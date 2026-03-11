@@ -49,8 +49,8 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Prepare Hugo modules (Docsy)
-        run: hugo mod download
+      - name: Download Go modules (Docsy)
+        run: go mod download
 
       - name: Build
         run: |
