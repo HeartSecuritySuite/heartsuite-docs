@@ -1,4 +1,4 @@
-baseURL: https://docs.heartsuite.com
+baseURL: https://docs.heartsecsuite.com
 title: Heart Security Suite Documentation
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
@@ -119,7 +119,7 @@ params:
 
   versions:
     - version: v1.6.2
-      url: 'https://docs.heartsuite.com'
+      url: 'https://docs.heartsecsuite.com'
 
   # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
   github_repo: https://github.com/google/docsy-example
