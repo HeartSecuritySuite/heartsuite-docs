@@ -5,7 +5,7 @@ Welcome to the official documentation for **HeartSuite Core Secure** — the ent
 Built with [Hugo](https://gohugo.io/) and the [Docsy](https://www.docsy.dev/) theme.
 
 ## Live Site
-[docs.heartsuite.com](https://HeartSecuritySuite.github.io/heartsuite-docs/)
+[docs.heartsecsuite.com](https://HeartSecuritySuite.github.io/heartsuite-docs/)
 
 ## Quick Start
 1. **Clone the Repo**:
