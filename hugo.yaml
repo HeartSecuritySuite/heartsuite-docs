@@ -112,20 +112,20 @@ params:
   # The version number for the version of the docs represented in this doc set.
   # Used in the "version-banner" partial to display a version number for the
   # current doc set.
-  version: 1.6.2
+  version: 1.6.3
 
   # Internal version number with build ID.
-  versionWithBuildId: 1.6.2
+  versionWithBuildId: 1.6.3
 
   versions:
-    - version: v1.6.2
+    - version: v1.6.3
       url: 'https://docs.heartsecsuite.com'
 
   # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
-  github_repo: https://github.com/google/docsy-example
+  github_repo: https://github.com/HeartSecuritySuite/heartsuite-docs
 
   # An optional link to a related project repo. For example, the sibling repository where your product code lives.
-  github_project_repo: https://github.com/google/docsy
+  github_project_repo: https://github.com/HeartSecuritySuite/heartsuite-core-secure
 
   # Specify a value here if your content directory is not in your repo's root directory
   # github_subdir: ""
