@@ -14,7 +14,7 @@ menu:
 
 
 
-This section covers extracting the HeartSuite distribution, running the installer script, and rebooting to load the modified kernel.
+This section covers extracting the HeartSuite distribution, running the installer script, and rebooting to load the modified kernel (Phase 1, with dashboard verification).
 
 Untar the distribution tar file:
 

@@ -20,13 +20,13 @@ Quick answers to common setup, usage, and troubleshooting questions. For detaile
 
 {{< details summary="How is HeartSuite different from other anti-malware solutions?" >}}
 
-A: HeartSuite uses Program Whitelist (APOs) to prevent unauthorized program execution and restrict file/network access, unlike signature-based or behavior prediction tools that attackers often bypass.
+A: HeartSuite uses an allowlist to prevent unauthorized program execution and restrict file/network access through its review tools on the dashboard, unlike signature-based or behavior prediction tools that attackers often bypass.
 
 {{< /details >}}
 
 {{< details summary="How is HeartSuite itself protected from attacks? How do I know that HeartSuite won't be targeted or compromised?" >}}
 
-A: Lockdown prevents changes to whitelist entrys and settings—once active, it requires rebooting to an alternate kernel for any modifications, ensuring tamper-proof protection.
+A: Lockdown protects the integrity of allowlist entries and settings—once active, it requires rebooting to an alternate kernel for any modifications, ensuring tamper-proof protection. The dashboard shows your current status after every reboot.
 
 {{< /details >}}
 
@@ -62,21 +62,21 @@ A: Security (Secure) Mode and Lockdown require a license. Monitor (Setup) Mode p
 
 {{< details summary="I work remotely a lot; can I still access a HeartSuite server remotely?" >}}
 
-A: Yes, HeartSuite allows remote access like SSH—whitelist necessary programs and IPs.
+A: Yes, HeartSuite allows remote access like SSH—allowlist necessary programs and IPs.
 
 {{< /details >}}
 
 ## Installation
 
-{{< details summary="Once I’ve installed HeartSuite, can a program access files without adding the directories to the whitelist entry?" >}}
+{{< details summary="Once I’ve installed HeartSuite, can a program access files without adding the directories to the allowlist entry?" >}}
 
-A: No, you must add directories or files using `hs-whitelist-manager` (Program Whitelist is an older term for whitelist entries).
+A: No, you must add directories or files using the dedicated review tools (for programs, files, or network) from the dashboard.
 
 {{< /details >}}
 
 {{< details summary="Why do I need to reboot multiple times during installation?" >}}
 
-A: To load the modified kernel and generate logs for auto-whitelisting essential programs—failure to do so can cause hangs.
+A: To load the modified kernel as part of the setup process—failure to do so can cause hangs.
 
 {{< /details >}}
 
@@ -88,33 +88,33 @@ A: Check GRUB settings (e.g., uncomment GRUB_DISABLE_LINUX_UUID for VMs), verify
 
 {{< details summary="The setup script doesn't show success after many runs—what next?" >}}
 
-A: Manually whitelist missing programs using `hs-whitelist-manager`, check logs for errors, and ensure root access.
+A: Review and approve using the program review tool (or equivalent) from the dashboard, ensure root access, and follow the next step it suggests.
 
 {{< /details >}}
 
-## Whitelisting
+## Allowlisting
 
-{{< details summary="Why does HeartSuite block a program I just whitelisted?" >}}
+{{< details summary="Why does HeartSuite block a program I just allowlisted?" >}}
 
-A: You may need to add file, directory, or network permissions. Check logs after running the program for denied actions.
+A: You may need to add file, directory, or network permissions. Use the review tools from the dashboard after running the program for pending events.
 
 {{< /details >}}
 
-{{< details summary="Can I whitelist directories instead of files?" >}}
+{{< details summary="Can I allowlist directories instead of files?" >}}
 
-A: Yes, for broad access—use `-d` in `hs-whitelist-manager`. Directories are often safer than individual files.
+A: Yes, for broad access—use the appropriate review queue from the Dashboard. Directories are often safer than individual files.
 
 {{< /details >}}
 
 {{< details summary="How do I activate Secure Mode?" >}}
 
-A: Secure Mode is an older term for Secure mode—use `hs-mode-switch` off after full whitelisting to activate.
+A: Use hs-activate-secure-mode (via the dashboard) after completing allowlisting in the process.
 
 {{< /details >}}
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: Use `-n IP` with `hs-whitelist-manager` to whitelist specific IPs—HeartSuite blocks all remote connections by default.
+A: Use the network review tool from the dashboard to allowlist specific IPs—HeartSuite blocks all remote connections by default.
 
 {{< /details >}}
 
@@ -122,7 +122,7 @@ A: Use `-n IP` with `hs-whitelist-manager` to whitelist specific IPs—HeartSuit
 
 {{< details summary="When should I switch to Secure mode?" >}}
 
-A: After fully whitelisting essential programs to avoid boot hangs. Use Setup mode for testing and adding permissions.
+A: After completing all reviews in the process to avoid boot hangs. Use Setup Mode for testing and adding permissions.
 
 {{< /details >}}
 
@@ -154,19 +154,19 @@ A: Boot alternate kernel to disable lockdown, make changes, then switch back to 
 
 {{< details summary="How do I check if HeartSuite is active?" >}}
 
-A: Run `dmesg | grep HEARTSUITE` for activation and mode messages.
+A: Access `hs-dashboard` for immediate verification of activation, current mode (Setup or Secure), and status.
 
 {{< /details >}}
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: Reboot into recovery or alternate kernel, switch to Setup mode if possible, and review logs for denied actions.
+A: Reboot into recovery or alternate kernel, switch to Setup Mode if possible, and use the dashboard review tools for pending events.
 
 {{< /details >}}
 
 {{< details summary="How to clear HeartSuite logs?" >}}
 
-A: As root: `/hs/sys/empty_HS_log.sh`.
+A: Follow the dashboard guidance for log management.
 
 {{< /details >}}
 

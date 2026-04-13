@@ -13,12 +13,12 @@ menu:
 ---
 
 
-HeartSuite is a comprehensive security suite designed to proactively block malware by whitelisting safe programs and actions. This section provides an understanding of how HeartSuite works, the setup process, and what's needed to get started.
+HeartSuite is a comprehensive security suite designed to proactively block malware by allowlisting safe programs and actions. This section provides an understanding of how HeartSuite works, the setup process with the dashboard for orientation, and what's needed to get started.
 
 ## Key Topics
 Dive deeper into specific areas:
 - [HeartSuite Overview](heartsuite-overview/) - Core features, how it protects against malware, and key benefits.
 - [Setup Overview](setup-overview/) - Step-by-step explanation of the setup process and modes (Setup vs. Secure).
-- [System Requirements](system-requirements/) - Compatible systems, kernel versions, and prerequisites.
+- [System Requirements](system-requirements/) - Compatible systems, kernel versions, and prerequisites including Dashboard verification.
 
-For detailed installation steps, see [Installation](../installation/).
+For detailed installation steps, see [Installation](../installation/). See verification via the Dashboard for orientation on boot.

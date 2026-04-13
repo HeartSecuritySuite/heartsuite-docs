@@ -13,7 +13,7 @@ toc: true
 
 Files that attackers routinely attack today are your backups. So HeartSuite makes sure to wall them off with extra protection. For starters, HeartSuite automatically backs up files in designated directories, including their subdirectories. But more importantly, HeartSuite prevents access to the backups by all programs—only HeartSuite can access the backups. HeartSuite supplies a backup configuration manager tool that admins can use to add and remove directories from the list of directories that will be backed up automatically. By means of this simple but powerful approach, HeartSuite prevents all programs from destroying or modifying backup files.
 
-The HeartSuite version manager program can then be used to retrieve any version of the file at will. All of that means that if your staff downloads malware masquerading as legitimate software by mistake, the layers of Program Whitelist, Lockdown, and versioning will work together to minimize damage and easily let you restore your files.
+The HeartSuite version manager program can then be used to retrieve any version of the file at will. All of that means that if your staff downloads malware masquerading as legitimate software by mistake, the layers of Program Allowlist, Lockdown, and versioning will work together to minimize damage and easily let you restore your files.
 
 ## Configuring Automatic File Backup
 
@@ -62,7 +62,7 @@ This tool helps recover from malware attacks, as backups are isolated and only a
 ## Integration with Other Features
 
 Backup and versioning work seamlessly with HeartSuite's core features:
-- **Program Whitelist**: Prevents unauthorized access to backup files.
+- **Program Allowlist**: Prevents unauthorized access to backup files.
 - **Lockdown**: Ensures backup configurations can't be altered during production.
 - **Secure Mode**: Enforces restrictions that protect backups from tampering.
 

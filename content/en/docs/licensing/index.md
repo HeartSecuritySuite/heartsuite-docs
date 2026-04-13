@@ -20,7 +20,7 @@ HeartSuite uses a separate database of directories to determine whether to backu
 
 ## Subscription
 
-**Overview**: Activate with your license key for Secure mode.
+**Overview**: Activate with your license key for Secure mode. The Dashboard shows subscription status alongside alerts.
 
 In order to switch from Setup to Secure mode, you need a subscription for your server; you must also activate the server using the subscription. The subscription is a simple text file; however, one subscription can potentially be used to activate up to 9999 servers. At the time you purchase your subscription, you must specify how many servers you want to be covered by the subscription. You can purchase additional subscriptions, if needed.
 

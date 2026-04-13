@@ -14,17 +14,11 @@ type: docs
 
 ## Verifying HeartSuite Activation
 
-To confirm that HeartSuite is running, view the kernel log messages using the following command, which may require root permission:
+To confirm that HeartSuite is running and to orient yourself, access the Dashboard (`hs-dashboard` or on boot). The Dashboard surfaces current mode (Setup or Secure), phase status, and Suggested Next Step.
 
-```bash
-# dmesg | grep HEARTSUITE
-```
-
-If HeartSuite is running, there will be at least two informational messages displayed in the log, one indicating that HeartSuite has been activated and another indicating its operation mode, Setup or Secure.
-
-If HeartSuite was not running when activated, a message indicating the size of the whitelist entries cache will also be added to the kernel log. A simple activation message will also be added to the HeartSuite log file:
+If the system is in Setup Mode with no prior allowlisting, the Dashboard indicates this state along with pending events and orients you without raw log output.
 
 ### Interpreting Log Messages
 
-**Tip**: Look for activation and mode messages (Setup or Secure) in the output to verify success.
+**Tip**: The Dashboard provides immediate verification of activation, mode (Setup or Secure), and Suggested Next Step. It orients you in the guided journey without raw logs; for Setup Mode with no prior allowlisting it surfaces pending events and next actions like beginning allowlisting. See the Dashboard for full details.
 

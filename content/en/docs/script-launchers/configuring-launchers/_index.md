@@ -26,7 +26,7 @@ Run the launcher directly to test scripts.
    # hs-python-launcher /.hs/sys/hs-os-boot-setup.py
    ```
 
-This applies the script's whitelist; direct `python3` uses the interpreter's whitelist.
+This applies the script's allowlist; direct `python3` uses the interpreter's allowlist.
 
 **Tip**: Use direct launcher for initial testing.
 
@@ -43,4 +43,4 @@ Make the interpreter's symbolic link point to the launcher for seamless use.
    # ln -sf /usr/bin/hs-python-launcher /usr/bin/python3
    ```
 
-Now, any `python3` command launches via `hs-python-launcher`, using the script's whitelist.
+Now, any `python3` command launches via `hs-python-launcher`, using the script's allowlist.

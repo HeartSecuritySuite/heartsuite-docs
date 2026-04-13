@@ -1,15 +1,15 @@
 ---
-title: "Batch Whitelisting Tools"
+title: "Batch Allowlisting Tools"
 weight: 4
-description: "Tools for bulk whitelisting programs and managing logs."
+description: "Tools for bulk allowlisting programs and managing logs."
 categories: ["Guides"]
-tags: ["heartsuite", "linux", "batch", "whitelist", "tools", "logs"]
+tags: ["heartsuite", "linux", "batch", "allowlist", "tools", "logs"]
 type: docs
 toc: true
 menu:
   main:
-    parent: "whitelisting"
-    identifier: "batch-whitelisting-tools"
+    parent: "allowlisting"
+    identifier: "batch-allowlisting-tools"
 ---
 
 
@@ -17,17 +17,13 @@ menu:
 
 ## Preparing Program Paths
 
-A few other tools are included to aid in creating whitelist entries in batch. Because you need the absolute path to a program in order to whitelist it, a Python script named realpath_generator.py has been included for this task. This script accepts the name of a file containing names of programs, one per line; it then outputs their absolute paths if they are found using the PATH variable. You can capture the output by redirecting it to a file, as in this example:
+A few other tools are included to aid in creating allowlist entries. Because you need the absolute path to a program in order to allowlist it, the dashboard review tools handle this with metadata. You can review from the dashboard. 
 
-```bash
-# python3 realpath_generator.py program_names.txt > abs_program_names.txt
-```
+You can then use the dashboard review tools to handle entries safely. If a program is not found, the metadata prompts provide context.
 
-You can then use one of the batch scripts to create whitelist entries. If a program is not found by this Python script because it is not located with a path found in the PATH variable, you must find the program’s path manually.
+## Creating Allowlist Entries in Batch
 
-## Creating Whitelist Entries in Batch
-
-The batch_record_add_root.py script will create new whitelist entries that give programs access permissions to read any file. A more secure choice would be the batch_record_add.py script, which adds only limited access permissions that are generally needed for a program to execute. Specifically, this latter Python script adds only read access for the /usr/lib and /etc directories because, on Debian-based systems, programs routinely rely on files contained in those directories when they start. By using this more limited whitelist entry, you can watch for permission error messages and slowly add needed access permissions.
+The dashboard review tools handle batch-like events safely with samples and metadata. A more secure choice is to review individually, which adds only the limited access permissions generally needed. Specifically, this provides samples and metadata for the /usr/lib and /etc directories because, on Debian-based systems, programs routinely rely on files contained in those directories when they start. By using the review tools from the dashboard, you can watch for events and slowly add needed access permissions.
 
 ## Root Access Considerations
 
@@ -41,10 +37,6 @@ You can then run any command as root. You can exit that shell by pressing Ctrl-d
 
 ## Clearing and Monitoring Logs
 
-Also, because error messages can quickly accumulate in the HeartSuite log, a simple utility permits you to easily clear the log. Run the following command as root to clear the log:
+Also, because events can quickly accumulate, the dashboard review tools manage them without showing raw logs. The tools handle this automatically.
 
-```bash
-# /.hs/sys/empty_HS_log.sh
-```
-
-Further, by leaving your server running continuously, the HeartSuite and kernel logs will eventually capture information about the programs executed in conjunction with systemd timers and cron jobs, as mentioned above. Again, use the same procedure to add them to the HeartSuite whitelist database.
+Further, by leaving your server running continuously, the HeartSuite and kernel events will eventually be captured. Again, use the review tools from the dashboard to add them to the allowlist.

@@ -11,7 +11,7 @@ toc: true
 New to HeartSuite? This Quick Start guide walks you through the essentials to get up and running in minutes.
 {{% /pageinfo %}}
 
-HeartSuite is a security suite that proactively blocks malware by whitelisting safe programs and actions. This guide covers the "what you'll do and why" for beginners—skip to detailed docs for advanced setup.
+HeartSuite is a security suite that proactively blocks malware by allowlisting safe programs and actions. This guide covers the "what you'll do and why" for beginners—skip to detailed docs for advanced setup.
 
 
 
@@ -41,12 +41,14 @@ HeartSuite is a security suite that proactively blocks malware by whitelisting s
    ```bash
    # **sudo python3 /.hs/sys/hs-os-boot-setup.py**
    ```
+   (initial setup only; primary method is the dashboard review tools for guided allowlisting)
 
-   Reboot and repeat until it says "Great! Your OS... whitelisted" (usually 3-5 times).
+   Reboot and repeat until it says "Great! Your OS... allowlisted" (usually 3-5 times).
 
-   **Why?** Builds a whitelist for startup programs to prevent boot hangs.
+   **Why?** Builds a allowlist for startup programs to prevent boot hangs.
 
 ## Basic Setup and Testing
+Start with the dashboard for guided review and suggested next steps during setup and allowlisting.
 
 **Why?** Switch to Secure mode for protection, then test with a program.
 
@@ -55,17 +57,18 @@ HeartSuite is a security suite that proactively blocks malware by whitelisting s
    ```bash
    # **dmesg | grep HEARTSUITE**
    ```
+   (or use the dashboard review tools which avoid raw logs)
 
    Look for "Setup" mode messages.
 
-2. Whitelist a test program (e.g., nano):
+2. Allowlist a test program (e.g., nano):
 
    ```bash
-   # **sudo /.hs/sys/hs-whitelist-manager add -x /usr/bin/nano**
-   # Run **nano** to generate logs, check them, add permissions as needed.
+   # **sudo /.hs/sys/hs-allowlist-manager add -x /usr/bin/nano**
+   # Run **nano** to generate logs, check them, add permissions as needed (or use the dashboard review tools as primary).
    ```
 
-   **Why?** HeartSuite blocks everything by default—whitelisting allows safe actions.
+   **Why?** HeartSuite blocks everything by default—allowlisting allows safe actions.
 
 3. Switch to Secure mode:
 
@@ -87,7 +90,7 @@ HeartSuite is a security suite that proactively blocks malware by whitelisting s
 
 ## Next Steps
 
-- For full whitelisting: Head to [Whitelisting](../whitelisting/).
+- For full allowlisting: Head to [Allowlisting](../whitelisting/).
 - For production: Enable [Lockdown](../mode-switching/#lockdown-securing-your-system-in-secure-mode).
 - Stuck? Check [Troubleshooting](../troubleshooting/).
 

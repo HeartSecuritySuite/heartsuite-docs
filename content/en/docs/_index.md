@@ -11,21 +11,21 @@ toc: true
 
 Version 1.6.2
 
-HeartSuite is a security suite that proactively blocks malware by whitelisting safe programs and actions. Secure your Linux server with easy setup and maintenance.
+HeartSuite is a security suite that proactively blocks malware by allowlisting safe programs and actions. The dashboard and clear guidance keep you informed of your progress in Setup or Secure Mode. Secure your Linux server with easy setup and maintenance.
 
 ## Learn About HeartSuite
 Understand key concepts to get the most out of HeartSuite.
-- [Introduction and Overview](introduction/) - Overview, setup process, and requirements.
-- [Whitelisting Programs](whitelisting/) - How to add safe programs and permissions.
+- [Introduction and Overview](introduction/) - Overview, setup process, dashboard guidance, and requirements.
+- [Allowlisting Programs](whitelisting/) - How to add safe programs and permissions using review tools.
 - [Mode Switching and Lockdown](mode-switching/) - Secure vs. Setup modes.
 
 [Explore Concepts](#)
 
 ## Get Started
 Follow quick guides to install and test HeartSuite.
-- [Quick Start](getting-started/) - Install, whitelist, and switch modes in minutes.
+- [Quick Start](getting-started/) - Install, allowlist, and switch modes in minutes.
 - [Obtaining and Installing HeartSuite](installation/) - Download and setup steps.
-- [Verifying Installation](verification/) - Confirm activation and basic config.
+- [Verifying Installation](verification/) - Confirm activation and basic config via the dashboard.
 
 [Start Here](#)
 
@@ -33,13 +33,13 @@ Follow quick guides to install and test HeartSuite.
 Perform common tasks and advanced config for ongoing security.
 - [Network and Remote Access](network/) - Configure network permissions.
 - [Script Launchers and Python Setup](script-launchers/) - Secure script execution.
-- [Advanced Configuration and Maintenance](maintenance/) - Caches, backups, and tweaks.
+- [Advanced Configuration and Maintenance](maintenance/) - Caches, backups, and tweaks via the dashboard.
 
 [View Tasks](#)
 
 ## Troubleshoot and Reference
 Get help and detailed info.
-- [Troubleshooting and Logs](troubleshooting/) - Common issues and logs.
+- [Troubleshooting and Logs](troubleshooting/) - Common issues and solutions.
 - [FAQs](faqs/) - Answers to frequent questions.
 - [Appendices](appendices/) - List of included tools.
 
@@ -51,7 +51,7 @@ Get help and detailed info.
 
 ## Ready to get started?
 
-Get HeartSuite running in minutes with our quick start guide.
+Get HeartSuite running in minutes with our quick start guide. Begin with the dashboard, which clearly shows your next steps.
 
 [Get Started](getting-started/)
 

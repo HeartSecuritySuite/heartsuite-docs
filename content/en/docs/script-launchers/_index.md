@@ -8,9 +8,9 @@ type: docs
 toc: true
 ---
 
-**Overview**: Scripts (e.g., Python) need special launchers for fine-grained security—regular interpreters would over-share permissions.
+**Overview**: Scripts (e.g., Python) need special launchers for fine-grained security—regular interpreters would over-share permissions. This appears as Phase 3 on the Dashboard with guided setup and suggested next step.
 
-HeartSuite provides Secure Script Launchers to apply per-script permissions instead of granting broad access to interpreters like Python or Perl. This ensures only whitelisted scripts run securely.
+HeartSuite provides Secure Script Launchers to apply per-script permissions instead of granting broad access to interpreters like Python or Perl. This ensures only allowlisted scripts run securely.
 
 ## Key Guides
 Dive into specific setup and reference areas:

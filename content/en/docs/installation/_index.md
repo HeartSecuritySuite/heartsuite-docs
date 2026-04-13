@@ -14,7 +14,7 @@ menu:
 
 ## Overview
 
-**What you'll do**: Download and extract HeartSuite, run the installer, reboot to load the modified kernel, and auto-whitelist essential startup programs by running a setup script multiple times.
+**What you'll do**: Download and extract HeartSuite, run the installer, reboot to load the modified kernel, and auto-allowlist essential startup programs by running a setup script multiple times.
 
 **Why**: This process integrates HeartSuite's security features without disrupting your system—HeartSuite blocks unauthorized actions by default, so proper setup prevents boot failures or hangs.
 
@@ -23,4 +23,4 @@ Follow these sub-guides for detailed steps:
 - [Obtaining HeartSuite](obtaining-heartsuite/) - Download the distribution from the website.
 - [VM Preparation](vm-preparation/) - Configure GRUB settings for virtual machines on clouds.
 - [Installation Part 1](installation-part1/) - Extract, install, and reboot to load the kernel.
-- [Installation Part 2](installation-part2/) - Auto-whitelist startup programs with the setup script.
+- [Installation Part 2](installation-part2/) - Auto-allowlist startup programs with the setup script.

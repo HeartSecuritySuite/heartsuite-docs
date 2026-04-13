@@ -15,4 +15,4 @@ menu:
 
 ## Overview
 
-These specs ensure compatibility with HeartSuite's kernel modifications. This edition of HeartSuite was compiled on a Debian 11 server, running on an x86 chipset. Therefore, it is binary compatible with any Linux distro derived from Debian or Ubuntu running on an x86 chipset. Additionally, HeartSuite is distributed as a set of tools and a gingerly modified version of the mainline Linux kernel, specifically version 5.19.6. Accordingly, this modified kernel must be booted in order to utilize HeartSuite.
+These specs ensure compatibility with HeartSuite's kernel modifications. This edition of HeartSuite was compiled on a Debian 11 server, running on an x86 chipset. Therefore, it is binary compatible with any Linux distro derived from Debian or Ubuntu running on an x86 chipset. Additionally, HeartSuite is distributed as a set of tools and a gingerly modified version of the mainline Linux kernel, specifically version 5.19.6. The Dashboard verifies kernel activation as part of the guided journey and provides orientation on every boot. Accordingly, this modified kernel must be booted in order to utilize HeartSuite.

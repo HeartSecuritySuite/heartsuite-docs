@@ -10,7 +10,7 @@ toc: true
 
 # Avoiding Gaps in Your HeartSuite Configuration
 
-Many whitelisted programs (e.g., file editors, rm) are useful during maintenance but should be locked down during normal operation to prevent attacks.
+Many allowlisted programs (e.g., file editors, rm) are useful during maintenance but should be locked down during normal operation to prevent attacks.
 
 ## Locking Down Maintenance Tools
 - Programs like `rm` often need broad write access for maintenance.
@@ -38,7 +38,7 @@ Setup steps:
    # sudo mv /usr/bin/rm /usr/bin/rm-orig
    # sudo ln -sf /usr/bin/limited_rm /usr/bin/rm
    ```
-2. Reboot and whitelist with `hs-os-boot-setup.py`.
+2. Reboot and allowlist with `hs-os-boot-setup.py`.
 3. Update `HS_lockdown.sh` to disable `rm-orig` and make both immutable.
 4. Update `HS_unlock.sh` to restore access.
 

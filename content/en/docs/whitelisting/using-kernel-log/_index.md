@@ -8,17 +8,13 @@ type: docs
 toc: true
 menu:
   main:
-    parent: "whitelisting"
+    parent: "allowlisting"
     identifier: "using-kernel-log"
 ---
 
 ## Introduction to using the kernel log
 
-Depending on you distro, some permission error messages may not appear in the HeartSuite log; instead, they are placed in the kernel log. You can easily obtain the kernel log with the following command, which may require root privilege:
-
-```bash
-# dmesg
-```
+Depending on your distro, some permission error messages may not appear in the HeartSuite log; instead, they are placed in the kernel log. The hs-review-* tools process kernel events automatically with tiered queues and metadata (per UX §§8.1,11).
 
 In order to readily extract only the HeartSuite messages, use grep:
 
@@ -26,6 +22,6 @@ In order to readily extract only the HeartSuite messages, use grep:
 # dmesg | grep HEARTSUITE
 ```
 
-Use **hs-os-boot-setup.py** or add manually with **hs-whitelist-manager** (see --help for examples).
+Use the dashboard or hs-review-* tiered queues (per UX §§8.1,8.2,11).
 
-Please note that any program added to the whitelist database using the **hs-os-boot-setup.py** script is granted access permissions allowing it to access every file, or directory, specified in log messages. Therefore, it is strongly recommended that you use the **hs-os-boot-setup.py** script cautiously. Specifically, we recommend that you use it before any adding programs that do not come with your distro. We have found that it can take several days, possibly a week, to capture all of the relevant log messages involving processes run by systemd timers and cron jobs. Once this essential information is captured, we strongly recommend that you switch to other means. Primarily, we strongly recommend that you add access permissions manually so that you can tailor access permissions to a “need-to-access” basis only. If you have several programs that require similar permissions, you can use one of our other scripts, which you can also modify easily for your needs. Finally, you can use the **hs-whitelist-manager** tool to review the access permissions of all programs and restrict them on the basis of need-to-access.
+Please note that the tiered review queues with metadata prompts avoid raw logs and blind bulk (per UX §§8.1-8.2,8.9,11,13.5,14). Therefore, it is strongly recommended that you use the review queues from the dashboard. Specifically, we recommend that you begin with hs-review-programs, hs-review-files and hs-review-network. We have found that it can take several days, possibly a week, to capture all of the relevant events involving processes run by systemd timers and cron jobs. Once this essential information is captured, we strongly recommend that you switch to other means. Primarily, we strongly recommend that you use the tiered queues so that you can tailor access permissions to a “need-to-access” basis only. If you have several programs that require similar permissions, the grouped tier-2 reviews handle this safely with samples and metadata. Finally, you can use the review tools to review the access permissions of all programs and restrict them on the basis of need-to-access.

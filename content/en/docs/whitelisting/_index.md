@@ -1,34 +1,34 @@
 ---
-title: "Whitelisting Programs"
+title: "Allowlisting Programs"
 weight: 40
-description: "Adding programs to the whitelist for secure execution."
+description: "Adding programs to the allowlist for secure execution."
 categories: ["Guides"]
-tags: ["heartsuite", "linux", "permissions", "whitelist", "security", "programs"]
+tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 toc: true
 type: docs
 ---
 
-**Overview**: Whitelisting tells HeartSuite which programs are safe to run and what they can access—without this, nothing works.
+**Overview**: Allowlisting tells HeartSuite which programs are safe to run and what they can access—without this, nothing works.
 
 ```mermaid
 graph LR;
     A[Attempt to run program in Setup Mode] --> B[Check HeartSuite log or kernel log for errors];
     B --> C{What type of permission error?};
-    C -->|Program not whitelisted| D["Add program: hs-whitelist-manager add -x /path/to/program"];
-    C -->|File/Directory access denied| E["Add file/dir permissions: add -f /file or -d /dir (use W for write)"];
-    C -->|Network access denied| F[Add IP address: add -n IP];
+    C -->|Program not allowlisted| D["Review via dashboard or hs-review-programs (tiered queues with metadata)"];
+    C -->|File/Directory access denied| E["Review via hs-review-files (read/write split, metadata prompts)"];
+    C -->|Network access denied| F[Review via hs-review-network];
     D --> G[Test program again, repeat for all errors];
     E --> G;
     F --> G;
-    G --> H[Whitelist complete for this program];
+    G --> H[Allowlist complete for this program];
 ```
 
-# Whitelisting Overview
+# Allowlisting Overview
 
-HeartSuite requires whitelisting programs to allow them execution and access permissions. Start with the basics, then dive into using logs for fine-tuning, and explore batch tools for efficiency.
+HeartSuite requires allowlisting programs to allow them execution and access permissions. Start with the basics, then dive into using logs for fine-tuning, and explore batch tools for efficiency.
 
 ## Key Guides
-- [Whitelisting Basics](whitelisting-basics/) - Introduction to adding programs and permissions.
-- [Using the HeartSuite Log](using-heart-suite-log/) - Monitor and resolve access errors via the HeartSuite activity log.
+- [Allowlisting Basics](allowlisting-basics/) - Introduction to adding programs and permissions.
+- [Using the HeartSuite Log](using-heart-suite-log/) - Monitor and resolve access errors via the HeartSuite activity log (cross-ref to tiered hs-review tools).
 - [Using the Kernel Log](using-kernel-log/) - Alternative log access for permission errors.
-- [Batch Whitelisting Tools](batch-whitelisting-tools/) - Scripts and utilities for bulk whitelisting.
+- [Batch Allowlisting Tools](batch-allowlisting-tools/) - Scripts and utilities for bulk allowlisting.
