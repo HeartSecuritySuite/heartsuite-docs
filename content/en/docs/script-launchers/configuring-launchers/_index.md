@@ -1,7 +1,7 @@
 ---
 title: "Configuring Script Launchers"
 weight: 2
-description: "Setting up HeartSuite script launchers for secure script execution."
+description: "Setting up HeartSuite Core Secure script launchers for secure script execution."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "security", "interpreters"]
 type: docs
@@ -26,7 +26,7 @@ When launchers are pending, the status panel shows:
 [a] Activate   [s] Skip
 ```
 
-Press `[a]` to activate all pending launchers at once. HeartSuite registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
+Press `[a]` to activate all pending launchers at once. HeartSuite Core Secure registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
 
 After activation, the result panel confirms which launchers were activated:
 
@@ -51,7 +51,7 @@ Phase 3 is not required if your system does not use script interpreters. The Das
 
 ## Skipping Launcher Setup
 
-Press `[s]` to skip without activating. HeartSuite notifies you:
+Press `[s]` to skip without activating. HeartSuite Core Secure notifies you:
 
 ```text
 Script launcher activation skipped.

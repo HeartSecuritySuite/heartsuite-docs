@@ -8,11 +8,11 @@ tags: ["heartsuite", "linux", "network", "permissions", "security", "remote-acce
 toc: true
 ---
 
-**Overview**: HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
+**Overview**: HeartSuite Core Secure blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
 
 ## How Network Allowlisting Works
 
-In Setup Mode, HeartSuite logs every outbound connection attempt without blocking it. These events appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
+In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These events appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
 Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address — each program must have its own approved destinations.
 

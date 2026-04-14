@@ -15,7 +15,7 @@ graph TD;
     A[System issue occurs] --> B{System fails to boot?};
     B -->|Yes| C[Boot into recovery mode or Non-HS kernel];
     C --> D["Dashboard resumes — follow Maintenance wizard steps"];
-    D --> E[Boot HeartSuite kernel — Dashboard shows pending events];
+    D --> E[Boot HeartSuite Core Secure kernel — Dashboard shows pending events];
     B -->|No| F[Check the Dashboard];
     F --> G{Safety Banner shows wrong mode or Non-HS kernel?};
     G -->|Yes| H[Check System Info Strip for mode, kernel, lockdown];
@@ -43,7 +43,7 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ## Log Management
 
-HeartSuite captures all permission events and presents them through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending event counts for each queue and groups events by category, so you always know what needs attention. The Maintenance screen (`[t]`) provides guided workflows for common maintenance tasks.
+HeartSuite Core Secure captures all permission events and presents them through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending event counts for each queue and groups events by category, so you always know what needs attention. The Maintenance screen (`[t]`) provides guided workflows for common maintenance tasks.
 
 The review queues are the primary way to see and resolve events. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
@@ -51,16 +51,16 @@ Allow several days to a week of observation in Setup Mode. Systemd timers, cron 
 
 ## Kernel Log (Advanced)
 
-The Dashboard's review queues automatically collect events from both the HeartSuite activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
+The Dashboard's review queues automatically collect events from both the HeartSuite Core Secure activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
 
-The kernel log is useful for advanced troubleshooting — for example, confirming kernel-level activation or correlating HeartSuite events with other kernel messages:
+The kernel log is useful for advanced troubleshooting — for example, confirming kernel-level activation or correlating HeartSuite Core Secure events with other kernel messages:
 
 ```bash
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same event data with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite kernel and the Non-HS kernel — on the Non-HS kernel, the Safety Banner shows "NON-HS KERNEL" and enforcement is inactive.
+The Dashboard presents the same event data with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Core Secure kernel and the Non-HS kernel — on the Non-HS kernel, the Safety Banner shows "NON-HS KERNEL" and enforcement is inactive.
 
 ## Reporting Issues
 
-If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite version, kernel version, the Safety Banner state, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com — we're happy to help.
+If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the Safety Banner state, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com — we're happy to help.

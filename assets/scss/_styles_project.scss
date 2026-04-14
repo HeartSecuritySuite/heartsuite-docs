@@ -10,6 +10,16 @@ https://www.docsy.dev/docs/content/lookandfeel/#project-style-files
 @import 'td/extra/buttons';
 @import 'td/extra/main-container';
 
+// Fix: homepage uses <main class="td-main"> directly (not a nested <main> inside .td-main),
+// so Docsy's ".td-main main" padding rule doesn't match. Apply navbar offset manually.
+main.td-main {
+  padding-top: 1.5rem;
+
+  @include media-breakpoint-up(md) {
+    padding-top: calc(1.5rem + $td-navbar-min-height);
+  }
+}
+
 // Example of color tuning
 
 .td-box--primary {

@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Quick guide to install and start using HeartSuite.
+description: Quick guide to install and start using HeartSuite Core Secure.
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "installation", "quickstart", "beginners"]
 weight: 2
@@ -9,16 +9,16 @@ type: docs
 ---
 
 {{% pageinfo color="primary" %}}
-HeartSuite uses a 7-phase guided model to take your system from initial observation to full enforcement. The Dashboard tracks your progress and suggests each next step.
+HeartSuite Core Secure uses a 7-phase guided model to take your system from initial observation to full enforcement. The Dashboard tracks your progress and suggests each next step.
 {{% /pageinfo %}}
 
-**Overview**: This guide covers both the Cloud Path and the Local Path for getting HeartSuite running, verified, and ready for allowlisting.
+**Overview**: This guide covers both the Cloud Path and the Local Path for getting HeartSuite Core Secure running, verified, and ready for allowlisting.
 
 ## The 7-Phase Model
 
-HeartSuite guides you through seven phases:
+HeartSuite Core Secure guides you through seven phases:
 
-1. **System Verification** — confirm HeartSuite is active and in Setup Mode
+1. **System Verification** — confirm HeartSuite Core Secure is active and in Setup Mode
 2. **Program Allowlisting** — approve the programs your system needs
 3. **Script Launchers** (if applicable) — configure Secure Script Launchers for interpreted scripts
 4. **File Access Allowlisting** — approve file read and write access
@@ -30,7 +30,7 @@ The Dashboard displays your current phase, pending event counts, and a Suggested
 
 ## Cloud Path Quick Start
 
-Users launching a pre-installed HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode.
+Users launching a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, GCP image) boot directly into Setup Mode.
 
 1. Launch your cloud instance and log in.
 
@@ -48,7 +48,7 @@ Users launching a pre-installed HeartSuite cloud instance (AWS AMI, GCP image) b
 
 ## Local Path Quick Start
 
-Users installing HeartSuite on bare-metal or custom VMs follow a longer installation sequence before reaching the Dashboard.
+Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a longer installation sequence before reaching the Dashboard.
 
 ### Download and Install
 
@@ -61,13 +61,13 @@ Users installing HeartSuite on bare-metal or custom VMs follow a longer installa
    # sudo ./HeartSuite_install.sh
    ```
 
-3. Reboot to load the HeartSuite kernel:
+3. Reboot to load the HeartSuite Core Secure kernel:
 
    ```bash
    # systemctl reboot
    ```
 
-   If the reboot does not load the HeartSuite kernel, check GRUB settings. See [Installation](../installation/) for details.
+   If the reboot does not load the HeartSuite Core Secure kernel, check GRUB settings. See [Installation](../installation/) for details.
 
 ### OS Boot Setup
 
@@ -85,7 +85,7 @@ Users installing HeartSuite on bare-metal or custom VMs follow a longer installa
 
 ## The Dashboard
 
-The Dashboard is your orientation point throughout the entire HeartSuite journey. It displays:
+The Dashboard is your orientation point throughout the entire HeartSuite Core Secure journey. It displays:
 
 - **Safety Banner** — current protection state (Setup Mode, Secure Mode, or Non-HS kernel)
 - **Phase Progress** — which of the 7 phases are complete, in progress, or not started

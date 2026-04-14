@@ -1,18 +1,18 @@
 ---
 title: "Allowlisting Basics"
 weight: 1
-description: "Overview and basic procedures for allowlisting programs in HeartSuite."
+description: "Overview and basic procedures for allowlisting programs in HeartSuite Core Secure."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite requires you to allowlist programs before they can execute, access files, or make network connections. The Dashboard and its review queues walk you through this process with full metadata and tiered grouping.
+**Overview**: HeartSuite Core Secure requires you to allowlist programs before they can execute, access files, or make network connections. The Dashboard and its review queues walk you through this process with full metadata and tiered grouping.
 
 ## How Allowlisting Works
 
-In Setup Mode, HeartSuite logs every program execution, file access attempt, and outbound network connection without blocking anything. These logged events populate three review queues visible from the Dashboard:
+In Setup Mode, HeartSuite Core Secure logs every program execution, file access attempt, and outbound network connection without blocking anything. These logged events populate three review queues visible from the Dashboard:
 
 - **Programs queue** (`[p]`) -- programs that attempted to execute
 - **File Access queue** (`[f]`) -- programs that attempted to read or write files
@@ -58,7 +58,7 @@ Every review item displays metadata directly in the primary prompt -- you do not
 | Homepage | Package homepage URL |
 | Installed | Date the package was installed or last updated |
 
-When a program has no entry in any package database, HeartSuite displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden -- the absence of information is itself a signal.
+When a program has no entry in any package database, HeartSuite Core Secure displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden -- the absence of information is itself a signal.
 
 ### Sort Cohort Labels
 
@@ -69,7 +69,7 @@ Within each queue, programs are grouped under cohort headers in the sidebar. The
 | Unknown origin | Program has no entry in any known package database. No metadata beyond the file path. |
 | Installed after OS | Program belongs to a package installed after the OS provisioning date. |
 | Installed with OS | Program belongs to a package whose install date matches the inferred OS provisioning date. |
-| HeartSuite | File path falls under `/.hs/`. Origin is known; no investigation needed. Sorted last. |
+| HeartSuite Core Secure | File path falls under `/.hs/`. Origin is known; no investigation needed. Sorted last. |
 
 The sort order is a workflow convenience that determines which programs appear first. It is not a trust ranking and does not affect the approval mechanism. Every program receives the same approve and skip options.
 
@@ -96,18 +96,18 @@ This program has not been allowlisted.
 
 ### Tier 2 -- Grouped Review
 
-Related events are grouped together (e.g., "847 file reads from /usr/lib/python3/"). HeartSuite shows a sample of the grouped events so you can confirm the grouping makes sense before approving. The `[v]` View all option is shown inline on the grouped prompt for users who want complete visibility before approving.
+Related events are grouped together (e.g., "847 file reads from /usr/lib/python3/"). HeartSuite Core Secure shows a sample of the grouped events so you can confirm the grouping makes sense before approving. The `[v]` View all option is shown inline on the grouped prompt for users who want complete visibility before approving.
 
 ### Tier 3 -- Informational Summary
 
-When the volume of remaining events is large, HeartSuite presents a summary of what is ahead — total counts and a breakdown by program — before you begin reviewing. This is an orientation view, not an approval surface. Press `[a]` or `[Enter]` to proceed into individual review.
+When the volume of remaining events is large, HeartSuite Core Secure presents a summary of what is ahead — total counts and a breakdown by program — before you begin reviewing. This is an orientation view, not an approval surface. Press `[a]` or `[Enter]` to proceed into individual review.
 
 > [!NOTE]
 > Tiers and cohort sort order are independent dimensions. A program in any cohort may appear in any tier. For example, a program with no package entry that generated 200 file read events would appear in the "Unknown origin" cohort (sorted first) but could be presented as a Tier 2 group (because the events are groupable by directory).
 
 ## Programs Queue (Phase 2)
 
-When a program executes without an allowlist entry, HeartSuite logs it. The Programs queue presents these events for review. Example log entry:
+When a program executes without an allowlist entry, HeartSuite Core Secure logs it. The Programs queue presents these events for review. Example log entry:
 
 ```text
 [Setup Notice - Add program to Allowlist?] Not Whitelisted: /usr/bin/nano
@@ -117,7 +117,7 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 ## File Access Queue (Phase 4)
 
-After a program is allowlisted, HeartSuite begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents these events with two distinct permission levels:
+After a program is allowlisted, HeartSuite Core Secure begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents these events with two distinct permission levels:
 
 - **Read access** -- the default first approval level when approving a file read event.
 - **Write access** -- always includes read access. Granted when approving a file write event.
@@ -157,7 +157,7 @@ This file access has not been allowlisted.
 From the Dashboard, select the File Access queue (`[f]`).
 
 > [!TIP]
-> Tier 2 grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). HeartSuite groups these events together and shows a sample, so you can approve directory-level access without reviewing each file individually.
+> Tier 2 grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). HeartSuite Core Secure groups these events together and shows a sample, so you can approve directory-level access without reviewing each file individually.
 
 ## Internet Access Queue (Phase 5)
 
@@ -201,12 +201,12 @@ The Dashboard automatically updates pending counts as you work. Allow several da
 
 ## Review Queues in Secure Mode
 
-In Secure Mode the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve events while enforcement is active. The queues show **denied** events (actions HeartSuite blocked), not pending events awaiting review.
+In Secure Mode the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve events while enforcement is active. The queues show **denied** events (actions HeartSuite Core Secure blocked), not pending events awaiting review.
 
 Use `[n]` to navigate through denied events one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance screen (`[t]`) — this switches to Setup Mode where the review queues become interactive again.
 
 > [!NOTE]
-> Denied events in Secure Mode are a normal part of operation, not failures. A denied event means HeartSuite blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
+> Denied events in Secure Mode are a normal part of operation, not failures. A denied event means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
 
 ## Advanced: Manual Allowlist Management
 

@@ -1,5 +1,5 @@
 ---
-title: "Installing HeartSuite – Part 2"
+title: "Installing HeartSuite Core Secure – Part 2"
 weight: 4
 description: "Auto-allowlisting essential startup programs with hs-os-boot-setup."
 categories: ["Installation"]
@@ -12,7 +12,7 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: After rebooting into the HeartSuite kernel, build the initial allowlist of startup and shutdown programs. This completes Phase 1 (System Verification) on the Local Path. The Dashboard then appears and guides you into Phase 2 (Program Allowlisting).
+**Overview**: After rebooting into the HeartSuite Core Secure kernel, build the initial allowlist of startup and shutdown programs. This completes Phase 1 (System Verification) on the Local Path. The Dashboard then appears and guides you into Phase 2 (Program Allowlisting).
 
 > [!NOTE]
 > Cloud users skip this step. Phase 1 auto-completes on a pre-configured cloud instance, and the Dashboard is ready immediately.
@@ -41,7 +41,7 @@ If after several cycles the Installation screen does not show the success messag
 
 1. Check the Dashboard for system status and pending items.
 2. Check the Dashboard's Programs review queue (`[p]`) for any pending events and approve missing programs.
-3. Verify that the HeartSuite kernel is loaded (the Dashboard System Info Strip shows "Kernel: HS").
+3. Verify that the HeartSuite Core Secure kernel is loaded (the Dashboard System Info Strip shows "Kernel: HS").
 
 > [!WARNING]
 > Completing these reboot-and-review cycles is essential before switching to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.

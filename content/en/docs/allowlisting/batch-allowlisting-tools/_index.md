@@ -24,7 +24,7 @@ For details on the tiered model and single-key actions, see [Allowlisting Basics
 
 ## batch_record_add.py (Advanced / Legacy)
 
-For automation workflows or environments where scripted allowlisting is preferred, the `batch_record_add.py` utility creates allowlist entries from the HeartSuite activity log in bulk. This tool is located in `/.hs/sys/`.
+For automation workflows or environments where scripted allowlisting is preferred, the `batch_record_add.py` utility creates allowlist entries from the HeartSuite Core Secure activity log in bulk. This tool is located in `/.hs/sys/`.
 
 ```bash
 # /.hs/sys/batch_record_add.py

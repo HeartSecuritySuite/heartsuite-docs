@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: This is an advanced hardening guide. Lockdown seals HeartSuite's configuration with filesystem immutability, but programs like file editors and `rm` remain executable by default. For high-security environments, you can optionally restrict these tools during Lockdown to close additional attack surfaces. The Dashboard's Maintenance screen (`[t]`) guides you through maintenance workflows, and the Mode Switch screen (`[m]`) manages Lockdown status.
+**Overview**: This is an advanced hardening guide. Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, but programs like file editors and `rm` remain executable by default. For high-security environments, you can optionally restrict these tools during Lockdown to close additional attack surfaces. The Dashboard's Maintenance screen (`[t]`) guides you through maintenance workflows, and the Mode Switch screen (`[m]`) manages Lockdown status.
 
 ## Locking Down Maintenance Tools
 - Programs like `rm` often need broad write access for maintenance.
@@ -22,7 +22,7 @@ toc: true
 ## Handling Programs Needing Write Access in Lockdown
 - Database servers need write permissions to their data files/directories.
 - Limit to specific paths—do not allow universal writes.
-- Note: Database security is handled by the program itself, not HeartSuite.
+- Note: Database security is handled by the program itself, not HeartSuite Core Secure.
 
 ## Optional Hardening: Programs Requiring Broad Access During Lockdown
 Some programs (e.g., shutdown routines) need `rm` during operation, but you may want to restrict the full `rm` binary.

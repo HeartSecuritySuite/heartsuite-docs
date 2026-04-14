@@ -1,5 +1,5 @@
 baseURL: https://docs.heartsecsuite.com
-title: Heart Security Suite Documentation
+title: HeartSuite Core Secure
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
 
@@ -41,6 +41,12 @@ outputFormats:
     mediaType: text/redirects
     root: true
 
+menus:
+  main:
+    - name: heartsecsuite.com
+      url: https://heartsecsuite.com
+      weight: 50
+
 # Configure how URLs look like per section.
 permalinks:
   blog: /:section/:year/:month/:day/:slugorcontentbasename
@@ -55,11 +61,10 @@ imaging:
 languages:
   en:
     languageName: English
-    title: Heart Security Suite Documentation
+    title: HeartSuite Core Secure
     params:
       description:
-        Documentation for Heart Security Suite, a Linux product for the US
-        market
+        Documentation for HeartSuite Core Secure, a Linux kernel-level security product
 
 markup:
   goldmark:
@@ -95,14 +100,12 @@ params:
     # set taxonomyPageHeader = [] to hide taxonomies on the page headers
     taxonomyPageHeader: [tags, categories]
 
-  privacy_policy: https://policies.google.com/privacy
-
   # First one is picked as the Twitter card image if not set on page.
   # images: [images/project-illustration.png]
 
   # Menu title if your navbar has a versions selector to access old versions of your site.
   # This menu appears only if you have at least one [params.versions] set.
-  version_menu: HeartSuite Releases
+  # version_menu: HeartSuite Releases
 
   # Flag used in the "version-banner" partial to decide whether to display a
   # banner on every page indicating that this is an archived version of the docs.
@@ -147,9 +150,9 @@ params:
 
   copyright:
     authors: >-
-      Docsy Authors | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
-    from_year: 2018
-    to_year: present
+      Heart Security Suite, LLC |
+    from_year: 2022
+    to_year: 2026
 
   # User interface configuration
   ui:
@@ -197,36 +200,24 @@ params:
   links:
     # End user relevant links. These will show up on left side of footer and in the community page if you have one.
     user:
-      - name: User mailing list
-        url: https://example.org/mail
+      - name: Email
+        url: mailto:support@heartsecsuite.com
         icon: fa fa-envelope
-        desc: Discussion and help from your fellow users
+        desc: Contact HeartSuite support
       - name: X
-        url: https://example.org/x
+        url: https://twitter.com/HeartSecSuite
         icon: fab fa-x-twitter
-        desc: Follow us on X to get the latest news!
-      - name: Stack Overflow
-        url: https://example.org/stack
-        icon: fab fa-stack-overflow
-        desc: Practical questions and curated answers
+        desc: Follow us on X for the latest news
+      - name: LinkedIn
+        url: https://www.linkedin.com/company/heartsuite/
+        icon: fab fa-linkedin
+        desc: Connect with us on LinkedIn
     # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
     developer:
-      - name: Site info
-        url: /site/
-        icon: fa-solid fa-hammer
-        desc: Site build information.
       - name: GitHub
         url: https://github.com/HeartSecuritySuite/heartsuite-docs
         icon: fab fa-github
-        desc: Development takes place here!
-      - name: Slack
-        url: https://example.org/slack
-        icon: fab fa-slack
-        desc: Chat with other project developers
-      - name: Developer mailing list
-        url: https://example.org/mail
-        icon: fa fa-envelope
-        desc: Discuss development issues around the project
+        desc: HeartSuite documentation on GitHub
 
 security:
   funcs: # cspell:disable-line

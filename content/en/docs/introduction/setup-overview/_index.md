@@ -2,7 +2,7 @@
 title: "Setup Overview"
 linkTitle: "Setup Overview"
 weight: 2
-description: "Overview of HeartSuite setup process and modes."
+description: "Overview of HeartSuite Core Secure setup process and modes."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "setup", "modes", "secure", "allowlist", "overview"]
 type: docs
@@ -13,23 +13,23 @@ menu:
     identifier: "setup-overview"
 ---
 
-**Overview**: HeartSuite must complete a guided setup journey in Setup Mode before it can enforce security in Secure Mode. This page explains why Setup Mode exists, what happens during each phase, and how to reach Secure Mode safely.
+**Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Secure Mode. This page explains why Setup Mode exists, what happens during each phase, and how to reach Secure Mode safely.
 
 ## Why Setup Mode Is Necessary
 
-HeartSuite enforces a default-deny policy: every program, file access, and network connection must be explicitly approved before the system permits it. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
+HeartSuite Core Secure enforces a default-deny policy: every program, file access, and network connection must be explicitly approved before the system permits it. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, HeartSuite logs all activity without blocking anything. The administrator reviews events through the Dashboard queues, approves legitimate activity, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
+Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews events through the Dashboard queues, approves legitimate activity, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
 
-Setup Mode is the default after installation. HeartSuite's automated backup system also operates during Setup Mode, providing an additional layer of protection even before enforcement begins.
+Setup Mode is the default after installation. HeartSuite Core Secure's automated backup system also operates during Setup Mode, providing an additional layer of protection even before enforcement begins.
 
 ## The 7 Phases
 
-HeartSuite organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
+HeartSuite Core Secure organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
 
 | Phase | Name | Description |
 |-------|------|-------------|
-| 1 | System Verification | Confirms the HeartSuite kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
+| 1 | System Verification | Confirms the HeartSuite Core Secure kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
 | 2 | Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
 | 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers screen (`[l]`), if applicable. |
 | 4 | File Access Allowlisting | Review and approve file read and write access events from the Dashboard's File Access queue (`[f]`). |
@@ -41,14 +41,14 @@ HeartSuite organizes the setup journey into seven phases. The Dashboard tracks p
 
 ### Cloud Path
 
-Users who launch a pre-installed HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. Phase 1 completes automatically. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required.
+Users who launch a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. Phase 1 completes automatically. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required.
 
 ### Local Path
 
-Users who install HeartSuite on bare-metal or custom VMs follow a longer path:
+Users who install HeartSuite Core Secure on bare-metal or custom VMs follow a longer path:
 
 1. Download and extract the installation package.
-2. Prepare GRUB and install the HeartSuite kernel.
+2. Prepare GRUB and install the HeartSuite Core Secure kernel.
 3. Run `hs-os-boot-setup`, which handles multiple reboots with a step counter.
 4. After Phase 1 completes, the Dashboard appears and the journey merges with the Cloud path.
 
@@ -60,7 +60,7 @@ The following diagram shows the primary path through the Dashboard and the advan
 
 ```mermaid
 graph TD
-    A[Install HeartSuite] --> B{Cloud or Local?}
+    A[Install HeartSuite Core Secure] --> B{Cloud or Local?}
     B -- Cloud --> C[Boot instance — Phase 1 auto-completes]
     B -- Local --> D["Run hs-os-boot-setup — multiple reboots"]
     D --> C
@@ -92,7 +92,7 @@ After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reb
 
 To perform system maintenance after entering Secure Mode, select the Maintenance screen (`[t]`) from the Dashboard. The Dashboard detects whether Lockdown is active and guides you through the correct path:
 
-- **Without Lockdown**: The Maintenance screen walks you through a safety checklist, switches to Setup Mode, and reboots. The HeartSuite kernel stays active with logging and backups running. Make your changes, then return to Secure Mode from the Dashboard.
-- **With Lockdown**: The Maintenance screen guides you through a 3-step process across two reboots — removing immutable flags on the Non-HS kernel, making changes, then returning to the HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
+- **Without Lockdown**: The Maintenance screen walks you through a safety checklist, switches to Setup Mode, and reboots. The HeartSuite Core Secure kernel stays active with logging and backups running. Make your changes, then return to Secure Mode from the Dashboard.
+- **With Lockdown**: The Maintenance screen guides you through a 3-step process across two reboots — removing immutable flags on the Non-HS kernel, making changes, then returning to the HeartSuite Core Secure kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
 
-For full details, see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+For full details, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).

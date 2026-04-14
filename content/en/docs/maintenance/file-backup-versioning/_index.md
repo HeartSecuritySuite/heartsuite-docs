@@ -7,11 +7,11 @@ tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security",
 toc: true
 ---
 
-**Overview**: Every time a file in a protected directory is modified, HeartSuite automatically creates a versioned backup with a timestamp and file size. Only HeartSuite can access the backups — no other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
+**Overview**: Every time a file in a protected directory is modified, HeartSuite Core Secure automatically creates a versioned backup with a timestamp and file size. Only HeartSuite Core Secure can access the backups — no other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
 ## How Backup Works
 
-HeartSuite monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Secure Mode — protection begins from first boot, before you have reviewed a single event.
+HeartSuite Core Secure monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite Core Secure silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Secure Mode — protection begins from first boot, before you have reviewed a single event.
 
 By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup screen.
 

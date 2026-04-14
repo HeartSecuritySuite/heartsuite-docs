@@ -22,7 +22,7 @@ After downloading the subscription file, copy it to each server it covers. Regar
 # sudo cp MyCompany_HS_subscription_3-10-26.txt /.hs/sys/HS_license.txt
 ```
 
-After copying the subscription file, activate it using `hs-activate-subscription`. The command requires the IP address of the HeartSuite Activation Server and the port number (6121). At the time of this writing, the IP is 172.232.3.4. Check the HeartSuite website for current connection details.
+After copying the subscription file, activate it using `hs-activate-subscription`. The command requires the IP address of the HeartSuite Core Secure Activation Server and the port number (6121). At the time of this writing, the IP is 172.232.3.4. Check the HeartSuite Core Secure website for current connection details.
 
 ```bash
 # sudo /.hs/sys/hs-activate-subscription 172.232.3.4 6121

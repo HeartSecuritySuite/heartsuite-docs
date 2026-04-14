@@ -1,7 +1,7 @@
 ---
-title: "Using HeartSuite Log"
+title: "Using HeartSuite Core Secure Log"
 weight: 2
-description: "Monitoring permission errors and adding program access via the HeartSuite activity log."
+description: "Monitoring permission errors and adding program access via the HeartSuite Core Secure activity log."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "log", "security"]
 type: docs
@@ -12,7 +12,7 @@ menu:
     identifier: "using-heart-suite-log"
 ---
 
-**Overview**: The Dashboard and its review queues are the primary way to review and resolve permission events. The HeartSuite activity log (`/.hs/sys/hs-activity-log.txt`) is available for advanced troubleshooting and for understanding what the review queues process behind the scenes.
+**Overview**: The Dashboard and its review queues are the primary way to review and resolve permission events. The HeartSuite Core Secure activity log (`/.hs/sys/hs-activity-log.txt`) is available for advanced troubleshooting and for understanding what the review queues process behind the scenes.
 
 ## Dashboard Review Tools (Primary)
 
@@ -22,7 +22,7 @@ The three review queues — Programs (`[p]`), File Access (`[f]`), and Internet 
 
 For details on the review process, single-key actions, and the tiered model, see [Allowlisting Basics](../allowlisting-basics/).
 
-## The HeartSuite Activity Log (Advanced)
+## The HeartSuite Core Secure Activity Log (Advanced)
 
 The activity log at `/.hs/sys/hs-activity-log.txt` records all permission events in text format. It is useful for:
 

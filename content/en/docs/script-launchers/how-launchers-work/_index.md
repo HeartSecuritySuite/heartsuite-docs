@@ -1,7 +1,7 @@
 ---
 title: "How Script Launchers Work"
 weight: 1
-description: "Explanation of HeartSuite's secure script launchers and their security benefits."
+description: "Explanation of HeartSuite Core Secure's secure script launchers and their security benefits."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "security", "interpreters", "launchers"]
 type: docs
@@ -24,6 +24,6 @@ Secure Script Launchers create a wrapper that applies the individual script's al
 
 ## Using Launchers
 
-HeartSuite provides Secure Script Launchers for each supported interpreter (e.g., `hs-python-launcher`). Once activated via the Dashboard's Launchers screen (`[l]`), every call to that interpreter automatically routes through the launcher — applying per-script permissions without any change to how you run scripts.
+HeartSuite Core Secure provides Secure Script Launchers for each supported interpreter (e.g., `hs-python-launcher`). Once activated via the Dashboard's Launchers screen (`[l]`), every call to that interpreter automatically routes through the launcher — applying per-script permissions without any change to how you run scripts.
 
 See [Configuring Script Launchers](../configuring-launchers/) for the activation steps.

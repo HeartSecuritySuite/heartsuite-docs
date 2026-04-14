@@ -1,7 +1,6 @@
 ---
 title: Blog
 aliases: [/blog/2018/*]
-menu: { main: { weight: 30 } }
 ---
 
 This is the **blog** section. It has two categories: News and Releases.
