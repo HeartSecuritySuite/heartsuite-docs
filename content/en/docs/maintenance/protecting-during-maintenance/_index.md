@@ -8,98 +8,88 @@ type: docs
 toc: true
 ---
 
-## Protecting Your Server During Maintenance
+**Overview**: Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite's protection to make changes. The Dashboard's Maintenance screen (`[t]`) guides you through the entire process, from safety preparation to returning to Secure Mode. The Maintenance screen appears only when the system is in Secure Mode, Secure Mode + Lockdown, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
-Maintenance — such as installing packages, editing files, or applying updates — is simply the period during which you temporarily reduce HeartSuite's protection to make changes. There are two ways to do this, and the choice matters: for almost all routine maintenance, switching to Setup mode on the HeartSuite kernel is the right approach. Booting the original kernel is a specific solution for a specific problem, described under Option 2 below.
+## Starting Maintenance
 
-### Option 1: Switch to Setup Mode
+From the Dashboard in Secure Mode, select the Maintenance screen (`[t]`). The Dashboard automatically detects whether Lockdown is active and presents the correct path — you do not need to determine this yourself.
 
-The most common approach is to remain on the HeartSuite kernel but switch to Setup mode. In Setup mode, HeartSuite logs all activity but does not block anything. Backups continue to run, and all `hs-*` tools remain available.
+### Safety Checklist
 
-Use this option for tasks such as installing packages with `dpkg`, editing configuration files, or updating allowlist entries. For example, `dpkg` creates temporary directories during installation; in Secure mode this causes a permission error and the installation halts. Switching to Setup mode allows the installation to proceed, after which you can add any needed allowlist entries and return to Secure mode.
+Before any mode change, the Maintenance screen presents a safety checklist. The Dashboard auto-detects system state where possible and shows the status of each item:
 
-```bash
-# sudo /.hs/sys/hs-mode-switch setup
-```
+- **Network isolation** — disable network interfaces or restrict firewall rules to prevent remote access during maintenance
+- **Server processes** — shut down daemons (e.g., web servers) to close attack vectors
+- **SSH access** — no root login, key-based auth only, source IP restriction
 
-After maintenance is complete, switch back to Secure mode:
-
-```bash
-# sudo /.hs/sys/hs-mode-switch off
-```
-
-### Option 2: Boot the Original Kernel
-
-Use this option only when lockdown is configured to re-engage automatically on every boot — that is, when the lockdown line in `HS_startup.sh` is uncommented. In that situation, rebooting into the HeartSuite kernel will re-engage lockdown before you can prevent it, and you cannot switch to Setup mode from within the locked-down system. Booting the original non-HeartSuite kernel from the GRUB menu is the way out.
-
-On the original kernel, HeartSuite is completely absent. The kernel module is not loaded, no enforcement or logging takes place, and backups do not run. Only `hs-*` tools that perform file operations — such as `hs-monitor-state`, `hs-backup-config-manager`, and `hs-allowlist-manager` — will work. Tools that invoke HeartSuite system calls, such as `activate_HS`, will fail with an error on the original kernel.
-
-> [!WARNING]
-> The original kernel provides no HeartSuite protection whatsoever. Take additional precautions to secure your server during this time (see Recommended Protection Measures below).
-
-To prepare for re-entry into the HeartSuite kernel after booting the original kernel, use the following workflow:
-
-1. Run `hs-monitor-state on` to pre-configure HeartSuite to start in Setup mode on the next boot:
-   ```bash
-   # sudo /.hs/sys/hs-monitor-state on
-   ```
-2. If lockdown was previously active, run `HS_unlock.sh` to clear filesystem immutability flags:
-   ```bash
-   # sudo /.hs/sys/HS_unlock.sh
-   ```
-3. Perform your maintenance tasks.
-4. Reboot into the HeartSuite kernel. HeartSuite will activate in Setup mode automatically.
-5. Update your allowlist as needed, then switch back to Secure mode.
+The Dashboard shows green checkmarks for items that pass and amber warnings for items that need attention. Press `[c]` Confirmed to proceed or `[s]` Skip to continue without completing the checklist. If you skip, the Dashboard displays a persistent reminder throughout the maintenance period — it does not disappear until you return to Secure Mode.
 
 > [!NOTE]
-> You must have physical or serial port access to select the original kernel at the GRUB menu. This is intentional — it prevents an attacker from remotely booting to the original kernel to bypass HeartSuite.
+> The safety checklist is more critical for the Lockdown path (Option 2), where HeartSuite will be completely absent. For the standard path (Option 1), HeartSuite continues logging and running backups.
 
-### Lockdown and Filesystem Immutability
+## Option 1: Switch to Setup Mode (No Lockdown)
 
-When `HS_lockdown.sh` makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the original kernel. If you attempt to modify a file that was made immutable during a previous lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." Run `HS_unlock.sh` to restore mutability before proceeding.
+This is the standard maintenance path. The HeartSuite kernel stays active. Logging and backups remain fully operational.
 
-### Recommended Protection Measures
+After completing the safety checklist, the Maintenance screen explains what will change:
 
-The protection measures below are recommended whenever HeartSuite is not fully active. The degree of risk differs between the two options above: in Setup mode, HeartSuite is still logging and backups are still running; on the original kernel, no HeartSuite protection is present at all. In either case, the following measures are strongly advised.
+- Enforcement changes from blocking to logging only
+- The HeartSuite kernel remains active
+- Backups continue running
+- The existing allowlist is preserved
+- New activity is logged, not blocked — it will appear in the review queues when you return to Secure Mode
 
-#### Block All Incoming Connections
-Disable network interfaces for maintenance to prevent remote access.
-- Use `ifdown`/`ifup` or `ip` command.
-- Requires physical/serial access.
+Type `YES` (case-sensitive) to confirm the switch. The Dashboard reboots to apply the mode change.
 
-Example (using `ifdown`):
-```bash
-ifdown eth0
-/.hs/sys/activate_HS
-if [ $? -eq 0 ]; then
-ifup eth0
-fi
-```
+After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears. Make your changes — install packages, edit configuration, update software. HeartSuite logs all new activity silently.
 
-Example (using `ip`):
-```bash
-ip link set eth0 down
-/.hs/sys/activate_HS
-if [ $? -eq 0 ]; then
-ip link set eth0 up
-fi
-```
+When finished, return to Secure Mode from the Dashboard. New events from the maintenance period appear in the review queues. Review and approve them through the standard allowlisting flow before enforcement resumes.
 
-For SSH-based maintenance:
-- Set firewall rules to block all except your IP/connection.
-- Add rules to `HS_lockdown.sh` to enable after lockdown.
-- Alternatively, use a separate firewall server for better protection (disable manually post-maintenance).
+## Option 2: Boot the Non-HS Kernel (Lockdown Active)
 
-#### Shut Down Server Programs
-Stop server programs (e.g., web servers) to close Internet access vectors.
-- Restart them after maintenance/reboot with lockdown.
-- Exception: Keep SSH if needed for access (see restrictions below).
+When Lockdown is active, the Maintenance screen does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where HeartSuite is completely absent.
 
-#### Restrict SSH Access
-For cloud setups, prefer serial port access (disable auto-start of `sshd`).
-If SSH required:
-- Disable root login.
-- Allow only one admin user.
-- Use key-based auth (no passwords).
-- Limit to specific IPs via firewall.
-- Use VPN for added security.
+### Step 1 of 3: Boot Non-HS Kernel and Remove Immutable Flags
+
+After the safety checklist and typing `YES` to confirm, the Dashboard prepares you for the GRUB boot menu — the one moment where it cannot provide guidance. It shows the exact Non-HS kernel name to select and warns you not to select the HeartSuite kernel. Press `[r]` to reboot.
+
+The Dashboard saves your maintenance session state before rebooting. This state persists across reboots and kernel changes — the step counter ("Step X of 3") follows you throughout the process.
+
+After selecting the Non-HS kernel from GRUB, the Dashboard resumes automatically on login. It detects the absence of the HeartSuite kernel module and adjusts its interface — actions that require the HeartSuite kernel are hidden entirely, not greyed out. The Dashboard shows:
+
+- "Non-HS kernel active. HeartSuite is not loaded."
+- "No enforcement. No logging. No backups."
+- "Maintenance step 1 of 3: Remove immutable flags."
+
+Press `[u]` to remove the immutable flags set by Lockdown. After the flags are removed, the Dashboard presents the automatic Lockdown re-engagement choice:
+
+- `[d]` **Disable automatic Lockdown re-engagement** — the startup script will no longer apply Lockdown on boot. You can re-enable this later. This simplifies future maintenance.
+- `[k]` **Keep automatic re-engagement** — Lockdown will re-apply on every HeartSuite kernel boot. Future maintenance will require this same process.
+
+Both options carry equal weight — neither is recommended over the other. The choice depends on your operational needs.
+
+> [!NOTE]
+> If you accidentally select the wrong kernel at GRUB (the HeartSuite kernel instead of the Non-HS kernel), the Dashboard detects this and guides you to reboot and select the correct kernel.
+
+### Step 2 of 3: Make Your Changes
+
+The Dashboard transitions to the maintenance workspace:
+
+- "Maintenance step 2 of 3: Make your changes."
+- "You are on the Non-HS kernel. HeartSuite is not active. Changes made now will not be logged."
+
+Make your changes — install software, update packages, modify configuration files. When finished, press `[f]` to prepare the return to the HeartSuite kernel. The Dashboard pre-configures Setup Mode for the next boot.
+
+### Step 3 of 3: Boot HeartSuite Kernel and Review
+
+Select the HeartSuite kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new log events — these appear in the review queues. Review and approve them, then return to Secure Mode from the Dashboard. If Lockdown was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
+
+> [!WARNING]
+> The Non-HS kernel provides no HeartSuite protection whatsoever. The safety checklist is critical for this path.
+
+> [!NOTE]
+> You must have physical or serial port access to select the Non-HS kernel at the GRUB menu. This is intentional — it prevents an attacker from remotely booting to bypass HeartSuite.
+
+## Lockdown and Filesystem Immutability
+
+When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the Non-HS kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance screen's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For manual recovery outside the maintenance wizard, run `hs-unlock`.

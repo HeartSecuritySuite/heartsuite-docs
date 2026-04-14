@@ -5,93 +5,118 @@ categories: ["Essentials"]
 tags: ["heartsuite", "linux", "installation", "quickstart", "beginners"]
 weight: 2
 toc: true
+type: docs
 ---
 
 {{% pageinfo color="primary" %}}
-New to HeartSuite? This Quick Start guide walks you through the essentials to get up and running in minutes.
+HeartSuite uses a 7-phase guided model to take your system from initial observation to full enforcement. The Dashboard tracks your progress and suggests each next step.
 {{% /pageinfo %}}
 
-HeartSuite is a security suite that proactively blocks malware by allowlisting safe programs and actions. This guide covers the "what you'll do and why" for beginners—skip to detailed docs for advanced setup.
+**Overview**: This guide covers both the Cloud Path and the Local Path for getting HeartSuite running, verified, and ready for allowlisting.
 
+## The 7-Phase Model
 
+HeartSuite guides you through seven phases:
 
-## Quick Installation
+1. **System Verification** — confirm HeartSuite is active and in Setup Mode
+2. **Program Allowlisting** — approve the programs your system needs
+3. **Script Launchers** (if applicable) — configure Secure Script Launchers for interpreted scripts
+4. **File Access Allowlisting** — approve file read and write access
+5. **Internet Access Allowlisting** — approve internet destinations
+6. **Alert Configuration** — set up at least one notification channel
+7. **Secure Mode** — locked until phases 2-6 are complete
 
-**Why?** Install HeartSuite's modified kernel and tools to enable security features without disrupting your server.
+The Dashboard displays your current phase, pending event counts, and a Suggested Next Step at all times.
+
+## Cloud Path Quick Start
+
+Users launching a pre-installed HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode.
+
+1. Launch your cloud instance and log in.
+
+2. The Dashboard appears automatically on first login with a welcome message:
+
+   ```text
+   HeartSuite Core Secure is active.
+   Current mode: Setup Mode — events are logged, nothing is blocked.
+   Suggested: Review 1 pending program event → [p] Programs
+   ```
+
+3. Phase 1 (System Verification) completes automatically — no manual steps required.
+
+4. Follow the Suggested Next Step on the Dashboard to begin Phase 2: Program Allowlisting.
+
+## Local Path Quick Start
+
+Users installing HeartSuite on bare-metal or custom VMs follow a longer installation sequence before reaching the Dashboard.
+
+### Download and Install
 
 1. Download the tar file from [heartsecsuite.com](https://heartsecsuite.com).
 
-2. Untar and run the installer (as root):
+2. Extract and run the installer (as root):
 
    ```bash
-   # **tar** xvf 5.19.6-HeartSuite-1.0.tar -m
-   # **sudo ./HeartSuite_install.sh**
+   # tar xvf 6.18-HeartSuite-1.6.4.tar -m
+   # sudo ./HeartSuite_install.sh
    ```
 
-3. Reboot to load the kernel:
+3. Reboot to load the HeartSuite kernel:
 
    ```bash
-   # **systemctl reboot**
+   # systemctl reboot
    ```
 
-   **If reboot fails**: Check GRUB settings for VMs (see [Installation](../installation/) details).
+   If the reboot does not load the HeartSuite kernel, check GRUB settings. See [Installation](../installation/) for details.
 
-4. Run the setup script multiple times (as root):
+### OS Boot Setup
+
+4. Launch the Dashboard:
 
    ```bash
-   # **sudo python3 /.hs/sys/hs-os-boot-setup.py**
-   ```
-   (initial setup only; primary method is the dashboard review tools for guided allowlisting)
-
-   Reboot and repeat until it says "Great! Your OS... allowlisted" (usually 3-5 times).
-
-   **Why?** Builds a allowlist for startup programs to prevent boot hangs.
-
-## Basic Setup and Testing
-Start with the dashboard for guided review and suggested next steps during setup and allowlisting.
-
-**Why?** Switch to Secure mode for protection, then test with a program.
-
-1. Verify activation:
-
-   ```bash
-   # **dmesg | grep HEARTSUITE**
-   ```
-   (or use the dashboard review tools which avoid raw logs)
-
-   Look for "Setup" mode messages.
-
-2. Allowlist a test program (e.g., nano):
-
-   ```bash
-   # **sudo /.hs/sys/hs-allowlist-manager add -x /usr/bin/nano**
-   # Run **nano** to generate logs, check them, add permissions as needed (or use the dashboard review tools as primary).
+   sudo python3 main.py
    ```
 
-   **Why?** HeartSuite blocks everything by default—allowlisting allows safe actions.
+   The Installation screen appears. Press `[a]` to run the setup process. Reboot after each cycle and re-launch the Dashboard — repeat until the Installation screen confirms all OS boot programs are allowlisted (usually 3-5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
 
-3. Switch to Secure mode:
+### Verify and Proceed
 
-   ```bash
-   # **sudo /.hs/sys/hs-mode-switch off**
-   # **systemctl reboot**
-   ```
+5. Once the Installation screen confirms completion, the Dashboard shows your current phase. From here, the Cloud Path and Local Path merge — follow the Suggested Next Step to begin allowlisting.
 
-   **If it hangs**: Switch back to Setup mode with **hs-mode-switch setup**.
+## The Dashboard
 
-3. Switch to Secure mode:
+The Dashboard is your orientation point throughout the entire HeartSuite journey. It displays:
 
-   ```bash
-   # **sudo /.hs/sys/hs-mode-switch off**
-   # **systemctl reboot**
-   ```
+- **Safety Banner** — current protection state (Setup Mode, Secure Mode, or Non-HS kernel)
+- **Phase Progress** — which of the 7 phases are complete, in progress, or not started
+- **Pending/Denied counts** — events grouped by category (Programs, File reads, File writes, Network)
+- **Suggested Next Step** — one clear, actionable recommendation
+- **System Info Strip** — kernel type, current mode, time in mode, lockdown status
 
-   **If it hangs**: Switch back to Setup mode with **hs-mode-switch setup**.
+The Suggested Next Step is always the recommended action. Follow it to proceed through each phase.
+
+## The Review Queues
+
+The Dashboard organizes allowlisting into three review queues, each presented as a screen within the Dashboard:
+
+- **Programs queue** (`[p]`) — review pending program execution events (Phase 2)
+- **File Access queue** (`[f]`) — review pending file read and write events (Phase 4)
+- **Internet Access queue** (`[i]`) — review pending network connection events (Phase 5)
+
+The Suggested Next Step directs you to the queue that needs attention. Select it to navigate directly to the review screen. For browsing or editing existing allowlist entries, use the Allowlist screen (`[a]`).
+
+## Switching to Secure Mode
+
+When phases 2-6 are complete, the Dashboard unlocks Phase 7 and shows Secure Mode activation as the Suggested Next Step. Activation requires typing `YES` (case-sensitive) to confirm. After confirmation, the Dashboard offers two reboot options:
+
+- `[r]` **Reboot** — enforcement active, configuration remains editable
+- `[l]` **Reboot + Lockdown** — enforcement active, configuration sealed with filesystem immutability
+
+Both are valid configurations depending on your threat model. If the system does not boot correctly, reboot into the Non-HS kernel — the Dashboard resumes there and guides you through recovery.
 
 ## Next Steps
 
-- For full allowlisting: Head to [Allowlisting](../whitelisting/).
-- For production: Enable [Lockdown](../mode-switching/#lockdown-securing-your-system-in-secure-mode).
-- Stuck? Check [Troubleshooting](../troubleshooting/).
-
-This gets you a basic secure setup. Explore advanced features as needed!
+- For full allowlisting guidance: [Allowlisting](../allowlisting/)
+- For alert configuration (Phase 6): [Alert Configuration](../alerts/)
+- For Lockdown after Secure Mode: [Mode Switching](../mode-switching/#lockdown-securing-your-system-in-secure-mode)
+- For troubleshooting: [Troubleshooting](../troubleshooting/)

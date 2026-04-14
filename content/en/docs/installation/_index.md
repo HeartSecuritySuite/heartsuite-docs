@@ -11,16 +11,19 @@ menu:
     identifier: "installation"
 ---
 
+**Overview**: HeartSuite installation follows one of two paths depending on your deployment method. Both paths end at the Dashboard, where Phase 1 (System Verification) confirms that the system is ready for allowlisting.
 
-## Overview
+## Cloud Path
 
-**What you'll do**: Download and extract HeartSuite, run the installer, reboot to load the modified kernel, and auto-allowlist essential startup programs by running a setup script multiple times.
+Launch a pre-configured cloud instance (e.g., AWS AMI, GCP image). The HeartSuite kernel is already installed and Phase 1 (System Verification) auto-completes on first boot. The Dashboard appears immediately — skip ahead to the allowlisting queues.
 
-**Why**: This process integrates HeartSuite's security features without disrupting your system—HeartSuite blocks unauthorized actions by default, so proper setup prevents boot failures or hangs.
+## Local Path
 
-Follow these sub-guides for detailed steps:
+Download the HeartSuite distribution, extract it, run the installer, and reboot multiple times to build the initial allowlist of startup and shutdown programs. This path involves:
 
-- [Obtaining HeartSuite](obtaining-heartsuite/) - Download the distribution from the website.
-- [VM Preparation](vm-preparation/) - Configure GRUB settings for virtual machines on clouds.
-- [Installation Part 1](installation-part1/) - Extract, install, and reboot to load the kernel.
-- [Installation Part 2](installation-part2/) - Auto-allowlist startup programs with the setup script.
+1. [Obtaining HeartSuite](obtaining-heartsuite/) — Download the distribution from the website.
+2. [VM Preparation](vm-preparation/) — Configure GRUB settings for virtual machines on clouds.
+3. [Installation Part 1](installation-part1/) — Extract, install, and reboot to load the kernel.
+4. [Installation Part 2](installation-part2/) — Auto-allowlist startup programs with `hs-os-boot-setup`.
+
+After the final reboot cycle, the Dashboard appears and displays the Suggested Next Step to guide you into Phase 2 (Program Allowlisting).

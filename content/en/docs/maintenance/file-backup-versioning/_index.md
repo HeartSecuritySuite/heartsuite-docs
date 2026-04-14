@@ -7,63 +7,51 @@ tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security",
 toc: true
 ---
 
-**Overview**: HeartSuite automatically backs up and versions files in protected directories, preventing malware from destroying or modifying them—only HeartSuite can access backups.
+**Overview**: Every time a file in a protected directory is modified, HeartSuite automatically creates a versioned backup with a timestamp and file size. Only HeartSuite can access the backups — no other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
-## File Backup and Versioning
+## How Backup Works
 
-Files that attackers routinely attack today are your backups. So HeartSuite makes sure to wall them off with extra protection. For starters, HeartSuite automatically backs up files in designated directories, including their subdirectories. But more importantly, HeartSuite prevents access to the backups by all programs—only HeartSuite can access the backups. HeartSuite supplies a backup configuration manager tool that admins can use to add and remove directories from the list of directories that will be backed up automatically. By means of this simple but powerful approach, HeartSuite prevents all programs from destroying or modifying backup files.
+HeartSuite monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Secure Mode — protection begins from first boot, before you have reviewed a single event.
 
-The HeartSuite version manager program can then be used to retrieve any version of the file at will. All of that means that if your staff downloads malware masquerading as legitimate software by mistake, the layers of Program Allowlist, Lockdown, and versioning will work together to minimize damage and easily let you restore your files.
+By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup screen.
 
-## Configuring Automatic File Backup
+## Configuring Protected Directories
 
-HeartSuite uses a separate database of directories to determine whether to backup a file that has been written. By default, the backup configuration database includes only a single directory, /home. You can remove it, as well as add additional directories, by using the `hs-backup-config-manager` tool. HeartSuite will automatically backup each file in these specified directories, including those within their subdirectories, when the contents of the file are changed by writing.
+From the Dashboard, select the Backup screen (`[b]`). The screen shows your current backup configuration — which directories are protected and when they were last backed up.
 
-### Example Usage
+From this screen you can:
 
-To add a directory to the backup list:
+- **Add directories** (`[n]`) — protect additional directories (e.g., `/var/www`, `/etc`, `/usr/lib`)
+- **Remove directories** (`[r]`) — stop backing up a directory (removing a directory does not delete existing backups; existing versions are retained)
 
-```bash
-sudo /.hs/sys/hs-backup-config-manager add /var/www
-```
+Recommended directories include those containing user documents, executable files, configuration, and shared libraries. Avoid high-churn directories like log directories — backup creates a new version on every write.
 
-To remove a directory:
-
-```bash
-sudo /.hs/sys/hs-backup-config-manager remove /home
-```
-
-To list configured directories:
-
-```bash
-sudo /.hs/sys/hs-backup-config-manager list
-```
-
-Always backup after file writes in monitored directories. This ensures multiple versions are available for restoration.
+> [!NOTE]
+> Backup is optional. You can remove all directories, disabling backup entirely. Mode Switch does not require backup to be configured.
 
 ## Restoring File Versions
 
-If a file is compromised (e.g., encrypted by ransomware), use the `hs-version-manager` to restore a previous version.
+If a file is compromised — for example, encrypted by ransomware — the Dashboard's Backup screen lets you browse version history and restore any previous version of any file in a protected directory. The Backup screen offers two browse modes:
 
-### Example: Restore a File
+- **File-first** (`[f]`) — navigate by directory and file, then view versions of the selected file
+- **Timeline** (`[t]`) — navigate by date, showing all files modified on a given day
+
+To restore a single file, select it and choose the version to restore. Each version shows its timestamp and file size.
+
+For ransomware recovery where many files were modified on the same date, use the Timeline view (`[t]`), press `[d]` to filter by date, review the affected files, and press `[b]` to batch restore all of them in one operation.
+
+## Lockdown and Backup
+
+When Lockdown is active, the backup configuration file is sealed — no user or program, including root, can add or remove directories. This prevents an attacker who compromises a running process from silently disabling backup. To change the backup configuration, enter a maintenance period first (see [Protecting During Maintenance](../protecting-during-maintenance/)).
+
+## Advanced: CLI Backup Management
+
+For automation workflows, the underlying CLI tools are available:
 
 ```bash
-sudo /.hs/sys/hs-version-manager restore /home/user/document.txt --version 2023-11-01
+# hs-backup-config-manager add /var/www
+# hs-backup-config-manager remove /home
+# hs-backup-config-manager list
+# hs-version-manager list /home/user/document.txt
+# hs-version-manager restore /home/user/document.txt --version 2023-11-01
 ```
-
-View available versions:
-
-```bash
-sudo /.hs/sys/hs-version-manager list /home/user/document.txt
-```
-
-This tool helps recover from malware attacks, as backups are isolated and only accessible by HeartSuite.
-
-## Integration with Other Features
-
-Backup and versioning work seamlessly with HeartSuite's core features:
-- **Program Allowlist**: Prevents unauthorized access to backup files.
-- **Lockdown**: Ensures backup configurations can't be altered during production.
-- **Secure Mode**: Enforces restrictions that protect backups from tampering.
-
-For advanced maintenance, see [Protecting During Maintenance](../protecting-during-maintenance/) for secure update practices.

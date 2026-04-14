@@ -12,27 +12,29 @@ menu:
     identifier: "vm-preparation"
 ---
 
-## Overview
+**Overview**: This step applies to the Local Path only. Cloud VMs provisioned from a pre-configured image do not require GRUB changes.
 
-# Preliminary Step: Virtual Machines (VM’s) on Clouds
-
-Installation of HeartSuite requires rebooting your computer several times. Notably, our installation procedure utilizes the GRUB boot loader, which can use labels or UUID’s when booting. We have found that use of labels for deployments in a cloud can result in boot failures. Accordingly, we strongly recommend that you edit the GRUB settings for VM’s provisioned in the cloud.
+Installation of HeartSuite requires rebooting several times. The installation procedure uses the GRUB boot loader, which can reference disks by labels or UUIDs. Using labels on cloud deployments can result in boot failures. Edit the GRUB settings for VMs provisioned in the cloud before proceeding.
 
 ## Configuring GRUB Settings
 
-Specifically, we recommend that you comment out the following line in the /etc/default/grub file:
+Comment out the following line in `/etc/default/grub`:
 
-```
+```text
 GRUB_DISABLE_LINUX_UUID=true
 ```
 
-by preceding it with a pound (#) symbol:
+by preceding it with a `#` symbol:
 
-```
+```text
 #GRUB_DISABLE_LINUX_UUID=true
 ```
 
-Then, rebuild GRUB using `/sbin/update-grub`.
+Then rebuild GRUB:
+
+```bash
+# /sbin/update-grub
+```
 
 > [!NOTE]
-> Cloud VMs may fail to boot due to GRUB settings; fix this to ensure reliable reboots.
+> Cloud VMs may fail to boot due to GRUB settings. Correcting this ensures reliable reboots during the installation process.

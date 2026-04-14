@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - docs/v1.6.2
   pull_request:
 
 env:
@@ -19,14 +20,20 @@ permissions:
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v5
         with:
-          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+          ref: main
+          fetch-depth: 0
 
       - name: Install Go (direct, no Node.js dependency)
         run: |
@@ -52,18 +59,45 @@ jobs:
       - name: Download Go modules (Docsy)
         run: go mod download
 
-      - name: Build
+      - name: Build main (v1.6.4)
         run: |
           hugo \
             --baseURL https://${REPO_OWNER}.github.io/${REPO_NAME} \
             --minify
+
+      - name: Checkout docs/v1.6.2 branch for v1.6.3 build
+        uses: actions/checkout@v5
+        with:
+          ref: docs/v1.6.2
+          path: v163-build
+          fetch-depth: 0
+
+      - name: Install npm dependencies (v1.6.3)
+        run: npm ci
+        working-directory: v163-build
+
+      - name: Download Go modules (v1.6.3)
+        run: go mod download
+        working-directory: v163-build
+
+      - name: Build v1.6.3
+        run: |
+          hugo \
+            --baseURL https://${REPO_OWNER}.github.io/${REPO_NAME}/v1.6.3 \
+            --minify
+        working-directory: v163-build
+
+      - name: Merge v1.6.3 into site output
+        run: |
+          mkdir -p public/v1.6.3
+          cp -r v163-build/public/* public/v1.6.3/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
-  # NOTE: Uncomment this job when the repo is made public next week.
+  # NOTE: Uncomment this job when the repo is made public.
   # Also change GitHub Pages source to "GitHub Actions" in repo Settings > Pages.
   # deploy:
   #   environment:

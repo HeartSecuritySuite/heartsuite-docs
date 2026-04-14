@@ -12,13 +12,12 @@ menu:
     weight: 15
 ---
 
-
-HeartSuite is a comprehensive security suite designed to proactively block malware by allowlisting safe programs and actions. This section provides an understanding of how HeartSuite works, the setup process with the dashboard for orientation, and what's needed to get started.
+**Overview**: HeartSuite enforces a default-deny policy — only explicitly approved programs can execute, access files, or make network connections. Any program not on the allowlist, including malware, is blocked at the kernel level before it can execute. The Dashboard guides you through a 7-phase journey from installation to Secure Mode, always showing your current progress and the suggested next step.
 
 ## Key Topics
-Dive deeper into specific areas:
-- [HeartSuite Overview](heartsuite-overview/) - Core features, how it protects against malware, and key benefits.
-- [Setup Overview](setup-overview/) - Step-by-step explanation of the setup process and modes (Setup vs. Secure).
-- [System Requirements](system-requirements/) - Compatible systems, kernel versions, and prerequisites including Dashboard verification.
 
-For detailed installation steps, see [Installation](../installation/). See verification via the Dashboard for orientation on boot.
+- [HeartSuite Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7-phase model.
+- [Setup Overview](setup-overview/) — The setup process, modes (Setup vs. Secure), and how the Dashboard guides you.
+- [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
+
+For detailed installation steps, see [Installation](../installation/). HeartSuite supports both Cloud (pre-installed) and Local (manual install) paths — both converge at the Dashboard after Phase 1 (System Verification).

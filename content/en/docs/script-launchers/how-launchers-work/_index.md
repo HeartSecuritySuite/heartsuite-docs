@@ -8,18 +8,22 @@ type: docs
 toc: true
 ---
 
+**Overview**: Without Secure Script Launchers, every script run by an interpreter (Python, Perl, PHP) shares the interpreter's permissions. If `python3` is allowed to access the network, every Python script inherits that access. Secure Script Launchers solve this by giving each script its own allowlist entry.
 
-## Overview
+## The Problem
 
-Certain programs, known as **interpreter programs** (e.g., Python, PHP, Perl, Bash), execute code from files. Without Script Launchers, these interpreters would need broad permissions, creating security risks.
+Interpreter programs (Python, PHP, Perl, Bash) execute code from files. When you allowlist `python3`, you grant permissions to the interpreter — and every script it runs inherits those permissions. A malicious Python script would have the same file and network access as your legitimate scripts.
 
-## Security Benefits
+## The Solution
 
-HeartSuite allows **individual allowlist entries for script files** (e.g., `script.py`), enabling fine-grained access control per script rather than giving wide permissions to the interpreter.
+Secure Script Launchers create a wrapper that applies the individual script's allowlist entry instead of the interpreter's:
 
-- Scripts are treated like regular programs: each can have its own permissions.
-- Interpreters can even be blocked entirely, ensuring only allowlisted scripts run.
+- Each script is treated like a standalone program with its own permissions
+- One script can have network access while another cannot
+- Interpreters can be blocked entirely, ensuring only allowlisted scripts run
 
 ## Using Launchers
 
-To enforce this, HeartSuite provides **Secure Script Launchers** called Secure Script Launchers (e.g., `hs-python-launcher`). These launch the interpreter but apply the script's allowlist entry instead.
+HeartSuite provides Secure Script Launchers for each supported interpreter (e.g., `hs-python-launcher`). Once activated via the Dashboard's Launchers screen (`[l]`), every call to that interpreter automatically routes through the launcher — applying per-script permissions without any change to how you run scripts.
+
+See [Configuring Script Launchers](../configuring-launchers/) for the activation steps.

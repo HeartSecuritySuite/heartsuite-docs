@@ -8,9 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: Scripts (e.g., Python) need special launchers for fine-grained security—regular interpreters would over-share permissions. This appears as Phase 3 on the Dashboard with guided setup and suggested next step.
-
-HeartSuite provides Secure Script Launchers to apply per-script permissions instead of granting broad access to interpreters like Python or Perl. This ensures only allowlisted scripts run securely.
+**Overview**: Without Secure Script Launchers, every Python or Perl script would share the interpreter's permissions — if `python3` is allowed to access the network, every Python script can access the network. Secure Script Launchers solve this by giving each script its own allowlist entry, so you control exactly what each script can do. The Dashboard presents this as Phase 3 when script interpreters are detected on the system.
 
 ## Key Guides
 Dive into specific setup and reference areas:

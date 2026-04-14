@@ -1,4 +1,3 @@
-docs.heartsuite.com/content/en/docs/installation/obtaining-heartsuite/_index.md
 ---
 title: "Obtaining HeartSuite"
 linkTitle: "Obtaining HeartSuite"
@@ -14,6 +13,9 @@ menu:
     identifier: "obtaining-heartsuite"
 ---
 
-## Overview
+**Overview**: HeartSuite is distributed as a single tar file. Download it from the HeartSuite website at heartsecsuite.com.
 
-HeartSuite is distributed as a single tar file; download it from our website, heartsecsuite.com. Please note that access to the tar file via wget is turned off by our hosting provider; you must use the download form on our website.
+> [!NOTE]
+> Cloud users who launched a pre-configured instance (AWS AMI, GCP image) already have HeartSuite installed. Skip this step and proceed directly to the Dashboard.
+
+Access to the tar file via `wget` is disabled by the hosting provider. Use the download form on the website to obtain the file.

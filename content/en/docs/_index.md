@@ -6,55 +6,53 @@ description: "Complete guide for installing and configuring HeartSuite security 
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "security", "overview", "guide"]
 toc: true
+type: docs
 ---
 
+**Overview**: HeartSuite enforces a default-deny policy — only explicitly approved programs can execute, access files, or make network connections. Any program not on the allowlist, including malware, is blocked at the kernel level before it can execute. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
 
-Version 1.6.2
-
-HeartSuite is a security suite that proactively blocks malware by allowlisting safe programs and actions. The dashboard and clear guidance keep you informed of your progress in Setup or Secure Mode. Secure your Linux server with easy setup and maintenance.
+HeartSuite supports two paths: **Cloud** (pre-installed instances where the Dashboard appears immediately) and **Local** (manual installation with guided boot setup). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
 ## Learn About HeartSuite
-Understand key concepts to get the most out of HeartSuite.
-- [Introduction and Overview](introduction/) - Overview, setup process, dashboard guidance, and requirements.
-- [Allowlisting Programs](whitelisting/) - How to add safe programs and permissions using review tools.
-- [Mode Switching and Lockdown](mode-switching/) - Secure vs. Setup modes.
 
-[Explore Concepts](#)
+Understand key concepts to get the most out of HeartSuite.
+- [Introduction and Overview](introduction/) — Overview, setup process, Dashboard guidance, and requirements.
+- [Allowlisting Programs](allowlisting/) — How to add safe programs and permissions using the review queues.
+- [Mode Switching and Lockdown](mode-switching/) — Setup Mode, Secure Mode, and Lockdown.
 
 ## Get Started
-Follow quick guides to install and test HeartSuite.
-- [Quick Start](getting-started/) - Install, allowlist, and switch modes in minutes.
-- [Obtaining and Installing HeartSuite](installation/) - Download and setup steps.
-- [Verifying Installation](verification/) - Confirm activation and basic config via the dashboard.
 
-[Start Here](#)
+Follow quick guides to install and test HeartSuite.
+- [Quick Start](getting-started/) — Install, allowlist, and switch modes.
+- [Obtaining and Installing HeartSuite](installation/) — Download and setup steps.
+- [Verifying Installation](verification/) — Confirm activation and basic configuration via the Dashboard.
 
 ## Use and Manage
-Perform common tasks and advanced config for ongoing security.
-- [Network and Remote Access](network/) - Configure network permissions.
-- [Script Launchers and Python Setup](script-launchers/) - Secure script execution.
-- [Advanced Configuration and Maintenance](maintenance/) - Caches, backups, and tweaks via the dashboard.
 
-[View Tasks](#)
+Perform common tasks and advanced configuration for ongoing security.
+- [Network and Remote Access](network/) — Configure network permissions.
+- [Script Launchers](script-launchers/) — Secure interpreted script execution.
+- [Alert Configuration](alerts/) — Set up push notifications for security events (Phase 6, required for Secure Mode).
+- [Maintenance](maintenance/) — Caches, backups, and configuration management.
 
 ## Troubleshoot and Reference
+
 Get help and detailed info.
-- [Troubleshooting and Logs](troubleshooting/) - Common issues and solutions.
-- [FAQs](faqs/) - Answers to frequent questions.
-- [Appendices](appendices/) - List of included tools.
+- [Troubleshooting and Logs](troubleshooting/) — Common issues and solutions.
+- [FAQs](faqs/) — Answers to frequent questions.
+- [Appendices](appendices/) — List of included tools.
 
-[Get Help](#)
+## Subscription and Support
 
-## Support and Licensing
-- [Licensing and Subscription](licensing/) - Activate your license.
+- [Subscription](licensing/) — Activate your subscription for Secure Mode.
 - For updates or help, visit [heartsecsuite.com](https://heartsecsuite.com).
 
 ## Ready to get started?
 
-Get HeartSuite running in minutes with our quick start guide. Begin with the dashboard, which clearly shows your next steps.
+Get HeartSuite running with the quick start guide. The Dashboard shows your current progress and suggests the next step.
 
 [Get Started](getting-started/)
 
 ---
 
-*About this Documentation*: Covers HeartSuite 1.6.2. [Contribute or Report Issues](#).
+*About this Documentation*: Covers HeartSuite v1.6.4.

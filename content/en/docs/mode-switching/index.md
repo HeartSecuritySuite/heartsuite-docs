@@ -5,106 +5,148 @@ description: "Switching between Setup and Secure modes, including lockdown featu
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
 toc: true
+type: docs
 ---
 
-**Overview**: HeartSuite operates in distinct system states depending on which kernel is booted and how lockdown is configured. Understanding these states is essential before switching modes or performing maintenance.
+**Overview**: HeartSuite guides you through mode switching via the Dashboard. The system state depends on which kernel is booted and whether Lockdown is applied — the Dashboard shows you the current state and suggests the appropriate next action.
 
 ## System States
 
-HeartSuite has two modes: Setup mode and Secure mode. Both run on the HeartSuite-modified kernel. Lockdown is an optional additional layer that can only be applied within Secure mode — it is not a separate mode. It is also important not to conflate either mode with booting the original non-HeartSuite kernel, which is not a HeartSuite mode at all.
+HeartSuite has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your threat model. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original non-HS kernel is not a HeartSuite mode at all; it is the system running without HeartSuite.
 
-| | HeartSuite kernel loaded | Enforcement | Logging | Backups | `hs-*` tools |
+| | HeartSuite kernel loaded | Enforcement | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
-| **Setup mode** | Yes | No — logs only | Yes | Yes | All available |
-| **Secure mode** | Yes | Yes — blocks | Yes | Yes | All available |
-| **Secure mode + lockdown** *(optional layer)* | Yes | Yes — blocks | Yes | Yes | All available; filesystem and tools immutable |
-| **Original kernel booted** *(not a HeartSuite mode)* | No — HeartSuite absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
+| **Setup Mode** | Yes | No — logs only | Yes | Yes | Dashboard and all features available |
+| **Secure Mode** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available |
+| **Secure Mode + Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
+| **Non-HS kernel** *(not a HeartSuite mode)* | No — HeartSuite absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup mode and Secure mode, HeartSuite's kernel module is active. Backups, logging, and all `hs-*` tools function normally in both. Booting the original kernel, by contrast, means HeartSuite is completely absent — the module is not loaded, no enforcement or logging takes place, and backups do not run. This is not a HeartSuite mode; it is the system running without HeartSuite.
-The Dashboard provides orientation for these states along with suggested next steps as part of the guided journey.
+In Setup Mode and Secure Mode, HeartSuite's kernel module is active. Backups, logging, and the Dashboard all function normally in both. Booting the non-HS kernel means HeartSuite is completely absent — the module is not loaded, no enforcement or logging takes place, and backups do not run.
+
+The Dashboard provides orientation for these states. The Safety Banner displays the current state, and the Suggested Next Step guides you toward the appropriate action.
+
+### Safety Banner States
+
+The Dashboard displays a Safety Banner reflecting the current system state:
+
+| State | Safety Banner |
+|---|---|
+| Setup Mode | **SETUP MODE** — logging only, nothing is blocked |
+| Secure Mode (no Lockdown) | **SECURE MODE** — Lockdown not applied |
+| Secure Mode + Lockdown | Silent (blank) |
+| Non-HS kernel | **NON-HS KERNEL** — HeartSuite is not active. No enforcement. No logging. No backups. |
 
 ## Setup vs Secure Mode
 
-At some point, you need to switch to Secure mode in order to prevent malicious programs from starting, or at least to restrict the files and remote computers such programs may access. You activate Secure mode using the hs-mode-switch program, as explained below. Before switching to Secure mode however, you must have successfully run the hs-os-boot-setup.py script, as explained above, repeatedly until you have received the message, “Great! Your OS and its related programs are now whitelisted.”. Characteristically, the message will appear after running the script three or four times.
+At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and remote computers such programs may access. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
 
-> [!WARNING]
-> As stated above, if you fail to setup HeartSuite properly using the **hs-os-boot-setup.py** script multiple times, your computer will not boot or shutdown when you change to Secure mode; instead, it will merely hang!
+> [!NOTE]
+> The Dashboard prevents Secure Mode activation until all preconditions are met — including completion of all setup phases and boot configuration via `hs-os-boot-setup`. If any precondition is not satisfied, the Mode Switch screen (`[m]`) displays "Mode switch is not available yet" and lists what remains.
 
-Moreover, if you fail to add needed access permissions or network address permissions to allowlist entries, HeartSuite will actively block programs from accessing needed files and network addresses when you change to Secure mode.
+If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite will actively block programs from accessing those files and network addresses when you switch to Secure Mode.
 
-Once HeartSuite has been configured as desired, it would behoove you to continue using it in Setup mode for some time, such as a few days or even a week or so. During that time, you will be able to use the logs to gather more information about file and network access activity. This information could prove invaluable for further allowlist entry configuration before moving to Secure mode.
+Once HeartSuite has been configured, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity. This information is valuable for further allowlist configuration before activating Secure Mode.
 
-Please note that, at times, you must revert to Setup mode when installing new software. For example, the Debian package manager, `dpkg`, creates temporary directories when installing packages. In Secure mode, this behavior will generate a permission error and cause the program to halt. By the time you have seen the error however, the temporary directory has been removed; therefore, it cannot be added to a allowlist entry. Thus, the simple solution is to use `dpkg` in Setup mode, then add any additional access permissions needed, then return to Secure mode.
+When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Secure Mode, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then return to Secure Mode.
 
 ```mermaid
 graph TD
-    A["After Installation: HeartSuite in Setup Mode"] --> B[Build complete allowlist using logs];
-    B --> C["Switch to Secure Mode: `hs-mode-switch off`"];
-    C --> D[Reboot or activate to enable Secure Mode];
-    D --> E["Optional: Uncomment lockdown in startup script for auto-lockdown"];
-    E --> F["Lockdown active: Settings frozen"];
-    F --> G{Maintenance needed?};
-    G --> |"No filesystem changes needed"| H["Switch to Setup mode: `hs-mode-switch setup`\nHeartSuite still active — logs, backups, and tools all run"];
-    G --> |"Lockdown active — filesystem immutable"| I["Boot original kernel from GRUB\nHeartSuite not loaded — no logging, no backups"];
-    H --> J["Make changes, update allowlist"];
-    I --> K["Run `hs-monitor-state on` to pre-set Setup mode for next boot"];
-    K --> L["Run `HS_unlock.sh` to clear immutable flags"];
-    L --> M["Reboot into HeartSuite kernel → activates in Setup mode"];
-    J --> N[Switch back to Secure Mode and relock];
-    M --> N;
-    N --> F;
+    A["Dashboard: Phase Progress complete"] --> B["Review queues empty — ready for Secure Mode"];
+    B --> C["Dashboard Mode Switch screen — type YES to confirm"];
+    C --> D{"Choose reboot option"};
+    D --> |"[r] Reboot"| E["Secure Mode active\nConfiguration remains editable"];
+    D --> |"[l] Reboot + Lockdown"| F["Secure Mode + Lockdown active\nConfiguration sealed"];
+    E --> G{Maintenance needed?};
+    F --> G;
+    G --> |"No Lockdown"| H["Maintenance [t] → safety checklist → switch to Setup Mode\nHeartSuite still active — logs, backups, Dashboard all run"];
+    G --> |"Lockdown active"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
+    H --> J["Make changes, update allowlist from Dashboard"];
+    I --> J;
+    J --> N["Return to Secure Mode from Dashboard"];
+    N --> D;
 ```
 
 ## Switching Between Modes
 
-To switch to Secure mode, you instruct the `hs-mode-switch` program to switch to secure mode:
+### Dashboard-First Mode Switch
+
+The Dashboard is the primary interface for mode switching. When all preconditions are met, the Suggested Next Step will offer Secure Mode activation. The precondition checklist includes:
+
+- All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
+- Boot configuration is complete (`hs-os-boot-setup`)
+- Phase 7 is unlocked (phases 2 through 6 complete)
+
+When preconditions are satisfied, the Dashboard presents the activation option.
+
+### Activating Secure Mode
+
+From the Dashboard, select the Mode Switch screen (`[m]`). The screen displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
+
+After confirming, the Dashboard offers two reboot options:
+
+- `[r]` **Reboot** — enforcement active, configuration remains editable
+- `[l]` **Reboot + Lockdown** — enforcement active, configuration sealed with filesystem immutability
+
+Both are valid configurations depending on your threat model. HeartSuite will boot in Secure Mode from that point forward until you switch back to Setup Mode.
+
+### Returning to Setup Mode
+
+From the Dashboard, use the Mode Switch screen (`[m]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Secure Mode would block.
+
+### Advanced: CLI Mode Switch
+
+When booted into a Non-HS kernel (where the Dashboard's mode switch is not available), use the CLI to pre-configure the mode for the next HeartSuite kernel boot:
 
 ```bash
-# sudo /.hs/sys/hs-mode-switch off
+# sudo hs-mode-switch setup
 ```
-
-This program will verify that you, in fact, wish to switch to Secure mode. Specifically, it will display a warning message and require that you signify your intent to activate Secure mode by typing the word ‘YES’, in all capital letters:
-
-After switching to secure mode, you must then either reactivate HeartSuite, by running the `activate_HS` program, or reboot. This final step is necessary for Secure mode to be activated. Thereafter, HeartSuite will always boot in Secure mode until you use the `hs-mode-switch` program to change back to Setup mode, which you must do before installing packages.
-
-You can view the result of trying to activate Secure mode by reading the kernel log:
-
-If a problem occurs, you can view the error condition in the kernel log:
-
-You may switch back to Setup mode anytime by using the `hs-mode-switch` program again:
-
-```bash
-# sudo /.hs/sys/hs-mode-switch setup
-```
-
-**Overview**: Lockdown freezes HeartSuite settings to prevent tampering—great for production.
-The Dashboard orients the user to lockdown status with suggested next steps in the guided journey.
 
 ## Lockdown: Securing Your System in Secure Mode
 
-Lockdown is an optional second step you apply after activating Secure mode. The table below summarises what changes when you add it.
+**Overview**: Lockdown seals HeartSuite's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current lockdown status and provides the Suggested Next Step for managing it.
 
-| | Secure mode | Secure mode + lockdown |
+Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on your threat model. The table below summarises what changes when you apply Lockdown.
+
+| | Secure Mode | Secure Mode + Lockdown |
 |---|---|---|
 | Blocks unauthorised programs, file access, and network access | Yes | Yes |
 | Logging | Yes | Yes |
 | Backups | Yes | Yes |
-| Can root edit allowlist entries or HeartSuite config files? | Yes | **No** — immutable |
+| Can root edit allowlist entries or HeartSuite config files? | Yes | **No** — immutable (attempting to write returns `errno:1`) |
 | Can an attacker with root tamper with security settings? | Possible | **No** — protected by immutability |
-| Can you modify files made immutable by `HS_lockdown.sh`? | Yes | **No** — until `HS_unlock.sh` is run after reboot |
-| Certain maintenance tools (e.g. `rm`) blocked? | No | **Yes** — made non-executable by `HS_lockdown.sh` |
-| Can lockdown be engaged in Setup mode? | N/A | No — Secure mode is required first |
-| How long does lockdown last? | N/A | Until the next reboot |
-| How do you exit lockdown? | N/A | Boot the original kernel, or run `HS_unlock.sh` after a reboot without lockdown |
+| Can you modify files made immutable by Lockdown? | Yes | **No** — until `hs-unlock` is run after reboot |
+| Maintenance tools (e.g. `rm`) optionally restricted? | No | **Optional** — can be made non-executable for additional hardening (see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/)) |
+| Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
+| How long does Lockdown last? | N/A | Until the next reboot |
+| How do you exit Lockdown? | N/A | Boot the Non-HS kernel, or run `hs-unlock` after a reboot without Lockdown |
 
-The `hs-lockdown` program protects HeartSuite settings during Secure mode. In particular, HeartSuite prevents any changes to the allowlist entries and other settings once lockdown is initiated. Moreover, the `HS_lockdown.sh` script starts the `hs-lockdown` program and also protects other files and directories from tampering by attackers during lockdown. In addition, the script makes certain tools that could be used to undermine HeartSuite — such as `rm` — non-executable or immutable, closing attack gaps that would otherwise exist while the server is running. Technically speaking, lockdown lasts until the next time your server is booted; there is no direct way to turn lockdown off. Please note that Lockdown cannot be engaged in Setup mode; if you try to do so, an error message is merely written to the kernel log. It is also worth noting that the filesystem immutability applied by `HS_lockdown.sh` via `chattr +i` is a filesystem-level attribute, not a kernel-module state. This means that immutable flags set during lockdown persist across reboots, including reboots into the original non-HeartSuite kernel. If you boot the original kernel for maintenance after lockdown was active, you must run `HS_unlock.sh` before attempting to modify any files that were made immutable.
+### What Lockdown Does
 
-Included in the HeartSuite installation is a systemd service unit named `heartsuite.service`. This service unit executes a shell script named `HS_startup.sh` at startup. The `HS_startup.sh` script executes the `activate_HS` program, which is the program that actually activates HeartSuite. Thus, this sequence of events starts HeartSuite automatically after booting. The `HS_startup.sh` script also contains a line that invokes the `HS_lockdown.sh` script immediately after activating HeartSuite, but, by default, the line is commented out. In order to engage lockdown immediately after booting in Secure mode, you must first uncomment this line. Once the line is uncommented, the startup script will always call the lockdown script. In that situation, rebooting will always engage lockdown before you can prevent it. In order to disengage lockdown, you must boot to an alternate kernel; this procedure will be discussed in the section below, “Protecting Your Server During Maintenance.”
+Once Lockdown is engaged, HeartSuite prevents any changes to the allowlist entries and other settings. Lockdown makes HeartSuite configuration files and directories immutable using `chattr +i`. For additional hardening, the lockdown script can optionally be configured to make tools like `rm` non-executable — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
 
-The essence of lockdown involves protecting files and directories from being changed. This protection is achieved by first making a file or directory immutable. Files and directories can be made immutable programmatically or by use of the command line tool, chattr. You can view whether particular files and directories are immutable using the lsattr command line tool. The chattr tool can also be used to make files and directories mutable again. Lockdown merely disables chattr functionality; therefore, no changes in mutability can be made once lockdown is engaged.
+Once Lockdown is engaged, the HeartSuite kernel disables `chattr` entirely — no user or program, including root, can change the immutability flags. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
-Although the `hs-lockdown` program supplied with HeartSuite can be executed directly, we urge you to run it indirectly. Specifically, we strongly recommend that you execute the `HS_lockdown.sh` script. This script provides a list of files and directories that you should consider protecting with lockdown. The script makes files and directories immutable using `chattr`, then executes the `hs-lockdown` program. Please feel free to edit this script to meet your needs, but keep in mind that once the `hs-lockdown` program has been executed, no changes in mutability may be made.
+Lockdown lasts until the next time your server is booted; there is no direct way to turn Lockdown off. Lockdown cannot be engaged in Setup Mode; if you attempt to do so, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a filesystem-level attribute, not a kernel-module state. This means that immutable flags set during Lockdown persist across reboots, including reboots into the Non-HS kernel. If you boot the Non-HS kernel for maintenance after Lockdown was active, you must run `hs-unlock` before attempting to modify any files that were made immutable.
 
-Files and directories may be made mutable again once lockdown is no longer active. The program `hs-unlock-progs`, also supplied with HeartSuite, switches all HeartSuite files back to being mutable so that you can make further configuration changes. The script `HS_unlock.sh` runs the `hs-unlock-progs` program and then makes other files and directories mutable again. In essence, this script is the counterpart to the `HS_lockdown.sh` script. Thus, any files or directories that are made immutable with the `HS_lockdown.sh` script should be returned to a mutable state using the `HS_unlock.sh` script before making changes to your server. If you forget to run the `HS_unlock.sh` script after lockdown ends and then try to write to a file made immutable by the `HS_lockdown.sh` script, you will encounter the error, “could not open <filename> file; errno:1.” The fix is simple: run the `HS_unlock.sh` script, then try your program again.
+### Automatic Lockdown on Boot
 
-Notably, you must have either physical or serial port access to your server in order to reboot to the original kernel—which means that attackers can't remotely reboot to the original kernel, thus providing another layer of defense.
+Lockdown can be configured to re-engage automatically on every HeartSuite kernel boot. When you choose `[l]` Reboot + Lockdown from the Mode Switch screen, the startup script applies Lockdown each time the HeartSuite kernel starts. Once enabled, rebooting will always engage Lockdown before you can prevent it.
+
+The Dashboard's Maintenance screen (`[t]`) detects automatic re-engagement and presents a guided choice: `[d]` Disable automatic Lockdown re-engagement or `[k]` Keep it. You do not need to edit any scripts manually. To disengage Lockdown when automatic re-engagement is active, boot to the Non-HS kernel; this procedure is discussed in [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+
+### Restoring Mutability After Lockdown
+
+Files and directories may be made mutable again once Lockdown is no longer active. The Dashboard's Maintenance screen (`[t]`) handles this automatically during the guided maintenance process — Step 1 of 3 offers `[u]` Remove immutable flags. For manual recovery outside the maintenance wizard, run `hs-unlock` from the CLI.
+
+If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
+
+You must have either physical or serial port access to your server to reboot to the Non-HS kernel — attackers cannot remotely reboot to bypass HeartSuite, providing another layer of defense.
+
+### Advanced: Lockdown CLI Tools
+
+The underlying CLI tools are available for advanced configuration and automation:
+
+- **`hs-activate-lockdown`** — makes files and directories immutable, then engages the lockdown program. Strongly recommended over running `hs-lockdown` directly.
+- **`hs-lockdown`** — engages lockdown without setting immutability flags. Use `hs-activate-lockdown` instead for complete protection.
+- **`hs-unlock`** — reverses all immutability set by Lockdown so you can make configuration changes.
+- **`hs-unlock-progs`** — restores mutability for HeartSuite files only (subset of what `hs-unlock` does).

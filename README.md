@@ -32,7 +32,7 @@ layouts/              # Custom page layouts (optional)
 themes/               # Hugo themes (managed by Hugo modules)
 .github/workflows/    # GitHub Actions for deployment
 ```
-- Content lives in `content/en/` — organized by topic (introduction, installation, whitelisting, troubleshooting).
+- Content lives in `content/en/` — organized by topic (introduction, installation, allowlisting, troubleshooting).
 - Changes auto-deploy via GitHub Actions on push to `main`.
 
 ## Contributing

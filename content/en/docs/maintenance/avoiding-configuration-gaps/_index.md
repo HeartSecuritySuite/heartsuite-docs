@@ -8,28 +8,26 @@ type: docs
 toc: true
 ---
 
-# Avoiding Gaps in Your HeartSuite Configuration
-
-Many allowlisted programs (e.g., file editors, rm) are useful during maintenance but should be locked down during normal operation to prevent attacks.
+**Overview**: This is an advanced hardening guide. Lockdown seals HeartSuite's configuration with filesystem immutability, but programs like file editors and `rm` remain executable by default. For high-security environments, you can optionally restrict these tools during Lockdown to close additional attack surfaces. The Dashboard's Maintenance screen (`[t]`) guides you through maintenance workflows, and the Mode Switch screen (`[m]`) manages Lockdown status.
 
 ## Locking Down Maintenance Tools
 - Programs like `rm` often need broad write access for maintenance.
 - In production (lockdown), disable or restrict them to block misuse via vulnerabilities.
 
-**Example**: Remove execution privileges from `rm` and make it immutable in `HS_lockdown.sh`. Unlock with `HS_unlock.sh` for maintenance.
+**Example**: Remove execution privileges from `rm` and make it immutable when Lockdown is applied. Restore access with `hs-unlock` for maintenance. The Dashboard displays the current lockdown status and guides you through unlocking when maintenance is needed.
 
 > [!WARNING]
-> Run `HS_unlock.sh` before maintenance to avoid errors like "could not open file; errno:1."
+> Run `hs-unlock` before maintenance to avoid errors like "could not open file; errno:1."
 
 ## Handling Programs Needing Write Access in Lockdown
 - Database servers need write permissions to their data files/directories.
 - Limit to specific paths—do not allow universal writes.
 - Note: Database security is handled by the program itself, not HeartSuite.
 
-## Special Cases: Programs Requiring Broad Access During Lockdown
-Some programs (e.g., shutdown routines) need `rm` during operation.
+## Optional Hardening: Programs Requiring Broad Access During Lockdown
+Some programs (e.g., shutdown routines) need `rm` during operation, but you may want to restrict the full `rm` binary.
 - **Solution**: Create a limited copy (`limited_rm`) with restricted permissions.
-- Configure scripts to use the copy in lockdown.
+- Configure scripts to use the copy during Lockdown.
 
 Setup steps:
 1. Copy `rm` to `limited_rm` and rename original to `rm-orig`:
@@ -38,9 +36,9 @@ Setup steps:
    # sudo mv /usr/bin/rm /usr/bin/rm-orig
    # sudo ln -sf /usr/bin/limited_rm /usr/bin/rm
    ```
-2. Reboot and allowlist with `hs-os-boot-setup.py`.
-3. Update `HS_lockdown.sh` to disable `rm-orig` and make both immutable.
-4. Update `HS_unlock.sh` to restore access.
+2. Reboot and allowlist `limited_rm` from the Dashboard's Programs queue (`[p]`).
+3. Update the Lockdown configuration to disable `rm-orig` and make both immutable.
+4. Update `hs-unlock` configuration to restore access.
 
 Restore full `rm` for maintenance:
 ```bash

@@ -48,7 +48,7 @@ Welcome! HeartSuite Core Secure is an enterprise-grade security suite built on a
 
 ### File Organization
 - `content/en/` — all content goes here.
-- Organize by topic: installation, whitelisting, maintenance, etc.
+- Organize by topic: installation, allowlisting, maintenance, etc.
 - Use index.md for section overviews.
 - Follow existing naming: kebab-case, e.g., `vm-preparation.md`.
 
@@ -56,7 +56,7 @@ Welcome! HeartSuite Core Secure is an enterprise-grade security suite built on a
 
 ### For Small Changes
 1. Edit directly on GitHub (web editor) or locally.
-2. Commit with clear message: "Clarify whitelisting basics".
+2. Commit with clear message: "Clarify allowlisting basics".
 3. Push/PR: Create PR to `main` for review.
 
 ### For Larger Changes
