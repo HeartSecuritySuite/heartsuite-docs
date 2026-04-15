@@ -61,7 +61,7 @@ jobs:
       - name: Build main (v1.6.4)
         run: |
           hugo \
-            --baseURL https://${REPO_OWNER}.github.io/${REPO_NAME} \
+            --baseURL https://docs.heartsecsuite.com \
             --minify
 
       - name: Upload Pages artifact
@@ -69,16 +69,14 @@ jobs:
         with:
           path: public
 
-  # NOTE: Uncomment this job when the repo is made public.
-  # Also change GitHub Pages source to "GitHub Actions" in repo Settings > Pages.
-  # deploy:
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: ${{ github.ref == 'refs/heads/main' }}
-  #   steps:
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
