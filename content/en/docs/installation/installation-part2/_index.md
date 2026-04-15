@@ -19,29 +19,44 @@ menu:
 
 ## Building the Initial Allowlist
 
-Launch the Dashboard:
+After booting into the HeartSuite Core Secure kernel, the management UI appears on the console automatically. The **System Setup** screen opens on first boot.
 
-```bash
-sudo python3 main.py
-```
+Each cycle follows the same pattern:
 
-The Installation screen appears. Press `[a]` to begin — the Installation screen runs the setup process, scans system logs for permission errors, and builds allowlist entries for essential startup and shutdown programs.
+1. Press `[a]` to run the setup step — the UI scans startup and shutdown logs and adds the programs it finds to the allowlist.
+2. When the step completes, the UI reboots the system automatically (5-second countdown — press any key to cancel if needed).
+3. At the GRUB menu, select the HeartSuite Core Secure kernel again.
+4. The System Setup screen resumes at the next step automatically.
 
-Reboot after each cycle, then re-launch the Dashboard (`sudo python3 main.py`) and press `[a]` again. New permission errors are generated on each boot as additional programs execute. The Installation screen directs you to reboot after each run.
+Repeat until the setup screen shows **Setup Complete** in green — no manual commands are needed between cycles.
 
-After three to five cycles (depending on the distribution), the Installation screen reports that all OS startup and shutdown programs are allowlisted.
+After three to five cycles (depending on the distribution), the setup screen confirms that all startup and shutdown programs have been allowlisted.
 
 ## After Phase 1 Completes
 
-Once the Installation screen confirms completion, the Dashboard displays your current progress. The Suggested Next Step guides you into Phase 2 (Program Allowlisting), where you review and approve the programs your system needs to run.
+When the setup screen shows the completion message, press `[q]` to return to the Dashboard. The Dashboard displays your current progress and the Suggested Next Step guides you into Phase 2 (Program Allowlisting).
 
-## If the Installation Screen Does Not Progress
+## If the UI Does Not Appear After Boot
 
-If after several cycles the Installation screen does not show the success message or you encounter errors:
+If the management UI does not appear on the console after booting into the HeartSuite Core Secure kernel:
 
-1. Check the Dashboard for system status and pending items.
-2. Check the Dashboard's Programs review queue (`[p]`) for any pending events and approve missing programs.
-3. Verify that the HeartSuite Core Secure kernel is loaded (the Dashboard System Info Strip shows "Kernel: HS").
+1. Switch to TTY2 (`Ctrl+Alt+F2`), log in as root, and check the service:
+   ```bash
+   systemctl status heartsuite-ui.service
+   ```
+2. Verify the HeartSuite Core Secure kernel is loaded:
+   ```bash
+   uname -r
+   ```
+   Expected output: `5.19.6-HeartSuite-1.0`
+3. If the wrong kernel booted, reboot and select the correct entry from the GRUB menu.
+
+## If the Setup Screen Does Not Progress
+
+If after several cycles the setup screen does not show the completion message:
+
+1. Check the Dashboard's Programs review queue (`[p]`) for any pending events and approve missing programs.
+2. Verify the HeartSuite Core Secure kernel is loaded (the Dashboard System Info Strip shows "Kernel: HS").
 
 > [!WARNING]
 > Completing these reboot-and-review cycles is essential before switching to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.

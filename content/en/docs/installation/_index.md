@@ -19,11 +19,11 @@ Launch a pre-configured cloud instance (e.g., AWS AMI, GCP image). The HeartSuit
 
 ## Local Path
 
-Download the HeartSuite Core Secure distribution, extract it, run the installer, and reboot multiple times to build the initial allowlist of startup and shutdown programs. This path involves:
+Download the HeartSuite Core Secure installer, run it, and reboot multiple times to build the initial allowlist of startup and shutdown programs. This path involves:
 
-1. [Obtaining HeartSuite Core Secure](obtaining-heartsuite/) — Download the distribution from the website.
+1. [Obtaining HeartSuite Core Secure](obtaining-heartsuite/) — Download the installer from the website.
 2. [VM Preparation](vm-preparation/) — Configure GRUB settings for virtual machines on clouds.
-3. [Installation Part 1](installation-part1/) — Extract, install, and reboot to load the kernel.
+3. [Installation Part 1](installation-part1/) — Run the installer and reboot to load the kernel.
 4. [Installation Part 2](installation-part2/) — Auto-allowlist startup programs with `hs-os-boot-setup`.
 
 After the final reboot cycle, the Dashboard appears and displays the Suggested Next Step to guide you into Phase 2 (Program Allowlisting).

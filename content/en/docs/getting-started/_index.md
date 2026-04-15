@@ -57,27 +57,25 @@ Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a lon
 2. Extract and run the installer (as root):
 
    ```bash
-   # tar xvf 6.18-HeartSuite-1.6.4.tar -m
-   # sudo ./HeartSuite_install.sh
+   tar xvf 6.18-HeartSuite-1.6.4.tar -m
+   sudo bash heartsuite-install-bundle.sh
    ```
 
-3. Reboot to load the HeartSuite Core Secure kernel:
+3. Reboot, then select the HeartSuite Core Secure kernel from the GRUB menu:
 
    ```bash
-   # systemctl reboot
+   reboot
    ```
 
-   If the reboot does not load the HeartSuite Core Secure kernel, check GRUB settings. See [Installation](../installation/) for details.
+   At GRUB: **Advanced options for Debian GNU/Linux** → **Linux 5.19.6-HeartSuite-1.0**
+
+   If the GRUB menu does not show the HeartSuite Core Secure kernel, run `update-grub` and reboot again. See [Installation](../installation/) for details.
 
 ### OS Boot Setup
 
-4. Launch the Dashboard:
+4. After booting into the HeartSuite Core Secure kernel, the management UI appears on the console automatically. The **System Setup** screen opens.
 
-   ```bash
-   sudo python3 main.py
-   ```
-
-   The Installation screen appears. Press `[a]` to run the setup process. Reboot after each cycle and re-launch the Dashboard — repeat until the Installation screen confirms all OS boot programs are allowlisted (usually 3-5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
+   Press `[a]` to run the setup step. The UI reboots the system when the step completes — select the HeartSuite Core Secure kernel from GRUB each time and repeat until the setup screen shows **Setup Complete** (usually 3–5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
 
 ### Verify and Proceed
 
