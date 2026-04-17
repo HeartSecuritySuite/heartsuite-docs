@@ -10,48 +10,37 @@ type: docs
 
 **Overview**: Phase 1 (System Verification) confirms that HeartSuite Core Secure is active and the system is ready for allowlisting. On the Cloud Path, this phase completes automatically on first boot. On the Local Path, it completes automatically once the installation process is done.
 
-## What the Dashboard Shows
-
-When Phase 1 is complete, the Dashboard confirms:
-
-- The protection state indicator at the top shows **SETUP MODE** — HeartSuite Core Secure is active, logging only, nothing blocked
-- Phase 1 shows as **Complete** in the phase progress
-- The status line at the bottom shows **Kernel: HS**
-- The Suggested Next Step directs you to begin Phase 2: Program Allowlisting
-
-No user action is required. The Dashboard confirms this automatically.
-
-## How Phase 1 Completes
+## Cloud Path and Local Path
 
 ### Cloud Path
 
-When you launch a pre-installed HeartSuite Core Secure cloud instance, Phase 1 completes automatically on first boot. The Dashboard appears with a welcome message confirming HeartSuite Core Secure is active and suggesting the next step.
+When you launch a pre-installed HeartSuite Core Secure cloud instance, Phase 1 completes automatically on first boot. The Dashboard appears confirming HeartSuite Core Secure is active and suggesting the next step.
 
 ### Local Path
 
 After completing the local installation process (download, GRUB preparation, kernel install, `hs-os-boot-setup` with its multiple reboots), the Dashboard appears once Phase 1 is complete. From here, both paths proceed identically.
 
-## Verifying via the Dashboard
+## What the Dashboard Shows
 
-The Dashboard provides immediate verification of activation, current mode, and phase status. It shows:
+When Phase 1 is complete, the Dashboard confirms:
 
-- **Protection state** (indicator at the top): Displays the current protection level
-- **Phase Progress**: Shows Phase 1 as Complete, In Progress, or Not Started
-- **Status line at the bottom**: Shows kernel type, current mode, time in mode, and lockdown status
-- **Suggested Next Step**: Directs you to begin allowlisting once verification is complete
+- **Protection state** (indicator at the top): Shows **SETUP MODE** — HeartSuite Core Secure is active, logging only, nothing blocked
+- **Phase Progress**: Shows Phase 1 as **Complete**
+- **Status line at the bottom**: Shows kernel type (`HS`), current mode, time in mode, and lockdown status
+- **Suggested Next Step**: Directs you to begin Phase 2: Program Allowlisting
 
-No manual verification command is required. The Dashboard surfaces HeartSuite Core Secure state automatically.
+No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
 
 ## Protection State
 
 The protection state indicator appears as a full-width, high-contrast bar at the top of the Dashboard. Its content depends on the current system state:
 
-| State | Banner |
-|-------|--------|
-| Setup Mode | SETUP MODE -- logging only, nothing is blocked |
-| Secure Mode (no Lockdown) | SECURE MODE -- Lockdown not applied |
-| Secure Mode + Lockdown | No banner (silence means safety) |
-| Non-HS kernel | NON-HS KERNEL -- HeartSuite Core Secure is not active. No enforcement. No logging. No backups. |
+| State | Indicator |
+|-------|-----------|
+| Setup Mode | SETUP MODE — logging only, nothing is blocked |
+| Secure Mode (no Lockdown) | SECURE MODE — Lockdown not applied |
+| Secure Mode + Lockdown | No indicator (silence means safety) |
+| Non-HS kernel | NON-HS KERNEL — HeartSuite Core Secure is not active. No enforcement. No logging. No backups. |
 
 ## Status Line at the Bottom
 
@@ -78,7 +67,7 @@ If Phase 1 does not complete, or the indicator at the top shows a state you did 
 
 3. For local installations, verify that all `hs-os-boot-setup` steps completed. `hs-os-boot-setup` uses a step counter across reboots — run it again and check the output.
 4. If the Dashboard shows "UNKNOWN STATE — protection status cannot be determined", follow the Suggested Next Step displayed on the Dashboard.
-5. If the issue persists, we're happy to help — contact support at support@heartsecsuite.com.
+5. If the issue persists, contact support at support@heartsecsuite.com.
 
 > [!NOTE]
 > For advanced troubleshooting, you can verify kernel-level activation directly:

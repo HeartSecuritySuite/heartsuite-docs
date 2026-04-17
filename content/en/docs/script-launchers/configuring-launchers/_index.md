@@ -1,7 +1,7 @@
 ---
 title: "Configuring Script Launchers"
 weight: 2
-description: "Setting up HeartSuite Core Secure script launchers for secure script execution."
+description: "How to activate per-script allowlisting for Python, Perl, and PHP interpreters."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "security", "interpreters"]
 type: docs
@@ -10,7 +10,7 @@ toc: true
 
 **Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers screen (`[l]`) shows detected interpreters and activates launchers in one step.
 
-## Dashboard-Guided Setup
+## Activating Launchers
 
 From the Dashboard, select the Launchers screen (`[l]`). The screen shows two sections:
 

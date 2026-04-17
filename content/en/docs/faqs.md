@@ -64,7 +64,7 @@ A: Debian 11, 12, or 13; any Ubuntu-derived distribution; Alpine Linux; or RPM-b
 
 {{< details summary="How can I download HeartSuite Core Secure?" >}}
 
-A: Download the tar file from heartsecsuite.com -- wget is disabled, so use the website form.
+A: Download the tar file from heartsecsuite.com — the download form is on the website; direct wget links are not provided.
 
 {{< /details >}}
 
@@ -100,7 +100,7 @@ A: Secure Mode and Lockdown require a subscription. Setup Mode provides insights
 
 {{< details summary="I work remotely a lot; can I still access a HeartSuite Core Secure server remotely?" >}}
 
-A: Yes, HeartSuite Core Secure allows remote access like SSH -- allowlist necessary programs and IPs.
+A: Yes. Allowlist the SSH program and the IP addresses you connect from — remote access works the same as any other approved program.
 
 {{< /details >}}
 

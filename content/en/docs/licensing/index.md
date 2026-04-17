@@ -14,7 +14,7 @@ type: docs
 
 A subscription is required before you can switch from Setup Mode to Secure Mode. Phase 7 (Secure Mode) is locked until phases 2-6 are complete and a valid subscription is activated.
 
-The subscription is a simple text file. One subscription can cover up to 9999 servers -- at the time of purchase, you specify how many servers the subscription covers. You can purchase additional subscriptions if needed.
+The subscription is a simple text file. One subscription can cover up to 9999 servers — at the time of purchase, you specify how many servers the subscription covers. You can purchase additional subscriptions if needed.
 
 After downloading the subscription file, copy it to each server it covers. Regardless of the original filename, it must be copied as `HS_license.txt` in the `/.hs/sys` directory. For example:
 

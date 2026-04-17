@@ -8,28 +8,9 @@ toc: true
 type: docs
 ---
 
-**Overview**: If issues arise, start with the Dashboard — the indicator at the top of the screen shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
+**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, a mode mismatch, or a kernel issue. The Dashboard disambiguates all three — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
 
-```mermaid
-graph TD;
-    A[System issue occurs] --> B{System fails to boot?};
-    B -->|Yes| C[Boot into recovery mode or Non-HS kernel];
-    C --> D["Dashboard resumes — follow Maintenance wizard steps"];
-    D --> E[Boot HeartSuite Core Secure kernel — Dashboard shows items waiting for review];
-    B -->|No| F[Check the Dashboard];
-    F --> G{Indicator at top shows wrong mode or Non-HS kernel?};
-    G -->|Yes| H[Check status line at bottom for mode, kernel, lockdown];
-    H --> I[Follow the Suggested Next Step];
-    G -->|No| J{Review queues show pending or denied items?};
-    J -->|Yes| K[Approve missing items from the review queues];
-    J -->|No| L["Check dmesg | grep HEARTSUITE for raw kernel entries"];
-    E --> K;
-    K --> M[Test operation];
-    I --> M;
-    L --> M;
-```
-
-## Dashboard-First Diagnostics
+## Where to Start
 
 The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
@@ -66,4 +47,4 @@ The Dashboard presents the same information with metadata enrichment and groupin
 
 ## Reporting Issues
 
-If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com — we're happy to help.
+If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com.

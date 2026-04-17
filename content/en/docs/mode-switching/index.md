@@ -1,7 +1,7 @@
 ---
 title: "Mode Switching and Lockdown"
 weight: 80
-description: "Switching between Setup and Secure modes, including lockdown features."
+description: "How to activate Secure Mode, apply Lockdown, and manage the trust boundary through maintenance."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
 toc: true
@@ -42,14 +42,14 @@ The indicator at the top of the Dashboard reflects the current system state:
 
 ## Setup Mode and Secure Mode
 
-At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and remote computers such programs may access. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
+At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and network destinations such programs may access. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
 
 > [!NOTE]
 > The Dashboard prevents Secure Mode activation until all preconditions are met — including completion of all setup phases and boot configuration via `hs-os-boot-setup`. If any precondition is not satisfied, the Mode Switch screen (`[m]`) displays "Mode switch is not available yet" and lists what remains.
 
 If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite Core Secure will actively block programs from accessing those files and network addresses when you switch to Secure Mode.
 
-Once HeartSuite Core Secure has been configured, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity. This information is valuable for further allowlist configuration before activating Secure Mode.
+Once HeartSuite Core Secure has been configured, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before enforcement begins.
 
 When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Secure Mode, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then return to Secure Mode.
 
@@ -107,7 +107,7 @@ When booted into a Non-HS kernel (where the Dashboard's mode switch is not avail
 
 ## Lockdown: Securing Your System in Secure Mode
 
-**Overview**: Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current lockdown status and provides the Suggested Next Step for managing it.
+Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current lockdown status and provides the Suggested Next Step for managing it.
 
 Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on your threat model. The table below summarises what changes when you apply Lockdown.
 

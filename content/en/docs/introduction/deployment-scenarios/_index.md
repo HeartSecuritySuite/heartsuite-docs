@@ -13,7 +13,7 @@ menu:
     identifier: "deployment-scenarios"
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — only approved programs can execute, access files, or make network connections. Setup Mode builds the allowlist from what your system actually uses, Secure Mode enforces it, and maintenance windows bring in patches, new tools, and evolving workloads under review before enforcement resumes. Nothing about this depends on cloud connectivity, a SaaS policy server, or an agent-to-console channel — HeartSuite Core Secure operates standalone. The scenarios below are where that model fits best, followed by the ones where it doesn't.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections, including malware running as root. Setup Mode builds the allowlist from what your system actually uses, Secure Mode enforces it, and maintenance windows bring in patches, new tools, and evolving workloads under review before enforcement resumes. Nothing about this depends on cloud connectivity, a SaaS policy server, or an agent-to-console channel — HeartSuite Core Secure operates standalone. The scenarios below are where that model fits best, followed by the ones where it doesn't.
 
 ## Production Servers
 
@@ -21,23 +21,23 @@ A web server serves pages. A database answers queries. A reverse proxy forwards 
 
 ## Closed Appliances and Embedded Devices
 
-A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. File Backup adds a second line of defence: if an approved program is subverted and writes where it shouldn't, the original is still available to restore.
+A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. File Backup adds a second line of defence: if an approved program that malware takes over writes where it shouldn't, the original is still available to restore.
 
 ## Regulated Workstations and Analyst Systems
 
-In financial, legal, healthcare, and defence workplaces, a workstation's toolchain is set by policy, not preference. The **Dashboard**—HeartSuite's management interface—includes review queues that let an administrator explicitly approve each tool and add it to the allowlist. This ensures only sanctioned tools can execute, maintaining compliance.
+In financial, legal, healthcare, and defence workplaces, a workstation's toolchain is set by policy, not preference. The **Dashboard** includes review queues that let an administrator explicitly approve each tool and add it to the allowlist. This ensures only approved tools can execute, maintaining compliance.
 
 > [!NOTE]
-> **Lockdown** mode freezes the allowlist to prevent changes, even by privileged users. This ensures a compromised user session cannot quietly add unauthorized tools, as enforcement happens at the kernel level.
+> **Lockdown** freezes the allowlist to prevent changes, including by root. This ensures a compromised user session cannot quietly add unauthorized tools, as enforcement happens at the kernel level.
 
 ## Build, CI, and Release Infrastructure
 
-A build host sits at the top of a supply chain. Compromise it, and every downstream consumer is at risk. **HeartSuite Core Secure** restricts the host to only approved components, limiting execution and network access to prevent unauthorized actions:
+A build host sits at the top of a supply chain. Compromise it, and every downstream consumer is at risk. **HeartSuite Core Secure** restricts the host to only approved programs, controlling which can execute, which files they can access, and which network connections they can make:
 
 - Compilers, linkers, signing tools, and release scripts you approved in Setup Mode.
 - Network destinations they need to fetch dependencies and publish build artifacts.
 
-**File Backup**—a feature that creates protected copies of critical files—safeguards signing keys and build output against tampering, allowing quick restoration if an approved tool is subverted.
+**File Backup**—a feature that creates protected copies of critical files—safeguards signing keys and build output against tampering, allowing quick restoration if an approved tool gets compromised.
 
 ## Offline and Air-Gapped Deployments
 
@@ -48,15 +48,15 @@ Some systems cannot assume the network is there. Industrial control networks, de
 Autonomous agents are powerful because they decide what to do next. That is also why they need a cage. Run HeartSuite Core Secure as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. The VM boots with an allowlist for the tools the agent is allowed to use. The allowlist holds for the life of the task. Then the VM is gone. Enforcement lives inside the guest, not on the host, so a compromised host cannot disable it. Where gVisor adds a userspace syscall filter between the agent and the kernel, HeartSuite Core Secure *is* the kernel — one layer instead of two, with nothing to unload.
 
 > [!NOTE]
-> Setup Mode profiles programs best when their invocation patterns are stable across runs. Agents that generate unpredictable tool-chains at runtime are harder to profile than agents whose action space is well-scoped to a defined set of tools and command patterns.
+> Setup Mode builds the allowlist most accurately when the same programs run in the same way across tasks. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
 ## Where HeartSuite Core Secure Is Not a Fit
 
 A few workloads are not compatible with the HeartSuite Core Secure kernel as shipped:
 
-- **Container hosts using the Docker default storage driver** — OverlayFS is not compiled into the HeartSuite Core Secure kernel. Alternative storage drivers or a Non-HS container host may be required.
+- **Container hosts using the Docker default storage driver** — OverlayFS is not compiled into the HeartSuite Core Secure kernel; overlay filesystems are a surface for shadowing protected directories. Alternative storage drivers or a Non-HS container host may be required.
 - **Hosts running eBPF-based observability or runtime-detection tooling** — Falco, Cilium, Tetragon, bpftrace, and similar tools require BPF syscalls that are not present. HeartSuite Core Secure replaces these with compiled-in enforcement rather than runtime tracing.
-- **Hypervisor hosts running virtual machines** — KVM is not compiled in. HeartSuite Core Secure runs as a guest under other hypervisors, but does not host guest VMs itself.
-- **Systems that require rootless containers** — unprivileged user namespaces are not compiled in.
+- **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel primitives removed to reduce the attack surface. HeartSuite Core Secure runs as a guest under other hypervisors, but does not host guest VMs itself.
+- **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.

@@ -14,9 +14,9 @@ toc: true
 
 In Setup Mode, HeartSuite Core Secure logs every program execution, file access attempt, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
 
-- **Programs queue** (`[p]`) -- programs that attempted to execute
-- **File Access queue** (`[f]`) -- programs that attempted to read or write files
-- **Internet Access queue** (`[i]`) -- programs that attempted outbound connections
+- **Programs queue** (`[p]`) — programs that attempted to execute
+- **File Access queue** (`[f]`) — programs that attempted to read or write files
+- **Internet Access queue** (`[i]`) — programs that attempted outbound connections
 
 The Dashboard shows pending counts for each queue and provides a Suggested Next Step directing you to the queue that needs attention first.
 
@@ -46,7 +46,7 @@ Two additional keys appear contextually, not in the footer:
 
 ### Metadata Shown in Review
 
-Every review item displays metadata directly in the primary prompt -- you do not need to press a key to see it. The fields shown include:
+Every review item displays metadata directly in the primary prompt — you do not need to press a key to see it. The fields shown include:
 
 | Field | Description |
 |-------|-------------|
@@ -57,9 +57,9 @@ Every review item displays metadata directly in the primary prompt -- you do not
 | Homepage | Package homepage URL |
 | Installed | Date the package was installed or last updated |
 
-When a program has no entry in any package database, HeartSuite Core Secure displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden -- the absence of information is itself a signal.
+When a program has no entry in any package database, HeartSuite Core Secure displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden — the absence of information is itself a signal.
 
-## How the Queue Presents Items
+## Individual and Grouped Review
 
 The review queues handle large volumes without requiring blind bulk approval. Volume is managed through intelligent grouping, not through approving things you cannot see.
 
@@ -118,8 +118,8 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 Once you approve a program's execution, HeartSuite Core Secure begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
 
-- **Read access** -- the default first approval level when approving a file read.
-- **Write access** -- always includes read access. Granted when approving a file write.
+- **Read access** — the default first approval level when approving a file read.
+- **Write access** — always includes read access. Granted when approving a file write.
 
 Example review prompt for a file read:
 

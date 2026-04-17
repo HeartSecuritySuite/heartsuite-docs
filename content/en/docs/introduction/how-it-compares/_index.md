@@ -13,7 +13,7 @@ menu:
     identifier: "how-it-compares"
 ---
 
-**Overview**: HeartSuite Core Secure is an enforcement layer. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
+**Overview**: HeartSuite Core Secure controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
 
 ## What HeartSuite Core Secure Replaces
 
@@ -50,21 +50,21 @@ These tools do not overlap with HeartSuite Core Secure. They answer different qu
 
 | Category | Representative products | What they do | Why HeartSuite Core Secure does not replace them |
 |---|---|---|---|
-| **SIEM / SOAR** | Splunk Enterprise Security, Microsoft Sentinel, Elastic Security, IBM QRadar, Sumo Logic, Graylog, Wazuh, Cortex XSOAR | Ingest logs from hosts and applications across a fleet, correlate events, alert analysts, drive playbook-based response | HeartSuite Core Secure is a single-host enforcement layer with no concept of a fleet, no correlation, no ticketing. Its activity log is a useful SIEM input. |
+| **SIEM / SOAR** | Splunk Enterprise Security, Microsoft Sentinel, Elastic Security, IBM QRadar, Sumo Logic, Graylog, Wazuh, Cortex XSOAR | Ingest logs from hosts and applications across a fleet, correlate events, alert analysts, drive playbook-based response | HeartSuite Core Secure blocks and logs on a single host — no fleet concept, no correlation, no ticketing. Its activity log is a useful SIEM input. |
 | **NDR / NTA** | Darktrace, ExtraHop Reveal(x), Vectra AI, Corelight, Cisco Secure Network Analytics | Passive network sensing, behavioural flow analysis, lateral-movement detection, encrypted-traffic fingerprinting | HeartSuite Core Secure's network allowlisting is per-process IP-level. It does not inspect traffic content or correlate across hosts. NDR answers fleet-wide questions HeartSuite Core Secure cannot. |
 | **Vulnerability management** | Tenable Nessus, Qualys VMDR, Rapid7 InsightVM, Greenbone, Wiz, Orca | Enumerate installed packages and services, match against CVE databases, produce a prioritised patch list | HeartSuite Core Secure reduces the blast radius of an unpatched CVE (a vulnerable but allowlist-bounded program cannot escalate beyond its allowlist) but does not enumerate CVEs. Many compliance regimes require periodic vulnerability scanning as a distinct control. |
 | **HIDS / FIM** | OSSEC, AIDE, Tripwire, Samhain, Wazuh | File-integrity monitoring, log-based intrusion detection, rootkit signatures | HeartSuite Core Secure enforces file integrity via Lockdown; HIDS adds independent alerting on unexpected change. Redundancy is valuable — different tools have different failure modes. |
 
-**The honest pitch.** HeartSuite Core Secure is an enforcement layer. It does not replace your SIEM, NDR, or VA scanner. It reduces the set of events those products have to reason about by making a class of attacks impossible rather than merely visible.
+HeartSuite Core Secure blocks. It does not detect, correlate, or alert across a fleet. It reduces the set of events your SIEM, NDR, and VA scanner have to reason about by making a class of attacks impossible rather than merely visible.
 
 ## What HeartSuite Core Secure Cannot Coexist With
 
 Some software depends on kernel features the HeartSuite Core Secure kernel does not include, and must run on the Non-HS kernel or a separate system:
 
-- Container hosts using Docker's default OverlayFS storage driver
-- Hosts running eBPF-based observability (Cilium, Falco, bpftrace)
-- Hypervisor hosts running virtual machines via KVM
-- Systems that require rootless containers (unprivileged user namespaces)
+- Container hosts using Docker's default OverlayFS storage driver — OverlayFS is not compiled in; overlay filesystems are a surface for shadowing protected directories
+- Hosts running eBPF-based observability (Cilium, Falco, bpftrace) — BPF syscalls are not present; HeartSuite Core Secure replaces runtime tracing with compiled-in enforcement
+- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; hosting guest VMs requires kernel primitives removed to reduce attack surface
+- Systems that require rootless containers (unprivileged user namespaces) — not compiled in; unprivileged user namespaces are a path to privilege escalation without credentials
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 

@@ -12,9 +12,7 @@ menu:
     identifier: "vm-preparation"
 ---
 
-**Overview**: This step applies to the Local Path only. Cloud VMs provisioned from a pre-configured image do not require GRUB changes.
-
-Installation of HeartSuite Core Secure requires rebooting several times. The installation procedure uses the GRUB boot loader, which can reference disks by labels or UUIDs. Using labels on cloud deployments can result in boot failures. Edit the GRUB settings for VMs provisioned in the cloud before proceeding.
+**Overview**: Cloud VMs often use disk labels in GRUB rather than UUIDs — this causes boot failures during the multiple reboots HeartSuite Core Secure installation requires. This step applies to Local Path installations on cloud VMs only. Bare-metal installations and Cloud Path users skip this entirely.
 
 ## Configuring GRUB Settings
 
@@ -36,5 +34,3 @@ Then rebuild GRUB:
 # /sbin/update-grub
 ```
 
-> [!NOTE]
-> Cloud VMs may fail to boot due to GRUB settings. Correcting this ensures reliable reboots during the installation process.

@@ -17,4 +17,4 @@ toc: true
 - Perl (`hs-perl-launcher`)
 - PHP (`hs-php-launcher`)
 
-For questions about launcher support for other interpreters, contact us at support@heartsecsuite.com — we're happy to help.
+For questions about launcher support for other interpreters, contact support@heartsecsuite.com.

@@ -3,7 +3,7 @@ title: "Introduction and Overview"
 weight: 10
 description: "Overview of HeartSuite Core Secure, setup process, and system requirements."
 categories: ["Essentials"]
-tags: ["heartsuite", "linux", "overview", "setup", "beginner"]
+tags: ["heartsuite", "linux", "overview", "setup"]
 type: docs
 toc: true
 menu:
@@ -12,11 +12,11 @@ menu:
     weight: 15
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist, including malware, is blocked at the kernel level before it can execute. The Dashboard guides you through a 7-phase journey from installation to Secure Mode, always showing your current progress and the suggested next step.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist, including malware running as root, is blocked at the kernel level before it can execute. Lockdown seals the allowlist at runtime so no changes are possible even with root access. The Dashboard guides you through a 7-phase journey from installation to Secure Mode, always showing your current progress and the suggested next step.
 
-## Key Topics
+## In This Section
 
-- [HeartSuite Core Secure Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7-phase model.
+- [HeartSuite Core Secure Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7 phases.
 - [Setup Overview](setup-overview/) — The setup process, modes (Setup vs. Secure), and how the Dashboard guides you.
 - [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
 - [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where HeartSuite Core Secure fits best, plus notes on incompatible stacks.

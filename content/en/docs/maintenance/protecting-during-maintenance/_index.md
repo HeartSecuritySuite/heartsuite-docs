@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite Core Secure's protection to make changes. The Dashboard's Maintenance screen (`[t]`) guides you through the entire process, from safety preparation to returning to Secure Mode. The Maintenance screen appears only when the system is in Secure Mode, Secure Mode + Lockdown, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — enforcement is temporarily absent, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite Core Secure's protection to make changes. The Dashboard's Maintenance screen (`[t]`) guides you through the entire process, from safety preparation to returning to Secure Mode. The Maintenance screen appears only when the system is in Secure Mode, Secure Mode + Lockdown, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
 ## Starting Maintenance
 
@@ -90,6 +90,6 @@ Select the HeartSuite Core Secure kernel from GRUB. The Dashboard appears automa
 > [!NOTE]
 > You must have physical or serial port access to select the Non-HS kernel at the GRUB menu. This is intentional — it prevents an attacker from remotely booting to bypass HeartSuite Core Secure.
 
-## Lockdown and Filesystem Immutability
+## Manual Recovery Outside the Maintenance Screen
 
 When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the Non-HS kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance screen's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For manual recovery outside the maintenance wizard, run `hs-unlock`.

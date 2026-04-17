@@ -15,13 +15,13 @@ menu:
 
 **Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist is blocked before it can execute, including malware and zero-day attacks that detection-based tools might miss.
 
-## How HeartSuite Core Secure Works
+## Kernel-Level Enforcement
 
 HeartSuite Core Secure uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute without an allowlist entry — and each allowlist entry also controls which files the program can read or write, and which network connections it can make. Even if malware is downloaded to a HeartSuite Core Secure server, the kernel prevents it from running or causing damage.
 
 The **Dashboard** is the central interface. It tracks your progress through a 7-phase setup journey, shows what's waiting for review, and always suggests the next step.
 
-### The 7-Phase Model
+### The 7 Phases
 
 | Phase | Name | Purpose |
 |-------|------|---------|
@@ -43,7 +43,7 @@ Detection tools like Falco, Cilium Tetragon, and bpftrace watch these primitives
 
 For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
 
-## Core Features
+## Features
 
 ### 1. Program Allowlist
 
@@ -63,13 +63,11 @@ Each queue manages volume through intelligent grouping — not blind bulk approv
 
 File access is divided into **read access** and **write access**. Write access always includes read access. These are approved separately — approving a file read grants read access; approving a file write upgrades to write access.
 
-The caching mechanism loads only a single allowlist entry into memory for a running program, even with thousands of concurrent instances, minimising impact on kernel memory.
-
 ### 2. Setup Mode and Secure Mode
 
 HeartSuite Core Secure operates in two modes:
 
-- **Setup Mode**: The kernel logs all denied actions without blocking them. Use this mode to build the allowlist by reviewing queues and approving legitimate programs and access patterns. The Dashboard guides this process.
+- **Setup Mode**: The kernel logs all program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist by reviewing queues and approving programs and their access patterns. The Dashboard guides this process.
 - **Secure Mode**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
 
 Activating Secure Mode requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist and requires typing `YES` (case-sensitive) to confirm.
@@ -80,7 +78,7 @@ Lockdown protects the integrity of allowlist entries by making them immutable. O
 
 After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Lockdown cannot be reversed at runtime. To make changes, the Dashboard's Maintenance screen (`[t]`) guides you through the correct maintenance path — including a guided 3-step process when Lockdown requires booting the Non-HS kernel.
 
-Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root.
+Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root, while the HeartSuite Core Secure kernel is running.
 
 ### 4. File Backup and Versioning
 
@@ -92,9 +90,9 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## Two Setup Paths
 
-**Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately. Phase 1 (System Verification) auto-completes. Proceed directly to the review queues.
+**Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete automatically. Proceed directly to the review queues.
 
-**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. Run `hs-os-boot-setup` through multiple reboots (the Dashboard shows a step counter). After Phase 1 completes, the Dashboard appears and both paths merge.
+**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. Run `hs-os-boot-setup` through multiple reboots (the Dashboard shows a step counter). Once the Dashboard confirms Phase 1 is complete, both paths merge.
 
 ## Is HeartSuite Core Secure Right for You?
 

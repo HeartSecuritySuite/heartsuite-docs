@@ -17,9 +17,9 @@ menu:
 
 ## Why Setup Mode Is Necessary
 
-HeartSuite Core Secure enforces a default-deny policy: every program, file access, and network connection must be explicitly approved before the system permits it. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
+HeartSuite Core Secure enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews activity through the Dashboard queues, approves legitimate programs and access, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
+Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews activity through the Dashboard queues, approves programs and their access, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
 
 Setup Mode is the default after installation. HeartSuite Core Secure's automated backup system also operates during Setup Mode, providing an additional layer of protection even before enforcement begins.
 
@@ -41,7 +41,7 @@ HeartSuite Core Secure organizes the setup journey into seven phases. The Dashbo
 
 ### Cloud Path
 
-Users who launch a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. Phase 1 completes automatically. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required.
+Users who launch a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms Phase 1 is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required.
 
 ### Local Path
 
@@ -50,13 +50,13 @@ Users who install HeartSuite Core Secure on bare-metal or custom VMs follow a lo
 1. Download and extract the installation package.
 2. Prepare GRUB and install the HeartSuite Core Secure kernel.
 3. Run `hs-os-boot-setup`, which handles multiple reboots with a step counter.
-4. After Phase 1 completes, the Dashboard appears and the journey merges with the Cloud path.
+4. After Phase 1 is complete, the Dashboard appears and the journey merges with the Cloud path.
 
 Both paths converge at the Dashboard after Phase 1. From that point forward, the workflow is identical.
 
-## Setup Workflow
+## From Installation to Secure Mode
 
-The following diagram shows the primary path through the Dashboard and the advanced CLI alternative.
+The following diagram shows the path from installation to Secure Mode, including the maintenance cycle.
 
 ```mermaid
 graph TD
@@ -84,7 +84,7 @@ graph TD
 >
 > Complete all allowlisting phases in Setup Mode before switching to Secure Mode. If boot and shutdown programs have not been approved, the system will fail to start or shut down correctly.
 
-When phases 2 through 6 are complete, Phase 7 unlocks on the Dashboard. The Suggested Next Step will prompt you to activate Secure Mode. The mode switch requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
+When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Secure Mode. Activating Secure Mode requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
 
 After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Both are valid configurations depending on your threat model. Lockdown can also be applied later from the Dashboard's Mode Switch screen (`[m]`).
 

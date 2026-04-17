@@ -8,9 +8,9 @@ tags: ["heartsuite", "linux", "network", "permissions", "security", "remote-acce
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
+**Overview**: Programs make outbound connections that operators never intended — telemetry, update beacons, C2 callbacks. HeartSuite Core Secure blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
 
-## How Network Allowlisting Works
+## Per-Program, Per-Destination Enforcement
 
 In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
@@ -60,7 +60,7 @@ This appears in the Internet Access queue with the destination `45.60.22.168 —
 
 ## Reviewing Existing Network Permissions
 
-To browse or edit network destinations that have already been approved, use Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
+To browse or edit network destinations that have already been approved, select Allowed (`[a]`) from the Dashboard main screen. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
 
 > [!NOTE]
 > This edition supports specific IPv4 and IPv6 addresses only.

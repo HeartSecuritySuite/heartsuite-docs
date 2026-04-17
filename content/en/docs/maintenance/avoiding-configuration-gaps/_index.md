@@ -1,28 +1,28 @@
 ---
 title: "Avoiding Configuration Gaps"
 weight: 1
-description: "Strategies to prevent security gaps during maintenance and configuration."
+description: "How to restrict maintenance tools like rm during Lockdown to close attack surfaces in high-security environments."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "configuration"]
 type: docs
 toc: true
 ---
 
-**Overview**: This is an advanced hardening guide. Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, but programs like file editors and `rm` remain executable by default. For high-security environments, you can optionally restrict these tools during Lockdown to close additional attack surfaces. The Dashboard's Maintenance screen (`[t]`) guides you through maintenance workflows, and the Mode Switch screen (`[m]`) manages Lockdown status.
+**Overview**: Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, but programs like file editors and `rm` remain executable by default. For high-security environments, you can optionally restrict these tools during Lockdown to close additional attack surfaces. The Dashboard's Maintenance screen (`[t]`) guides you through maintenance workflows, and the Mode Switch screen (`[m]`) manages Lockdown status.
 
 ## Locking Down Maintenance Tools
-- Programs like `rm` often need broad write access for maintenance.
-- In production (lockdown), disable or restrict them to block misuse via vulnerabilities.
 
-**Example**: Remove execution privileges from `rm` and make it immutable when Lockdown is applied. Restore access with `hs-unlock` for maintenance. The Dashboard displays the current lockdown status and guides you through unlocking when maintenance is needed.
+Programs like `rm` often need broad write access during maintenance, but in production that same access becomes an attack surface. Disable or restrict these tools while Lockdown is active so a vulnerability in an approved program cannot exploit them. Restore access with `hs-unlock` before any maintenance window — the Dashboard's Maintenance screen (`[t]`) guides you through that process.
 
 > [!WARNING]
 > Run `hs-unlock` before maintenance to avoid errors like "could not open file; errno:1."
 
-## Handling Programs Needing Write Access in Lockdown
-- Database servers need write permissions to their data files/directories.
-- Limit to specific paths—do not allow universal writes.
-- Note: Database security is handled by the program itself, not HeartSuite Core Secure.
+## Write Access During Lockdown
+
+Database servers and similar programs need write permissions to their data files and directories. Limit allowlist entries to specific paths — do not grant universal write access.
+
+> [!NOTE]
+> Database security is handled by the program itself, not HeartSuite Core Secure.
 
 ## Optional Hardening: Programs Requiring Broad Access During Lockdown
 Some programs (e.g., shutdown routines) need `rm` during operation, but you may want to restrict the full `rm` binary.

@@ -2,7 +2,7 @@
 title: "Obtaining HeartSuite Core Secure"
 linkTitle: "Obtaining HeartSuite Core Secure"
 weight: 1
-description: "Download and acquire HeartSuite Core Secure distribution."
+description: "Download the HeartSuite Core Secure installation package from heartsecsuite.com."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "download", "tar", "website"]
 type: docs
@@ -18,4 +18,6 @@ menu:
 > [!NOTE]
 > Cloud users who launched a pre-configured instance (AWS AMI, GCP image) already have HeartSuite Core Secure installed. Skip this step and proceed directly to the Dashboard.
 
-Access to the tar file via `wget` is disabled by the hosting provider. Use the download form on the website to obtain the file.
+The tar file is not available via direct download — use the download form on heartsecsuite.com.
+
+Once you have the tar file, proceed to [VM Preparation](../vm-preparation/) if you are installing on a cloud VM, or directly to [Installation Part 1](../installation-part1/) for bare-metal installations.
