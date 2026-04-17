@@ -24,7 +24,7 @@ Database servers and similar programs need write permissions to their data files
 > [!NOTE]
 > Database security is handled by the program itself, not HeartSuite Core Secure.
 
-## Optional Hardening: Programs Requiring Broad Access During Lockdown
+## Programs That Need Broad Access During Lockdown
 Some programs (e.g., shutdown routines) need `rm` during operation, but you may want to restrict the full `rm` binary.
 - **Solution**: Create a limited copy (`limited_rm`) with restricted permissions.
 - Configure scripts to use the copy during Lockdown.

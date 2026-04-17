@@ -28,9 +28,6 @@ HeartSuite Core Secure captures all activity and presents it through the Dashboa
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
-> [!NOTE]
-> If the Dashboard shows zero pending items but a program is still failing, confirm whether the attempt was captured: `grep /path/to/program /.hs/sys/hs-activity-log.txt`. If the entry is missing there too, check `dmesg | grep HEARTSUITE` — some entries appear only in the kernel log depending on the distribution.
-
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 
 ## Kernel Log (Advanced)

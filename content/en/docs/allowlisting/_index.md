@@ -18,7 +18,7 @@ Allowlisting spans three phases of the HeartSuite Core Secure setup process:
 
 Start from the Dashboard — it shows how many items are waiting in each queue and the Suggested Next Step directs you to whichever needs attention. The review queues manage volume through intelligent grouping, not blind bulk approval.
 
-## Key Guides
+## In This Section
 
 - [Allowlisting Basics](allowlisting-basics/) — Core procedures for reviewing and approving programs, file access, and network connections.
 - [Batch Allowlisting Tools](batch-allowlisting-tools/) — Activity log format and CLI tools for scripted allowlisting workflows.

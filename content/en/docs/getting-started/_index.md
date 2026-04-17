@@ -2,13 +2,13 @@
 title: Getting Started
 description: Quick guide to install and start using HeartSuite Core Secure.
 categories: ["Essentials"]
-tags: ["heartsuite", "linux", "installation", "quickstart", "beginners"]
+tags: ["heartsuite", "linux", "installation", "quickstart"]
 weight: 2
 toc: true
 type: docs
 ---
 
-**Overview**: This guide covers both the Cloud Path and the Local Path for getting HeartSuite Core Secure running, verified, and ready for allowlisting.
+**Overview**: HeartSuite Core Secure runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.
 
 ## The 7-Phase Model
 
@@ -71,7 +71,7 @@ Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a lon
 
 4. After booting into the HeartSuite Core Secure kernel, the Dashboard appears on the console automatically. The **System Setup** screen opens.
 
-   Press `[a]` to run the setup step. The UI reboots the system when the step completes — select the HeartSuite Core Secure kernel from GRUB each time and repeat until the setup screen shows **Setup Complete** (usually 3–5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
+   Press `[a]` to run the setup step. HeartSuite Core Secure reboots the system when the step completes — select the HeartSuite Core Secure kernel from GRUB each time and repeat until the setup screen shows **Setup Complete** (usually 3–5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
 
 ### Verify and Proceed
 

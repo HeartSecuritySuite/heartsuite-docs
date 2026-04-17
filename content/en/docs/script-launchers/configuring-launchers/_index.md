@@ -63,7 +63,7 @@ Interpreters will remain blocked in Secure Mode until approved.
 
 You can return to the Launchers screen (`[l]`) at any time to activate launchers before switching to Secure Mode.
 
-## Advanced: Testing a Launcher Directly
+## Testing a Launcher Directly
 
 Before or after Dashboard activation, you can run a script through a specific launcher directly to verify it works under its own permissions:
 

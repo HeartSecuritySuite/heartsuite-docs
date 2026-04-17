@@ -50,7 +50,7 @@ When finished, return to Secure Mode from the Dashboard. New activity from the m
 
 ## Option 2: Boot the Non-HS Kernel (Lockdown Active)
 
-When Lockdown is active, the Maintenance screen does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where HeartSuite Core Secure is completely absent.
+When Lockdown is active, the Maintenance screen does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where HeartSuite Core Secure is completely absent. This path requires physical or serial-console access to the machine — you must be able to select the Non-HS kernel at GRUB. An attacker without that access cannot take this path remotely.
 
 ### Step 1 of 3: Boot Non-HS Kernel and Remove Immutable Flags
 
@@ -89,9 +89,6 @@ Select the HeartSuite Core Secure kernel from GRUB. The Dashboard appears automa
 
 > [!WARNING]
 > The Non-HS kernel provides no HeartSuite Core Secure protection whatsoever. The safety checklist is critical for this path.
-
-> [!NOTE]
-> You must have physical or serial port access to select the Non-HS kernel at the GRUB menu. This is intentional — it prevents an attacker from remotely booting to bypass HeartSuite Core Secure.
 
 ## Manual Recovery Outside the Maintenance Screen
 

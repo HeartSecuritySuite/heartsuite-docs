@@ -15,7 +15,7 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 
 HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts running eBPF-based observability tools.
 
-## Learn About HeartSuite Core Secure
+## Introduction and Concepts
 
 - [Introduction and Overview](introduction/) — Overview, setup process, Dashboard guidance, and requirements.
 - [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.

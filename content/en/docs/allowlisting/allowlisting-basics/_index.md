@@ -93,7 +93,7 @@ When the volume of remaining items is large, HeartSuite Core Secure presents a s
 
 ## Programs Queue (Phase 2)
 
-When a program executes without an allowlist entry, HeartSuite Core Secure logs it. The Programs queue presents them for review. Example log entry:
+When a program executes without an allowlist entry, HeartSuite Core Secure logs it. The Programs queue presents it for review.
 
 ### What the Groups Mean
 
@@ -107,10 +107,6 @@ Programs are grouped into sections in the program list on the left. These groups
 | HeartSuite Core Secure | File path falls under `/.hs/`. Origin is known; no investigation needed. Sorted last. |
 
 The sort order is a workflow convenience that determines which programs appear first. It is not a trust ranking and does not affect the approval mechanism. Every program receives the same approve and skip options.
-
-```text
-[Setup Notice - Add program to Allowlist?] Not Whitelisted: /usr/bin/nano
-```
 
 From the Dashboard, select the Programs queue (`[p]`). Each program is presented with its package metadata. Press `[a]` to approve execution or `[s]` to skip.
 
@@ -190,9 +186,6 @@ From the Dashboard, select the Internet Access queue (`[i]`).
 > [!SCREENSHOT]
 > **Screenshot needed**: Internet Access queue — show a real review item with the destination IP, reverse DNS hostname with registrar and country, program name and metadata, attempt count, and `[a]` `[s]` action keys. Ideal if destination shows a recognisable provider (e.g., AWS, Cloudflare).
 
-> [!NOTE]
-> This edition supports specific IPv4 and IPv6 addresses only.
-
 ## Progress and Completion
 
 While working through a queue, a progress indicator shows your position:
@@ -208,7 +201,7 @@ All program events resolved.
 Returning to Dashboard…
 ```
 
-The Dashboard automatically updates pending counts as you work. Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before proceeding to Secure Mode.
+Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before proceeding to Secure Mode.
 
 ## Review Queues in Secure Mode
 
@@ -219,7 +212,7 @@ Use `[n]` to navigate through denied items one by one. To approve a denied progr
 > [!NOTE]
 > Denied items in Secure Mode are a normal part of operation, not failures. A denied item means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
 
-## Advanced: Manual Allowlist Management
+## Manual Allowlist Management
 
 For users who prefer direct CLI manipulation, `hs-manage-allowlist` provides a browser and editor for existing allowlist entries. See its built-in help:
 

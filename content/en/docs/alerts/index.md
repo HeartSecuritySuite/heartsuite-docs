@@ -13,7 +13,7 @@ type: docs
 > [!SCREENSHOT]
 > **Screenshot needed**: Alert Settings screen (`[e]`) — show the Email tab in a configured state: Node ID filled, SMTP fields populated, password shown as `(set)`, Save and Test buttons visible. A second frame showing the Fleet tab with Syslog toggled on and the Webhook field populated would be valuable.
 
-## How Alerts Work
+## Alerts vs. the Dashboard
 
 Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
 

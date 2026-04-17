@@ -3,14 +3,10 @@ title: "FAQs"
 weight: 105
 description: "Common questions and answers for HeartSuite Core Secure."
 categories: ["Support"]
-tags: ["heartsuite", "linux", "questions", "help", "beginner", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky"]
+tags: ["heartsuite", "linux", "questions", "help", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky"]
 toc: true
 type: docs
 ---
-
-{{% pageinfo color="info" %}}
-Quick answers to common setup, usage, and troubleshooting questions. For detailed guides, see the full documentation.
-{{% /pageinfo %}}
 
 ## General
 
@@ -70,7 +66,7 @@ A: Download the tar file from heartsecsuite.com — the download form is on the 
 
 {{< details summary="Is technical support available for HeartSuite Core Secure customers?" >}}
 
-A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heartsecsuite.com](https://heartsecsuite.com). We're happy to help.
+A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heartsecsuite.com](https://heartsecsuite.com).
 
 {{< /details >}}
 
@@ -94,7 +90,7 @@ A: No. Most security products generate high volumes of alerts because they flag 
 
 {{< details summary="What are the limitations of the 'free trial'?" >}}
 
-A: Secure Mode and Lockdown require a subscription. Setup Mode provides insights for decisions without full protection.
+A: Secure Mode and Lockdown require a subscription. Setup Mode logs activity without blocking — you can observe your workload but enforcement is not active.
 
 {{< /details >}}
 

@@ -8,13 +8,13 @@ toc: true
 type: docs
 ---
 
-**Overview**: Phase 1 (System Verification) confirms that HeartSuite Core Secure is active and the system is ready for allowlisting. On the Cloud Path, this phase completes automatically on first boot. On the Local Path, it completes automatically once the installation process is done.
+**Overview**: Phase 1 (System Verification) confirms that HeartSuite Core Secure is active and the system is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
 
 ## Cloud Path and Local Path
 
 ### Cloud Path
 
-When you launch a pre-installed HeartSuite Core Secure cloud instance, Phase 1 completes automatically on first boot. The Dashboard appears confirming HeartSuite Core Secure is active and suggesting the next step.
+When you launch a pre-installed HeartSuite Core Secure cloud instance, the Dashboard confirms Phase 1 is complete on first boot and suggests the next step.
 
 ### Local Path
 

@@ -47,7 +47,7 @@ For ransomware recovery where many files were modified on the same date, use the
 
 When Lockdown is active, the backup configuration file is sealed — no user or program, including root, can add or remove directories. This prevents an attacker who compromises a running process from silently disabling backup. To change the backup configuration, enter a maintenance period first (see [Protecting During Maintenance](../protecting-during-maintenance/)).
 
-## Advanced: CLI Backup Management
+## CLI Backup Management
 
 For automation workflows, the underlying CLI tools are available:
 

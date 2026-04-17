@@ -13,7 +13,7 @@ menu:
     identifier: "setup-overview"
 ---
 
-**Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Secure Mode. This page explains why Setup Mode exists, what happens during each phase, and how to reach Secure Mode safely.
+**Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Secure Mode.
 
 ## Why Setup Mode Is Necessary
 

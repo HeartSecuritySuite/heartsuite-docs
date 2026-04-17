@@ -15,7 +15,7 @@ menu:
 
 ## Cloud Path
 
-Launch a pre-configured cloud instance (e.g., AWS AMI, GCP image). The HeartSuite Core Secure kernel is already installed and Phase 1 (System Verification) auto-completes on first boot. The Dashboard appears immediately — skip ahead to the allowlisting queues.
+Launch a pre-configured cloud instance (e.g., AWS AMI, GCP image). The HeartSuite Core Secure kernel is already installed and the Dashboard confirms Phase 1 is complete on first boot and appears immediately — skip ahead to the allowlisting queues.
 
 ## Local Path
 
