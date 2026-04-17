@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Allowlisting defines what each program is permitted to do — whether it can run, which files it can access, and which network destinations it can reach. The Dashboard guides you through each allowlisting phase and tracks your progress.
+**Overview**: By default, any program on a Linux server can execute, access any file, and connect to any destination. HeartSuite Core Secure controls all three per program — the Dashboard guides you through each approval phase and tracks your progress.
 
 ```mermaid
 graph TD

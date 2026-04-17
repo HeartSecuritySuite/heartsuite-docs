@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: When the Dashboard detects script interpreters (Python, Perl, PHP) in use without launcher configuration, it presents Phase 3 as the Suggested Next Step. The Launchers screen (`[l]`) shows detected interpreters and activates launchers in one step.
+**Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers screen (`[l]`) shows detected interpreters and activates launchers in one step.
 
 ## Dashboard-Guided Setup
 

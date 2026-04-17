@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure controls what each program is permitted to do — whether it can execute, which files it can access, and which network connections it can make. The Dashboard and its review queues walk you through approving each dimension, with full metadata and intelligent grouping to manage volume.
+**Overview**: A program running without restrictions on a server can read any file, write anywhere, and connect to any destination. HeartSuite Core Secure requires every program to be explicitly approved to execute, to access files, and to make network connections — each independently. The Dashboard and its review queues walk you through each approval, with full metadata and intelligent grouping to manage volume.
 
 ## The Three Review Queues
 

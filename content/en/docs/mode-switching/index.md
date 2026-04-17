@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: HeartSuite Core Secure guides you through mode switching via the Dashboard. The system state depends on which kernel is booted and whether Lockdown is applied — the Dashboard shows you the current state and suggests the appropriate next action.
+**Overview**: Moving from observation to enforcement blocks every program not on the allowlist — including any you forgot to approve. The Dashboard guides the transition through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist after the switch: no program or user, including root, can modify it while the server is running.
 
 ## System States
 

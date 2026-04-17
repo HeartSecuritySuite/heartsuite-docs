@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Phase 6 requires at least one push alert channel to be configured before Secure Mode can be activated. Alerts notify you of blocks and state changes when no one is connected to the Dashboard. On a stable system in Secure Mode with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
+**Overview**: In Secure Mode, blocks happen whether or not anyone is connected to the Dashboard — without alerts, a blocked program fails silently. Alerts notify you of blocks and state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
 
 ## How Alerts Work
 
