@@ -83,7 +83,7 @@ HeartSuite Core Secure blocks. It does not detect, correlate, or alert across a 
 Some software depends on kernel features the HeartSuite Core Secure kernel does not include, and must run on the Non-HS kernel or a separate system:
 
 - Container hosts using Docker's default OverlayFS storage driver — OverlayFS is not compiled in; overlay filesystems are a surface for shadowing protected directories
-- Hosts running eBPF-based observability (Cilium, Falco, bpftrace) — BPF syscalls are not present; HeartSuite Core Secure replaces runtime tracing with compiled-in enforcement
+- Hosts where eBPF-based tooling must run locally — BPF syscalls are not present on the HS kernel; these tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding
 - Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; hosting guest VMs requires kernel primitives removed to reduce attack surface
 - Systems that require rootless containers (unprivileged user namespaces) — not compiled in; unprivileged user namespaces are a path to privilege escalation without credentials
 

@@ -13,7 +13,7 @@ type: docs
 
 HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
-HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts running eBPF-based observability tools.
+HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts where eBPF-based tooling must run locally.
 
 ## Introduction and Concepts
 

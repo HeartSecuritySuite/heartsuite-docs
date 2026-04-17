@@ -96,7 +96,7 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## Is HeartSuite Core Secure Right for You?
 
-HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts that run eBPF-based observability. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts where eBPF-based tooling must run locally. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
 If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, and how it can be circumvented.
 
