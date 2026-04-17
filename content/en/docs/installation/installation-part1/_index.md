@@ -15,7 +15,7 @@ menu:
 **Overview**: Run the installer bundle and reboot to load the HeartSuite Core Secure kernel. This is the first step of Phase 1 (System Verification) on the Local Path.
 
 > [!NOTE]
-> Cloud users skip this step entirely. The HeartSuite Core Secure kernel is pre-installed and Phase 1 auto-completes on first boot. Proceed directly to the Dashboard.
+> Cloud users skip this step entirely. The HeartSuite Core Secure kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. Proceed directly to the Dashboard.
 
 ## Extract the Distribution
 
@@ -33,7 +33,7 @@ Run the installer from the extracted directory (as root):
 sudo bash heartsuite-install-bundle.sh
 ```
 
-The installer sets up the HeartSuite Core Secure kernel, tools, and management UI. When it finishes, it displays `=== Bundle Installation Complete ===`.
+The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard. When it finishes, it displays `=== Bundle Installation Complete ===`.
 
 ## Reboot into the HeartSuite Core Secure Kernel
 
@@ -51,7 +51,7 @@ When the GRUB menu appears, select the HeartSuite Core Secure kernel:
 > [!TIP]
 > If the GRUB menu does not appear automatically, hold **Shift** (BIOS) or press **Esc** immediately after the system starts.
 
-After boot, the HeartSuite Core Secure management UI appears on the console. The Setup Wizard starts automatically — proceed to [Installation Part 2](../installation-part2/).
+After boot, the Dashboard appears on the console. The System Setup screen starts automatically — proceed to [Installation Part 2](../installation-part2/).
 
 ## If the Reboot Fails
 
@@ -60,4 +60,4 @@ If the system does not reboot or hangs, try these steps:
 1. Verify the installer completed without errors before rebooting.
 2. Check GRUB configuration for VMs (uncomment `GRUB_DISABLE_LINUX_UUID` if needed and run `update-grub`).
 3. Boot into recovery mode and run `fsck` to check file systems.
-4. After a successful boot, the Dashboard confirms the HeartSuite Core Secure kernel is loaded. The Safety Banner shows the current mode and the System Info Strip shows "Kernel: HS".
+4. After a successful boot, the Dashboard confirms the HeartSuite Core Secure kernel is loaded. The indicator at the top shows the current mode and the status line at the bottom shows "Kernel: HS".

@@ -9,35 +9,35 @@ toc: true
 type: docs
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy — only explicitly approved programs can execute, access files, or make network connections. Any program not on the allowlist, including malware, is blocked at the kernel level before it can execute. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level. Three things are controlled for every program on the system: whether it can execute, which files it can read or write, and which IP addresses it can connect to. Anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist so that not even root can change it at runtime. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
 
-HeartSuite Core Secure supports two paths: **Cloud** (pre-installed instances where the Dashboard appears immediately) and **Local** (manual installation with guided boot setup). Both paths converge at the Dashboard after Phase 1 (System Verification).
+HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
+
+HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts running eBPF-based observability tools.
 
 ## Learn About HeartSuite Core Secure
 
-Understand key concepts to get the most out of HeartSuite Core Secure.
 - [Introduction and Overview](introduction/) — Overview, setup process, Dashboard guidance, and requirements.
-- [Allowlisting Programs](allowlisting/) — How to add safe programs and permissions using the review queues.
+- [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
+- [How HeartSuite Core Secure Compares](introduction/how-it-compares/) — What HeartSuite Core Secure replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
+- [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
 - [Mode Switching and Lockdown](mode-switching/) — Setup Mode, Secure Mode, and Lockdown.
 
 ## Get Started
 
-Follow quick guides to install and test HeartSuite Core Secure.
 - [Quick Start](getting-started/) — Install, allowlist, and switch modes.
 - [Obtaining and Installing HeartSuite Core Secure](installation/) — Download and setup steps.
 - [Verifying Installation](verification/) — Confirm activation and basic configuration via the Dashboard.
 
 ## Use and Manage
 
-Perform common tasks and advanced configuration for ongoing security.
 - [Network and Remote Access](network/) — Configure network permissions.
 - [Script Launchers](script-launchers/) — Secure interpreted script execution.
-- [Alert Configuration](alerts/) — Set up push notifications for security events (Phase 6, required for Secure Mode).
+- [Alert Configuration](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
 - [Maintenance](maintenance/) — Caches, backups, and configuration management.
 
 ## Troubleshoot and Reference
 
-Get help and detailed info.
 - [Troubleshooting and Logs](troubleshooting/) — Common issues and solutions.
 - [FAQs](faqs/) — Answers to frequent questions.
 - [Appendices](appendices/) — List of included tools.
@@ -49,9 +49,9 @@ Get help and detailed info.
 
 ## Ready to get started?
 
-Get HeartSuite Core Secure running with the quick start guide. The Dashboard shows your current progress and suggests the next step.
+**Already have a subscription?** Follow the [Quick Start](getting-started/) — the Dashboard guides you from there.
 
-[Get Started](getting-started/)
+**Evaluating?** Cloud instances and the Local Path package are available at [heartsecsuite.com](https://heartsecsuite.com).
 
 ---
 

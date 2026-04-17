@@ -43,7 +43,7 @@ Type `YES` (case-sensitive) to confirm the switch. The Dashboard reboots to appl
 
 After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears. Make your changes — install packages, edit configuration, update software. HeartSuite Core Secure logs all new activity silently.
 
-When finished, return to Secure Mode from the Dashboard. New events from the maintenance period appear in the review queues. Review and approve them through the standard allowlisting flow before enforcement resumes.
+When finished, return to Secure Mode from the Dashboard. New activity from the maintenance period appears in the review queues. Review and approve them through the standard allowlisting flow before enforcement resumes.
 
 ## Option 2: Boot the Non-HS Kernel (Lockdown Active)
 
@@ -82,7 +82,7 @@ Make your changes — install software, update packages, modify configuration fi
 
 ### Step 3 of 3: Boot HeartSuite Core Secure Kernel and Review
 
-Select the HeartSuite Core Secure kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new log events — these appear in the review queues. Review and approve them, then return to Secure Mode from the Dashboard. If Lockdown was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
+Select the HeartSuite Core Secure kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then return to Secure Mode from the Dashboard. If Lockdown was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
 
 > [!WARNING]
 > The Non-HS kernel provides no HeartSuite Core Secure protection whatsoever. The safety checklist is critical for this path.

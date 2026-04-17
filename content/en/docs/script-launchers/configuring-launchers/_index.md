@@ -12,12 +12,12 @@ toc: true
 
 ## Dashboard-Guided Setup
 
-From the Dashboard, select the Launchers screen (`[l]`). The screen shows two panels:
+From the Dashboard, select the Launchers screen (`[l]`). The screen shows two sections:
 
 - **Script Launcher Status** — how many interpreters were detected and how many launchers are pending activation
 - **Detected Interpreters** — the list of interpreter paths found in the activity log, with their current launcher status
 
-When launchers are pending, the status panel shows:
+When launchers are pending, the screen shows:
 
 ```text
 2 interpreter(s) found across 47 log event(s).
@@ -28,7 +28,7 @@ When launchers are pending, the status panel shows:
 
 Press `[a]` to activate all pending launchers at once. HeartSuite Core Secure registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
 
-After activation, the result panel confirms which launchers were activated:
+After activation, the screen confirms which launchers were activated:
 
 ```text
 Activated 2 Secure Script Launcher(s): python3, perl.
@@ -38,7 +38,7 @@ these interpreters will be reviewed on their own permission terms.
 
 Press `[q]` to return to the Dashboard. Phase 3 is marked complete automatically.
 
-## If No Script Events Are Detected
+## If No Script Interpreters Are Detected
 
 If none of the known interpreters have appeared in the activity log yet, the screen shows:
 

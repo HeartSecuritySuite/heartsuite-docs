@@ -16,13 +16,37 @@ Quick answers to common setup, usage, and troubleshooting questions. For detaile
 
 {{< details summary="How is HeartSuite Core Secure different from other anti-malware solutions?" >}}
 
-A: HeartSuite Core Secure enforces security at the kernel level — not through signatures, behavior prediction, or eBPF filters that attackers routinely bypass. The HeartSuite Core Secure kernel blocks any program execution, file access, or network connection that has not been explicitly approved through the Dashboard's review process. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+A: HeartSuite Core Secure enforces security at the kernel level — not through malware signatures, behavior prediction, or eBPF filters that attackers routinely bypass. The HeartSuite Core Secure kernel blocks any program execution, file access, or network connection that has not been explicitly approved through the Dashboard's review queues. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+
+{{< /details >}}
+
+{{< details summary="Who is HeartSuite Core Secure for?" >}}
+
+A: HeartSuite Core Secure fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. It is not a fit for container hosts that depend on the Docker default storage driver, or for hosts that run eBPF-based observability tools like Falco, Cilium, or Tetragon. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+
+{{< /details >}}
+
+{{< details summary="Can I use the same allowlist across a fleet or Kubernetes cluster?" >}}
+
+A: Yes. Each host runs the HeartSuite Core Secure kernel with the same allowlist installed locally — no central policy server, no cloud dependency. The same allowlist configuration can be distributed to any number of hosts. Production deployments run HeartSuite Core Secure across hundreds or thousands of nodes, all enforcing the same approved-programs policy. Fleet-wide event correlation and compliance reporting are handled by your SIEM alongside HeartSuite Core Secure — see [How HeartSuite Core Secure Compares](introduction/how-it-compares/).
+
+{{< /details >}}
+
+{{< details summary="How does HeartSuite Core Secure compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
+
+A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical or serial-console access only).
+
+{{< /details >}}
+
+{{< details summary="Does HeartSuite Core Secure replace my SIEM, NDR, or vulnerability scanner?" >}}
+
+A: No. HeartSuite Core Secure enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or manage compliance at scale. (The same allowlist can be distributed to any number of hosts; see [Can I use the same allowlist across a fleet?](#can-i-use-the-same-allowlist-across-a-fleet-or-kubernetes-cluster) below.) SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that HeartSuite Core Secure does not address. Run HeartSuite Core Secure alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. HeartSuite Core Secure's activity log is a useful SIEM input. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/).
 
 {{< /details >}}
 
 {{< details summary="Why is kernel-level enforcement better than eBPF or agent-based security?" >}}
 
-A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents that run alongside programs. Malware with sufficient privileges can disable, bypass, or unload them. HeartSuite Core Secure's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the HeartSuite Core Secure kernel is running, enforcement is active. This is the difference between a lock on the door and a guard standing next to it.
+A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes within the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them. HeartSuite Core Secure's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the HeartSuite Core Secure kernel is running, enforcement is active. This is the difference between a lock on the door and a guard standing next to it.
 
 {{< /details >}}
 
@@ -52,7 +76,7 @@ A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heart
 
 {{< details summary="How do I report a bug or security issue?" >}}
 
-A: For bugs, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the Safety Banner state shown on your Dashboard, and steps to reproduce. For security vulnerabilities, do not use a public issue — email support@heartsecsuite.com for responsible disclosure.
+A: For bugs, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, do not use a public issue — email support@heartsecsuite.com for responsible disclosure.
 
 {{< /details >}}
 
@@ -82,7 +106,7 @@ A: Yes, HeartSuite Core Secure allows remote access like SSH -- allowlist necess
 
 {{< details summary="What is the Dashboard?" >}}
 
-A: The Dashboard is the primary interface for managing HeartSuite Core Secure. It shows your current mode (Setup or Secure), progress through each setup phase, pending or denied event counts, and a Suggested Next Step that tells you exactly what to do next. The Safety Banner at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
+A: The Dashboard is how you manage HeartSuite Core Secure. It shows your current mode (Setup or Secure), progress through each setup phase, pending or denied counts, and a Suggested Next Step that tells you exactly what to do next. The indicator at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
 
 {{< /details >}}
 
@@ -122,13 +146,13 @@ A: Check the Dashboard's Suggested Next Step — it will indicate what remains. 
 
 {{< details summary="A new program is being blocked in Secure Mode — what should I do?" >}}
 
-A: In Secure Mode, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs HeartSuite Core Secure has not seen before. To resolve it, select the Maintenance screen (`[t]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears as a pending event. Approve it from the review queues, then return to Secure Mode.
+A: In Secure Mode, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs HeartSuite Core Secure has not seen before. To resolve it, select the Maintenance screen (`[t]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then return to Secure Mode.
 
 {{< /details >}}
 
 {{< details summary="Can I allowlist directories instead of files?" >}}
 
-A: Yes. When the Dashboard's File Access review queue presents grouped events from the same directory, you can approve directory-level access rather than approving each file individually. For example, if Python reads 200 files from `/usr/lib/python3/`, the review queue groups them and lets you approve access to the entire directory at once.
+A: Yes. When the Dashboard's File Access review queue presents grouped accesses from the same directory, you can approve directory-level access rather than approving each file individually. For example, if Python reads 200 files from `/usr/lib/python3/`, the review queue groups them and lets you approve access to the entire directory at once.
 
 {{< /details >}}
 
@@ -140,7 +164,7 @@ A: The Dashboard unlocks Secure Mode when all prior phases are complete and show
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: HeartSuite Core Secure blocks all outbound connections by default. When a program attempts a connection, the event appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there.
+A: HeartSuite Core Secure blocks all outbound connections by default. When a program attempts a connection, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there.
 
 {{< /details >}}
 
@@ -148,7 +172,7 @@ A: HeartSuite Core Secure blocks all outbound connections by default. When a pro
 
 {{< details summary="When should I switch to Secure Mode?" >}}
 
-A: After the Dashboard shows all review phases complete. Take your time in Setup Mode — allow several days to a week for systemd timers, cron jobs, and infrequent services to appear in the review queues. The Dashboard's System Info Strip shows how long Setup Mode has been active (e.g., "Setup Mode — active for 3d 7h"), so you can easily track your observation period. Switching too early will block programs that have not been approved.
+A: After the Dashboard shows all review phases complete. Take your time in Setup Mode — allow several days to a week for systemd timers, cron jobs, and infrequent services to appear in the review queues. The status line at the bottom of the Dashboard shows how long Setup Mode has been active (e.g., "Setup Mode — active for 3d 7h"), so you can easily track your observation period. Switching too early will block programs that have not been approved.
 
 {{< /details >}}
 
@@ -180,13 +204,13 @@ A: Select the Maintenance screen (`[t]`) from the Dashboard. It detects whether 
 
 {{< details summary="How do I check if HeartSuite Core Secure is active?" >}}
 
-A: The Dashboard's Safety Banner at the top of the screen immediately shows whether HeartSuite Core Secure is active and what mode it is in. The Dashboard appears automatically on login.
+A: The indicator at the top of the screen immediately shows whether HeartSuite Core Secure is active and what mode it is in. The Dashboard appears automatically on login.
 
 {{< /details >}}
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: Reboot into a Non-HS kernel (select it from GRUB). The Dashboard resumes automatically on the Non-HS kernel and guides you through the maintenance steps. Once back on the HeartSuite Core Secure kernel, the Dashboard will show any pending events that caused the hang.
+A: Reboot into a Non-HS kernel (select it from GRUB). The Dashboard resumes automatically on the Non-HS kernel and guides you through the maintenance steps. Once back on the HeartSuite Core Secure kernel, the Dashboard will show any pending items that caused the hang.
 
 {{< /details >}}
 
@@ -196,4 +220,4 @@ A: The Dashboard automatically clears the activity log when all review queues ar
 
 {{< /details >}}
 
-For support, visit [heartsecsuite.com](https://heartsecsuite.com) or email support@heartsecsuite.com.
+For support email support@heartsecsuite.com.

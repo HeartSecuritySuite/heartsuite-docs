@@ -12,13 +12,13 @@ toc: true
 
 ## How Network Allowlisting Works
 
-In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These events appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
+In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
 Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address — each program must have its own approved destinations.
 
 ## Using the Internet Access Queue
 
-Select the Internet Access queue from the Dashboard (`[i]`). Each event shows:
+Select the Internet Access queue from the Dashboard (`[i]`). Each connection shows:
 
 - **Program** — the full path and package metadata (name, version, description, maintainer)
 - **Destination** — the IP address with reverse DNS hostname (e.g., `93.184.216.34 — example.com (Edgecast, US)`)
@@ -50,17 +50,17 @@ Suppose `wget` is on the program allowlist but no network destinations have been
 # wget https://example.com/agreement.html
 ```
 
-produces a log event:
+produces a log entry:
 
 ```text
 [Setup Notice - Add to Network Allowlist?] Network Connection Attempt Logged by /usr/bin/wget; IP: 45.60.22.168
 ```
 
-This event appears in the Internet Access queue with the destination `45.60.22.168 — example.com`. After you approve it, the same `wget` command completes without generating a new event for that IP address.
+This appears in the Internet Access queue with the destination `45.60.22.168 — example.com`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
 
 ## Reviewing Existing Network Permissions
 
-To browse or edit network destinations that have already been approved, use the Allowlist screen (`[a]`) from the Dashboard. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
+To browse or edit network destinations that have already been approved, use Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
 
 > [!NOTE]
 > This edition supports specific IPv4 and IPv6 addresses only.

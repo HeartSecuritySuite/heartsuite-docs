@@ -13,13 +13,13 @@ menu:
     identifier: "heartsuite-overview"
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — only explicitly approved programs can execute, access files, or make network connections. Any program not on the allowlist is blocked before it can execute, including malware and zero-day attacks that detection-based tools might miss.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist is blocked before it can execute, including malware and zero-day attacks that detection-based tools might miss.
 
 ## How HeartSuite Core Secure Works
 
-HeartSuite Core Secure uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute, access files, or make network connections unless explicitly approved by an administrator. Even if malware is downloaded to a HeartSuite Core Secure server, the kernel prevents it from running or causing damage.
+HeartSuite Core Secure uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute without an allowlist entry — and each allowlist entry also controls which files the program can read or write, and which network connections it can make. Even if malware is downloaded to a HeartSuite Core Secure server, the kernel prevents it from running or causing damage.
 
-The **Dashboard** is the central interface. It tracks your progress through a 7-phase setup journey, shows pending events that need review, and always suggests the next step.
+The **Dashboard** is the central interface. It tracks your progress through a 7-phase setup journey, shows what's waiting for review, and always suggests the next step.
 
 ### The 7-Phase Model
 
@@ -33,25 +33,35 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 6 | Alert Configuration | Set up notification channels (email, syslog, webhook) |
 | 7 | Secure Mode | Activate enforcement — locked until phases 2–6 are complete |
 
+## Reduced Kernel Attack Surface
+
+Most malware escalates privilege by reaching for the same handful of kernel features. eBPF to hide processes. FUSE to redirect reads. Overlay filesystems to shadow protected directories. Userspace security frameworks — AppArmor, SMACK, Landlock — to pivot through. Unprivileged user namespaces to become root without credentials.
+
+The HeartSuite Core Secure kernel is compiled without any of them.
+
+Detection tools like Falco, Cilium Tetragon, and bpftrace watch these primitives and raise alerts when something looks suspicious. HeartSuite Core Secure takes a different path. It removes the primitives. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker.
+
+For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
+
 ## Core Features
 
 ### 1. Program Allowlist
 
-An allowlist entry defines what a program is permitted to do: which files it can access, which directories it can read or write, and which network connections it can make. The HeartSuite Core Secure kernel requires every program to have an allowlist entry before it is permitted to run.
+An allowlist entry defines what a program is permitted to do — whether it can execute, which files it can read or write, and which network connections it can make. The HeartSuite Core Secure kernel requires every program to have an allowlist entry before it is permitted to run.
 
-The **Dashboard review queues** present pending events for approval:
+The **Dashboard review queues** present pending items for approval:
 
 - **Programs queue** (`[p]`) — programs attempting to execute
 - **File Access queue** (`[f]`) — programs attempting to read or write files
 - **Internet Access queue** (`[i]`) — programs attempting outbound connections
 
-Each queue uses a tiered review model to manage volume efficiently:
+Each queue manages volume through intelligent grouping — not blind bulk approval:
 
-- **Tier 1**: Individual events shown one at a time with full metadata (package name, description, category, maintainer, install date)
-- **Tier 2**: Grouped events (e.g., "847 file reads from /usr/lib/python3/") with a representative sample shown
-- **Tier 3**: Informational summary of what is ahead before reviewing
+- **Individual review**: Items shown one at a time with full metadata (package name, description, category, maintainer, install date)
+- **Grouped review**: Related items (e.g., "847 file reads from /usr/lib/python3/") presented as a single group with a representative sample shown
+- **Queue summary**: An orientation view of total counts and a breakdown by program shown before reviewing begins
 
-File access is divided into **read access** and **write access**. Write access always includes read access. These are approved separately — approving a file read event grants read access; approving a file write event upgrades to write access.
+File access is divided into **read access** and **write access**. Write access always includes read access. These are approved separately — approving a file read grants read access; approving a file write upgrades to write access.
 
 The caching mechanism loads only a single allowlist entry into memory for a running program, even with thousands of concurrent instances, minimising impact on kernel memory.
 
@@ -85,3 +95,11 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 **Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately. Phase 1 (System Verification) auto-completes. Proceed directly to the review queues.
 
 **Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. Run `hs-os-boot-setup` through multiple reboots (the Dashboard shows a step counter). After Phase 1 completes, the Dashboard appears and both paths merge.
+
+## Is HeartSuite Core Secure Right for You?
+
+HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts that run eBPF-based observability. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+
+If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, and how it can be circumvented.
+
+To get HeartSuite Core Secure: launch a pre-installed cloud instance or download the Local Path package from [heartsecsuite.com](https://heartsecsuite.com). Both arrive at the Dashboard — [Getting Started](../../getting-started/) covers the rest.

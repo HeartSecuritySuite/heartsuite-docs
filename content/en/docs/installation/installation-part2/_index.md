@@ -15,18 +15,18 @@ menu:
 **Overview**: After rebooting into the HeartSuite Core Secure kernel, build the initial allowlist of startup and shutdown programs. This completes Phase 1 (System Verification) on the Local Path. The Dashboard then appears and guides you into Phase 2 (Program Allowlisting).
 
 > [!NOTE]
-> Cloud users skip this step. Phase 1 auto-completes on a pre-configured cloud instance, and the Dashboard is ready immediately.
+> Cloud users skip this step. On a pre-configured cloud instance, the Dashboard confirms Phase 1 is complete on first boot.
 
 ## Building the Initial Allowlist
 
-After booting into the HeartSuite Core Secure kernel, the management UI appears on the console automatically. The **System Setup** screen opens on first boot.
+After booting into the HeartSuite Core Secure kernel, the Dashboard appears on the console automatically. The **System Setup** screen opens on first boot.
 
 Each cycle follows the same pattern:
 
-1. Press `[a]` to run the setup step — the UI scans startup and shutdown logs and adds the programs it finds to the allowlist.
-2. When the step completes, the UI reboots the system automatically (5-second countdown — press any key to cancel if needed).
+1. Press `[a]` to run the setup step — HeartSuite Core Secure scans startup and shutdown logs and adds the programs it finds to the allowlist.
+2. When the step completes, the system reboots automatically (5-second countdown — press any key to cancel if needed).
 3. At the GRUB menu, select the HeartSuite Core Secure kernel again.
-4. The System Setup screen resumes at the next step automatically.
+4. The Dashboard appears and the Suggested Next Step shows `[s] System Setup`. Press `[s]` to continue to the next step.
 
 Repeat until the setup screen shows **Setup Complete** in green — no manual commands are needed between cycles.
 
@@ -38,7 +38,7 @@ When the setup screen shows the completion message, press `[q]` to return to the
 
 ## If the UI Does Not Appear After Boot
 
-If the management UI does not appear on the console after booting into the HeartSuite Core Secure kernel:
+If the Dashboard does not appear on the console after booting into the HeartSuite Core Secure kernel:
 
 1. Switch to TTY2 (`Ctrl+Alt+F2`), log in as root, and check the service:
    ```bash
@@ -55,8 +55,8 @@ If the management UI does not appear on the console after booting into the Heart
 
 If after several cycles the setup screen does not show the completion message:
 
-1. Check the Dashboard's Programs review queue (`[p]`) for any pending events and approve missing programs.
-2. Verify the HeartSuite Core Secure kernel is loaded (the Dashboard System Info Strip shows "Kernel: HS").
+1. Check the Dashboard's Programs review queue (`[p]`) for any pending items and approve missing programs.
+2. Verify the HeartSuite Core Secure kernel is loaded (the status line at the bottom of the Dashboard shows "Kernel: HS").
 
 > [!WARNING]
 > Completing these reboot-and-review cycles is essential before switching to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.

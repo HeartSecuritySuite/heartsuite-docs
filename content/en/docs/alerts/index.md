@@ -1,18 +1,18 @@
 ---
 title: "Alert Configuration"
 weight: 70
-description: "Configuring push alert channels for security events in Secure Mode."
+description: "Configuring push alert channels for blocks and state changes in Secure Mode."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "alerts", "email", "syslog", "webhook", "security", "notifications"]
 toc: true
 type: docs
 ---
 
-**Overview**: Phase 6 requires at least one push alert channel to be configured before Secure Mode can be activated. Alerts notify you of security-relevant events when no one is connected to the Dashboard. On a stable system in Secure Mode, expect roughly 1–5 email alerts per week — alert volume is intentionally low.
+**Overview**: Phase 6 requires at least one push alert channel to be configured before Secure Mode can be activated. Alerts notify you of blocks and state changes when no one is connected to the Dashboard. On a stable system in Secure Mode with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
 
 ## How Alerts Work
 
-Alerts are a push channel for events that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
+Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
 
 Alerts are suppressed entirely in Setup Mode. Setup Mode is a high-volume observation phase — logging everything without blocking. Alerting during this phase would produce constant noise before the allowlist is complete. Alerts become active only when Secure Mode is enabled.
 
@@ -43,7 +43,7 @@ Once configured, the tab shows current settings with the password displayed as `
 
 Configure syslog and webhook delivery for fleet and SIEM integrations. All channels are independent — enable any combination.
 
-**Syslog** — A toggle (Enabled/Disabled). When enabled, HeartSuite Core Secure writes all alert events to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the HeartSuite Core Secure node. After enabling, the Alert Settings screen provides an rsyslog forwarding rule example for your SIEM.
+**Syslog** — A toggle (Enabled/Disabled). When enabled, HeartSuite Core Secure writes all alerts to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the HeartSuite Core Secure node. After enabling, the Alert Settings screen provides an rsyslog forwarding rule example for your SIEM.
 
 Verify syslog delivery with:
 
@@ -56,7 +56,7 @@ To forward to a SIEM, configure an rsyslog output rule in `/etc/rsyslog.d/hearts
 - [Splunk — Get data from TCP and UDP ports](https://docs.splunk.com/Documentation/Splunk/latest/Data/Monitornetworkports)
 - [Elastic — Filebeat syslog input](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-syslog.html)
 
-**Webhook** — Enter an HTTPS URL. HeartSuite Core Secure POSTs a JSON payload to this URL on every alert event. HTTP (non-TLS) URLs are rejected. Example payload:
+**Webhook** — Enter an HTTPS URL. HeartSuite Core Secure POSTs a JSON payload to this URL on every alert. HTTP (non-TLS) URLs are rejected. Example payload:
 
 ```json
 {
@@ -85,21 +85,21 @@ When Phase 6 is complete — at least one push channel configured — the Dashbo
 
 ## What Triggers an Alert
 
-### Tier 1 — Administrative State Changes
+### Administrative State Changes
 
-These events fire immediately on every configured channel, regardless of accumulation windows or digest mode:
+These alerts fire immediately on every configured channel, regardless of accumulation windows or digest mode:
 
-| Event | When it fires |
+| Alert | When it fires |
 |-------|---------------|
 | Mode switch (Setup → Secure or Secure → Setup) | Immediately on mode change |
 | Lockdown activated or deactivated | Immediately on state change |
 | New allowlist file pushed while Lockdown is active | On detection |
 
-### Tier 2 — Anomalous Activity in Secure Mode
+### Blocks in Secure Mode
 
-These events apply a threshold filter and are active in Secure Mode only:
+These blocks apply a threshold filter and are active in Secure Mode only:
 
-| Event | Trigger condition |
+| Block | Trigger condition |
 |-------|------------------|
 | Previously unseen program blocked | A program path appears in the denial log that has never appeared in any prior log session |
 | Network burst to new destinations | A single program generates blocked connections to previously unseen destinations within a 2-hour window |
@@ -107,7 +107,7 @@ These events apply a threshold filter and are active in Secure Mode only:
 
 **Never alerted under any circumstances:**
 
-- Any event in Setup Mode
+- Anything in Setup Mode
 - Repeated blocks of the same program–destination pair already seen in the current session
 - File version activity under `/tmp/`, `/var/tmp/`, or `/dev/shm/`
 - Dashboard sessions opened or closed
@@ -117,20 +117,20 @@ These events apply a threshold filter and are active in Secure Mode only:
 
 ### Email — 5-Minute Accumulation Window
 
-Tier 2 events are grouped before delivery. A dropper that installs 40 payloads in 90 seconds produces one email — *"40 previously unseen programs blocked in 90 seconds"* — not 40 individual messages. Volume and velocity are the attack signal; 40 separate emails fragment that signal into noise.
+Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 seconds produces one email — *"40 previously unseen programs blocked in 90 seconds"* — not 40 individual messages. Volume and velocity are the attack signal; 40 separate emails fragment that signal into noise.
 
-- The 5-minute window starts on the first Tier 2 event of a given type
-- Additional events of the same type within that window are added to the pending bundle
-- At window close, one email is dispatched covering all accumulated events
-- Events of different types accumulate independently — a network burst does not delay a file modification alert
+- The 5-minute window starts on the first block of a given type
+- Additional blocks of the same type within that window are added to the pending bundle
+- At window close, one email is dispatched covering all accumulated blocks
+- Blocks of different types accumulate independently — a network burst does not delay a file modification alert
 
-**Digest mode:** If more than 3 Tier 2 emails are dispatched within a single hour, HeartSuite Core Secure switches to digest mode for the remainder of that hour. All further Tier 2 events are queued and delivered as one digest email at the hour's end. Tier 1 events are never held — mode switches and lockdown changes are always delivered immediately.
+**Digest mode:** If more than 3 block alerts are dispatched within a single hour, HeartSuite Core Secure switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — mode switches and lockdown changes are always delivered immediately.
 
 The 5-minute window and hourly cap are fixed, not user-configurable.
 
 ### Syslog and Webhook — Immediate
 
-Syslog and webhook emit every event immediately, without grouping or windowing. SIEM platforms (Splunk, Elastic) and incident management tools (PagerDuty, OpsGenie) apply their own correlation and deduplication — grouping events before they reach these systems removes information they need.
+Syslog and webhook emit every alert immediately, without grouping or windowing. SIEM platforms (Splunk, Elastic) and incident management tools (PagerDuty, OpsGenie) apply their own correlation and deduplication — grouping alerts before they reach these systems removes information they need.
 
 > [!NOTE]
 > Alerts begin flowing only after Secure Mode is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.

@@ -19,7 +19,7 @@ menu:
 
 HeartSuite Core Secure enforces a default-deny policy: every program, file access, and network connection must be explicitly approved before the system permits it. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews events through the Dashboard queues, approves legitimate activity, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
+Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews activity through the Dashboard queues, approves legitimate programs and access, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
 
 Setup Mode is the default after installation. HeartSuite Core Secure's automated backup system also operates during Setup Mode, providing an additional layer of protection even before enforcement begins.
 
@@ -32,8 +32,8 @@ HeartSuite Core Secure organizes the setup journey into seven phases. The Dashbo
 | 1 | System Verification | Confirms the HeartSuite Core Secure kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
 | 2 | Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
 | 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers screen (`[l]`), if applicable. |
-| 4 | File Access Allowlisting | Review and approve file read and write access events from the Dashboard's File Access queue (`[f]`). |
-| 5 | Internet Access Allowlisting | Review and approve internet connection events from the Dashboard's Internet Access queue (`[i]`). |
+| 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
+| 5 | Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
 | 6 | Alert Configuration | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings screen (`[e]`). |
 | 7 | Secure Mode | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Mode Switch screen (`[m]`). |
 

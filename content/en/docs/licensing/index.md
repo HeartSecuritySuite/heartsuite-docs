@@ -32,4 +32,4 @@ If activation is successful, the program creates an activation key and displays 
 
 ## Dashboard Subscription Status
 
-The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning in the reference panel with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing. Phase 7 (Secure Mode) unlocks when phases 2-6 are complete.
+The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning on the Dashboard with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing. Phase 7 (Secure Mode) unlocks when phases 2-6 are complete.

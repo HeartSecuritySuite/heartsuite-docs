@@ -8,24 +8,21 @@ type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is the primary interface for most users; the tools listed below are available for advanced use or specific cases.
+**Overview**: HeartSuite Core Secure includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day; the tools listed below are for advanced workflows and recovery scenarios.
 
 With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The HeartSuite Core Secure installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to HeartSuite Core Secure databases must be run as root.
 
-> [!TIP]
-> The Dashboard is the primary interface — it appears automatically on login. The CLI tools below are for advanced workflows and recovery scenarios.
-
-## Primary Tools
+## Management Tools
 
 These are the tools most users interact with, organized by phase.
 
 ### Dashboard and Review (Phases 1-5)
 
-- **Dashboard** -- the primary interface for HeartSuite Core Secure. Displays phase progress, pending/denied event counts, Safety Banner, System Info Strip, and Suggested Next Step. Appears automatically on login. Launch manually with `sudo python3 main.py`.
-- **Programs queue** (`[p]`) -- Dashboard screen to review and approve pending program execution events (Phase 2). Presents events with full metadata, grouped intelligently.
-- **File Access queue** (`[f]`) -- Dashboard screen to review and approve pending file access events (Phase 4). Handles read access and write access approvals separately.
-- **Internet Access queue** (`[i]`) -- Dashboard screen to review and approve pending internet access events (Phase 5). Allows allowlisting specific IPs per program.
-- **Allowlist screen** (`[a]`) -- Dashboard screen to browse and edit existing allowlist entries.
+- **Dashboard** -- where you manage HeartSuite Core Secure. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `sudo python3 main.py`.
+- **Programs queue** (`[p]`) -- Dashboard screen to review and approve pending program executions (Phase 2). Presents items with full metadata, grouped intelligently.
+- **File Access queue** (`[f]`) -- Dashboard screen to review and approve pending file accesses (Phase 4). Handles read access and write access approvals separately.
+- **Internet Access queue** (`[i]`) -- Dashboard screen to review and approve pending internet connections (Phase 5). Allows allowlisting specific IPs per program.
+- **Allowed** (`[a]`) -- Dashboard screen to browse and edit existing allowlist entries.
 - **Browser View** (`[w]`) -- Dashboard screen to enable or disable browser-based access to HeartSuite Core Secure via SSH tunnel.
 - **Launchers** (`[l]`) -- Dashboard screen to configure Secure Script Launchers (Phase 3).
 
@@ -46,7 +43,7 @@ These are the tools most users interact with, organized by phase.
 - **Backup** (`[b]`) -- Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 - **`hs-manage-allowlist`** -- CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
 
-## Additional Executable Tools
+## System and Subscription Tools
 
 - **`activate_HS`** -- turns HeartSuite Core Secure service on. The installation routine adds a systemd service that runs this automatically at startup.
 - **`hs-cache-size`** -- change the maximum number of allowlist entries cached simultaneously. View `--help` for details.
@@ -77,7 +74,7 @@ Each script displays help information when started without arguments.
 
 ## Shell Scripts
 
-These scripts do not include help information but are simple to read.
+These scripts do not include help information.
 
 - **`hs-clear-logs`** -- manually clears the HeartSuite Core Secure activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
 - **`init_base_records.sh`** -- used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.

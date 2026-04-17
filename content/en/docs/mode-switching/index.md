@@ -23,20 +23,24 @@ HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on th
 
 In Setup Mode and Secure Mode, HeartSuite Core Secure's kernel module is active. Backups, logging, and the Dashboard all function normally in both. Booting the non-HS kernel means HeartSuite Core Secure is completely absent — the module is not loaded, no enforcement or logging takes place, and backups do not run.
 
-The Dashboard provides orientation for these states. The Safety Banner displays the current state, and the Suggested Next Step guides you toward the appropriate action.
+The Dashboard provides orientation for these states. The indicator at the top displays the current protection state, and the Suggested Next Step guides you toward the appropriate action.
 
-### Safety Banner States
+### Trust Graduation Across Modes
 
-The Dashboard displays a Safety Banner reflecting the current system state:
+Each mode defines a different trust boundary. In Setup Mode, the operator is trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, the operator's ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires console or serial access, preventing a remote attacker from triggering it.
 
-| State | Safety Banner |
+### Protection State
+
+The indicator at the top of the Dashboard reflects the current system state:
+
+| State | Indicator text |
 |---|---|
 | Setup Mode | **SETUP MODE** — logging only, nothing is blocked |
 | Secure Mode (no Lockdown) | **SECURE MODE** — Lockdown not applied |
 | Secure Mode + Lockdown | Silent (blank) |
 | Non-HS kernel | **NON-HS KERNEL** — HeartSuite Core Secure is not active. No enforcement. No logging. No backups. |
 
-## Setup vs Secure Mode
+## Setup Mode and Secure Mode
 
 At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and remote computers such programs may access. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
 
@@ -70,7 +74,7 @@ graph TD
 
 ### Dashboard-First Mode Switch
 
-The Dashboard is the primary interface for mode switching. When all preconditions are met, the Suggested Next Step will offer Secure Mode activation. The precondition checklist includes:
+The Dashboard is where you switch modes. When all preconditions are met, the Suggested Next Step will offer Secure Mode activation. The precondition checklist includes:
 
 - All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
 - Boot configuration is complete (`hs-os-boot-setup`)
