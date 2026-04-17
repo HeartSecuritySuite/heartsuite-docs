@@ -86,7 +86,7 @@ graph TD
 
 When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Secure Mode. Activating Secure Mode requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
 
-After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Both are valid configurations depending on your threat model. Lockdown can also be applied later from the Dashboard's Mode Switch screen (`[m]`).
+After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Both are valid configurations depending on your security requirements. Lockdown can also be applied later from the Dashboard's Mode Switch screen (`[m]`).
 
 ## Maintenance in Secure Mode
 

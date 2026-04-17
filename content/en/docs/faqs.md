@@ -12,7 +12,7 @@ type: docs
 
 {{< details summary="How is HeartSuite Core Secure different from other anti-malware solutions?" >}}
 
-A: HeartSuite Core Secure enforces security at the kernel level — not through malware signatures, behavior prediction, or eBPF filters that attackers routinely bypass. The HeartSuite Core Secure kernel blocks any program execution, file access, or network connection that has not been explicitly approved through the Dashboard's review queues. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+A: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, HeartSuite Core Secure blocks any execution, file access, or network connection not explicitly approved through the Dashboard's review queues. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
 
 {{< /details >}}
 

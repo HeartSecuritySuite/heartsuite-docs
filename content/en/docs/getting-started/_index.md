@@ -44,38 +44,12 @@ Users launching a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, 
 
 ## Local Path Quick Start
 
-Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a longer installation sequence before reaching the Dashboard.
+Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a two-part installation sequence before reaching the Dashboard.
 
-### Download and Install
+1. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the HeartSuite Core Secure kernel.
+2. **[Installation Part 2](../installation/installation-part2/)** — run `hs-os-boot-setup` through multiple reboots until the Dashboard confirms Phase 1 is complete.
 
-1. Download the tar file from [heartsecsuite.com](https://heartsecsuite.com).
-
-2. Extract and run the installer (as root):
-
-   ```bash
-   tar xvf 6.18-HeartSuite-1.6.4.tar -m
-   sudo bash heartsuite-install-bundle.sh
-   ```
-
-3. Reboot, then select the HeartSuite Core Secure kernel from the GRUB menu:
-
-   ```bash
-   reboot
-   ```
-
-   At GRUB: **Advanced options for Debian GNU/Linux** → **Linux 5.19.6-HeartSuite-1.0**
-
-   If the GRUB menu does not show the HeartSuite Core Secure kernel, run `update-grub` and reboot again. See [Installation](../installation/) for details.
-
-### OS Boot Setup
-
-4. After booting into the HeartSuite Core Secure kernel, the Dashboard appears on the console automatically. The **System Setup** screen opens.
-
-   Press `[a]` to run the setup step. HeartSuite Core Secure reboots the system when the step completes — select the HeartSuite Core Secure kernel from GRUB each time and repeat until the setup screen shows **Setup Complete** (usually 3–5 cycles). This builds the initial allowlist for startup programs, preventing boot issues when Secure Mode is activated later.
-
-### Verify and Proceed
-
-5. Once the System Setup screen confirms completion, the Dashboard shows your current phase. From here, the Cloud Path and Local Path merge — follow the Suggested Next Step to begin allowlisting.
+Once Phase 1 is complete, the Cloud Path and Local Path merge — the Dashboard shows your current phase and the Suggested Next Step directs you to begin allowlisting.
 
 ## Switching to Secure Mode
 
@@ -84,7 +58,7 @@ When phases 2-6 are complete, the Dashboard unlocks Phase 7 and shows Secure Mod
 - `[r]` **Reboot** — enforcement active, configuration remains editable
 - `[l]` **Reboot + Lockdown** — enforcement active, configuration sealed with filesystem immutability
 
-Both are valid configurations depending on your threat model. If the system does not boot correctly, reboot into the Non-HS kernel — the Dashboard resumes there and guides you through recovery.
+Both are valid configurations depending on your security requirements. If the system does not boot correctly, reboot into the Non-HS kernel — the Dashboard resumes there and guides you through recovery.
 
 ## Next Steps
 

@@ -30,7 +30,7 @@ HeartSuite Core Secure is distributed with two HeartSuite Core Secure kernels ba
 
 ## Software Compatibility Notes
 
-The HeartSuite Core Secure kernel is compiled without several features that introduce privilege-escalation or confinement-bypass primitives inconsistent with kernel-level allowlisting. Software that relies on those features will not run on the HeartSuite Core Secure kernel — use the Non-HS kernel or a separate system for those workloads.
+The HeartSuite Core Secure kernel is compiled without several features that attackers use to gain elevated access or escape security restrictions — keeping them in would undermine kernel-level allowlisting. Software that relies on those features will not run on the HeartSuite Core Secure kernel — use the Non-HS kernel or a separate system for those workloads.
 
 | Not available on HS kernel | Affects |
 |-----------|---------|

@@ -56,7 +56,7 @@ A few workloads are not compatible with the HeartSuite Core Secure kernel as shi
 
 - **Container hosts using the Docker default storage driver** — OverlayFS is not compiled into the HeartSuite Core Secure kernel; overlay filesystems are a surface for shadowing protected directories. Alternative storage drivers or a Non-HS container host may be required.
 - **Hosts where eBPF-based tooling must run locally** — Falco, Cilium, Tetragon, bpftrace, and similar tools require BPF syscalls that are not present on the HS kernel. These tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding. For on-host forensics during incident response, eBPF-based tools are not available; strace and /proc inspection remain available.
-- **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel primitives removed to reduce the attack surface. HeartSuite Core Secure runs as a guest under other hypervisors — it does not host guest VMs.
+- **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel features that have been removed to reduce what attackers can reach. HeartSuite Core Secure runs as a guest under other hypervisors — it does not host guest VMs.
 - **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.

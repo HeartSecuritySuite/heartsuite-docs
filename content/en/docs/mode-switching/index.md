@@ -94,7 +94,7 @@ After confirming, the Dashboard offers two reboot options:
 - `[r]` **Reboot** — enforcement active, configuration remains editable
 - `[l]` **Reboot + Lockdown** — enforcement active, configuration sealed with filesystem immutability
 
-Both are valid configurations depending on your threat model. HeartSuite Core Secure will boot in Secure Mode from that point forward until you switch back to Setup Mode.
+Both are valid configurations depending on your security requirements. HeartSuite Core Secure will boot in Secure Mode from that point forward until you switch back to Setup Mode.
 
 ### Returning to Setup Mode
 
@@ -112,7 +112,7 @@ When booted into a Non-HS kernel, set the mode before rebooting to the HeartSuit
 
 Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current lockdown status and provides the Suggested Next Step for managing it.
 
-Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on your threat model. The table below summarises what changes when you apply Lockdown.
+Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on how strictly you want to lock down the system. The table below summarises what changes when you apply Lockdown.
 
 | | Secure Mode | Secure Mode + Lockdown |
 |---|---|---|

@@ -13,7 +13,7 @@ menu:
     identifier: "how-it-compares"
 ---
 
-**Overview**: HeartSuite Core Secure controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
+**Overview**: HeartSuite Core Secure controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. The question is not "can this user access this file?" but "can this specific program?" Two programs running as the same user get different permissions. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
 
 ## What HeartSuite Core Secure Replaces
 
@@ -25,7 +25,7 @@ These tools provide runtime confinement or kernel-level enforcement of some kind
 | **AppArmor, SELinux, SMACK, Landlock** (userspace LSM frameworks) | Per-process MAC profiles limiting filesystem and capability access | Root with the right capability can set SELinux to permissive, unload an AppArmor profile, or modify the policy file | HeartSuite Core Secure's allowlist is stored in filesystem objects the kernel refuses to modify under Lockdown. Even root cannot edit it at runtime. |
 | **seccomp-bpf sandboxes** (systemd services, browser sandboxes, bubblewrap, firejail) | Per-process syscall filters set by the process itself or its parent | A parent with equivalent privilege can spawn the same binary without the filter. Filters are scoped to a process tree, not to the program identity | HeartSuite Core Secure gates by program identity, not process lineage. A program's allowlist applies every time it runs, regardless of who spawned it. |
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | HeartSuite Core Secure *is* the kernel — one layer instead of two, with nothing to unload. Used as a guest kernel inside a microVM, it provides kernel-level enforcement for the workload. |
-| **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the kernel module, or tamper with the driver. Many breaches include "disable EDR" as an early step | HeartSuite Core Secure has no agent and no module to unload — it is the kernel. Note: EDR provides telemetry and response HeartSuite Core Secure does not. Treat HeartSuite Core Secure as a replacement for the preventive-enforcement dimension only; for detection and response, see the complementary table below. |
+| **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the kernel module, or tamper with the driver. Many breaches include "disable EDR" as an early step | HeartSuite Core Secure has no agent and no module to unload — it is the kernel. When attackers use legitimate tools rather than new malware — the pattern in most modern breaches — EDR detects the suspicious behavior. HeartSuite Core Secure constrains it differently: even a legitimate tool can only reach the files and network destinations its allowlist entry approves. Note: EDR provides telemetry and response HeartSuite Core Secure does not. Treat HeartSuite Core Secure as a replacement for the preventive-enforcement dimension only; for detection and response, see the complementary table below. |
 
 **The common pattern.** Every tool in this table can be disabled by an attacker who has already reached root. HeartSuite Core Secure cannot — its enforcement is compiled into the kernel and its allowlist is sealed by filesystem immutability under Lockdown. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
 
@@ -84,7 +84,7 @@ Some software depends on kernel features the HeartSuite Core Secure kernel does 
 
 - Container hosts using Docker's default OverlayFS storage driver — OverlayFS is not compiled in; overlay filesystems are a surface for shadowing protected directories
 - Hosts where eBPF-based tooling must run locally — BPF syscalls are not present on the HS kernel; these tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding
-- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; the kernel primitives KVM requires have been removed to reduce attack surface. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
+- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; the kernel features KVM requires have been removed to reduce the features attackers can reach. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
 - Systems that require rootless containers (unprivileged user namespaces) — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
@@ -98,7 +98,7 @@ HeartSuite Core Secure's allowlist can be changed through one path only:
 1. **Maintenance window** — you switch to Setup Mode, make changes, and return to Secure Mode. Logged and intentional.
 2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, running `hs-unlock`, and rebooting back. Booting the Non-HS kernel requires **physical presence**. An attacker without physical presence cannot take this path.
 
-What this means for the threat model:
+What this means for security:
 
 - Remote root alone is not sufficient to defeat enforcement. There is no agent to kill, no kernel module to unload, no LSM policy to set permissive, and no way to remotely force a reboot into the Non-HS kernel.
 - Defeating HeartSuite Core Secure requires physical presence — a keyboard and monitor at the machine, a serial port, or a hypervisor console. SSH access, regardless of privilege level, is not sufficient.

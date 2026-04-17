@@ -7,7 +7,7 @@ tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security",
 toc: true
 ---
 
-**Overview**: Allowlisting controls what programs can run, but an approved program that malware takes over can still write files — ransomware running inside an approved process can encrypt whatever that process can reach. HeartSuite Core Secure automatically creates a versioned backup every time a file in a protected directory is written. Only HeartSuite Core Secure can access the backups — no other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
+**Overview**: Allowlisting controls what programs can run, but an approved program that malware takes over can still write files — ransomware running inside an approved process can encrypt whatever that process can reach. Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted. HeartSuite Core Secure automatically creates a versioned backup every time a file in a protected directory is written, and under Lockdown the kernel itself prevents any program from reaching those backups. No other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
 ## Automatic Versioning
 

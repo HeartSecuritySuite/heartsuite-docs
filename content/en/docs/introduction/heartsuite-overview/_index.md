@@ -13,7 +13,7 @@ menu:
     identifier: "heartsuite-overview"
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist is blocked before it can execute, including malware and zero-day attacks that detection-based tools might miss.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three — per program, not per user. Your SSH server and your web server both run as root; they still get different permissions because they are different programs. Any program not on the allowlist is blocked at the kernel before it can run or cause damage.
 
 ## Kernel-Level Enforcement
 
@@ -35,11 +35,13 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 
 ## Reduced Kernel Attack Surface
 
+The security industry patches vulnerabilities one at a time. HeartSuite Core Secure removes the features attackers rely on instead.
+
 Most malware escalates privilege by reaching for the same handful of kernel features. eBPF to hide processes. FUSE to redirect reads. Overlay filesystems to shadow protected directories. Userspace security frameworks — AppArmor, SMACK, Landlock — to pivot through. Unprivileged user namespaces to become root without credentials.
 
 The HeartSuite Core Secure kernel is compiled without any of them.
 
-Detection tools like Falco, Cilium Tetragon, and bpftrace watch these primitives and raise alerts when something looks suspicious. HeartSuite Core Secure takes a different path. It removes the primitives. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker.
+Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. HeartSuite Core Secure takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker.
 
 For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
 
@@ -83,6 +85,8 @@ Because access permissions are enforced inside the HeartSuite Core Secure kernel
 ### 4. File Backup and Versioning
 
 HeartSuite Core Secure automatically backs up files in designated directories and prevents all programs from accessing the backups — only HeartSuite Core Secure itself can reach them. The version manager can restore any version of a backed-up file, regardless of whether it was encrypted, deleted, or modified.
+
+Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. HeartSuite Core Secure's backups are not permission-protected: under Lockdown, the kernel itself blocks write access to backup files. No program, including root, can reach them.
 
 ### 5. Secure Script Launchers
 
