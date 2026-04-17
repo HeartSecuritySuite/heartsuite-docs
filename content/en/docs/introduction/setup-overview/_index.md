@@ -61,7 +61,7 @@ The following diagram shows the path from installation to Secure Mode, including
 ```mermaid
 graph TD
     A[Install HeartSuite Core Secure] --> B{Cloud or Local?}
-    B -- Cloud --> C[Boot instance — Phase 1 auto-completes]
+    B -- Cloud --> C[Boot instance — Dashboard confirms Phase 1 complete]
     B -- Local --> D["Run hs-os-boot-setup — multiple reboots"]
     D --> C
     C --> E[Dashboard appears — Suggested Next Step]
@@ -73,7 +73,7 @@ graph TD
     J --> K["Phase 7: Activate Secure Mode"]
     K --> L["Lockdown: [r] Reboot or [l] Reboot + Lockdown"]
     L --> M{Maintenance needed?}
-    M -- Yes --> N["Dashboard Maintenance wizard guides through steps"]
+    M -- Yes --> N["Maintenance screen guides through steps"]
     N --> K
     M -- No --> O[System secured]
 ```

@@ -26,6 +26,9 @@ When launchers are pending, the screen shows:
 [a] Activate   [s] Skip
 ```
 
+> [!SCREENSHOT]
+> **Screenshot needed**: Launchers screen (`[l]`) — show the screen with 1–2 pending interpreters listed in the Detected Interpreters section, the status count ("2 interpreter(s) found across 47 log event(s). 2 launcher(s) available but not yet activated."), and `[a]` Activate / `[s]` Skip visible.
+
 Press `[a]` to activate all pending launchers at once. HeartSuite Core Secure registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
 
 After activation, the screen confirms which launchers were activated:

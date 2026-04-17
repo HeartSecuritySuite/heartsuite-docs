@@ -32,6 +32,9 @@ Repeat until the setup screen shows **Setup Complete** in green — no manual co
 
 After three to five cycles (depending on the distribution), the setup screen confirms that all startup and shutdown programs have been allowlisted.
 
+> [!SCREENSHOT]
+> **Screenshot needed**: System Setup screen — show the screen mid-cycle with the current step description and `[a]` action visible, then a second frame showing the **Setup Complete** confirmation in green. Both frames should show the step counter. Capture from the HeartSuite Core Secure kernel console.
+
 ## After Phase 1 Completes
 
 When the setup screen shows the completion message, press `[q]` to return to the Dashboard. The Dashboard displays your current progress and the Suggested Next Step guides you into Phase 2 (Program Allowlisting).

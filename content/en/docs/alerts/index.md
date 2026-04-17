@@ -10,6 +10,9 @@ type: docs
 
 **Overview**: In Secure Mode, blocks happen whether or not anyone is connected to the Dashboard — without alerts, a blocked program fails silently. Alerts notify you of blocks and state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
 
+> [!SCREENSHOT]
+> **Screenshot needed**: Alert Settings screen (`[e]`) — show the Email tab in a configured state: Node ID filled, SMTP fields populated, password shown as `(set)`, Save and Test buttons visible. A second frame showing the Fleet tab with Syslog toggled on and the Webhook field populated would be valuable.
+
 ## How Alerts Work
 
 Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.

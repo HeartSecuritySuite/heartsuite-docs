@@ -19,6 +19,9 @@ By default, `/home` is configured for backup. You can add or remove directories 
 
 From the Dashboard, select the Backup screen (`[b]`). The screen shows your current backup configuration — which directories are protected and when they were last backed up.
 
+> [!SCREENSHOT]
+> **Screenshot needed**: Backup screen (`[b]`) — show the configuration view with 2–3 protected directories listed, each showing the last-backup timestamp. The `[n]` Add and `[r]` Remove options should be visible. A second frame showing the Timeline browse mode (`[t]`) with a list of dates and modified files would show the recovery workflow.
+
 From this screen you can:
 
 - **Add directories** (`[n]`) — protect additional directories (e.g., `/var/www`, `/etc`, `/usr/lib`)

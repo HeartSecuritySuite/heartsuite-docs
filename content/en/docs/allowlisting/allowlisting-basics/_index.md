@@ -114,6 +114,9 @@ The sort order is a workflow convenience that determines which programs appear f
 
 From the Dashboard, select the Programs queue (`[p]`). Each program is presented with its package metadata. Press `[a]` to approve execution or `[s]` to skip.
 
+> [!SCREENSHOT]
+> **Screenshot needed**: Programs queue — show a real review item with all metadata fields populated (Package, Description, Category, Maintainer, Installed date), the action keys `[a]` `[s]` `[?]` visible in the footer, and the progress indicator at the top (e.g., "Programs: reviewing 2 of 7"). Include the groups panel on the left showing Unknown origin / Installed after OS / Installed with OS sections.
+
 ## File Access Queue (Phase 4)
 
 Once you approve a program's execution, HeartSuite Core Secure begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
@@ -155,6 +158,9 @@ This file access has not been allowlisted.
 
 From the Dashboard, select the File Access queue (`[f]`).
 
+> [!SCREENSHOT]
+> **Screenshot needed**: File Access queue — show a grouped review item (e.g., "847 file reads from /usr/lib/python3/") with the sample files listed and the group approval option visible. The read/write distinction should be clear from the action key label.
+
 > [!TIP]
 > Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). HeartSuite Core Secure groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
 
@@ -180,6 +186,9 @@ This destination has not been allowlisted for this program.
 ```
 
 From the Dashboard, select the Internet Access queue (`[i]`).
+
+> [!SCREENSHOT]
+> **Screenshot needed**: Internet Access queue — show a real review item with the destination IP, reverse DNS hostname with registrar and country, program name and metadata, attempt count, and `[a]` `[s]` action keys. Ideal if destination shows a recognisable provider (e.g., AWS, Cloudflare).
 
 > [!NOTE]
 > This edition supports specific IPv4 and IPv6 addresses only.

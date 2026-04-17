@@ -31,7 +31,28 @@ These tools provide runtime confinement or kernel-level enforcement of some kind
 
 ## Trust Boundaries and Bypass Surface
 
-Three questions cut to the core of any enforcement mechanism: *who is trusted to set the policy, who is gated at runtime, and what does a bypass look like?* The table below answers each for the main enforcement mechanisms alongside HeartSuite Core Secure, so the differences are visible in one shape.
+Three questions cut to the core of any enforcement mechanism: *who is trusted to set the policy, who is gated at runtime, and what does a bypass look like?*
+
+```mermaid
+graph LR
+    A[Attacker gains root] --> B["eBPF agent\n(Falco, Tetragon)"]
+    A --> C["LSM framework\n(AppArmor, SELinux)"]
+    A --> D["seccomp sandbox\n(bubblewrap, firejail)"]
+    A --> E["Linux EDR agent\n(CrowdStrike, SentinelOne)"]
+    A --> F["HeartSuite Core Secure"]
+    B --> G["Kill agent or\nunload BPF program"]
+    C --> H["Set permissive or\nreload policy"]
+    D --> I["Launch same binary\nwithout the filter"]
+    E --> J["Kill driver or\nBYOVD bypass"]
+    F --> K["Physical or serial-console\naccess required"]
+    G --> L["Protection disabled ✗"]
+    H --> L
+    I --> L
+    J --> L
+    K --> M["Protection intact ✓"]
+```
+
+The table below answers each question in full for the main enforcement mechanisms alongside HeartSuite Core Secure.
 
 | Mechanism | Trusted during setup | Untrusted at runtime | How enforcement is bypassed |
 |---|---|---|---|

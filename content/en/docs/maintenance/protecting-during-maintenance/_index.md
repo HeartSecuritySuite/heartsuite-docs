@@ -24,6 +24,9 @@ Before any mode change, the Maintenance screen presents a safety checklist. The 
 
 The Dashboard shows green checkmarks for items that pass and amber warnings for items that need attention. Press `[c]` Confirmed to proceed or `[s]` Skip to continue without completing the checklist. If you skip, the Dashboard displays a persistent reminder throughout the maintenance period — it does not disappear until you return to Secure Mode.
 
+> [!SCREENSHOT]
+> **Screenshot needed**: Maintenance screen (`[t]`) safety checklist — show the checklist with a mix of green checkmarks and at least one amber warning so both states are visible. The `[c]` Confirmed and `[s]` Skip options must be visible at the bottom.
+
 > [!NOTE]
 > The safety checklist is more critical for the Lockdown path (Option 2), where HeartSuite Core Secure will be completely absent. For the standard path (Option 1), HeartSuite Core Secure continues logging and running backups.
 

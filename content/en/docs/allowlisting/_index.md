@@ -10,17 +10,6 @@ type: docs
 
 **Overview**: By default, any program on a Linux server can execute, access any file, and connect to any destination. HeartSuite Core Secure controls all three per program — the Dashboard guides you through each approval phase and tracks your progress.
 
-```mermaid
-graph TD
-    A[Dashboard] --> B[Phase 2: Programs queue]
-    A --> C[Phase 4: File Access queue]
-    A --> D[Phase 5: Internet Access queue]
-    B --> E[Approve or skip each item]
-    C --> E
-    D --> E
-    E --> F[Dashboard updates pending counts]
-```
-
 Allowlisting spans three phases of the HeartSuite Core Secure setup process:
 
 - **Phase 2 — Program Allowlisting** (`[p]`): Approve which programs are permitted to execute.
