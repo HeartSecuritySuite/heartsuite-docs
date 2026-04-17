@@ -76,7 +76,7 @@ Activating Secure Mode requires all review queues to be empty, alerts to be conf
 
 Lockdown protects the integrity of allowlist entries by making them immutable. Once applied, no changes can be made to the allowlist while the server is running — preventing attackers from modifying the security configuration, even with root access.
 
-After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Lockdown cannot be reversed at runtime. To make changes, the Dashboard's Maintenance screen (`[t]`) guides you through the correct maintenance path — including a guided 3-step process when Lockdown requires booting the Non-HS kernel.
+After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Lockdown holds for the life of the boot — no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance screen (`[t]`) guides you through the correct maintenance path — including a guided 3-step process when Lockdown requires booting the Non-HS kernel.
 
 Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root, while the HeartSuite Core Secure kernel is running.
 

@@ -37,7 +37,7 @@ Secure Script Launchers create a wrapper that applies the individual script's al
 
 - Each script is treated like a standalone program with its own permissions
 - One script can have network access while another cannot
-- Interpreters can be blocked entirely, ensuring only allowlisted scripts run
+- Interpreters can be blocked entirely — only allowlisted scripts run
 
 ## Using Launchers
 

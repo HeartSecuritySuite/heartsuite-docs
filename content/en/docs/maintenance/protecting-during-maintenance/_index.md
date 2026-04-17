@@ -50,7 +50,10 @@ When finished, return to Secure Mode from the Dashboard. New activity from the m
 
 ## Option 2: Boot the Non-HS Kernel (Lockdown Active)
 
-When Lockdown is active, the Maintenance screen does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where HeartSuite Core Secure is completely absent. This path requires physical or serial-console access to the machine — you must be able to select the Non-HS kernel at GRUB. An attacker without that access cannot take this path remotely.
+> [!NOTE]
+> This path requires physical presence at the machine — a keyboard and monitor, a serial port, or your cloud provider's serial console (AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console). Confirm that access before you start.
+
+When Lockdown is active, the Maintenance screen does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where HeartSuite Core Secure is completely absent.
 
 ### Step 1 of 3: Boot Non-HS Kernel and Remove Immutable Flags
 

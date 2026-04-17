@@ -30,13 +30,13 @@ A: Yes. Each host runs the HeartSuite Core Secure kernel with the same allowlist
 
 {{< details summary="How does HeartSuite Core Secure compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical or serial-console access only).
+A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical presence only).
 
 {{< /details >}}
 
 {{< details summary="Does HeartSuite Core Secure replace my SIEM, NDR, or vulnerability scanner?" >}}
 
-A: No. HeartSuite Core Secure enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or manage compliance at scale. (The same allowlist can be distributed to any number of hosts; see [Can I use the same allowlist across a fleet?](#can-i-use-the-same-allowlist-across-a-fleet-or-kubernetes-cluster) below.) SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that HeartSuite Core Secure does not address. Run HeartSuite Core Secure alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. HeartSuite Core Secure's activity log is a useful SIEM input. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/).
+A: No. HeartSuite Core Secure enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or produce compliance reports across a fleet. (The same allowlist can be distributed to any number of hosts; see [Can I use the same allowlist across a fleet?](#can-i-use-the-same-allowlist-across-a-fleet-or-kubernetes-cluster) below.) SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that HeartSuite Core Secure does not address. Run HeartSuite Core Secure alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. HeartSuite Core Secure's activity log is a useful SIEM input. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/).
 
 {{< /details >}}
 
@@ -88,7 +88,7 @@ A: No. Most security products generate high volumes of alerts because they flag 
 
 {{< /details >}}
 
-{{< details summary="What are the limitations of the 'free trial'?" >}}
+{{< details summary="What does the free trial include?" >}}
 
 A: Secure Mode and Lockdown require a subscription. Setup Mode logs activity without blocking — you can observe your workload but enforcement is not active.
 

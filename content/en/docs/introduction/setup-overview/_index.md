@@ -19,7 +19,7 @@ menu:
 
 HeartSuite Core Secure enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. The administrator reviews activity through the Dashboard queues, approves programs and their access, and builds an allowlist that reflects the system's actual workload. Once the allowlist is complete, the administrator transitions to Secure Mode with confidence that approved operations will continue uninterrupted.
+Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. You review activity through the Dashboard queues, approve programs and their access, and build an allowlist that reflects the system's actual workload. Once the allowlist is complete, you transition to Secure Mode.
 
 Setup Mode is the default after installation. HeartSuite Core Secure's automated backup system also operates during Setup Mode, providing an additional layer of protection even before enforcement begins.
 

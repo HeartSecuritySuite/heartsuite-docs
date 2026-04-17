@@ -27,7 +27,7 @@ The Dashboard provides orientation for these states. The indicator at the top di
 
 ### Trust Graduation Across Modes
 
-Each mode defines a different trust boundary. In Setup Mode, the operator is trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, the operator's ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires console or serial access, preventing a remote attacker from triggering it.
+Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires console or serial access, preventing a remote attacker from triggering it.
 
 ### Protection State
 
@@ -147,7 +147,7 @@ Files and directories may be made mutable again once Lockdown is no longer activ
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-You must have either physical or serial port access to your server to reboot to the Non-HS kernel — attackers cannot remotely reboot to bypass HeartSuite Core Secure, providing another layer of defense.
+Physical presence is required to reboot to the Non-HS kernel — attackers cannot remotely bypass HeartSuite Core Secure, providing another layer of defense.
 
 ### Lockdown Commands
 
