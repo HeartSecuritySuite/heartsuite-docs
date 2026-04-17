@@ -14,8 +14,6 @@ With exception of the Secure Script Launchers, all tools are located in the `/.h
 
 ## Management Tools
 
-These are the tools most users interact with, organized by phase.
-
 ### Dashboard and Review (Phases 1-5)
 
 - **Dashboard** — where you manage HeartSuite Core Secure. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `sudo python3 main.py`.

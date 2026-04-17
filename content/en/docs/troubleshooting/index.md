@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting and Logs"
 weight: 100
-description: "Log management, dmesg analysis, and common issues."
+description: "Diagnosing blocks, mode mismatches, and kernel issues."
 categories: ["Support"]
 tags: ["heartsuite", "linux", "logs", "issues", "help", "debugging"]
 toc: true
@@ -30,7 +30,7 @@ The review queues are how you see and resolve what needs attention. The underlyi
 
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 
-## Kernel Log (Advanced)
+## Kernel Log
 
 The Dashboard's review queues automatically collect entries from both the HeartSuite Core Secure activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
 

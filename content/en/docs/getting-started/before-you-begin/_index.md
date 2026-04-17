@@ -3,7 +3,7 @@ title: "Before You Begin"
 weight: 1
 description: "System requirements and prerequisites for installing HeartSuite Core Secure."
 categories: ["Essentials"]
-tags: ["heartsuite", "linux", "prerequisites", "requirements", "beginner", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky"]
+tags: ["heartsuite", "linux", "prerequisites", "requirements", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky"]
 toc: true
 type: docs
 ---

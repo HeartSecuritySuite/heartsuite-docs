@@ -26,7 +26,7 @@ Database servers and similar programs need write permissions to their data files
 
 ## Programs That Need Broad Access During Lockdown
 Some programs (e.g., shutdown routines) need `rm` during operation, but you may want to restrict the full `rm` binary.
-- **Solution**: Create a limited copy (`limited_rm`) with restricted permissions.
+- Create a limited copy (`limited_rm`) with restricted permissions.
 - Configure scripts to use the copy during Lockdown.
 
 Setup steps:
@@ -45,4 +45,4 @@ Restore full `rm` for maintenance:
 # sudo mv /usr/bin/rm-orig /usr/bin/rm
 ```
 
-Now, scripts call `limited_rm` with restricted access during lockdown.
+During Lockdown, scripts use `limited_rm` with restricted access.

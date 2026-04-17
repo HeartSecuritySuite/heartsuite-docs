@@ -100,9 +100,9 @@ Both are valid configurations depending on your threat model. HeartSuite Core Se
 
 From the Dashboard, use the Mode Switch screen (`[m]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Secure Mode would block.
 
-### Advanced: CLI Mode Switch
+### Switching Mode from a Non-HS Kernel
 
-When booted into a Non-HS kernel (where the Dashboard's mode switch is not available), use the CLI to pre-configure the mode for the next HeartSuite Core Secure kernel boot:
+When booted into a Non-HS kernel, set the mode before rebooting to the HeartSuite Core Secure kernel:
 
 ```bash
 # sudo hs-mode-switch setup
@@ -149,7 +149,7 @@ If you try to write to an immutable file without removing the flags first, you w
 
 You must have either physical or serial port access to your server to reboot to the Non-HS kernel — attackers cannot remotely reboot to bypass HeartSuite Core Secure, providing another layer of defense.
 
-### Advanced: Lockdown CLI Tools
+### Lockdown Commands
 
 The underlying CLI tools are available for advanced configuration and automation:
 

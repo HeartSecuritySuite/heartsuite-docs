@@ -39,7 +39,7 @@ Each interpreter now routes through its launcher. Scripts using
 these interpreters will be reviewed on their own permission terms.
 ```
 
-Press `[q]` to return to the Dashboard. Phase 3 is marked complete automatically.
+Press `[q]` to return to the Dashboard. The Dashboard marks Phase 3 complete.
 
 ## If No Script Interpreters Are Detected
 
@@ -50,7 +50,7 @@ No script interpreter log events detected.
 You may proceed to the next phase without activating any launchers.
 ```
 
-Phase 3 is not required if your system does not use script interpreters. The Dashboard updates the Suggested Next Step to proceed to Phase 4.
+Phase 3 is not required if your system does not use script interpreters.
 
 ## Skipping Launcher Setup
 

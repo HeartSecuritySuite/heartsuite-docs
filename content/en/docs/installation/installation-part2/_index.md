@@ -35,11 +35,11 @@ After three to five cycles (depending on the distribution), the setup screen con
 > [!SCREENSHOT]
 > **Screenshot needed**: System Setup screen — show the screen mid-cycle with the current step description and `[a]` action visible, then a second frame showing the **Setup Complete** confirmation in green. Both frames should show the step counter. Capture from the HeartSuite Core Secure kernel console.
 
-## After Phase 1 Completes
+## Returning to the Dashboard
 
 When the setup screen shows the completion message, press `[q]` to return to the Dashboard. The Dashboard displays your current progress and the Suggested Next Step guides you into Phase 2 (Program Allowlisting).
 
-## If the UI Does Not Appear After Boot
+## If the Dashboard Does Not Appear After Boot
 
 If the Dashboard does not appear on the console after booting into the HeartSuite Core Secure kernel:
 

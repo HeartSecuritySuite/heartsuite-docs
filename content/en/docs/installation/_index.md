@@ -3,7 +3,7 @@ title: "Obtaining and Installing HeartSuite Core Secure"
 weight: 20
 description: "Download, installation steps, and preliminary setup for virtual machines."
 categories: ["Installation"]
-tags: ["heartsuite", "linux", "setup", "kernel", "download", "beginner"]
+tags: ["heartsuite", "linux", "setup", "kernel", "download"]
 toc: true
 type: docs
 menu:
