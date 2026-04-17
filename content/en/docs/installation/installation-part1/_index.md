@@ -17,10 +17,18 @@ menu:
 > [!NOTE]
 > Cloud users skip this step entirely. The HeartSuite Core Secure kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. The Dashboard appears automatically on first boot.
 
+## Verify the Download
+
+```bash
+sha256sum -c heartsuite-install.sh.sha256
+```
+
+Expected output: `heartsuite-install.sh: OK`
+
 ## Install
 
 ```bash
-tar xvf *HeartSuite*.tar -m && sudo bash heartsuite-install-bundle.sh
+sudo bash heartsuite-install.sh
 ```
 
 The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard.
