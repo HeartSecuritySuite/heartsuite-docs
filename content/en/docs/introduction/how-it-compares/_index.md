@@ -84,8 +84,8 @@ Some software depends on kernel features the HeartSuite Core Secure kernel does 
 
 - Container hosts using Docker's default OverlayFS storage driver — OverlayFS is not compiled in; overlay filesystems are a surface for shadowing protected directories
 - Hosts where eBPF-based tooling must run locally — BPF syscalls are not present on the HS kernel; these tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding
-- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; hosting guest VMs requires kernel primitives removed to reduce attack surface
-- Systems that require rootless containers (unprivileged user namespaces) — not compiled in; unprivileged user namespaces are a path to privilege escalation without credentials
+- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; the kernel primitives KVM requires have been removed to reduce attack surface. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
+- Systems that require rootless containers (unprivileged user namespaces) — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
