@@ -30,9 +30,13 @@ In financial, legal, healthcare, and defence workplaces, a workstation's toolcha
 > [!NOTE]
 > **Lockdown** freezes the allowlist to prevent changes, including by root. This ensures a compromised user session cannot quietly add unauthorized tools, as enforcement happens at the kernel level.
 
+In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no. No program or user, including root, can modify the allowlist or disable enforcement while the HeartSuite Core Secure kernel is running. Disabling enforcement requires physical presence at the machine. For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question.
+
 ## Build, CI, and Release Infrastructure
 
-A build host sits at the top of a supply chain. Compromise it, and every downstream consumer is at risk. **HeartSuite Core Secure** restricts the host to only approved programs, controlling which can execute, which files they can access, and which network connections they can make:
+A build host sits at the top of a supply chain. Compromise it, and every downstream consumer is at risk. CVE-2024-27198 — JetBrains TeamCity, unauthenticated RCE — demonstrates what this means. An attacker who reaches a TeamCity server can execute any program without credentials. On a HeartSuite Core Secure build host, that program has no allowlist entry. The kernel refuses to run it.
+
+**HeartSuite Core Secure** restricts the host to only approved programs, controlling which can execute, which files they can access, and which network connections they can make:
 
 - Compilers, linkers, signing tools, and release scripts you approved in Setup Mode.
 - Network destinations they need to fetch dependencies and publish build artifacts.
@@ -60,3 +64,5 @@ A few workloads are not compatible with the HeartSuite Core Secure kernel as shi
 - **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
+
+Kubernetes-native runtime security, cross-platform endpoint protection across Windows and macOS, developer per-application sandboxing, and enterprise backup at fleet scale each have dedicated products built for them. HeartSuite Core Secure is built for one thing: Linux systems where the security policy must survive a compromised root account.

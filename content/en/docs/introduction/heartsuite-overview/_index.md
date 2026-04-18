@@ -88,6 +88,8 @@ HeartSuite Core Secure automatically backs up files in designated directories an
 
 Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. HeartSuite Core Secure's backups are not permission-protected: under Lockdown, the kernel itself blocks write access to backup files. No program, including root, can reach them.
 
+The allowlist blocks most attacks at the kernel. When an approved program is compromised, a backup on every write means recovery starts from the moment before damage began — not the last scheduled snapshot.
+
 ### 5. Secure Script Launchers
 
 Allowlist entries can be created for interpreted code such as Python, PHP, and Perl. HeartSuite Core Secure provides Secure Script Launchers that identify the specific script being run when an interpreter is launched, enabling per-script access control with the same granularity as compiled programs.
@@ -97,6 +99,10 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 **Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete. Proceed directly to the review queues.
 
 **Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. Run `hs-os-boot-setup` through multiple reboots (the Dashboard shows a step counter). Once the Dashboard confirms Phase 1 is complete, both paths merge.
+
+## How HeartSuite Core Secure Stands Alone
+
+No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Core Secure the right choice for deployments where the security layer itself must be protected from the attacker who is already inside.
 
 ## Is HeartSuite Core Secure Right for You?
 
