@@ -1,7 +1,7 @@
 ---
 title: "Installing HeartSuite Core Secure – Part 2"
 weight: 4
-description: "Auto-allowlisting essential startup programs with hs-os-boot-setup."
+description: "Completing the System Setup screen to allowlist startup and shutdown programs."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "allowlisting", "script"]
 type: docs

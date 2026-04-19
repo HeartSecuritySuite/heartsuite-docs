@@ -49,7 +49,7 @@ Users who install HeartSuite Core Secure on bare-metal or custom VMs follow a lo
 
 1. Download and extract the installation package.
 2. Prepare GRUB and install the HeartSuite Core Secure kernel.
-3. Run `hs-os-boot-setup`, which handles multiple reboots with a step counter.
+3. Follow the System Setup screen — press `[a]` for each step; the system reboots after each one.
 4. After Phase 1 is complete, the Dashboard appears and the journey merges with the Cloud path.
 
 Both paths converge at the Dashboard after Phase 1. From that point forward, the workflow is identical.
@@ -62,7 +62,7 @@ The following diagram shows the path from installation to Secure Mode, including
 graph TD
     A[Install HeartSuite Core Secure] --> B{Cloud or Local?}
     B -- Cloud --> C[Boot instance — Dashboard confirms Phase 1 complete]
-    B -- Local --> D["Run hs-os-boot-setup — multiple reboots"]
+    B -- Local --> D["System Setup screen — press [a] each step"]
     D --> C
     C --> E[Dashboard appears — Suggested Next Step]
     E --> F["Phase 2: Programs queue — approve programs"]

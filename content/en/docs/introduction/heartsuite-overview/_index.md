@@ -98,7 +98,7 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 **Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete. Proceed directly to the review queues.
 
-**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. Run `hs-os-boot-setup` through multiple reboots (the Dashboard shows a step counter). Once the Dashboard confirms Phase 1 is complete, both paths merge.
+**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. The System Setup screen guides you through multiple setup steps with a step counter. Once the Dashboard confirms Phase 1 is complete, both paths merge.
 
 ## How HeartSuite Core Secure Stands Alone
 

@@ -122,7 +122,7 @@ A: No. In Secure Mode, a program can only access files and directories that have
 
 {{< details summary="Why do I need to reboot multiple times during installation?" >}}
 
-A: The HeartSuite Core Secure kernel must be loaded during the installation process. Each reboot allows `hs-os-boot-setup` to capture and allowlist additional startup and shutdown programs. Skipping reboots can leave essential programs unapproved, which would cause the system to hang in Secure Mode.
+A: The HeartSuite Core Secure kernel must be loaded during the installation process. Each setup step — run via the System Setup screen — captures startup and shutdown programs that appeared in the previous boot. Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Secure Mode.
 
 {{< /details >}}
 
@@ -132,9 +132,9 @@ A: Check GRUB settings (e.g., uncomment GRUB_DISABLE_LINUX_UUID for VMs), verify
 
 {{< /details >}}
 
-{{< details summary="hs-os-boot-setup doesn't show success after many runs—what next?" >}}
+{{< details summary="The System Setup screen is not showing Setup Complete — what next?" >}}
 
-A: Check the Dashboard's Suggested Next Step — it will indicate what remains. Ensure you are running as root and that you have rebooted between each run of `hs-os-boot-setup`.
+A: Check the Dashboard's Suggested Next Step — it will indicate what remains. Press `[a]` from the System Setup screen to run the next step. The system reboots automatically after each step that finds new programs.
 
 {{< /details >}}
 

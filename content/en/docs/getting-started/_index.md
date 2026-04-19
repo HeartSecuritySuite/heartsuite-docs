@@ -47,7 +47,7 @@ Users launching a pre-installed HeartSuite Core Secure cloud instance (AWS AMI, 
 Users installing HeartSuite Core Secure on bare-metal or custom VMs follow a two-part installation sequence before reaching the Dashboard.
 
 1. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the HeartSuite Core Secure kernel.
-2. **[Installation Part 2](../installation/installation-part2/)** — run `hs-os-boot-setup` through multiple reboots until the Dashboard confirms Phase 1 is complete.
+2. **[Installation Part 2](../installation/installation-part2/)** — follow the System Setup screen through multiple setup steps until the Dashboard confirms Phase 1 is complete.
 
 Once Phase 1 is complete, the Cloud Path and Local Path merge — the Dashboard shows your current phase and the Suggested Next Step directs you to begin allowlisting.
 

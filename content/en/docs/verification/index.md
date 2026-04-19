@@ -18,7 +18,7 @@ When you launch a pre-installed HeartSuite Core Secure cloud instance, the Dashb
 
 ### Local Path
 
-After completing the local installation process (download, GRUB preparation, kernel install, `hs-os-boot-setup` with its multiple reboots), the Dashboard appears once Phase 1 is complete. From here, both paths proceed identically.
+After completing the local installation process (download, GRUB preparation, kernel install, and the System Setup screen's multiple steps), the Dashboard appears once Phase 1 is complete. From here, both paths proceed identically.
 
 ## What the Dashboard Shows
 
@@ -68,7 +68,7 @@ If Phase 1 does not complete, or the indicator at the top shows a state you did 
    systemctl status heartsuite
    ```
 
-3. For local installations, verify that all `hs-os-boot-setup` steps completed. `hs-os-boot-setup` uses a step counter across reboots — run it again and check the output.
+3. For local installations, verify that the System Setup screen completed — it shows **Setup Complete** in green when all startup and shutdown programs have been allowlisted. If not, return to the System Setup screen and press `[a]` to run another step.
 4. If the Dashboard shows "UNKNOWN STATE — protection status cannot be determined", follow the Suggested Next Step displayed on the Dashboard.
 5. If the issue persists, contact support at support@heartsecsuite.com.
 

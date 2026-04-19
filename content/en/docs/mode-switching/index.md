@@ -45,7 +45,7 @@ The indicator at the top of the Dashboard reflects the current system state:
 At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and network destinations such programs may access. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
 
 > [!NOTE]
-> The Dashboard prevents Secure Mode activation until all preconditions are met — including completion of all setup phases and boot configuration via `hs-os-boot-setup`. If any precondition is not satisfied, the Mode Switch screen (`[m]`) displays "Mode switch is not available yet" and lists what remains.
+> The Dashboard prevents Secure Mode activation until all preconditions are met — including completion of all setup phases and the System Setup screen steps. If any precondition is not satisfied, the Mode Switch screen (`[m]`) displays "Mode switch is not available yet" and lists what remains.
 
 If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite Core Secure will actively block programs from accessing those files and network addresses when you switch to Secure Mode.
 
@@ -77,7 +77,7 @@ graph TD
 The Dashboard is where you switch modes. When all preconditions are met, the Suggested Next Step will offer Secure Mode activation. The precondition checklist includes:
 
 - All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
-- Boot configuration is complete (`hs-os-boot-setup`)
+- Boot configuration is complete (System Setup screen)
 - Phase 7 is unlocked (phases 2 through 6 complete)
 
 When preconditions are satisfied, the Dashboard presents the activation option.
