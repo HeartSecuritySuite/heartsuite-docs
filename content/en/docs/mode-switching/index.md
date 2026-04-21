@@ -12,7 +12,7 @@ type: docs
 
 ## System States
 
-HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your threat model. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
+HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your security requirements. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
 
 | | HeartSuite Core Secure kernel loaded | Enforcement | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
@@ -27,7 +27,7 @@ The Dashboard provides orientation for these states. The indicator at the top di
 
 ### Trust Graduation Across Modes
 
-Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires console or serial access, preventing a remote attacker from triggering it.
+Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
 
 ### Protection State
 
@@ -125,7 +125,7 @@ Lockdown is a separate decision you make after activating Secure Mode. Both runn
 | Maintenance tools (e.g. `rm`) optionally restricted? | No | **Optional** — can be made non-executable for additional hardening (see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/)) |
 | Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
 | How long does Lockdown last? | N/A | Until the next reboot |
-| How do you exit Lockdown? | N/A | Boot the Non-HS kernel, or run `hs-unlock` after a reboot without Lockdown |
+| How do you exit Lockdown? | N/A | Boot the Non-HS kernel (physical presence required — keyboard and monitor, serial port, or cloud serial console — select from GRUB manually), or run `hs-unlock` after a reboot without Lockdown |
 
 ### What Lockdown Does
 
@@ -147,7 +147,7 @@ Files and directories may be made mutable again once Lockdown is no longer activ
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-Physical presence is required to reboot to the Non-HS kernel — attackers cannot remotely bypass HeartSuite Core Secure, providing another layer of defense.
+Selecting the Non-HS kernel from GRUB is intentionally manual — it requires physical presence at the machine: a keyboard and monitor, a serial port, or your cloud provider's serial console. An attacker cannot trigger it remotely, even as root. Before you reboot, the Maintenance screen (`[t]`) displays the exact GRUB entry to select — you do not need to know it in advance. Returning to HeartSuite after maintenance is automatic: the HS kernel is always the GRUB default, so a reboot brings you back without any GRUB interaction.
 
 ### Lockdown Commands
 

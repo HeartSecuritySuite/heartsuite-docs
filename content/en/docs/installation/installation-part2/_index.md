@@ -25,8 +25,7 @@ Each cycle follows the same pattern:
 
 1. Press `[a]` to run the setup step — HeartSuite Core Secure scans startup and shutdown logs and adds the programs it finds to the allowlist.
 2. When the step completes, the system reboots automatically (5-second countdown — press any key to cancel if needed).
-3. At the GRUB menu, select the HeartSuite Core Secure kernel again.
-4. The Dashboard appears and the Suggested Next Step shows `[s] System Setup`. Press `[s]` to continue to the next step.
+3. The system boots back into the HeartSuite Core Secure kernel automatically. The Dashboard appears and the Suggested Next Step shows `[s] System Setup`. Press `[s]` to continue to the next step.
 
 Repeat until the setup screen shows **Setup Complete** in green — no manual commands are needed between cycles.
 

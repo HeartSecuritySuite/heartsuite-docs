@@ -96,12 +96,12 @@ Every security system has a known way to be taken out of the picture. Being expl
 HeartSuite Core Secure's allowlist can be changed through one path only:
 
 1. **Maintenance window** — you switch to Setup Mode, make changes, and return to Secure Mode. Logged and intentional.
-2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, running `hs-unlock`, and rebooting back. Booting the Non-HS kernel requires **physical presence**. An attacker without physical presence cannot take this path.
+2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, running `hs-unlock`, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
 
 What this means for security:
 
 - Remote root alone is not sufficient to defeat enforcement. There is no agent to kill, no kernel module to unload, no LSM policy to set permissive, and no way to remotely force a reboot into the Non-HS kernel.
-- Defeating HeartSuite Core Secure requires physical presence — a keyboard and monitor at the machine, a serial port, or a hypervisor console. SSH access, regardless of privilege level, is not sufficient.
+- Defeating HeartSuite Core Secure requires physical presence — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access, regardless of privilege level, is not sufficient.
 - Physical presence always returns control to you — no software applied to the system can prevent it.
 
 Compare this to the products in the first table: in most of them, remote root is sufficient to disable enforcement. HeartSuite Core Secure is deliberately not in that category.

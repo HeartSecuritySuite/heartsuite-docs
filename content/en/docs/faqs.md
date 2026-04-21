@@ -30,7 +30,7 @@ A: Yes. Each host runs the HeartSuite Core Secure kernel with the same allowlist
 
 {{< details summary="How does HeartSuite Core Secure compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical presence only).
+A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only).
 
 {{< /details >}}
 

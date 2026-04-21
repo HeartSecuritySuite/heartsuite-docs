@@ -30,7 +30,7 @@ In financial, legal, healthcare, and defence workplaces, a workstation's toolcha
 > [!NOTE]
 > **Lockdown** freezes the allowlist to prevent changes, including by root. This ensures a compromised user session cannot quietly add unauthorized tools, as enforcement happens at the kernel level.
 
-In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no. No program or user, including root, can modify the allowlist or disable enforcement while the HeartSuite Core Secure kernel is running. Disabling enforcement requires physical presence at the machine. For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question.
+In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no. No program or user, including root, can modify the allowlist or disable enforcement while the HeartSuite Core Secure kernel is running. Disabling enforcement requires physical presence at the machine — a keyboard and monitor, a serial port, or your cloud provider's serial console. For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question.
 
 ## Build, CI, and Release Infrastructure
 

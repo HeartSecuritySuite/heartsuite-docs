@@ -35,26 +35,21 @@ The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard.
 
 ## Reboot into the HeartSuite Core Secure Kernel
 
-Reboot the system:
+The installer sets the HeartSuite kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
 
-```bash
-reboot
-```
+After reboot, the Dashboard appears on the console (TTY1). Continue with [Installation Part 2](../installation-part2/).
 
-When the GRUB menu appears, select the HeartSuite Core Secure kernel:
+> [!NOTE]
+> **If you are connected over SSH**, your session drops when the reboot fires — this is expected. The Dashboard runs on the console (TTY1), not in an SSH terminal. Access it via your cloud provider's serial console, or a monitor and keyboard on bare-metal systems.
 
-Select the entry containing **HeartSuite** in the kernel name. On some distributions this appears under **Advanced options**.
+> [!NOTE]
+> **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the HeartSuite kernel from the GRUB menu manually.
 
-> [!TIP]
-> If the GRUB menu does not appear automatically, hold **Shift** (BIOS) or press **Esc** immediately after the system starts.
+## If the System Does Not Boot into HeartSuite
 
-After boot, the Dashboard appears on the console. Continue with [Installation Part 2](../installation-part2/).
+If the system boots to the wrong kernel or hangs:
 
-## If the Reboot Fails
-
-If the system does not reboot or hangs:
-
-1. Verify the installer completed without errors before rebooting.
-2. Check GRUB configuration for VMs (uncomment `GRUB_DISABLE_LINUX_UUID` if needed and run `update-grub`).
+1. Verify the installer completed without errors before the reboot fired.
+2. For VMs: if UUID detection causes a boot failure, uncomment `GRUB_DISABLE_LINUX_UUID` in `/etc/default/grub` and run `update-grub`, then reboot.
 
 If neither step resolves the issue, contact HeartSuite support.
