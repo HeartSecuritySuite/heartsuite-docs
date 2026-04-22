@@ -50,7 +50,7 @@ If the Dashboard does not appear on the console after booting into the HeartSuit
    ```bash
    uname -r
    ```
-   Expected output: `5.19.6-HeartSuite-1.0`
+   Expected output: `5.19.6-1.heartsuite`
 3. If the wrong kernel booted, reboot and select the correct entry from the GRUB menu.
 
 ## If the Setup Screen Does Not Progress
