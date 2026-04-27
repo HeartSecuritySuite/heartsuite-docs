@@ -1,0 +1,28 @@
+# htmltest configuration — link and anchor checks for the built Hugo site
+# Run as: htmltest -c .htmltest.yml
+# Run from CI after `hugo --minify`. The DirectoryPath points at Hugo's output.
+
+DirectoryPath: "public"
+
+# Internal links and anchors are the priority — catches bugs like
+# anchor links pointing into Hugo's default {{< details >}} shortcode,
+# which does not generate ids from summary text.
+CheckInternal: true
+CheckAnchors: true
+CheckImages: true
+
+# External links are skipped in routine CI runs (transient failures,
+# rate limits, slow). Enable locally when auditing externally.
+CheckExternal: false
+CheckMailto: false
+
+# Hugo emits directories without trailing slashes by design.
+IgnoreDirectoryMissingTrailingSlash: true
+
+# Don't fail on missing alt text — separate concern; revisit later.
+IgnoreAltMissing: true
+
+# Hugo's pretty-URL output puts each page at its-own/index.html.
+# These two flags handle the resulting link patterns cleanly.
+IgnoreEmptyHref: false
+TestFilesConcurrently: true

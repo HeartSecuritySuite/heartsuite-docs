@@ -64,6 +64,11 @@ jobs:
             --baseURL https://docs.heartsecsuite.com \
             --minify
 
+      - name: Check links and anchors with htmltest
+        uses: wjdp/htmltest-action@master
+        with:
+          config: .htmltest.yml
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
