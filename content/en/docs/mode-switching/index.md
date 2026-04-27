@@ -12,7 +12,7 @@ type: docs
 
 ## System States
 
-HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your security requirements. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
+HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your security requirements. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original Non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
 
 | | HeartSuite Core Secure kernel loaded | Enforcement | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
@@ -21,13 +21,13 @@ HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on th
 | **Secure Mode + Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
 | **Non-HS kernel** *(not a HeartSuite Core Secure mode)* | No — HeartSuite Core Secure absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup Mode and Secure Mode, HeartSuite Core Secure's kernel module is active. Backups, logging, and the Dashboard all function normally in both. Booting the non-HS kernel means HeartSuite Core Secure is completely absent — the module is not loaded, no enforcement or logging takes place, and backups do not run.
+In Setup Mode and Secure Mode, HeartSuite Core Secure's kernel module is active. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means HeartSuite Core Secure is completely absent — the HS kernel is not loaded, no enforcement or logging takes place, and backups do not run.
 
 The Dashboard provides orientation for these states. The indicator at the top displays the current protection state, and the Suggested Next Step guides you toward the appropriate action.
 
 ### Trust Graduation Across Modes
 
-Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — every denied action is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
+Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of UID; any program, including one running as root, is gated by the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
 
 ### Protection State
 
@@ -110,7 +110,7 @@ When booted into a Non-HS kernel, set the mode before rebooting to the HeartSuit
 
 ## Lockdown: Securing Your System in Secure Mode
 
-Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current lockdown status and provides the Suggested Next Step for managing it.
+Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, preventing tampering during production operation. The Dashboard displays the current Lockdown status and provides the Suggested Next Step for managing it.
 
 Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on how strictly you want to lock down the system. The table below summarises what changes when you apply Lockdown.
 
@@ -125,15 +125,25 @@ Lockdown is a separate decision you make after activating Secure Mode. Both runn
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
 | Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
 | How long does Lockdown last? | N/A | Until the next reboot |
-| How do you exit Lockdown? | N/A | Boot the Non-HS kernel (physical presence required — keyboard and monitor, serial port, or cloud serial console — select from GRUB manually), or run `hs-unlock` after a reboot without Lockdown |
+| How do you exit Lockdown? | N/A | Boot the Non-HS kernel (physical presence required — keyboard and monitor, serial port, or cloud serial console — select from GRUB manually), or run `HS_unlock.sh` after a reboot without Lockdown |
 
 ### What Lockdown Does
 
-Once Lockdown is engaged, HeartSuite Core Secure prevents any changes to the allowlist entries and other settings. Lockdown makes HeartSuite Core Secure configuration files and directories immutable using `chattr +i`. Lockdown also automatically restricts a class of approved programs that are necessary during maintenance but dangerous during production: file editors (`nano`, `vim`, `sed`, `ed`) are sealed and cannot run, and broadly-scoped file-system tools (`rm`, `cp`, `mv`) are replaced with restricted copies whose file-access scope is limited to the paths your system uses them on during normal operation. The Lockdown setup screen shows what will be restricted before you confirm; restoration is automatic when you enter Maintenance.
+Once Lockdown is engaged, HeartSuite Core Secure seals five things at once, all using `chattr +i`. The Lockdown setup screen shows the full inventory before you confirm, with per-category counts and a `[v] View full inventory` action per category. Restoration is automatic when you enter Maintenance.
+
+The five categories Lockdown seals:
+
+- **HeartSuite configuration** — your allowlist files, the mode state file, and the kernel image directory. Defends against allowlist tampering and kernel swap by an attacker who escalates to root.
+- **System integrity** — shared libraries (`/usr/lib/`), systemd unit directories, the SSH server config, and sudo policy. Defends against shared-library injection (a modified `libc.so` backdooring every program loading it), malicious systemd units installed to fire on next boot, and SSH or sudo policy weakened by a brief root compromise.
+- **Authentication state** — the account database (`/etc/passwd`, `/etc/shadow`, `/etc/group`) and no-login shells. Defends against an escalated attacker creating accounts, changing passwords, or converting service accounts into interactive logins.
+- **Boot-window and shell persistence** — cron and anacron configuration, environment defaults, and root's shell profiles. Defends against an attacker scheduling a script to run after a reboot but before Lockdown re-engages, and against bash-profile backdoors fired on the next root login.
+- **Maintenance tools** — file editors (`nano`, `vim`, `sed`, `ed`) made non-executable, and `rm`/`cp`/`mv` replaced with restricted copies whose write access is limited to the paths the kernel saw those tools used for during Setup Mode. Defends against a compromised approved program leveraging admin tools that run with their own broad scope, not the caller's.
+
+If the HeartSuite kernel ever fails to load on a future boot — for example, an accidental boot of the original kernel, a corrupted module, or a missing dependency — the startup script automatically isolates the primary network interface and removes all Lockdown immutable flags so the administrator can recover. This is a documented recovery path, not a security bypass: the unprotected machine is taken off the network before any seals are removed.
 
 Once Lockdown is engaged, the HeartSuite Core Secure kernel disables `chattr` entirely — no user or program, including root, can change the immutability flags. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
-Lockdown lasts until the next time your server is booted; there is no direct way to turn Lockdown off. Lockdown cannot be engaged in Setup Mode; if you attempt to do so, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a filesystem-level attribute, not a kernel-module state. This means that immutable flags set during Lockdown persist across reboots, including reboots into the Non-HS kernel. If you boot the Non-HS kernel for maintenance after Lockdown was active, you must run `hs-unlock` before attempting to modify any files that were made immutable.
+Lockdown lasts until the next time your server is booted; there is no direct way to turn Lockdown off. Lockdown cannot be engaged in Setup Mode; if you attempt to do so, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. This means that immutable flags set during Lockdown persist across reboots, including reboots into the Non-HS kernel. If you boot the Non-HS kernel for maintenance after Lockdown was active, you must run `hs-unlock` before attempting to modify any files that were made immutable.
 
 ### Automatic Lockdown on Boot
 
@@ -143,7 +153,7 @@ The Dashboard's Maintenance screen (`[t]`) detects automatic re-engagement and p
 
 ### Restoring Mutability After Lockdown
 
-Files and directories may be made mutable again once Lockdown is no longer active. The Dashboard's Maintenance screen (`[t]`) handles this automatically during the guided maintenance process — Step 1 of 3 offers `[u]` Remove immutable flags. For manual recovery outside the maintenance wizard, run `hs-unlock` from the CLI.
+Files and directories may be made mutable again once Lockdown is no longer active. The Dashboard's Maintenance screen (`[t]`) handles this automatically during the guided maintenance process — Step 1 of 3 offers `[u]` Remove immutable flags. For manual recovery outside the maintenance wizard, run `HS_unlock.sh` from the CLI.
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
@@ -151,9 +161,8 @@ Selecting the Non-HS kernel from GRUB is intentionally manual — it requires ph
 
 ### Lockdown Commands
 
-The underlying CLI tools are available for advanced configuration and automation:
+These are the actual scripts Lockdown uses. Most users never invoke them directly — the Dashboard's `[m]` Mode Switch and `[t]` Maintenance screens run them for you.
 
-- **`hs-activate-lockdown`** — makes files and directories immutable, then engages the lockdown program. Strongly recommended over running `hs-lockdown` directly.
-- **`hs-lockdown`** — engages lockdown without setting immutability flags. Use `hs-activate-lockdown` instead for complete protection.
-- **`hs-unlock`** — reverses all immutability set by Lockdown so you can make configuration changes.
-- **`hs-unlock-progs`** — restores mutability for HeartSuite Core Secure files only (subset of what `hs-unlock` does).
+- **`HS_lockdown.sh`** — runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration with `chattr +i`, disables file editors, replaces `rm`/`cp`/`mv` with restricted copies, then engages Lockdown via the kernel.
+- **`HS_unlock.sh`** — reverses `HS_lockdown.sh`. The Maintenance screen runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only for recovery outside the Dashboard.
+- **`hs-unlock-progs`** — internal helper called by `HS_unlock.sh`. Not invoked directly in normal use.
