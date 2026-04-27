@@ -41,7 +41,7 @@ A build host sits at the top of a supply chain. Compromise it, and every downstr
 - Compilers, linkers, signing tools, and release scripts you approved in Setup Mode.
 - Network destinations they need to fetch dependencies and publish build artifacts.
 
-**File Backup**—a feature that creates protected copies of critical files—safeguards signing keys and build output against tampering, allowing quick restoration if an approved tool gets compromised.
+**File Backup** keeps versioned copies of signing keys and build output. It does not prevent tampering — the allowlist and Lockdown do that — but if an approved tool is compromised and corrupts a protected file, you can restore an earlier version from the Dashboard's Backup screen.
 
 ## Offline and Air-Gapped Deployments
 
@@ -49,14 +49,14 @@ Some systems cannot assume the network is there. Industrial control networks, de
 
 ## AI Agent and Automation Sandboxes
 
-Autonomous agents are powerful because they decide what to do next. That is also why they need a cage. Run HeartSuite Core Secure as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. The VM boots with an allowlist for the tools the agent is allowed to use. The allowlist holds for the life of the task. Then the VM is gone. Enforcement lives inside the guest, not on the host, so a compromised host cannot disable it. Where gVisor adds a userspace syscall filter between the agent and the kernel, HeartSuite Core Secure *is* the kernel — one layer instead of two, with nothing to unload.
+Autonomous agents are powerful because they decide what to do next. That is also why they need a cage. Run HeartSuite Core Secure as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. You build the allowlist once: run a representative agent task in Setup Mode, review and approve the tools it uses through the Dashboard queues, then bake that allowlist into the VM image. Each task VM boots from that image into Secure Mode with the allowlist already in force. The allowlist holds for the life of the task. Then the VM is gone. Enforcement lives inside the guest, not on the host, so a compromised host cannot disable it. Where gVisor adds a userspace syscall filter between the agent and the kernel, HeartSuite Core Secure *is* the kernel — one layer instead of two, with nothing to unload.
 
 > [!NOTE]
 > Setup Mode captures the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
 ## Container Hosts
 
-Docker, containerd, Kubernetes, Podman, and CRI-O all run on a HeartSuite Core Secure host. The installer detects which container engine is present and asks the operator to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode records container-runtime programs, overlay mounts, and each container image intended to run under Lockdown.
+Docker, containerd, Kubernetes, Podman, and CRI-O all run on a HeartSuite Core Secure host. The installer detects which container engine is present and asks the operator to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode logs container-runtime programs, overlay mounts, and each container image intended to run under Lockdown so you can review and approve them in the Dashboard queues before switching to Secure Mode.
 
 Lockdown seals the running container set — the kernel stops accepting new mount operations, including the overlay mounts and bind-mounts every container start requires. The same protection blocks attackers from constructing paths to shadow protected files. Containers running at the moment Lockdown engages continue running. New containers, image pulls, and restarts after exit each require a maintenance window — reboot to Setup Mode, start the containers, return to steady state, and re-engage Lockdown. The Dashboard's Lockdown screen shows mount-refusal messages from the kernel when a container engine tries to start a new container after Lockdown.
 

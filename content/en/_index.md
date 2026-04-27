@@ -5,7 +5,7 @@ weight: 10
 description: "Complete guide for installing and configuring HeartSuite Core Secure."
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level. Three things are controlled for every program on the system: whether it can execute, which files it can read or write, and which IP addresses it can connect to. Anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist so that not even root can change it at runtime. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level. Three things are controlled for every program on the system: whether it can execute, which files it can read or write, and which IP addresses it can connect to. Anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](docs/mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
 
 HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
@@ -14,7 +14,7 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 - [Introduction and Overview](docs/introduction/) — Overview, setup process, Dashboard guidance, and requirements.
 - [Deployment Scenarios](docs/introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
 - [How HeartSuite Core Secure Compares](docs/introduction/how-it-compares/) — What HeartSuite Core Secure replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
-- [Allowlisting Programs](docs/allowlisting/) — How to add safe programs and permissions using the review queues.
+- [Allowlisting Programs](docs/allowlisting/) — How to approve programs and their file and network permissions using the review queues.
 - [Mode Switching and Lockdown](docs/mode-switching/) — Setup Mode, Secure Mode, and Lockdown.
 
 ## Get Started
