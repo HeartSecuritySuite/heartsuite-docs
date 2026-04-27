@@ -24,7 +24,10 @@ IgnoreAltMissing: true
 
 # Docsy generates href="#" for JavaScript-driven UI elements (dropdown
 # toggles, anchor pilcrows, scroll-to-top). Treat them as intentional.
+# IgnoreEmptyHref handles href="" (truly empty); IgnoreInternalEmptyHash
+# handles href="#" (just a hash). htmltest treats them as separate checks.
 IgnoreEmptyHref: true
+IgnoreInternalEmptyHash: true
 
 # Skip Docsy's print-friendly variant. Its relative paths resolve from
 # _print/docs/index.html and don't match the regular page layout, so
