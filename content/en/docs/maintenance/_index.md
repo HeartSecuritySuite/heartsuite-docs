@@ -15,7 +15,6 @@ The Maintenance screen appears only when the system is in Secure Mode, Secure Mo
 
 ## In This Section
 
-- [Avoiding Configuration Gaps](avoiding-configuration-gaps/) — How to restrict maintenance tools like `rm` during Lockdown so a compromised approved program cannot use them to do damage in high-security environments.
 - [Protecting During Maintenance](protecting-during-maintenance/) — Step-by-step guidance for maintenance windows, from the safety checklist through Lockdown recovery across two reboots.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups that even root cannot reach under Lockdown — restore any earlier version of a file when needed.
 - [Cache Adjustment](cache-adjustment/) — Tuning the allowlist cache for servers with large numbers of concurrent programs.

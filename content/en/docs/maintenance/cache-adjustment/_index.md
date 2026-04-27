@@ -1,18 +1,37 @@
 ---
 title: "Adjusting the Cache Size"
 weight: 3
-description: "Tuning HeartSuite Core Secure's allowlist cache for optimal performance."
+description: "How HeartSuite Core Secure auto-tunes its allowlist cache, and when manual intervention is needed."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "cache", "performance", "tuning"]
 type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure caches allowlist entries in kernel memory for performance. Each cache slot holds one unique program or script. The default size works for most systems; adjust it only if you have an unusually large number of concurrent programs. This is a CLI-only setting — no Dashboard equivalent exists.
+**Overview**: HeartSuite Core Secure caches allowlist entries in kernel memory for performance — each cache slot holds one program. The Dashboard automatically expands the cache to match your allowlist size, so for most systems no tuning is needed. Manual adjustment is only relevant when the allowlist exceeds the kernel cache maximum of 255 entries.
 
-The cache size accepts values from 10 to 255 entries. Increase it on servers with highly varied workloads; leave it at the default on most systems.
+## How Auto-Adjustment Works
+
+On startup and every state refresh, the Dashboard compares the size of your allowlist against the current kernel cache size. If the allowlist is larger, the Dashboard silently expands the cache to fit — up to the kernel maximum of 255 entries. The minimum cache size is 10 entries.
+
+This runs in the background on the Dashboard's normal 60-second refresh cycle. You do not need to invoke any CLI tool, change any settings, or even know the current cache size — the Dashboard handles it whenever it loads or refreshes.
+
+## When the Allowlist Exceeds 255 Entries
+
+If your allowlist grows beyond 255 entries — unusual for most workloads, but possible on servers running many distinct programs — auto-expansion stops at the kernel maximum. The Dashboard logs a warning:
+
+```text
+Allowlist has 312 entries but kernel cache max is 255; consider removing unused entries.
+```
+
+The Allowed screen (`[a]`) is the place to review and remove entries you no longer need. After pruning, the Dashboard's next refresh fits the cache to your trimmed allowlist automatically.
+
+## Manual Adjustment (Advanced)
+
+For scripting and automation, the `hs-cache-size` CLI sets the cache to a specific size between 10 and 255:
 
 ```bash
-# hs-cache-size --help
-# hs-cache-size --set 128
+# hs-cache-size 128
 ```
+
+The Dashboard's auto-adjustment is the supported path. Use the CLI only when scripting around the Dashboard — for example, test fixtures or automation that runs without the UI.

@@ -28,12 +28,12 @@ This is what you use in normal operation. The Dashboard guides you through every
 - **Maintenance** (`[t]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Secure Mode, Secure+Lockdown, and Non-HS kernel states — hidden in Setup Mode by design.
 - **Backup** (`[b]`) — Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 
-## User-Customisable Scripts
+## Lockdown Scripts (Tool-Managed)
 
-Edit these to extend Lockdown beyond the shipped defaults. See [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/) for the typical use case.
+These scripts implement Lockdown's filesystem-level seal and tool restrictions. They are managed by HeartSuite Core Secure and run automatically — listed here for transparency, not for direct editing.
 
-- **`HS_lockdown.sh`** — the script that runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), then engages Lockdown. You can edit this file to extend Lockdown to other programs — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
-- **`HS_unlock.sh`** — the script that reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration and re-enables the file editors. The Maintenance screen runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only if you need recovery outside the Dashboard.
+- **`HS_lockdown.sh`** — runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, seals common file editors (`nano`, `vim`, `sed`, `ed`) non-executable, replaces broadly-scoped maintenance tools (`rm`, `cp`, `mv`) with restricted copies whose scope is derived from your Setup Mode observation log, then engages Lockdown.
+- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance screen runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & Scripting CLI
 
@@ -41,7 +41,7 @@ For scripting, automation, and recovery scenarios. UI users rarely need these �
 
 - **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
 - **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. The Dashboard's Mode Switch screen (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
-- **`hs-cache-size`** — change the maximum number of allowlist entries cached simultaneously. View `--help` for details.
+- **`hs-cache-size`** — set the kernel allowlist cache size (10–255). The Dashboard auto-adjusts this on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
 - **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Secure Mode can be enabled.
 - **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup screen (`[b]`) for directory management.
 - **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup screen (`[b]`) for version browsing and restoration. View `--help` for details.

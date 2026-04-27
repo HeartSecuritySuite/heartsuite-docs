@@ -119,17 +119,17 @@ Lockdown is a separate decision you make after activating Secure Mode. Both runn
 | Blocks unauthorised programs, file access, and network access | Yes | Yes |
 | Logging | Yes | Yes |
 | Backups | Yes | Yes |
-| Can root edit allowlist entries or HeartSuite Core Secure config files? | Yes | **No** — immutable (attempting to write returns `errno:1`) |
+| Can root edit allowlist entries or HeartSuite Core Secure config files? | Yes | **No** — immutable; attempts to write are blocked by the kernel until the seal is removed via Maintenance |
 | Can an attacker with root tamper with security settings? | Possible | **No** — protected by immutability |
-| Can you modify files made immutable by Lockdown? | Yes | **No** — until `hs-unlock` is run after reboot |
-| Maintenance tools (e.g. `rm`) optionally restricted? | No | **Optional** — can be made non-executable for additional hardening (see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/)) |
+| Can you modify files made immutable by Lockdown? | Yes | **No** — until the seal is removed via the Maintenance screen on the Non-HS kernel |
+| Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
 | Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
 | How long does Lockdown last? | N/A | Until the next reboot |
 | How do you exit Lockdown? | N/A | Boot the Non-HS kernel (physical presence required — keyboard and monitor, serial port, or cloud serial console — select from GRUB manually), or run `hs-unlock` after a reboot without Lockdown |
 
 ### What Lockdown Does
 
-Once Lockdown is engaged, HeartSuite Core Secure prevents any changes to the allowlist entries and other settings. Lockdown makes HeartSuite Core Secure configuration files and directories immutable using `chattr +i`. For additional hardening, the lockdown script can optionally be configured to make tools like `rm` non-executable — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
+Once Lockdown is engaged, HeartSuite Core Secure prevents any changes to the allowlist entries and other settings. Lockdown makes HeartSuite Core Secure configuration files and directories immutable using `chattr +i`. Lockdown also automatically restricts a class of approved programs that are necessary during maintenance but dangerous during production: file editors (`nano`, `vim`, `sed`, `ed`) are sealed and cannot run, and broadly-scoped file-system tools (`rm`, `cp`, `mv`) are replaced with restricted copies whose file-access scope is limited to the paths your system uses them on during normal operation. The Lockdown setup screen shows what will be restricted before you confirm; restoration is automatic when you enter Maintenance.
 
 Once Lockdown is engaged, the HeartSuite Core Secure kernel disables `chattr` entirely — no user or program, including root, can change the immutability flags. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
