@@ -82,7 +82,7 @@ HeartSuite Core Secure makes a class of attacks impossible rather than merely vi
 
 Some software depends on kernel features the HeartSuite Core Secure kernel does not include. Those workloads run on the Non-HS kernel or a separate system:
 
-- Container hosts using Docker's default OverlayFS storage driver — OverlayFS is not compiled in; overlay filesystems are a surface for shadowing protected directories
+- Hosts requiring continuous container scheduling — dynamic deployments, autoscaling, and pod rescheduling after node loss each require new mount operations; Lockdown refuses those to prevent attackers from constructing paths to shadow protected files. Container hosts with a steady-state workload are supported via the Container-host install; see [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts)
 - Hosts where eBPF-based tooling must run locally — BPF syscalls are not present on the HS kernel; these tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding
 - Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; the kernel features KVM requires have been removed to reduce the features attackers can reach. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
 - Systems that require rootless containers (unprivileged user namespaces) — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials

@@ -106,7 +106,7 @@ No other product combines all three: enforcement that survives root compromise, 
 
 ## Is HeartSuite Core Secure Right for You?
 
-HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. It is not a fit for container hosts that depend on OverlayFS, or for hosts where eBPF-based tooling must run locally. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
 If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, and how it can be circumvented.
 

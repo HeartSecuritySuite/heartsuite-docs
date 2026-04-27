@@ -54,11 +54,19 @@ Autonomous agents are powerful because they decide what to do next. That is also
 > [!NOTE]
 > Setup Mode builds the allowlist most accurately when the same programs run in the same way across tasks. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
+## Container Hosts
+
+Docker, containerd, Kubernetes, Podman, and CRI-O all run on a HeartSuite Core Secure host. The installer detects which container engine is present and asks the operator to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode records container-runtime programs, overlay mounts, and each container image intended to run under Lockdown.
+
+Lockdown seals the running container set — the kernel stops accepting new mount operations, including the overlay mounts and bind-mounts every container start requires. The same protection blocks attackers from constructing paths to shadow protected files. Containers running at the moment Lockdown engages continue running. New containers, image pulls, and restarts after exit each require a maintenance window — reboot to Setup Mode, start the containers, return to steady state, and re-engage Lockdown. The Dashboard's Lockdown screen shows mount-refusal messages from the kernel when a container engine tries to start a new container after Lockdown.
+
+This is the right pattern for long-lived service containers, Kubernetes nodes with a stable pod set, and batch jobs that complete before Lockdown engages.
+
 ## Where HeartSuite Core Secure Is Not a Fit
 
 A few workloads are not compatible with the HeartSuite Core Secure kernel as shipped:
 
-- **Container hosts using the Docker default storage driver** — OverlayFS is not compiled into the HeartSuite Core Secure kernel; overlay filesystems are a surface for shadowing protected directories. Alternative storage drivers or a Non-HS container host may be required.
+- **Hosts requiring continuous container scheduling** — dynamic deployments, autoscaling, and pod rescheduling after node loss each require new mount operations that Lockdown refuses. Container hosts with a steady-state workload are supported via the Container-host install above.
 - **Hosts where eBPF-based tooling must run locally** — Falco, Cilium, Tetragon, bpftrace, and similar tools require BPF syscalls that are not present on the HS kernel. These tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding. For on-host forensics during incident response, eBPF-based tools are not available; strace and /proc inspection remain available.
 - **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel features that have been removed to reduce what attackers can reach. HeartSuite Core Secure runs as a guest under other hypervisors — it does not host guest VMs.
 - **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.

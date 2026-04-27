@@ -37,10 +37,10 @@ The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard.
 
 The installer sets the HeartSuite kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
 
-After reboot, the Dashboard appears on the console (TTY1). Continue with [Installation Part 2](../installation-part2/).
+After reboot, the Dashboard appears automatically on whichever surface you log in from. Continue with [Installation Part 2](../installation-part2/).
 
 > [!NOTE]
-> **If you are connected over SSH**, your session drops when the reboot fires — this is expected. The Dashboard runs on the console (TTY1), not in an SSH terminal. Access it via your cloud provider's serial console, or a monitor and keyboard on bare-metal systems.
+> **If you are connected over SSH**, your session drops when the reboot fires — this is expected. Reconnect over SSH after the system comes back: the Dashboard launches in your SSH session automatically when the system has post-reboot work pending. Once the journey is complete and nothing is pending, normal SSH logins drop you at a regular shell. The serial console (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL) remains an equivalent surface — both reach the same Dashboard.
 
 > [!NOTE]
 > **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the HeartSuite kernel from the GRUB menu manually.

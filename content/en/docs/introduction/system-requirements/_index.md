@@ -36,7 +36,7 @@ The HeartSuite Core Secure kernel is compiled without several features that atta
 |-----------|---------|
 | eBPF program loading (`CONFIG_BPF_SYSCALL`) | Cilium, Falco, Tetragon, Pixie, bpftrace, bcc, Tracee, and other eBPF-based observability and runtime-detection tools |
 | FUSE (`CONFIG_FUSE_FS`) | sshfs, s3fs, rclone mounts, NTFS-3G, AppImage, gocryptfs |
-| Overlay filesystem (`CONFIG_OVERLAY_FS`) | Docker default storage driver, containerd, Podman, CRI-O (alternative storage drivers may still work) |
+| Overlay filesystem (`CONFIG_OVERLAY_FS`) | Standard-host installs: not enabled — overlay filesystems give attackers a path to shadow protected directories. Container-host installs: enabled (`CONFIG_OVERLAY_FS=m`) — Docker, containerd, Podman, and CRI-O use the `overlay2` storage driver. See [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts). |
 | AppArmor, SMACK, Landlock (userspace LSM frameworks) | Snap confinement, Ubuntu default profiles, LXD |
 | Unprivileged user namespaces (`CONFIG_USER_NS`) | Rootless containers |
 | KVM (`CONFIG_KVM`) | Running HeartSuite Core Secure as a hypervisor host for virtual machines |

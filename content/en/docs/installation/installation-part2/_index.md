@@ -19,7 +19,7 @@ menu:
 
 ## Building the Initial Allowlist
 
-After booting into the HeartSuite Core Secure kernel, the Dashboard appears on the console automatically. The **System Setup** screen opens on first boot.
+After booting into the HeartSuite Core Secure kernel, the Dashboard appears automatically — on the serial console (`/dev/ttyS0`, reached via `virsh console`, AWS/Azure/GCP serial console, or IPMI SOL) and equally in any SSH session you reconnect with while post-reboot work is pending. The **System Setup** screen opens on first boot.
 
 Each cycle follows the same pattern:
 
@@ -40,18 +40,19 @@ When the setup screen shows the completion message, press `[q]` to return to the
 
 ## If the Dashboard Does Not Appear After Boot
 
-If the Dashboard does not appear on the console after booting into the HeartSuite Core Secure kernel:
+If the Dashboard does not appear after booting into the HeartSuite Core Secure kernel:
 
-1. Switch to TTY2 (`Ctrl+Alt+F2`), log in as root, and check the service:
+1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL, or a null-modem cable). The Dashboard auto-launches when a console client attaches. The graphical TTY1 (virt-manager, VNC, SPICE) shows a regular getty, not the Dashboard — the Dashboard is on the serial console by design.
+2. Confirm the autologin is active on the serial console:
    ```bash
-   systemctl status heartsuite-ui.service
+   systemctl status serial-getty@ttyS0.service
    ```
-2. Verify the HeartSuite Core Secure kernel is loaded:
+3. Verify the HeartSuite Core Secure kernel is loaded:
    ```bash
    uname -r
    ```
-   Expected output: `5.19.6-1.heartsuite`
-3. If the wrong kernel booted, reboot and select the correct entry from the GRUB menu.
+   Expected output ends in `.heartsuite` (for example, `6.18.23-HeartSuite-1.0`).
+4. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
 
 ## If the Setup Screen Does Not Progress
 
