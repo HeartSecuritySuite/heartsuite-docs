@@ -21,14 +21,14 @@ A web server serves pages. A database answers queries. A reverse proxy forwards 
 
 ## Closed Appliances and Embedded Devices
 
-A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have interactive users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. Lockdown extends that protection so even root cannot quietly extend the allowlist while the system runs. File Backup is the recovery layer behind both: if an approved program is compromised and writes where it shouldn't, an earlier version of the file is still available to restore from the Dashboard's Backup screen.
+A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have interactive users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. Lockdown extends that protection so even root cannot quietly extend the allowlist while the system runs. File Backup is the recovery layer behind both. Under Lockdown, the kernel blocks any program (including root) from reaching the backup files — so even if an approved program is compromised and corrupts a file, the previous versions remain intact and restorable from the Dashboard's Backup screen.
 
 ## Regulated Workstations and Analyst Systems
 
 In financial, legal, healthcare, and defence workplaces, a workstation's toolchain is set by policy, not preference. The **Dashboard** includes review queues that let you approve each tool and add it to the allowlist. Only the tools you approve can execute — everything else is blocked.
 
 > [!NOTE]
-> **Lockdown** seals the allowlist against change. The configuration files are made immutable on disk (`chattr +i`), and the HeartSuite Core Secure kernel refuses runtime modifications to enforcement state — even from root. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
+> **Lockdown** seals the allowlist against change. The configuration files are made immutable on disk (`chattr +i`), and the HeartSuite Core Secure kernel will not accept changes to the allowlist while it's running — even from root. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
 
 In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no. No program or user, including root, can modify the allowlist or disable enforcement while the HeartSuite Core Secure kernel is running. Disabling enforcement requires physical presence at the machine — a keyboard and monitor, a serial port, or your cloud provider's serial console. For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question.
 
@@ -41,7 +41,7 @@ A build host sits at the top of a supply chain. Compromise it, and every downstr
 - Compilers, linkers, signing tools, and release scripts you approved in Setup Mode.
 - Network destinations they need to fetch dependencies and publish build artifacts.
 
-**File Backup** keeps versioned copies of signing keys and build output. It does not prevent tampering — the allowlist and Lockdown do that — but if an approved tool is compromised and corrupts a protected file, you can restore an earlier version from the Dashboard's Backup screen.
+**File Backup** keeps versioned copies of signing keys and build output. Under Lockdown, the kernel blocks any program (including root) from reaching those copies — so even if an approved tool is compromised, the previous versions remain intact and restorable from the Dashboard's Backup screen.
 
 ## Offline and Air-Gapped Deployments
 

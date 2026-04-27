@@ -1,6 +1,6 @@
 ---
-title: "In Practice"
-linkTitle: "In Practice"
+title: "When Root Isn't Enough"
+linkTitle: "When Root Isn't Enough"
 weight: 6
 description: "How HeartSuite Core Secure's three enforcement mechanisms hold against real attacks — one example per mechanism, including what it does not cover."
 categories: ["Essentials"]
@@ -75,6 +75,6 @@ HeartSuite Core Secure enforces three things per program. An attacker who stays 
 
 **Backdoored programs that are already on the allowlist.** vsftpd 2.3.4 (CVE-2011-2523) shipped with a backdoor compiled in — connecting with a username containing `:)` opens a listener on port 6200 and hands the attacker a root shell. If vsftpd is on the allowlist, the backdoor activates inside vsftpd's own process: no new binary executes, no outbound connection is made, and no file access outside vsftpd's approved scope occurs. HeartSuite Core Secure limits what the attacker can do with that shell — file reads and outbound network connections remain gated. A program already approved to run can exercise its approved permissions, including ones a backdoor author planned for.
 
-**Attacks within a program's approved scope.** A compromised web server that reads only files it is already approved to read, and connects only to destinations already in its network allowlist, operates within its allowlist. Every file outside that scope is still blocked. Every connection to an unapproved destination is still refused. Tight allowlisting limits the blast radius — and File Backup ensures recovery for files the program was approved to write.
+**Attacks within a program's approved scope.** A compromised web server that reads only files it is already approved to read, and connects only to destinations already in its network allowlist, operates within its allowlist. Every file outside that scope is still blocked. Every connection to an unapproved destination is still refused. Tight allowlisting limits the blast radius — and under Lockdown, the kernel blocks any program (including root) from reaching backup files, so previous versions remain intact and restorable from the Dashboard's Backup screen.
 
 For detection and response when an attack stays within approved boundaries, see [How HeartSuite Core Secure Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR.

@@ -33,7 +33,7 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 6 | Alert Configuration | Set up notification channels (email, syslog, webhook) |
 | 7 | Secure Mode | Activate enforcement — locked until phases 2–6 are complete |
 
-## Reduced Kernel Attack Surface
+## Reduced Kernel Footprint
 
 The security industry patches vulnerabilities one at a time. HeartSuite Core Secure removes the features attackers rely on instead.
 

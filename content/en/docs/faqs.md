@@ -12,7 +12,7 @@ type: docs
 
 {{< details summary="How is HeartSuite Core Secure different from other anti-malware solutions?" >}}
 
-A: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, HeartSuite Core Secure blocks any execution, file access, or network connection not explicitly approved through the Dashboard's review queues. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+A: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, HeartSuite Core Secure requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Secure Mode, anything not approved is blocked. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
 
 {{< /details >}}
 
@@ -78,7 +78,7 @@ A: For bugs, open an issue on GitHub using the [Bug Report template](https://git
 
 {{< details summary="Can HeartSuite Core Secure automatically backup files?" >}}
 
-A: Yes. Every time a file in a configured directory is modified, HeartSuite Core Secure automatically creates a new versioned backup with a timestamp and file size. Only HeartSuite Core Secure can access the backups — no other program, including malware running as root, can read or destroy them. Versions are never automatically deleted. Use the Dashboard's Backup screen (`[b]`) to add or remove directories, browse version history, and restore any previous version of a file.
+A: Yes. Every time a file in a configured directory is modified, HeartSuite Core Secure automatically creates a new versioned backup with a timestamp and file size. Under Lockdown, the kernel itself blocks any program (including root) from reaching the backup files — so even if an attacker compromises an approved program, the previous versions remain intact. Versions are never automatically deleted. Use the Dashboard's Backup screen (`[b]`) to add or remove directories, browse version history, and restore any previous version of a file.
 
 {{< /details >}}
 
@@ -160,7 +160,7 @@ A: The Dashboard unlocks Secure Mode when all prior phases are complete and show
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: HeartSuite Core Secure blocks all outbound connections by default. When a program attempts a connection, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there.
+A: HeartSuite Core Secure requires every outbound connection to be explicitly approved per program. When a program attempts a connection during Setup Mode, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there. In Secure Mode, any connection not on the allowlist is refused at the kernel.
 
 {{< /details >}}
 

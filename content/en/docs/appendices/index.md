@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day; the tools listed below are for advanced workflows and recovery scenarios.
+**Overview**: HeartSuite Core Secure includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day. Most CLI entries below are run automatically by the system or by the Dashboard, or kept for scripting, recovery, and advanced setup. A normal user does not invoke them directly.
 
 With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The HeartSuite Core Secure installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to HeartSuite Core Secure databases must be run as root.
 
@@ -31,9 +31,9 @@ With exception of the Secure Script Launchers, all tools are located in the `/.h
 ### Mode Switching and Security (Phase 7)
 
 - **Mode Switch** (`[m]`) — Dashboard screen for Secure Mode activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot or `[l]` Reboot + Lockdown.
-- **`hs-activate-lockdown`** — makes HeartSuite Core Secure configuration files and directories immutable using `chattr +i`, then engages the lockdown program. Requires Secure Mode to be active. Requires typing `YES` to confirm.
-- **`hs-unlock`** — reverses Lockdown by making HeartSuite Core Secure files mutable again. This is the counterpart to `hs-activate-lockdown`.
-- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. Used from a Non-HS kernel during recovery. View `--help` for details.
+- **`HS_lockdown.sh`** — the script that runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), then engages Lockdown. You can edit this file to extend Lockdown to other programs — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
+- **`HS_unlock.sh`** — the script that reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration and re-enables the file editors. The Maintenance screen runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only if you need recovery outside the Dashboard.
+- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. The Dashboard's Mode Switch screen (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
 
 ### Maintenance and Backup
 
@@ -47,10 +47,10 @@ With exception of the Secure Script Launchers, all tools are located in the `/.h
 - **`hs-cache-size`** — change the maximum number of allowlist entries cached simultaneously. View `--help` for details.
 - **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup screen (`[b]`) for directory management.
 - **`hs-curfew`** — stops HeartSuite Core Secure from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
-- **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. View `--help` for details.
+- **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers screen (`[l]`) for normal use. View `--help` for scripting details.
 - **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Secure Mode can be enabled.
 - **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup screen (`[b]`) for version browsing and restoration. View `--help` for details.
-- **`hs-unlock-progs`** — switches all HeartSuite Core Secure files back to mutable state (after Lockdown).
+- **`hs-unlock-progs`** — runs automatically as part of `HS_unlock.sh`. Not invoked directly in normal use.
 
 ## Secure Script Launchers (Phase 3)
 

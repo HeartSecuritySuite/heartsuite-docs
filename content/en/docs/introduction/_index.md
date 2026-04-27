@@ -12,7 +12,7 @@ menu:
     weight: 15
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy — each program must be explicitly approved to execute, to access files, and to make network connections. Any program not on the allowlist, including malware running as root, is blocked at the kernel level before it can execute. Lockdown seals the allowlist at runtime so no changes are possible even with root access. The Dashboard guides you through a 7-phase journey from installation to Secure Mode, always showing your current progress and the suggested next step.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure enforces default-deny on all three at the kernel level — per program, not per user. In Secure Mode, any program not on the allowlist — including malware running as root — is blocked before it can execute. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](../mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase journey from installation to Secure Mode, always showing your current progress and the suggested next step.
 
 ## In This Section
 
