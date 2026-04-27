@@ -68,8 +68,8 @@ A few workloads are not compatible with the HeartSuite Core Secure kernel as shi
 
 - **Hosts requiring continuous container scheduling** — dynamic deployments, autoscaling, and pod rescheduling after node loss each require new mount operations that Lockdown refuses. Container hosts with a steady-state workload are supported via the Container-host install above.
 - **Hosts where eBPF-based tooling must run locally** — Falco, Cilium, Tetragon, bpftrace, and similar tools require BPF syscalls that are not present on the HS kernel. These tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding. For on-host forensics during incident response, eBPF-based tools are not available; strace and /proc inspection remain available.
-- **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel features that have been removed to reduce what attackers can reach. HeartSuite Core Secure runs as a guest under other hypervisors — it does not host guest VMs.
-- **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
+- **Hypervisor hosts running virtual machines** — KVM is not compiled in; hosting guest VMs requires kernel features that have been removed to reduce what attackers can reach. HeartSuite Core Secure runs as a guest under other hypervisors and provides kernel-level enforcement there.
+- **Systems that require rootless containers** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host. Removing unprivileged user namespaces from the HS kernel is deliberate hardening — it closes a privilege-escalation path that compromises many Linux servers.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 

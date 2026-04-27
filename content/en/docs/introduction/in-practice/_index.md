@@ -25,7 +25,7 @@ Each attack below was actively exploited within days of its disclosure. The gap 
 
 This applies equally to interpreted scripts. A malicious Python script dropped at `/tmp/attack.py` has no allowlist entry for that path. HeartSuite Core Secure's Secure Script Launchers give each script its own allowlist entry, separate from the interpreter. Python runs. The unauthorized script does not.
 
-**What it does not cover.** If the attacker already controls an approved program and issues commands within that program's approved scope, this gate does not apply. See [What This Page Does Not Cover](#what-this-page-does-not-cover).
+**What it does not cover.** If the attacker already controls an approved program and issues commands within that program's approved scope, this particular gate does not apply. The other two still do: the program can only read and write files in its allowlist, and only connect to destinations in its network allowlist. And every attempt to launch a new program returns to this gate — any new program without an allowlist entry is blocked. See [When Attackers Stay Within Approved Boundaries](#when-attackers-stay-within-approved-boundaries) for the full picture.
 
 ---
 
@@ -41,7 +41,7 @@ The question is not whether the system user can read `/etc/passwd`. The question
 
 The same mechanism applies to binary replacement. If an attacker with root tries to overwrite `/usr/bin/whoami` with a malicious script, the write is blocked — because the program issuing the write does not have `/usr/bin/whoami` in its file write allowlist. Root privilege does not override this check.
 
-**What it does not cover.** If the attacker targets only files the compromised program is already approved to read, this gate does not apply.
+**What it does not cover.** If the attacker targets only files the compromised program is already approved to read, this gate does not apply. The other gates still do: writes outside the approved paths are still blocked, every outbound connection is still gated by the network allowlist, and any new program the attacker tries to run is blocked at the program gate. See [When Attackers Stay Within Approved Boundaries](#when-attackers-stay-within-approved-boundaries) for the full picture.
 
 ---
 
@@ -61,7 +61,7 @@ Either check alone stops the exfiltration. Both activate. The result is the same
 
 Log4Shell (CVE-2021-44228) shows the same gate working in reverse. The attack works by causing a vulnerable application to reach out to attacker-controlled infrastructure to fetch and run malicious code. That outbound request — to a server not in the application's network allowlist — is refused. The code never arrives. The attack ends at the network gate before anything executes.
 
-**Scope.** Network allowlisting controls which programs can reach which destinations. What they send over those approved connections is the domain of your network detection tools — see the complementary table in [How HeartSuite Core Secure Compares](../how-it-compares/).
+**Scope.** Network allowlisting controls which programs can reach which destinations. What they send over those approved connections is the domain of your network detection tools — see the complementary table in [How HeartSuite Core Secure Compares](../how-it-compares/). Even when an attacker uses an approved program's approved connection, the program still cannot reach destinations outside its network allowlist, read or write files outside its file allowlist, or launch a new program — see [When Attackers Stay Within Approved Boundaries](#when-attackers-stay-within-approved-boundaries) for the full picture.
 
 ---
 
