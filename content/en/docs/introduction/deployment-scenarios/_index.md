@@ -13,22 +13,22 @@ menu:
     identifier: "deployment-scenarios"
 ---
 
-**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections, including malware running as root. Setup Mode builds the allowlist from what your system actually uses, Secure Mode enforces it, and maintenance windows bring in patches, new tools, and evolving workloads under review before enforcement resumes. Nothing about this depends on cloud connectivity, a SaaS policy server, or an agent-to-console channel — HeartSuite Core Secure operates standalone. The scenarios below are where that model fits best, followed by the ones where it doesn't.
+**Overview**: HeartSuite Core Secure enforces a default-deny policy at the kernel level — each program must be explicitly approved to execute, to access files, and to make network connections, including malware running as root. In Setup Mode, the system logs everything it sees so you can review and approve it through the Dashboard queues; Secure Mode then enforces what you approved. Patches, new tools, and evolving workloads are added the same way: open a maintenance window — reboot into Setup Mode, install or change what you need, review the new entries in the queues, then re-engage Secure Mode (and Lockdown, if you use it). Nothing about this depends on cloud connectivity, a SaaS policy server, or an agent-to-console channel — HeartSuite Core Secure operates standalone. The scenarios below are where that model fits best, followed by the ones where it doesn't.
 
 ## Production Servers
 
-A web server serves pages. A database answers queries. A reverse proxy forwards traffic. Each has a shape HeartSuite Core Secure can learn in a few days of Setup Mode, then enforce in Secure Mode. Patches, package upgrades, and new services arrive through maintenance windows — reviewed, added to the allowlist, then the server returns to enforcement. Lockdown goes one step further: while the server runs, even root can no longer change the allowlist. An attacker is left with nowhere to go.
+A web server serves pages. A database answers queries. A reverse proxy forwards traffic. Each has a shape that Setup Mode captures over a few days of logging — the programs that run, the files they touch, the destinations they reach — which you then review and approve in the Dashboard queues before switching to Secure Mode. Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Secure Mode. Lockdown goes one step further: while the server runs, even root can no longer change the allowlist. An attacker with root is left with nowhere to go.
 
 ## Closed Appliances and Embedded Devices
 
-A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. File Backup adds a second line of defence: if an approved program that malware takes over writes where it shouldn't, the original is still available to restore.
+A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have interactive users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. Lockdown extends that protection so even root cannot quietly extend the allowlist while the system runs. File Backup is the recovery layer behind both: if an approved program is compromised and writes where it shouldn't, an earlier version of the file is still available to restore from the Dashboard's Backup screen.
 
 ## Regulated Workstations and Analyst Systems
 
 In financial, legal, healthcare, and defence workplaces, a workstation's toolchain is set by policy, not preference. The **Dashboard** includes review queues that let you approve each tool and add it to the allowlist. Only the tools you approve can execute — everything else is blocked.
 
 > [!NOTE]
-> **Lockdown** freezes the allowlist to prevent changes, including by root. This ensures a compromised user session cannot quietly add unauthorized tools, as enforcement happens at the kernel level.
+> **Lockdown** seals the allowlist against change. The configuration files are made immutable on disk (`chattr +i`), and the HeartSuite Core Secure kernel refuses runtime modifications to enforcement state — even from root. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
 
 In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no. No program or user, including root, can modify the allowlist or disable enforcement while the HeartSuite Core Secure kernel is running. Disabling enforcement requires physical presence at the machine — a keyboard and monitor, a serial port, or your cloud provider's serial console. For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question.
 
@@ -52,7 +52,7 @@ Some systems cannot assume the network is there. Industrial control networks, de
 Autonomous agents are powerful because they decide what to do next. That is also why they need a cage. Run HeartSuite Core Secure as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. The VM boots with an allowlist for the tools the agent is allowed to use. The allowlist holds for the life of the task. Then the VM is gone. Enforcement lives inside the guest, not on the host, so a compromised host cannot disable it. Where gVisor adds a userspace syscall filter between the agent and the kernel, HeartSuite Core Secure *is* the kernel — one layer instead of two, with nothing to unload.
 
 > [!NOTE]
-> Setup Mode builds the allowlist most accurately when the same programs run in the same way across tasks. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
+> Setup Mode captures the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
 ## Container Hosts
 
