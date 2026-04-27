@@ -12,9 +12,9 @@ toc: true
 
 With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The HeartSuite Core Secure installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to HeartSuite Core Secure databases must be run as root.
 
-## Management Tools
+## Day-to-Day: Dashboard Screens
 
-### Dashboard and Review (Phases 1-5)
+This is what you use in normal operation. The Dashboard guides you through every phase, and these screens cover the full setup and maintenance workflow.
 
 - **Dashboard** — where you manage HeartSuite Core Secure. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `sudo python3 main.py`.
 - **Programs queue** (`[p]`) — Dashboard screen to review and approve pending program executions (Phase 2). Presents items with full metadata, grouped intelligently.
@@ -23,57 +23,55 @@ With exception of the Secure Script Launchers, all tools are located in the `/.h
 - **Allowed** (`[a]`) — Dashboard screen to browse and edit existing allowlist entries.
 - **Browser View** (`[w]`) — Dashboard screen to enable or disable browser-based access to HeartSuite Core Secure via SSH tunnel.
 - **Launchers** (`[l]`) — Dashboard screen to configure Secure Script Launchers (Phase 3).
-
-### Alert Configuration (Phase 6)
-
 - **Alert Settings** (`[e]`) — Dashboard screen to configure alert channels (email, syslog, or webhook). At least one channel must be configured before Secure Mode activation. See [Alert Configuration](../alerts/).
-
-### Mode Switching and Security (Phase 7)
-
 - **Mode Switch** (`[m]`) — Dashboard screen for Secure Mode activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot or `[l]` Reboot + Lockdown.
-- **`HS_lockdown.sh`** — the script that runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), then engages Lockdown. You can edit this file to extend Lockdown to other programs — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
-- **`HS_unlock.sh`** — the script that reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration and re-enables the file editors. The Maintenance screen runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only if you need recovery outside the Dashboard.
-- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. The Dashboard's Mode Switch screen (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
-
-### Maintenance and Backup
-
 - **Maintenance** (`[t]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Secure Mode, Secure+Lockdown, and Non-HS kernel states — hidden in Setup Mode by design.
 - **Backup** (`[b]`) — Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
-- **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
 
-## System and Subscription Tools
+## User-Customisable Scripts
+
+Edit these to extend Lockdown beyond the shipped defaults. See [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/) for the typical use case.
+
+- **`HS_lockdown.sh`** — the script that runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), then engages Lockdown. You can edit this file to extend Lockdown to other programs — see [Avoiding Configuration Gaps](../maintenance/avoiding-configuration-gaps/).
+- **`HS_unlock.sh`** — the script that reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration and re-enables the file editors. The Maintenance screen runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only if you need recovery outside the Dashboard.
+
+## Recovery & Scripting CLI
+
+For scripting, automation, and recovery scenarios. UI users rarely need these — most have a Dashboard equivalent that handles them automatically.
+
+- **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
+- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. The Dashboard's Mode Switch screen (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
+- **`hs-cache-size`** — change the maximum number of allowlist entries cached simultaneously. View `--help` for details.
+- **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Secure Mode can be enabled.
+- **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup screen (`[b]`) for directory management.
+- **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup screen (`[b]`) for version browsing and restoration. View `--help` for details.
+- **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers screen (`[l]`) for normal use. View `--help` for scripting details.
+- **`hs-clear-logs`** — manually clears the HeartSuite Core Secure activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
+
+## Internal / Automatic
+
+These run on their own — listed for transparency, not for direct invocation.
 
 - **`activate_HS`** — turns HeartSuite Core Secure service on. The installation routine adds a systemd service that runs this automatically at startup.
-- **`hs-cache-size`** — change the maximum number of allowlist entries cached simultaneously. View `--help` for details.
-- **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup screen (`[b]`) for directory management.
 - **`hs-curfew`** — stops HeartSuite Core Secure from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
-- **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers screen (`[l]`) for normal use. View `--help` for scripting details.
-- **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Secure Mode can be enabled.
-- **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup screen (`[b]`) for version browsing and restoration. View `--help` for details.
 - **`hs-unlock-progs`** — runs automatically as part of `HS_unlock.sh`. Not invoked directly in normal use.
+- **`hs-os-boot-setup.py`** — used internally by the Installation screen during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation.
+- **`init_base_records.sh`** — used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.
+- **`HS_startup.sh`** — runs automatically when the system boots, turning HeartSuite Core Secure on. The Dashboard's Maintenance screen (`[t]`) edits this file when you change Lockdown re-engagement settings.
+
+## Legacy / Scripted Deployment Only
+
+Off the user path. Prefer the Dashboard review tools for any standard workflow.
+
+- **`batch_record_add.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with basic directory access. Prefer the Dashboard review tools for standard workflows.
+- **`batch_record_add_read_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with read access to all files. Use with caution. Prefer the Dashboard review tools.
+- **`batch_record_add_write_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with write access to all files. Use with extreme caution. Prefer the Dashboard review tools.
 
 ## Secure Script Launchers (Phase 3)
 
-Located in `/usr/bin` (in the default PATH):
+Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Launchers screen (`[l]`).
 
 - **`hs-python-launcher`** — Secure Script Launcher for Python 3
 - **`hs-python2-launcher`** — Secure Script Launcher for Python 2
 - **`hs-perl-launcher`** — Secure Script Launcher for Perl
 - **`hs-php-launcher`** — Secure Script Launcher for PHP
-
-## Python Scripts
-
-Each script displays help information when started without arguments.
-
-- **`hs-os-boot-setup.py`** — used internally by the Installation screen during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation.
-- **`batch_record_add.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with basic directory access. Prefer the Dashboard review tools for standard workflows.
-- **`batch_record_add_read_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with read access to all files. Use with caution. Prefer the Dashboard review tools.
-- **`batch_record_add_write_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with write access to all files. Use with extreme caution. Prefer the Dashboard review tools.
-
-## Shell Scripts
-
-These scripts do not include help information.
-
-- **`hs-clear-logs`** — manually clears the HeartSuite Core Secure activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
-- **`init_base_records.sh`** — used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.
-- **`HS_startup.sh`** — called by the systemd `heartsuite.service` unit immediately after booting. Activates HeartSuite Core Secure automatically. The Dashboard's Maintenance screen (`[t]`) manages Lockdown re-engagement settings in this script.
