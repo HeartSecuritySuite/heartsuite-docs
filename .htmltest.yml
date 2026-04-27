@@ -22,7 +22,14 @@ IgnoreDirectoryMissingTrailingSlash: true
 # Don't fail on missing alt text — separate concern; revisit later.
 IgnoreAltMissing: true
 
-# Hugo's pretty-URL output puts each page at its-own/index.html.
-# These two flags handle the resulting link patterns cleanly.
-IgnoreEmptyHref: false
+# Docsy generates href="#" for JavaScript-driven UI elements (dropdown
+# toggles, anchor pilcrows, scroll-to-top). Treat them as intentional.
+IgnoreEmptyHref: true
+
+# Skip Docsy's print-friendly variant. Its relative paths resolve from
+# _print/docs/index.html and don't match the regular page layout, so
+# checking it produces noise about "../alerts/" not existing.
+IgnoreDirs:
+  - "_print"
+
 TestFilesConcurrently: true
