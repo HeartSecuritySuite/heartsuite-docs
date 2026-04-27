@@ -28,11 +28,11 @@ This is what you use in normal operation. The Dashboard guides you through every
 - **Maintenance** (`[t]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Secure Mode, Secure+Lockdown, and Non-HS kernel states — hidden in Setup Mode by design.
 - **Backup** (`[b]`) — Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 
-## Lockdown Scripts (Tool-Managed)
+## Lockdown Scripts
 
-These scripts implement Lockdown's filesystem-level seal and tool restrictions. They are managed by HeartSuite Core Secure and run automatically — listed here for transparency, not for direct editing.
+These run automatically when you engage or unlock Lockdown via the Dashboard. You do not need to invoke or edit them yourself.
 
-- **`HS_lockdown.sh`** — runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, seals common file editors (`nano`, `vim`, `sed`, `ed`) non-executable, replaces broadly-scoped maintenance tools (`rm`, `cp`, `mv`) with restricted copies whose scope is derived from your Setup Mode observation log, then engages Lockdown.
+- **`HS_lockdown.sh`** — runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance screen runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & Scripting CLI
@@ -50,7 +50,7 @@ For scripting, automation, and recovery scenarios. UI users rarely need these �
 
 ## Internal / Automatic
 
-These run on their own — listed for transparency, not for direct invocation.
+These run on their own — you do not need to invoke them yourself.
 
 - **`activate_HS`** — turns HeartSuite Core Secure service on. The installation routine adds a systemd service that runs this automatically at startup.
 - **`hs-curfew`** — stops HeartSuite Core Secure from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
