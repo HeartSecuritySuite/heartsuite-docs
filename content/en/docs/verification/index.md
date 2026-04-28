@@ -31,8 +31,7 @@ When Phase 1 is complete, the Dashboard confirms:
 
 No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Dashboard in Setup Mode with Phase 1 complete — show the full terminal screen. Must include: SETUP MODE indicator at the top in high-contrast text, Phase 1 marked Complete in the phase progress, status line at the bottom showing `Kernel: HS`, and the Suggested Next Step pointing to Phase 2 Program Allowlisting.
+![Dashboard in Setup Mode with Phase 1 complete](test_docs_dashboard_phase1_complete.svg)
 
 ## Protection State
 

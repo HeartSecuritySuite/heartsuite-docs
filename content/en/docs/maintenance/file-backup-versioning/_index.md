@@ -23,8 +23,7 @@ By default, `/home` is configured for backup. You can add or remove directories 
 
 From the Dashboard, select Backup (`[b]`). The Dashboard shows your current backup configuration — which directories are protected and when they were last backed up.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Backup (`[b]`) — show the configuration view with 2–3 protected directories listed, each showing the last-backup timestamp. The `[n]` Add and `[r]` Remove options should be visible. A second frame showing the Timeline browse mode (`[t]`) with a list of dates and modified files would show the recovery workflow.
+![Backup configured with 3 protected directories](test_docs_backup_configured.svg)
 
 From here you can:
 

@@ -31,8 +31,9 @@ Repeat until System Setup shows **Setup Complete** in green — no manual comman
 
 After three to five cycles (depending on the distribution), System Setup confirms that all startup and shutdown programs have been allowlisted.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: System Setup — show the screen mid-cycle with the current step description and `[a]` action visible, then a second frame showing the **Setup Complete** confirmation in green. Both frames should show the step counter. Capture from the HeartSuite Core Secure kernel console.
+![System Setup mid-cycle with step counter and action prompt](test_docs_installation_mid_cycle.svg)
+
+![System Setup complete — Phase 1 confirmed in green](test_docs_installation_complete.svg)
 
 ## Returning to the Dashboard
 

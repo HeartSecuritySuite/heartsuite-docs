@@ -110,8 +110,7 @@ The sort order is a workflow convenience that determines which programs appear f
 
 From the Dashboard, select the Programs queue (`[p]`). Each program is presented with its package metadata. Press `[a]` to approve execution or `[s]` to skip.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Programs queue — show a real review item with all metadata fields populated (Package, Description, Category, Maintainer, Installed date), the action keys `[a]` `[s]` `[?]` visible in the footer, and the progress indicator at the top (e.g., "Programs: reviewing 2 of 7"). Include the groups panel on the left showing Unknown origin / Installed after OS / Installed with OS sections.
+![Programs queue review item with package metadata and action keys](test_docs_programs_queue_review.svg)
 
 ## File Access Queue (Phase 4)
 
@@ -154,8 +153,7 @@ This file access has not been allowlisted.
 
 From the Dashboard, select the File Access queue (`[f]`).
 
-> [!SCREENSHOT]
-> **Screenshot needed**: File Access queue — show a grouped review item (e.g., "847 file reads from /usr/lib/python3/") with the sample files listed and the group approval option visible. The read/write distinction should be clear from the action key label.
+![File access queue — python3 grouped reads with sample files](test_docs_file_access_grouped.svg)
 
 > [!TIP]
 > Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). HeartSuite Core Secure groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
@@ -183,8 +181,7 @@ This destination has not been allowlisted for this program.
 
 From the Dashboard, select the Internet Access queue (`[i]`).
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Internet Access queue — show a real review item with the destination IP, reverse DNS hostname with registrar and country, program name and metadata, attempt count, and `[a]` `[s]` action keys. Ideal if destination shows a recognisable provider (e.g., AWS, Cloudflare).
+![Internet access queue with destination IP and reverse DNS](test_docs_internet_access_populated.svg)
 
 ## Progress and Completion
 
