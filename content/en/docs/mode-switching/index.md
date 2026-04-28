@@ -86,8 +86,7 @@ When preconditions are satisfied, the Dashboard presents the activation option.
 
 From the Dashboard, select the Mode Switch (`[m]`). The Mode Switch displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Mode Switch (`[m]`) — show the screen with all preconditions met (green checkmarks throughout), the observation period summary visible, and the YES confirmation prompt ready for input. Capture the full terminal screen so the SETUP MODE indicator at the top is visible.
+![Mode Switch with all preconditions met](test_docs_mode_switch_all_clear.svg)
 
 After confirming, the Dashboard offers one reboot option:
 

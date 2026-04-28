@@ -10,8 +10,7 @@ type: docs
 
 **Overview**: In Secure Mode, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
 
-> [!SCREENSHOT]
-> **Screenshot needed**: Alert Settings (`[e]`) — show the Email tab in a configured state: Node ID filled, SMTP fields populated, password shown as `(set)`, Save and Test buttons visible. A second frame showing the Fleet tab with Syslog toggled on and the Webhook field populated would be valuable.
+![Alert Settings configured with SMTP and syslog](test_docs_alert_settings_configured.svg)
 
 ## When Alerts Fire
 
