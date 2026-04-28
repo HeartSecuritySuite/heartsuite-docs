@@ -54,6 +54,8 @@ Users who install HeartSuite Core Secure on bare-metal or custom VMs follow a lo
 
 Both paths converge at the Dashboard after Phase 1. From that point forward, the workflow is identical.
 
+![Dashboard after Phase 1: Phase 2 Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
+
 ## From Installation to Secure Mode
 
 The following diagram shows the path from installation to Secure Mode, including the maintenance cycle.

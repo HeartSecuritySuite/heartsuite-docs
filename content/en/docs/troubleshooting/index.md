@@ -22,6 +22,8 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 > [!TIP]
 > If you suspect a program is being blocked, check the Dashboard first. Denied items appear as counts on the Dashboard, grouped by category (Programs, File reads, File writes, Network). For example, if `nano` is blocked from executing, the Dashboard shows `Programs: 1 denied` and the Programs queue (`[p]`) presents it with full metadata for approval.
 
+![Dashboard in Secure Mode with denied counts: 2 programs, 1 file read, 1 network connection denied](test_docs_dashboard_secure_denied.svg)
+
 ## Log Management
 
 HeartSuite Core Secure captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[t]`) provides guided workflows for common maintenance tasks.
