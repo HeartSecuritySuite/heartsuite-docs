@@ -3,7 +3,7 @@ title: Getting Started
 description: Quick guide to install and start using HeartSuite Core Secure.
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "installation", "quickstart"]
-weight: 2
+weight: 15
 toc: true
 type: docs
 ---
