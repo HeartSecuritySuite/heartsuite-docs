@@ -40,8 +40,6 @@ This destination has not been allowlisted for this program.
 
 Press `[a]` to approve the destination for that program, or `[s]` to skip it for later.
 
-![Internet Access queue showing curl and apt with destination IPs and reverse DNS hostnames](test_docs_internet_access_populated.svg)
-
 When the Internet Access queue is empty, the Dashboard marks Phase 5 as complete and updates the Suggested Next Step.
 
 ## Approving a Network Destination

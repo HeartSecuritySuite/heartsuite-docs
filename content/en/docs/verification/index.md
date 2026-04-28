@@ -31,8 +31,6 @@ When Phase 1 is complete, the Dashboard confirms:
 
 No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
 
-![Dashboard in Setup Mode with Phase 1 complete](test_docs_dashboard_phase1_complete.svg)
-
 ## Protection State
 
 The protection state indicator appears as a full-width, high-contrast bar at the top of the Dashboard. Its content depends on the current system state:
