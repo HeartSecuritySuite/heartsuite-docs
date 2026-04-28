@@ -1,6 +1,6 @@
 ---
 title: "Licensing and Subscription"
-weight: 70
+weight: 75
 description: "Activating subscriptions for Secure Mode."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "license", "subscription", "activation"]
