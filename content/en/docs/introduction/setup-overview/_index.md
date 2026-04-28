@@ -1,8 +1,8 @@
 ---
-title: "Setup Overview"
-linkTitle: "Setup Overview"
+title: "The Setup Journey"
+linkTitle: "The Setup Journey"
 weight: 2
-description: "Overview of HeartSuite Core Secure setup process and modes."
+description: "How HeartSuite Core Secure guides you from installation to Secure Mode through seven phases."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "setup", "modes", "secure", "allowlist", "overview"]
 type: docs
