@@ -1,7 +1,7 @@
 ---
 title: "Obtaining and Installing HeartSuite Core Secure"
 weight: 20
-description: "Download, installation steps, and preliminary setup for virtual machines."
+description: "Download and installation steps for HeartSuite Core Secure."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "kernel", "download"]
 toc: true
@@ -22,8 +22,7 @@ Launch a pre-configured cloud instance (e.g., AWS AMI, GCP image). The HeartSuit
 Download the HeartSuite Core Secure installer, run it, and reboot multiple times to build the initial allowlist of startup and shutdown programs. This path involves:
 
 1. [Obtaining HeartSuite Core Secure](obtaining-heartsuite/) — Download the installer from the website.
-2. [VM Preparation](vm-preparation/) — Configure GRUB settings for virtual machines on clouds.
-3. [Installation Part 1](installation-part1/) — Run the installer and reboot to load the kernel.
-4. [Installation Part 2](installation-part2/) — Complete the System Setup steps to allowlist startup and shutdown programs.
+2. [Installation Part 1](installation-part1/) — Run the installer and reboot to load the kernel.
+3. [Installation Part 2](installation-part2/) — Complete the System Setup steps to allowlist startup and shutdown programs.
 
 After the final reboot cycle, the Dashboard appears and displays the Suggested Next Step to guide you into Phase 2 (Program Allowlisting).
