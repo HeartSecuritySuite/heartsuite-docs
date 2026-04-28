@@ -33,8 +33,8 @@ HeartSuite Core Secure is a strong fit for production servers, regulated worksta
 
 - [Network and Remote Access](network/) — Configure network permissions.
 - [Script Launchers](script-launchers/) — Secure interpreted script execution.
-- [Alert Configuration](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
-- [Maintenance](maintenance/) — Caches, backups, and configuration management.
+- [Alert Settings](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
+- [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
 ## Troubleshoot and Reference
 
