@@ -17,7 +17,7 @@ menu:
 ## In This Section
 
 - [HeartSuite Core Secure Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7 phases.
-- [Setup Overview](setup-overview/) — The setup process, modes (Setup vs. Secure), and how the Dashboard guides you.
+- [The Setup Journey](setup-overview/) — The seven phases from installation to Secure Mode, the Cloud and Local paths, and how the Dashboard guides you.
 - [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
 - [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where HeartSuite Core Secure fits best, plus notes on incompatible stacks.
 - [How HeartSuite Core Secure Compares](how-it-compares/) — What HeartSuite Core Secure replaces, what it complements, and how it can be circumvented.
