@@ -1,0 +1,33 @@
+/*
+Project-specific styles. For details, see:
+https://www.docsy.dev/docs/content/lookandfeel/#project-style-files
+*/
+
+// Dark mode enhancements
+@import 'td/color-adjustments-dark';
+@import 'td/code-dark';
+@import 'td/gcs-search-dark';
+@import 'td/extra/buttons';
+@import 'td/extra/main-container';
+
+// Fix: homepage uses <main class="td-main"> directly (not a nested <main> inside .td-main),
+// so Docsy's ".td-main main" padding rule doesn't match. Apply navbar offset manually.
+main.td-main {
+  padding-top: 1.5rem;
+
+  @include media-breakpoint-up(md) {
+    padding-top: calc(1.5rem + $td-navbar-min-height);
+  }
+}
+
+// Example of color tuning
+
+.td-box--primary {
+  // TODO: rework the td-box--* classes so that they don't override `color`;
+  // otherwise we can't use Bootstrap's CSS variables:
+  // --bs-link-color: $color !important;
+  // --bs-link-color-rgb: red !important;
+  a {
+    color: tint-color($primary, 80%) !important;
+  }
+}
