@@ -20,4 +20,4 @@ menu:
 
 The tar file is not available via direct download — use the download form on heartsecsuite.com.
 
-Once you have the tar file, proceed to [VM Preparation](../vm-preparation/) if you are installing on a cloud VM, or directly to [Installation Part 1](../installation-part1/) for bare-metal installations.
+Once you have the tar file, proceed to [Installation Part 1](../installation-part1/).
