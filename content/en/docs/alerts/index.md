@@ -1,5 +1,5 @@
 ---
-title: "Alert Configuration"
+title: "Alert Settings"
 weight: 70
 description: "Configuring push alert channels for blocks and state changes in Secure Mode."
 categories: ["Guides"]

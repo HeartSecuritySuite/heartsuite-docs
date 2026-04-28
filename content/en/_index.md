@@ -27,8 +27,8 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 
 - [Network and Remote Access](docs/network/) — Configure network permissions.
 - [Script Launchers](docs/script-launchers/) — Secure interpreted script execution.
-- [Alert Configuration](docs/alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
-- [Maintenance](docs/maintenance/) — Caches, backups, and configuration management.
+- [Alert Settings](docs/alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
+- [Maintenance](docs/maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
 ## Troubleshoot and Reference
 
