@@ -18,7 +18,7 @@ A: Every attack does three things: run a program, access files, make a network c
 
 {{< details summary="Who is HeartSuite Core Secure for?" >}}
 
-A: HeartSuite Core Secure fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. It is not a fit for container hosts that depend on the Docker default storage driver, or for hosts that run eBPF-based observability tools like Falco, Cilium, or Tetragon. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+A: HeartSuite Core Secure fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Container host support (Docker, containerd, Kubernetes) is coming in v2. Currently it is not a fit for hosts that run eBPF-based observability tools like Falco, Cilium, or Tetragon. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
 {{< /details >}}
 
@@ -54,7 +54,7 @@ A: Lockdown makes all allowlist entries and configuration files immutable at the
 
 {{< details summary="What are the system requirements for HeartSuite Core Secure?" >}}
 
-A: Debian 11, 12, or 13; any Ubuntu-derived distribution; Alpine Linux; or RPM-based distributions (RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE) — all on x86 architecture. HeartSuite Core Secure ships with two HeartSuite Core Secure kernel versions: 5.19 and 6.18.
+A: Debian 11, 12, or 13; any Ubuntu-derived distribution; or Alpine Linux — all on x86 architecture. RPM-based distributions (RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE) are coming soon. HeartSuite Core Secure ships with two HeartSuite Core Secure kernel versions: 5.19 and 6.18.
 
 {{< /details >}}
 
