@@ -73,7 +73,7 @@ graph TD
     H --> I["Phase 5: Internet Access queue — approve connections"]
     I --> J["Phase 6: Configure alerts"]
     J --> K["Phase 7: Activate Secure Mode"]
-    K --> L["Lockdown: [r] Reboot or [l] Reboot + Lockdown"]
+    K --> L["[r] Reboot — Secure Mode active, apply Lockdown separately when ready"]
     L --> M{Maintenance needed?}
     M -- Yes --> N["Maintenance guides through steps"]
     N --> K
@@ -88,7 +88,7 @@ graph TD
 
 When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Secure Mode. Activating Secure Mode requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
 
-After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (Secure Mode active, configuration remains editable) or `[l]` Reboot + Lockdown (Secure Mode active, configuration sealed with filesystem immutability). Both are valid configurations depending on your security requirements. Lockdown can also be applied later from the Dashboard's Mode Switch (`[m]`).
+After activating Secure Mode, the Dashboard offers one reboot option: `[r]` Reboot — Secure Mode becomes active, configuration remains editable. Apply Lockdown separately from the Dashboard when you are ready.
 
 ## Maintenance in Secure Mode
 

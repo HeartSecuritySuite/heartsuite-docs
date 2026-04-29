@@ -123,7 +123,7 @@ Lockdown is a separate decision you make after activating Secure Mode. Both runn
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
 | Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
 | How long does Lockdown last? | N/A | Until immutable flags are removed through the maintenance journey — Lockdown persists across reboots and re-engages automatically on every HeartSuite kernel boot |
-| How do you exit Lockdown? | N/A | Boot the Non-HS kernel (physical presence required — keyboard and monitor, serial port, or cloud serial console — select from GRUB manually), or run `HS_unlock.sh` after a reboot without Lockdown |
+| How do you exit Lockdown? | N/A | Use the Dashboard's Maintenance (`[t]`) — it sets the GRUB default to the non-HS kernel automatically before rebooting, guides you through removing the seal on the non-HS kernel, then returns to the HeartSuite kernel. Console access (keyboard and monitor, serial port, or cloud serial console) is required only if automatic GRUB configuration does not apply. |
 
 ### What Lockdown Does
 
@@ -141,7 +141,7 @@ If the HeartSuite kernel fails to load, the startup script isolates the primary 
 
 Once Lockdown is engaged, the HeartSuite Core Secure kernel disables `chattr` entirely — no user or program, including root, can change the immutability flags. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
-Lockdown persists across reboots — the HeartSuite startup script re-engages it automatically each time the HeartSuite kernel starts. The only way to remove it is to boot the Non-HS kernel and follow the maintenance journey. Lockdown cannot be engaged in Setup Mode; if you try, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. This means that immutable flags set during Lockdown persist across reboots, including reboots into the Non-HS kernel. If you boot the Non-HS kernel for maintenance after Lockdown was active, you must run `HS_unlock.sh` before attempting to modify any files that were made immutable.
+Lockdown persists across reboots — the HeartSuite startup script re-engages it automatically each time the HeartSuite kernel starts. The only way to remove it is to boot the Non-HS kernel and follow the maintenance journey. Lockdown cannot be engaged in Setup Mode; if you try, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. This means that immutable flags set during Lockdown persist across reboots, including reboots into the Non-HS kernel. If you boot the Non-HS kernel for maintenance after Lockdown was active, the Dashboard's Maintenance wizard runs `HS_unlock.sh` for you via `[u]` Remove Flags. For recovery outside the wizard, run `HS_unlock.sh` manually before attempting to modify any files that were made immutable.
 
 ### What This Closes Off
 
@@ -163,7 +163,7 @@ You can make files and directories mutable again once Lockdown is no longer acti
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-Selecting the Non-HS kernel from GRUB is intentionally manual — it requires physical presence at the machine: a keyboard and monitor, a serial port, or your cloud provider's serial console. An attacker cannot trigger it remotely, even as root. Before you reboot, the Maintenance (`[t]`) displays the exact GRUB entry to select — you do not need to know it in advance. Returning to HeartSuite after maintenance is automatic: the HS kernel is always the GRUB default, so a reboot brings you back without any GRUB interaction.
+Before rebooting, the Maintenance (`[t]`) sets the GRUB default to the non-HS kernel automatically — no GRUB menu interaction is required. If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually, which requires console access: a keyboard and monitor, a serial port, or your cloud provider's serial console. Returning to the HeartSuite kernel after maintenance is also automatic: the Dashboard restores the HS kernel as the GRUB default before rebooting back, so no GRUB interaction is needed on the return trip either.
 
 ### Lockdown Commands
 
