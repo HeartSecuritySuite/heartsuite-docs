@@ -26,12 +26,12 @@ Allowlist has 312 entries but kernel cache max is 255; consider removing unused 
 
 The Allowed (`[a]`) is the place to review and remove entries you no longer need. After pruning, the Dashboard's next refresh fits the cache to your trimmed allowlist automatically.
 
-## Manual Adjustment (Advanced)
+## CLI Access for Scripting and Automation
 
-For scripting and automation, the `hs-cache-size` CLI sets the cache to a specific size between 10 and 255:
+For scripting and automation workflows that run without the Dashboard, `hs-cache-size` sets the cache to a specific size between 10 and 255:
 
 ```bash
 # hs-cache-size 128
 ```
 
-The Dashboard's auto-adjustment is the supported path. Use the CLI only when scripting around the Dashboard — for example, test fixtures or automation that runs without the UI.
+The Dashboard is the supported path for normal use.

@@ -209,10 +209,12 @@ Use `[n]` to navigate through denied items one by one. To approve a denied progr
 > [!NOTE]
 > Denied items in Secure Mode are a normal part of operation, not failures. A denied item means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
 
-## Manual Allowlist Management
+## CLI Access for Scripting and Automation
 
-For users who prefer direct CLI manipulation, `hs-manage-allowlist` provides a browser and editor for existing allowlist entries. See its built-in help:
+For scripting and automation workflows that run without the Dashboard, `hs-manage-allowlist` provides a browser and editor for existing allowlist entries. See its built-in help:
 
 ```bash
 # hs-manage-allowlist --help
 ```
+
+The Dashboard is the supported path for normal use.
