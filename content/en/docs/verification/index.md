@@ -40,7 +40,7 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 | Setup Mode | SETUP MODE — logging only, nothing is blocked |
 | Secure Mode (no Lockdown) | SECURE MODE — Lockdown not applied |
 | Secure Mode + Lockdown | No indicator (silence means safety) |
-| Non-HS kernel | NON-HS KERNEL — HeartSuite Core Secure is not active. No enforcement. No logging. No backups. |
+| Non-HS kernel | NON-HS KERNEL — HeartSuite Core Secure is not active. No blocking. No logging. No backups. |
 
 ## Status Line at the Bottom
 

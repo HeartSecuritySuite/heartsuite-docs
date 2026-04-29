@@ -90,7 +90,7 @@ A: No. Most security products generate high volumes of alerts because they flag 
 
 {{< details summary="What does the free trial include?" >}}
 
-A: Secure Mode and Lockdown require a subscription. Setup Mode logs activity without blocking — you can observe your workload but enforcement is not active.
+A: Secure Mode and Lockdown require a subscription. Setup Mode logs activity without blocking — you can observe your workload but blocking is not active.
 
 {{< /details >}}
 
@@ -108,7 +108,7 @@ A: The Dashboard is how you manage HeartSuite Core Secure. It shows your current
 
 {{< details summary="How does HeartSuite Core Secure guide me through setup?" >}}
 
-A: The Dashboard walks you through seven phases, from verifying your installation to activating full protection. Each phase focuses on one task — approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`). The Dashboard tracks your progress and always shows the next step. Secure Mode (full enforcement) unlocks only after all prior phases are complete.
+A: The Dashboard walks you through seven phases, from verifying your installation to activating full protection. Each phase focuses on one task — approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`). The Dashboard tracks your progress and always shows the next step. Secure Mode unlocks only after all prior phases are complete.
 
 {{< /details >}}
 

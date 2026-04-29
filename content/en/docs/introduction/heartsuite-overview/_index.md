@@ -31,7 +31,7 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 4 | File Access Allowlisting | Review and approve file read/write access for programs |
 | 5 | Internet Access Allowlisting | Review and approve outbound internet connections |
 | 6 | Alert Configuration | Set up notification channels (email, syslog, webhook) |
-| 7 | Secure Mode | Activate enforcement — locked until phases 2–6 are complete |
+| 7 | Secure Mode | Activate Secure Mode — locked until phases 2–6 are complete |
 
 ## Reduced Kernel Footprint
 
