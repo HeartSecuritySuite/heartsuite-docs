@@ -37,10 +37,10 @@ The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard.
 
 The installer sets the HeartSuite kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
 
-After reboot, the Dashboard appears automatically wherever you log in. Continue with [Installation Part 2](../installation-part2/).
+After reboot, HeartSuite Core Secure reads the startup and shutdown logs and adds those programs to the allowlist automatically. Continue with [Installation Part 2](../installation-part2/).
 
 > [!NOTE]
-> **If you are connected over SSH**, your session drops when the reboot fires — this is expected. Reconnect over SSH after the system comes back: the Dashboard launches in your SSH session automatically when setup work remains. Once setup is complete, normal SSH logins drop you at a regular shell. The serial console (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL) works the same way — it also reaches the Dashboard.
+> **If you are connected over SSH**, your session drops when the reboot fires — this is expected. Reconnect after the system comes back. While setup is running, each SSH login shows a brief status line and drops you at a regular shell; the Dashboard appears once setup is complete. The serial console (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL) shows the current setup step on every boot.
 
 > [!NOTE]
 > **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the HeartSuite kernel from the GRUB menu manually.
@@ -50,6 +50,6 @@ After reboot, the Dashboard appears automatically wherever you log in. Continue 
 If the system boots to the wrong kernel or hangs:
 
 1. Verify the installer completed without errors before the reboot fired.
-2. For VMs: if UUID detection causes a boot failure, uncomment `GRUB_DISABLE_LINUX_UUID` in `/etc/default/grub` and run `update-grub`, then reboot.
+2. Reboot and select the HeartSuite kernel from the GRUB menu manually.
 
-If neither step resolves the issue, contact HeartSuite support.
+If the issue persists, contact HeartSuite support — we're happy to help.

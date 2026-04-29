@@ -1,7 +1,7 @@
 ---
 title: "Installing HeartSuite Core Secure – Part 2"
 weight: 4
-description: "Completing the System Setup to allowlist startup and shutdown programs."
+description: "HeartSuite Core Secure builds the initial allowlist automatically after the first boot. The Dashboard appears when setup is complete."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "allowlisting", "script"]
 type: docs
@@ -12,55 +12,51 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: After rebooting into the HeartSuite Core Secure kernel, build the initial allowlist of startup and shutdown programs. This completes Phase 1 (System Verification) on the Local Path. The Dashboard then appears and guides you into Phase 2 (Program Allowlisting).
+**Overview**: No commands are needed after the first boot into the HeartSuite Core Secure kernel. HeartSuite Core Secure reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into Phase 2 (Program Allowlisting).
 
 > [!NOTE]
-> Cloud users skip this step. On a pre-configured cloud instance, the Dashboard confirms Phase 1 is complete on first boot.
+> Cloud users skip this step. On a pre-configured cloud instance, the Dashboard confirms Phase 1 (System Verification) is complete on first boot.
 
-## Building the Initial Allowlist
+## What Happens After the First Boot
 
-After booting into the HeartSuite Core Secure kernel, the Dashboard appears automatically — on the serial console (`/dev/ttyS0`, reached via `virsh console`, AWS/Azure/GCP serial console, or IPMI SOL) and equally in any SSH session you reconnect with while post-reboot work is pending. The **System Setup** opens on first boot.
+HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
 
-Each cycle follows the same pattern:
+**While setup is running, you will see:**
 
-1. Press `[a]` to run the setup step — HeartSuite Core Secure scans startup and shutdown logs and adds the programs it finds to the allowlist.
-2. When the step completes, the system reboots automatically (5-second countdown — press any key to cancel if needed).
-3. The system boots back into the HeartSuite Core Secure kernel automatically. The Dashboard appears and the Suggested Next Step shows `[s] System Setup`. Press `[s]` to continue to the next step.
+- **Over SSH**: each time you reconnect, the login shows a brief status line and drops you at a regular shell — no action needed:
+  ```
+  HeartSuite Phase 1 is running — step N of unknown total.
+  The system reboots automatically. Reconnect in a few minutes.
+  ```
 
-Repeat until System Setup shows **Setup Complete** in green — no manual commands are needed between cycles.
+- **On the serial console** (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL): the banner above the login prompt shows the current step on every boot. No action needed.
 
-After three to five cycles (depending on the distribution), System Setup confirms that all startup and shutdown programs have been allowlisted.
+The first time you connect and the Dashboard appears, setup is complete. The Dashboard shows the reboot history and the Suggested Next Step directs you into Phase 2 (Program Allowlisting).
 
-![System Setup mid-cycle with step counter and action prompt](test_docs_installation_mid_cycle.svg)
+## If the Dashboard Does Not Appear
 
-![System Setup complete — Phase 1 confirmed in green](test_docs_installation_complete.svg)
+If setup is still running, SSH reconnects show the status line above instead of the Dashboard. Wait a few minutes and reconnect.
 
-## Returning to the Dashboard
+If repeated reconnects still show the status line rather than the Dashboard:
 
-When System Setup shows the completion message, press `[q]` to return to the Dashboard. The Dashboard displays your current progress and the Suggested Next Step guides you into Phase 2 (Program Allowlisting).
-
-## If the Dashboard Does Not Appear After Boot
-
-If the Dashboard does not appear after booting into the HeartSuite Core Secure kernel:
-
-1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL, or a null-modem cable). The Dashboard auto-launches when a console client attaches. The graphical TTY1 (virt-manager, VNC, SPICE) shows a regular getty, not the Dashboard — the Dashboard is on the serial console by design.
-2. Confirm the autologin is active on the serial console:
-   ```bash
-   systemctl status serial-getty@ttyS0.service
-   ```
-3. Verify the HeartSuite Core Secure kernel is loaded:
+1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL). The banner shows the current step — if it has not advanced across reboots, check the per-step log at `/var/log/heartsuite/phase1-step-N.log`.
+2. Verify the HeartSuite Core Secure kernel is loaded:
    ```bash
    uname -r
    ```
-   Expected output ends in `.heartsuite` (for example, `6.18.23-HeartSuite-1.0`).
-4. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
+   Expected output ends in `HeartSuite` (for example, `6.18.23-HeartSuite-1.0`).
+3. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
 
-## If the Setup Screen Does Not Progress
+## If Setup Stops With an Error
 
-If after several cycles System Setup does not show the completion message:
+If something goes wrong during setup, the next login shows an error with the reason and the last output from the setup process.
 
-1. Check the Dashboard's Programs review queue (`[p]`) for any pending items and approve missing programs.
-2. Verify the HeartSuite Core Secure kernel is loaded (the status line at the bottom of the Dashboard shows "Kernel: HS").
+![Phase 1 error — reason text and retry options](test_docs_installation_error_halted.svg)
+
+Two options are available:
+
+- **`[r]` Retry** — restarts the setup from where it stopped.
+- **`[q]` Open shell** — drops you to a shell to investigate before retrying.
 
 > [!WARNING]
-> Completing these reboot-and-review cycles is essential before switching to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.
+> The boot setup must complete before you switch to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.

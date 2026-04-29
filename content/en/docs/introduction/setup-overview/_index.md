@@ -49,7 +49,7 @@ Users who install HeartSuite Core Secure on bare-metal or custom VMs follow a lo
 
 1. Download and extract the installation package.
 2. Prepare GRUB and install the HeartSuite Core Secure kernel.
-3. Follow the System Setup — press `[a]` for each step; the system reboots after each one.
+3. HeartSuite Core Secure reads the startup and shutdown logs automatically, rebooting between passes until all startup and shutdown programs are in the allowlist.
 4. After Phase 1 is complete, the Dashboard appears and the journey merges with the Cloud path.
 
 Both paths converge at the Dashboard after Phase 1. From that point forward, the workflow is identical.
@@ -64,7 +64,7 @@ The following diagram shows the path from installation to Secure Mode, including
 graph TD
     A[Install HeartSuite Core Secure] --> B{Cloud or Local?}
     B -- Cloud --> C[Boot instance — Dashboard confirms Phase 1 complete]
-    B -- Local --> D["System Setup — press [a] each step"]
+    B -- Local --> D["Boot setup runs automatically — reboots between passes"]
     D --> C
     C --> E[Dashboard appears — Suggested Next Step]
     E --> F["Phase 2: Programs queue — approve programs"]
@@ -88,7 +88,7 @@ graph TD
 
 When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Secure Mode. Activating Secure Mode requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
 
-After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Both are valid configurations depending on your security requirements. Lockdown can also be applied later from the Dashboard's Mode Switch (`[m]`).
+After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (Secure Mode active, configuration remains editable) or `[l]` Reboot + Lockdown (Secure Mode active, configuration sealed with filesystem immutability). Both are valid configurations depending on your security requirements. Lockdown can also be applied later from the Dashboard's Mode Switch (`[m]`).
 
 ## Maintenance in Secure Mode
 
