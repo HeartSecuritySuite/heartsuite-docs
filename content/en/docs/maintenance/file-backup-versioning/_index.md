@@ -50,9 +50,9 @@ For ransomware recovery where many files were modified on the same date, use the
 
 When Lockdown is active, the backup configuration file is sealed — no user or program, including root, can add or remove directories. This prevents an attacker who compromises a running process from silently disabling backup. To change the backup configuration, enter a maintenance period first (see [Protecting During Maintenance](../protecting-during-maintenance/)).
 
-## CLI Backup Management
+## CLI Access for Scripting and Automation
 
-For automation workflows, the underlying CLI tools are available:
+For scripting and automation workflows that run without the Dashboard, the following CLI tools are available:
 
 ```bash
 # hs-backup-config-manager add /var/www
@@ -61,3 +61,5 @@ For automation workflows, the underlying CLI tools are available:
 # hs-version-manager list /home/user/document.txt
 # hs-version-manager restore /home/user/document.txt --version 2023-11-01
 ```
+
+The Dashboard is the supported path for normal use.

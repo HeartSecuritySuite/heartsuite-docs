@@ -56,9 +56,9 @@ HeartSuite Core Secure intercepts the connection and the attempt appears in the 
 
 To browse or edit network destinations that have already been approved, select Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
 
-## Direct Allowlist Management
+## CLI Access for Scripting and Automation
 
-For automation workflows or bulk changes, `hs-manage-allowlist` provides direct CLI access:
+For scripting and automation workflows that run without the Dashboard, `hs-manage-allowlist` provides direct CLI access:
 
 ```bash
 # hs-manage-allowlist add -x /usr/bin/wget -n 45.60.22.168
@@ -72,5 +72,7 @@ Or look up the entry number first:
 /usr/bin/wget
 # hs-manage-allowlist add -r 277 -n 192.142.166.196
 ```
+
+The Dashboard is the supported path for normal use.
 
 For general allowlisting concepts (program execution, file access, write permissions), see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
