@@ -29,7 +29,7 @@ HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it
   The system reboots automatically. Reconnect in a few minutes.
   ```
 
-- **On the serial console** (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL): the banner above the login prompt shows the current step on every boot. No action needed.
+- **On the serial console** (`virsh console`, AWS/Azure/GCP serial console, IPMI SOL): attach and press Enter — the console autologs in and shows the current step. No action needed.
 
 The first time you connect and the Dashboard appears, setup is complete. The Dashboard shows the reboot history and the Suggested Next Step directs you into Phase 2 (Program Allowlisting).
 
@@ -39,7 +39,7 @@ If setup is still running, SSH reconnects show the status line above instead of 
 
 If repeated reconnects still show the status line rather than the Dashboard:
 
-1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL). The banner shows the current step — if it has not advanced across reboots, check the per-step log at `/var/log/heartsuite/phase1-step-N.log`.
+1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL) and press Enter to see the current step. If it has not advanced across reboots, run `journalctl -u heartsuite-phase1` to see the setup output.
 2. Verify the HeartSuite Core Secure kernel is loaded:
    ```bash
    uname -r
