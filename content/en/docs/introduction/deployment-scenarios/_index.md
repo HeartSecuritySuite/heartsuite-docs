@@ -54,7 +54,7 @@ Autonomous agents are powerful because they decide what to do next. That is also
 > [!NOTE]
 > Setup Mode captures the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
-## Container Hosts *(coming soon)*
+## Container Hosts *(coming soon)* {#container-hosts}
 
 Docker, containerd, Kubernetes, and CRI-O all run on a HeartSuite Core Secure host. *(Coming in v2)* The installer detects which container engine is present and asks you to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode logs container-runtime programs, overlay mounts, and each container image intended to run under Lockdown so you can review and approve them in the Dashboard queues before switching to Secure Mode.
 
