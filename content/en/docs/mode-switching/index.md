@@ -14,14 +14,14 @@ type: docs
 
 HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your security requirements. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original Non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
 
-| | HeartSuite Core Secure kernel loaded | Enforcement | Logging | Backups | Dashboard and features |
+| | HeartSuite Core Secure kernel loaded | Blocking | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
 | **Setup Mode** | Yes | No — logs only | Yes | Yes | Dashboard and all features available |
 | **Secure Mode** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available |
 | **Secure Mode + Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
 | **Non-HS kernel** *(not a HeartSuite Core Secure mode)* | No — HeartSuite Core Secure absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup Mode and Secure Mode, the HS kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means HeartSuite Core Secure is completely absent — the HS kernel is not loaded, no enforcement or logging takes place, and backups do not run.
+In Setup Mode and Secure Mode, the HS kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means HeartSuite Core Secure is completely absent — the HS kernel is not loaded, no blocking or logging takes place, and backups do not run.
 
 The indicator at the top of the Dashboard shows the current protection state, and the Suggested Next Step tells you what to do next.
 
@@ -38,7 +38,7 @@ The indicator at the top of the Dashboard reflects the current protection state:
 | Setup Mode | **SETUP MODE** — logging only, nothing is blocked |
 | Secure Mode (no Lockdown) | **SECURE MODE** — Lockdown not applied |
 | Secure Mode + Lockdown | Silent (blank) |
-| Non-HS kernel | **NON-HS KERNEL** — HeartSuite Core Secure is not active. No enforcement. No logging. No backups. |
+| Non-HS kernel | **NON-HS KERNEL** — HeartSuite Core Secure is not active. No blocking. No logging. No backups. |
 
 ## Setup Mode and Secure Mode
 
@@ -49,7 +49,7 @@ At some point, you need to switch to Secure Mode to prevent malicious programs f
 
 If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite Core Secure will block programs from accessing those files and network addresses when you switch to Secure Mode.
 
-Once HeartSuite Core Secure is set up, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before enforcement begins.
+Once HeartSuite Core Secure is set up, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before switching to Secure Mode.
 
 When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Secure Mode, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then return to Secure Mode.
 
@@ -57,7 +57,7 @@ When installing new software, you must return to Setup Mode. For example, the De
 graph TD
     A["Dashboard: Phase Progress complete"] --> B["Review queues empty — ready for Secure Mode"];
     B --> C["Dashboard Mode Switch — type YES to confirm"];
-    C --> D["[r] Reboot — enforcement activates, configuration remains editable"];
+    C --> D["[r] Reboot — Secure Mode activates, configuration remains editable"];
     D --> E["Secure Mode active"];
     E --> F["Apply Lockdown from Dashboard when ready"];
     E --> G{Maintenance needed?};
@@ -90,9 +90,9 @@ From the Dashboard, select the Mode Switch (`[m]`). The Mode Switch displays a p
 
 After confirming, the Dashboard offers one reboot option:
 
-- `[r]` **Reboot** — enforcement activates, configuration remains editable
+- `[r]` **Reboot** — Secure Mode activates, configuration remains editable
 
-HeartSuite Core Secure boots in Secure Mode from that point forward until you switch back to Setup Mode. Apply Lockdown separately from the Dashboard when you are ready — this gives you the opportunity to verify enforcement is working before sealing the configuration.
+HeartSuite Core Secure boots in Secure Mode from that point forward until you switch back to Setup Mode. Apply Lockdown separately from the Dashboard when you are ready — this gives you the opportunity to verify Secure Mode is working before sealing the configuration.
 
 ### Returning to Setup Mode
 

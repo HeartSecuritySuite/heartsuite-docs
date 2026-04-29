@@ -42,7 +42,7 @@ The kernel log is useful for advanced troubleshooting in three situations: a pro
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Core Secure kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and enforcement is inactive.
+The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Core Secure kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and blocking is inactive.
 
 ## Reporting Issues
 

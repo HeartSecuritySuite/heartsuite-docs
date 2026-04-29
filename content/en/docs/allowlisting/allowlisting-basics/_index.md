@@ -202,7 +202,7 @@ Allow several days to a week of observation in Setup Mode to capture activity fr
 
 ## Review Queues in Secure Mode
 
-In Secure Mode the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while enforcement is active. The queues show **denied** items (actions HeartSuite Core Secure blocked), not pending items awaiting approval.
+In Secure Mode the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Secure Mode. The queues show **denied** items (actions HeartSuite Core Secure blocked), not pending items awaiting approval.
 
 Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance (`[t]`) — this switches to Setup Mode where the review queues become interactive again.
 

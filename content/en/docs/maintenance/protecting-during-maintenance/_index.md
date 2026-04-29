@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: Every maintenance window is an attack window — enforcement is temporarily absent, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite Core Secure's protection to make changes. The Dashboard's Maintenance (`[t]`) guides you through the entire process, from safety preparation to returning to Secure Mode. The Maintenance appears only when the system is in Secure Mode, Secure Mode + Lockdown, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite Core Secure's protection to make changes. The Dashboard's Maintenance (`[t]`) guides you through the entire process, from safety preparation to returning to Secure Mode. The Maintenance appears only when the system is in Secure Mode, Secure Mode + Lockdown, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
 ## Starting Maintenance
 
@@ -35,7 +35,7 @@ This is the standard maintenance path. The HeartSuite Core Secure kernel stays a
 
 After completing the safety checklist, the Maintenance explains what will change:
 
-- Enforcement changes from blocking to logging only
+- HeartSuite Core Secure switches from blocking to logging only
 - The HeartSuite Core Secure kernel remains active
 - Backups continue running
 - The existing allowlist is preserved
@@ -45,7 +45,7 @@ Type `YES` (case-sensitive) to confirm the switch. The Dashboard reboots to appl
 
 After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears. Make your changes — install packages, edit configuration, update software. HeartSuite Core Secure logs all new activity silently.
 
-When finished, return to Secure Mode from the Dashboard. New activity from the maintenance period appears in the review queues. Review and approve them through the standard allowlisting flow before enforcement resumes.
+When finished, return to Secure Mode from the Dashboard. New activity from the maintenance period appears in the review queues. Review and approve them through the standard allowlisting flow before Secure Mode resumes.
 
 ## Option 2: Boot the Non-HS Kernel (Lockdown Active)
 
@@ -63,7 +63,7 @@ The Dashboard saves your maintenance session state before rebooting. This state 
 After selecting the Non-HS kernel from GRUB, the Dashboard resumes automatically on login. It detects the absence of the HeartSuite Core Secure kernel module and adjusts its interface — actions that require the HeartSuite Core Secure kernel are hidden entirely, not greyed out. The Dashboard shows:
 
 - "Non-HS kernel active. HeartSuite Core Secure is not loaded."
-- "No enforcement. No logging. No backups."
+- "No blocking. No logging. No backups."
 - "Maintenance step 1 of 3: Remove immutable flags."
 
 Press `[u]` to remove the immutable flags set by Lockdown. After the flags are removed, the Dashboard presents the automatic Lockdown re-engagement choice:
