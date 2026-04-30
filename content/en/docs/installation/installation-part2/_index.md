@@ -51,8 +51,6 @@ If repeated reconnects still show the status line rather than the Dashboard:
 
 If something goes wrong during setup, the next login shows an error with the reason and the last output from the setup process.
 
-![Phase 1 error — reason text and retry options](test_docs_installation_error_halted.svg)
-
 Two options are available:
 
 - **`[r]` Retry** — restarts the setup from where it stopped.
