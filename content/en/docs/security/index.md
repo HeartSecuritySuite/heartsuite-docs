@@ -23,363 +23,363 @@ The **Env. Score** column shows the CVSS v3.1 Environmental Score for the HeartS
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | 7.8 HIGH | 0.0 | Affected — hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | 7.8 HIGH | 7.1–7.9 HIGH | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 
-| [CVE-2024-0775](#cve-2024-0775) | CONFIG_EXT4_FS | 6.7 HIGH | 6.8 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | 6.7 HIGH | 6.8 MEDIUM | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-52530](#cve-2023-52530) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2023-52612](#cve-2023-52612) | CONFIG_CRYPTO | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_CRYPTO=y; Lockdown limits post-exploitation |
+| [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework (`CONFIG_CRYPTO`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_CRYPTO=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-26654](#cve-2024-26654) | CONFIG_SND | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | 7.0 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-26704](#cve-2024-26704) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-26842](#cve-2024-26842) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-26842](#cve-2024-26842) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; UFS flash storage absent on x86 server |
 
-| [CVE-2022-48662](#cve-2022-48662) | CONFIG_DRM_I915 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM_I915=y; Lockdown limits post-exploitation |
+| [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no Intel display GPU present |
 
-| [CVE-2024-26934](#cve-2024-26934) | CONFIG_USB | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_USB=y; Lockdown limits post-exploitation |
+| [CVE-2024-26934](#cve-2024-26934) | USB core (`CONFIG_USB`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-26939](#cve-2024-26939) | CONFIG_DRM_I915 | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_DRM_I915=y; Lockdown limits post-exploitation |
+| [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | 7.0 HIGH | 0.0 | Affected — hardware absent; no Intel display GPU present |
 
-| [CVE-2022-48689](#cve-2022-48689) | CONFIG_EXT4_FS | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2022-48689](#cve-2022-48689) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.0 HIGH | 7.1 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-48701](#cve-2022-48701) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2022-48701](#cve-2022-48701) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-48702](#cve-2022-48702) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2022-48702](#cve-2022-48702) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-48695](#cve-2022-48695) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2022-48695](#cve-2022-48695) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires LSI/Avago mpt3sas SAS/NVMe HBA |
 
-| [CVE-2024-35789](#cve-2024-35789) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2024-35789](#cve-2024-35789) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2024-35886](#cve-2024-35886) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-52835](#cve-2023-52835) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-52868](#cve-2023-52868) | CONFIG_THERMAL | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_THERMAL=y; Lockdown limits post-exploitation |
+| [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_THERMAL=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-36916](#cve-2024-36916) | CONFIG_BLK_CGROUP_IOCOST | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_BLK_CGROUP_IOCOST=y; Lockdown limits post-exploitation |
+| [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_BLK_CGROUP_IOCOST=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-38560](#cve-2024-38560) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-38560](#cve-2024-38560) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires Brocade bfa Fibre Channel HBA |
 
-| [CVE-2024-38588](#cve-2024-38588) | CONFIG_KPROBES | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_KPROBES=y; Lockdown limits post-exploitation |
+| [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_KPROBES=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-40901](#cve-2024-40901) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-40901](#cve-2024-40901) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires LSI/Avago mpt3sas SAS/NVMe HBA |
 
-| [CVE-2024-40978](#cve-2024-40978) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-40978](#cve-2024-40978) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires QLogic qedi iSCSI HBA |
 
-| [CVE-2024-41092](#cve-2024-41092) | CONFIG_DRM_I915 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM_I915=y; Lockdown limits post-exploitation |
+| [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no Intel display GPU present |
 
-| [CVE-2024-42136](#cve-2024-42136) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-42136](#cve-2024-42136) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; CD-ROM drive absent on server |
 
-| [CVE-2024-44985](#cve-2024-44985) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-44986](#cve-2024-44986) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-44987](#cve-2024-44987) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-46673](#cve-2024-46673) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-46673](#cve-2024-46673) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Adaptec aacraid RAID controller |
 
-| [CVE-2024-46746](#cve-2024-46746) | CONFIG_HID | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2024-46746](#cve-2024-46746) | HID subsystem (`CONFIG_HID`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2024-46747](#cve-2024-46747) | CONFIG_HID | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2024-46747](#cve-2024-46747) | HID subsystem (`CONFIG_HID`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2024-46798](#cve-2024-46798) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-46798](#cve-2024-46798) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-46849](#cve-2024-46849) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-46849](#cve-2024-46849) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-47682](#cve-2024-47682) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-47682](#cve-2024-47682) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-47701](#cve-2024-47701) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-47701](#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49852](#cve-2024-49852) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-49852](#cve-2024-49852) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Emulex libefc Fibre Channel HBA |
 
-| [CVE-2024-49882](#cve-2024-49882) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49882](#cve-2024-49882) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49883](#cve-2024-49883) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49883](#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49884](#cve-2024-49884) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49884](#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49889](#cve-2024-49889) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49960](#cve-2024-49960) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-49983](#cve-2024-49983) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50007](#cve-2024-50007) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-50007](#cve-2024-50007) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-48951](#cve-2022-48951) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2022-48951](#cve-2022-48951) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-48956](#cve-2022-48956) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49022](#cve-2022-49022) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2022-49022](#cve-2022-49022) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2022-49023](#cve-2022-49023) | CONFIG_CFG80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_CFG80211=y; Lockdown limits post-exploitation |
+| [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2024-50278](#cve-2024-50278) | CONFIG_BLK_DEV_DM | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_BLK_DEV_DM=y; Lockdown limits post-exploitation |
+| [CVE-2024-50278](#cve-2024-50278) | device mapper (`CONFIG_BLK_DEV_DM`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50279](#cve-2024-50279) | CONFIG_BLK_DEV_DM | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_BLK_DEV_DM=y; Lockdown limits post-exploitation |
+| [CVE-2024-50279](#cve-2024-50279) | device mapper (`CONFIG_BLK_DEV_DM`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-53147](#cve-2024-53147) | CONFIG_FAT_FS | 7.1 HIGH | 6.6 HIGH | Affected — CONFIG_FAT_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-53147](#cve-2024-53147) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | 7.1 HIGH | 6.6 MEDIUM | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-53150](#cve-2024-53150) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-53150](#cve-2024-53150) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-53170](#cve-2024-53170) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-53173](#cve-2024-53173) | CONFIG_NFS_V4 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NFS_V4=y; Lockdown limits post-exploitation |
+| [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NFS_V4=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-53214](#cve-2024-53214) | CONFIG_HID | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2024-53214](#cve-2024-53214) | HID subsystem (`CONFIG_HID`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2024-53227](#cve-2024-53227) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-53227](#cve-2024-53227) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Brocade bfa Fibre Channel HBA |
 
-| [CVE-2024-53239](#cve-2024-53239) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-53239](#cve-2024-53239) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-56609](#cve-2024-56609) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2024-56609](#cve-2024-56609) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2024-56631](#cve-2024-56631) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2024-56631](#cve-2024-56631) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-56663](#cve-2024-56663) | CONFIG_MAC80211 | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2024-56663](#cve-2024-56663) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2024-57899](#cve-2024-57899) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2025-21863](#cve-2025-21863) | CONFIG_IO_URING | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IO_URING=y; Lockdown limits post-exploitation |
+| [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-52930](#cve-2023-52930) | CONFIG_DRM_I915 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM_I915=y; Lockdown limits post-exploitation |
+| [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no Intel display GPU present |
 
-| [CVE-2023-52988](#cve-2023-52988) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2023-52988](#cve-2023-52988) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2025-21993](#cve-2025-21993) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-21993](#cve-2025-21993) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires iSCSI Boot Firmware Table (iBFT, iSCSI boot configuration) |
 
-| [CVE-2025-22083](#cve-2025-22083) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-22083](#cve-2025-22083) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; vhost-scsi not applicable — no KVM host mode in HS |
 
-| [CVE-2025-22121](#cve-2025-22121) | CONFIG_EXT4_FS | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37785](#cve-2025-37785) | CONFIG_EXT4_FS | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-40364](#cve-2025-40364) | CONFIG_IO_URING | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IO_URING=y; Lockdown limits post-exploitation |
+| [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37738](#cve-2025-37738) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49789](#cve-2022-49789) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2022-49789](#cve-2022-49789) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; IBM Z Fibre Channel hardware absent |
 
-| [CVE-2022-49842](#cve-2022-49842) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-49865](#cve-2022-49865) | CONFIG_IPV6 | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53037](#cve-2023-53037) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53037](#cve-2023-53037) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
 
-| [CVE-2023-53039](#cve-2023-53039) | CONFIG_HID | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2023-53065](#cve-2023-53065) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37861](#cve-2025-37861) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-37861](#cve-2025-37861) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
 
-| [CVE-2025-37979](#cve-2025-37979) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2025-37979](#cve-2025-37979) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2022-49934](#cve-2022-49934) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2025-38103](#cve-2025-38103) | CONFIG_HID | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2025-38206](#cve-2025-38206) | CONFIG_FAT_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_FAT_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-38206](#cve-2025-38206) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38239](#cve-2025-38239) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-38239](#cve-2025-38239) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires LSI MegaRAID SAS controller |
 
-| [CVE-2025-38249](#cve-2025-38249) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2025-38389](#cve-2025-38389) | CONFIG_DRM_I915 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM_I915=y; Lockdown limits post-exploitation |
+| [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no Intel display GPU present |
 
-| [CVE-2025-38494](#cve-2025-38494) | CONFIG_HID | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2025-38550](#cve-2025-38550) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2025-38550](#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38556](#cve-2025-38556) | CONFIG_HID | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2025-38556](#cve-2025-38556) | HID subsystem (`CONFIG_HID`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2025-38563](#cve-2025-38563) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38565](#cve-2025-38565) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38572](#cve-2025-38572) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38699](#cve-2025-38699) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-38699](#cve-2025-38699) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Brocade bfa Fibre Channel HBA |
 
-| [CVE-2025-38729](#cve-2025-38729) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2025-39702](#cve-2025-39702) | CONFIG_IPV6 | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | 7.0 HIGH | 7.1 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-39757](#cve-2025-39757) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2025-39760](#cve-2025-39760) | CONFIG_USB | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_USB=y; Lockdown limits post-exploitation |
+| [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-39788](#cve-2025-39788) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; UFS flash storage absent on x86 server |
 
-| [CVE-2022-50306](#cve-2022-50306) | CONFIG_EXT4_FS | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53257](#cve-2023-53257) | CONFIG_MAC80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2023-53282](#cve-2023-53282) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53282](#cve-2023-53282) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Emulex lpfc Fibre Channel HBA |
 
-| [CVE-2023-53285](#cve-2023-53285) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2023-53285](#cve-2023-53285) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53320](#cve-2023-53320) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53320](#cve-2023-53320) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
 
-| [CVE-2023-53321](#cve-2023-53321) | CONFIG_MAC80211 | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_MAC80211=y; Lockdown limits post-exploitation |
+| [CVE-2023-53321](#cve-2023-53321) | mac80211 wireless stack (`CONFIG_MAC80211`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2023-53322](#cve-2023-53322) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53322](#cve-2023-53322) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires QLogic qla2xxx Fibre Channel HBA |
 
-| [CVE-2022-50378](#cve-2022-50378) | CONFIG_DRM | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM=y; Lockdown limits post-exploitation |
+| [CVE-2022-50378](#cve-2022-50378) | DRM subsystem (`CONFIG_DRM`) | 7.8 HIGH | 0.0 | Affected — hardware absent; Amlogic Meson ARM SoC GPU absent |
 
-| [CVE-2023-53376](#cve-2023-53376) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53376](#cve-2023-53376) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
 
-| [CVE-2023-53392](#cve-2023-53392) | CONFIG_HID | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_HID=y; Lockdown limits post-exploitation |
+| [CVE-2023-53392](#cve-2023-53392) | HID subsystem (`CONFIG_HID`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no USB HID input devices on headless server |
 
-| [CVE-2025-39841](#cve-2025-39841) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-39841](#cve-2025-39841) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Emulex lpfc Fibre Channel HBA |
 
-| [CVE-2025-39864](#cve-2025-39864) | CONFIG_CFG80211 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_CFG80211=y; Lockdown limits post-exploitation |
+| [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no WiFi NIC present |
 
-| [CVE-2025-39866](#cve-2025-39866) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-39866](#cve-2025-39866) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-50422](#cve-2022-50422) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2022-50422](#cve-2022-50422) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires SAS libsas library (requires SAS HBA) |
 
-| [CVE-2022-50432](#cve-2022-50432) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2022-50432](#cve-2022-50432) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53473](#cve-2023-53473) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53510](#cve-2023-53510) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 0.0 | Affected — hardware absent; UFS flash storage absent on x86 server |
 
-| [CVE-2023-53521](#cve-2023-53521) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53521](#cve-2023-53521) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
 
-| [CVE-2022-50488](#cve-2022-50488) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2022-50488](#cve-2022-50488) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-50496](#cve-2022-50496) | CONFIG_BLK_DEV_DM | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_BLK_DEV_DM=y; Lockdown limits post-exploitation |
+| [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-50546](#cve-2022-50546) | CONFIG_EXT4_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_EXT4_FS=y; Lockdown limits post-exploitation |
+| [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53640](#cve-2023-53640) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2023-53675](#cve-2023-53675) | CONFIG_SCSI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53675](#cve-2023-53675) | SCSI subsystem (`CONFIG_SCSI`) | 7.1 HIGH | 7.9 HIGH | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
 
-| [CVE-2023-53676](#cve-2023-53676) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53676](#cve-2023-53676) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
 
-| [CVE-2025-71075](#cve-2025-71075) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-71075](#cve-2025-71075) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Adaptec aic94xx SAS HBA |
 
-| [CVE-2026-23076](#cve-2026-23076) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23076](#cve-2026-23076) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-23078](#cve-2026-23078) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23078](#cve-2026-23078) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-23089](#cve-2026-23089) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23089](#cve-2026-23089) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-23191](#cve-2026-23191) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23191](#cve-2026-23191) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-23193](#cve-2026-23193) | CONFIG_SCSI | 8.8 HIGH | 9.0 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2026-23193](#cve-2026-23193) | SCSI subsystem (`CONFIG_SCSI`) | 8.8 HIGH | 9.0 CRITICAL | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
 
-| [CVE-2026-23208](#cve-2026-23208) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23208](#cve-2026-23208) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-23216](#cve-2026-23216) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2026-23216](#cve-2026-23216) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
 
-| [CVE-2025-71238](#cve-2025-71238) | CONFIG_SCSI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SCSI=y; Lockdown limits post-exploitation |
+| [CVE-2025-71238](#cve-2025-71238) | SCSI subsystem (`CONFIG_SCSI`) | 7.8 HIGH | 7.9 HIGH | Affected — requires QLogic qla2xxx Fibre Channel HBA |
 
-| [CVE-2026-23318](#cve-2026-23318) | CONFIG_SND | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | 7.1 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2026-31581](#cve-2026-31581) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2023-3268](#cve-2023-3268) | CONFIG_RELAY | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_RELAY=y; Lockdown limits post-exploitation |
+| [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_RELAY=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-3567](#cve-2023-3567) | CONFIG_VT | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_VT=y; Lockdown limits post-exploitation |
+| [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_VT=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-6531](#cve-2023-6531) | CONFIG_UNIX | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_UNIX=y; Lockdown limits post-exploitation |
+| [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | 7.0 HIGH | 7.1 HIGH | Affected — `CONFIG_UNIX=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-51043](#cve-2023-51043) | CONFIG_DRM | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_DRM=y; Lockdown limits post-exploitation |
+| [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | 7.0 HIGH | 7.1 HIGH | Affected — `CONFIG_DRM=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-0841](#cve-2024-0841) | CONFIG_HUGETLBFS | 6.6 HIGH | 7.1 HIGH | Affected — CONFIG_HUGETLBFS=y; Lockdown limits post-exploitation |
+| [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | 6.6 HIGH | 7.1 HIGH | Affected — `CONFIG_HUGETLBFS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-26593](#cve-2024-26593) | CONFIG_I2C_I801 | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_I2C_I801=y; Lockdown limits post-exploitation |
+| [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_I2C_I801=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-38586](#cve-2024-38586) | CONFIG_R8169 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_R8169=y; Lockdown limits post-exploitation |
+| [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-38630](#cve-2024-38630) | CONFIG_WATCHDOG | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_WATCHDOG=y; Lockdown limits post-exploitation |
+| [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_WATCHDOG=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-34777](#cve-2024-34777) | CONFIG_DMA_ENGINE | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_ENGINE=y; Lockdown limits post-exploitation |
+| [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_DMA_ENGINE=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-39463](#cve-2024-39463) | CONFIG_9P_FS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_9P_FS=y; Lockdown limits post-exploitation |
+| [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-40956](#cve-2024-40956) | CONFIG_DMA_ENGINE | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_ENGINE=y; Lockdown limits post-exploitation |
+| [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | 7.8 HIGH | 0.0 | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
 
-| [CVE-2022-48867](#cve-2022-48867) | CONFIG_DMA_ENGINE | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_ENGINE=y; Lockdown limits post-exploitation |
+| [CVE-2022-48867](#cve-2022-48867) | DMA engine framework (`CONFIG_DMA_ENGINE`) | 7.8 HIGH | 0.0 | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
 
-| [CVE-2024-46759](#cve-2024-46759) | CONFIG_HWMON | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HWMON=y; Lockdown limits post-exploitation |
+| [CVE-2024-46759](#cve-2024-46759) | hardware monitoring subsystem (`CONFIG_HWMON`) | 7.8 HIGH | 0.0 | Affected — hardware absent; ADC128D818 I2C ADC chip absent |
 
-| [CVE-2024-49860](#cve-2024-49860) | CONFIG_ACPI | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_ACPI=y; Lockdown limits post-exploitation |
+| [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49029](#cve-2022-49029) | CONFIG_HWMON | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HWMON=y; Lockdown limits post-exploitation |
+| [CVE-2022-49029](#cve-2022-49029) | hardware monitoring subsystem (`CONFIG_HWMON`) | 7.8 HIGH | 0.0 | Affected — hardware absent; IBM Power Management Extension hardware absent |
 
-| [CVE-2024-50127](#cve-2024-50127) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2024-50127](#cve-2024-50127) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50131](#cve-2024-50131) | CONFIG_TRACING | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_TRACING=y; Lockdown limits post-exploitation |
+| [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-53057](#cve-2024-53057) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2024-53057](#cve-2024-53057) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-56606](#cve-2024-56606) | CONFIG_PACKET | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PACKET=y; Lockdown limits post-exploitation |
+| [CVE-2024-56606](#cve-2024-56606) | AF_PACKET sockets (`CONFIG_PACKET`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PACKET=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-21692](#cve-2025-21692) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2025-21692](#cve-2025-21692) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49799](#cve-2022-49799) | CONFIG_TRACING | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_TRACING=y; Lockdown limits post-exploitation |
+| [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49892](#cve-2022-49892) | CONFIG_FTRACE | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_FTRACE=y; Lockdown limits post-exploitation |
+| [CVE-2022-49892](#cve-2022-49892) | ftrace / function tracer (`CONFIG_FTRACE`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_FTRACE=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49921](#cve-2022-49921) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2022-49921](#cve-2022-49921) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53111](#cve-2023-53111) | CONFIG_BLK_DEV_LOOP | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_BLK_DEV_LOOP=y; Lockdown limits post-exploitation |
+| [CVE-2023-53111](#cve-2023-53111) | loop block device (`CONFIG_BLK_DEV_LOOP`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_BLK_DEV_LOOP=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37879](#cve-2025-37879) | CONFIG_9P_FS | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_9P_FS=y; Lockdown limits post-exploitation |
+| [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37914](#cve-2025-37914) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2025-37914](#cve-2025-37914) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37915](#cve-2025-37915) | CONFIG_NET_SCHED | 7.0 HIGH | 7.1 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.0 HIGH | 7.1 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-37923](#cve-2025-37923) | CONFIG_TRACING | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_TRACING=y; Lockdown limits post-exploitation |
+| [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-38369](#cve-2025-38369) | CONFIG_DMA_ENGINE | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_ENGINE=y; Lockdown limits post-exploitation |
+| [CVE-2025-38369](#cve-2025-38369) | DMA engine framework (`CONFIG_DMA_ENGINE`) | 7.8 HIGH | 0.0 | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
 
-| [CVE-2025-38548](#cve-2025-38548) | CONFIG_HWMON | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_HWMON=y; Lockdown limits post-exploitation |
+| [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | 7.8 HIGH | 0.0 | Affected — hardware absent; Corsair Commander Pro hardware absent |
 
-| [CVE-2022-50320](#cve-2022-50320) | CONFIG_ACPI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_ACPI=y; Lockdown limits post-exploitation |
+| [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2023-53395](#cve-2023-53395) | CONFIG_ACPI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_ACPI=y; Lockdown limits post-exploitation |
+| [CVE-2023-53395](#cve-2023-53395) | ACPI subsystem (`CONFIG_ACPI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2025-39869](#cve-2025-39869) | CONFIG_DMA_ENGINE | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_ENGINE=y; Lockdown limits post-exploitation |
+| [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | 7.1 HIGH | 0.0 | Affected — hardware absent; Texas Instruments eDMA hardware absent |
 
-| [CVE-2022-50423](#cve-2022-50423) | CONFIG_ACPI | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_ACPI=y; Lockdown limits post-exploitation |
+| [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 
-| [CVE-2026-23378](#cve-2026-23378) | CONFIG_NET_SCHED | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_SCHED=y; Lockdown limits post-exploitation |
+| [CVE-2026-23378](#cve-2026-23378) | network traffic scheduler (`CONFIG_NET_SCHED`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-36883](#cve-2024-36883) | CONFIG_INET | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_INET=y; Lockdown limits post-exploitation |
+| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-36971](#cve-2024-36971) | CONFIG_INET | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_INET=y; Lockdown limits post-exploitation |
+| [CVE-2024-36971](#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-38577](#cve-2024-38577) | CONFIG_TASKS_RCU | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_TASKS_RCU=y; Lockdown limits post-exploitation |
+| [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-40958](#cve-2024-40958) | CONFIG_NET_NS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_NET_NS=y; Lockdown limits post-exploitation |
+| [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_NET_NS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-41039](#cve-2024-41039) | CONFIG_SND | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_SND=y; Lockdown limits post-exploitation |
+| [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | 7.8 HIGH | 0.0 | Affected — hardware absent; no audio hardware present |
 
-| [CVE-2024-46713](#cve-2024-46713) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-46852](#cve-2024-46852) | CONFIG_DMA_SHARED_BUFFER | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DMA_SHARED_BUFFER=y; Lockdown limits post-exploitation |
+| [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_DMA_SHARED_BUFFER=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-48950](#cve-2022-48950) | CONFIG_PERF_EVENTS | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_PERF_EVENTS=y; Lockdown limits post-exploitation |
+| [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 
-| [CVE-2022-49026](#cve-2022-49026) | CONFIG_E100 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_E100=y; Lockdown limits post-exploitation |
+| [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_E100=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50055](#cve-2024-50055) | CONFIG_BASE_FULL | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_BASE_FULL=y; Lockdown limits post-exploitation |
+| [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50112](#cve-2024-50112) | CONFIG_X86_64 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_X86_64=y; Lockdown limits post-exploitation |
+| [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-50193](#cve-2024-50193) | CONFIG_X86_64 | 7.1 HIGH | 7.9 HIGH | Affected — CONFIG_X86_64=y; Lockdown limits post-exploitation |
+| [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | 7.1 HIGH | 7.9 HIGH | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-56600](#cve-2024-56600) | CONFIG_IPV6 | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_IPV6=y; Lockdown limits post-exploitation |
+| [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-56601](#cve-2024-56601) | CONFIG_INET | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_INET=y; Lockdown limits post-exploitation |
+| [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | 7.8 HIGH | 7.9 HIGH | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 
-| [CVE-2024-56616](#cve-2024-56616) | CONFIG_DRM | 7.8 HIGH | 7.9 HIGH | Affected — CONFIG_DRM=y; Lockdown limits post-exploitation |
+| [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | 7.8 HIGH | 0.0 | Affected — hardware absent; DisplayPort MST display hardware absent |
 
 Over 1,000 CVEs across 178 disabled-feature groups are listed in [Not Affected — Disabled Features](#not-affected-disabled-features) below.
 
@@ -482,3310 +482,2325 @@ Lockdown applies once an exploit reaches root in userspace — root cannot modif
 ## CVE-2024-0775
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 6.7 HIGH
-**Environmental Score**: 6.8 HIGH — Lockdown reduces MI: High→Low
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 6.7 MEDIUM (AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 6.8 MEDIUM — Lockdown reduces MI: High→Low
 
-A use-after-free flaw was found in the __ext4_remount in fs/ext4/super.c in ext4 in the Linux kernel. This flaw allows a local user to cause an information leak problem while freeing the old quota file names before a potential failure, leading to a use-after-free.
+A use-after-free flaw was found in the __ext4_remount in fs/ext4/super.c in ext4 in the Linux kernel.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-52530
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When ieee80211_key_link() is called by ieee80211_gtk_rekey_add() but returns 0 due to KRACK protection (identical key reinstall), ieee80211_gtk_rekey_add() will still return a point
 
-wifi: mac80211: fix potential key use-after-free
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-but returns 0 due to KRACK protection (identical key reinstall),
-ieee80211_gtk_rekey_add() will still return a point
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52612
 
 **Status**: Affected
-**Component**: `CONFIG_CRYPTO` (`CONFIG_CRYPTO`)
-**Base Score**: 7.8 HIGH
+**Component**: kernel crypto framework (`CONFIG_CRYPTO`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The req->dst buffer size should be checked before copying from the scomp_scratch->dst to avoid req->dst buffer overflow problem.
 
-crypto: scomp - fix req->dst buffer overflow
-
-The req->dst buffer size should be checked before copying from the
-scomp_scratch->dst to avoid req->dst buffer overflow problem.
-
-`CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. The kernel crypto framework is used by IPsec, dm-crypt, TLS, and other subsystems — all active on a Debian 11 server. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26654
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.0 HIGH
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The dreamcastcard->timer could schedule the spu_dma_work and the spu_dma_work could also arm the dreamcastcard->timer.
 
-ALSA: sh: aica: reorder cleanup operations to avoid UAF bugs
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The dreamcastcard->timer could schedule the spu_dma_work and the
-spu_dma_work could also arm the dreamcastcard->timer.
-
-When the snd_pcm_substream is closing, the aica_c
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26704
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In ext4_move_extents(), moved_len is only updated when all moves are successfully executed, and only discards orig_inode and donor_inode preallocations when moved_len
 
-ext4: fix double-free of blocks due to wrong extents moved_len
-
-In ext4_move_extents(), moved_len is only updated when all moves are
-successfully executed, and only discards orig_inode and donor_inode
-preallocations when moved_len 
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-26842
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — UFS flash storage absent on x86 server
 
-In the Linux kernel, the following vulnerability has been resolved:
+When task_tag >= 32 (in MCQ mode) and sizeof(unsigned int) == 4, 1U << task_tag will out of bounds for a u32 mask.
 
-scsi: ufs: core: Fix shift issue in ufshcd_clear_cmd()
+`CONFIG_SCSI=y` is compiled in. UFS (Universal Flash Storage) is used in mobile phones and embedded devices. A Debian 11 server uses SATA or NVMe storage — the UFS host controller driver (`ufshcd`) is compiled in but never bound to any hardware.
 
-When task_tag >= 32 (in MCQ mode) and sizeof(unsigned int) == 4, 1U <<
-task_tag will out of bounds for a u32 mask. Fix this up to prevent
-SHIFT_ISSUE (bitwise shifts that are 
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48662
 
-**Status**: Affected
-**Component**: `CONFIG_DRM_I915` (`CONFIG_DRM_I915`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no Intel display GPU present
 
-In the Linux kernel, the following vulnerability has been resolved:
+i915_perf assumes that it can use the i915_gem_context reference to protect its i915->gem.contexts.list iteration.
 
-drm/i915/gem: Really move i915_gem_context.link under ref protection
+`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
 
-i915_perf assumes that it can use the i915_gem_context reference to
-protect its i915->gem.contexts.list iteration. However, this requires
-that we do not remove t
-
-`CONFIG_DRM_I915=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26934
 
 **Status**: Affected
-**Component**: `CONFIG_USB` (`CONFIG_USB`)
-**Base Score**: 7.8 HIGH
+**Component**: USB core (`CONFIG_USB`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Among the attribute file callback routines in drivers/usb/core/sysfs.c, the interface_authorized_store() function is the only one which acquires a device lock on an ancestor d
 
-USB: core: Fix deadlock in usb_deauthorize_interface()
-
-Among the attribute file callback routines in
-drivers/usb/core/sysfs.c, the interface_authorized_store() function is
-the only one which acquires a device lock on an ancestor d
-
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. USB core is present. Exploiting USB core bugs typically requires connecting a USB device or having an existing USB device present. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26939
 
-**Status**: Affected
-**Component**: `CONFIG_DRM_I915` (`CONFIG_DRM_I915`)
-**Base Score**: 7.0 HIGH
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no Intel display GPU present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Object debugging tools were sporadically reporting illegal attempts to free a still active i915 VMA object when parking a GT believed to be idle. [161.359441] ODEBUG: free acti
 
-drm/i915/vma: Fix UAF on destroy against retire race
+`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
 
-Object debugging tools were sporadically reporting illegal attempts to
-free a still active i915 VMA object when parking a GT believed to be idle.
-
-[161.359441] ODEBUG: free acti
-
-`CONFIG_DRM_I915=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48689
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.0 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+We got a recent syzbot report [1] showing a possible misuse of pfmemalloc page status in TCP zerocopy paths.
 
-tcp: TX zerocopy should not sense pfmemalloc status
-
-We got a recent syzbot report [1] showing a possible misuse
-of pfmemalloc page status in TCP zerocopy paths.
-
-Indeed, for pages coming from user space or other layers,
-using page
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2022-48701
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+There may be a bad USB audio device with a USB ID of (0x04fa, 0x4201) and the number of it's interfaces less than 4, an out-of-bounds read bug occurs w
 
-ALSA: usb-audio: Fix an out-of-bounds bug in __snd_usb_parse_audio_interface()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-There may be a bad USB audio device with a USB ID of (0x04fa, 0x4201) and
-the number of it's interfaces less than 4, an out-of-bounds read bug occurs
-w
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48702
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The voice allocator sometimes begins allocating from near the end of the array and then wraps around, however snd_emu10k1_pcm_channel_alloc() accesses the
 
-ALSA: emu10k1: Fix out of bounds access in snd_emu10k1_pcm_channel_alloc()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The voice allocator sometimes begins allocating from near the end of the
-array and then wraps around, however snd_emu10k1_pcm_channel_alloc()
-accesses the 
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48695
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix the following use-after-free warning which is observed during controller reset: refcount_t: underflow; use-after-free.
 
-scsi: mpt3sas: Fix use-after-free warning
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the LSI/Avago mpt3sas SAS/NVMe HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-Fix the following use-after-free warning which is observed during
-controller reset:
-
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 23 PID: 5399 at lib/refcount.c:28 refcount_warn_sa
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-35789
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When moving a station out of a VLAN and deleting the VLAN afterwards, the fast_rx entry still holds a pointer to the VLAN's netdev, which can cause use-after-free
 
-wifi: mac80211: check/clear fast rx for non-4addr sta VLAN changes
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-When moving a station out of a VLAN and deleting the VLAN afterwards, the
-fast_rx entry still holds a pointer to the VLAN's netdev, which can cause
-use-after-free 
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-35886
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+syzkaller reported infinite recursive calls of fib6_dump_done() during netlink socket destruction.  [1] From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
 
-ipv6: Fix infinite recursion in fib6_dump_done().
-
-syzkaller reported infinite recursive calls of fib6_dump_done() during
-netlink socket destruction.  [1]
-
-From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then
-th
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52835
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When perf-record with a large AUX area, e.g 4GB, it fails with: #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1 failed to mmap with 12 (Cannot allocate
 
-perf/core: Bail out early if the request AUX area is out of bound
-
-When perf-record with a large AUX area, e.g 4GB, it fails with:
-
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate 
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52868
 
 **Status**: Affected
-**Component**: `CONFIG_THERMAL` (`CONFIG_THERMAL`)
-**Base Score**: 7.8 HIGH
+**Component**: thermal management (`CONFIG_THERMAL`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The dev->id value comes from ida_alloc() so it's a number between zero and INT_MAX.
 
-thermal: core: prevent potential string overflow
-
-The dev->id value comes from ida_alloc() so it's a number between zero
-and INT_MAX.  If it's too high then these sprintf()s will overflow.
-
-`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-36916
 
 **Status**: Affected
-**Component**: `CONFIG_BLK_CGROUP_IOCOST` (`CONFIG_BLK_CGROUP_IOCOST`)
-**Base Score**: 7.1 HIGH
+**Component**: block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+UBSAN catches undefined behavior in blk-iocost, where sometimes iocg->delay is shifted right by a number that is too large, resulting in undefined behavior on some architectures.
 
-blk-iocost: avoid out of bounds shift
-
-UBSAN catches undefined behavior in blk-iocost, where sometimes
-iocg->delay is shifted right by a number that is too large,
-resulting in undefined behavior on some architectures.
-
-[  186.55657
-
-`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. Block I/O cost control is part of the cgroup block I/O layer, active when cgroups are in use. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38560
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from userspace to that buffer.
 
-scsi: bfa: Ensure the copied buf is NUL terminated
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Brocade bfa Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-Currently, we allocate a nbytes-sized kernel buffer and copy nbytes from
-userspace to that buffer. Later, we use sscanf on this buffer but we don't
-ensure that the string is termi
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-38588
 
 **Status**: Affected
-**Component**: `CONFIG_KPROBES` (`CONFIG_KPROBES`)
-**Base Score**: 7.8 HIGH
+**Component**: kprobes (`CONFIG_KPROBES`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+KASAN reports a bug: BUG: KASAN: use-after-free in ftrace_location+0x90/0x120 Read of size 8 at addr ffff888141d40010 by task insmod/424
 
-ftrace: Fix possible use-after-free issue in ftrace_location()
-
-KASAN reports a bug:
-
-  BUG: KASAN: use-after-free in ftrace_location+0x90/0x120
-  Read of size 8 at addr ffff888141d40010 by task insmod/424
-  CPU: 8 PID: 424 Comm: i
-
-`CONFIG_KPROBES=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_KPROBES=y` is compiled in and 5.19.6 falls within the affected range. kprobes and ftrace are kernel debugging infrastructure requiring `CAP_SYS_ADMIN`. Not normally active on a production server. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-40901
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+There is a potential out-of-bounds access when using test_bit() on a single word.
 
-scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the LSI/Avago mpt3sas SAS/NVMe HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-There is a potential out-of-bounds access when using test_bit() on a single
-word. The test_bit() and set_bit() functions operate on long values, and
-when testin
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-40978
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly on a __user pointer, which results into the crash.
 
-scsi: qedi: Fix crash while reading debugfs attribute
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qedi iSCSI HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly
-on a __user pointer, which results into the crash.
-
-To fix this issue, use a small local stack buffer
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-41092
 
-**Status**: Affected
-**Component**: `CONFIG_DRM_I915` (`CONFIG_DRM_I915`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no Intel display GPU present
 
-In the Linux kernel, the following vulnerability has been resolved:
+CI has been sporadically reporting the following issue triggered by igt@i915_selftest@live@hangcheck on ADL-P and similar machines: <6> [414.049203] i915: Running intel_
 
-drm/i915/gt: Fix potential UAF by revoke of fence registers
+`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
 
-CI has been sporadically reporting the following issue triggered by
-igt@i915_selftest@live@hangcheck on ADL-P and similar machines:
-
-<6> [414.049203] i915: Running intel_
-
-`CONFIG_DRM_I915=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-42136
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — CD-ROM drive absent on server
 
-In the Linux kernel, the following vulnerability has been resolved:
+When running syzkaller with the newly reintroduced signed integer wrap sanitizer we encounter this splat: [  366.015950] UBSAN: signed-integer-overflow in .
 
-cdrom: rearrange last_media_change check to avoid unintentional overflow
+`CONFIG_SCSI=y` is compiled in. This bug is in the CD-ROM block driver (`drivers/cdrom/cdrom.c`). No optical drive is present on a production server deployment.
 
-When running syzkaller with the newly reintroduced signed integer wrap
-sanitizer we encounter this splat:
-
-[  366.015950] UBSAN: signed-integer-overflow in .
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-44985
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+If skb_expand_head() returns NULL, skb has been freed and the associated dst/idev could also have been freed.
 
-ipv6: prevent possible UAF in ip6_xmit()
-
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
-
-We must use rcu_read_lock() to prevent a possible UAF.
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-44986
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+If skb_expand_head() returns NULL, skb has been freed and associated dst/idev could also have been freed.
 
-ipv6: fix possible UAF in ip6_finish_output2()
-
-If skb_expand_head() returns NULL, skb has been freed
-and associated dst/idev could also have been freed.
-
-We need to hold rcu_read_lock() to make sure the dst and
-associated idev are
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-44987
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+syzbot reported an UAF in ip6_send_skb() [1] After ip6_local_out() has returned, we no longer can safely dereference rt, unless we hold rcu_read_lock().
 
-ipv6: prevent UAF in ip6_send_skb()
-
-syzbot reported an UAF in ip6_send_skb() [1]
-
-After ip6_local_out() has returned, we no longer can safely
-dereference rt, unless we hold rcu_read_lock().
-
-A similar issue has been fixed in commi
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46673
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+aac_probe_one() calls hardware-specific init functions through the aac_driver_ident::init pointer, all of which eventually call down to aac_init_adapter().
 
-scsi: aacraid: Fix double-free on probe failure
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Adaptec aacraid RAID controller driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-aac_probe_one() calls hardware-specific init functions through the
-aac_driver_ident::init pointer, all of which eventually call down to
-aac_init_adapter().
-
-If aac_init_adapter() fai
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-46746
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+HID driver callbacks aren't called anymore once hid_destroy_device() has been called.
 
-HID: amd_sfh: free driver_data after destroying hid device
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-HID driver callbacks aren't called anymore once hid_destroy_device() has
-been called. Hence, hid driver_data should be freed only after the
-hid_destroy_device() function r
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46747
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+report_fixup for the Cougar 500k Gaming Keyboard was not verifying that the report descriptor size was correct before accessing it
 
-HID: cougar: fix slab-out-of-bounds Read in cougar_report_fixup
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-report_fixup for the Cougar 500k Gaming Keyboard was not verifying
-that the report descriptor size was correct before accessing it
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46798
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When using kernel with the following extra config, - CONFIG_KASAN=y - CONFIG_KASAN_GENERIC=y
 
-ASoC: dapm: Fix UAF for snd_soc_pcm_runtime object
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-When using kernel with the following extra config,
-
-  - CONFIG_KASAN=y
-  - CONFIG_KASAN_GENERIC=y
-  - CONFIG_KASAN_INLINE=y
-  - CONFIG_KASAN_VMALLOC=y
-  - CONFIG_FRAME_WARN=4096
-
-
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46849
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Buffer 'card->dai_link' is reallocated in 'meson_card_reallocate_links()', so move 'pad' pointer initialization after this function when memory is already reallocated.
 
-ASoC: meson: axg-card: fix 'use-after-free'
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-Buffer 'card->dai_link' is reallocated in 'meson_card_reallocate_links()',
-so move 'pad' pointer initialization after this function when memory is
-already reallocated.
-
-Kasan bug report:
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-47682
 
 **Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Ff the device returns page 0xb1 with length 8 (happens with qemu v2.x, for example), sd_read_block_characteristics() may attempt an out-of-bounds memory access when
 
-scsi: sd: Fix off-by-one error in sd_read_block_characteristics()
-
-Ff the device returns page 0xb1 with length 8 (happens with qemu v2.x, for
-example), sd_read_block_characteristics() may attempt an out-of-bounds
-memory access when
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 (SATA via libata, NVMe via the SCSI translation layer). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-47701
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When looking up for an entry in an inlined directory, if e_value_offs is changed underneath the filesystem by some change in the block device, it will lead t
 
-ext4: avoid OOB when system.data xattr changes underneath the filesystem
-
-When looking up for an entry in an inlined directory, if e_value_offs is
-changed underneath the filesystem by some change in the block device, it
-will lead t
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49852
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The kref_put() function will call nport->release if the refcount drops to zero. The nport->release release function is _efc_nport_free() which frees "nport"
 
-scsi: elx: libefc: Fix potential use after free in efc_nport_vport_del()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex libefc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-The kref_put() function will call nport->release if the refcount drops to
-zero.  The nport->release release function is _efc_nport_free() which frees
-"nport"
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-49882
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been released, otherwise it may be released twice.
 
-ext4: fix double brelse() the buffer of the extents path
-
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been
-released, otherwise it may be released twice. An example of what triggers
-this is as follows:
-
-  sp
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49883
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and cause UAF.
 
-ext4: aovid use-after-free in ext4_ext_insert_extent()
-
-As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is
-reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and
-cause UAF. Below is a sample 
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49884
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+We hit the following use-after-free: ================================================================== BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
 
-ext4: fix slab-use-after-free in ext4_split_extent_at()
-
-We hit the following use-after-free:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
-R
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49889
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In ext4_find_extent(), path may be freed by error or be reallocated, so using a previously saved *ppath may have been freed and thus may trigger use-after-free, as follows:
 
-ext4: avoid use-after-free in ext4_ext_show_leaf()
-
-In ext4_find_extent(), path may be freed by error or be reallocated, so
-using a previously saved *ppath may have been freed and thus may trigger
-use-after-free, as follows:
-
-ext4_
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49960
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Syzbot has found an ODEBUG bug in ext4_fill_super The del_timer_sync function cancels the s_err_report timer, which reminds about filesystem errors daily.
 
-ext4: fix timer use-after-free on failed mount
-
-Syzbot has found an ODEBUG bug in ext4_fill_super
-
-The del_timer_sync function cancels the s_err_report timer,
-which reminds about filesystem errors daily. We should
-guarantee the tim
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-49983
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When calling ext4_force_split_extent_at() in ext4_ext_replay_update_ex(), the 'ppath' is updated but it is the 'path' that is freed, thus potentially triggerin
 
-ext4: drop ppath from ext4_ext_replay_update_ex() to avoid double-free
-
-When calling ext4_force_split_extent_at() in ext4_ext_replay_update_ex(),
-the 'ppath' is updated but it is the 'path' that is freed, thus potentially
-triggerin
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2024-50007
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+ASIHPI driver stores some values in the static array upon a response from the driver, and its index depends on the firmware.
 
-ALSA: asihpi: Fix potential OOB array access
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-ASIHPI driver stores some values in the static array upon a response
-from the driver, and its index depends on the firmware.  We shouldn't
-trust it blindly.
-
-This patch adds a sanity ch
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48951
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The bounds checks in snd_soc_put_volsw_sx() are only being applied to the first channel, meaning it is possible to write out of bounds values to the second chann
 
-ASoC: ops: Check bounds for second channel in snd_soc_put_volsw_sx()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The bounds checks in snd_soc_put_volsw_sx() are only being applied to the
-first channel, meaning it is possible to write out of bounds values to the
-second chann
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48956
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Blamed commit claimed rcu_read_lock() was held by ip6_fragment() callers. It seems to not be always true, at least for UDP stack. syzbot reported:
 
-ipv6: avoid use-after-free in ip6_fragment()
-
-Blamed commit claimed rcu_read_lock() was held by ip6_fragment() callers.
-
-It seems to not be always true, at least for UDP stack.
-
-syzbot reported:
-
-BUG: KASAN: use-after-free in ip6_d
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49022
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix possible out-of-bound access in ieee80211_get_rate_duration routine as reported by the following UBSAN report: UBSAN: array-index-out-of-bounds in net/mac8
 
-wifi: mac8021: fix possible oob access in ieee80211_get_rate_duration
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-Fix possible out-of-bound access in ieee80211_get_rate_duration routine
-as reported by the following UBSAN report:
-
-UBSAN: array-index-out-of-bounds in net/mac8
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49023
 
-**Status**: Affected
-**Component**: `CONFIG_CFG80211` (`CONFIG_CFG80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+For vendor elements, the code here assumes that 5 octets are present without checking.
 
-wifi: cfg80211: fix buffer overflow in elem comparison
+`CONFIG_CFG80211=y` is compiled in. No WiFi network interface card is present on a server deployment. cfg80211 manages wireless interfaces; without hardware, no interface is created and the affected code paths are unreachable.
 
-For vendor elements, the code here assumes that 5 octets
-are present without checking. Since the element itself is
-already checked to fit, we only need to check the length.
-
-`CONFIG_CFG80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50278
 
 **Status**: Affected
-**Component**: `CONFIG_BLK_DEV_DM` (`CONFIG_BLK_DEV_DM`)
-**Base Score**: 7.1 HIGH
+**Component**: device mapper (`CONFIG_BLK_DEV_DM`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Out-of-bounds access occurs if the fast device is expanded unexpectedly before the first-time resume of the cache table.
 
-dm cache: fix potential out-of-bounds access on the first resume
-
-Out-of-bounds access occurs if the fast device is expanded unexpectedly
-before the first-time resume of the cache table. This happens because
-expanding the fast devi
-
-`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Device mapper is used for LVM and is active on a standard Debian 11 installation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup covers writes to protected directories regardless of the block layer.
 
 
 ## CVE-2024-50279
 
 **Status**: Affected
-**Component**: `CONFIG_BLK_DEV_DM` (`CONFIG_BLK_DEV_DM`)
-**Base Score**: 7.1 HIGH
+**Component**: device mapper (`CONFIG_BLK_DEV_DM`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+dm-cache checks the dirty bits of the cache blocks to be dropped when shrinking the fast device, but an index bug in bitset iteration causes out-of-bounds access
 
-dm cache: fix out-of-bounds access to the dirty bitset when resizing
-
-dm-cache checks the dirty bits of the cache blocks to be dropped when
-shrinking the fast device, but an index bug in bitset iteration causes
-out-of-bounds access
-
-`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Device mapper is used for LVM and is active on a standard Debian 11 installation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup covers writes to protected directories regardless of the block layer.
 
 
 ## CVE-2024-53147
 
 **Status**: Affected
-**Component**: `CONFIG_FAT_FS` (`CONFIG_FAT_FS`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 6.6 HIGH — Lockdown reduces MI: High→Low
+**Component**: FAT/exFAT filesystem (`CONFIG_FAT_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H)
+**Environmental Score**: 6.6 MEDIUM — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In the case of the directory size is greater than or equal to the cluster size, if start_clu becomes an EOF cluster(an invalid cluster) due to file system corruption, then the d
 
-exfat: fix out-of-bounds access of directory entries
-
-In the case of the directory size is greater than or equal to
-the cluster size, if start_clu becomes an EOF cluster(an invalid
-cluster) due to file system corruption, then the d
-
-`CONFIG_FAT_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_FAT_FS=y` is compiled in and 5.19.6 falls within the affected range. FAT/exFAT is compiled in (used for the EFI system partition on Debian 11). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53150
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The current USB-audio driver code doesn't check bLength of each descriptor at traversing for clock descriptors.
 
-ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The current USB-audio driver code doesn't check bLength of each
-descriptor at traversing for clock descriptors.  That is, when a
-device provides a bogus descripto
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53170
 
 **Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+blk_mq_clear_flush_rq_mapping() is not called during scsi probe, by checking blk_queue_init_done().
 
-block: fix uaf for flush rq while iterating tags
-
-blk_mq_clear_flush_rq_mapping() is not called during scsi probe, by
-checking blk_queue_init_done(). However, QUEUE_FLAG_INIT_DONE is cleared
-in del_gendisk by commit aec89dc5d421 ("
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 (SATA via libata, NVMe via the SCSI translation layer). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53173
 
 **Status**: Affected
-**Component**: `CONFIG_NFS_V4` (`CONFIG_NFS_V4`)
-**Base Score**: 7.8 HIGH
+**Component**: NFS v4 client (`CONFIG_NFS_V4`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Yang Erkun reports that when two threads are opening files at the same time, and are forced to abort before a reply is seen, then the call to nfs_release_seqid() in
 
-NFSv4.0: Fix a use-after-free problem in the asynchronous open()
-
-Yang Erkun reports that when two threads are opening files at the same
-time, and are forced to abort before a reply is seen, then the call to
-nfs_release_seqid() in 
-
-`CONFIG_NFS_V4=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NFS_V4=y` is compiled in and 5.19.6 falls within the affected range. NFS v4 client is compiled in. This path is active only when an NFS v4 share is mounted. On a server not using NFS, this code path is not reached. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53214
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+There are cases where a PCIe extended capability should be hidden from the user.
 
-vfio/pci: Properly hide first-in-list PCIe extended capability
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-There are cases where a PCIe extended capability should be hidden from
-the user. For example, an unknown capability (i.e., capability with ID
-greater than PCI_EXT_CAP_
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53227
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20 Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303 Call Trace:
 
-scsi: bfa: Fix use-after-free in bfad_im_module_exit()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Brocade bfa Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20
-Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303
-
-Call Trace:
- <TASK>
- dump_stack_lvl+0x95/0xe0
- 
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-53239
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The current 6fire code tries to release the resources right after the call of usb6fire_chip_abort().
 
-ALSA: 6fire: Release resources at card release
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The current 6fire code tries to release the resources right after the
-call of usb6fire_chip_abort().  But at this moment, the card object
-might be still in use (as we're calling snd_c
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56609
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When removing kernel modules by: rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core Driver uses skb_queue_purge() to purge TX skb, but not report tx sta
 
-wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-When removing kernel modules by:
-   rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
-
-Driver uses skb_queue_purge() to purge TX skb, but not report tx sta
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56631
 
 **Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN: BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5838
 
-scsi: sg: Fix slab-use-after-free read in sg_release()
-
-Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
-
-BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
-kernel/locking/lockdep.c:5838
-__mutex_unl
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 (SATA via libata, NVMe via the SCSI translation layer). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56663
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Since the netlink attribute range validation provides inclusive checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise c
 
-wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-Since the netlink attribute range validation provides inclusive
-checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
-IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise c
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-57899
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+On 32-bit systems, the size of an unsigned long is 4 bytes, while a u64 is 8 bytes.
 
-wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-On 32-bit systems, the size of an unsigned long is 4 bytes,
-while a u64 is 8 bytes. Therefore, when using
-or_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_B
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-21863
 
 **Status**: Affected
-**Component**: `CONFIG_IO_URING` (`CONFIG_IO_URING`)
-**Base Score**: 7.8 HIGH
+**Component**: io_uring (`CONFIG_IO_URING`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+sqe->opcode is used for different tables, make sure we santitise it against speculations.
 
-io_uring: prevent opcode speculation
-
-sqe->opcode is used for different tables, make sure we santitise it
-against speculations.
-
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. io_uring is compiled in. Applications using io_uring for async I/O can reach these paths. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52930
 
-**Status**: Affected
-**Component**: `CONFIG_DRM_I915` (`CONFIG_DRM_I915`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no Intel display GPU present
 
-In the Linux kernel, the following vulnerability has been resolved:
+A userspace with multiple threads racing I915_GEM_SET_TILING to set the tiling to I915_TILING_NONE could trigger a double free of the bit_17 bitmask.  (Or conversely leak memory on the tr
 
-drm/i915: Fix potential bit_17 double-free
+`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
 
-A userspace with multiple threads racing I915_GEM_SET_TILING to set the
-tiling to I915_TILING_NONE could trigger a double free of the bit_17
-bitmask.  (Or conversely leak memory on the tr
-
-`CONFIG_DRM_I915=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52988
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+snd_hda_get_connections() can return a negative error code. It may lead to accessing 'conn' array at a negative index.
 
-ALSA: hda/via: Avoid potential array out-of-bound in add_secret_dac_path()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-snd_hda_get_connections() can return a negative error code.
-It may lead to accessing 'conn' array at a negative index.
-
-Found by Linux Verification Center 
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-21993
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When performing an iSCSI boot using IPv6, iscsistart still reads the /sys/firmware/ibft/ethernetX/subnet-mask entry.
 
-iscsi_ibft: Fix UBSAN shift-out-of-bounds warning in ibft_attr_show_nic()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the iSCSI Boot Firmware Table (iBFT, iSCSI boot configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-When performing an iSCSI boot using IPv6, iscsistart still reads the
-/sys/firmware/ibft/ethernetX/subnet-mask entry. Since the IPv6 prefix
-length is 64, thi
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-22083
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — vhost-scsi not applicable — no KVM host mode in HS
 
-In the Linux kernel, the following vulnerability has been resolved:
+If vhost_scsi_set_endpoint is called multiple times without a vhost_scsi_clear_endpoint between them, we can hit multiple bugs found by Haoran Zhang:
 
-vhost-scsi: Fix handling of multiple calls to vhost_scsi_set_endpoint
+`CONFIG_SCSI=y` is compiled in. vhost-scsi is used when Linux acts as a KVM hypervisor, presenting a SCSI device to guest VMs. HeartSuite Core Secure does not support the KVM host deployment model — KVM and related virtualisation features are not part of the supported configuration (see Deployment Scenarios). This attack path does not apply.
 
-If vhost_scsi_set_endpoint is called multiple times without a
-vhost_scsi_clear_endpoint between them, we can hit multiple bugs
-found by Haoran Zhang:
-
-1. Use-af
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-22121
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.1 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+There's issue as follows: BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790 Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
 
-ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all()
-
-There's issue as follows:
-BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790
-Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
-
-C
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2025-37785
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.1 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Mounting a corrupted filesystem with directory which contains '.' dir entry with rec_len == block size results in out-of-bounds read (later on, when the corrupted directory is removed).
 
-ext4: fix OOB read when checking dotdot dir
-
-Mounting a corrupted filesystem with directory which contains '.' dir
-entry with rec_len == block size results in out-of-bounds read (later
-on, when the corrupted directory is removed).
-
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2025-40364
 
 **Status**: Affected
-**Component**: `CONFIG_IO_URING` (`CONFIG_IO_URING`)
-**Base Score**: 7.8 HIGH
+**Component**: io_uring (`CONFIG_IO_URING`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+io_req_prep_async() can import provided buffers, commit the ring state by giving up on that before, it'll be reimported later if needed.
 
-io_uring: fix io_req_prep_async with provided buffers
-
-io_req_prep_async() can import provided buffers, commit the ring state
-by giving up on that before, it'll be reimported later if needed.
-
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. io_uring is compiled in. Applications using io_uring for async I/O can reach these paths. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37738
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Once inside 'ext4_xattr_inode_dec_ref_all' we should ignore xattrs entries past the 'end' entry.
 
-ext4: ignore xattrs past end
-
-Once inside 'ext4_xattr_inode_dec_ref_all' we should
-ignore xattrs entries past the 'end' entry.
-
-This fixes the following KASAN reported issue:
-
-=======================================================
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2022-49789
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — IBM Z Fibre Channel hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+We used to use the wrong type of integer in 'zfcp_fsf_req_send()' to cache the FSF request ID when sending a new FSF request.
 
-scsi: zfcp: Fix double free of FSF request when qdio send fails
+`CONFIG_SCSI=y` is compiled in. zfcp is the Fibre Channel driver for IBM Z (mainframe) architecture. This code path does not exist on an x86 Debian 11 server.
 
-We used to use the wrong type of integer in 'zfcp_fsf_req_send()' to cache
-the FSF request ID when sending a new FSF request. This is used in case the
-sending fails a
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49842
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+KASAN reports a use-after-free: BUG: KASAN: use-after-free in device_del+0xb5b/0xc60 Read of size 8 at addr ffff888008655050 by task rmmod/387
 
-ASoC: core: Fix use-after-free in snd_soc_exit()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-KASAN reports a use-after-free:
-
-BUG: KASAN: use-after-free in device_del+0xb5b/0xc60
-Read of size 8 at addr ffff888008655050 by task rmmod/387
-CPU: 2 PID: 387 Comm: rmmod
-Hardware 
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49865
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.1 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When copying a `struct ifaddrlblmsg` to the network, __ifal_reserved remained uninitialized, resulting in a 1-byte infoleak: BUG: KMSAN: kernel-network-i
 
-ipv6: addrlabel: fix infoleak when sending struct ifaddrlblmsg to network
-
-When copying a `struct ifaddrlblmsg` to the network, __ifal_reserved
-remained uninitialized, resulting in a 1-byte infoleak:
-
-  BUG: KMSAN: kernel-network-i
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53037
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When the SAS Transport Layer support is enabled and a device exposed to the OS by the driver fails INQUIRY commands, the driver frees up the memory allocated for an internal
 
-scsi: mpi3mr: Bad drive in topology results kernel crash
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-When the SAS Transport Layer support is enabled and a device exposed to
-the OS by the driver fails INQUIRY commands, the driver frees up the memory
-allocated for an internal
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-53039
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+When a reset notify IPC message is received, the ISR schedules a work function and passes the ISHTP device to it via a global pointer ishtp_dev.
 
-HID: intel-ish-hid: ipc: Fix potential use-after-free in work function
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-When a reset notify IPC message is received, the ISR schedules a work
-function and passes the ISHTP device to it via a global pointer
-ishtp_dev. If ish_probe()
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53065
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+syzkaller reportes a KASAN issue with stack-out-of-bounds. The call trace is as follows: dump_stack+0x9c/0xd3
 
-perf/core: Fix perf_output_begin parameter is incorrectly invoked in perf_event_bpf_output
-
-syzkaller reportes a KASAN issue with stack-out-of-bounds.
-The call trace is as follows:
-  dump_stack+0x9c/0xd3
-  print_address_description
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37861
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When the task management thread processes reply queues while the reset thread resets them, the task management thread accesses an invalid queue ID (0xFFFF),
 
-scsi: mpi3mr: Synchronous access b/w reset and tm thread for reply queue
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-When the task management thread processes reply queues while the reset
-thread resets them, the task management thread accesses an invalid queue ID
-(0xFFFF), 
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-37979
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Case values introduced in commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") cause out of bounds access in arrays of sc7280 driver data (e.g. in ca
 
-ASoC: qcom: Fix sc7280 lpass potential buffer overflow
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-Case values introduced in commit
-5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution")
-cause out of bounds access in arrays of sc7280 driver data (e.g. in ca
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49934
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+ieee80211_scan_rx() tries to access scan_req->flags after a null check, but a UAF is observed when the scan is completed and __ieee80211_scan_completed() executes, which then calls
 
-wifi: mac80211: Fix UAF in ieee80211_scan_rx()
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-ieee80211_scan_rx() tries to access scan_req->flags after a
-null check, but a UAF is observed when the scan is completed
-and __ieee80211_scan_completed() executes, which then calls
-cf
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38103
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+Update struct hid_descriptor to better reflect the mandatory and optional parts of the HID Descriptor as per USB HID 1.11 specification.
 
-HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-Update struct hid_descriptor to better reflect the mandatory and
-optional parts of the HID Descriptor as per USB HID 1.11 specification.
-Note: the kernel current
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38206
 
 **Status**: Affected
-**Component**: `CONFIG_FAT_FS` (`CONFIG_FAT_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: FAT/exFAT filesystem (`CONFIG_FAT_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The double free could happen in the following path. exfat_create_upcase_table() exfat_create_upcase_table() : return error
 
-exfat: fix double free in delayed_free
-
-The double free could happen in the following path.
-
-exfat_create_upcase_table()
-        exfat_create_upcase_table() : return error
-        exfat_free_upcase_table() : free ->vol_utbl
-       
-
-`CONFIG_FAT_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_FAT_FS=y` is compiled in and 5.19.6 falls within the affected range. FAT/exFAT is compiled in (used for the EFI system partition on Debian 11). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38239
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+On a system with DRAM interleave enabled, out-of-bound access is detected: megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
 
-scsi: megaraid_sas: Fix invalid node index
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the LSI MegaRAID SAS controller driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-On a system with DRAM interleave enabled, out-of-bound access is
-detected:
-
-megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
-------------[ cut here ]------------
-U
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-38249
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+In snd_usb_get_audioformat_uac3(), the length value returned from snd_usb_ctl_msg() is used directly for memory allocation without validation.
 
-ALSA: usb-audio: Fix out-of-bounds read in snd_usb_get_audioformat_uac3()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-In snd_usb_get_audioformat_uac3(), the length value returned from
-snd_usb_ctl_msg() is used directly for memory allocation without
-validation. This length i
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38389
 
-**Status**: Affected
-**Component**: `CONFIG_DRM_I915` (`CONFIG_DRM_I915`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no Intel display GPU present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The following error has been reported sporadically by CI when a test unbinds the i915 driver on a ring submission platform: <4> [239.330153] ------------[ cut here ]---------
 
-drm/i915/gt: Fix timeline left held on VMA alloc error
+`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
 
-The following error has been reported sporadically by CI when a test
-unbinds the i915 driver on a ring submission platform:
-
-<4> [239.330153] ------------[ cut here ]---------
-
-`CONFIG_DRM_I915=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38494
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+hid_hw_raw_request() is actually useful to ensure the provided buffer and length are valid.
 
-HID: core: do not bypass hid_hw_raw_request
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-hid_hw_raw_request() is actually useful to ensure the provided buffer
-and length are valid. Directly calling in the low level transport driver
-function bypassed those checks and allowed 
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38550
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec() does, the reference should be put after ip6_mc_clear_src() return.
 
-ipv6: mcast: Delay put pmc->idev in mld_del_delrec()
-
-pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec()
-does, the reference should be put after ip6_mc_clear_src() return.
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38556
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+Testing by the syzbot fuzzer showed that the HID core gets a shift-out-of-bounds exception when it tries to convert a 32-bit quantity to a 0-bit quantity.
 
-HID: core: Harden s32ton() against conversion to 0 bits
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-Testing by the syzbot fuzzer showed that the HID core gets a
-shift-out-of-bounds exception when it tries to convert a 32-bit
-quantity to a 0-bit quantity.  Ideally this shoul
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38563
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The perf mmap code is careful about mmap()'ing the user page with the ringbuffer and additionally the auxiliary buffer, when the event supports it.
 
-perf/core: Prevent VMA split of buffer mappings
-
-The perf mmap code is careful about mmap()'ing the user page with the
-ringbuffer and additionally the auxiliary buffer, when the event supports
-it. Once the first mapping is establis
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38565
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped() callback of the related event.
 
-perf/core: Exit early on perf_mmap() fail
-
-When perf_mmap() fails to allocate a buffer, it still invokes the
-event_mapped() callback of the related event. On X86 this might increase
-the perf_rdpmc_allowed reference counter. But not
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38572
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+syzbot was able to craft a packet with very long IPv6 extension headers leading to an overflow of skb->transport_header.
 
-ipv6: reject malicious packets in ipv6_gso_segment()
-
-syzbot was able to craft a packet with very long IPv6 extension headers
-leading to an overflow of skb->transport_header.
-
-This 16bit field has a limited range.
-
-Add skb_reset_tr
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38699
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When the bfad_im_probe() function fails during initialization, the memory pointed to by bfad->im is freed without setting bfad->im to NULL.
 
-scsi: bfa: Double-free fix
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Brocade bfa Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-When the bfad_im_probe() function fails during initialization, the memory
-pointed to by bfad->im is freed without setting bfad->im to NULL.
-
-Subsequently, during driver uninstallation, when the state mac
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-38729
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+UAC3 power domain descriptors need to be verified with its variable bLength for avoiding the unexpected OOB accesses by malicious firmware, too.
 
-ALSA: usb-audio: Validate UAC3 power domain descriptors, too
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-UAC3 power domain descriptors need to be verified with its variable
-bLength for avoiding the unexpected OOB accesses by malicious
-firmware, too.
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39702
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.0 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+To prevent timing attacks, MACs need to be compared in constant time. Use the appropriate helper function for this.
 
-ipv6: sr: Fix MAC comparison to be constant-time
-
-To prevent timing attacks, MACs need to be compared in constant time.
-Use the appropriate helper function for this.
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39757
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+UAC3 class segment descriptors need to be verified whether their sizes match with the declared lengths and whether they fit with the allocated buffer sizes, too.
 
-ALSA: usb-audio: Validate UAC3 cluster segment descriptors
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-UAC3 class segment descriptors need to be verified whether their sizes
-match with the declared lengths and whether they fit with the
-allocated buffer sizes, too.  Otherwis
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39760
 
 **Status**: Affected
-**Component**: `CONFIG_USB` (`CONFIG_USB`)
-**Base Score**: 7.1 HIGH
+**Component**: USB core (`CONFIG_USB`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
-usb: core: config: Prevent OOB read in SS endpoint companion parsing
-
-usb_parse_ss_endpoint_companion() checks descriptor type before length,
-enabling a potentially odd read outside of the buffer size.
-
-Fix this up by checking the 
-
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. USB core is present. Exploiting USB core bugs typically requires connecting a USB device or having an existing USB device present. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39788
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — UFS flash storage absent on x86 server
 
-In the Linux kernel, the following vulnerability has been resolved:
+On Google gs101, the number of UTP transfer request slots (nutrs) is 32, and in this case the driver ends up programming the UTRL_NEXUS_TYPE incorrectly as 0.
 
-scsi: ufs: exynos: Fix programming of HCI_UTRL_NEXUS_TYPE
+`CONFIG_SCSI=y` is compiled in. UFS (Universal Flash Storage) is used in mobile and embedded platforms. This bug is in the Samsung Exynos UFS variant (`ufs-exynos`). A Debian 11 x86 server has no UFS hardware; the driver is never active.
 
-On Google gs101, the number of UTP transfer request slots (nutrs) is 32,
-and in this case the driver ends up programming the UTRL_NEXUS_TYPE
-incorrectly as 0.
-
-This is beca
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-50306
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.1 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+For scan loop must ensure that at least EXT4_FC_TAG_BASE_LEN space. If remain space less than EXT4_FC_TAG_BASE_LEN which will lead to out of bound read when mounting c
 
-ext4: fix potential out of bound read in ext4_fc_replay_scan()
-
-For scan loop must ensure that at least EXT4_FC_TAG_BASE_LEN space. If remain
-space less than EXT4_FC_TAG_BASE_LEN which will lead to out of bound read
-when mounting c
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-53257
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Before checking the action code, check that it even exists in the frame.
 
-wifi: mac80211: check S1G action frame size
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-Before checking the action code, check that it even
-exists in the frame.
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53282
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+During the sysfs firmware write process, a use-after-free read warning is logged from the lpfc_wr_object() routine: BUG: KFENCE: use-after-free read in
 
-scsi: lpfc: Fix use-after-free KFENCE violation during sysfs firmware write
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex lpfc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-During the sysfs firmware write process, a use-after-free read warning is
-logged from the lpfc_wr_object() routine:
-
-  BUG: KFENCE: use-after-free read in
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-53285
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Normally the extended attributes in the inode body would have been checked when the inode is first opened, but if someone is writing to the block device while the file
 
-ext4: add bounds checking in get_max_inline_xattr_value_size()
-
-Normally the extended attributes in the inode body would have been
-checked when the inode is first opened, but if someone is writing to
-the block device while the file
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-53320
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The function mpi3mr_get_all_tgt_info() has four issues: 1) It calculates valid entry length in alltgt_info assuming the header part of the struct mpi3mr_device_map_info wou
 
-scsi: mpi3mr: Fix issues in mpi3mr_get_all_tgt_info()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-The function mpi3mr_get_all_tgt_info() has four issues:
-
-1) It calculates valid entry length in alltgt_info assuming the header part
-   of the struct mpi3mr_device_map_info wou
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-53321
 
-**Status**: Affected
-**Component**: `CONFIG_MAC80211` (`CONFIG_MAC80211`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+While technically some control frames like ACK are shorter and end after Address 1, such frames shouldn't be forwarded through wmediumd or similar userspace, so require the full 3-address
 
-wifi: mac80211_hwsim: drop short frames
+`CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
-While technically some control frames like ACK are shorter and
-end after Address 1, such frames shouldn't be forwarded through
-wmediumd or similar userspace, so require the full 3-address
-he
-
-`CONFIG_MAC80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53322
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+System crash due to use after free. Current code allows terminate_rport_io to exit before making sure all IOs has returned.
 
-scsi: qla2xxx: Wait for io return on terminate rport
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qla2xxx Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-System crash due to use after free.
-Current code allows terminate_rport_io to exit before making
-sure all IOs has returned. For FCP-2 device, IO's can hang
-on in HW because driv
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2022-50378
 
-**Status**: Affected
-**Component**: `CONFIG_DRM` (`CONFIG_DRM`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DRM subsystem (`CONFIG_DRM`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — Amlogic Meson ARM SoC GPU absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Unloading the driver triggers the following KASAN warning: [  +0.006275] ============================================================= [  +0.000029] BUG: KASAN:
 
-drm/meson: reorder driver deinit sequence to fix use-after-free bug
+`CONFIG_DRM=y` is compiled in. drm/meson is the display driver for Amlogic Meson SoC platforms (ARM-based embedded boards such as ODROID, Khadas, etc.). This driver and its hardware are not present on an x86 Debian 11 server.
 
-Unloading the driver triggers the following KASAN warning:
-
-[  +0.006275] =============================================================
-[  +0.000029] BUG: KASAN: 
-
-`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53376
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using byte as unit.
 
-scsi: mpi3mr: Use number of bits to manage bitmap sizes
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using
-byte as unit. However, bitmap helper functions assume that bitmaps are
-allocated using unsigned long 
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-53392
 
-**Status**: Affected
-**Component**: `CONFIG_HID` (`CONFIG_HID`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: HID subsystem (`CONFIG_HID`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no USB HID input devices on headless server
 
-In the Linux kernel, the following vulnerability has been resolved:
+During warm reset device->fw_client is set to NULL. If a bus driver is registered after this NULL setting and before new firmware clients are enumerated by ISHTP, kernel panic
 
-HID: intel-ish-hid: Fix kernel panic during warm reset
+`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
-During warm reset device->fw_client is set to NULL. If a bus driver is
-registered after this NULL setting and before new firmware clients are
-enumerated by ISHTP, kernel panic
-
-`CONFIG_HID=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39841
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix a use-after-free window by correcting the buffer release sequence in the deferred receive path.
 
-scsi: lpfc: Fix buffer free/clear order in deferred receive path
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex lpfc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-Fix a use-after-free window by correcting the buffer release sequence in
-the deferred receive path. The code freed the RQ buffer first and only
-then cleared the cont
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-39864
 
-**Status**: Affected
-**Component**: `CONFIG_CFG80211` (`CONFIG_CFG80211`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no WiFi NIC present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Following bss_free() quirk introduced in commit 776b3580178f ("cfg80211: track hidden SSID networks properly"), adjust cfg80211_update_known_bss() to free the last beacon frame
 
-wifi: cfg80211: fix use-after-free in cmp_bss()
+`CONFIG_CFG80211=y` is compiled in. No WiFi network interface card is present on a server deployment. cfg80211 manages wireless interfaces; without hardware, no interface is created and the affected code paths are unreachable.
 
-Following bss_free() quirk introduced in commit 776b3580178f
-("cfg80211: track hidden SSID networks properly"), adjust
-cfg80211_update_known_bss() to free the last beacon frame
-eleme
-
-`CONFIG_CFG80211=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39866
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+An use-after-free issue occurred when __mark_inode_dirty() get the bdi_writeback that was in the progress of switching.
 
-fs: writeback: fix use-after-free in __mark_inode_dirty()
-
-An use-after-free issue occurred when __mark_inode_dirty() get the
-bdi_writeback that was in the progress of switching.
-
-CPU: 1 PID: 562 Comm: systemd-random- Not tainted 6
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2022-50422
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to delete "slow_task->timer".
 
-scsi: libsas: Fix use-after-free bug in smp_execute_task_sg()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SAS libsas library (requires SAS HBA) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-When executing SMP task failed, the smp_execute_task_sg() calls del_timer()
-to delete "slow_task->timer". However, if the timer handler
-sas_task_internal_timedout() is 
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2022-50432
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Syzkaller managed to trigger concurrent calls to kernfs_remove_by_name_ns() for the same file resulting in a KASAN detected use-after-free.
 
-kernfs: fix use-after-free in __kernfs_remove
-
-Syzkaller managed to trigger concurrent calls to
-kernfs_remove_by_name_ns() for the same file resulting in
-a KASAN detected use-after-free. The race occurs when the root
-node is freed 
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-53473
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The ext4_dirhash() will *almost* never fail, especially when the hash tree feature was first introduced.
 
-ext4: improve error handling from ext4_dirhash()
-
-The ext4_dirhash() will *almost* never fail, especially when the hash
-tree feature was first introduced.  However, with the addition of
-support of encrypted, casefolded file names, 
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-53510
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — UFS flash storage absent on x86 server
 
-In the Linux kernel, the following vulnerability has been resolved:
+ufshcd_queuecommand() may be called two times in a row for a SCSI command before it is completed.
 
-scsi: ufs: core: Fix handling of lrbp->cmd
+`CONFIG_SCSI=y` is compiled in. UFS (Universal Flash Storage) is mobile/embedded storage. The `ufshcd` core driver is compiled in but never instantiated on an x86 server; no UFS host controller hardware is present.
 
-ufshcd_queuecommand() may be called two times in a row for a SCSI command
-before it is completed. Hence make the following changes:
-
- - In the functions that submit a command, do not chec
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53521
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+A fix for: BUG: KASAN: slab-out-of-bounds in ses_intf_remove+0x23f/0x270 [ses] Read of size 8 at addr ffff88a10d32e5d8 by task rmmod/12013
 
-scsi: ses: Fix slab-out-of-bounds in ses_intf_remove()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SCSI Enclosure Services (SAS enclosure hardware) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-A fix for:
-
-BUG: KASAN: slab-out-of-bounds in ses_intf_remove+0x23f/0x270 [ses]
-Read of size 8 at addr ffff88a10d32e5d8 by task rmmod/12013
-
-When edev->components is zero, acc
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2022-50488
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Our test report a uaf for 'bfqq->bic' in 5.10: ================================================================== BUG: KASAN: use-after-free in bfq_select_queue+0x378/0xa30
 
-block, bfq: fix possible uaf for 'bfqq->bic'
-
-Our test report a uaf for 'bfqq->bic' in 5.10:
-
-==================================================================
-BUG: KASAN: use-after-free in bfq_select_queue+0x378/0xa30
-
-CPU: 6 PID
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2022-50496
 
 **Status**: Affected
-**Component**: `CONFIG_BLK_DEV_DM` (`CONFIG_BLK_DEV_DM`)
-**Base Score**: 7.8 HIGH
+**Component**: device mapper (`CONFIG_BLK_DEV_DM`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Dm_cache also has the same UAF problem when dm_resume() and dm_destroy() are concurrent.
 
-dm cache: Fix UAF in destroy()
-
-Dm_cache also has the same UAF problem when dm_resume()
-and dm_destroy() are concurrent.
-
-Therefore, cancelling timer again in destroy().
-
-`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Device mapper is used for LVM and is active on a standard Debian 11 installation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup covers writes to protected directories regardless of the block layer.
 
 
 ## CVE-2022-50546
 
 **Status**: Affected
-**Component**: `CONFIG_EXT4_FS` (`CONFIG_EXT4_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Syzbot found the following issue: ===================================================== BUG: KMSAN: uninit-value in ext4_evict_inode+0xdd/0x26b0 fs/ext4/inode.c:180
 
-ext4: fix uninititialized value in 'ext4_evict_inode'
-
-Syzbot found the following issue:
-=====================================================
-BUG: KMSAN: uninit-value in ext4_evict_inode+0xdd/0x26b0 fs/ext4/inode.c:180
- ext4_evict
-
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
 
 
 ## CVE-2023-53640
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When we run syzkaller we get below Out of Bounds error. "KASAN: slab-out-of-bounds Read in regcache_flat_read" Below is the backtrace of the issue:
 
-ASoC: lpass: Fix for KASAN use_after_free out of bounds
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-When we run syzkaller we get below Out of Bounds error.
-
-"KASAN: slab-out-of-bounds Read in regcache_flat_read"
-
-Below is the backtrace of the issue:
-
-BUG: KASAN: slab-out-of
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53675
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Sanitize possible desc_ptr out-of-bounds accesses in ses_enclosure_data_process().
 
-scsi: ses: Fix possible desc_ptr out-of-bounds accesses
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SCSI Enclosure Services (SAS enclosure hardware) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-Sanitize possible desc_ptr out-of-bounds accesses in
-ses_enclosure_data_process().
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-53676
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The function lio_target_nacl_info_show() uses sprintf() in a loop to print details for every iSCSI connection in a session without checking for the buffer len
 
-scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-The function lio_target_nacl_info_show() uses sprintf() in a loop to print
-details for every iSCSI connection in a session without checking for the
-buffer len
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-71075
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+The asd_pci_remove() function fails to synchronize with pending tasklets before freeing the asd_ha structure, leading to a potential use-after-free vulnerability.
 
-scsi: aic94xx: fix use-after-free in device removal path
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Adaptec aic94xx SAS HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-The asd_pci_remove() function fails to synchronize with pending tasklets
-before freeing the asd_ha structure, leading to a potential
-use-after-free vulnerability.
-
-When a de
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2026-23076
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+In the audio mixer handling code of ctxfi driver, the conf field is used as a kind of loop index, and it's referred in the index callbacks (amixer_index() and sum_index
 
-ALSA: ctxfi: Fix potential OOB access in audio mixer handling
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-In the audio mixer handling code of ctxfi driver, the conf field is
-used as a kind of loop index, and it's referred in the index callbacks
-(amixer_index() and sum_index
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23078
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The scarlett2_usb_get_config() function has a logic error in the endianness conversion code that can cause buffer overflows when count > 1.
 
-ALSA: scarlett2: Fix buffer overflow in config retrieval
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The scarlett2_usb_get_config() function has a logic error in the
-endianness conversion code that can cause buffer overflows when
-count > 1.
-
-The code checks `if (size == 2)`
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23089
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees mixer->id_elems but the controls already added to the card still reference the freed memory.
 
-ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
-mixer->id_elems but the controls already added to the card still
-reference the freed memory. Later when snd_
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23191
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The PCM trigger callback of aloop driver tries to check the PCM state and stop the stream of the tied substream in the corresponding cable.
 
-ALSA: aloop: Fix racy access at PCM trigger
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The PCM trigger callback of aloop driver tries to check the PCM state
-and stop the stream of the tied substream in the corresponding cable.
-Since both check and stop operations are perfo
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23193
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 8.8 HIGH
-**Environmental Score**: 9.0 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 8.8 HIGH (AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 9.0 CRITICAL — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In iscsit_dec_session_usage_count(), the function calls complete() while holding the sess->session_usage_lock.
 
-scsi: target: iscsi: Fix use-after-free in iscsit_dec_session_usage_count()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-In iscsit_dec_session_usage_count(), the function calls complete() while
-holding the sess->session_usage_lock. Similar to the connection usage count
-logic
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2026-23208
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+In this case, the user constructed the parameters with maxpacksize 40 for rate 22050 / pps 1000, and packsize[0] 22 packsize[1] 23.
 
-ALSA: usb-audio: Prevent excessive number of frames
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-In this case, the user constructed the parameters with maxpacksize 40
-for rate 22050 / pps 1000, and packsize[0] 22 packsize[1] 23. The buffer
-size for each data URB is maxpacksi
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23216
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In iscsit_dec_conn_usage_count(), the function calls complete() while holding the conn->conn_usage_lock.
 
-scsi: target: iscsi: Fix use-after-free in iscsit_dec_conn_usage_count()
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-In iscsit_dec_conn_usage_count(), the function calls complete() while
-holding the conn->conn_usage_lock. As soon as complete() is invoked, the
-waiter (such a
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-71238
 
-**Status**: Affected
-**Component**: `CONFIG_SCSI` (`CONFIG_SCSI`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — requires specific hardware
+**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Kernel panic observed on system, [5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000 [5353358.825194] #PF: supervisor write access in kernel mode
 
-scsi: qla2xxx: Fix bsg_done() causing double free
+`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qla2xxx Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
 
-Kernel panic observed on system,
-
-[5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000
-[5353358.825194] #PF: supervisor write access in kernel mode
-[5353
-
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2026-23318
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+The entry of the validators table for UAC3 AC header descriptor is defined with the wrong protocol version UAC_VERSION_2, while it should have been UAC_VERSION_3.
 
-ALSA: usb-audio: Use correct version for UAC3 header validation
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-The entry of the validators table for UAC3 AC header descriptor is
-defined with the wrong protocol version UAC_VERSION_2, while it should
-have been UAC_VERSION_3.  Th
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-31581
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+In usb6fire_chip_abort(), the chip struct is allocated as the card's private data (via snd_card_new with sizeof(struct sfire_chip)).
 
-ALSA: 6fire: fix use-after-free on disconnect
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-In usb6fire_chip_abort(), the chip struct is allocated as the card's
-private data (via snd_card_new with sizeof(struct sfire_chip)).  When
-snd_card_free_when_closed() is called and no 
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-3268
 
 **Status**: Affected
-**Component**: `CONFIG_RELAY` (`CONFIG_RELAY`)
-**Base Score**: 7.1 HIGH
+**Component**: relay filesystem (`CONFIG_RELAY`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay_file_read_start_pos in kernel/relay.c in the relayfs. This flaw could allow a local attacker to crash the system or leak kernel internal information.
+An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay_file_read_start_pos in kernel/relay.c in the relayfs.
 
-`CONFIG_RELAY=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_RELAY=y` is compiled in and 5.19.6 falls within the affected range. The relay filesystem is used by kernel tracing tools (SystemTap, etc.). Access requires `CAP_SYS_ADMIN`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-3567
 
 **Status**: Affected
-**Component**: `CONFIG_VT` (`CONFIG_VT`)
-**Base Score**: 7.1 HIGH
+**Component**: virtual terminal (VT) (`CONFIG_VT`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-A use-after-free flaw was found in vcs_read in drivers/tty/vt/vc_screen.c in vc_screen in the Linux Kernel. This issue may allow an attacker with local user access to cause a system crash or leak internal kernel information.
+A use-after-free flaw was found in vcs_read in drivers/tty/vt/vc_screen.c in vc_screen in the Linux Kernel.
 
-`CONFIG_VT=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_VT=y` is compiled in and 5.19.6 falls within the affected range. Virtual terminals are present. Exploiting vc_screen bugs requires access to `/dev/vcs*` devices, readable by members of the `tty` group on Debian. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-6531
 
 **Status**: Affected
-**Component**: `CONFIG_UNIX` (`CONFIG_UNIX`)
-**Base Score**: 7.0 HIGH
+**Component**: Unix domain sockets (`CONFIG_UNIX`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
 A use-after-free flaw was found in the Linux Kernel due to a race problem in the unix garbage collector's deletion of SKB races with unix_stream_read_generic() on the socket that the SKB is queued on.
 
-`CONFIG_UNIX=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_UNIX=y` is compiled in and 5.19.6 falls within the affected range. Unix domain sockets are used by virtually all inter-process communication on a Debian 11 server (systemd, D-Bus, etc.). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-51043
 
 **Status**: Affected
-**Component**: `CONFIG_DRM` (`CONFIG_DRM`)
-**Base Score**: 7.0 HIGH
+**Component**: DRM subsystem (`CONFIG_DRM`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
 In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-free during a race condition between a nonblocking atomic commit and a driver unload.
 
-`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The DRM subsystem manages GPU and display hardware. On a server without a display GPU, most DRM paths are inactive. The drm_atomic path specifically requires GPU mode-setting operations. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-0841
 
 **Status**: Affected
-**Component**: `CONFIG_HUGETLBFS` (`CONFIG_HUGETLBFS`)
-**Base Score**: 6.6 HIGH
+**Component**: hugetlbfs (`CONFIG_HUGETLBFS`)
+**Base Score**: 6.6 MEDIUM (AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
-A null pointer dereference flaw was found in the hugetlbfs_fill_super function in the Linux kernel hugetlbfs (HugeTLB pages) functionality. This issue may allow a local user to crash the system or potentially escalate their privileges on the system.
+A null pointer dereference flaw was found in the hugetlbfs_fill_super function in the Linux kernel hugetlbfs (HugeTLB pages) functionality.
 
-`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. HugeTLB pages require explicit mmap with `MAP_HUGETLB` or use of hugetlbfs. Not all processes use huge pages; requires specific process behavior. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26593
 
 **Status**: Affected
-**Component**: `CONFIG_I2C_I801` (`CONFIG_I2C_I801`)
-**Base Score**: 7.1 HIGH
+**Component**: Intel SMBus I2C controller (`CONFIG_I2C_I801`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+According to the Intel datasheets, software must reset the block buffer index twice for block process call transactions: once before writing the outgoing data to the buffer, and once
 
-i2c: i801: Fix block process call transactions
-
-According to the Intel datasheets, software must reset the block
-buffer index twice for block process call transactions: once before
-writing the outgoing data to the buffer, and once 
-
-`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers (for BMC, temperature sensor, and other management interfaces). Access requires root or membership in the `i2c` group. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38586
 
 **Status**: Affected
-**Component**: `CONFIG_R8169` (`CONFIG_R8169`)
-**Base Score**: 7.8 HIGH
+**Component**: Realtek r8169 Ethernet driver (`CONFIG_R8169`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+An issue was found on the RTL8125b when transmitting small fragmented packets, whereby invalid entries were inserted into the transmit ring buffer, subsequently
 
-r8169: Fix possible ring buffer corruption on fragmented Tx packets.
-
-An issue was found on the RTL8125b when transmitting small fragmented
-packets, whereby invalid entries were inserted into the transmit ring
-buffer, subsequently 
-
-`CONFIG_R8169=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_R8169=y` is compiled in and 5.19.6 falls within the affected range. The r8169 Realtek Gigabit Ethernet driver is active if the server has a Realtek NIC. Network operation uses this driver continuously. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38630
 
 **Status**: Affected
-**Component**: `CONFIG_WATCHDOG` (`CONFIG_WATCHDOG`)
-**Base Score**: 7.8 HIGH
+**Component**: watchdog timer subsystem (`CONFIG_WATCHDOG`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+When the cpu5wdt module is removing, the origin code uses del_timer() to de-activate the timer.
 
-watchdog: cpu5wdt.c: Fix use-after-free bug caused by cpu5wdt_trigger
-
-When the cpu5wdt module is removing, the origin code uses del_timer() to
-de-activate the timer. If the timer handler is running, del_timer() could
-not stop it a
-
-`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. Watchdog timer hardware is present on many servers for reboot-on-hang. This specific bug is in the cpu5wdt driver (a PC-era ISA watchdog timer); this hardware may not be present on modern servers. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-34777
 
 **Status**: Affected
-**Component**: `CONFIG_DMA_ENGINE` (`CONFIG_DMA_ENGINE`)
-**Base Score**: 7.1 HIGH
+**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+While validating node ids in map_benchmark_ioctl(), node_possible() may be provided with invalid argument outside of [0,MAX_NUMNODES-1] range leading to:
 
-dma-mapping: benchmark: fix node id validation
-
-While validating node ids in map_benchmark_ioctl(), node_possible() may
-be provided with invalid argument outside of [0,MAX_NUMNODES-1] range
-leading to:
-
-BUG: KASAN: wild-memory-acce
-
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. The DMA engine framework is used by storage, network, and crypto subsystems. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-39463
 
 **Status**: Affected
-**Component**: `CONFIG_9P_FS` (`CONFIG_9P_FS`)
-**Base Score**: 7.8 HIGH
+**Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix a use-after-free on dentry's d_fsdata fid list when a thread looks up a fid through dentry while another thread unlinks it: UAF thread:
 
-9p: add missing locking around taking dentry fid list
-
-Fix a use-after-free on dentry's d_fsdata fid list when a thread
-looks up a fid through dentry while another thread unlinks it:
-
-UAF thread:
-refcount_t: addition on 0; use-afte
-
-`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. 9P (Plan 9) filesystem is compiled in and used in virtualised environments for host-guest file sharing. On a bare-metal server without 9P mounts, this code path requires a process that mounts a 9P filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-40956
 
-**Status**: Affected
-**Component**: `CONFIG_DMA_ENGINE` (`CONFIG_DMA_ENGINE`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Use list_for_each_entry_safe() to allow iterating through the list and deleting the entry in the iteration process.
 
-dmaengine: idxd: Fix possible Use-After-Free in irq_process_work_list
+`CONFIG_DMA_ENGINE=y` is compiled in. idxd is the driver for Intel Data Streaming Accelerator (DSA) and Intelligence Analytics Accelerator (IAX), available in Intel Sapphire Rapids and later server CPUs. These accelerators require specific Intel hardware not present on a standard Debian 11 server.
 
-Use list_for_each_entry_safe() to allow iterating through the list and
-deleting the entry in the iteration process. The descriptor is freed via
-idxd_desc_comple
-
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48867
 
-**Status**: Affected
-**Component**: `CONFIG_DMA_ENGINE` (`CONFIG_DMA_ENGINE`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+On driver unload any pending descriptors are flushed at the time the interrupt is freed: idxd_dmaengine_drv_remove() ->
 
-dmaengine: idxd: Prevent use after free on completion memory
+`CONFIG_DMA_ENGINE=y` is compiled in. idxd drives Intel's Data Streaming Accelerator hardware, present only in Intel Sapphire Rapids (and later) server CPUs. This hardware is not present on a standard Debian 11 deployment.
 
-On driver unload any pending descriptors are flushed at the
-time the interrupt is freed:
-idxd_dmaengine_drv_remove() ->
-	drv_disable_wq() ->
-		idxd_wq_free_irq() ->
-			i
-
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46759
 
-**Status**: Affected
-**Component**: `CONFIG_HWMON` (`CONFIG_HWMON`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — ADC128D818 I2C ADC chip absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large negative number such as -9223372036854775808 is provided by the user.
 
-hwmon: (adc128d818) Fix underflows seen when writing limit attributes
+`CONFIG_HWMON=y` is compiled in. adc128d818 drives the Texas Instruments ADC128D818 — a specific 8-channel I2C ADC chip used on some custom boards. This chip is not part of standard server hardware; the hwmon driver is never bound.
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reorderin
-
-`CONFIG_HWMON=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-49860
 
 **Status**: Affected
-**Component**: `CONFIG_ACPI` (`CONFIG_ACPI`)
-**Base Score**: 7.1 HIGH
+**Component**: ACPI subsystem (`CONFIG_ACPI`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Only buffer objects are valid return values of _STR. If something else is returned description_show() will access invalid memory.
 
-ACPI: sysfs: validate return type of _STR method
-
-Only buffer objects are valid return values of _STR.
-
-If something else is returned description_show() will access invalid
-memory.
-
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49029
 
-**Status**: Affected
-**Component**: `CONFIG_HWMON` (`CONFIG_HWMON`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — IBM Power Management Extension hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Smatch report warning as follows: drivers/hwmon/ibmpex.c:509 ibmpex_register_bmc() warn: '&data->list' not removed from list
 
-hwmon: (ibmpex) Fix possible UAF when ibmpex_register_bmc() fails
+`CONFIG_HWMON=y` is compiled in. ibmpex drives the IBM Power Management Extension, specific to IBM Power Systems server hardware. This is not present on an x86 Debian 11 server.
 
-Smatch report warning as follows:
-
-drivers/hwmon/ibmpex.c:509 ibmpex_register_bmc() warn:
-  '&data->list' not removed from list
-
-If ibmpex_find_sensors() fails in i
-
-`CONFIG_HWMON=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50127
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In 'taprio_change()', 'admin' pointer may become dangling due to sched switch / removal caused by 'advance_sched()', and critical section protected by 'q->current_entry_lock' is to
 
-net: sched: fix use-after-free in taprio_change()
-
-In 'taprio_change()', 'admin' pointer may become dangling due to sched
-switch / removal caused by 'advance_sched()', and critical section
-protected by 'q->current_entry_lock' is to
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50131
 
 **Status**: Affected
-**Component**: `CONFIG_TRACING` (`CONFIG_TRACING`)
-**Base Score**: 7.8 HIGH
+**Component**: kernel tracing (`CONFIG_TRACING`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+strlen() returns a string length excluding the null byte. If the string length equals to the maximum buffer length, the buffer will have no space for the NULL t
 
-tracing: Consider the NULL character when validating the event length
-
-strlen() returns a string length excluding the null byte. If the string
-length equals to the maximum buffer length, the buffer will have no
-space for the NULL t
-
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53057
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be either root or ingress.
 
-net/sched: stop qdisc_tree_reduce_backlog on TC_H_ROOT
-
-In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed
-to be either root or ingress. This assumption is bogus since it's valid
-to create egress qdiscs with m
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56606
 
 **Status**: Affected
-**Component**: `CONFIG_PACKET` (`CONFIG_PACKET`)
-**Base Score**: 7.8 HIGH
+**Component**: AF_PACKET sockets (`CONFIG_PACKET`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+After sock_init_data() the allocated sk object is attached to the provided sock object.
 
-af_packet: avoid erroring out after sock_init_data() in packet_create()
-
-After sock_init_data() the allocated sk object is attached to the provided
-sock object. On error, packet_create() frees the sk object leaving the
-dangling poi
-
-`CONFIG_PACKET=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PACKET=y` is compiled in and 5.19.6 falls within the affected range. AF_PACKET raw sockets are used by packet capture tools (`tcpdump`, etc.). Creating AF_PACKET sockets requires `CAP_NET_RAW`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-21692
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an Out-Of-Bound class in ets_class_from_arg() when passed clid of 0.
 
-net: sched: fix ets qdisc OOB Indexing
-
-Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can
-index an Out-Of-Bound class in ets_class_from_arg() when passed clid of
-0. The overflow may cause local privilege escala
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49799
 
 **Status**: Affected
-**Component**: `CONFIG_TRACING` (`CONFIG_TRACING`)
-**Base Score**: 7.1 HIGH
+**Component**: kernel tracing (`CONFIG_TRACING`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In register_synth_event(), if set_synth_event_print_fmt() failed, then both trace_remove_event_call() and unregister_trace_event() will be called, which means the trace_eve
 
-tracing: Fix wild-memory-access in register_synth_event()
-
-In register_synth_event(), if set_synth_event_print_fmt() failed, then
-both trace_remove_event_call() and unregister_trace_event() will be
-called, which means the trace_eve
-
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49892
 
 **Status**: Affected
-**Component**: `CONFIG_FTRACE` (`CONFIG_FTRACE`)
-**Base Score**: 7.8 HIGH
+**Component**: ftrace / function tracer (`CONFIG_FTRACE`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore that perf had registered two ops with the same content successively, both dynamic.
 
-ftrace: Fix use-after-free for dynamic ftrace_ops
-
-KASAN reported a use-after-free with ftrace ops [1]. It was found from
-vmcore that perf had registered two ops with the same content
-successively, both dynamic. After unregistering
-
-`CONFIG_FTRACE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_FTRACE=y` is compiled in and 5.19.6 falls within the affected range. ftrace is the kernel function tracer. Configuring ftrace requires `CAP_SYS_ADMIN` and is not active in normal production operation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49921
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+We can't use "skb" again after passing it to qdisc_enqueue(). This is basically identical to commit 2f09707d0c97 ("sch_sfb: Also store skb len before calling child enqueue").
 
-net: sched: Fix use after free in red_enqueue()
-
-We can't use "skb" again after passing it to qdisc_enqueue().  This is
-basically identical to commit 2f09707d0c97 ("sch_sfb: Also store skb
-len before calling child enqueue").
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53111
 
 **Status**: Affected
-**Component**: `CONFIG_BLK_DEV_LOOP` (`CONFIG_BLK_DEV_LOOP`)
-**Base Score**: 7.8 HIGH
+**Component**: loop block device (`CONFIG_BLK_DEV_LOOP`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronously when using asynchronous I/O unless memory allocation fails.
 
-loop: Fix use-after-free issues
-
-do_req_filebacked() calls blk_mq_complete_request() synchronously or
-asynchronously when using asynchronous I/O unless memory allocation fails.
-Hence, modify loop_handle_cmd() such that it does not 
-
-`CONFIG_BLK_DEV_LOOP=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BLK_DEV_LOOP=y` is compiled in and 5.19.6 falls within the affected range. Loop devices are present on Debian 11 (used for snaps, container images, etc.). Exploiting this requires loop device operations with `CAP_SYS_ADMIN`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37879
 
 **Status**: Affected
-**Component**: `CONFIG_9P_FS` (`CONFIG_9P_FS`)
-**Base Score**: 7.1 HIGH
+**Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In p9_client_write() and p9_client_read_once(), if the server incorrectly replies with success but a negative write/read count then we would consider written (nega
 
-9p/net: fix improper handling of bogus negative read/write replies
-
-In p9_client_write() and p9_client_read_once(), if the server
-incorrectly replies with success but a negative write/read count then we
-would consider written (nega
-
-`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. 9P (Plan 9) filesystem is compiled in and used in virtualised environments for host-guest file sharing. On a bare-metal server without 9P mounts, this code path requires a process that mounts a 9P filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37914
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-net_sched: ets: Fix double list add in class with netem as child qdisc
-
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of ets
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37915
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.0 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-net_sched: drr: Fix double list add in class with netem as child qdisc
-
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of drr
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37923
 
 **Status**: Affected
-**Component**: `CONFIG_TRACING` (`CONFIG_TRACING`)
-**Base Score**: 7.8 HIGH
+**Component**: kernel tracing (`CONFIG_TRACING`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+syzbot reported this bug: ================================================================== BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
 
-tracing: Fix oob write in trace_seq_to_buffer()
-
-syzbot reported this bug:
-==================================================================
-BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-
-
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38369
 
-**Status**: Affected
-**Component**: `CONFIG_DMA_ENGINE` (`CONFIG_DMA_ENGINE`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Running IDXD workloads in a container with the /dev directory mounted can trigger a call trace or even a kernel panic when the parent proces
 
-dmaengine: idxd: Check availability of workqueue allocated by idxd wq driver before using
+`CONFIG_DMA_ENGINE=y` is compiled in. idxd drives Intel's on-chip Data Streaming and Analytics Accelerator hardware. This requires specific Intel Sapphire Rapids or later CPU hardware not present on a standard server.
 
-Running IDXD workloads in a container with the /dev directory mounted can
-trigger a call trace or even a kernel panic when the parent proces
-
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38548
 
-**Status**: Affected
-**Component**: `CONFIG_HWMON` (`CONFIG_HWMON`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — Corsair Commander Pro hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Add buffer_recv_size to store the size of the received bytes. Validate buffer_recv_size in send_usb_cmd().
 
-hwmon: (corsair-cpro) Validate the size of the received input buffer
+`CONFIG_HWMON=y` is compiled in. corsair-cpro drives the Corsair Commander Pro — a desktop PC fan/cooler controller connected via USB HID. This device is not present in a production server environment.
 
-Add buffer_recv_size to store the size of the received bytes.
-Validate buffer_recv_size in send_usb_cmd().
-
-`CONFIG_HWMON=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-50320
 
 **Status**: Affected
-**Component**: `CONFIG_ACPI` (`CONFIG_ACPI`)
-**Base Score**: 7.8 HIGH
+**Component**: ACPI subsystem (`CONFIG_ACPI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+On a Packard Bell Dot SC (Intel Atom N2600 model) there is a FPDT table which contains invalid physical addresses, with high bits set which fall outside t
 
-ACPI: tables: FPDT: Don't call acpi_os_map_memory() on invalid phys address
-
-On a Packard Bell Dot SC (Intel Atom N2600 model) there is a FPDT table
-which contains invalid physical addresses, with high bits set which fall
-outside t
-
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53395
 
 **Status**: Affected
-**Component**: `CONFIG_ACPI` (`CONFIG_ACPI`)
-**Base Score**: 7.8 HIGH
+**Component**: ACPI subsystem (`CONFIG_ACPI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5 According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction.
 
-ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
-
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
-
-According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care
-
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39869
 
-**Status**: Affected
-**Component**: `CONFIG_DMA_ENGINE` (`CONFIG_DMA_ENGINE`)
-**Base Score**: 7.1 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Environmental Score**: 0.0 — Texas Instruments eDMA hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix a critical memory allocation bug in edma_setup_from_hw() where queue_priority_map was allocated with insufficient memory.
 
-dmaengine: ti: edma: Fix memory allocation size for queue_priority_map
+`CONFIG_DMA_ENGINE=y` is compiled in. ti-edma is the DMA controller driver for Texas Instruments Keystone/OMAP/AM embedded SoC platforms. This driver and hardware are not present on an x86 Debian 11 server.
 
-Fix a critical memory allocation bug in edma_setup_from_hw() where
-queue_priority_map was allocated with insufficient memory. The code
-declared queue_priority_
-
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-50423
 
 **Status**: Affected
-**Component**: `CONFIG_ACPI` (`CONFIG_ACPI`)
-**Base Score**: 7.8 HIGH
+**Component**: ACPI subsystem (`CONFIG_ACPI`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+There is an use-after-free reported by KASAN: BUG: KASAN: use-after-free in acpi_ut_remove_reference+0x3b/0x82 Read of size 1 at addr ffff888112afc460 by task
 
-ACPICA: Fix use-after-free in acpi_ut_copy_ipackage_to_ipackage()
-
-There is an use-after-free reported by KASAN:
-
-  BUG: KASAN: use-after-free in acpi_ut_remove_reference+0x3b/0x82
-  Read of size 1 at addr ffff888112afc460 by task 
-
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2026-23378
 
 **Status**: Affected
-**Component**: `CONFIG_NET_SCHED` (`CONFIG_NET_SCHED`)
-**Base Score**: 7.8 HIGH
+**Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Whenever an ife action replace changes the metalist, instead of replacing the old data on the metalist, the current ife code is appending the new metadata.
 
-net/sched: act_ife: Fix metalist update behavior
-
-Whenever an ife action replace changes the metalist, instead of
-replacing the old data on the metalist, the current ife code is appending
-the new metadata. Aside from being innaprop
-
-`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_SCHED=y` is compiled in and 5.19.6 falls within the affected range. The traffic control scheduler is present and used by the kernel network stack. Exploiting most tc bugs requires `CAP_NET_ADMIN` to configure qdiscs. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-36883
 
 **Status**: Affected
-**Component**: `CONFIG_INET` (`CONFIG_INET`)
-**Base Score**: 7.1 HIGH
+**Component**: TCP/IP networking (`CONFIG_INET`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+net_alloc_generic is called by net_alloc, which is called without any locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem.
 
-net: fix out-of-bounds access in ops_init
-
-net_alloc_generic is called by net_alloc, which is called without any
-locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem. It
-is read twice, first to allocate an array,
-
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-36971
 
 **Status**: Affected
-**Component**: `CONFIG_INET` (`CONFIG_INET`)
-**Base Score**: 7.8 HIGH
+**Component**: TCP/IP networking (`CONFIG_INET`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+__dst_negative_advice() does not enforce proper RCU rules when sk->dst_cache must be cleared, leading to possible UAF.
 
-net: fix __dst_negative_advice() race
-
-__dst_negative_advice() does not enforce proper RCU rules when
-sk->dst_cache must be cleared, leading to possible UAF.
-
-RCU rules are that we must first clear sk->sk_dst_cache,
-then call dst_r
-
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38577
 
 **Status**: Affected
-**Component**: `CONFIG_TASKS_RCU` (`CONFIG_TASKS_RCU`)
-**Base Score**: 7.8 HIGH
+**Component**: RCU tasks subsystem (`CONFIG_TASKS_RCU`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+There is a possibility of buffer overflow in show_rcu_tasks_trace_gp_kthread() if counters, passed to sprintf() are huge.
 
-rcu-tasks: Fix show_rcu_tasks_trace_gp_kthread buffer overflow
-
-There is a possibility of buffer overflow in
-show_rcu_tasks_trace_gp_kthread() if counters, passed
-to sprintf() are huge. Counter numbers, needed for this
-are unrealis
-
-`CONFIG_TASKS_RCU=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_TASKS_RCU=y` is compiled in and 5.19.6 falls within the affected range. RCU tasks is a core kernel synchronisation mechanism, active at all times. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-40958
 
 **Status**: Affected
-**Component**: `CONFIG_NET_NS` (`CONFIG_NET_NS`)
-**Base Score**: 7.8 HIGH
+**Component**: network namespaces (`CONFIG_NET_NS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Syzkaller hit a warning: refcount_t: addition on 0; use-after-free. WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
 
-netns: Make get_net_ns() handle zero refcount net
-
-Syzkaller hit a warning:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
-Modules linked in:
-CPU: 3 PID: 
-
-`CONFIG_NET_NS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_NET_NS=y` is compiled in and 5.19.6 falls within the affected range. Network namespaces are used by containers and process isolation. Creating network namespaces requires `CAP_SYS_ADMIN` (or user namespaces, which are disabled on the HS kernel). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-41039
 
-**Status**: Affected
-**Component**: `CONFIG_SND` (`CONFIG_SND`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — no audio hardware present
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix the checking that firmware file buffer is large enough for the wmfw header, to prevent overrunning the buffer.
 
-firmware: cs_dsp: Fix overflow checking of wmfw header
+`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
-Fix the checking that firmware file buffer is large enough for the
-wmfw header, to prevent overrunning the buffer.
-
-The original code tested that the firmware data buffer cont
-
-`CONFIG_SND=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46713
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Ole reported that event->mmap_mutex is strictly insufficient to serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-perf/aux: Fix AUX buffer serialization
-
-Ole reported that event->mmap_mutex is strictly insufficient to
-serialize the AUX buffer, add a per RB mutex to fully serialize it.
-
-Note that in the lock order comment the perf_event::mmap_m
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46852
 
 **Status**: Affected
-**Component**: `CONFIG_DMA_SHARED_BUFFER` (`CONFIG_DMA_SHARED_BUFFER`)
-**Base Score**: 7.8 HIGH
+**Component**: DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't track CMA dma-buf pages under RssFile") it was possible to obtain a mapping larger than the buff
 
-dma-buf: heaps: Fix off-by-one in CMA heap fault handler
-
-Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps:
-Don't track CMA dma-buf pages under RssFile") it was possible to obtain
-a mapping larger than the buff
-
-`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF is used by GPU and multimedia subsystems for zero-copy buffer sharing. Requires access to a DRM or V4L2 device. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48950
 
 **Status**: Affected
-**Component**: `CONFIG_PERF_EVENTS` (`CONFIG_PERF_EVENTS`)
-**Base Score**: 7.8 HIGH
+**Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Per syzbot it is possible for perf_pending_task() to run after the event is free()'d.
 
-perf: Fix perf_pending_task() UaF
-
-Per syzbot it is possible for perf_pending_task() to run after the
-event is free()'d. There are two related but distinct cases:
-
- - the task_work was already queued before destroying the event;
- -
-
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49026
 
 **Status**: Affected
-**Component**: `CONFIG_E100` (`CONFIG_E100`)
-**Base Score**: 7.8 HIGH
+**Component**: Intel e100 Fast Ethernet driver (`CONFIG_E100`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xmit_frame() will return NETDEV_TX_BUSY and the upper layer will resend the skb.
 
-e100: Fix possible use after free in e100_xmit_prepare
-
-In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so
-e100_xmit_frame() will return NETDEV_TX_BUSY and the upper layer will
-resend the skb. But the skb is a
-
-`CONFIG_E100=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_E100=y` is compiled in and 5.19.6 falls within the affected range. The Intel e100 driver supports legacy Intel Fast Ethernet cards. If this NIC is present, the driver is active during normal network operation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50055
 
 **Status**: Affected
-**Component**: `CONFIG_BASE_FULL` (`CONFIG_BASE_FULL`)
-**Base Score**: 7.8 HIGH
+**Component**: core kernel (`CONFIG_BASE_FULL`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+For bus_register(), any error which happens after kset_register() will cause that @priv are freed twice, fixed by setting @priv with NULL after the first free.
 
-driver core: bus: Fix double free in driver API bus_register()
-
-For bus_register(), any error which happens after kset_register() will
-cause that @priv are freed twice, fixed by setting @priv with NULL after
-the first free.
-
-`CONFIG_BASE_FULL=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_BASE_FULL=y` is compiled in and 5.19.6 falls within the affected range. This is a core kernel driver infrastructure bug (bus/device management). Driver probe and removal paths are active during device enumeration. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50112
 
 **Status**: Affected
-**Component**: `CONFIG_X86_64` (`CONFIG_X86_64`)
-**Base Score**: 7.8 HIGH
+**Component**: x86_64 architecture (`CONFIG_X86_64`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+Linear Address Masking (LAM) has a weakness related to transient execution as described in the SLAM paper[1].
 
-x86/lam: Disable ADDRESS_MASKING in most cases
-
-Linear Address Masking (LAM) has a weakness related to transient
-execution as described in the SLAM paper[1]. Unless Linear Address
-Space Separation (LASS) is enabled this weakness ma
-
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. This is an architecture-level bug in x86_64 address masking. The affected code path requires a process to use Linear Address Masking (LAM), which requires `ARCH_SET_GS`/`ARCH_SET_FS` with a tagged pointer. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50193
 
 **Status**: Affected
-**Component**: `CONFIG_X86_64` (`CONFIG_X86_64`)
-**Base Score**: 7.1 HIGH
+**Component**: x86_64 architecture (`CONFIG_X86_64`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+CPU buffers are currently cleared after call to exc_nmi, but before register state is restored.
 
-x86/entry_32: Clear CPU buffers after register restore in NMI return
-
-CPU buffers are currently cleared after call to exc_nmi, but before
-register state is restored. This may be okay for MDS mitigation but not for
-RDFS. Because RDF
-
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. This is an architecture-level bug in x86_64 address masking. The affected code path requires a process to use Linear Address Masking (LAM), which requires `ARCH_SET_GS`/`ARCH_SET_FS` with a tagged pointer. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56600
 
 **Status**: Affected
-**Component**: `CONFIG_IPV6` (`CONFIG_IPV6`)
-**Base Score**: 7.8 HIGH
+**Component**: IPv6 networking stack (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+sock_init_data() attaches the allocated sk pointer to the provided sock object. If inet6_create() fails later, the sk object is released, but the sock object retains
 
-net: inet6: do not leave a dangling sk pointer in inet6_create()
-
-sock_init_data() attaches the allocated sk pointer to the provided sock
-object. If inet6_create() fails later, the sk object is released, but the
-sock object retains
-
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56601
 
 **Status**: Affected
-**Component**: `CONFIG_INET` (`CONFIG_INET`)
-**Base Score**: 7.8 HIGH
+**Component**: TCP/IP networking (`CONFIG_INET`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
 
-In the Linux kernel, the following vulnerability has been resolved:
+sock_init_data() attaches the allocated sk object to the provided sock object. If inet_create() fails later, the sk object is freed, but the sock object retains the da
 
-net: inet: do not leave a dangling sk pointer in inet_create()
-
-sock_init_data() attaches the allocated sk object to the provided sock
-object. If inet_create() fails later, the sk object is freed, but the
-sock object retains the da
-
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56616
 
-**Status**: Affected
-**Component**: `CONFIG_DRM` (`CONFIG_DRM`)
-**Base Score**: 7.8 HIGH
-**Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Status**: Affected — hardware absent on server deployments
+**Component**: DRM subsystem (`CONFIG_DRM`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Environmental Score**: 0.0 — DisplayPort MST display hardware absent
 
-In the Linux kernel, the following vulnerability has been resolved:
+Fix the MST sideband message body length check, which must be at least 1 byte accounting for the message body CRC (aka message data CRC) at the end of the message.
 
-drm/dp_mst: Fix MST sideband message body length check
+`CONFIG_DRM=y` is compiled in. DisplayPort Multi-Stream Transport (DP MST) is used for daisy-chaining multiple monitors via DisplayPort. A headless server has no display output hardware; the DP MST sideband message path is never reached.
 
-Fix the MST sideband message body length check, which must be at least 1
-byte accounting for the message body CRC (aka message data CRC) at the
-end of the message.
-
-This fixes
-
-`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 ## Not Affected — Disabled Features {#not-affected-disabled-features}
 
