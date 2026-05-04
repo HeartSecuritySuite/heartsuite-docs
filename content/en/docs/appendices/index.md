@@ -78,15 +78,4 @@ Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Laun
 
 ## Kernel CVE Coverage
 
-The HeartSuite Core Secure kernel is compiled without the features these CVE classes require. "In HS kernel?" reflects the 5.19.6 and 6.18.23 production configurations as measured from the compiled kernel config file.
-
-| CVE class | Feature required | In HS kernel? | Representative CVEs |
-|---|---|---|---|
-| BPF verifier privilege escalation | `CONFIG_BPF_SYSCALL` | **No** | CVE-2022-23222, CVE-2021-4204 |
-| io_uring memory corruption and credential hijack | `CONFIG_IO_URING` | **No** | CVE-2023-21400, CVE-2022-1043 |
-| OverlayFS SUID and capability smuggling | `CONFIG_OVERLAY_FS`, `CONFIG_FUSE_FS` | **No** | CVE-2023-0386, CVE-2023-2640, CVE-2023-32629 |
-| Filesystem context heap overflow | `CONFIG_USER_NS` + legacy filesystem context | **No** | CVE-2022-0185 |
-| kexec Secure Boot bypass | `CONFIG_KEXEC` | **No** *(corrected in 6.18.23)* | CVE-2022-21505 |
-| Userspace crypto socket privilege escalation | `CONFIG_CRYPTO_USER_API_AEAD` | **No** | CVE-2026-31431 |
-
-For the design rationale behind these choices, see [HeartSuite Core Secure Overview → Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint). For the software tools these choices affect, see [System Requirements → Software Compatibility Notes](../introduction/system-requirements/#software-compatibility-notes).
+For CVE status entries with full technical rationale and scanner guidance, see [Kernel Security Transparency](../security/).
