@@ -41,6 +41,8 @@ Most malware escalates privilege by reaching for the same handful of kernel feat
 
 The HeartSuite Core Secure kernel is compiled without any of them.
 
+A stock Ubuntu kernel ships with over 6,600 loadable modules and a configuration file of more than 12,000 lines. The HeartSuite Core Secure kernel ships with 13 modules and 5,050 lines — one file you can read in an afternoon.
+
 Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. HeartSuite Core Secure takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker.
 
 For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
