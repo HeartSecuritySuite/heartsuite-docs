@@ -26,7 +26,7 @@ menu:
 | Config file: 12,000+ lines, audited by tooling | Config file: 5,050 lines, readable by a person |
 | Blocking depends on runtime configuration | Blocking is compiled into the binary itself |
 
-When CISA adds a Linux kernel CVE to its Known Exploited Vulnerabilities catalog, the question for every security team is: is that kernel feature present on our hosts? For the features HeartSuite Core Secure has compiled out, the answer is always no — without patching, without policy, without an agent checking.
+Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features HeartSuite Core Secure has compiled out, the answer is always no — without patching, without policy, without an agent checking.
 
 ## What HeartSuite Core Secure Replaces
 
