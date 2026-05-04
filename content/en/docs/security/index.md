@@ -4140,7 +4140,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NVME_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### CIFS/SMB Client
+### CIFS/SMB Client {#cifs-smb-client}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_CIFS` not set
@@ -4257,7 +4257,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IEEE802154` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### InfiniBand / RDMA
+### InfiniBand / RDMA {#infiniband-rdma}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_INFINIBAND` not set
@@ -4446,7 +4446,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_RDS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### TUN/TAP Driver
+### TUN/TAP Driver {#tun-tap-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_TUN` not set
