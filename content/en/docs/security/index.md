@@ -3787,7 +3787,7 @@ This fixes
 
 `CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. Lockdown applies once an exploit reaches root — root cannot modify the allowlist, cannot add backdoor programs, and cannot persist across a reboot.
 
-## Not Affected — Disabled Features
+## Not Affected — Disabled Features {#not-affected-disabled-features}
 
 HeartSuite Core Secure is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
 
@@ -4077,7 +4077,7 @@ These CVEs cover four hardware-specific drivers absent from the HeartSuite Core 
 Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the HeartSuite Core Secure kernel. There is no RNDIS driver to probe and no `ksmbd` listener to reach — there is no reachable code path for either CVE in this group.
 
 
-### Ntfs3 Fs
+### Ntfs3 Fs {#config-ntfs3-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NTFS3_FS` not set
@@ -4086,7 +4086,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NTFS3_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Traffic Control: cls_flower
+### Traffic Control: cls_flower {#tc-cls-flower}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_CLS_FLOWER` not set
@@ -4104,7 +4104,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_CAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Smb Server
+### Smb Server {#config-smb-server}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SMB_SERVER` not set
@@ -4158,7 +4158,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ATM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Rose
+### Rose {#config-rose}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ROSE` not set
@@ -4167,7 +4167,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ROSE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Tls
+### Tls {#config-tls}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_TLS` not set
@@ -4185,7 +4185,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IP_DCCP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### AMD GPU (amdgpu)
+### AMD GPU (amdgpu) {#amdgpu-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_AMDGPU` not set
@@ -4203,7 +4203,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_F2FS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Atheros Wireless Driver
+### Atheros Wireless Driver {#ath-wireless-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ATH` not set
@@ -4212,7 +4212,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ATH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mctp
+### Mctp {#config-mctp}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MCTP` not set
@@ -4239,7 +4239,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NFC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Renesas Ethernet AVB Driver
+### Renesas Ethernet AVB Driver {#ravb-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RAVB` not set
@@ -4248,7 +4248,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_RAVB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### IEEE 802.15.4 (WPAN)
+### IEEE 802.15.4 (WPAN) {#ieee802154-wpan}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IEEE802154` not set
@@ -4266,7 +4266,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_INFINIBAND` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Spi Sun6I
+### Spi Sun6I {#config-spi-sun6i}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SPI_SUN6I` not set
@@ -4275,7 +4275,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SPI_SUN6I` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Intel WiFi (iwlwifi)
+### Intel WiFi (iwlwifi) {#iwlwifi-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IWLWIFI` not set
@@ -4284,7 +4284,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IWLWIFI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Security Tomoyo
+### Security Tomoyo {#config-security-tomoyo}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SECURITY_TOMOYO` not set
@@ -4293,7 +4293,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SECURITY_TOMOYO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Drm Msm
+### Drm Msm {#config-drm-msm}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_MSM` not set
@@ -4302,7 +4302,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_MSM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### S390
+### S390 {#config-s390}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_S390` not set
@@ -4311,7 +4311,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_S390` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Jfs Fs
+### Jfs Fs {#config-jfs-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_JFS_FS` not set
@@ -4320,7 +4320,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_JFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Llc
+### Llc {#config-llc}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_LLC` not set
@@ -4329,7 +4329,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_LLC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mhi Bus
+### Mhi Bus {#config-mhi-bus}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MHI_BUS` not set
@@ -4338,7 +4338,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MHI_BUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Ip Tunnel
+### Ip Tunnel {#config-ip-tunnel}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IP_TUNNEL` not set
@@ -4347,7 +4347,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IP_TUNNEL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Afs Fs
+### Afs Fs {#config-afs-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_AFS_FS` not set
@@ -4356,7 +4356,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_AFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Traffic Control: act_mirred
+### Traffic Control: act_mirred {#tc-act-mirred}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_ACT_MIRRED` not set
@@ -4365,7 +4365,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_ACT_MIRRED` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Usb Cdns3
+### Usb Cdns3 {#config-usb-cdns3}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_CDNS3` not set
@@ -4374,7 +4374,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_CDNS3` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Crypto Dev Virtio
+### Crypto Dev Virtio {#config-crypto-dev-virtio}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_CRYPTO_DEV_VIRTIO` not set
@@ -4383,7 +4383,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_CRYPTO_DEV_VIRTIO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Gtp
+### Gtp {#config-gtp}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_GTP` not set
@@ -4392,7 +4392,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_GTP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Dm Crypt
+### Dm Crypt {#config-dm-crypt}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DM_CRYPT` not set
@@ -4419,7 +4419,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_BTRFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Thinkpad Lmi
+### Thinkpad Lmi {#config-thinkpad-lmi}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_THINKPAD_LMI` not set
@@ -4428,7 +4428,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_THINKPAD_LMI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Sparx5 Switch
+### Sparx5 Switch {#config-sparx5-switch}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SPARX5_SWITCH` not set
@@ -4437,7 +4437,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SPARX5_SWITCH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Rds
+### Rds {#config-rds}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RDS` not set
@@ -4455,7 +4455,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_TUN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mlxbf I2C
+### Mlxbf I2C {#config-mlxbf-i2c}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MLXBF_I2C` not set
@@ -4464,7 +4464,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MLXBF_I2C` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### ARM64 Architecture
+### ARM64 Architecture {#arm64-arch}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ARM64` not set
@@ -4473,7 +4473,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ARM64` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Nilfs2 Fs
+### Nilfs2 Fs {#config-nilfs2-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NILFS2_FS` not set
@@ -4482,7 +4482,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NILFS2_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Common Clk Qcom
+### Common Clk Qcom {#config-common-clk-qcom}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_COMMON_CLK_QCOM` not set
@@ -4500,7 +4500,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_GADGET` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Nouveau (NVIDIA open-source)
+### Nouveau (NVIDIA open-source) {#nouveau-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_NOUVEAU` not set
@@ -4509,7 +4509,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_NOUVEAU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Dvb Core
+### Dvb Core {#config-dvb-core}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DVB_CORE` not set
@@ -4518,7 +4518,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DVB_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Peci
+### Peci {#config-peci}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PECI` not set
@@ -4527,7 +4527,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PECI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Of
+### Of {#config-of}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_OF` not set
@@ -4545,7 +4545,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_EROFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Open vSwitch
+### Open vSwitch {#openvswitch}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_OPENVSWITCH` not set
@@ -4563,7 +4563,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_FIREWIRE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Kvm
+### Kvm {#config-kvm}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_KVM` not set
@@ -4572,7 +4572,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_KVM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Aquantia Atlantic Driver
+### Aquantia Atlantic Driver {#atlantic-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ATLANTIC` not set
@@ -4581,7 +4581,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ATLANTIC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mellanox mlx5 Driver
+### Mellanox mlx5 Driver {#mlx5-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MLX5_CORE` not set
@@ -4590,7 +4590,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MLX5_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### AX.25 / Ham Radio
+### AX.25 / Ham Radio {#ax25-hamradio}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_AX25` not set
@@ -4599,7 +4599,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_AX25` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Dma Direct Remap
+### Dma Direct Remap {#config-dma-direct-remap}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DMA_DIRECT_REMAP` not set
@@ -4608,7 +4608,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DMA_DIRECT_REMAP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Fb
+### Fb {#config-fb}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_FB` not set
@@ -4617,7 +4617,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_FB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### GFS2 Shared Filesystem
+### GFS2 Shared Filesystem {#gfs2-filesystem}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_GFS2_FS` not set
@@ -4626,7 +4626,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_GFS2_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### GSPCA USB Webcam Driver
+### GSPCA USB Webcam Driver {#gspca-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_GSPCA_CORE` not set
@@ -4635,7 +4635,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_GSPCA_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### SMC (RDMA over Converged Ethernet)
+### SMC (RDMA over Converged Ethernet) {#smc-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SMC` not set
@@ -4644,7 +4644,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SMC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### IPVLAN Driver
+### IPVLAN Driver {#ipvlan}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IPVLAN` not set
@@ -4653,7 +4653,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IPVLAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### HiSilicon HNS3 Driver
+### HiSilicon HNS3 Driver {#hns3-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HNS3` not set
@@ -4671,7 +4671,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_KVM_AMD` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Network Block Device (NBD)
+### Network Block Device (NBD) {#nbd-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_BLK_DEV_NBD` not set
@@ -4680,7 +4680,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_BLK_DEV_NBD` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Synaptics RMI4 Driver
+### Synaptics RMI4 Driver {#rmi4-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RMI4_CORE` not set
@@ -4689,7 +4689,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_RMI4_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Bt848 Video Capture Driver
+### Bt848 Video Capture Driver {#bttv-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_BT848` not set
@@ -4698,7 +4698,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_BT848` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Hw Perf Events Hisi
+### Hw Perf Events Hisi {#config-hw-perf-events-hisi}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HW_PERF_EVENTS_HISI` not set
@@ -4716,7 +4716,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_WMI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### AMD Radeon GPU
+### AMD Radeon GPU {#radeon-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_RADEON` not set
@@ -4725,7 +4725,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_RADEON` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Parallel Port Device
+### Parallel Port Device {#ppdev-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PPDEV` not set
@@ -4743,7 +4743,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_TIPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### GPIO Library
+### GPIO Library {#gpiolib}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_GPIOLIB` not set
@@ -4752,7 +4752,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_GPIOLIB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Pin Controller Subsystem
+### Pin Controller Subsystem {#pinctrl}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PINCTRL` not set
@@ -4761,7 +4761,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PINCTRL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### VMware SVGA (vmwgfx)
+### VMware SVGA (vmwgfx) {#vmwgfx-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_VMWGFX` not set
@@ -4770,7 +4770,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_VMWGFX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Traffic Control: sch_multiq
+### Traffic Control: sch_multiq {#tc-multiq}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_SCH_MULTIQ` not set
@@ -4779,7 +4779,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_SCH_MULTIQ` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### IMA (Integrity Measurement Architecture)
+### IMA (Integrity Measurement Architecture) {#ima}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IMA` not set
@@ -4788,7 +4788,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IMA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### PowerPC Architecture
+### PowerPC Architecture {#powerpc-arch}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PPC` not set
@@ -4797,7 +4797,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Xfs Fs
+### Xfs Fs {#config-xfs-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_XFS_FS` not set
@@ -4806,7 +4806,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_XFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### HFS+ Filesystem
+### HFS+ Filesystem {#hfsplus-filesystem}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HFSPLUS_FS` not set
@@ -4824,7 +4824,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ISDN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Platform X86
+### Platform X86 {#config-platform-x86}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PLATFORM_X86` not set
@@ -4860,7 +4860,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PPP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### QCOM RmNet Driver
+### QCOM RmNet Driver {#rmnet-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RMNET` not set
@@ -4878,7 +4878,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_UDF_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### LoongArch Architecture
+### LoongArch Architecture {#loongarch-arch}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_LOONGARCH` not set
@@ -4887,7 +4887,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_LOONGARCH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Realtek WiFi Driver
+### Realtek WiFi Driver {#rtlwifi-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RTLWIFI` not set
@@ -4896,7 +4896,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_RTLWIFI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Broadcom WiFi Driver
+### Broadcom WiFi Driver {#brcmfmac-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_BRCMFMAC` not set
@@ -4905,7 +4905,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_BRCMFMAC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### MemStick Driver
+### MemStick Driver {#memstick}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MEMSTICK` not set
@@ -4923,7 +4923,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IP_SCTP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Ntfs Fs
+### Ntfs Fs {#config-ntfs-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NTFS_FS` not set
@@ -4932,7 +4932,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NTFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Net Sch Qfq
+### Net Sch Qfq {#config-net-sch-qfq}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_SCH_QFQ` not set
@@ -4941,7 +4941,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_SCH_QFQ` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Af Rxrpc
+### Af Rxrpc {#config-af-rxrpc}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_AF_RXRPC` not set
@@ -4950,7 +4950,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_AF_RXRPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Marvell WiFi Driver
+### Marvell WiFi Driver {#mwifiex-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MWIFIEX` not set
@@ -4959,7 +4959,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MWIFIEX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Microchip WILC1000 WiFi Driver
+### Microchip WILC1000 WiFi Driver {#wilc1000-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_WILC1000` not set
@@ -4968,7 +4968,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_WILC1000` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Traffic Control: cls_u32
+### Traffic Control: cls_u32 {#tc-cls-u32}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_CLS_U32` not set
@@ -4977,7 +4977,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_CLS_U32` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### SAA7134 Media Driver
+### SAA7134 Media Driver {#saa7134-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_SAA7134` not set
@@ -4986,7 +4986,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_SAA7134` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### DM1105 DVB Driver
+### DM1105 DVB Driver {#dm1105-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_DM1105` not set
@@ -4995,7 +4995,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_DM1105` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Allwinner Cedrus Video Codec
+### Allwinner Cedrus Video Codec {#cedrus-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_SUNXI_CEDRUS` not set
@@ -5004,7 +5004,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_SUNXI_CEDRUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Renesas USB3 Driver
+### Renesas USB3 Driver {#renesas-usb3}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_RENESAS_USBHS3` not set
@@ -5013,7 +5013,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_RENESAS_USBHS3` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Rockchip Video Decoder
+### Rockchip Video Decoder {#rkvdec-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_RKVDEC` not set
@@ -5022,7 +5022,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_RKVDEC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Intel IGB Ethernet Driver
+### Intel IGB Ethernet Driver {#igb-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IGB` not set
@@ -5031,7 +5031,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IGB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### AppleTalk Protocol
+### AppleTalk Protocol {#appletalk}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ATALK` not set
@@ -5040,7 +5040,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ATALK` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Hauppauge pvrusb2 Driver
+### Hauppauge pvrusb2 Driver {#pvrusb2-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_PVRUSB2` not set
@@ -5058,7 +5058,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PWM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Griffin PowerMate Driver
+### Griffin PowerMate Driver {#powermate-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_INPUT_POWERMATE` not set
@@ -5076,7 +5076,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_TEE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Bonding
+### Bonding {#config-bonding}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_BONDING` not set
@@ -5085,7 +5085,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_BONDING` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Vmware Vmci
+### Vmware Vmci {#config-vmware-vmci}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VMWARE_VMCI` not set
@@ -5094,7 +5094,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VMWARE_VMCI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Wwan
+### Wwan {#config-wwan}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_WWAN` not set
@@ -5103,7 +5103,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_WWAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Cachefiles
+### Cachefiles {#config-cachefiles}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_CACHEFILES` not set
@@ -5112,7 +5112,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_CACHEFILES` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Snd Soc
+### Snd Soc {#config-snd-soc}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SND_SOC` not set
@@ -5121,7 +5121,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SND_SOC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Iio
+### Iio {#config-iio}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IIO` not set
@@ -5130,7 +5130,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IIO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Vhost Vsock
+### Vhost Vsock {#config-vhost-vsock}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VHOST_VSOCK` not set
@@ -5139,7 +5139,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VHOST_VSOCK` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Net Fou
+### Net Fou {#config-net-fou}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_FOU` not set
@@ -5148,7 +5148,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_FOU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Parisc
+### Parisc {#config-parisc}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PARISC` not set
@@ -5157,7 +5157,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PARISC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Net Sch Netem
+### Net Sch Netem {#config-net-sch-netem}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_SCH_NETEM` not set
@@ -5166,7 +5166,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_SCH_NETEM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Uml
+### Uml {#config-uml}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_UML` not set
@@ -5175,7 +5175,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_UML` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Spi Nxp Flexspi
+### Spi Nxp Flexspi {#config-spi-nxp-flexspi}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SPI_NXP_FLEXSPI` not set
@@ -5184,7 +5184,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SPI_NXP_FLEXSPI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Vdpa
+### Vdpa {#config-vdpa}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VDPA` not set
@@ -5193,7 +5193,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VDPA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Usb Serial
+### Usb Serial {#config-usb-serial}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_SERIAL` not set
@@ -5202,7 +5202,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_SERIAL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Usb Musb Hdrc
+### Usb Musb Hdrc {#config-usb-musb-hdrc}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_MUSB_HDRC` not set
@@ -5211,7 +5211,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_MUSB_HDRC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Superh
+### Superh {#config-superh}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SUPERH` not set
@@ -5220,7 +5220,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SUPERH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Spi Mpc52Xx
+### Spi Mpc52Xx {#config-spi-mpc52xx}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SPI_MPC52xx` not set
@@ -5229,7 +5229,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SPI_MPC52xx` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Pktgen
+### Pktgen {#config-pktgen}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PKTGEN` not set
@@ -5238,7 +5238,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PKTGEN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Orangefs Fs
+### Orangefs Fs {#config-orangefs-fs}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ORANGEFS_FS` not set
@@ -5247,7 +5247,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ORANGEFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Geneve
+### Geneve {#config-geneve}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_GENEVE` not set
@@ -5256,7 +5256,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_GENEVE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Slimbus
+### Slimbus {#config-slimbus}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SLIMBUS` not set
@@ -5265,7 +5265,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SLIMBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Udmabuf
+### Udmabuf {#config-udmabuf}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_UDMABUF` not set
@@ -5274,7 +5274,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_UDMABUF` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mcb
+### Mcb {#config-mcb}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MCB` not set
@@ -5283,7 +5283,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MCB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Staging
+### Staging {#config-staging}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_STAGING` not set
@@ -5292,7 +5292,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_STAGING` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Coresight
+### Coresight {#config-coresight}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_CORESIGHT` not set
@@ -5301,7 +5301,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_CORESIGHT` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Ipv6 Seg6 Lwtunnel
+### Ipv6 Seg6 Lwtunnel {#config-ipv6-seg6-lwtunnel}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IPV6_SEG6_LWTUNNEL` not set
@@ -5310,7 +5310,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IPV6_SEG6_LWTUNNEL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Comedi
+### Comedi {#config-comedi}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_COMEDI` not set
@@ -5319,7 +5319,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_COMEDI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Nubus
+### Nubus {#config-nubus}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NUBUS` not set
@@ -5328,7 +5328,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NUBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Xdp Sockets
+### Xdp Sockets {#config-xdp-sockets}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_XDP_SOCKETS` not set
@@ -5337,7 +5337,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_XDP_SOCKETS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Ptp 1588 Clock Ocp
+### Ptp 1588 Clock Ocp {#config-ptp-1588-clock-ocp}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PTP_1588_CLOCK_OCP` not set
@@ -5346,7 +5346,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PTP_1588_CLOCK_OCP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Trace Buf
+### Trace Buf {#config-trace-buf}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_TRACE_BUF` not set
@@ -5355,7 +5355,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_TRACE_BUF` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Dlm
+### Dlm {#config-dlm}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DLM` not set
@@ -5364,7 +5364,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DLM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Net Team
+### Net Team {#config-net-team}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_NET_TEAM` not set
@@ -5373,7 +5373,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_NET_TEAM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Macvlan
+### Macvlan {#config-macvlan}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MACVLAN` not set
@@ -5382,7 +5382,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MACVLAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Security Apparmor
+### Security Apparmor {#config-security-apparmor}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_SECURITY_APPARMOR` not set
@@ -5391,7 +5391,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_SECURITY_APPARMOR` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Rcu Nocb Cpu
+### Rcu Nocb Cpu {#config-rcu-nocb-cpu}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_RCU_NOCB_CPU` not set
@@ -5400,7 +5400,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_RCU_NOCB_CPU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Debug Mutexes
+### Debug Mutexes {#config-debug-mutexes}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DEBUG_MUTEXES` not set
@@ -5409,7 +5409,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DEBUG_MUTEXES` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Stm
+### Stm {#config-stm}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_STM` not set
@@ -5418,7 +5418,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_STM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Greybus
+### Greybus {#config-greybus}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_GREYBUS` not set
@@ -5427,7 +5427,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_GREYBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Ionic
+### Ionic {#config-ionic}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_IONIC` not set
@@ -5436,7 +5436,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_IONIC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Crypto Dev Hisi Sec2
+### Crypto Dev Hisi Sec2 {#config-crypto-dev-hisi-sec2}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_CRYPTO_DEV_HISI_SEC2` not set
@@ -5445,7 +5445,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_CRYPTO_DEV_HISI_SEC2` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Bna
+### Bna {#config-bna}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_BNA` not set
@@ -5454,7 +5454,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_BNA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Drm Aspeed Gfx
+### Drm Aspeed Gfx {#config-drm-aspeed-gfx}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_ASPEED_GFX` not set
@@ -5463,7 +5463,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_ASPEED_GFX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Pci Kirin
+### Pci Kirin {#config-pci-kirin}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_PCI_KIRIN` not set
@@ -5472,7 +5472,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_PCI_KIRIN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Drm Stm
+### Drm Stm {#config-drm-stm}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_STM` not set
@@ -5481,7 +5481,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_STM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Hi Gmac
+### Hi Gmac {#config-hi-gmac}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HI_GMAC` not set
@@ -5490,7 +5490,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_HI_GMAC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Hsr
+### Hsr {#config-hsr}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HSR` not set
@@ -5499,7 +5499,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_HSR` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Typec
+### Typec {#config-typec}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_TYPEC` not set
@@ -5508,7 +5508,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_TYPEC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Mse102X
+### Mse102X {#config-mse102x}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MSE102X` not set
@@ -5517,7 +5517,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MSE102X` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Video S5P Jpeg
+### Video S5P Jpeg {#config-video-s5p-jpeg}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_S5P_JPEG` not set
@@ -5526,7 +5526,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_VIDEO_S5P_JPEG` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Arm Scmi Protocol
+### Arm Scmi Protocol {#config-arm-scmi-protocol}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_ARM_SCMI_PROTOCOL` not set
@@ -5535,7 +5535,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_ARM_SCMI_PROTOCOL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Intel Xe GPU Driver
+### Intel Xe GPU Driver {#drm-xe-driver}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_XE` not set
@@ -5544,7 +5544,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_XE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Hyperv Vsockets
+### Hyperv Vsockets {#config-hyperv-vsockets}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_HYPERV_VSOCKETS` not set
@@ -5553,7 +5553,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_HYPERV_VSOCKETS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Usb Lan78Xx
+### Usb Lan78Xx {#config-usb-lan78xx}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_LAN78XX` not set
@@ -5562,7 +5562,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_LAN78XX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Drm Xlnx
+### Drm Xlnx {#config-drm-xlnx}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_DRM_XLNX` not set
@@ -5571,7 +5571,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_DRM_XLNX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Usb Net Cdcether
+### Usb Net Cdcether {#config-usb-net-cdcether}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_USB_NET_CDCETHER` not set
@@ -5580,7 +5580,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_USB_NET_CDCETHER` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Md Raid10
+### Md Raid10 {#config-md-raid10}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_MD_RAID10` not set
@@ -5589,7 +5589,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 `CONFIG_MD_RAID10` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
 
-### Video Adv748X
+### Video Adv748X {#config-video-adv748x}
 
 **Status**: Not Affected
 **Config gate**: `CONFIG_VIDEO_ADV748X` not set
