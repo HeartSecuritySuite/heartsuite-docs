@@ -21,6 +21,8 @@ A web server serves pages. A database answers queries. A reverse proxy forwards 
 
 CVE-2026-31431 — algif_aead, privilege escalation via AF_ALG — demonstrates what this means. An attacker exploiting it reaches root. On a HeartSuite Core Secure kernel, that path does not exist — AF_ALG is not compiled in. But even if it had been, Lockdown closes every path from there. The kernel refuses to clear immutable flags. Mount operations are blocked. Writes to the audit log are blocked. Root cannot modify configuration, cannot add a backdoor, and cannot survive a reboot.
 
+See [Kernel Security Transparency](../../security/) for the full CVE status table and scanner guidance.
+
 ## Closed Appliances and Embedded Devices
 
 A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have interactive users. They have a job. The programs that do the job are fixed. An attacker's first move is usually to introduce a new one, and HeartSuite Core Secure blocks that move before it starts. Lockdown extends that protection so even root cannot quietly extend the allowlist while the system runs. File Backup is the recovery layer behind both. The kernel restricts the backup directory to HeartSuite's own backup tooling — no other allowlisted program, however privileged, can read or overwrite it. So even if an approved program is compromised and corrupts a file, the previous versions remain intact and restorable from the Dashboard's Backup.
