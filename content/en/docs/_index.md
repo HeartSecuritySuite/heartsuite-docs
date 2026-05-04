@@ -40,6 +40,7 @@ HeartSuite Core Secure is a strong fit for production servers, regulated worksta
 
 - [Troubleshooting and Logs](troubleshooting/) — Common issues and solutions.
 - [FAQs](faqs/) — Answers to frequent questions.
+- [Kernel Security Transparency](security/) — CVE status and Not Affected rationale for the HeartSuite Core Secure kernel.
 - [Appendices](appendices/) — List of included tools.
 
 ## Subscription and Support
