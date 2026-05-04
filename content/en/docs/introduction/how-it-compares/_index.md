@@ -15,6 +15,19 @@ menu:
 
 **Overview**: HeartSuite Core Secure controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. The question is not "can this user access this file?" but "can this specific program?" Two programs running as the same user get different permissions. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
 
+## Kernel Architecture
+
+| Standard Linux | HeartSuite Core Secure |
+|---|---|
+| Wide kernel + security agent watching it | Minimal kernel — features removed at build time |
+| BPF programs enforce blocking policy | BPF syscall is not compiled in — nothing to unload |
+| Kernel module driver provides telemetry | No agent module — no module to kill |
+| OverlayFS and FUSE enabled for containers | Compiled out — the CVE class disappears with them |
+| Config file: 12,000+ lines, audited by tooling | Config file: 5,050 lines, readable by a person |
+| Blocking depends on runtime configuration | Blocking is compiled into the binary itself |
+
+When CISA adds a Linux kernel CVE to its Known Exploited Vulnerabilities catalog, the question for every security team is: is that kernel feature present on our hosts? For the features HeartSuite Core Secure has compiled out, the answer is always no — without patching, without policy, without an agent checking.
+
 ## What HeartSuite Core Secure Replaces
 
 These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Core Secure row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
