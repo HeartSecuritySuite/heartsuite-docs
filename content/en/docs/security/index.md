@@ -8,7 +8,12 @@ type: docs
 toc: true
 ---
 
-**Overview**: Vulnerability scanners match on kernel version strings — when a scanner sees a kernel older than the version that introduced an upstream fix, it may flag the system as affected regardless of whether the vulnerable code path is compiled in. This page lists kernel CVEs relevant to HeartSuite Core Secure, with the exact status and technical reason for each. Auditors and compliance teams can reference it directly when reviewing scanner output.
+<div class="cve-hero-statement">
+<p class="cve-hs-lead">HeartSuite Core Secure was designed to contain only what is necessary.<br>Everything else was never there to begin with.</p>
+<p class="cve-hs-stat"><strong>70</strong> high and critical CVEs — Effective Score <strong>0.0</strong>.</p>
+</div>
+
+This page provides complete transparency on every kernel CVE relevant to HeartSuite Core Secure — the precise status, the technical rationale, and the measured effective risk. Auditors and compliance teams can reference it directly when reviewing scanner output.
 
 The **Effective Score** column shows the CVSS v3.1 Environmental Score for a HeartSuite Core Secure deployment — the actual risk on your system, not the theoretical worst case. Where the attack surface is absent — hardware not present or trigger not installed — the Effective Score is 0.0 regardless of Base Score. Where the code path is reachable, the Effective Score reflects Modified Impact metrics accounting for Lockdown: Integrity Impact is reduced (MI: High→Low) because Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
 
