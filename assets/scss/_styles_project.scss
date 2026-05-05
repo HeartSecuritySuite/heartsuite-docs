@@ -41,6 +41,31 @@ main.td-main {
   }
 }
 
+// CVE hero opening statement — the philosophical anchor, before the cards
+.cve-hero-statement {
+  text-align: center;
+  padding: 2.5rem 0 1rem;
+
+  .cve-hs-lead {
+    font-size: 1.3rem;
+    font-weight: 300;
+    line-height: 1.65;
+    letter-spacing: -0.01em;
+    max-width: 640px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .cve-hs-stat {
+    font-size: 0.95rem;
+    color: var(--bs-secondary-color);
+
+    strong {
+      color: var(--bs-success);
+      font-weight: 600;
+    }
+  }
+}
+
 // CVE hero stat cards — large, quiet, generous breathing room
 .cve-hero {
   padding: 2rem 0 3rem;
