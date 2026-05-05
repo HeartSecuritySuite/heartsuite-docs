@@ -27,6 +27,15 @@ main.td-main {
   color: #fff;
 }
 
+// Effective Score 0.0 — calm, resolved green; distinct from generic success.
+// Bootstrap 5.3 subtle variables auto-adapt to dark mode.
+.badge-erased {
+  background-color: var(--bs-success-bg-subtle);
+  color: var(--bs-success-text-emphasis);
+  border: 1px solid var(--bs-success-border-subtle);
+  padding: 0.3em 0.6em;
+}
+
 // Table enhancements for CVE data tables
 .td-content table {
   tbody tr:hover {
@@ -78,7 +87,7 @@ main.td-main {
   background: transparent;
   padding: 2rem 1.25rem 3rem;
 
-  &.cve-hero-neutralized { border-top-color: var(--bs-success); }
+  &.cve-hero-neutralized { border-top-color: var(--bs-success); background-color: var(--bs-success-bg-subtle); }
   &.cve-hero-contained   { border-top-color: var(--bs-warning); }
   &.cve-hero-compiled    { border-top-color: var(--bs-secondary-color); }
 }
