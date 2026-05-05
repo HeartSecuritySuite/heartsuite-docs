@@ -68,9 +68,9 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-48695](#cve-2022-48695) | mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-35789](#cve-2024-35789) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_THERMAL=y`; Lockdown limits post-exploitation |
-| [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_BLK_CGROUP_IOCOST=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
+| [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — thermal sysfs not in allowlist; Lockdown prevents modification |
+| [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — iocost cgroup paths not in allowlist; Lockdown prevents modification |
 | [CVE-2024-38560](#cve-2024-38560) | Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA` not set |
 | [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — kprobe registration not in allowlist; Lockdown prevents modification |
 | [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
@@ -101,7 +101,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2024-50278](#cve-2024-50278) | dm-cache (`CONFIG_DM_CACHE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_DM_CACHE` not compiled |
 | [CVE-2024-50279](#cve-2024-50279) | dm-cache (`CONFIG_DM_CACHE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_DM_CACHE` not compiled |
-| [CVE-2024-53147](#cve-2024-53147) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-53147](#cve-2024-53147) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — Lockdown blocks `mount()`; no adversary-controlled FAT volume on HS |
 | [CVE-2024-53150](#cve-2024-53150) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_USB_AUDIO` not compiled |
 | [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_NFS_V4=y`; Lockdown limits post-exploitation |
@@ -126,7 +126,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2023-53037](#cve-2023-53037) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
-| [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
+| [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2025-37861](#cve-2025-37861) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2025-37979](#cve-2025-37979) | Qualcomm sc7280 ASoC driver (`CONFIG_SND_SOC_SC7280`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC_SC7280` not compiled |
 | [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -138,8 +138,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
 | [CVE-2025-38550](#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38556](#cve-2025-38556) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
-| [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
+| [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38699](#cve-2025-38699) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
@@ -187,9 +187,9 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_DRM=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_HUGETLBFS=y`; base I:L, Lockdown limits post-exploitation persistence |
-| [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_I2C_I801=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — no I2C tool in allowlist; Lockdown prevents modification |
 | [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
-| [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_WATCHDOG=y`; Lockdown limits post-exploitation |
+| [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — watchdog daemon not in allowlist; Lockdown prevents modification |
 | [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_DMA_ENGINE=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no 9P filesystem on HS deployments |
 | [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
@@ -222,10 +222,10 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
 | [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CLONE_NEWNET` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_DMA_SHARED_BUFFER=y`; Lockdown limits post-exploitation |
-| [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_E100=y`; Lockdown limits post-exploitation |
+| [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
+| [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no DRM/GPU device on headless server |
+| [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
+| [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Intel Pro/100 NIC not present on modern server hardware |
 | [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_X86_64=y`; base I:N, Lockdown limits post-exploitation persistence |
@@ -627,64 +627,44 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2023-52835
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 **Affected range**: pre-fix
 **Upstream fix**: 6.8 series
 
 When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1 failed to mmap with 12 (Cannot allocate memory)`. The perf AUX area mmap handler in `kernel/events/core.c:6269–6345` calculates memory accounting limits and calls `rb_alloc_aux()` to allocate the backing pages. For very large AUX areas (gigabytes), the accounting arithmetic at line 6285 (`user_locked += user_extra`) can underflow or produce incorrect values when `user_extra` is extremely large (e.g., 1M pages for 4GB). The mmap() still succeeds despite the accounting failure, allowing unprivileged users to bypass RLIMIT_MEMLOCK restrictions and exhaust kernel memory. The HS 5.19.6 kernel carries the unpatched AUX area accounting at `kernel/events/core.c:6269–6345`.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. Triggering the accounting error requires calling `mmap()` with a very large AUX area on a perf event file descriptor — reachable by any local user within the paranoia level limits.
-
-On a HeartSuite Core Secure system in Secure Mode, the kernel enforces the program allowlist equally against root and non-root processes (`hs_sandbox_caching.c`). No process without an allowlist entry can execute, so a standalone exploit tool has no path to the vulnerable perf AUX mmap path. Once Lockdown is activated, four independent mechanisms block every follow-on path an attacker would need:
-
-1. **Allowlist integrity**: SPF control files are marked immutable by `chattr +i`. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), preventing any process — including root — from clearing the immutable flag and modifying the allowlist.
-2. **Mount paths sealed**: `do_mount()` (`kernel/namespace.c:4218`), `fsmount()` (line 4300), and `move_mount()` (line 4453) all return `EPERM` under Lockdown, blocking filesystem remounting and injection.
-3. **Reactivation disabled**: `hs_sandbox_caching.c:1942` prevents Secure Mode from being re-enabled once it has been turned off under Lockdown. An attacker who disables Secure Mode loses it permanently.
-4. **No new execution**: Secure Mode remains active in parallel with Lockdown, so any new binary — including a post-exploitation payload — is blocked at the kernel execution gate regardless of filesystem access.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-52868
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: thermal management (`CONFIG_THERMAL`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — thermal sysfs not accessible in HS allowlist; Secure Mode blocks the trigger
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
 The `dev->id` value comes from `ida_alloc()`, so it is a number between zero and INT_MAX. In `drivers/thermal/thermal_core.c`, this ID is formatted into fixed-size `THERMAL_NAME_LENGTH` (20-byte) buffers using `sprintf()`. At line 681, `sprintf(dev->attr_name, "cdev%d_trip_point", dev->id)` produces a string of the form `"cdev<N>_trip_point"`. For large IDs, the full string exceeds 20 bytes: `"cdev2147483647_trip_point"` is 25 characters plus a null terminator (26 bytes total), overflowing `attr_name` by 6 bytes. The same overflow applies at line 690 for `sprintf(dev->weight_attr_name, "cdev%d_weight", dev->id)`, which produces up to 22 bytes into a 20-byte buffer. Both overflows corrupt adjacent kernel heap memory and can be leveraged for privilege escalation.
 
-`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. Triggering the overflow requires registering a thermal cooling device with a sufficiently large ID — possible for a local user with access to the thermal sysfs interface.
-
-On a HeartSuite Core Secure system in Secure Mode, the kernel enforces the program allowlist equally against root and non-root processes (`hs_sandbox_caching.c`). No process without an allowlist entry can execute, so a standalone exploit tool has no path to the thermal registration interface. Once Lockdown is activated, four independent mechanisms block every follow-on path an attacker would need:
-
-1. **Allowlist integrity**: SPF control files are marked immutable by `chattr +i`. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), preventing any process — including root — from clearing the immutable flag and modifying the allowlist.
-2. **Mount paths sealed**: `do_mount()` (`kernel/namespace.c:4218`), `fsmount()` (line 4300), and `move_mount()` (line 4453) all return `EPERM` under Lockdown, blocking filesystem remounting and injection.
-3. **Reactivation disabled**: `hs_sandbox_caching.c:1942` prevents Secure Mode from being re-enabled once it has been turned off under Lockdown. An attacker who disables Secure Mode loses it permanently.
-4. **No new execution**: Secure Mode remains active in parallel with Lockdown, so any new binary — including a post-exploitation payload — is blocked at the kernel execution gate regardless of filesystem access.
+`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. Triggering the overflow requires registering a thermal cooling device with a sufficiently large ID — this path requires access to the thermal sysfs interface, which is not included in the HS allowlist. On a HeartSuite Core Secure system in Secure Mode, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the thermal registration interface. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-36916
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — iocost cgroup paths not in HS allowlist; Secure Mode blocks the trigger
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
 UBSAN catches undefined behavior in blk-iocost, where sometimes `iocg->delay` is shifted right by a number that is too large, resulting in undefined behavior on some architectures. Two sites in `block/blk-iocost.c` are affected: line 1338 computes `iocg->delay >> div64_u64(tdelta, USEC_PER_SEC)`, where the divisor is elapsed time in seconds — if the delay has been active for 64 or more seconds, the shift amount reaches or exceeds 64, which is undefined behavior for a 64-bit type under the C standard. Line 2112 performs `iocg->delay >> nr_cycles`, where `nr_cycles` can similarly exceed 63. On x86 the shift wraps, but on other architectures the result is indeterminate. Incorrect delay values can bypass I/O throttling controls or cause the cgroup I/O cost model to make scheduling decisions based on garbage data.
 
-`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. The blk-iocost controller is active whenever cgroups are in use with I/O cost weighting enabled.
-
-Once an exploit reaches root in userspace, Lockdown's constraints apply in full. The allowlist database files are made immutable before Lockdown is engaged. `FS_IOC_SETFLAGS` returns `EPERM` for all callers (`kernel/ioctl.c:561–569`), so root cannot use `chattr` to clear those immutable flags and rewrite the allowlist. `mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), blocking any bind-mount or remount attempt to shadow or replace the allowlist files. HeartSuite reactivation is disabled during Lockdown (`hs_sandbox_caching.c:1942`), so the service cannot be reconfigured to accept new entries through any path.
-
-Secure Mode adds a further constraint that runs independently of Lockdown: every program execution is checked against the allowlist at the kernel level, applying equally to root. An attacker who has gained root cannot execute a backdoor binary they drop onto the filesystem — it has no allowlist entry, and the kernel refuses to run it regardless of file ownership or permission bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. The blk-iocost controller is active whenever cgroups are in use with I/O cost weighting enabled. Configuring iocost requires writing to cgroup control files under `/sys/fs/cgroup/` — no cgroup management tool that exposes iocost configuration appears in the HS allowlist. On a HeartSuite Core Secure system in Secure Mode, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the iocost configuration path. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38560
@@ -1167,22 +1147,16 @@ When shrinking the fast (cache) device, dm-cache iterates the `dirty_bitset` to 
 
 ## CVE-2024-53147
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: FAT/exFAT filesystem (`CONFIG_FAT_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H)
-**Environmental Score**: 6.6 MEDIUM — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — Lockdown blocks `mount()`; no adversary-controlled FAT filesystem reachable
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `fs/exfat/dir.c`, when iterating directory entries, the cluster-walk loop at line 105 calls `exfat_get_next_cluster(sb, &(clu.dir))` to follow the FAT chain. If a directory's size is at least one cluster (so `clu_offset > 0`) and `ei->start_clu` was set to `EXFAT_EOF_CLUSTER` (`0xFFFFFFFF`) due to filesystem corruption, `clu.dir` starts at `0xFFFFFFFF`. The call at line 106 then attempts a FAT table lookup at index `0xFFFFFFFF`, which is far outside the FAT table's `num_clusters` entries, causing an out-of-bounds read.
 
-`CONFIG_FAT_FS=y` is compiled in and HS 5.19.6 falls within the affected range. exFAT is compiled in and is used for the EFI system partition on Debian 11; the vulnerable path is reached whenever a corrupted exFAT directory is traversed.
-
-Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
-
-Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_FAT_FS=y` is compiled in and HS 5.19.6 falls within the affected range. exFAT is compiled in and is used for the EFI system partition; the vulnerable path is triggered by traversing a corrupted exFAT directory. The adversary must be able to present a crafted exFAT image — mounting an external device or network share requires `mount()`, which Lockdown blocks unconditionally. The EFI system partition is already mounted at boot time and its contents are controlled by the administrator; an external attacker cannot inject a malformed exFAT directory into the in-use ESP. On a HeartSuite Core Secure system in Secure Mode, the kernel additionally blocks any process without an allowlist entry from executing, closing the exploitation path before it can reach the vulnerable directory traversal code.
 
 
 ## CVE-2024-53150
@@ -1501,14 +1475,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53065
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 syzkaller reportes a KASAN issue with stack-out-of-bounds. The call trace is as follows: dump_stack+0x9c/0xd3
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37861
@@ -1657,26 +1631,26 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38563
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 The perf mmap code is careful about mmap()'ing the user page with the ringbuffer and additionally the auxiliary buffer, when the event supports it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38565
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped() callback of the related event.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-38572
@@ -2234,7 +2208,7 @@ An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay
 **Status**: Affected
 **Component**: virtual terminal (VT) (`CONFIG_VT`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 A use-after-free flaw was found in vcs_read in drivers/tty/vt/vc_screen.c in vc_screen in the Linux Kernel.
 
@@ -2246,7 +2220,7 @@ A use-after-free flaw was found in vcs_read in drivers/tty/vt/vc_screen.c in vc_
 **Status**: Affected
 **Component**: Unix domain sockets (`CONFIG_UNIX`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 
 A use-after-free flaw was found in the Linux Kernel due to a race problem in the unix garbage collector's deletion of SKB races with unix_stream_read_generic() on the socket that the SKB is queued on.
 
@@ -2258,7 +2232,7 @@ A use-after-free flaw was found in the Linux Kernel due to a race problem in the
 **Status**: Affected
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 
 In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-free during a race condition between a nonblocking atomic commit and a driver unload.
 
@@ -2270,7 +2244,7 @@ In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-f
 **Status**: Affected
 **Component**: hugetlbfs (`CONFIG_HUGETLBFS`)
 **Base Score**: 6.6 MEDIUM (AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H)
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 6.6 MEDIUM — base I:L; Lockdown limits post-exploitation persistence
 
 A null pointer dereference flaw was found in the hugetlbfs_fill_super function in the Linux kernel hugetlbfs (HugeTLB pages) functionality.
 
@@ -2279,14 +2253,14 @@ A null pointer dereference flaw was found in the hugetlbfs_fill_super function i
 
 ## CVE-2024-26593
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: Intel SMBus I2C controller (`CONFIG_I2C_I801`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — no I2C/SMBus tool in HS allowlist; Secure Mode blocks access
 
 According to the Intel datasheets, software must reset the block buffer index twice for block process call transactions: once before writing the outgoing data to the buffer, and once
 
-`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers (for BMC, temperature sensor, and other management interfaces). Access requires root or membership in the `i2c` group. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers for BMC, temperature sensor, and management bus communication. Accessing it requires root or `i2c` group membership and an i2c-tools or lm-sensors binary — no such tool appears in the HS allowlist. On a HeartSuite Core Secure system in Secure Mode, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the I2C device interface. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-38586
@@ -2303,14 +2277,14 @@ An issue was found on the RTL8125b when transmitting small fragmented packets, w
 
 ## CVE-2024-38630
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: watchdog timer subsystem (`CONFIG_WATCHDOG`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — no watchdog daemon in HS allowlist; Secure Mode blocks `/dev/watchdog` access
 
 When the cpu5wdt module is removing, the origin code uses del_timer() to de-activate the timer.
 
-`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. Watchdog timer hardware is present on many servers for reboot-on-hang. This specific bug is in the cpu5wdt driver (a PC-era ISA watchdog timer); this hardware may not be present on modern servers. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. The cpu5wdt driver targets a PC-era ISA watchdog timer; this hardware is absent on any modern HS server deployment. Even on configurations where the hardware exists, the trigger requires a process to open and interact with `/dev/watchdog` — no watchdog daemon appears in the HS allowlist. On a HeartSuite Core Secure system in Secure Mode, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the cpu5wdt interface. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-34777
@@ -2318,7 +2292,7 @@ When the cpu5wdt module is removing, the origin code uses del_timer() to de-acti
 **Status**: Affected
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 While validating node ids in map_benchmark_ioctl(), node_possible() may be provided with invalid argument outside of [0,MAX_NUMNODES-1] range leading to:
 
@@ -2384,7 +2358,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 Only buffer objects are valid return values of _STR. If something else is returned description_show() will access invalid memory.
 
@@ -2595,10 +2569,18 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: Linux 5.x–5.19 (fix adds address validation before acpi_os_map_memory call)
+**Upstream fix**: drivers/acpi/acpi_fpdt.c (validate subtable->address before mapping)
 
-On a Packard Bell Dot SC (Intel Atom N2600 model) there is a FPDT table which contains invalid physical addresses, with high bits set which fall outside t
+In `drivers/acpi/acpi_fpdt.c`, `acpi_init_fpdt()` (line 253) passes FPDT subtable addresses from firmware-supplied ACPI tables directly to `acpi_os_map_memory()` without validating that the address falls within the physical memory range. On systems with buggy firmware (the Packard Bell Dot SC, Intel Atom N2600 being the reported case), FPDT entries contain addresses with high bits set outside the valid physical range. `acpi_os_map_memory()` then attempts to map non-existent memory, crashing the kernel. Any firmware that supplies a malformed FPDT triggers the same path.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. FPDT parsing runs at `fs_initcall` priority — early boot, before any user-space process is running. Triggering the crash requires a machine with malformed firmware or an attacker with physical/firmware access to inject a crafted ACPI table.
+
+**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) reduces the environmental integrity score: `FS_IOC_SETFLAGS` returns `EPERM` and all mount paths return `EPERM`. An attacker who survives the crash and reaches root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
+
+The combination places this vulnerability in a contained environment: the ACPI parsing path is present, but the post-exploitation surface is closed by Lockdown and Secure Mode.
 
 
 ## CVE-2023-53395
@@ -2607,10 +2589,18 @@ On a Packard Bell Dot SC (Intel Atom N2600 model) there is a FPDT table which co
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: Linux 5.x through affected ACPICA version
+**Upstream fix**: ACPICA commit 90310989a079 (drivers/acpi/acpica/acopcode.h)
 
-ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5 According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction.
+In the ACPICA AML interpreter, the opcode table entries for the AML `Timer` instruction (`ARGP_TIMER_OP`, `ARGI_TIMER_OP` in `drivers/acpi/acpica/acopcode.h`) were inconsistent with ACPI Specification section 19.6.134, which specifies that `Timer` takes no arguments. The mismatch caused the AML parser to mishandle `Timer` opcodes in certain AML bytecode sequences, potentially treating subsequent bytecode as a spurious argument and corrupting the AML interpreter walk-state.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. AML execution runs at boot and is re-triggered by ACPI table reload events. Exploiting the walk-state corruption requires crafted AML bytecode; on a server with a reputable firmware vendor the ACPI tables are read-only after boot.
+
+**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) reduces the environmental integrity score: `FS_IOC_SETFLAGS` returns `EPERM` and all mount paths return `EPERM`. An attacker who reaches root via the corruption cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
+
+The combination places this vulnerability in a contained environment: the AML parsing path is present, but the post-exploitation surface is closed by Lockdown and Secure Mode.
 
 
 ## CVE-2025-39869
@@ -2633,10 +2623,18 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: Linux 5.x–5.19
+**Upstream fix**: drivers/acpi/acpica/utdelete.c (reference count ordering fix)
 
-There is an use-after-free reported by KASAN: BUG: KASAN: use-after-free in acpi_ut_remove_reference+0x3b/0x82 Read of size 1 at addr ffff888112afc460 by task
+In `drivers/acpi/acpica/utdelete.c`, `acpi_ut_remove_reference()` is called on an ACPI operand object that has already been freed by a concurrent or error-handling code path. The function reads `object->common.descriptor_type` (via `ACPI_GET_DESCRIPTOR_TYPE`, line 720) and `object->common.reference_count` (via `acpi_ut_update_object_reference`, line 740) from the already-freed memory. KASAN detects the access as a use-after-free at offset +0x3b in `acpi_ut_remove_reference()`.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI is present on all x86 servers and is active from boot. Most ACPI bugs are triggered via ACPI table parsing or sysfs interfaces accessible to root. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. The ACPI subsystem is active from boot. Triggering this path requires manipulating the ACPI reference count lifecycle, typically via ACPI method evaluation during device enumeration or hotplug events.
+
+**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) reduces the environmental integrity score: `FS_IOC_SETFLAGS` returns `EPERM` and all mount paths return `EPERM`. An attacker who reaches root via the use-after-free cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
+
+The combination places this vulnerability in a contained environment: the ACPI reference counting path is present, but the post-exploitation surface is closed by Lockdown and Secure Mode.
 
 
 ## CVE-2026-23378
@@ -2656,7 +2654,7 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 **Status**: Affected
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 net_alloc_generic is called by net_alloc, which is called without any locking. It reads max_gen_ptrs, which is changed under pernet_ops_rwsem.
 
@@ -2715,50 +2713,50 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2024-46713
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 Ole reported that event->mmap_mutex is strictly insufficient to serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-46852
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — no DRM device on headless HS server; DMA-BUF operations unreachable
 
 Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't track CMA dma-buf pages under RssFile") it was possible to obtain a mapping larger than the buff
 
-`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF is used by GPU and multimedia subsystems for zero-copy buffer sharing. Requires access to a DRM or V4L2 device. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF buffer sharing requires access to a DRM or V4L2 device. HeartSuite Core Secure runs on headless server hardware with no GPU or video capture device; the DRM and V4L2 device nodes are absent, so the exploitation path — opening a DRM device and issuing `mmap()` on its DMA-BUF — is hardware-unreachable. No GPU or multimedia tool appears in the HS allowlist. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-48950
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 Per syzbot it is possible for perf_pending_task() to run after the event is free()'d.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. The perf events subsystem is accessible to processes depending on `/proc/sys/kernel/perf_event_paranoid`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-49026
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: Intel e100 Fast Ethernet driver (`CONFIG_E100`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — Intel Pro/100 NIC absent on any modern HS server deployment
 
 In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xmit_frame() will return NETDEV_TX_BUSY and the upper layer will resend the skb.
 
-`CONFIG_E100=y` is compiled in and 5.19.6 falls within the affected range. The Intel e100 driver supports legacy Intel Fast Ethernet cards. If this NIC is present, the driver is active during normal network operation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_E100=y` is compiled in and 5.19.6 falls within the affected range. The Intel e100 driver supports legacy Intel Pro/100 Fast Ethernet cards, a line discontinued in the early 2000s. No modern server or datacenter hardware ships with or supports this NIC; the driver code is compiled in but the hardware is universally absent on any HS deployment. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50055
@@ -2790,11 +2788,19 @@ Linear Address Masking (LAM) has a weakness related to transient execution as de
 **Status**: Affected
 **Component**: x86_64 architecture (`CONFIG_X86_64`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Affected range**: Linux 5.x–6.11
+**Upstream fix**: arch/x86/kernel/nmi.c (CPU buffer flush ordering fix)
 
-CPU buffers are currently cleared after call to exc_nmi, but before register state is restored.
+On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied after `exc_nmi()` completes but before IRET restores register state. This ordering leaves a window in which speculative execution can observe uninitialised microarchitectural buffer contents from the interrupted context — a same-CPU information disclosure in the MDS (Microarchitectural Data Sampling) class.
 
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. This is an architecture-level bug in x86_64 address masking. The affected code path requires a process to use Linear Address Masking (LAM), which requires `ARCH_SET_GS`/`ARCH_SET_FS` with a tagged pointer. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. The NMI return path is always active; triggering NMIs from ring-3 requires only `perf_event_open()` or hardware performance counters. Extracting useful data from the window requires co-location on a CPU core.
+
+**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) does not reduce the integrity score — the base vector already carries I:N. Lockdown closes the post-exploitation window: an attacker who chains the infoleak into a larger exploit cannot mount filesystems, set persistent flags via `FS_IOC_SETFLAGS`, or survive a reboot.
+
+**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
+
+The combination keeps a successful attacker contained: the NMI timing window is present on affected hardware, but the environment prevents translating leaked kernel memory into persistent compromise or lateral movement.
 
 
 ## CVE-2024-56600
