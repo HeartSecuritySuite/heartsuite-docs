@@ -53,14 +53,14 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
-| [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">6.7 HIGH</span> | <span class="badge bg-warning text-dark">6.8 MEDIUM</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">6.7 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_CRYPTO=y`; Lockdown limits post-exploitation |
 | [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `EXT4_IOC_MOVE_EXT` ioctl only reached by defrag tools; none in HS allowlist |
 | [CVE-2024-26842](#cve-2024-26842) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
 | [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
-| [CVE-2024-26934](#cve-2024-26934) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
+| [CVE-2024-26934](#cve-2024-26934) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB interface device on headless server; race condition unreachable |
 | [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_INET=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_USB_AUDIO` not set |
@@ -145,7 +145,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_IPV6=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_USB=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB device on headless server; descriptor parsing path unreachable |
 | [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
 | [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -363,22 +363,16 @@ A more sophisticated exploit could use the kernel use-after-free to directly cor
 
 ## CVE-2024-0775
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 6.7 MEDIUM (AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 6.8 MEDIUM — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable
 **Affected range**: kernels through 6.7.2, 6.6.15, 6.1.79, 5.15.148, 5.10.211, 5.4.270, 4.19.308 (5.19 branch is EOL; no backport)
 **Upstream fix**: Linux 6.7.3, 6.6.16, 6.1.80, 5.15.149, 5.10.212, 5.4.271, 4.19.309
 
 This CVE describes a use-after-free in the `__ext4_remount()` error path in `fs/ext4/super.c`. When a remount operation fails and rolls back to saved options, the function restores quota file name pointers via `rcu_assign_pointer(sbi->s_qf_names[i], old_opts.s_qf_names[i])` and then frees the displaced current pointer via `kfree(to_free[i])`. If the success path has already freed those names at the earlier `kfree(old_opts.s_qf_names[i])` call, the error path operates on already-freed memory. The CVE requires `CAP_SYS_ADMIN` (implicit in `PR:H`) because `mount(MS_REMOUNT)` is a privileged operation.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server.
-
-Lockdown directly prevents the trigger. `__ext4_remount()` is reached exclusively via `mount(MS_REMOUNT)`. HeartSuite's `kernel/namespace.c` returns `EPERM` from `do_mount()` whenever `HS_locked_down()` is true. During Lockdown, root cannot call `mount()` at all — the CVE's entry point is blocked at the syscall level before any ext4 code is reached.
-
-In Secure Mode without Lockdown, an additional gate applies: an attacker cannot execute a new exploit binary because it has no allowlist entry and the kernel refuses to run it regardless of privilege level. Reaching `__ext4_remount()` requires an already-permitted process to make the remount call.
-
-If exploitation were to succeed, Lockdown closes the post-exploitation path: the allowlist database files are immutable, `FS_IOC_SETFLAGS` is blocked so immutable flags cannot be cleared, and `mount()` is blocked so no filesystem remapping is possible. Root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup additionally creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. `__ext4_remount()` is reached exclusively via `mount(MS_REMOUNT)` — a privileged operation that Lockdown blocks unconditionally. `do_mount()` returns `EPERM` whenever `HS_locked_down()` is true (`kernel/namespace.c:4218`), so root cannot call `mount()` at all; the CVE's entry point is blocked at the syscall level before any ext4 code is reached. In Secure Mode, the allowlist additionally prevents execution of any exploit binary that would invoke the remount path.
 
 
 ## CVE-2023-52530
@@ -438,22 +432,16 @@ This CVE describes a use-after-free caused by a circular scheduling race between
 
 ## CVE-2024-26704
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `EXT4_IOC_MOVE_EXT` ioctl only reached by defragmentation tools; none in HS allowlist
 **Affected range**: kernels prior to stable fixes in the 6.8.x, 6.7.x, 6.6.x, 6.1.x, 5.15.x, 5.10.x, and 5.4.x series (5.19 branch is EOL; no backport)
 **Upstream fix**: merged in Linux 6.8; backported across active stable series
 
 This CVE describes a use-after-free in `ext4_move_extents()` in `fs/ext4/move_extent.c`, reachable via the `EXT4_IOC_MOVE_EXT` ioctl. The function moves file extents between an original inode and a donor inode. If the first move operation fails, `o_start` has not advanced past `orig_blk`, so `*moved_len` is set to zero. Preallocation blocks set up for `orig_inode` and `donor_inode` are discarded only when `*moved_len` is non-zero — the guard at `move_extent.c:692`. With `*moved_len == 0`, those preallocations are never discarded, leaving stale preallocation state that produces a use-after-free when the preallocations are later released. The `EXT4_IOC_MOVE_EXT` ioctl requires only write access to the file — no `CAP_SYS_ADMIN`, consistent with the `PR:L` CVSS score.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server, so this ioctl path is active for any process with write access to an ext4 file. On a HeartSuite Core Secure system in Secure Mode, reaching this path requires an approved process to invoke the ioctl. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it regardless of privilege level.
-
-Once an exploit reaches root in userspace, Lockdown's constraints apply in full. The allowlist database files are made immutable before Lockdown is engaged. `FS_IOC_SETFLAGS` returns `EPERM` for all callers (`kernel/ioctl.c`), so root cannot use `chattr` to clear those immutable flags and rewrite the allowlist. `mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c`), blocking any bind-mount or remount attempt to shadow or replace the allowlist files. HeartSuite reactivation is disabled during Lockdown, so the service cannot be reconfigured to accept new entries through any path.
-
-Secure Mode adds a further constraint that runs independently of Lockdown: every program execution is checked against the allowlist at the kernel level, applying equally to root. An attacker who has gained root cannot execute a backdoor binary they drop onto the filesystem — it has no allowlist entry, and the kernel refuses to run it regardless of file ownership or permission bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot. File Backup additionally creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file during exploitation, the previous version remains recoverable.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The `EXT4_IOC_MOVE_EXT` ioctl is the sole entry point to the vulnerable `ext4_move_extents()` path; it is invoked by extent-defragmentation tools (`e4defrag`) and not by normal filesystem read or write operations. No defragmentation tool appears in the HS allowlist, and the kernel blocks any process without an allowlist entry from executing. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26842
@@ -493,22 +481,16 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-26934
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: USB core (`CONFIG_USB`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — no USB interface device on headless HS server; deadlock race unreachable
 **Affected range**: 4.11–6.8
 **Upstream fix**: 6.8.2 series
 
 Among the attribute file callback routines in `drivers/usb/core/sysfs.c`, `interface_authorized_store()` is the only one that acquires a device lock on an ancestor device. It delegates immediately to `usb_deauthorize_interface()` (`drivers/usb/core/message.c`), which takes `device_lock(dev->parent)` first (line 1792) and then `device_lock(dev)` (line 1795). This lock ordering diverges from other USB subsystem paths, creating an ABBA deadlock when a concurrent bind or configuration operation holds the interface device lock and waits to acquire the parent lock while `usb_deauthorize_interface()` holds the parent lock and waits for the child. The deadlock stalls the USB subsystem and can produce a kernel hang. The HS 5.19.6 kernel carries the unpatched `interface_authorized_store()` at `drivers/usb/core/sysfs.c:1172` and the unchanged `usb_deauthorize_interface()` at `drivers/usb/core/message.c:1792`.
 
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Triggering the race requires a local process with write access to the `/sys/.../authorized` sysfs attribute of a USB interface device at the same moment another USB operation is in progress.
-
-Once an exploit reaches root in userspace, Lockdown's constraints apply in full. The allowlist database files are made immutable before Lockdown is engaged. `FS_IOC_SETFLAGS` returns `EPERM` for all callers (`kernel/ioctl.c:561–569`), so root cannot use `chattr` to clear those immutable flags and rewrite the allowlist. `mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), blocking any bind-mount or remount attempt to shadow or replace the allowlist files. HeartSuite reactivation is disabled during Lockdown (`hs_sandbox_caching.c:1942`), so the service cannot be reconfigured to accept new entries through any path.
-
-Secure Mode adds a further constraint that runs independently of Lockdown: every program execution is checked against the allowlist at the kernel level, applying equally to root. An attacker who has gained root cannot execute a backdoor binary they drop onto the filesystem — it has no allowlist entry, and the kernel refuses to run it regardless of file ownership or permission bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Triggering the ABBA deadlock race requires writing to the `/sys/.../authorized` sysfs attribute of an enumerated USB interface device while a concurrent USB operation is in progress. HeartSuite Core Secure runs on headless server hardware with no external USB devices connected; no USB interface device is enumerated, so the sysfs path does not exist and the race condition is unreachable. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-26939
@@ -1713,14 +1695,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-39760
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: USB core (`CONFIG_USB`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — no USB device on headless HS server; descriptor parsing path unreachable
 
 usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. USB core is present. Exploiting USB core bugs typically requires connecting a USB device or having an existing USB device present. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. The `usb_parse_ss_endpoint_companion()` descriptor parsing path is triggered during USB device enumeration when a device is connected. HeartSuite Core Secure runs on headless server hardware with no external USB devices; no USB device enumeration occurs, so the vulnerable descriptor parsing code path is never reached. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39788
@@ -1744,9 +1726,16 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
-For scan loop must ensure that at least EXT4_FC_TAG_BASE_LEN space. If remain space less than EXT4_FC_TAG_BASE_LEN which will lead to out of bound read when mounting c
+**Affected range**: Linux 5.10+; 5.19.6 falls within range  
+**Upstream fix**: fs/ext4/fast_commit.c
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+In `fs/ext4/fast_commit.c`, the fast commit replay scan loop reads the tag-length header (`struct ext4_fc_tl`, 4 bytes) before verifying that at least 4 bytes remain in the replay buffer. Mounting a filesystem whose fast commit area has been truncated or crafted to place fewer than 4 bytes at the tail causes an out-of-bounds read when parsing the next tag.
+
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Mounting a crafted filesystem image requires an approved binary with a `mount` allowlist entry; an attacker cannot invoke the mount path without one.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. After gaining root, an attacker cannot mount additional filesystems, modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2023-53257
@@ -1782,9 +1771,16 @@ During the sysfs firmware write process, a use-after-free read warning is logged
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-Normally the extended attributes in the inode body would have been checked when the inode is first opened, but if someone is writing to the block device while the file
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: fs/ext4/inode.c
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+ext4 validates `i_extra_isize` when an inode is first loaded into memory (`fs/ext4/inode.c:4794`), confirming that the extra space falls within the inode's allocated size. If an attacker writes directly to the block device while the filesystem is mounted, the raw on-disk inode can be modified so that `i_extra_isize` exceeds the previously verified bound. Subsequent access to in-inode extended attributes computes the xattr magic pointer as `EXT4_GOOD_OLD_INODE_SIZE + ei->i_extra_isize` without re-validating the updated value, allowing a read or write beyond the end of the inode body.
+
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Exploiting this bug requires writing directly to the block device while the filesystem is mounted — an operation that itself requires root or `CAP_SYS_RAWIO`. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to reach this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. After gaining root, an attacker cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2023-53320
@@ -1934,9 +1930,16 @@ Syzkaller triggered concurrent calls to `kernfs_remove_by_name_ns()` for the sam
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-The ext4_dirhash() will *almost* never fail, especially when the hash tree feature was first introduced.
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: fs/ext4/hash.c
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+In `fs/ext4/hash.c`, `__ext4fs_dirhash()` returns `-1` in two cases: when a directory uses the `DX_HASH_SIPHASH` algorithm but the inode lacks an encryption key (line 271: "Siphash requires key"), and on an unknown hash version (line 280). Callers of `ext4fs_dirhash()` did not consistently check for this error and proceeded with a stale or zero `hinfo->hash`, potentially corrupting hash-tree directory lookups or writes.
+
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server and directory lookups occur during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2023-53510
@@ -1996,9 +1999,16 @@ Dm_cache also has the same UAF problem when dm_resume() and dm_destroy() are con
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-Syzbot found the following issue: ===================================================== BUG: KMSAN: uninit-value in ext4_evict_inode+0xdd/0x26b0 fs/ext4/inode.c:180
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: fs/ext4/inode.c
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+In `ext4_evict_inode()` (`fs/ext4/inode.c:180`), the function checks `EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL` to determine whether the inode being evicted is an extended attribute inode. Under certain error paths during inode allocation, the ext4-specific `i_flags` field in `ext4_inode_info` is not fully initialized before the inode reaches eviction, causing the flag test to read from uninitialized memory. KMSAN reported the uninitialized-value access at this check.
+
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server and inode eviction occurs during normal filesystem operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2023-53640
