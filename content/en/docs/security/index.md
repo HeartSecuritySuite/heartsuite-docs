@@ -107,7 +107,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-52988](#cve-2023-52988) | Intel HDA audio driver (`CONFIG_SND_HDA_INTEL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-22083](#cve-2025-22083) | vhost-SCSI driver (`CONFIG_VHOST_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_VHOST_SCSI` not compiled |
 | [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
-| [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown; crafted xattr image cannot be mounted |
 | [CVE-2022-49789](#cve-2022-49789) | IBM Z Fibre Channel driver (`CONFIG_ZFCP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ZFCP` not compiled |
 | [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2023-53037](#cve-2023-53037) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
@@ -201,7 +201,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-56663](#cve-2024-56663) | cfg80211 wireless stack (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2025-21993](#cve-2025-21993) | iSCSI iBFT driver (`CONFIG_ISCSI_IBFT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_IBFT` not set |
 | [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown; crafted ext4 image cannot be mounted |
 | [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
 | [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
@@ -224,7 +224,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no 9P filesystem on HS deployments |
 | [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Texas Instruments eDMA hardware absent |
-| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_INET=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — pernet race requires module loading; blocked by Lockdown post-boot |
 | [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — perf_event_open() blocked by perf_event_paranoid=3 |
 | [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
@@ -234,7 +234,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no DRM/GPU device on headless server |
 | [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">6.7 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable |
-| [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_HUGETLBFS=y`; base I:L, Lockdown limits post-exploitation persistence |
+| [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown; hugetlbfs mount path unreachable |
 
 Over 1,000 CVEs across 178 disabled-feature groups are listed in [Not Affected — Disabled Features](#not-affected-disabled-features) below.
 
@@ -1124,7 +1124,7 @@ The USB-audio driver does not validate `bLength` of each descriptor when travers
 
 In `blk_mq_exit_hctx()` at `block/blk-mq.c:3440`, the call to `blk_mq_clear_flush_rq_mapping()` (line 3441) is guarded by `if (blk_queue_init_done(q))`. During SCSI device probe, the queue is not yet fully initialized, so this condition is false and `blk_mq_clear_flush_rq_mapping()` is skipped. The function is responsible for atomically clearing the `flush_rq` pointer from every slot in `tags->rqs[]`. When skipped, `flush_rq` is subsequently freed but its pointer remains live in the `rqs[]` array. Any later iteration over `tags->rqs[]` — such as during a tag-set teardown or request lookup — dereferences the stale pointer, constituting a use-after-free.
 
-`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 via libata; the vulnerable path is triggered during SCSI probe teardown when initialization does not complete successfully.
+`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 via libata; the vulnerable path is triggered during SCSI probe teardown when initialization does not complete successfully. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -1297,20 +1297,16 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 ### CVE-2025-37785
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; crafted ext4 image cannot be mounted
 **Affected range**: Linux ≤ 6.14-rc4
 **Upstream fix**: commit 4f45d4452e6b ("ext4: fix OOB read when mounting corrupted fs")
 
 In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry whose `rec_len` equals the filesystem block size, the iteration offset at line 246 jumps to exactly `block_size` after the first entry. During directory removal, a subsequent traversal computes a `de` pointer one block past the buffer boundary, producing an out-of-bounds read.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the out-of-bounds read requires mounting an ext4 filesystem image containing a corrupted directory block — a crafted disk image with a malformed `'.'` entry `rec_len`. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Mounting a crafted filesystem image requires an approved binary with a `mount` allowlist entry; an attacker cannot invoke this path without one.
-
-`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the out-of-bounds read requires mounting an ext4 filesystem image containing a corrupted directory block. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 directory parsing code is reached. In Secure Mode, no approved binary in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 
 ### CVE-2025-40364
@@ -1333,20 +1329,16 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 ### CVE-2025-37738
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; crafted xattr image cannot be mounted
 **Affected range**: Linux ≤ 6.13-rc3
 **Upstream fix**: commit b631e432b12d ("ext4: fix xattr inode dec ref boundary")
 
 In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1143 iterates xattr entries with `for (entry = first; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry))`. The loop has no upper-boundary parameter: it relies solely on the `IS_LAST_ENTRY()` zero-terminator sentinel. A corrupted xattr block without a valid terminating entry causes the loop to walk past the end of the allocated buffer, reading and dereferencing arbitrary memory.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the unbounded xattr loop requires mounting a filesystem with a corrupted xattr block that lacks the valid zero-terminator sentinel. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Mounting a crafted filesystem image requires an approved binary with a `mount` allowlist entry; an attacker cannot invoke this path without one.
-
-`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the unbounded xattr loop requires mounting a filesystem with a corrupted xattr block that lacks the valid zero-terminator sentinel. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 xattr parsing code is reached. In Secure Mode, no approved binary in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 
 ### CVE-2022-49789
@@ -2259,20 +2251,16 @@ In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-f
 
 ### CVE-2024-0841
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: hugetlbfs (`CONFIG_HUGETLBFS`)
 **Base Score**: 6.6 MEDIUM (AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H)
-**Environmental Score**: 6.6 MEDIUM — base I:L; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; hugetlbfs mount path unreachable
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/hugetlbfs/inode.c
 
 In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs superblock for a `mount(2)` call. Under certain error conditions during setup — for instance, when huge page pool allocation fails — the function dereferences a pointer that was not initialised, causing a null pointer dereference. The crash is reachable by any local user with `CAP_SYS_ADMIN` permission to mount hugetlbfs.
 
-`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Triggering `hugetlbfs_fill_super()` requires calling `mount(2)` with `hugetlbfs` as the filesystem type, which on Debian 11 requires `CAP_SYS_ADMIN`. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Mounting hugetlbfs requires an approved binary with a `mount` allowlist entry; an attacker cannot invoke this path without one.
-
-`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
+`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Triggering `hugetlbfs_fill_super()` requires calling `mount(2)` with `hugetlbfs` as the filesystem type, which additionally requires `CAP_SYS_ADMIN` on Debian 11. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any hugetlbfs setup begins. In Secure Mode, no approved binary in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 
 ### CVE-2024-26593
@@ -2670,20 +2658,16 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 
 ### CVE-2024-36883
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — pernet race requires module loading; blocked by Lockdown post-boot
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/core/net_namespace.c
 
 In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — the size of the generic pointers array — to determine how much memory to allocate for a new network namespace. This read occurs without holding `pernet_ops_rwsem`. `register_pernet_operations()` can increment `max_gen_ptrs` concurrently while holding the write side of that lock. The race can cause `net_alloc_generic()` to allocate an undersized array, leading to out-of-bounds access when the new namespace is subsequently populated.
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race is triggered when a network namespace is created concurrently with a new pernet operations registration. Creating a network namespace requires `CLONE_NEWNET` with `CAP_NET_ADMIN`; user namespaces that would bypass this capability requirement are disabled on the HS kernel. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
-
-`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines); `sys_hs_lockdown_hs()` blocks `init_module` and `finit_module`, preventing any new kernel module from loading post-Lockdown. After Lockdown engages at boot, all statically-linked pernet operations have already registered and `max_gen_ptrs` is stable — no concurrent write is possible. Separately, creating a network namespace requires `CAP_NET_ADMIN` with user namespaces disabled on the HS kernel; no unprivileged process can initiate the namespace-creation side of the race. The race condition cannot be triggered on any HeartSuite Core Secure deployment.
 
 
 ### CVE-2024-36971
