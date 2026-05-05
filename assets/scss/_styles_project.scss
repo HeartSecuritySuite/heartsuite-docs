@@ -20,6 +20,27 @@ main.td-main {
   }
 }
 
+// CVE severity badges — CRITICAL/MEDIUM/LOW/NONE use Bootstrap built-ins;
+// HIGH needs orange which Bootstrap does not provide as a utility class.
+.badge-cve-high {
+  background-color: #e86a10;
+  color: #fff;
+}
+
+// Table enhancements for CVE data tables
+.td-content table {
+  tbody tr:hover {
+    background-color: var(--bs-tertiary-bg, rgba(0, 0, 0, 0.04));
+    transition: background-color 0.1s ease;
+  }
+
+  .badge {
+    font-size: 0.75em;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
 // Example of color tuning
 
 .td-box--primary {
