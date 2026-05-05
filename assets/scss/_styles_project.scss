@@ -51,6 +51,14 @@ main.td-main {
     transition: background-color 0.1s ease;
   }
 
+  tbody tr:has(.badge-erased, .badge-cve-none) {
+    background-color: var(--bs-success-bg-subtle);
+
+    &:hover {
+      background-color: var(--bs-success-border-subtle);
+    }
+  }
+
   .badge {
     font-size: 0.75em;
     font-weight: 600;
