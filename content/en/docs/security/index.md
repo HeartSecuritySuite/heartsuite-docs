@@ -92,8 +92,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-49883](#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49884](#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown |
+| [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown |
 | [CVE-2024-50007](#cve-2024-50007) | ASIHPI soundcard driver (`CONFIG_SND_ASIHPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_ASIHPI` not compiled |
 | [CVE-2022-48951](#cve-2022-48951) | ALSA SoC layer (`CONFIG_SND_SOC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC` not compiled |
 | [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
@@ -147,7 +147,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB device on headless server; descriptor parsing path unreachable |
 | [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
-| [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — mount() blocked by Lockdown |
 | [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2023-53282](#cve-2023-53282) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2023-53285](#cve-2023-53285) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
@@ -190,7 +190,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — no I2C tool in allowlist; Lockdown prevents modification |
 | [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
 | [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — watchdog daemon not in allowlist; Lockdown prevents modification |
-| [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_DMA_ENGINE=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2024-34777](#cve-2024-34777) | DMA map benchmark (`CONFIG_DMA_MAP_BENCHMARK`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_DMA_MAP_BENCHMARK` not compiled in HS kernel |
 | [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no 9P filesystem on HS deployments |
 | [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
 | [CVE-2022-48867](#cve-2022-48867) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
@@ -227,8 +227,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Intel Pro/100 NIC not present on modern server hardware |
 | [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_X86_64=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no LAM-using process in HS allowlist |
+| [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — perf_event_open() blocked by perf_event_paranoid=3 |
 | [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | DisplayPort MST display hardware absent |
@@ -1001,42 +1001,30 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-49960
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...)` runs at line 4995 and `INIT_WORK(&sbi->s_error_work, flush_stashed_error_work)` at line 4997. During the `failed_mount3:` error-unwind at line 5454, `flush_work(&sbi->s_error_work)` is called at line 5456 immediately before `del_timer_sync(&sbi->s_err_report)` at line 5457. The work callback `flush_stashed_error_work` can call `mod_timer` on `s_err_report`, arming the timer during the same unwind that is about to cancel it. When the code path passes through `failed_mount_wq:` (line 5439), `flush_work` runs a second time at line 5448 before falling through to `failed_mount3:`, doubling the exposure. Syzbot detected this as an ODEBUG (Object Debug) object-state inconsistency.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; the bug is triggered during a failed mount, for example when `ext4_es_register_shrinker()` or journal loading fails part way through setup.
-
-Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
-
-Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during a failed mount — for example when `ext4_es_register_shrinker()` or journal loading fails partway through `ext4_fill_super()`. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved binaries are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-49983
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns `ppath = path`, making both local variables alias the same allocation. Line 5881 then calls `ext4_force_split_extent_at(NULL, inode, &ppath, start, 1)`, passing the address of `ppath`. Inside, `ext4_split_extent_at()` calls `ext4_ext_insert_extent()` which may invoke `ext4_ext_grow_indepth()` and reallocate `*ppath` via `kcalloc()`. When that happens, the outer `ppath` is updated to the new allocation and the original memory is freed — but `path` still holds the original (now stale) pointer. The `kfree(path)` call at line 5885 then frees already-freed memory, constituting a double-free/use-after-free. The bug is exercised during fast-commit journal replay.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; the vulnerable path runs during fast-commit replay, which is triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled.
-
-Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
-
-Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during fast-commit journal replay, triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved binaries are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50007
@@ -1586,9 +1574,16 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec() does, the reference should be put after ip6_mc_clear_src() return.
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: net/ipv6/mcast.c
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+In `net/ipv6/mcast.c`, `mld_clear_delrec()` releases the `pmc->idev` reference before calling `ip6_mc_clear_src()`, but `ip6_mc_clear_src()` accesses `pmc->idev` internally. The reference drop must be deferred until after `ip6_mc_clear_src()` returns; releasing it early causes a use-after-free when `ip6_mc_clear_src()` subsequently dereferences the freed pointer.
+
+`CONFIG_IPV6=y` is compiled in and the IPv6 stack is active on configured interfaces. IPv6 multicast listener discovery (MLD) is reachable via network interfaces that join multicast groups — a common configuration on servers. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2025-38556
@@ -1636,9 +1631,16 @@ When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped()
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-syzbot was able to craft a packet with very long IPv6 extension headers leading to an overflow of skb->transport_header.
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: net/ipv6/
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+syzbot demonstrated that a crafted IPv6 packet with excessively long chained extension headers causes `skb->transport_header` to overflow. The field is a `__u16`; when the cumulative extension header length wraps past 65535, the kernel misidentifies the transport layer offset when parsing subsequent headers, potentially accessing incorrect memory.
+
+`CONFIG_IPV6=y` is compiled in and the IPv6 stack processes all inbound IPv6 packets, including those with extension headers. This path is reachable from the network without requiring a local process. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to escalate further — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2025-38699
@@ -1674,9 +1676,16 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 
-To prevent timing attacks, MACs need to be compared in constant time. Use the appropriate helper function for this.
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: net/ipv6/
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+In `net/ipv6/`, a Message Authentication Code comparison used a variable-time function rather than a constant-time one (such as `crypto_memneq()`). An attacker who can observe response timing can iteratively determine whether partial MAC bytes are correct, eventually recovering a valid MAC and bypassing authentication in IPv6 protocol handling.
+
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Exploiting a timing side-channel requires high network precision and repeated measurements (AC:H), which significantly reduces practical exploitability. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to follow up on a bypassed MAC check — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2025-39757
@@ -1721,21 +1730,17 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-50306
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 
 **Affected range**: Linux 5.10+; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/fast_commit.c
 
 In `fs/ext4/fast_commit.c`, the fast commit replay scan loop reads the tag-length header (`struct ext4_fc_tl`, 4 bytes) before verifying that at least 4 bytes remain in the replay buffer. Mounting a filesystem whose fast commit area has been truncated or crafted to place fewer than 4 bytes at the tail causes an out-of-bounds read when parsing the next tag.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Mounting a crafted filesystem image requires an approved binary with a `mount` allowlist entry; an attacker cannot invoke the mount path without one.
-
-`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. After gaining root, an attacker cannot mount additional filesystems, modify the allowlist, install persistent backdoors, or survive a reboot.
-
-On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The vulnerable path runs during the fast commit replay scan triggered on mount of a filesystem whose fast commit area has a malformed tag-length header. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved binaries are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53257
@@ -1894,9 +1899,16 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: fs/fs-writeback.c
+
 In `fs/fs-writeback.c`, `__mark_inode_dirty()` acquires a reference to a `bdi_writeback` structure. A concurrent `bdi_writeback_switch()` can free the structure before the reference is dropped, resulting in a use-after-free when the writeback pointer is subsequently accessed.
 
-`fs/fs-writeback.c` is always compiled in on a system with block device support. The writeback subsystem is active for all block I/O on any mounted filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`fs/fs-writeback.c` is always compiled in on a system with block device support. The writeback subsystem is active for all block I/O on any mounted filesystem. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2022-50422
@@ -1918,9 +1930,16 @@ When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to d
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: fs/kernfs/dir.c
+
 Syzkaller triggered concurrent calls to `kernfs_remove_by_name_ns()` for the same kernfs node, resulting in a KASAN-detected use-after-free in `fs/kernfs/dir.c`. The race occurs because `kernfs_remove_by_name_ns()` does not prevent concurrent removals of the same node from two threads.
 
-`CONFIG_KERNFS=y` is compiled in and 5.19.6 falls within the affected range. kernfs underpins sysfs and is active on every running Linux system. The racy `kernfs_remove_by_name_ns()` call site is reachable via device attribute removal during concurrent hotplug events. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_KERNFS=y` is compiled in and 5.19.6 falls within the affected range. kernfs underpins sysfs and is active on every running Linux system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2023-53473
@@ -1987,9 +2006,16 @@ In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involv
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-Dm_cache also has the same UAF problem when dm_resume() and dm_destroy() are concurrent.
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: drivers/md/dm-cache-target.c
 
-`CONFIG_BLK_DEV_DM=y` is compiled in and 5.19.6 falls within the affected range. Device mapper is used for LVM and is active on a standard Debian 11 installation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup covers writes to protected directories regardless of the block layer.
+In `drivers/md/dm-cache-target.c`, `cache_resume()` (line 2971) calls `allow_background_work()`, which schedules work on `cache->wq`. If `cache_dtr()` runs concurrently, `destroy()` (line 1881) frees `cache->wq` at line 1891 while those work items are still active, resulting in a use-after-free.
+
+`CONFIG_BLK_DEV_DM=y` is compiled in and device mapper is used for LVM on a standard Debian 11 installation. Triggering this race requires concurrent resume and destroy operations on a device mapper target. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to set up this race — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2022-50546
@@ -2274,9 +2300,16 @@ According to the Intel datasheets, software must reset the block buffer index tw
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-An issue was found on the RTL8125b when transmitting small fragmented packets, whereby invalid entries were inserted into the transmit ring buffer, subsequently
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: drivers/net/ethernet/realtek/r8169_main.c
 
-`CONFIG_R8169=y` is compiled in and 5.19.6 falls within the affected range. The r8169 Realtek Gigabit Ethernet driver is active if the server has a Realtek NIC. Network operation uses this driver continuously. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+In `drivers/net/ethernet/realtek/r8169_main.c`, transmitting small fragmented scatter-gather packets on an RTL8125b NIC causes the driver to populate TX ring buffer descriptors with invalid state. The NIC subsequently processes the malformed descriptors, leading to incorrect DMA operations that can corrupt memory.
+
+`CONFIG_R8169=y` is compiled in and 5.19.6 falls within the affected range. The r8169 driver is active on systems with a Realtek NIC and handles all network TX traffic; the faulty path is reachable through normal network operation on affected hardware. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2024-38630
@@ -2293,14 +2326,14 @@ When the cpu5wdt module is removing, the origin code uses del_timer() to de-acti
 
 ## CVE-2024-34777
 
-**Status**: Affected
-**Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
+**Status**: Not Affected — `CONFIG_DMA_MAP_BENCHMARK` not compiled
+**Component**: DMA map benchmark (`CONFIG_DMA_MAP_BENCHMARK`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — `CONFIG_DMA_MAP_BENCHMARK` not compiled in HS kernel
 
-While validating node ids in map_benchmark_ioctl(), node_possible() may be provided with invalid argument outside of [0,MAX_NUMNODES-1] range leading to:
+In `kernel/dma/map_benchmark.c`, `map_benchmark_ioctl()` passes the user-supplied NUMA node ID directly to `node_possible()` (line 211) without first verifying that it falls within `[0, MAX_NUMNODES-1]`. `node_possible()` uses the node ID as a bitmap index; an out-of-range value causes an out-of-bounds read in the `node_possible_map` bitmap.
 
-`CONFIG_DMA_ENGINE=y` is compiled in and 5.19.6 falls within the affected range. The DMA engine framework is used by storage, network, and crypto subsystems. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_DMA_MAP_BENCHMARK` is not set in the HS 5.19.6 configuration. The DMA mapping benchmark module is a debug/testing facility accessible via `/sys/kernel/debug/dma_map_benchmark`; it is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-39463
@@ -2765,34 +2798,28 @@ For bus_register(), any error which happens after kset_register() will cause tha
 
 ## CVE-2024-50112
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: x86_64 architecture (`CONFIG_X86_64`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — no LAM-using process in HS allowlist
 
 Linear Address Masking (LAM) has a weakness related to transient execution as described in the SLAM paper[1].
 
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. This is an architecture-level bug in x86_64 address masking. The affected code path requires a process to use Linear Address Masking (LAM), which requires `ARCH_SET_GS`/`ARCH_SET_FS` with a tagged pointer. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. The vulnerable code path requires a process to invoke Linear Address Masking (LAM) via `ARCH_SET_GS`/`ARCH_SET_FS` with a tagged pointer. No approved process in the HS allowlist uses LAM or invokes this kernel interface; on a HeartSuite Core Secure system, the SPF allowlist blocks execution of any unapproved binary at the kernel gate before any interface interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-50193
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: x86_64 architecture (`CONFIG_X86_64`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
+**Environmental Score**: 0.0 — perf_event_open() blocked by perf_event_paranoid=3; no perf tool in HS allowlist
 **Affected range**: Linux 5.x–6.11
 **Upstream fix**: arch/x86/kernel/nmi.c (CPU buffer flush ordering fix)
 
 On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied after `exc_nmi()` completes but before IRET restores register state. This ordering leaves a window in which speculative execution can observe uninitialised microarchitectural buffer contents from the interrupted context — a same-CPU information disclosure in the MDS (Microarchitectural Data Sampling) class.
 
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. The NMI return path is always active; triggering NMIs from ring-3 requires only `perf_event_open()` or hardware performance counters. Extracting useful data from the window requires co-location on a CPU core.
-
-**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) does not reduce the integrity score — the base vector already carries I:N. Lockdown closes the post-exploitation window: an attacker who chains the infoleak into a larger exploit cannot mount filesystems, set persistent flags via `FS_IOC_SETFLAGS`, or survive a reboot.
-
-**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
-
-The combination keeps a successful attacker contained: the NMI timing window is present on affected hardware, but the environment prevents translating leaked kernel memory into persistent compromise or lateral movement.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-56600
@@ -2802,9 +2829,16 @@ The combination keeps a successful attacker contained: the NMI timing window is 
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-sock_init_data() attaches the allocated sk pointer to the provided sock object. If inet6_create() fails later, the sk object is released, but the sock object retains
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: net/ipv6/af_inet6.c
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+In `net/ipv6/af_inet6.c`, `sock_init_data()` attaches the newly allocated `sk` pointer to `sock->sk` before `inet6_create()` completes setup. If `inet6_create()` fails at a later step and frees the `sk`, `sock->sk` retains the dangling pointer. The socket cleanup path subsequently calls `sock->sk->sk_prot->close()` on the freed `sk`, causing a use-after-free.
+
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 socket creation is triggered whenever a process opens an IPv6 socket — a common operation on any networked system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary to reach this path — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2024-56601
@@ -2814,9 +2848,16 @@ sock_init_data() attaches the allocated sk pointer to the provided sock object. 
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-sock_init_data() attaches the allocated sk object to the provided sock object. If inet_create() fails later, the sk object is freed, but the sock object retains the da
+**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Upstream fix**: net/ipv4/af_inet.c
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+In `net/ipv4/af_inet.c`, `sock_init_data()` attaches the newly allocated `sk` pointer to `sock->sk` before `inet_create()` completes setup. If `inet_create()` fails at a later step and frees the `sk`, `sock->sk` retains the dangling pointer. The socket cleanup path subsequently calls `sock->sk->sk_prot->close()` on the freed `sk`, causing a use-after-free.
+
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active; INET socket creation occurs on every TCP or UDP connection. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it.
+
+`sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this bug cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lockdown together limit the blast radius of a successful exploit to the current session, with no persistence across reboot and no ability to modify system configuration.
 
 
 ## CVE-2024-56616
