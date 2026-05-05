@@ -51,12 +51,16 @@ main.td-main {
     transition: background-color 0.1s ease;
   }
 
-  tbody tr:has(.badge-erased, .badge-cve-none) {
-    background-color: var(--bs-success-bg-subtle);
+  // Bootstrap 5 table-striped uses --bs-table-bg-type on <td> via inset box-shadow,
+  // which paints over any background-color set on <tr>. Setting --bs-table-bg-state
+  // on the cells directly overrides it (bg-state wins over bg-type in Bootstrap's cascade).
+  tbody tr:has(.badge-erased, .badge-cve-none) > td {
+    --bs-table-bg-state: var(--bs-success-bg-subtle);
+    transition: background-color 0.1s ease;
+  }
 
-    &:hover {
-      background-color: var(--bs-success-border-subtle);
-    }
+  tbody tr:has(.badge-erased, .badge-cve-none):hover > td {
+    --bs-table-bg-state: var(--bs-success-border-subtle);
   }
 
   .badge {
