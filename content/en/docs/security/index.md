@@ -62,7 +62,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2024-26934](#cve-2024-26934) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
 | [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
-| [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
+| [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_INET=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_USB_AUDIO` not set |
 | [CVE-2022-48702](#cve-2022-48702) | EMU10K1 audio driver (`CONFIG_SND_EMU10K1`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_EMU10K1` not set |
 | [CVE-2022-48695](#cve-2022-48695) | mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SCSI_MPT3SAS` not set |
@@ -70,9 +70,9 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_THERMAL=y`; Lockdown limits post-exploitation |
-| [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_CGROUP_IOCOST=y`; Lockdown limits post-exploitation |
+| [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_BLK_CGROUP_IOCOST=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2024-38560](#cve-2024-38560) | Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA` not set |
-| [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_KPROBES=y`; Lockdown limits post-exploitation |
+| [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — kprobe registration not in allowlist; Lockdown prevents modification |
 | [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-40978](#cve-2024-40978) | QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QEDI` not set |
 | [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
@@ -109,7 +109,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-53227](#cve-2024-53227) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2024-53239](#cve-2024-53239) | 6fire USB audio driver (`CONFIG_SND_USB_6FIRE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_USB_6FIRE` not compiled |
 | [CVE-2024-56609](#cve-2024-56609) | Realtek rtw88 WiFi driver (`CONFIG_RTW88`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_RTW88` not compiled |
-| [CVE-2024-56631](#cve-2024-56631) | SCSI generic driver (`CONFIG_CHR_DEV_SG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_CHR_DEV_SG=y`; Lockdown limits post-exploitation |
+| [CVE-2024-56631](#cve-2024-56631) | SCSI generic driver (`CONFIG_CHR_DEV_SG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `/dev/sg*` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-56663](#cve-2024-56663) | cfg80211 wireless stack (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — 32-bit-specific vulnerability; HS kernel is x86_64 |
 | [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
@@ -128,10 +128,10 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
 | [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37861](#cve-2025-37861) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
-| [CVE-2025-37979](#cve-2025-37979) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
+| [CVE-2025-37979](#cve-2025-37979) | Qualcomm sc7280 ASoC driver (`CONFIG_SND_SOC_SC7280`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC_SC7280` not compiled |
 | [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
-| [CVE-2025-38206](#cve-2025-38206) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-38206](#cve-2025-38206) | exFAT filesystem (`CONFIG_EXFAT_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_EXFAT_FS` not compiled |
 | [CVE-2025-38239](#cve-2025-38239) | LSI MegaRAID SAS driver (`CONFIG_MEGARAID_SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_MEGARAID_SAS` not set |
 | [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
@@ -143,11 +143,11 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38699](#cve-2025-38699) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_IPV6=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
+| [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_USB=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
-| [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2023-53282](#cve-2023-53282) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2023-53285](#cve-2023-53285) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
@@ -182,31 +182,31 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-71238](#cve-2025-71238) | QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QLA_FC` not compiled |
 | [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_RELAY=y`; Lockdown limits post-exploitation |
-| [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_VT=y`; Lockdown limits post-exploitation |
-| [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_UNIX=y`; Lockdown limits post-exploitation |
-| [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_DRM=y`; Lockdown limits post-exploitation |
-| [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge badge-cve-high">6.6 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_HUGETLBFS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_I2C_I801=y`; Lockdown limits post-exploitation |
+| [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — debugfs relay not in allowlist; Lockdown prevents modification |
+| [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_VT=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
+| [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_DRM=y`; Lockdown reduces MI: High→Low (AC:H base) |
+| [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_HUGETLBFS=y`; base I:L, Lockdown limits post-exploitation persistence |
+| [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_I2C_I801=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
 | [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_WATCHDOG=y`; Lockdown limits post-exploitation |
-| [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_DMA_ENGINE=y`; Lockdown limits post-exploitation |
-| [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_DMA_ENGINE=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no 9P filesystem on HS deployments |
 | [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
 | [CVE-2022-48867](#cve-2022-48867) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
 | [CVE-2024-46759](#cve-2024-46759) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | ADC128D818 I2C ADC chip absent |
-| [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
+| [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_ACPI=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2022-49029](#cve-2022-49029) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | IBM Power Management Extension hardware absent |
 | [CVE-2024-50127](#cve-2024-50127) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2024-53057](#cve-2024-53057) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2024-56606](#cve-2024-56606) | AF_PACKET sockets (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PACKET=y`; Lockdown limits post-exploitation |
+| [CVE-2024-56606](#cve-2024-56606) | AF_PACKET sockets (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CAP_NET_RAW` not in allowlist; Lockdown prevents modification |
 | [CVE-2025-21692](#cve-2025-21692) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49892](#cve-2022-49892) | ftrace / function tracer (`CONFIG_FTRACE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49921](#cve-2022-49921) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2023-53111](#cve-2023-53111) | loop block device (`CONFIG_BLK_DEV_LOOP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_DEV_LOOP=y`; Lockdown limits post-exploitation |
-| [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2023-53111](#cve-2023-53111) | loop block device (`CONFIG_BLK_DEV_LOOP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `/dev/loop*` not in allowlist; Lockdown prevents modification |
+| [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no 9P filesystem on HS deployments |
 | [CVE-2025-37914](#cve-2025-37914) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
@@ -217,10 +217,10 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Texas Instruments eDMA hardware absent |
 | [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 | [CVE-2026-23378](#cve-2026-23378) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
+| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_INET=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2024-36971](#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
-| [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_NET_NS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CLONE_NEWNET` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_DMA_SHARED_BUFFER=y`; Lockdown limits post-exploitation |
@@ -228,7 +228,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_E100=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
+| [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_X86_64=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | DisplayPort MST display hardware absent |
@@ -532,7 +532,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: TCP receive zerocopy (`CONFIG_INET`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 **Affected range**: 4.14–pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -672,7 +672,7 @@ On a HeartSuite Core Secure system in Secure Mode, the kernel enforces the progr
 **Status**: Affected
 **Component**: block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
@@ -703,22 +703,16 @@ Currently, we allocate a `nbytes`-sized kernel buffer and copy `nbytes` from use
 
 ## CVE-2024-38588
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: kprobes (`CONFIG_KPROBES`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — kprobe registration not in HS allowlist; Secure Mode blocks the exploitation trigger
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(ip, ip)` at line 1583 to obtain a `dyn_ftrace *rec` pointer without holding `ftrace_lock`. On a concurrent path, module unloading frees the pages that back ftrace records for module functions. If a module is removed between the `lookup_rec()` return and the `return rec->ip` dereference at line 1594, the pointer references freed memory. The race is reached through the kprobe registration path: `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()` — all called without the lock that serialises ftrace record lifetime.
 
-`CONFIG_KPROBES=y` is compiled in and HS 5.19.6 falls within the affected range.
-
-Once an exploit reaches root in userspace, Lockdown's constraints apply in full. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; at that point `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. An attacker who has escalated through this UAF cannot alter what the system will run, cannot install a persistent backdoor, and loses their access on the next reboot.
-
-Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_KPROBES=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No HeartSuite Core Secure production deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-40901
@@ -1283,18 +1277,16 @@ In the Realtek rtw88 802.11ac/ax wireless driver (`drivers/net/wireless/realtek/
 
 ## CVE-2024-56631
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: SCSI generic driver (`CONFIG_CHR_DEV_SG`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `/dev/sg*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
 **Affected range**: Linux ≤ 6.12-rc7
 **Upstream fix**: commit 4a9804207b58 ("scsi: sg: Fix UAF in sg_release()")
 
 In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 382 acquires `sdp->open_rel_lock` at line 391, then calls `kref_put(&sfp->f_ref, sg_remove_sfp)` at line 393. If that `kref_put` drops the last reference, `sg_remove_sfp` is invoked, which can free the `Sg_device` structure that `sdp` points to — including its embedded mutex. The subsequent `mutex_unlock(&sdp->open_rel_lock)` at line 404 then operates on freed memory, producing a KASAN `slab-use-after-free` in `lock_release`.
 
-HeartSuite Lockdown blocks the post-exploitation path: `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`) and all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`). An attacker who reaches root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-HeartSuite Secure Mode enforces an SPF allowlist in `hs_sandbox_caching.c` that applies equally to root. Reaching `sg_release()` requires an approved process to open a `/dev/sg*` device node and release it in a race window. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. Together, Lockdown and Secure Mode place this vulnerability in a contained environment where exploitation leads to no durable compromise.
+`CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No HeartSuite Core Secure production deployment includes raw SCSI access in the Secure Mode allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-56663
@@ -1533,16 +1525,14 @@ When the task management thread processes reply queues while the reset thread re
 
 ## CVE-2025-37979
 
-**Status**: Risk erased
-**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Status**: Not Affected — `CONFIG_SND_SOC_SC7280` not compiled
+**Component**: Qualcomm sc7280 ASoC driver (`CONFIG_SND_SOC_SC7280`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Environmental Score**: 0.0 — `CONFIG_SND_SOC_SC7280` not compiled in HS kernel
 
-Case values introduced in commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") cause out of bounds access in arrays of sc7280 driver data (e.g. in ca
+Commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") introduced switch-case values in the Qualcomm sc7280 machine driver that index into fixed-size arrays without bounds checking, causing out-of-bounds access when unexpected codec or CPU DAI link types are encountered during probe.
 
-`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_SND_SOC_SC7280` is not set in the HS 5.19.6 configuration. This driver targets the Qualcomm sc7280 SoC, an ARM-based mobile/embedded platform. It is not selected on x86_64 server builds. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2022-49934
@@ -1575,14 +1565,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38206
 
-**Status**: Affected
-**Component**: FAT/exFAT filesystem (`CONFIG_FAT_FS`)
+**Status**: Not Affected — `CONFIG_EXFAT_FS` not compiled
+**Component**: exFAT filesystem (`CONFIG_EXFAT_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_EXFAT_FS` not compiled in HS kernel
 
-The double free could happen in the following path. exfat_create_upcase_table() exfat_create_upcase_table() : return error
+In `fs/exfat/nls.c`, `exfat_load_upcase_table()` frees `sbi->vol_utbl` via `exfat_free_upcase_table()` on a checksum-mismatch error (line 706) without NULLing the pointer. If the subsequent `exfat_load_default_upcase_table()` call fails to allocate a replacement buffer, `sbi->vol_utbl` retains the stale freed pointer. A later cleanup path calling `exfat_free_upcase_table()` again frees the same allocation, causing a double free. The trigger is mounting a specially crafted exFAT volume.
 
-`CONFIG_FAT_FS=y` is compiled in and 5.19.6 falls within the affected range. FAT/exFAT is compiled in (used for the EFI system partition on Debian 11). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_EXFAT_FS` is not set in the HS 5.19.6 configuration. The exFAT filesystem driver — including `fs/exfat/nls.c` — is not compiled into the kernel image. Note that `CONFIG_FAT_FS=y` (VFAT/FAT32) is compiled for EFI system partition support, but that is a separate driver with no shared code. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-38239
@@ -1732,7 +1722,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.1 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 
 To prevent timing attacks, MACs need to be compared in constant time. Use the appropriate helper function for this.
 
@@ -1758,7 +1748,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: USB core (`CONFIG_USB`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
@@ -1784,7 +1774,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
 
 For scan loop must ensure that at least EXT4_FC_TAG_BASE_LEN space. If remain space less than EXT4_FC_TAG_BASE_LEN which will lead to out of bound read when mounting c
 
@@ -2229,14 +2219,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-3268
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: relay filesystem (`CONFIG_RELAY`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — debugfs relay access not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay_file_read_start_pos in kernel/relay.c in the relayfs.
 
-`CONFIG_RELAY=y` is compiled in and 5.19.6 falls within the affected range. The relay filesystem is used by kernel tracing tools (SystemTap, etc.). Access requires `CAP_SYS_ADMIN`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_RELAY=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and read access to relay channel files under debugfs — paths used exclusively by kernel tracing tools (SystemTap, etc.) that have no place in a production server allowlist. Without an allowlist entry covering debugfs relay access, the kernel refuses it. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2023-3567
@@ -2337,14 +2327,14 @@ While validating node ids in map_benchmark_ioctl(), node_possible() may be provi
 
 ## CVE-2024-39463
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
 
 Fix a use-after-free on dentry's d_fsdata fid list when a thread looks up a fid through dentry while another thread unlinks it: UAF thread:
 
-`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. 9P (Plan 9) filesystem is compiled in and used in virtualised environments for host-guest file sharing. On a bare-metal server without 9P mounts, this code path requires a process that mounts a 9P filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_9P_FS=y` is compiled in. Triggering this vulnerability requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 
 ## CVE-2024-40956
@@ -2453,14 +2443,14 @@ In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be e
 
 ## CVE-2024-56606
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: AF_PACKET sockets (`CONFIG_PACKET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CAP_NET_RAW` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 After sock_init_data() the allocated sk object is attached to the provided sock object.
 
-`CONFIG_PACKET=y` is compiled in and 5.19.6 falls within the affected range. AF_PACKET raw sockets are used by packet capture tools (`tcpdump`, etc.). Creating AF_PACKET sockets requires `CAP_NET_RAW`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No HeartSuite Core Secure production deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-21692
@@ -2513,26 +2503,26 @@ We can't use "skb" again after passing it to qdisc_enqueue(). This is basically 
 
 ## CVE-2023-53111
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: loop block device (`CONFIG_BLK_DEV_LOOP`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `/dev/loop*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronously when using asynchronous I/O unless memory allocation fails.
 
-`CONFIG_BLK_DEV_LOOP=y` is compiled in and 5.19.6 falls within the affected range. Loop devices are present on Debian 11 (used for snaps, container images, etc.). Exploiting this requires loop device operations with `CAP_SYS_ADMIN`. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering this vulnerability requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No HeartSuite Core Secure production workload uses loop devices — they are absent from the Secure Mode allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-37879
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
 
 In p9_client_write() and p9_client_read_once(), if the server incorrectly replies with success but a negative write/read count then we would consider written (nega
 
-`CONFIG_9P_FS=y` is compiled in and 5.19.6 falls within the affected range. 9P (Plan 9) filesystem is compiled in and used in virtualised environments for host-guest file sharing. On a bare-metal server without 9P mounts, this code path requires a process that mounts a 9P filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_9P_FS=y` is compiled in. Triggering this vulnerability requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 
 ## CVE-2025-37914
@@ -2699,14 +2689,14 @@ There is a possibility of buffer overflow in show_rcu_tasks_trace_gp_kthread() i
 
 ## CVE-2024-40958
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: network namespaces (`CONFIG_NET_NS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CLONE_NEWNET` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 Syzkaller hit a warning: refcount_t: addition on 0; use-after-free. WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
 
-`CONFIG_NET_NS=y` is compiled in and 5.19.6 falls within the affected range. Network namespaces are used by containers and process isolation. Creating network namespaces requires `CAP_SYS_ADMIN` (or user namespaces, which are disabled on the HS kernel). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_NET_NS=y` is compiled in. Creating a network namespace requires `CLONE_NEWNET` with `CAP_NET_ADMIN`. User namespaces (which would bypass the capability requirement) are disabled on the HS kernel. No HeartSuite Core Secure production service creates network namespaces — they are absent from the Secure Mode allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-41039
