@@ -10,7 +10,7 @@ toc: true
 
 <div class="cve-hero-statement">
 <p class="cve-hs-lead">HeartSuite Core Secure was designed to contain only what is necessary.<br>Everything else was never there to begin with.</p>
-<p class="cve-hs-stat"><strong>70</strong> high and critical CVEs — Effective Score <strong>0.0</strong>.</p>
+<p class="cve-hs-stat"><strong>{{< cve-stat type="neutralized" >}}</strong> high and critical CVEs — Effective Score <strong>0.0</strong>.</p>
 </div>
 
 This page provides complete transparency on every kernel CVE relevant to HeartSuite Core Secure — the precise status, the technical rationale, and the measured effective risk. Auditors and compliance teams can reference it directly when reviewing scanner output.
@@ -23,14 +23,14 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 <div class="row text-center g-4">
 <div class="col-md-4">
 <div class="cve-hero-card cve-hero-neutralized">
-<p class="cve-hero-number text-success">70</p>
+<p class="cve-hero-number text-success">{{< cve-stat type="neutralized" >}}</p>
 <p class="cve-hero-label">High &amp; Critical CVEs reduced to Effective Score <strong>0.0</strong></p>
 <p class="cve-hero-detail">Attack surface absent by design — the vulnerable code was never compiled in.</p>
 </div>
 </div>
 <div class="col-md-4">
 <div class="cve-hero-card cve-hero-contained">
-<p class="cve-hero-number text-warning">115</p>
+<p class="cve-hero-number text-warning">{{< cve-stat type="reachable" >}}</p>
 <p class="cve-hero-label">CVEs with reachable code paths</p>
 <p class="cve-hero-detail">Fully contained by Lockdown — no persistence, no allowlist changes, no survival after reboot.</p>
 </div>
@@ -80,8 +80,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-46673](#cve-2024-46673) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Adaptec aacraid RAID controller |
-| [CVE-2024-46746](#cve-2024-46746) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2024-46673](#cve-2024-46673) | Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_AACRAID` not set |
+| [CVE-2024-46746](#cve-2024-46746) | AMD SFH HID driver (`CONFIG_AMD_SFH_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AMD_SFH_HID` not set |
 | [CVE-2024-46747](#cve-2024-46747) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
 | [CVE-2024-46798](#cve-2024-46798) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
 | [CVE-2024-46849](#cve-2024-46849) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
@@ -787,10 +787,18 @@ On a HeartSuite system with an optical drive installed, Lockdown's constraints w
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-If skb_expand_head() returns NULL, skb has been freed and the associated dst/idev could also have been freed.
+In `net/ipv6/ip6_output.c`, `ip6_finish_output2()` saves `idev = ip6_dst_idev(dst)` at line 63. At line 72, `skb_expand_head(skb, hh_len)` makes room for the link-layer header; when allocation fails, `skb_expand_head()` frees the original `skb` and returns NULL. The `idev` pointer saved before the call now references memory associated with the freed `skb`. At line 74, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences the stale `idev` — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+
+Once an exploit reaches root in userspace, Lockdown's constraints apply in full. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; at that point `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. An attacker who has escalated through this UAF cannot alter what the system will run, cannot install a persistent backdoor, and loses their access on the next reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-44986
@@ -799,10 +807,18 @@ If skb_expand_head() returns NULL, skb has been freed and the associated dst/ide
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-If skb_expand_head() returns NULL, skb has been freed and associated dst/idev could also have been freed.
+In `net/ipv6/ip6_output.c`, `ip6_xmit()` saves `idev = ip6_dst_idev(dst)` at line 256. At line 271, `skb_expand_head(skb, head_room)` expands the buffer to accommodate the IPv6 header and IP options; when allocation fails, the original `skb` is freed and NULL is returned. The `idev` pointer is now stale. At line 273, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences freed memory — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+
+Once an exploit reaches root in userspace, Lockdown's constraints apply in full. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; at that point `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. An attacker who has escalated through this UAF cannot alter what the system will run, cannot install a persistent backdoor, and loses their access on the next reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-44987
@@ -811,38 +827,46 @@ If skb_expand_head() returns NULL, skb has been freed and associated dst/idev co
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-syzbot reported an UAF in ip6_send_skb() [1] After ip6_local_out() has returned, we no longer can safely dereference rt, unless we hold rcu_read_lock().
+In `net/ipv6/ip6_output.c`, `ip6_send_skb()` at line 1943 saves `rt = (struct rt6_info *)skb_dst(skb)` without holding `rcu_read_lock()`. At line 1946, `ip6_local_out()` transmits the packet and may consume the `skb`, releasing the associated route. If `ip6_local_out()` returns a non-zero error code, lines 1951–1952 dereference `rt->rt6i_idev` — but `rt` is an RCU-protected pointer and may be freed before the dereference. Holding `rcu_read_lock()` for the duration of the `rt` dereference is required.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+
+Once an exploit reaches root in userspace, Lockdown's constraints apply in full. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; at that point `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. An attacker who has escalated through this UAF cannot alter what the system will run, cannot install a persistent backdoor, and loses their access on the next reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-46673
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — driver not compiled in
+**Component**: Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-aac_probe_one() calls hardware-specific init functions through the aac_driver_ident::init pointer, all of which eventually call down to aac_init_adapter().
+`aac_probe_one()` at `drivers/scsi/aacraid/linit.c:1577` calls the hardware-specific `init` function pointer from `aac_driver_ident`, which eventually calls `aac_init_adapter()` at `comminit.c:510`. On failure, `aac_init_adapter()` frees `dev->queues` internally at line 644 (on `aac_comm_init()` failure) or line 651 (on `aac_fib_setup()` failure) before returning NULL. The `aac_probe_one()` error path at `linit.c:1798` then calls `kfree(aac->queues)` a second time on the same pointer — a double-free.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Adaptec aacraid RAID controller driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_AACRAID` is not set in the HS 5.19.6 configuration. The Adaptec aacraid RAID controller driver — including the vulnerable `aac_probe_one()` and `aac_init_adapter()` paths — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-46746
 
-**Status**: Affected — hardware absent on server deployments
-**Component**: HID subsystem (`CONFIG_HID`)
+**Status**: Not Affected — driver not compiled in
+**Component**: AMD Sensor Fusion Hub HID driver (`CONFIG_AMD_SFH_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-HID driver callbacks aren't called anymore once hid_destroy_device() has been called.
+In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `devm_kfree(dev, cl_data->report_descr[i])` at lines 259 and 276 to free the HID report descriptor before `hid_destroy_device()` at line 178. The `amdtp_hid_parse()` callback at `amd_sfh_hid.c:32` accesses `cli_data->report_descr[hid_data->index]` during device initialisation or tear-down. If the descriptor is freed before `hid_destroy_device()` has completed its disconnect sequence — and the callback fires in that window — it dereferences freed memory.
 
-`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_AMD_SFH_HID` is not set in the HS 5.19.6 configuration. The AMD Sensor Fusion Hub HID driver — including the vulnerable `amd_sfh_client.c` cleanup path and `amdtp_hid_parse()` callback — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-46747
