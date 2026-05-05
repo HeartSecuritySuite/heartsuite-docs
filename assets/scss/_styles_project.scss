@@ -41,6 +41,46 @@ main.td-main {
   }
 }
 
+// CVE hero stat cards — large, quiet, generous breathing room
+.cve-hero {
+  padding: 2rem 0 3rem;
+}
+
+.cve-hero-card {
+  border: none;
+  border-top: 3px solid var(--bs-secondary-color);
+  border-radius: 0;
+  background: transparent;
+  padding: 2rem 1.25rem 3rem;
+
+  &.cve-hero-neutralized { border-top-color: var(--bs-success); }
+  &.cve-hero-contained   { border-top-color: var(--bs-warning); }
+  &.cve-hero-compiled    { border-top-color: var(--bs-secondary-color); }
+}
+
+.cve-hero-number {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.cve-hero-label {
+  font-size: 0.925rem;
+  line-height: 1.55;
+  color: var(--bs-secondary-color);
+  margin-bottom: 0.5rem;
+}
+
+.cve-hero-detail {
+  font-size: 0.825rem;
+  line-height: 1.55;
+  color: var(--bs-secondary-color);
+  font-style: italic;
+  margin-bottom: 0;
+}
+
 // Example of color tuning
 
 .td-box--primary {

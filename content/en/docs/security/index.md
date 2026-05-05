@@ -14,28 +14,27 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 
 ## CVE Status
 
-<div class="row my-4 text-center">
+<div class="cve-hero">
+<div class="row text-center g-4">
 <div class="col-md-4">
-<div class="card border-success mb-3">
-<div class="card-body">
-<p class="display-4 fw-bold text-success mb-0">70</p>
-<p class="card-text text-muted">HIGH/CRITICAL CVEs<br><strong>reduced to Effective Score 0.0</strong><br><small>attack surface absent by design</small></p>
-</div>
-</div>
-</div>
-<div class="col-md-4">
-<div class="card border-warning mb-3">
-<div class="card-body">
-<p class="display-4 fw-bold text-warning mb-0">115</p>
-<p class="card-text text-muted">CVEs with code path reachable<br><strong>Lockdown limits post-exploitation</strong><br><small>no persistence · no allowlist changes · no reboot survival</small></p>
-</div>
+<div class="cve-hero-card cve-hero-neutralized">
+<p class="cve-hero-number text-success">70</p>
+<p class="cve-hero-label">High &amp; Critical CVEs reduced to Effective Score <strong>0.0</strong></p>
+<p class="cve-hero-detail">Attack surface absent by design — the vulnerable code was never compiled in.</p>
 </div>
 </div>
 <div class="col-md-4">
-<div class="card border-secondary mb-3">
-<div class="card-body">
-<p class="display-4 fw-bold text-secondary mb-0">1,000+</p>
-<p class="card-text text-muted">additional CVEs<br><strong>Not Applicable — subsystem not compiled</strong><br><small>zero attack surface by kernel configuration</small></p>
+<div class="cve-hero-card cve-hero-contained">
+<p class="cve-hero-number text-warning">115</p>
+<p class="cve-hero-label">CVEs with reachable code paths</p>
+<p class="cve-hero-detail">Fully contained by Lockdown — no persistence, no allowlist changes, no survival after reboot.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="cve-hero-card cve-hero-compiled">
+<p class="cve-hero-number text-secondary">1,000+</p>
+<p class="cve-hero-label">Additional CVEs</p>
+<p class="cve-hero-detail">Not Applicable — entire subsystems never compiled into the kernel.</p>
 </div>
 </div>
 </div>
@@ -72,7 +71,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-40978](#cve-2024-40978) | QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QEDI` not set |
 | [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
-| [CVE-2024-42136](#cve-2024-42136) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; CD-ROM drive absent on server |
+| [CVE-2024-42136](#cve-2024-42136) | CD-ROM subsystem (`CONFIG_CDROM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; CD-ROM drive absent on server |
 | [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
@@ -719,30 +718,30 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-40901
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — driver not compiled in
+**Component**: LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-There is a potential out-of-bounds access when using test_bit() on a single word.
+In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the `pd_handles` bitmap is allocated as `(ioc->facts.MaxDevHandle / 8)` bytes (rounded up) via `kzalloc()` at `mpt3sas_base.c:8312`. The `test_bit()` function accesses bitmaps in `unsigned long`-sized units (8 bytes on 64-bit kernels). When the allocation is smaller than `sizeof(unsigned long)` — for example a single byte when `MaxDevHandle` is 8 — calls such as `test_bit(sas_device->handle, ioc->pd_handles)` at line 1942 and `test_bit(handle, ioc->pd_handles)` at line 4106 read 7 bytes beyond the heap allocation, producing a slab out-of-bounds read.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the LSI/Avago mpt3sas SAS/NVMe HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_MPT3SAS` is not set in the HS 5.19.6 configuration. The LSI/Avago mpt3sas SAS/SATA/NVMe HBA driver — including the vulnerable `mpt3sas_scsih.c` bitmap access paths — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-40978
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — driver not compiled in
+**Component**: QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-The qedi_dbg_do_not_recover_cmd_read() function invokes sprintf() directly on a __user pointer, which results into the crash.
+In `drivers/scsi/qedi/qedi_debugfs.c`, `qedi_dbg_do_not_recover_cmd_read()` at line 128 calls `sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover)` where `buffer` is the `char __user *` argument passed directly from the debugfs file read handler. `sprintf()` writes to a kernel virtual address rather than staging data in a kernel buffer first; on a system with SMAP (Supervisor Mode Access Prevention) enabled, the kernel write to a userspace pointer faults immediately and panics the kernel. The correct fix is to stage into a kernel buffer and use `simple_read_from_buffer()` to copy to userspace.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qedi iSCSI HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_QEDI` is not set in the HS 5.19.6 configuration. The QLogic qedi iSCSI HBA driver — including the vulnerable `qedi_dbg_do_not_recover_cmd_read()` debugfs handler — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-41092
@@ -751,26 +750,30 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-CI has been sporadically reporting the following issue triggered by igt@i915_selftest@live@hangcheck on ADL-P and similar machines: <6> [414.049203] i915: Running intel_
+In the i915 GT reset path, `intel_gt_handle_error()` at `intel_reset.c:1309` calls `synchronize_srcu_expedited()` at line 1285 on `gt->reset.backoff_srcu` to drain concurrent SRCU readers before the GPU reset proceeds. The GuC engine failure worker (`reset_fail_worker_func` at `intel_guc_submission.c:4485`) queues via `queue_work()` at line 4545 and calls `intel_gt_handle_error()` asynchronously. A race between this deferred reset path and the hangcheck heartbeat — as reproduced by `igt@i915_selftest@live@hangcheck` on ADL-P (GuC submission) — can reach `reset_prepare_engine()` at `intel_reset.c:743` and the WW-mutex backoff context via `i915_gem_ww_ctx_backoff()` (`i915_gem_ww.c:42`) after the owning structure has already been freed, producing a use-after-free.
 
-`CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes may not be created and the GPU context entry points are unreachable. This follows the established pattern for i915 CVEs — see CVE-2022-4139.
+`CONFIG_DRM_I915=y` is compiled in and HS 5.19.6 falls within the affected range. No Intel integrated or discrete display GPU is present on a standard Debian 11 server deployment. Without display hardware the DRM device nodes are not created, the GPU submission paths are not initialised, and the GuC engine failure worker that triggers this race is never scheduled. The vulnerable code path cannot be reached.
 
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+On a HeartSuite system with this hardware installed, Lockdown's constraints would still apply after any escalation: `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. Secure Mode independently prevents any unauthorised binary — including a backdoor dropped post-exploit — from executing regardless of file ownership or capability bits.
 
 
 ## CVE-2024-42136
 
 **Status**: Affected — hardware absent on server deployments
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Component**: CD-ROM subsystem (`CONFIG_CDROM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — CD-ROM drive absent on server
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-When running syzkaller with the newly reintroduced signed integer wrap sanitizer we encounter this splat: [  366.015950] UBSAN: signed-integer-overflow in .
+In `drivers/cdrom/cdrom.c`, `cdrom_read_cd()` at line 2080 computes `cgc->buflen = blocksize * nblocks` and `cdrom_read_block()` at line 2104 computes `cgc->buflen = blksize * nblocks`. Both operands are `int` parameters, so the multiplication is evaluated as a signed 32-bit expression before being stored in the `unsigned int buflen` field of `struct packet_command`. When syzkaller passes a large `nblocks` value — for example, greater than 912,000 with the common `CD_FRAMESIZE_RAW = 2352` block size — the intermediate product exceeds `INT_MAX`, signed integer overflow occurs, and an incorrect (smaller) buffer length is stored in `cgc->buflen`.
 
-`CONFIG_SCSI=y` is compiled in. This bug is in the CD-ROM block driver (`drivers/cdrom/cdrom.c`). No optical drive is present on a production server deployment.
+`CONFIG_CDROM=y` is compiled in and HS 5.19.6 falls within the affected range. No optical drive is present on a standard Debian 11 server deployment. Without this hardware the CD-ROM device nodes are not created and the ioctl paths that call `cdrom_read_cd()` and `cdrom_read_block()` are never reached. The vulnerable code path cannot be triggered.
 
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+On a HeartSuite system with an optical drive installed, Lockdown's constraints would still apply after any escalation: `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. Secure Mode independently prevents any unauthorised binary — including a backdoor dropped post-exploit — from executing regardless of file ownership or capability bits.
 
 
 ## CVE-2024-44985
