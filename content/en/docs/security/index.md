@@ -50,7 +50,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 
 | CVE | Component | Base Score | Effective Score | Status |
 |-----|-----------|-----------|-----------------|--------|
-| [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Affected — trigger not present in default configuration |
+| [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Effective Score 0.0 — trigger not present in default configuration |
 | [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-23193](#cve-2026-23193) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
@@ -746,7 +746,7 @@ On a HeartSuite system with an optical drive installed, Lockdown's constraints w
 
 In `net/ipv6/ip6_output.c`, `ip6_finish_output2()` saves `idev = ip6_dst_idev(dst)` at line 63. At line 72, `skb_expand_head(skb, hh_len)` makes room for the link-layer header; when allocation fails, `skb_expand_head()` frees the original `skb` and returns NULL. The `idev` pointer saved before the call now references memory associated with the freed `skb`. At line 74, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences the stale `idev` — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this UAF cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -764,7 +764,7 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 In `net/ipv6/ip6_output.c`, `ip6_xmit()` saves `idev = ip6_dst_idev(dst)` at line 256. At line 271, `skb_expand_head(skb, head_room)` expands the buffer to accommodate the IPv6 header and IP options; when allocation fails, the original `skb` is freed and NULL is returned. The `idev` pointer is now stale. At line 273, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences freed memory — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this UAF cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -782,7 +782,7 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 In `net/ipv6/ip6_output.c`, `ip6_send_skb()` at line 1943 saves `rt = (struct rt6_info *)skb_dst(skb)` without holding `rcu_read_lock()`. At line 1946, `ip6_local_out()` transmits the packet and may consume the `skb`, releasing the associated route. If `ip6_local_out()` returns a non-zero error code, lines 1951–1952 dereference `rt->rt6i_idev` — but `rt` is an RCU-protected pointer and may be freed before the dereference. Holding `rcu_read_lock()` for the duration of the `rt` dereference is required.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this UAF cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -884,7 +884,7 @@ If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x
 
 When ext4 searches an inlined directory, `ext4_find_inline_entry()` at `fs/ext4/inline.c:1709` calls `ext4_get_inline_xattr_pos()` to locate the extended-attribute portion of the inline data. At `inline.c:1077`, that function returns `IFIRST(header) + le16_to_cpu(entry->e_value_offs)` without validating that the offset stays within the inode body buffer. A crafted block device can supply an `e_value_offs` that pushes the resulting pointer out of bounds; that pointer is then passed directly to `ext4_search_dir()` at line 1712, causing an OOB memory access.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -914,7 +914,7 @@ The kref_put() function will call nport->release if the refcount drops to zero. 
 
 In `ext4_ext_try_to_merge_up()` at `fs/ext4/extents.c:1871`, `brelse(path[1].p_bh)` releases the depth-1 extent block buffer but leaves `path[1].p_bh` non-NULL. When the caller subsequently runs cleanup via `ext4_ext_drop_refs()`, it iterates the path and calls `brelse()` on every non-NULL `p_bh`, releasing the same buffer head a second time — a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -932,7 +932,7 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 In `ext4_ext_insert_extent()` at `fs/ext4/extents.c:2094`, the call to `ext4_ext_create_new_leaf()` may internally call `ext4_ext_grow_indepth()`, which reallocates the `path` array via `kcalloc()`. After the call returns, the caller continues using the original `path` pointer — now stale — causing a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -950,7 +950,7 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 In `ext4_split_extent_at()` at `fs/ext4/extents.c:3178`, the function saves the path pointer as `path = *ppath`. At line 3248 it calls `ext4_ext_insert_extent(handle, inode, ppath, ...)`, which may reallocate `*ppath`, freeing the memory that `path` still points to. Subsequent uses of `path` at lines 3281, 3282, 3301, and 3304 — in both the success and error-recovery branches — dereference the now-freed pointer, constituting a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -968,7 +968,7 @@ On a HeartSuite Core Secure deployment, the SPF allowlist (Secure Mode) and Lock
 
 `ext4_find_extent()` at `fs/ext4/extents.c:874` takes an optional `**orig_path` argument allowing callers to reuse an existing path allocation. On two code paths it frees the old allocation: when the tree depth has grown beyond the cached maximum (lines 898–901, `kfree(path); *orig_path = NULL`) and on any I/O or corruption error (lines 953–957, same sequence). Callers that save a local `path = *ppath` copy before invoking a sub-function that internally calls `ext4_find_extent()` — such as `ext4_split_convert_extents()` — retain a pointer to the freed memory. Subsequent use of that stale pointer constitutes a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
@@ -1034,7 +1034,7 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 
 `ip6_fragment()` at `net/ipv6/ip6_output.c:831` handles IPv6 packet fragmentation. The function and its callees access RCU-protected routing and neighbor table entries; a prior commit added an assumption that all callers hold the RCU read lock at entry. For the IPv4-style fast path via `ip6_finish_output2()` this holds — `rcu_read_lock_bh()` is acquired at line 119. However the UDP egress path (`ip6_send_skb()` at line 1940 → `ip6_local_out()` → `ip6_output()` → `ip6_finish_output()` → `ip6_fragment()`) does not guarantee the lock is held before entry into the fragmentation code. Under concurrent route or neighbor table modification this produces a use-after-free. Syzbot confirmed the race.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
 
 `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking `FS_IOC_SETFLAGS` at `kernel/ioctl.c:561–569` and all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM. An attacker who escalates through this CVE cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
