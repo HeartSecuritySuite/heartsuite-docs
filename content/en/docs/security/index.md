@@ -198,18 +198,18 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 | [CVE-2022-49029](#cve-2022-49029) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | IBM Power Management Extension hardware absent |
 | [CVE-2024-50127](#cve-2024-50127) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
+| [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2024-53057](#cve-2024-53057) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-56606](#cve-2024-56606) | AF_PACKET sockets (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_PACKET=y`; Lockdown limits post-exploitation |
 | [CVE-2025-21692](#cve-2025-21692) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49892](#cve-2022-49892) | ftrace / function tracer (`CONFIG_FTRACE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_FTRACE=y`; Lockdown limits post-exploitation |
+| [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
+| [CVE-2022-49892](#cve-2022-49892) | ftrace / function tracer (`CONFIG_FTRACE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49921](#cve-2022-49921) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2023-53111](#cve-2023-53111) | loop block device (`CONFIG_BLK_DEV_LOOP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_DEV_LOOP=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37914](#cve-2025-37914) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
+| [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2025-38369](#cve-2025-38369) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
 | [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Corsair Commander Pro hardware absent |
 | [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
@@ -2429,14 +2429,14 @@ In 'taprio_change()', 'admin' pointer may become dangling due to sched switch / 
 
 ## CVE-2024-50131
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 strlen() returns a string length excluding the null byte. If the string length equals to the maximum buffer length, the buffer will have no space for the NULL t
 
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2024-53057
@@ -2477,26 +2477,26 @@ Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an 
 
 ## CVE-2022-49799
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In register_synth_event(), if set_synth_event_print_fmt() failed, then both trace_remove_event_call() and unregister_trace_event() will be called, which means the trace_eve
 
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2022-49892
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ftrace / function tracer (`CONFIG_FTRACE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore that perf had registered two ops with the same content successively, both dynamic.
 
-`CONFIG_FTRACE=y` is compiled in and 5.19.6 falls within the affected range. ftrace is the kernel function tracer. Configuring ftrace requires `CAP_SYS_ADMIN` and is not active in normal production operation. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_FTRACE=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2022-49921
@@ -2561,14 +2561,14 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 
 ## CVE-2025-37923
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 syzbot reported this bug: ================================================================== BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
 
-`CONFIG_TRACING=y` is compiled in and 5.19.6 falls within the affected range. Kernel tracing requires root or `CAP_SYS_ADMIN` to configure. On a production server, tracing is not normally active. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ## CVE-2025-38369
