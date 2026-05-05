@@ -42,7 +42,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 <div class="cve-hero-card cve-hero-compiled">
 <p class="cve-hero-number text-secondary">1,000+</p>
 <p class="cve-hero-label">Additional CVEs</p>
-<p class="cve-hero-detail">Subsystems never compiled into the kernel.</p>
+<p class="cve-hero-detail">Kernel features never compiled in.</p>
 </div>
 </div>
 </div>
@@ -70,7 +70,7 @@ Across every reachable CVE in this document, the answer is the same — and shor
 
 - **Sensitive-data disclosure during the live session.** A root attacker can read disk content while the session is active. Confidentiality during the breach is the role of disk encryption, not Secure Mode + Lockdown.
 - **Hardware-level and pre-boot threats.** Firmware compromise, baseboard management exploits, and physical attacks on the boot chain are outside the HS attack surface.
-- **Misconfigured APOs.** Operators who allowlist tools they should not — `modprobe`, `bpftool`, networked exfiltration utilities — move outcomes from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-environmental-scores-and-deployment-tuning).
+- **Misconfigured APOs.** Operators who allowlist tools they should not — `modprobe`, `bpftool`, networked exfiltration utilities — move outcomes from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-effective-scores-and-deployment-tuning).
 
 > **The reason the answer is the same for every reachable CVE in this document is that HeartSuite's enforcement is structural, not state-based.** Most kernel hardening products gate enforcement on a state variable that an attacker with arbitrary kernel write can clear in a single instruction. Secure Mode's allowlist is consulted on every `execve` regardless of any state variable. There is no kill-switch.
 
@@ -279,7 +279,7 @@ Per-CVE entries below name the bug, then state which of these two layers limits 
 
 Most kernel hardening products gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. HeartSuite Core Secure does not work that way. **Secure Mode's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined anywhere in this document, the system continues to refuse new code execution. That is the property that makes the per-CVE backstops below short, calm, and identical: the answer is the same for every CVE, because the answer is structural.
 
-##### Note on Environmental Scores and deployment tuning
+##### Note on Effective Scores and deployment tuning
 
 The Environmental Scores published in this document assume a **worst-case allowlist composition** — i.e., that an operator's Secure Mode APO contains common utilities including networked tools (`curl`, `wget`, `ssh` outbound, `nc`, `python` with sockets, etc.). Under that assumption, an attacker who reaches root via one of the Affected CVEs retains a confidentiality impact of HIGH (`MC:H`) because they can read sensitive data and pipe it out via an already-allowlisted networked utility. This is the conservative, deployment-agnostic floor.
 
@@ -288,7 +288,7 @@ Operators running tighter allowlists may legitimately credit a lower MC. Specifi
 - **APO contains zero outbound-networking utilities** (no `curl`, `wget`, outbound `ssh`, `nc`, scripting languages with socket access, etc.): `MC:L` becomes defensible — the attacker can read on disk but has no in-band exfiltration path within Secure Mode's allowlist. Out-of-band (physical-console, side-channel) exfiltration remains possible; that's why the credit is L, not N.
 - **APO contains zero process-mutation utilities** (no `kill`, `pkill`, init-system control surfaces beyond what HS itself uses): `MA:L` becomes defensible for the disruption-via-userspace component, though kernel-level availability impact (panics, OOM via syscalls) is independent of allowlist composition and keeps `MA:H` for any CVE that grants kernel-context primitives.
 
-These are deployment-specific reductions and are **not** baked into the published Environmental Scores in this document. An operator who has hardened their APO accordingly can recompute their own deployment-specific score by adjusting `MC` and/or `MA` in the modified vector. The published scores are correct for any deployment that has not affirmatively confirmed the tighter conditions above.
+These are deployment-specific reductions and are **not** baked into the published Effective Scores in this document. An operator who has hardened their APO accordingly can recompute their own deployment-specific score by adjusting `MC` and/or `MA` in the modified vector. The published scores are correct for any deployment that has not affirmatively confirmed the tighter conditions above.
 
 ##### Note on Risk-erased entries that depend on APO composition
 
@@ -299,7 +299,7 @@ Several Risk-erased entries below justify their 0.0 Effective Score with phrasin
 - `bpftool`, `trace-cmd`, `perf`, debugfs/tracefs writers — kernel instrumentation. Allowlisting reverts the kprobe / tracing / perf CVE cluster (CVE-2024-38588 etc.) to **Affected**.
 - `dmsetup`, raw block-device tools, `cryptsetup` mappings created post-boot — block-layer mutation. Same shape.
 
-Operators running development, debug, or instrumentation-heavy deployments who legitimately need any of the above should treat the corresponding Risk-erased entries in this document as **Affected** for their environment, and apply the standard Affected backstop logic (Secure Mode's allowlist still refuses *unknown* binaries, but the now-allowlisted utility is itself the trigger). The "Risk erased" classifications below are correct for production deployments; they are not universal.
+Operators running development, debug, or instrumentation-heavy deployments who legitimately need any of the above should treat the corresponding Risk-erased entries in this document as **Affected** for their environment, and apply the standard Affected backstop logic (Secure Mode's allowlist still refuses *unknown* binaries, but the now-allowlisted utility is itself the trigger). The "Risk erased" classifications below are correct for HeartSuite Core Secure deployments; they are not universal.
 
 ### CVE-2026-31431
 
@@ -321,7 +321,7 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 **Status**: Effective Score 0.0 — trigger not present in default configuration
 **Component**: nf_reject_ipv6 — IPv6 netfilter TCP RST generation (`CONFIG_NF_REJECT_IPV6`, `CONFIG_IP6_NF_TARGET_REJECT`)  
 **Base Score**: 9.1 CRITICAL (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H)  
-**Environmental Score**: 0.0 — trigger not present; HeartSuite installs no ip6tables REJECT rules  
+**Effective Score**: 0.0 — trigger not present; HeartSuite installs no ip6tables REJECT rules  
 **Upstream fix**: Linux 4.19.323, 5.4.285, 5.10.227, 5.15.168, 6.1.113, 6.6.54, 6.10.13, 6.11.2 (5.19 branch is EOL; no backport)
 
 This CVE describes an information disclosure in the IPv6 netfilter TCP reset path. When the kernel sends a TCP RST packet in response to a connection rejected by an ip6tables rule, `nf_reject_ip6_tcphdr_put()` allocates a TCP header via `skb_put()` without zeroing the buffer. The function then writes every field in the header explicitly except the four reserved bits (`th->res1`) in byte 12. Those bits retain whatever value was in the allocated kernel memory region. The RST packet is sent with that uninitialized content on the wire.
@@ -341,7 +341,7 @@ The result is a two-layer guarantee: Secure Mode prevents the trigger from being
 **Status**: Risk erased
 **Component**: mac80211 — 802.11 wireless stack (`CONFIG_MAC80211`)  
 **Base Scores**: CVE-2022-42719: 8.8 HIGH (AV:A); CVE-2022-41674: 8.1 HIGH (AV:A); CVE-2022-42720: 7.8 HIGH (AV:A)  
-**Environmental Score**: 0.0 — no WiFi hardware present; attack vector (frame injection via wireless NIC) has no path to execution  
+**Effective Score**: 0.0 — no WiFi hardware present; attack vector (frame injection via wireless NIC) has no path to execution  
 **Affected range**: Linux 5.19.x before 5.19.16  
 **Upstream fix**: Linux 5.4.218–219, 5.10.148–149, 5.15.74, 5.19.16, 6.0.2
 
@@ -363,7 +363,7 @@ Secure Mode adds a further constraint that runs independently of Lockdown: every
 **Status**: Risk erased
 **Component**: ALSA PCM — in-kernel sound subsystem (`CONFIG_SND`)  
 **Base Score**: 7.9 HIGH (AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H)  
-**Environmental Score**: 0.0 — no audio hardware present; no `/dev/snd` devices; ioctl path unreachable  
+**Effective Score**: 0.0 — no audio hardware present; no `/dev/snd` devices; ioctl path unreachable  
 **Affected range**: Linux 5.16 through 6.1.5  
 **Upstream fix**: Linux 4.14.303, 4.19.270, 5.4.229, 5.10.163, 5.15.88, 6.1.6 (5.19 branch is EOL; no backport)
 
@@ -381,7 +381,7 @@ Secure Mode adds a further constraint that runs independently of Lockdown: every
 **Status**: Risk erased
 **Component**: i915 GPU driver (`CONFIG_DRM_I915`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
-**Environmental Score**: 0.0 — no i915 GPU present; GPU context entry point unreachable  
+**Effective Score**: 0.0 — no i915 GPU present; GPU context entry point unreachable  
 **Affected range**: Linux 5.16 through 6.0.10  
 **Upstream fix**: Linux 5.4.226, 5.10.157, 5.15.81, 6.0.11 (5.19 branch is EOL; no backport)
 
@@ -396,7 +396,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 **Status**: Affected  
 **Component**: io_uring — asynchronous I/O subsystem (`CONFIG_IO_URING`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
-**Environmental Score**: 7.1–7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
+**Effective Score**: 7.1–7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
 **Affected ranges**: CVE-2023-2236: 5.19 through 6.0.10; CVE-2022-3910: 5.18 through 5.19.10  
 **Upstream fix**: CVE-2023-2236: 6.0.11; CVE-2022-3910: 5.19.11 (5.19 branch is EOL for CVE-2023-2236; CVE-2022-3910 fix was in-branch but 5.19.6 predates it)
 
@@ -405,22 +405,22 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 - **CVE-2023-2236** — double `fput()` in the `io_install_fixed_file()` path. When an async open operation installs a fixed file and encounters an error, `io_install_fixed_file()` calls `fput(file)` at its error label; the caller then calls `fput(file)` a second time. The file's reference count reaches zero while the object is still referenced, producing a use-after-free.
 - **CVE-2022-3910** — improper reference count update in io_uring's fixed file handling that leads to a use-after-free and local privilege escalation.
 
-`CONFIG_IO_URING=y` is compiled in. The `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in. The `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
-These constraints are why the Environmental Score reflects a reduced MI (High→Low): root cannot modify the allowlist, cannot install persistent backdoors, and cannot survive a reboot. Confidentiality and Availability impacts remain High, reflecting that an attacker with a live root session can still read data and disrupt services within the bounds of already-permitted processes.
+These constraints are why the Effective Score reflects a reduced MI (High→Low): root cannot modify the allowlist, cannot install persistent backdoors, and cannot survive a reboot. Confidentiality and Availability impacts remain High, reflecting that an attacker with a live root session can still read data and disrupt services within the bounds of already-permitted processes.
 
-A more sophisticated exploit could use the kernel use-after-free to directly corrupt kernel data structures before surfacing in userspace. In that scenario Lockdown's API-level restrictions are not the binding constraint — the corruption happens below the layer where those checks operate. This is why the Environmental Score does not reach 0.0: the io_uring path is reachable by any local user, and pre-userspace kernel corruption is outside the scope of what Lockdown addresses.
+A more sophisticated exploit could use the kernel use-after-free to directly corrupt kernel data structures before surfacing in userspace. In that scenario Lockdown's API-level restrictions are not the binding constraint — the corruption happens below the layer where those checks operate. This is why the Effective Score does not reach 0.0: the io_uring path is reachable by any local user, and pre-userspace kernel corruption is outside the scope of what Lockdown addresses.
 
 ### CVE-2024-0775
 
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 6.7 MEDIUM (AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable
+**Effective Score**: 0.0 — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable
 **Affected range**: kernels through 6.7.2, 6.6.15, 6.1.79, 5.15.148, 5.10.211, 5.4.270, 4.19.308 (5.19 branch is EOL; no backport)
 **Upstream fix**: Linux 6.7.3, 6.6.16, 6.1.80, 5.15.149, 5.10.212, 5.4.271, 4.19.309
 
@@ -434,7 +434,7 @@ This CVE describes a use-after-free in the `__ext4_remount()` error path in `fs/
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present; WoWLAN path unreachable
+**Effective Score**: 0.0 — no WiFi NIC present; WoWLAN path unreachable
 **Affected range**: kernels through 6.7.3, 6.6.18, 6.1.81, 5.15.150, 5.10.214, 5.4.273, 4.19.311 (5.19 branch is EOL; no backport)
 **Upstream fix**: Linux 6.7.4, 6.6.19, 6.1.82, 5.15.151, 5.10.215, 5.4.274, 4.19.312
 
@@ -453,13 +453,13 @@ Secure Mode adds a further constraint that runs independently of Lockdown: every
 **Status**: Affected
 **Component**: kernel crypto framework — scomp interface (`CONFIG_CRYPTO`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: kernels prior to stable fixes in the 6.7.x, 6.6.x, 6.1.x, 5.15.x, 5.10.x, and 5.4.x series (5.19 branch is EOL; no backport)
 **Upstream fix**: merged in Linux 6.8-rc; backported across active stable series
 
 This CVE describes a buffer overflow in the kernel software compression (`scomp`) interface in `crypto/scompress.c`. The `scomp_acomp_comp_decomp()` function uses a per-CPU scratch buffer of `SCOMP_SCRATCH_SIZE` bytes as working space. If the caller provides a `req->dst` scatter list smaller than `SCOMP_SCRATCH_SIZE`, the function still caps `req->dlen` to `SCOMP_SCRATCH_SIZE` and then copies the full output — up to that size — into `req->dst` via `scatterwalk_map_and_copy()`. No check verifies that `req->dst` can hold `req->dlen` bytes before the copy. A caller who controls `req->dst` and triggers a compression or decompression that fills the scratch buffer can write beyond the end of the destination scatter list.
 
-`CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. The kernel crypto framework is used by IPsec, dm-crypt, TLS, and other subsystems — all active on a Debian 11 server. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. The kernel crypto framework is used by IPsec, dm-crypt, TLS, and other subsystems — all active on a Debian 11 server. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -470,7 +470,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ALSA AICA Dreamcast sound driver (`CONFIG_SND_AICA`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in; no code path exists
+**Effective Score**: 0.0 — driver not compiled in; no code path exists
 **Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport)
 
 This CVE describes a use-after-free caused by a circular scheduling race between `dreamcastcard->timer` and `spu_dma_work` in the AICA Yamaha sound chip driver (`sound/sh/aica.c`). The timer callback `aica_period_elapsed()` schedules `spu_dma_work` via `schedule_work()`; the work handler then re-arms the timer via `mod_timer()`. `spu_begin_dma()` independently schedules the work and arms the timer in the same call. These two execution paths can race against each other and against card teardown, producing a use-after-free on the `snd_card_aica` object while the timer or work item is still pending.
@@ -483,7 +483,7 @@ This CVE describes a use-after-free caused by a circular scheduling race between
 **Status**: Risk erased
 **Component**: ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `EXT4_IOC_MOVE_EXT` ioctl only reached by defragmentation tools; none in HS allowlist
+**Effective Score**: 0.0 — `EXT4_IOC_MOVE_EXT` ioctl only reached by defragmentation tools; none in HS allowlist
 **Affected range**: kernels prior to stable fixes in the 6.8.x, 6.7.x, 6.6.x, 6.1.x, 5.15.x, 5.10.x, and 5.4.x series (5.19 branch is EOL; no backport)
 **Upstream fix**: merged in Linux 6.8; backported across active stable series
 
@@ -497,7 +497,7 @@ This CVE describes a use-after-free in `ext4_move_extents()` in `fs/ext4/move_ex
 **Status**: Risk erased
 **Component**: UFS host controller driver (`CONFIG_SCSI_UFSHCD`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in; no code path exists
+**Effective Score**: 0.0 — driver not compiled in; no code path exists
 **Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport)
 
 This CVE describes an out-of-bounds memory access in the UFS host controller driver's MCQ (Multi-Circular Queue) mode. When `task_tag >= 32` and `sizeof(unsigned int) == 4`, the expression `1U << task_tag` is undefined behaviour in C — shifting a 32-bit value by 32 or more positions. In practice this produces incorrect bitmask values in the per-queue task tracking, allowing the computed mask to index outside the valid task range and corrupt adjacent memory.
@@ -510,7 +510,7 @@ This CVE describes an out-of-bounds memory access in the UFS host controller dri
 **Status**: Risk erased
 **Component**: Intel i915 DRM driver — i915_perf (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no Intel display GPU present
+**Effective Score**: 0.0 — no Intel display GPU present
 **Affected range**: Linux 5.19.x before 5.19.16; 5.15.x before 5.15.74; earlier stable series also affected
 **Upstream fix**: Linux 5.19.16, 5.15.74, 5.10.148, 5.4.218, 4.19.263 (fix landed within the 5.19 branch before it reached EOL; 5.19.6 predates it)
 
@@ -529,7 +529,7 @@ Secure Mode adds a further constraint that runs independently of Lockdown: every
 **Status**: Risk erased
 **Component**: USB core (`CONFIG_USB`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no USB interface device on headless HS server; deadlock race unreachable
+**Effective Score**: 0.0 — no USB interface device on headless HS server; deadlock race unreachable
 **Affected range**: 4.11–6.8
 **Upstream fix**: 6.8.2 series
 
@@ -543,7 +543,7 @@ Among the attribute file callback routines in `drivers/usb/core/sysfs.c`, `inter
 **Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no Intel display GPU present
+**Effective Score**: 0.0 — no Intel display GPU present
 **Affected range**: pre-6.8
 **Upstream fix**: 6.8 series
 
@@ -559,13 +559,13 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: TCP receive zerocopy (`CONFIG_INET`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
+**Effective Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 **Affected range**: 4.14–pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 A syzbot report identified a misuse of pfmemalloc page status in TCP zerocopy receive paths. In `tcp_zerocopy_receive()` (`net/ipv4/tcp.c:2086`), socket buffer fragment pages are collected into a batch (line 2178: `page = skb_frag_page(frags)`) and mapped directly into userspace via `vm_insert_pages()`. No `page_is_pfmemalloc()` check is performed before adding a fragment page to the batch. Pages allocated from pfmemalloc reserves (used to break memory-pressure deadlocks in the network receive path) carry special lifecycle accounting; mapping them into userspace circumvents that accounting. A local attacker who can induce a pfmemalloc allocation into the TCP receive path can map a reserve page into their own address space, potentially corrupting page refcount state in ways that lead to privilege escalation.
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP zerocopy receive path (`TCP_ZEROCOPY_RECEIVE` ioctl on a connected socket) is reachable by any local user with network access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP zerocopy receive path (`TCP_ZEROCOPY_RECEIVE` ioctl on a connected socket) is reachable by any local user with network access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -576,7 +576,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: USB audio driver (`CONFIG_SND_USB_AUDIO`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -590,7 +590,7 @@ There may be a bad USB audio device with a USB ID of (0x04fa, 0x4201) and fewer 
 **Status**: Risk erased
 **Component**: EMU10K1 audio driver (`CONFIG_SND_EMU10K1`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -604,7 +604,7 @@ The voice allocator sometimes begins allocating from near the end of the array a
 **Status**: Risk erased
 **Component**: mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -618,7 +618,7 @@ A use-after-free occurs during controller reset in the mpt3sas firmware event cl
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
@@ -634,13 +634,13 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
 syzkaller reported infinite recursive calls of `fib6_dump_done()` during netlink socket destruction. From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then closed the netlink socket. The IPv6 FIB dump handler at `net/ipv6/ip6_fib.c:652` hooks the callback destructor by setting `cb->done = fib6_dump_done` (saving the original callback in `cb->args[3]`). When the netlink socket closes, netlink core invokes the destructor, calling `fib6_dump_done()` at line 570. This function calls `cb->done(cb)` — but `cb->done` is now `fib6_dump_done` itself, creating infinite recursion that exhausts the kernel stack. The HS 5.19.6 kernel carries the unpatched FIB dump callback at `net/ipv6/ip6_fib.c:645–684`.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Triggering the infinite recursion requires sending an `AF_UNSPEC RTM_GETROUTE` netlink message and then closing the socket — reachable by any local user with a netlink socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Triggering the infinite recursion requires sending an `AF_UNSPEC RTM_GETROUTE` netlink message and then closing the socket — reachable by any local user with a netlink socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -651,13 +651,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 **Affected range**: pre-fix
 **Upstream fix**: 6.8 series
 
 When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1 failed to mmap with 12 (Cannot allocate memory)`. The perf AUX area mmap handler in `kernel/events/core.c:6269–6345` calculates memory accounting limits and calls `rb_alloc_aux()` to allocate the backing pages. For very large AUX areas (gigabytes), the accounting arithmetic at line 6285 (`user_locked += user_extra`) can underflow or produce incorrect values when `user_extra` is extremely large (e.g., 1M pages for 4GB). The mmap() still succeeds despite the accounting failure, allowing unprivileged users to bypass RLIMIT_MEMLOCK restrictions and exhaust kernel memory. The HS 5.19.6 kernel carries the unpatched AUX area accounting at `kernel/events/core.c:6269–6345`.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2023-52868
@@ -665,7 +665,7 @@ When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -
 **Status**: Risk erased
 **Component**: thermal management (`CONFIG_THERMAL`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — thermal sysfs not accessible in HS allowlist; Secure Mode blocks the trigger
+**Effective Score**: 0.0 — thermal sysfs not accessible in HS allowlist; Secure Mode blocks the trigger
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
@@ -679,7 +679,7 @@ The `dev->id` value comes from `ida_alloc()`, so it is a number between zero and
 **Status**: Risk erased
 **Component**: block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — iocost cgroup paths not in HS allowlist; Secure Mode blocks the trigger
+**Effective Score**: 0.0 — iocost cgroup paths not in HS allowlist; Secure Mode blocks the trigger
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
@@ -693,7 +693,7 @@ UBSAN catches undefined behavior in blk-iocost, where sometimes `iocg->delay` is
 **Status**: Risk erased
 **Component**: Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -707,13 +707,13 @@ Currently, we allocate a `nbytes`-sized kernel buffer and copy `nbytes` from use
 **Status**: Risk erased
 **Component**: kprobes (`CONFIG_KPROBES`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — kprobe registration not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — kprobe registration not in HS allowlist; Secure Mode blocks the exploitation trigger
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(ip, ip)` at line 1583 to obtain a `dyn_ftrace *rec` pointer without holding `ftrace_lock`. On a concurrent path, module unloading frees the pages that back ftrace records for module functions. If a module is removed between the `lookup_rec()` return and the `return rec->ip` dereference at line 1594, the pointer references freed memory. The race is reached through the kprobe registration path: `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()` — all called without the lock that serialises ftrace record lifetime.
 
-`CONFIG_KPROBES=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No HeartSuite Core Secure production deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_KPROBES=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-40901
@@ -721,7 +721,7 @@ In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(i
 **Status**: Risk erased
 **Component**: LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -735,7 +735,7 @@ In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the `pd_handles` bitmap is allocated 
 **Status**: Risk erased
 **Component**: QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -749,7 +749,7 @@ In `drivers/scsi/qedi/qedi_debugfs.c`, `qedi_dbg_do_not_recover_cmd_read()` at l
 **Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no Intel display GPU present
+**Effective Score**: 0.0 — no Intel display GPU present
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -765,7 +765,7 @@ On a HeartSuite system with this hardware installed, Lockdown's constraints woul
 **Status**: Risk erased
 **Component**: CD-ROM subsystem (`CONFIG_CDROM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — CD-ROM drive absent on server
+**Effective Score**: 0.0 — CD-ROM drive absent on server
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -781,13 +781,13 @@ On a HeartSuite system with an optical drive installed, Lockdown's constraints w
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `net/ipv6/ip6_output.c`, `ip6_finish_output2()` saves `idev = ip6_dst_idev(dst)` at line 63. At line 72, `skb_expand_head(skb, hh_len)` makes room for the link-layer header; when allocation fails, `skb_expand_head()` frees the original `skb` and returns NULL. The `idev` pointer saved before the call now references memory associated with the freed `skb`. At line 74, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences the stale `idev` — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -798,13 +798,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `net/ipv6/ip6_output.c`, `ip6_xmit()` saves `idev = ip6_dst_idev(dst)` at line 256. At line 271, `skb_expand_head(skb, head_room)` expands the buffer to accommodate the IPv6 header and IP options; when allocation fails, the original `skb` is freed and NULL is returned. The `idev` pointer is now stale. At line 273, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences freed memory — a use-after-free.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -815,13 +815,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `net/ipv6/ip6_output.c`, `ip6_send_skb()` at line 1943 saves `rt = (struct rt6_info *)skb_dst(skb)` without holding `rcu_read_lock()`. At line 1946, `ip6_local_out()` transmits the packet and may consume the `skb`, releasing the associated route. If `ip6_local_out()` returns a non-zero error code, lines 1951–1952 dereference `rt->rt6i_idev` — but `rt` is an RCU-protected pointer and may be freed before the dereference. Holding `rcu_read_lock()` for the duration of the `rt` dereference is required.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -832,7 +832,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -846,7 +846,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: AMD Sensor Fusion Hub HID driver (`CONFIG_AMD_SFH_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -860,7 +860,7 @@ In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `dev
 **Status**: Risk erased
 **Component**: Cougar HID driver (`CONFIG_HID_COUGAR`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -874,7 +874,7 @@ In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `dev
 **Status**: Risk erased
 **Component**: ALSA rawmidi subsystem (`CONFIG_SND_RAWMIDI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_RAWMIDI` not compiled
+**Effective Score**: 0.0 — `CONFIG_SND_RAWMIDI` not compiled
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -888,7 +888,7 @@ In `sound/core/rawmidi.c`, `snd_rawmidi_drain_output()` at line 224 saves `runti
 **Status**: Risk erased
 **Component**: Amlogic Meson ASoC driver (`CONFIG_SND_MESON_CARD_UTILS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — driver not compiled in
+**Effective Score**: 0.0 — driver not compiled in
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -902,7 +902,7 @@ In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pa
 **Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — non-conformant VPD firmware absent; standard SAS/SATA drives conform to SCSI spec
+**Effective Score**: 0.0 — non-conformant VPD firmware absent; standard SAS/SATA drives conform to SCSI spec
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -916,13 +916,13 @@ If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 When ext4 searches an inlined directory, `ext4_find_inline_entry()` at `fs/ext4/inline.c:1709` calls `ext4_get_inline_xattr_pos()` to locate the extended-attribute portion of the inline data. At `inline.c:1077`, that function returns `IFIRST(header) + le16_to_cpu(entry->e_value_offs)` without validating that the offset stays within the inode body buffer. A crafted block device can supply an `e_value_offs` that pushes the resulting pointer out of bounds; that pointer is then passed directly to `ext4_search_dir()` at line 1712, causing an OOB memory access.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -933,7 +933,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected — `CONFIG_SCSI_EFCT` not compiled
 **Component**: Emulex EFC FC driver (`CONFIG_SCSI_EFCT`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_EFCT` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_EFCT` not compiled in HS kernel
 
 The kref_put() function will call nport->release if the refcount drops to zero. The nport->release release function is _efc_nport_free() which frees "nport"
 
@@ -945,13 +945,13 @@ The kref_put() function will call nport->release if the refcount drops to zero. 
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `ext4_ext_try_to_merge_up()` at `fs/ext4/extents.c:1871`, `brelse(path[1].p_bh)` releases the depth-1 extent block buffer but leaves `path[1].p_bh` non-NULL. When the caller subsequently runs cleanup via `ext4_ext_drop_refs()`, it iterates the path and calls `brelse()` on every non-NULL `p_bh`, releasing the same buffer head a second time — a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -962,13 +962,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `ext4_ext_insert_extent()` at `fs/ext4/extents.c:2094`, the call to `ext4_ext_create_new_leaf()` may internally call `ext4_ext_grow_indepth()`, which reallocates the `path` array via `kcalloc()`. After the call returns, the caller continues using the original `path` pointer — now stale — causing a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -979,13 +979,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `ext4_split_extent_at()` at `fs/ext4/extents.c:3178`, the function saves the path pointer as `path = *ppath`. At line 3248 it calls `ext4_ext_insert_extent(handle, inode, ppath, ...)`, which may reallocate `*ppath`, freeing the memory that `path` still points to. Subsequent uses of `path` at lines 3281, 3282, 3301, and 3304 — in both the success and error-recovery branches — dereference the now-freed pointer, constituting a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -996,13 +996,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 `ext4_find_extent()` at `fs/ext4/extents.c:874` takes an optional `**orig_path` argument allowing callers to reuse an existing path allocation. On two code paths it frees the old allocation: when the tree depth has grown beyond the cached maximum (lines 898–901, `kfree(path); *orig_path = NULL`) and on any I/O or corruption error (lines 953–957, same sequence). Callers that save a local `path = *ppath` copy before invoking a sub-function that internally calls `ext4_find_extent()` — such as `ext4_split_convert_extents()` — retain a pointer to the freed memory. Subsequent use of that stale pointer constitutes a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1013,7 +1013,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
+**Effective Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1027,7 +1027,7 @@ In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
+**Effective Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1041,7 +1041,7 @@ In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns 
 **Status**: Not Affected
 **Component**: ASIHPI soundcard driver (`CONFIG_SND_ASIHPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_ASIHPI` not compiled
+**Effective Score**: 0.0 — `CONFIG_SND_ASIHPI` not compiled
 
 The ASIHPI driver writes firmware-controlled index values into a static array without bounds-checking the index. `CONFIG_SND_ASIHPI` is not set in the HS 5.19.6 kernel configuration; the driver and this code path are absent from the compiled kernel image.
 
@@ -1051,7 +1051,7 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 **Status**: Not Affected
 **Component**: ALSA SoC layer (`CONFIG_SND_SOC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_SOC` not compiled
+**Effective Score**: 0.0 — `CONFIG_SND_SOC` not compiled
 
 `snd_soc_put_volsw_sx()` applies bounds checks only to the first channel, allowing out-of-bounds writes to the second. `CONFIG_SND_SOC` is not set in the HS 5.19.6 kernel configuration; the ALSA SoC layer and this function are absent from the compiled kernel image.
 
@@ -1061,13 +1061,13 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 `ip6_fragment()` at `net/ipv6/ip6_output.c:831` handles IPv6 packet fragmentation. The function and its callees access RCU-protected routing and neighbor table entries; a prior commit added an assumption that all callers hold the RCU read lock at entry. For the IPv4-style fast path via `ip6_finish_output2()` this holds — `rcu_read_lock_bh()` is acquired at line 119. However the UDP egress path (`ip6_send_skb()` at line 1940 → `ip6_local_out()` → `ip6_output()` → `ip6_finish_output()` → `ip6_fragment()`) does not guarantee the lock is held before entry into the fragmentation code. Under concurrent route or neighbor table modification this produces a use-after-free. Syzbot confirmed the race.
 
-`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1078,7 +1078,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1092,7 +1092,7 @@ In `ieee80211_get_rate_duration()` at `net/mac80211/airtime.c:455`, `airtime_mcs
 **Status**: Risk erased
 **Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1106,7 +1106,7 @@ In `net/wireless/scan.c:338`, when merging per-STA profile elements in the multi
 **Status**: Not Affected
 **Component**: dm-cache (`CONFIG_DM_CACHE`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_DM_CACHE` not compiled
+**Effective Score**: 0.0 — `CONFIG_DM_CACHE` not compiled
 
 If the cache device is expanded between initial load and first-time resume, the bitsets (`dirty_bitset`, `discard_bitset`) allocated in `dm-cache-target.c` are sized to the pre-expansion block count. On resume, cache-block indices derived from the new device size exceed the allocated bitset bounds, causing an out-of-bounds access. `CONFIG_DM_CACHE` is not set in the HS 5.19.6 kernel configuration; the dm-cache target and this code path are absent from the compiled kernel image.
 
@@ -1116,7 +1116,7 @@ If the cache device is expanded between initial load and first-time resume, the 
 **Status**: Not Affected
 **Component**: dm-cache (`CONFIG_DM_CACHE`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_DM_CACHE` not compiled
+**Effective Score**: 0.0 — `CONFIG_DM_CACHE` not compiled
 
 When shrinking the fast (cache) device, dm-cache iterates the `dirty_bitset` to identify cache blocks that must be flushed before being dropped. An index error in the bitset iteration produces a bit index that exceeds the allocated bitset bounds, causing an out-of-bounds access. `CONFIG_DM_CACHE` is not set in the HS 5.19.6 kernel configuration; the dm-cache target and this code path are absent from the compiled kernel image.
 
@@ -1126,7 +1126,7 @@ When shrinking the fast (cache) device, dm-cache iterates the `dirty_bitset` to 
 **Status**: Risk erased
 **Component**: FAT/exFAT filesystem (`CONFIG_FAT_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H)
-**Environmental Score**: 0.0 — Lockdown blocks `mount()`; no adversary-controlled FAT filesystem reachable
+**Effective Score**: 0.0 — Lockdown blocks `mount()`; no adversary-controlled FAT filesystem reachable
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1140,7 +1140,7 @@ In `fs/exfat/dir.c`, when iterating directory entries, the cluster-walk loop at 
 **Status**: Not Affected
 **Component**: USB audio driver (`CONFIG_SND_USB_AUDIO`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_USB_AUDIO` not compiled
+**Effective Score**: 0.0 — `CONFIG_SND_USB_AUDIO` not compiled
 
 The USB-audio driver does not validate `bLength` of each descriptor when traversing clock descriptors, allowing a malformed USB device to cause an out-of-bounds read. `CONFIG_SND_USB_AUDIO` is not set in the HS 5.19.6 kernel configuration; the USB audio driver and this descriptor-traversal path are absent from the compiled kernel image.
 
@@ -1150,13 +1150,13 @@ The USB-audio driver does not validate `bLength` of each descriptor when travers
 **Status**: Affected
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 In `blk_mq_exit_hctx()` at `block/blk-mq.c:3440`, the call to `blk_mq_clear_flush_rq_mapping()` (line 3441) is guarded by `if (blk_queue_init_done(q))`. During SCSI device probe, the queue is not yet fully initialized, so this condition is false and `blk_mq_clear_flush_rq_mapping()` is skipped. The function is responsible for atomically clearing the `flush_rq` pointer from every slot in `tags->rqs[]`. When skipped, `flush_rq` is subsequently freed but its pointer remains live in the `rqs[]` array. Any later iteration over `tags->rqs[]` — such as during a tag-set teardown or request lookup — dereferences the stale pointer, constituting a use-after-free.
 
-`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 via libata; the vulnerable path is triggered during SCSI probe teardown when initialization does not complete successfully. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 via libata; the vulnerable path is triggered during SCSI probe teardown when initialization does not complete successfully. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1167,7 +1167,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: NFS v4 client (`CONFIG_NFS_V4`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no NFS v4 share reachable on HS deployments
+**Effective Score**: 0.0 — `mount()` blocked by Lockdown; no NFS v4 share reachable on HS deployments
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
@@ -1181,7 +1181,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected
 **Component**: VFIO subsystem (`CONFIG_VFIO`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_VFIO` not compiled
+**Effective Score**: 0.0 — `CONFIG_VFIO` not compiled
 
 In `drivers/vfio/pci/vfio_pci_config.c`, the VFIO PCI extended-capability enumeration loop at line 1638 hides capabilities with unknown length by rewriting the `next` pointer in the previous entry's header. When a capability should be hidden but occupies the first position in the extended-capability chain, the pointer fixup path has incorrect behaviour, allowing a misconfigured or malicious guest to reach memory it should not. `CONFIG_VFIO` is not set in the HS 5.19.6 kernel configuration; the VFIO subsystem and this PCI config-space virtualisation path are absent from the compiled kernel image.
 
@@ -1191,7 +1191,7 @@ In `drivers/vfio/pci/vfio_pci_config.c`, the VFIO PCI extended-capability enumer
 **Status**: Not Affected
 **Component**: Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled
+**Effective Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled
 
 In the Brocade bfa Fibre Channel adapter driver (`drivers/scsi/bfa/`), a use-after-free occurs during driver load: an internal object containing an embedded spinlock is freed while lockdep still holds a reference to that lock, producing a KASAN `slab-use-after-free` splat inside `__lock_acquire`. `CONFIG_SCSI_BFA_FC` is not set in the HS 5.19.6 kernel configuration; the Brocade bfa driver is absent from the compiled kernel image.
 
@@ -1201,7 +1201,7 @@ In the Brocade bfa Fibre Channel adapter driver (`drivers/scsi/bfa/`), a use-aft
 **Status**: Not Affected
 **Component**: 6fire USB audio driver (`CONFIG_SND_USB_6FIRE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_USB_6FIRE` not compiled
+**Effective Score**: 0.0 — `CONFIG_SND_USB_6FIRE` not compiled
 
 In the TerraTec AUREON 6fire USB audio driver (`sound/usb/6fire/chip.c`), `usb6fire_chip_disconnect()` calls `usb6fire_chip_abort()` at line 183 — which schedules a deferred `snd_card_free_when_closed()` and nulls `chip->card` — immediately followed by `usb6fire_chip_destroy()` at line 184, which frees the underlying sub-resources. When userspace still holds the card open, the deferred free races against the destroy path, producing a use-after-free. `CONFIG_SND_USB_6FIRE` is not set in the HS 5.19.6 kernel configuration; the driver is absent from the compiled kernel image.
 
@@ -1211,7 +1211,7 @@ In the TerraTec AUREON 6fire USB audio driver (`sound/usb/6fire/chip.c`), `usb6f
 **Status**: Not Affected
 **Component**: Realtek rtw88 WiFi driver (`CONFIG_RTW88`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_RTW88` not compiled
+**Effective Score**: 0.0 — `CONFIG_RTW88` not compiled
 
 In the Realtek rtw88 802.11ac/ax wireless driver (`drivers/net/wireless/realtek/rtw88/tx.c`), `rtw_tx_report_purge_timer()` at line 160 calls `skb_queue_purge()` at line 172 to discard queued TX-report SKBs when the firmware fails to acknowledge them. Because `ieee80211_tx_status()` is never called for the discarded SKBs, mac80211 retains a reference to the associated station structure after it has been freed, producing a use-after-free during driver teardown. `CONFIG_RTW88` is not set in the HS 5.19.6 kernel configuration; the rtw88 driver family is absent from the compiled kernel image.
 
@@ -1221,13 +1221,13 @@ In the Realtek rtw88 802.11ac/ax wireless driver (`drivers/net/wireless/realtek/
 **Status**: Risk erased
 **Component**: SCSI generic driver (`CONFIG_CHR_DEV_SG`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `/dev/sg*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `/dev/sg*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
 **Affected range**: Linux ≤ 6.12-rc7
 **Upstream fix**: commit 4a9804207b58 ("scsi: sg: Fix UAF in sg_release()")
 
 In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 382 acquires `sdp->open_rel_lock` at line 391, then calls `kref_put(&sfp->f_ref, sg_remove_sfp)` at line 393. If that `kref_put` drops the last reference, `sg_remove_sfp` is invoked, which can free the `Sg_device` structure that `sdp` points to — including its embedded mutex. The subsequent `mutex_unlock(&sdp->open_rel_lock)` at line 404 then operates on freed memory, producing a KASAN `slab-use-after-free` in `lock_release`.
 
-`CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No HeartSuite Core Secure production deployment includes raw SCSI access in the Secure Mode allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No HeartSuite Core Secure HeartSuite Core Secure deployment includes raw SCSI access in the Secure Mode allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-56663
@@ -1235,7 +1235,7 @@ In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 
 **Status**: Risk erased
 **Component**: cfg80211 wireless stack (`CONFIG_CFG80211`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 
 In `net/wireless/nl80211.c`, the netlink policy for `NL80211_ATTR_MLO_LINK_ID` at line 797 uses `NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS)` — where `IEEE80211_MLD_MAX_NUM_LINKS = 15` (`include/linux/ieee80211.h:4349`). Since the range check is inclusive, link ID 15 passes validation. Structures such as `cfg80211_bss` size their `links[]` array with 15 entries (valid indices 0–14); an attacker-supplied link ID of 15 indexes one element past the end of the array, producing an out-of-bounds access. `CONFIG_CFG80211=y` is compiled in. No WiFi network interface card is present on a server deployment; without WiFi hardware, no wireless interfaces are created and the MLO link ID path is never reachable.
 
@@ -1245,7 +1245,7 @@ In `net/wireless/nl80211.c`, the netlink policy for `NL80211_ATTR_MLO_LINK_ID` a
 **Status**: Not Affected
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — 32-bit-specific vulnerability; HS kernel is x86_64
+**Effective Score**: 0.0 — 32-bit-specific vulnerability; HS kernel is x86_64
 
 In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 bytes on 32-bit) and `u64` (8 bytes) causes incorrect arithmetic or storage on 32-bit architectures. On x86_64, `sizeof(unsigned long) == sizeof(u64) == 8`; the size mismatch condition cannot arise. `CONFIG_X86_64=y` in the HS 5.19.6 configuration; additionally, no WiFi hardware is present on a server deployment.
 
@@ -1255,13 +1255,13 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 **Status**: Affected
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux ≤ 6.13-rc6
 **Upstream fix**: commit 838154be1ea7 ("io_uring: sanitise sqe->opcode against speculations")
 
 In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and checks it against `IORING_OP_LAST` at line 8385. Without a Spectre v1 barrier, the CPU's speculative execution engine can index into `io_op_defs[]` at line 8389 before the bounds-check branch resolves, enabling a microarchitectural side-channel read of kernel memory at speculative offsets. The upstream fix inserts `array_index_nospec(opcode, IORING_OP_LAST)` before the array access.
 
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1272,7 +1272,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no Intel display GPU present
+**Effective Score**: 0.0 — no Intel display GPU present
 
 In `drivers/gpu/drm/i915/gem/i915_gem_tiling.c`, `i915_gem_object_set_tiling()` releases the gem object lock at line 308, then performs an unguarded check-and-free of `obj->bit_17` at lines 314–322. Two threads concurrently calling `I915_GEM_SET_TILING` to set tiling to `I915_TILING_NONE` can both enter the `else` branch at line 319 and both call `bitmap_free(obj->bit_17)` at line 320, producing a double-free. Conversely, two threads setting a swizzled tiling mode can both pass the `!obj->bit_17` check at line 315 and both call `bitmap_zalloc`, leaking the first allocation. `CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment; DRM device nodes are not created and the GEM ioctl path is unreachable.
 
@@ -1282,7 +1282,7 @@ In `drivers/gpu/drm/i915/gem/i915_gem_tiling.c`, `i915_gem_object_set_tiling()` 
 **Status**: Risk erased
 **Component**: Intel HDA audio driver (`CONFIG_SND_HDA_INTEL`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In `sound/pci/hda/patch_via.c`, `via_auto_init_analog_input()` calls `snd_hda_get_connections()` at line 820 and stores the return value in `nums`. The function can return a negative error code. The subsequent loop at line 822 (`for (i = 0; i < nums; i++)`) is a no-op for negative `nums`, but the `conn[nums++]` write at line 832 then indexes the `conn[]` array at a negative offset, producing an out-of-bounds write. `CONFIG_SND_HDA_INTEL=y` is compiled in. No audio hardware is present on a headless server deployment; HDA codec probing never runs and the vulnerable path is never reached.
 
@@ -1292,7 +1292,7 @@ In `sound/pci/hda/patch_via.c`, `via_auto_init_analog_input()` calls `snd_hda_ge
 **Status**: Not Affected — `CONFIG_ISCSI_IBFT` not set
 **Component**: iSCSI iBFT driver (`CONFIG_ISCSI_IBFT`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ISCSI_IBFT` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ISCSI_IBFT` not compiled in HS kernel
 
 In the iSCSI Boot Firmware Table (iBFT) kernel driver, the subnet-mask field read from `/sys/firmware/ibft/ethernetX/subnet-mask` during an IPv6 iSCSI boot contains a memory safety issue. `CONFIG_ISCSI_IBFT` is not set in the HS 5.19.6 kernel configuration; the iBFT sysfs interface is absent from the compiled kernel image.
 
@@ -1302,7 +1302,7 @@ In the iSCSI Boot Firmware Table (iBFT) kernel driver, the subnet-mask field rea
 **Status**: Not Affected
 **Component**: vhost-SCSI driver (`CONFIG_VHOST_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_VHOST_SCSI` not compiled
+**Effective Score**: 0.0 — `CONFIG_VHOST_SCSI` not compiled
 
 In `drivers/vhost/scsi.c`, `vhost_scsi_set_endpoint()` at line 1531 does not guard against being called multiple times without an intervening `vhost_scsi_clear_endpoint()`. Duplicate invocations corrupt the `vs_tpg` pointer array and reference counts, triggering use-after-free and null-pointer conditions. `CONFIG_VHOST_SCSI` is not set in the HS 5.19.6 kernel configuration; the vhost-SCSI virtualisation driver is absent from the compiled kernel image.
 
@@ -1312,15 +1312,15 @@ In `drivers/vhost/scsi.c`, `vhost_scsi_set_endpoint()` at line 1531 does not gua
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
+**Effective Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
 **Affected range**: Linux ≤ 6.13-rc3
 **Upstream fix**: commit 34f96e89f84c ("ext4: fix UAF in ext4_xattr_inode_dec_ref_all()")
 
-In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1127 iterates over xattr entries, calling `ext4_xattr_inode_iget()` at line 1148 to obtain each `ea_inode`. If `ext4_expand_inode_array()` at line 1154 fails, `iput(ea_inode)` at line 1158 frees the inode. When the journal restart function (`ext4_xattr_restart_fn`) subsequently runs, it can re-encounter the same entry and dereference the freed inode at line 1182 (`ext4_xattr_inode_dec_ref`), producing a use-after-free.
+In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1127 iterates over xattr entries, calling `ext4_xattr_inode_iget()` at line 1148 to obtain each `ea_inode`. If `ext4_expand_inode_array()` at line 1154 fails, `iput(ea_inode)` at line 1158 frees the inode. When the journal restart function (`ext4_xattr_restart_fn`) subsequently runs, it can re-encounter the same entry and dereference the freed inode at line 1182 (`ext4_xattr_inode_dec_ref`), producing a use-after-free. The published vector is C:H/I:N/A:H — disclosure and crash, not direct privilege escalation.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Reaching the xattr teardown path requires a process to manipulate extended attributes on an ext4 filesystem — a standard operation available to any user with file access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Reaching the xattr teardown path requires a process to manipulate extended attributes on an ext4 filesystem — a standard operation available to any user with file access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1329,7 +1329,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; crafted ext4 image cannot be mounted
+**Effective Score**: 0.0 — mount() blocked by Lockdown; crafted ext4 image cannot be mounted
 **Affected range**: Linux ≤ 6.14-rc4
 **Upstream fix**: commit 4f45d4452e6b ("ext4: fix OOB read when mounting corrupted fs")
 
@@ -1343,13 +1343,13 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 **Status**: Affected
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux ≤ 6.14-rc5
 **Upstream fix**: commit 0f2122045b94 ("io_uring: don't import buffers for async preparation")
 
 In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchronous copy of a request's state. For requests using provided buffers (`IOSQE_BUFFER_SELECT`), the function can select and consume a buffer slot during the async preparation phase. If the ring state is then discarded before the I/O completes — for example, when the async path is abandoned and the request is retried — the buffer slot is consumed but the reference is lost, allowing the slot to be selected again by a subsequent request and producing a use-after-free of the shared buffer metadata.
 
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1360,7 +1360,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; crafted xattr image cannot be mounted
+**Effective Score**: 0.0 — mount() blocked by Lockdown; crafted xattr image cannot be mounted
 **Affected range**: Linux ≤ 6.13-rc3
 **Upstream fix**: commit b631e432b12d ("ext4: fix xattr inode dec ref boundary")
 
@@ -1374,7 +1374,7 @@ In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1143 iterates xat
 **Status**: Not Affected
 **Component**: IBM Z Fibre Channel driver (`CONFIG_ZFCP`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ZFCP` not compiled
+**Effective Score**: 0.0 — `CONFIG_ZFCP` not compiled
 
 In `drivers/s390/scsi/zfcp_fsf.c`, `zfcp_fsf_req_send()` stores the FSF request ID in a variable of the wrong integer type, causing the ID to be truncated on architectures where the required width exceeds that type. `CONFIG_ZFCP` is not present in the HS 5.19.6 kernel configuration; the IBM Z Fibre Channel driver is s390-architecture-specific and is absent from the x86_64 compiled kernel image.
 
@@ -1384,7 +1384,7 @@ In `drivers/s390/scsi/zfcp_fsf.c`, `zfcp_fsf_req_send()` stores the FSF request 
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In the ALSA sound subsystem, a use-after-free occurs in `device_del()` during driver module removal. When an ALSA driver is unloaded, a device object is freed while still referenced by a concurrent access path, producing a KASAN use-after-free report at `device_del+0xb5b` by the `rmmod` task.
 
@@ -1398,13 +1398,13 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
+**Effective Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
 **Affected range**: Linux 5.4–5.19.6
 **Upstream fix**: kernel.org stable queue (net/ipv6/addrlabel.c)
 
 In `net/ipv6/addrlabel.c`, `ip6addrlbl_putmsg()` (line 438) constructs a `struct ifaddrlblmsg` for a netlink reply. The function writes `ifal_family`, `ifal_prefixlen`, `ifal_flags`, and `ifal_seq` but never zeroes the `__ifal_reserved` padding byte. That uninitialised byte is subsequently copied to userspace via `nlmsg_unicast()`, leaking one byte of kernel stack memory per IPv6 address-label query.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Any process with access to a `NETLINK_ROUTE` socket can trigger the infoleak — no elevated privilege is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Any process with access to a `NETLINK_ROUTE` socket can trigger the infoleak — no elevated privilege is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **The attacker cannot turn this leak into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1415,7 +1415,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
 **Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 When the SAS Transport Layer support is enabled and a device exposed to the OS by the driver fails INQUIRY commands, the mpi3mr driver frees the memory allocated for an internal device handle but continues to reference that handle in subsequent SCSI transport operations, causing a use-after-free.
 
@@ -1427,7 +1427,7 @@ When the SAS Transport Layer support is enabled and a device exposed to the OS b
 **Status**: Not Affected
 **Component**: Intel ISH HID driver (`CONFIG_INTEL_ISH_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_INTEL_ISH_HID` not compiled
+**Effective Score**: 0.0 — `CONFIG_INTEL_ISH_HID` not compiled
 
 When a reset notify IPC message is received by the Intel Integrated Sensor Hub Transfer Protocol (ISHTP) subsystem, the ISR schedules a work item and passes the device struct via the global `ishtp_dev` pointer. A race between the reset notify path and device teardown can leave `ishtp_dev` pointing to a freed object, triggering a use-after-free.
 
@@ -1439,7 +1439,7 @@ When a reset notify IPC message is received by the Intel Integrated Sensor Hub T
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 In `kernel/events/core.c`, a stack-out-of-bounds issue discovered by syzkaller occurs in the perf events sample output path. A crafted `perf_event_open()` call with specific sample type flags causes the kernel to write beyond the bounds of a stack-allocated buffer during event sampling, overwriting adjacent stack memory.
 
@@ -1453,7 +1453,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
 **Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 When the task management thread processes reply queues while the reset thread simultaneously resets them, the task management thread accesses an invalid queue ID (`0xFFFF`) — a sentinel value indicating a torn-down queue — resulting in an out-of-bounds access during the concurrent reset operation.
 
@@ -1465,7 +1465,7 @@ When the task management thread processes reply queues while the reset thread si
 **Status**: Not Affected — `CONFIG_SND_SOC_SC7280` not compiled
 **Component**: Qualcomm sc7280 ASoC driver (`CONFIG_SND_SOC_SC7280`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SND_SOC_SC7280` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SND_SOC_SC7280` not compiled in HS kernel
 
 Commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") introduced switch-case values in the Qualcomm sc7280 machine driver that index into fixed-size arrays without bounds checking, causing out-of-bounds access when unexpected codec or CPU DAI link types are encountered during probe.
 
@@ -1477,7 +1477,7 @@ Commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") i
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 
 In `net/mac80211/scan.c`, `ieee80211_scan_rx()` accesses `scan_req->flags` after a null check. A use-after-free occurs when scan completion triggers `__ieee80211_scan_completed()`, which frees the scan request while a concurrent `ieee80211_scan_rx()` call still dereferences it.
 
@@ -1491,7 +1491,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Effective Score**: 0.0 — no USB HID input devices on headless server
 
 Update struct hid_descriptor to better reflect the mandatory and optional parts of the HID Descriptor as per USB HID 1.11 specification.
 
@@ -1505,7 +1505,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_EXFAT_FS` not compiled
 **Component**: exFAT filesystem (`CONFIG_EXFAT_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_EXFAT_FS` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_EXFAT_FS` not compiled in HS kernel
 
 In `fs/exfat/nls.c`, `exfat_load_upcase_table()` frees `sbi->vol_utbl` via `exfat_free_upcase_table()` on a checksum-mismatch error (line 706) without NULLing the pointer. If the subsequent `exfat_load_default_upcase_table()` call fails to allocate a replacement buffer, `sbi->vol_utbl` retains the stale freed pointer. A later cleanup path calling `exfat_free_upcase_table()` again frees the same allocation, causing a double free. The trigger is mounting a specially crafted exFAT volume.
 
@@ -1517,7 +1517,7 @@ In `fs/exfat/nls.c`, `exfat_load_upcase_table()` frees `sbi->vol_utbl` via `exfa
 **Status**: Not Affected — `CONFIG_MEGARAID_SAS` not set
 **Component**: LSI MegaRAID SAS driver (`CONFIG_MEGARAID_SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_MEGARAID_SAS` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_MEGARAID_SAS` not compiled in HS kernel
 
 On systems with DRAM interleave enabled, the MegaRAID SAS driver miscalculates the MSI-X poll queue allocation, requesting poll queues beyond the number of available vectors. This results in an out-of-bounds access during driver initialization when the hardware exposes a specific MSI-X configuration.
 
@@ -1529,7 +1529,7 @@ On systems with DRAM interleave enabled, the MegaRAID SAS driver miscalculates t
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In snd_usb_get_audioformat_uac3(), the length value returned from snd_usb_ctl_msg() is used directly for memory allocation without validation.
 
@@ -1543,7 +1543,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no Intel display GPU present
+**Effective Score**: 0.0 — no Intel display GPU present
 
 On ring submission GPU platforms, unbinding the i915 driver during testing sporadically triggers a kernel warning. A GPU context or ring buffer entry is accessed after being freed during the driver teardown path, detected by the kernel's warning infrastructure during CI unbind tests.
 
@@ -1557,7 +1557,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Effective Score**: 0.0 — no USB HID input devices on headless server
 
 hid_hw_raw_request() is actually useful to ensure the provided buffer and length are valid.
 
@@ -1571,7 +1571,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/mcast.c
@@ -1589,7 +1589,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Effective Score**: 0.0 — no USB HID input devices on headless server
 
 Testing by the syzbot fuzzer showed that the HID core gets a shift-out-of-bounds exception when it tries to convert a 32-bit quantity to a 0-bit quantity.
 
@@ -1603,11 +1603,11 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 The perf mmap code is careful about mmap()'ing the user page with the ringbuffer and additionally the auxiliary buffer, when the event supports it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2025-38565
@@ -1615,11 +1615,11 @@ The perf mmap code is careful about mmap()'ing the user page with the ringbuffer
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped() callback of the related event.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2025-38572
@@ -1627,7 +1627,7 @@ When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped()
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/
@@ -1645,7 +1645,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected — `CONFIG_SCSI_BFA_FC` not compiled
 **Component**: Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled in HS kernel
 
 When the bfad_im_probe() function fails during initialization, the memory pointed to by bfad->im is freed without setting bfad->im to NULL.
 
@@ -1657,7 +1657,7 @@ When the bfad_im_probe() function fails during initialization, the memory pointe
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 UAC3 power domain descriptors need to be verified with its variable bLength for avoiding the unexpected OOB accesses by malicious firmware, too.
 
@@ -1671,7 +1671,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
+**Effective Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/
@@ -1689,7 +1689,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 UAC3 class segment descriptors need to be verified whether their sizes match with the declared lengths and whether they fit with the allocated buffer sizes, too.
 
@@ -1703,7 +1703,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: USB core (`CONFIG_USB`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no USB device on headless HS server; descriptor parsing path unreachable
+**Effective Score**: 0.0 — no USB device on headless HS server; descriptor parsing path unreachable
 
 usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
@@ -1715,7 +1715,7 @@ usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling
 **Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — UFS flash storage absent on x86 server
+**Effective Score**: 0.0 — UFS flash storage absent on x86 server
 
 On Google gs101, the number of UTP transfer request slots (nutrs) is 32, and in this case the driver ends up programming the UTRL_NEXUS_TYPE incorrectly as 0.
 
@@ -1729,7 +1729,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
+**Effective Score**: 0.0 — mount() blocked by Lockdown; `do_mount()` returns EPERM
 
 **Affected range**: Linux 5.10+; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/fast_commit.c
@@ -1744,7 +1744,7 @@ In `fs/ext4/fast_commit.c`, the fast commit replay scan loop reads the tag-lengt
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 
 Before checking the action code, check that it even exists in the frame.
 
@@ -1758,7 +1758,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
 **Component**: Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
 
 In `drivers/scsi/lpfc/`, `lpfc_wr_object()` performs a use-after-free read during the sysfs firmware write process. KFENCE detects that a firmware object buffer is read after being freed during the firmware update write sequence.
 
@@ -1770,7 +1770,7 @@ In `drivers/scsi/lpfc/`, `lpfc_wr_object()` performs a use-after-free read durin
 **Status**: Risk erased
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — direct block device write requires CAP_SYS_RAWIO; no raw-device write tool in HS allowlist
+**Effective Score**: 0.0 — direct block device write requires CAP_SYS_RAWIO; no raw-device write tool in HS allowlist
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/inode.c
@@ -1785,7 +1785,7 @@ ext4 validates `i_extra_isize` when an inode is first loaded into memory (`fs/ex
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
 **Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 In the mpi3mr driver, `mpi3mr_get_all_tgt_info()` has multiple issues in its device map handling: the function miscalculates the valid entry length in `alltgt_info` by incorrectly sizing the `struct mpi3mr_device_map_info` header, leading to out-of-bounds reads when iterating target device entries.
 
@@ -1797,7 +1797,7 @@ In the mpi3mr driver, `mpi3mr_get_all_tgt_info()` has multiple issues in its dev
 **Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 
 In `net/mac80211/`, control frames such as ACK frames that legally omit Address 2 and Address 3 are forwarded through `wmediumd` or similar userspace interfaces. The mac80211 frame parser does not enforce the full 3-address format before forwarding, potentially causing out-of-bounds reads in userspace frame consumers that assume the standard frame layout.
 
@@ -1811,7 +1811,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
 **Component**: QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
 
 System crash due to use after free. Current code allows terminate_rport_io to exit before making sure all IOs has returned.
 
@@ -1823,7 +1823,7 @@ System crash due to use after free. Current code allows terminate_rport_io to ex
 **Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Amlogic Meson ARM SoC GPU absent
+**Effective Score**: 0.0 — Amlogic Meson ARM SoC GPU absent
 
 In `drivers/gpu/drm/meson/`, unloading the Amlogic Meson display driver triggers a KASAN use-after-free. During driver teardown, a resource allocated during probe is accessed after the teardown path has freed it, producing a KASAN warning at module unload time.
 
@@ -1837,7 +1837,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
 **Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using byte as unit.
 
@@ -1849,7 +1849,7 @@ To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using byte as
 **Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Effective Score**: 0.0 — no USB HID input devices on headless server
 
 In the Intel ISHTP HID driver, during a warm reset `device->fw_client` is set to NULL. If a bus driver is registered after this NULL assignment but before ISHTP completes re-enumeration of firmware clients, the driver dereferences the NULL `fw_client` pointer, triggering a kernel panic.
 
@@ -1863,7 +1863,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
 **Component**: Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
 
 Fix a use-after-free window by correcting the buffer release sequence in the deferred receive path.
 
@@ -1875,7 +1875,7 @@ Fix a use-after-free window by correcting the buffer release sequence in the def
 **Status**: Risk erased
 **Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no WiFi NIC present
+**Effective Score**: 0.0 — no WiFi NIC present
 
 In `net/wireless/scan.c`, `cfg80211_update_known_bss()` frees the last beacon frame of a BSS entry under conditions related to hidden SSID tracking (commit 776b3580178f). A race condition allows this beacon frame to be freed while still referenced by another code path, causing a use-after-free.
 
@@ -1889,7 +1889,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: VFS writeback subsystem
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/fs-writeback.c
@@ -1907,7 +1907,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected — `CONFIG_SCSI_SAS_LIBSAS` not set
 **Component**: SAS libsas library (`CONFIG_SCSI_SAS_LIBSAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_SAS_LIBSAS` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_SAS_LIBSAS` not compiled in HS kernel
 
 When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to delete "slow_task->timer".
 
@@ -1919,7 +1919,7 @@ When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to d
 **Status**: Affected
 **Component**: kernfs subsystem (`CONFIG_KERNFS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/kernfs/dir.c
@@ -1937,7 +1937,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/hash.c
@@ -1955,7 +1955,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — UFS flash storage absent on x86 server
+**Effective Score**: 0.0 — UFS flash storage absent on x86 server
 
 ufshcd_queuecommand() may be called two times in a row for a SCSI command before it is completed.
 
@@ -1969,7 +1969,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
 **Component**: SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
 
 In `drivers/scsi/ses.c`, `ses_intf_remove()` performs an out-of-bounds slab read when removing a SCSI Enclosure Services device. At `ses_intf_remove+0x23f`, a buffer access reads beyond its allocated boundary, as reported by KASAN during module removal by the `rmmod` task.
 
@@ -1981,7 +1981,7 @@ In `drivers/scsi/ses.c`, `ses_intf_remove()` performs an out-of-bounds slab read
 **Status**: Not Affected
 **Component**: BFQ I/O scheduler (`CONFIG_IOSCHED_BFQ`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_IOSCHED_BFQ` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_IOSCHED_BFQ` not compiled in HS kernel
 
 In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involving `bfqq->bic`. A BFQ I/O queue object is freed while a reference to its `bic` (BFQ I/O context) is still live, leading to a use-after-free when `bfq_select_queue()` subsequently accesses the freed `bfqq` pointer.
 
@@ -1993,7 +1993,7 @@ In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involv
 **Status**: Affected
 **Component**: device mapper (`CONFIG_BLK_DEV_DM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/md/dm-cache-target.c
@@ -2011,7 +2011,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/inode.c
@@ -2029,7 +2029,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In the ALSA sound subsystem, `regcache_flat_read()` performs a slab-out-of-bounds read. syzkaller reproduced a KASAN report showing an out-of-bounds read in the flat register cache read path, triggered through the ALSA register map interface.
 
@@ -2043,7 +2043,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
 **Component**: SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
 
 Sanitize possible desc_ptr out-of-bounds accesses in ses_enclosure_data_process().
 
@@ -2055,7 +2055,7 @@ Sanitize possible desc_ptr out-of-bounds accesses in ses_enclosure_data_process(
 **Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
 **Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 In `drivers/target/iscsi/`, `lio_target_nacl_info_show()` uses `sprintf()` in a loop to print details for every iSCSI connection in a session without checking that the output buffer has sufficient remaining space, leading to a buffer overflow when a session contains many connections.
 
@@ -2067,7 +2067,7 @@ In `drivers/target/iscsi/`, `lio_target_nacl_info_show()` uses `sprintf()` in a 
 **Status**: Not Affected — `CONFIG_SCSI_AIC94XX` not set
 **Component**: Adaptec aic94xx SAS driver (`CONFIG_SCSI_AIC94XX`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_AIC94XX` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_AIC94XX` not compiled in HS kernel
 
 The asd_pci_remove() function fails to synchronize with pending tasklets before freeing the asd_ha structure, leading to a potential use-after-free vulnerability.
 
@@ -2079,7 +2079,7 @@ The asd_pci_remove() function fails to synchronize with pending tasklets before 
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In the ALSA ctxfi audio driver's mixer handling code, the `conf` field is used as a loop index and referenced in the index callbacks `amixer_index()` and `sum_index()`. Without a bounds check on `conf`, these callbacks can access mixer entries outside the allocated range, leading to an out-of-bounds read.
 
@@ -2093,7 +2093,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 The scarlett2_usb_get_config() function has a logic error in the endianness conversion code that can cause buffer overflows when count > 1.
 
@@ -2107,7 +2107,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees mixer->id_elems but the controls already added to the card still reference the freed memory.
 
@@ -2121,7 +2121,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 The PCM trigger callback of aloop driver tries to check the PCM state and stop the stream of the tied substream in the corresponding cable.
 
@@ -2135,7 +2135,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
 **Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 8.8 HIGH (AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 In iscsit_dec_session_usage_count(), the function calls complete() while holding the sess->session_usage_lock.
 
@@ -2147,7 +2147,7 @@ In iscsit_dec_session_usage_count(), the function calls complete() while holding
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In this case, the user constructed the parameters with maxpacksize 40 for rate 22050 / pps 1000, and packsize[0] 22 packsize[1] 23.
 
@@ -2161,7 +2161,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
 **Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 In iscsit_dec_conn_usage_count(), the function calls complete() while holding the conn->conn_usage_lock.
 
@@ -2173,7 +2173,7 @@ In iscsit_dec_conn_usage_count(), the function calls complete() while holding th
 **Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
 **Component**: QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
 
 In `drivers/scsi/qla2xxx/`, the QLogic Fibre Channel HBA driver writes to an invalid kernel address during a specific error recovery path, triggering a page fault with a supervisor write access error. The invalid address indicates a use-after-free or uninitialized pointer dereference within the driver's interrupt or completion handling.
 
@@ -2185,7 +2185,7 @@ In `drivers/scsi/qla2xxx/`, the QLogic Fibre Channel HBA driver writes to an inv
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 The entry of the validators table for UAC3 AC header descriptor is defined with the wrong protocol version UAC_VERSION_2, while it should have been UAC_VERSION_3.
 
@@ -2199,7 +2199,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 In usb6fire_chip_abort(), the chip struct is allocated as the card's private data (via snd_card_new with sizeof(struct sfire_chip)).
 
@@ -2213,11 +2213,11 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: relay filesystem (`CONFIG_RELAY`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — debugfs relay access not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — debugfs relay access not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay_file_read_start_pos in kernel/relay.c in the relayfs.
 
-`CONFIG_RELAY=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and read access to relay channel files under debugfs — paths used exclusively by kernel tracing tools (SystemTap, etc.) that have no place in a production server allowlist. Without an allowlist entry covering debugfs relay access, the kernel refuses it. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_RELAY=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and read access to relay channel files under debugfs — paths used exclusively by kernel tracing tools (SystemTap, etc.) that have no place in a production server allowlist. Without an allowlist entry covering debugfs relay access, the kernel refuses it. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2023-3567
@@ -2225,15 +2225,15 @@ An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay
 **Status**: Affected
 **Component**: virtual terminal (VT) (`CONFIG_VT`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
+**Effective Score**: 7.1 HIGH — base I:N; Secure Mode + Lockdown limit post-exploitation persistence
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/tty/vt/vc_screen.c
 
-In `drivers/tty/vt/vc_screen.c`, `vcs_read()` accesses virtual console screen data through a `vc_screen` reference without holding appropriate locks for the full duration of the read. A concurrent write or deallocation of the virtual console can free the underlying `vc_screen` structure while `vcs_read()` is still referencing it, causing a use-after-free.
+In `drivers/tty/vt/vc_screen.c`, `vcs_read()` accesses virtual console screen data through a `vc_screen` reference without holding appropriate locks for the full duration of the read. A concurrent write or deallocation of the virtual console can free the underlying `vc_screen` structure while `vcs_read()` is still referencing it, causing a use-after-free. The published vector is C:H/I:N/A:H — disclosure and crash, not direct privilege escalation.
 
-`CONFIG_VT=y` is compiled in and 5.19.6 falls within the affected range. Reading `/dev/vcs*` virtual console screen devices requires membership in the `tty` group on Debian. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Executing a standalone exploit binary requires an allowlist entry; an attacker cannot reach this code path without one.
+`CONFIG_VT=y` is compiled in and 5.19.6 falls within the affected range. Reading `/dev/vcs*` virtual console screen devices requires membership in the `tty` group on Debian. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Executing a non-allowlisted binary requires an allowlist entry; an attacker cannot reach this code path without one.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2242,7 +2242,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: Unix domain sockets (`CONFIG_UNIX`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
+**Effective Score**: 6.5 MEDIUM — Secure Mode + Lockdown reduce MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/unix/garbage.c
 
@@ -2259,7 +2259,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no DRM/GPU device on headless server; `drm_atomic` requires GPU mode-setting
+**Effective Score**: 0.0 — no DRM/GPU device on headless server; `drm_atomic` requires GPU mode-setting
 
 In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-free during a race condition between a nonblocking atomic commit and a driver unload.
 
@@ -2271,7 +2271,7 @@ In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-f
 **Status**: Risk erased
 **Component**: hugetlbfs (`CONFIG_HUGETLBFS`)
 **Base Score**: 6.6 MEDIUM (AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:H)
-**Environmental Score**: 0.0 — mount() blocked by Lockdown; hugetlbfs mount path unreachable
+**Effective Score**: 0.0 — mount() blocked by Lockdown; hugetlbfs mount path unreachable
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/hugetlbfs/inode.c
 
@@ -2285,7 +2285,7 @@ In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs su
 **Status**: Risk erased
 **Component**: Intel SMBus I2C controller (`CONFIG_I2C_I801`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no I2C/SMBus tool in HS allowlist; Secure Mode blocks access
+**Effective Score**: 0.0 — no I2C/SMBus tool in HS allowlist; Secure Mode blocks access
 
 In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block process call transactions incorrectly. Intel datasheets specify that the block buffer index must be reset twice: once before writing the outgoing data to the buffer, and once before reading the incoming response. The driver resets the index only once, causing the response to be read from the wrong buffer position and potentially returning incorrect data to callers.
 
@@ -2297,7 +2297,7 @@ In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block pr
 **Status**: Affected
 **Component**: Realtek r8169 Ethernet driver (`CONFIG_R8169`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/net/ethernet/realtek/r8169_main.c
@@ -2315,7 +2315,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: watchdog timer subsystem (`CONFIG_WATCHDOG`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no watchdog daemon in HS allowlist; Secure Mode blocks `/dev/watchdog` access
+**Effective Score**: 0.0 — no watchdog daemon in HS allowlist; Secure Mode blocks `/dev/watchdog` access
 
 When the cpu5wdt module is removing, the origin code uses del_timer() to de-activate the timer.
 
@@ -2327,7 +2327,7 @@ When the cpu5wdt module is removing, the origin code uses del_timer() to de-acti
 **Status**: Not Affected — `CONFIG_DMA_MAP_BENCHMARK` not compiled
 **Component**: DMA map benchmark (`CONFIG_DMA_MAP_BENCHMARK`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `CONFIG_DMA_MAP_BENCHMARK` not compiled in HS kernel
+**Effective Score**: 0.0 — `CONFIG_DMA_MAP_BENCHMARK` not compiled in HS kernel
 
 In `kernel/dma/map_benchmark.c`, `map_benchmark_ioctl()` passes the user-supplied NUMA node ID directly to `node_possible()` (line 211) without first verifying that it falls within `[0, MAX_NUMNODES-1]`. `node_possible()` uses the node ID as a bitmap index; an out-of-range value causes an out-of-bounds read in the `node_possible_map` bitmap.
 
@@ -2339,11 +2339,11 @@ In `kernel/dma/map_benchmark.c`, `map_benchmark_ioctl()` passes the user-supplie
 **Status**: Risk erased
 **Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
+**Effective Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
 
 In `fs/9p/`, a use-after-free occurs on a dentry's `d_fsdata` fid list when one thread looks up a fid through the dentry while another thread concurrently unlinks it. The unlinking thread frees the fid while the lookup thread still holds a reference, causing the lookup to dereference freed memory.
 
-`CONFIG_9P_FS=y` is compiled in. Triggering this vulnerability requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
+`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
@@ -2353,7 +2353,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 **Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
+**Effective Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
 Use list_for_each_entry_safe() to allow iterating through the list and deleting the entry in the iteration process.
 
@@ -2367,7 +2367,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
+**Effective Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
 In `drivers/dma/idxd/`, when the Intel Data Streaming Accelerator driver is unloaded, `idxd_dmaengine_drv_remove()` frees the interrupt handler while descriptor completions are still pending. Completion callbacks that fire after interrupt teardown dereference the freed interrupt state, causing a use-after-free.
 
@@ -2381,7 +2381,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — ADC128D818 I2C ADC chip absent
+**Effective Score**: 0.0 — ADC128D818 I2C ADC chip absent
 
 DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large negative number such as -9223372036854775808 is provided by the user.
 
@@ -2395,7 +2395,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — malformed ACPI _STR firmware absent; standard OEM server firmware returns Buffer objects as specified
+**Effective Score**: 0.0 — malformed ACPI _STR firmware absent; standard OEM server firmware returns Buffer objects as specified
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/acpi/device_sysfs.c
 
@@ -2409,7 +2409,7 @@ In the ACPI subsystem, the `_STR` ACPI method must return a buffer object contai
 **Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — IBM Power Management Extension hardware absent
+**Effective Score**: 0.0 — IBM Power Management Extension hardware absent
 
 In `drivers/hwmon/ibmpex.c`, `ibmpex_register_bmc()` at line 509 adds a BMC device entry to the global list but does not remove it from the list on the error path. If registration fails partway through, `&data->list` remains linked while the containing `data` struct is freed, leading to a use-after-free when the list is subsequently traversed.
 
@@ -2423,11 +2423,11 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In `net/sched/sch_taprio.c`, `taprio_change()` holds the `admin` schedule pointer while a concurrent `advance_sched()` call can switch or remove the schedule, making `admin` a dangling pointer. The critical section protected by `q->current_entry_lock` does not prevent this race, allowing access to freed schedule memory.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-50131
@@ -2435,11 +2435,11 @@ In `net/sched/sch_taprio.c`, `taprio_change()` holds the `admin` schedule pointe
 **Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In the kernel tracing subsystem, `strlen()` returns the string length excluding the null terminator. If the string length equals the maximum buffer length, the buffer has no remaining space for the null byte, and the subsequent null terminator write goes one byte past the end of the buffer — a classic off-by-one overflow.
 
-`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-53057
@@ -2447,11 +2447,11 @@ In the kernel tracing subsystem, `strlen()` returns the string length excluding 
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be either root or ingress.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-56606
@@ -2459,11 +2459,11 @@ In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be e
 **Status**: Risk erased
 **Component**: AF_PACKET sockets (`CONFIG_PACKET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CAP_NET_RAW` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `CAP_NET_RAW` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 After sock_init_data() the allocated sk object is attached to the provided sock object.
 
-`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No HeartSuite Core Secure production deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No HeartSuite Core Secure HeartSuite Core Secure deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2025-21692
@@ -2471,11 +2471,11 @@ After sock_init_data() the allocated sk object is attached to the provided sock 
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an Out-Of-Bound class in ets_class_from_arg() when passed clid of 0.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2022-49799
@@ -2483,11 +2483,11 @@ Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an 
 **Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` and `unregister_trace_event()` on the error path when `set_synth_event_print_fmt()` fails. Calling both functions causes the trace event to be unregistered twice, resulting in a double-free of the trace event structure.
 
-`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2022-49892
@@ -2495,11 +2495,11 @@ In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` a
 **Status**: Risk erased
 **Component**: ftrace / function tracer (`CONFIG_FTRACE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore that perf had registered two ops with the same content successively, both dynamic.
 
-`CONFIG_FTRACE=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_FTRACE=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2022-49921
@@ -2507,11 +2507,11 @@ KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore th
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 We can't use "skb" again after passing it to qdisc_enqueue(). This is basically identical to commit 2f09707d0c97 ("sch_sfb: Also store skb len before calling child enqueue").
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2023-53111
@@ -2519,11 +2519,11 @@ We can't use "skb" again after passing it to qdisc_enqueue(). This is basically 
 **Status**: Risk erased
 **Component**: loop block device (`CONFIG_BLK_DEV_LOOP`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `/dev/loop*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `/dev/loop*` access not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronously when using asynchronous I/O unless memory allocation fails.
 
-`CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering this vulnerability requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No HeartSuite Core Secure production workload uses loop devices — they are absent from the Secure Mode allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering the bug requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No HeartSuite Core Secure production workload uses loop devices — they are absent from the Secure Mode allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2025-37879
@@ -2531,11 +2531,11 @@ do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronou
 **Status**: Risk erased
 **Component**: Plan 9 filesystem (9P) (`CONFIG_9P_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
+**Effective Score**: 0.0 — `mount()` blocked by Lockdown; no 9P filesystem reachable on HS deployments
 
 In `net/9p/client.c`, `p9_client_write()` and `p9_client_read_once()` do not validate the count returned by the 9P server. If a misbehaving server replies with success but a negative byte count, the client treats the negative value as a large unsigned integer, potentially causing integer underflow or incorrect buffer offset calculations.
 
-`CONFIG_9P_FS=y` is compiled in. Triggering this vulnerability requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
+`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Core Secure deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
@@ -2545,11 +2545,11 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2025-37915
@@ -2557,11 +2557,11 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2025-37923
@@ -2569,11 +2569,11 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 **Status**: Risk erased
 **Component**: kernel tracing (`CONFIG_TRACING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — tracefs not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In `kernel/trace/trace.c`, `trace_seq_to_buffer()` at line 1830 performs a slab-out-of-bounds write. syzbot reproduced a KASAN report showing that a trace sequence buffer copy operation writes beyond the allocated slab boundary, reachable through the kernel tracing filesystem interface under `CAP_SYS_ADMIN`.
 
-`CONFIG_TRACING=y` is compiled in. Triggering this vulnerability requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure production deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2025-38369
@@ -2581,7 +2581,7 @@ In `kernel/trace/trace.c`, `trace_seq_to_buffer()` at line 1830 performs a slab-
 **Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
+**Effective Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
 
 Running IDXD workloads in a container with the /dev directory mounted can trigger a call trace or even a kernel panic when the parent process exits while child processes are still using IDXD portal file descriptors. The portal file descriptor cleanup races with process exit, causing a use-after-free when the freed descriptor object is subsequently accessed.
 
@@ -2595,7 +2595,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Corsair Commander Pro hardware absent
+**Effective Score**: 0.0 — Corsair Commander Pro hardware absent
 
 Add buffer_recv_size to store the size of the received bytes. Validate buffer_recv_size in send_usb_cmd().
 
@@ -2609,7 +2609,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — FPDT crash requires malformed firmware; not reachable on standard OEM hardware
+**Effective Score**: 0.0 — FPDT crash requires malformed firmware; not reachable on standard OEM hardware
 **Affected range**: Linux 5.x–5.19 (fix adds address validation before acpi_os_map_memory call)
 **Upstream fix**: drivers/acpi/acpi_fpdt.c (validate subtable->address before mapping)
 
@@ -2623,7 +2623,7 @@ In `drivers/acpi/acpi_fpdt.c`, `acpi_init_fpdt()` (line 253) passes FPDT subtabl
 **Status**: Risk erased
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — AML exploit requires crafted firmware; ACPI tables read-only after boot on standard servers
+**Effective Score**: 0.0 — AML exploit requires crafted firmware; ACPI tables read-only after boot on standard servers
 **Affected range**: Linux 5.x through affected ACPICA version
 **Upstream fix**: ACPICA commit 90310989a079 (drivers/acpi/acpica/acopcode.h)
 
@@ -2637,7 +2637,7 @@ In the ACPICA AML interpreter, the opcode table entries for the AML `Timer` inst
 **Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — Texas Instruments eDMA hardware absent
+**Effective Score**: 0.0 — Texas Instruments eDMA hardware absent
 
 Fix a critical memory allocation bug in edma_setup_from_hw() where queue_priority_map was allocated with insufficient memory.
 
@@ -2651,7 +2651,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Affected
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux 5.x–5.19
 **Upstream fix**: drivers/acpi/acpica/utdelete.c (reference count ordering fix)
 
@@ -2668,11 +2668,11 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: network traffic scheduler (`CONFIG_NET_SCHED`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `tc` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 Whenever an ife action replace changes the metalist, instead of replacing the old data on the metalist, the current ife code is appending the new metadata.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering this vulnerability requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure production deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Secure Mode allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 
 ### CVE-2024-36883
@@ -2680,7 +2680,7 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 **Status**: Risk erased
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — pernet race requires module loading; modprobe/insmod refused by Secure Mode APO post-boot
+**Effective Score**: 0.0 — pernet race requires module loading; modprobe/insmod refused by Secure Mode APO post-boot
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/core/net_namespace.c
 
@@ -2694,13 +2694,13 @@ In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — th
 **Status**: Affected
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/core/dst.c
 
 In `net/core/dst.c`, `__dst_negative_advice()` clears `sk->dst_cache` when a cached destination entry is marked invalid. The function reads `sk->dst_cache`, determines it should be dropped, then calls the protocol-specific `sk_dst_reset()` — but without proper RCU locking across this sequence. A concurrent operation can free the destination entry between the initial read and the reset, resulting in a use-after-free on the freed `dst` entry.
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active; `__dst_negative_advice()` is invoked whenever a cached destination becomes invalid — reachable through normal network activity or by triggering ICMP unreachable messages. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active; `__dst_negative_advice()` is invoked whenever a cached destination becomes invalid — reachable through normal network activity or by triggering ICMP unreachable messages. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2711,13 +2711,13 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: RCU tasks subsystem (`CONFIG_TASKS_RCU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: kernel/rcu/tasks.h
 
 In `kernel/rcu/tasks.h`, `show_rcu_tasks_trace_gp_kthread()` formats diagnostic counters for the RCU tasks trace grace-period kthread into a fixed-size buffer using `sprintf()`. The function does not bound the number of characters written; if individual counter values are sufficiently large, the formatted output overflows the buffer. The sysfs interface exposing this data is readable by any local user via `/sys/kernel/rcu_tasks_kthread_status` or equivalent debugfs entries.
 
-`CONFIG_TASKS_RCU=y` is compiled in and 5.19.6 falls within the affected range. RCU tasks is a core kernel synchronisation mechanism active at all times; the overflow condition requires unusually large counter values, making reliable exploitation difficult on a production system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone exploit binary without an allowlist entry.
+`CONFIG_TASKS_RCU=y` is compiled in and 5.19.6 falls within the affected range. RCU tasks is a core kernel synchronisation mechanism active at all times; the overflow condition requires unusually large counter values, making reliable exploitation difficult on a production system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted binary without an allowlist entry.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted binary at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2728,7 +2728,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: network namespaces (`CONFIG_NET_NS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `CLONE_NEWNET` not in HS allowlist; Secure Mode blocks the exploitation trigger
+**Effective Score**: 0.0 — `CLONE_NEWNET` not in HS allowlist; Secure Mode blocks the exploitation trigger
 
 In the network namespace subsystem, a use-after-free occurs through a refcount underflow. syzkaller triggered a `refcount_t: addition on 0` warning at `lib/refcount.c:25`, indicating that a network namespace object's reference count reached zero while still being accessed, with a subsequent attempt to increment the freed object's refcount in `refcount_warn_saturate()`.
 
@@ -2740,7 +2740,7 @@ In the network namespace subsystem, a use-after-free occurs through a refcount u
 **Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Effective Score**: 0.0 — no audio hardware present
 
 Fix the checking that firmware file buffer is large enough for the wmfw header, to prevent overrunning the buffer.
 
@@ -2754,11 +2754,11 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 Ole reported that event->mmap_mutex is strictly insufficient to serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2024-46852
@@ -2766,7 +2766,7 @@ Ole reported that event->mmap_mutex is strictly insufficient to serialize the AU
 **Status**: Risk erased
 **Component**: DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no DRM device on headless HS server; DMA-BUF operations unreachable
+**Effective Score**: 0.0 — no DRM device on headless HS server; DMA-BUF operations unreachable
 
 Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't track CMA dma-buf pages under RssFile") it was possible to obtain a mapping larger than the buffer by calling `mremap()` on a DMA-BUF heap allocation. The DMA-BUF heap mmap handler did not set `VM_DONTEXPAND`, allowing the VMA to be extended beyond the original allocation size and enabling out-of-bounds access to adjacent memory.
 
@@ -2778,11 +2778,11 @@ Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't tra
 **Status**: Risk erased
 **Component**: perf events subsystem (`CONFIG_PERF_EVENTS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
+**Effective Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
 In `kernel/events/core.c`, `perf_pending_task()` can execute after the associated `perf_event` object has been freed. When a task exits and its pending perf events are processed, a race allows the task-work callback to fire after the event is released, causing a use-after-free.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2022-49026
@@ -2790,7 +2790,7 @@ In `kernel/events/core.c`, `perf_pending_task()` can execute after the associate
 **Status**: Risk erased
 **Component**: Intel e100 Fast Ethernet driver (`CONFIG_E100`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — Intel Pro/100 NIC absent on any modern HS server deployment
+**Effective Score**: 0.0 — Intel Pro/100 NIC absent on any modern HS server deployment
 
 In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xmit_frame() will return NETDEV_TX_BUSY and the upper layer will resend the skb.
 
@@ -2802,7 +2802,7 @@ In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xm
 **Status**: Affected
 **Component**: core kernel (`CONFIG_BASE_FULL`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/base/bus.c
 
@@ -2819,7 +2819,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Not Affected — LAM not implemented in Linux 5.19.x
 **Component**: x86_64 architecture (`CONFIG_X86_64`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — LAM infrastructure absent from Linux 5.19.x (introduced in 6.2)
+**Effective Score**: 0.0 — LAM infrastructure absent from Linux 5.19.x (introduced in 6.2)
 
 Linear Address Masking (LAM) is an x86_64 feature that allows software to store metadata in the upper bits of a canonical virtual address; it requires explicit kernel support — `arch_prctl` LAM commands, CR3 tag bit management, and associated data structures — to activate. The SLAM transient execution attack exploits an interaction between LAM tag bits and the speculative address-translation pipeline when a LAM-enabled process is running. This LAM kernel infrastructure was introduced upstream in Linux 6.2. The 5.19.6 kernel contains no LAM code paths; no process can enable LAM regardless of privilege level, and the transient execution oracle the SLAM paper describes does not exist in this kernel.
 
@@ -2829,13 +2829,13 @@ Linear Address Masking (LAM) is an x86_64 feature that allows software to store 
 **Status**: Risk erased
 **Component**: x86_64 architecture (`CONFIG_X86_64`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — perf_event_open() blocked by perf_event_paranoid=3; no perf tool in HS allowlist
+**Effective Score**: 0.0 — perf_event_open() blocked by perf_event_paranoid=3; no perf tool in HS allowlist
 **Affected range**: Linux 5.x–6.11
 **Upstream fix**: arch/x86/kernel/nmi.c (CPU buffer flush ordering fix)
 
 On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied after `exc_nmi()` completes but before IRET restores register state. This ordering leaves a window in which speculative execution can observe uninitialised microarchitectural buffer contents from the interrupted context — a same-CPU information disclosure in the MDS (Microarchitectural Data Sampling) class.
 
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Secure Mode's allowlist refuses new code and Lockdown blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 
 ### CVE-2024-56600
@@ -2843,7 +2843,7 @@ On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied 
 **Status**: Affected
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/af_inet6.c
@@ -2861,7 +2861,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Affected
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
+**Effective Score**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv4/af_inet.c
@@ -2879,7 +2879,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — DisplayPort MST display hardware absent
+**Effective Score**: 0.0 — DisplayPort MST display hardware absent
 
 Fix the MST sideband message body length check, which must be at least 1 byte accounting for the message body CRC (aka message data CRC) at the end of the message.
 
