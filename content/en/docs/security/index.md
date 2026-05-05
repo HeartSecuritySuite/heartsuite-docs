@@ -104,7 +104,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-53147](#cve-2024-53147) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — Lockdown blocks `mount()`; no adversary-controlled FAT volume on HS |
 | [CVE-2024-53150](#cve-2024-53150) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_USB_AUDIO` not compiled |
 | [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
-| [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_NFS_V4=y`; Lockdown limits post-exploitation |
+| [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `mount()` blocked by Lockdown; no NFS v4 share reachable on HS |
 | [CVE-2024-53214](#cve-2024-53214) | VFIO subsystem (`CONFIG_VFIO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_VFIO` not compiled |
 | [CVE-2024-53227](#cve-2024-53227) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2024-53239](#cve-2024-53239) | 6fire USB audio driver (`CONFIG_SND_USB_6FIRE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_USB_6FIRE` not compiled |
@@ -125,8 +125,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2023-53037](#cve-2023-53037) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
-| [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
-| [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
+| [CVE-2023-53039](#cve-2023-53039) | Intel ISH HID driver (`CONFIG_INTEL_ISH_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_INTEL_ISH_HID` not compiled |
+| [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2025-37861](#cve-2025-37861) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2025-37979](#cve-2025-37979) | Qualcomm sc7280 ASoC driver (`CONFIG_SND_SOC_SC7280`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC_SC7280` not compiled |
 | [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -159,13 +159,13 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-53392](#cve-2023-53392) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
 | [CVE-2025-39841](#cve-2025-39841) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
-| [CVE-2025-39866](#cve-2025-39866) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-39866](#cve-2025-39866) | VFS writeback subsystem | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — writeback always active; Lockdown limits post-exploitation |
 | [CVE-2022-50422](#cve-2022-50422) | SAS libsas library (`CONFIG_SCSI_SAS_LIBSAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_SAS_LIBSAS` not set |
-| [CVE-2022-50432](#cve-2022-50432) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50432](#cve-2022-50432) | kernfs subsystem (`CONFIG_KERNFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_KERNFS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
 | [CVE-2023-53521](#cve-2023-53521) | SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set |
-| [CVE-2022-50488](#cve-2022-50488) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50488](#cve-2022-50488) | BFQ I/O scheduler (`CONFIG_IOSCHED_BFQ`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_IOSCHED_BFQ` not compiled |
 | [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
@@ -185,7 +185,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — debugfs relay not in allowlist; Lockdown prevents modification |
 | [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_VT=y`; base I:N, Lockdown limits post-exploitation persistence |
 | [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
-| [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_DRM=y`; Lockdown reduces MI: High→Low (AC:H base) |
+| [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no DRM/GPU device on headless server |
 | [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_HUGETLBFS=y`; base I:L, Lockdown limits post-exploitation persistence |
 | [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — no I2C tool in allowlist; Lockdown prevents modification |
 | [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
@@ -212,8 +212,8 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2025-38369](#cve-2025-38369) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
 | [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Corsair Commander Pro hardware absent |
-| [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53395](#cve-2023-53395) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — FPDT crash requires malformed firmware; not reachable on standard OEM hardware |
+| [CVE-2023-53395](#cve-2023-53395) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Risk erased — AML exploit requires crafted firmware; ACPI tables read-only after boot |
 | [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Texas Instruments eDMA hardware absent |
 | [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 | [CVE-2026-23378](#cve-2026-23378) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `tc` not in allowlist; Lockdown prevents modification |
@@ -1191,22 +1191,16 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-53173
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: NFS v4 client (`CONFIG_NFS_V4`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `mount()` blocked by Lockdown; no NFS v4 share reachable on HS deployments
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
 `nfs_release_seqid()` at `fs/nfs/nfs4state.c:1088` removes a seqid from the sequence wait-list and wakes the next waiter (`rpc_wake_up_queued_task()` at line 1102). When two threads open the same file concurrently and both abort before receiving a reply, two separate code paths each call `nfs_release_seqid()` on the same `nfs_seqid`: the prepare callback at `fs/nfs/nfs4proc.c:2462` (when `nfs4_setup_sequence()` returns non-zero) and the done/release callback at line 2061. The second call finds `seqid->list` already empty and returns without action, but by this point `nfs_free_seqid()` may have freed the seqid object. The task woken by the first release can dereference `seqid->sequence` through the `nfs_seqid` pointer it holds — now pointing to freed memory — constituting a use-after-free.
 
-`CONFIG_NFS_V4=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path is active only when an NFS v4 share is mounted; on a server that does not mount NFS shares, the code path is not reached.
-
-Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
-
-Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
-
-The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
+`CONFIG_NFS_V4=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable seqid use-after-free path is only reachable when an NFS v4 share is mounted. On a HeartSuite Core Secure system, Lockdown blocks `mount()` unconditionally — `do_mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`). No NFS v4 filesystem can be mounted by any process, so the vulnerable code path is never reached. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-53214
@@ -1461,16 +1455,14 @@ When the SAS Transport Layer support is enabled and a device exposed to the OS b
 
 ## CVE-2023-53039
 
-**Status**: Risk erased
-**Component**: HID subsystem (`CONFIG_HID`)
+**Status**: Not Affected
+**Component**: Intel ISH HID driver (`CONFIG_INTEL_ISH_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Environmental Score**: 0.0 — `CONFIG_INTEL_ISH_HID` not compiled
 
-When a reset notify IPC message is received, the ISR schedules a work function and passes the ISHTP device to it via a global pointer ishtp_dev.
+When a reset notify IPC message is received by the Intel Integrated Sensor Hub Transfer Protocol (ISHTP) subsystem, the ISR schedules a work item and passes the device struct via the global `ishtp_dev` pointer. A race between the reset notify path and device teardown can leave `ishtp_dev` pointing to a freed object, triggering a use-after-free.
 
-`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_INTEL_ISH_HID` is not set in the HS 5.19.6 configuration. The Intel ISH HID driver (`drivers/hid/intel-ish-hid/`) is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53065
@@ -1480,9 +1472,11 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — `perf_event_paranoid=3` restricts `perf_event_open()`; no profiling tool in HS allowlist
 
-syzkaller reportes a KASAN issue with stack-out-of-bounds. The call trace is as follows: dump_stack+0x9c/0xd3
+In `kernel/events/core.c`, a stack-out-of-bounds issue discovered by syzkaller occurs in the perf events sample output path. A crafted `perf_event_open()` call with specific sample type flags causes the kernel to write beyond the bounds of a stack-allocated buffer during event sampling, overwriting adjacent stack memory.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a standalone exploit binary — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_PERF_EVENTS=y` is compiled in. The HS kernel sets `/proc/sys/kernel/perf_event_paranoid=3`, which restricts `perf_event_open()` to processes with `CAP_PERFMON`. No profiling tool (`perf`, `sysdig`, or equivalent) is included in the HS Secure Mode allowlist — the kernel refuses to execute it. The crafted `perf_event_open()` call required to trigger the stack overflow is unreachable in a standard HS deployment.
+
+The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-37861
@@ -1900,13 +1894,13 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 ## CVE-2025-39866
 
 **Status**: Affected
-**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Component**: VFS writeback subsystem
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-An use-after-free issue occurred when __mark_inode_dirty() get the bdi_writeback that was in the progress of switching.
+In `fs/fs-writeback.c`, `__mark_inode_dirty()` acquires a reference to a `bdi_writeback` structure. A concurrent `bdi_writeback_switch()` can free the structure before the reference is dropped, resulting in a use-after-free when the writeback pointer is subsequently accessed.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`fs/fs-writeback.c` is always compiled in on a system with block device support. The writeback subsystem is active for all block I/O on any mounted filesystem. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2022-50422
@@ -1924,13 +1918,13 @@ When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to d
 ## CVE-2022-50432
 
 **Status**: Affected
-**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Component**: kernfs subsystem (`CONFIG_KERNFS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
 
-Syzkaller managed to trigger concurrent calls to kernfs_remove_by_name_ns() for the same file resulting in a KASAN detected use-after-free.
+Syzkaller triggered concurrent calls to `kernfs_remove_by_name_ns()` for the same kernfs node, resulting in a KASAN-detected use-after-free in `fs/kernfs/dir.c`. The race occurs because `kernfs_remove_by_name_ns()` does not prevent concurrent removals of the same node from two threads.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_KERNFS=y` is compiled in and 5.19.6 falls within the affected range. kernfs underpins sysfs and is active on every running Linux system. The racy `kernfs_remove_by_name_ns()` call site is reachable via device attribute removal during concurrent hotplug events. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2023-53473
@@ -1973,14 +1967,14 @@ A fix for: BUG: KASAN: slab-out-of-bounds in ses_intf_remove+0x23f/0x270 [ses] R
 
 ## CVE-2022-50488
 
-**Status**: Affected
-**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Status**: Not Affected
+**Component**: BFQ I/O scheduler (`CONFIG_IOSCHED_BFQ`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_IOSCHED_BFQ` not compiled in HS kernel
 
-Our test report a uaf for 'bfqq->bic' in 5.10: ================================================================== BUG: KASAN: use-after-free in bfq_select_queue+0x378/0xa30
+In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involving `bfqq->bic`. A BFQ I/O queue object is freed while a reference to its `bic` (BFQ I/O context) is still live, leading to a use-after-free when `bfq_select_queue()` subsequently accesses the freed `bfqq` pointer.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_IOSCHED_BFQ` is not set in the HS 5.19.6 configuration. The BFQ (Budget Fair Queueing) block I/O scheduler is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2022-50496
@@ -2229,14 +2223,14 @@ A use-after-free flaw was found in the Linux Kernel due to a race problem in the
 
 ## CVE-2023-51043
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
+**Environmental Score**: 0.0 — no DRM/GPU device on headless server; `drm_atomic` requires GPU mode-setting
 
 In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-free during a race condition between a nonblocking atomic commit and a driver unload.
 
-`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The DRM subsystem manages GPU and display hardware. On a server without a display GPU, most DRM paths are inactive. The drm_atomic path specifically requires GPU mode-setting operations. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The `drm_atomic` race condition requires a process to initiate GPU mode-setting operations — specifically a nonblocking atomic commit — concurrent with driver unload. HeartSuite Core Secure runs on headless server hardware with no display GPU; the DRM device nodes are absent, so no mode-setting operation can be initiated. No GPU or display tool appears in the HS allowlist. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2024-0841
@@ -2565,42 +2559,30 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-50320
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — FPDT crash requires malformed firmware; not reachable on standard OEM hardware
 **Affected range**: Linux 5.x–5.19 (fix adds address validation before acpi_os_map_memory call)
 **Upstream fix**: drivers/acpi/acpi_fpdt.c (validate subtable->address before mapping)
 
 In `drivers/acpi/acpi_fpdt.c`, `acpi_init_fpdt()` (line 253) passes FPDT subtable addresses from firmware-supplied ACPI tables directly to `acpi_os_map_memory()` without validating that the address falls within the physical memory range. On systems with buggy firmware (the Packard Bell Dot SC, Intel Atom N2600 being the reported case), FPDT entries contain addresses with high bits set outside the valid physical range. `acpi_os_map_memory()` then attempts to map non-existent memory, crashing the kernel. Any firmware that supplies a malformed FPDT triggers the same path.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. FPDT parsing runs at `fs_initcall` priority — early boot, before any user-space process is running. Triggering the crash requires a machine with malformed firmware or an attacker with physical/firmware access to inject a crafted ACPI table.
-
-**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) reduces the environmental integrity score: `FS_IOC_SETFLAGS` returns `EPERM` and all mount paths return `EPERM`. An attacker who survives the crash and reaches root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
-
-The combination places this vulnerability in a contained environment: the ACPI parsing path is present, but the post-exploitation surface is closed by Lockdown and Secure Mode.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. FPDT parsing runs at `fs_initcall` priority — early boot, before any user-space process is running. Triggering the invalid-address crash requires malformed FPDT entries in the system's ACPI firmware; HeartSuite deployments use standard OEM server firmware that conforms to the ACPI specification. Injecting a crafted ACPI table requires physical or firmware-level access, which is outside the HS software-based adversary model. An adversary with firmware access has already bypassed the OS security boundary; the ACPI parsing path is therefore not a reachable software attack surface on any standard HS deployment.
 
 
 ## CVE-2023-53395
 
-**Status**: Affected
+**Status**: Risk erased
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — AML exploit requires crafted firmware; ACPI tables read-only after boot on standard servers
 **Affected range**: Linux 5.x through affected ACPICA version
 **Upstream fix**: ACPICA commit 90310989a079 (drivers/acpi/acpica/acopcode.h)
 
 In the ACPICA AML interpreter, the opcode table entries for the AML `Timer` instruction (`ARGP_TIMER_OP`, `ARGI_TIMER_OP` in `drivers/acpi/acpica/acopcode.h`) were inconsistent with ACPI Specification section 19.6.134, which specifies that `Timer` takes no arguments. The mismatch caused the AML parser to mishandle `Timer` opcodes in certain AML bytecode sequences, potentially treating subsequent bytecode as a spurious argument and corrupting the AML interpreter walk-state.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. AML execution runs at boot and is re-triggered by ACPI table reload events. Exploiting the walk-state corruption requires crafted AML bytecode; on a server with a reputable firmware vendor the ACPI tables are read-only after boot.
-
-**HeartSuite Lockdown** (`sys_hs_lockdown_hs()`, `kernel/ioctl.c:561–569`; `kernel/namespace.c:4218, 4300, 4453`) reduces the environmental integrity score: `FS_IOC_SETFLAGS` returns `EPERM` and all mount paths return `EPERM`. An attacker who reaches root via the corruption cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
-**HeartSuite Secure Mode** enforces an SPF allowlist (`hs_sandbox_caching.c`) that applies to root equally. An attacker cannot drop and execute a new exploit binary — it carries no allowlist entry and the kernel refuses to run it regardless of privilege level.
-
-The combination places this vulnerability in a contained environment: the AML parsing path is present, but the post-exploitation surface is closed by Lockdown and Secure Mode.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. AML execution runs at boot using ACPI tables supplied by the system firmware. Exploiting the walk-state corruption requires crafted AML bytecode — on a server with a reputable firmware vendor, ACPI tables are loaded from firmware storage at boot and are read-only thereafter; no userspace process can replace or modify the AML after boot without firmware-level access. This places the trigger outside the HS software-based adversary model. After gaining root through any avenue, Lockdown closes every follow-on path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
 
 ## CVE-2025-39869
