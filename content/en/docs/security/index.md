@@ -10,12 +10,39 @@ toc: true
 
 **Overview**: Vulnerability scanners match on kernel version strings — when a scanner sees a kernel older than the version that introduced an upstream fix, it may flag the system as affected regardless of whether the vulnerable code path is compiled in. This page lists kernel CVEs relevant to HeartSuite Core Secure, with the exact status and technical reason for each. Auditors and compliance teams can reference it directly when reviewing scanner output.
 
-The **Env. Score** column shows the CVSS v3.1 Environmental Score for the HeartSuite Core Secure deployment context. Where the attack surface is absent — hardware not present or trigger not installed — the Environmental Score is 0.0 regardless of Base Score. Where the code path is reachable, the Environmental Score reflects Modified Impact metrics accounting for Lockdown: Integrity Impact is reduced (MI: High→Low) because Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
+The **Effective Score** column shows the CVSS v3.1 Environmental Score for a HeartSuite Core Secure deployment — the actual risk on your system, not the theoretical worst case. Where the attack surface is absent — hardware not present or trigger not installed — the Effective Score is 0.0 regardless of Base Score. Where the code path is reachable, the Effective Score reflects Modified Impact metrics accounting for Lockdown: Integrity Impact is reduced (MI: High→Low) because Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ## CVE Status
 
-| CVE | Component | Base Score | Env. Score | Status |
-|-----|-----------|-----------|-----------|--------|
+<div class="row my-4 text-center">
+<div class="col-md-4">
+<div class="card border-success mb-3">
+<div class="card-body">
+<p class="display-4 fw-bold text-success mb-0">70</p>
+<p class="card-text text-muted">HIGH/CRITICAL CVEs<br><strong>reduced to Effective Score 0.0</strong><br><small>attack surface absent by design</small></p>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card border-warning mb-3">
+<div class="card-body">
+<p class="display-4 fw-bold text-warning mb-0">115</p>
+<p class="card-text text-muted">CVEs with code path reachable<br><strong>Lockdown limits post-exploitation</strong><br><small>no persistence · no allowlist changes · no reboot survival</small></p>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="card border-secondary mb-3">
+<div class="card-body">
+<p class="display-4 fw-bold text-secondary mb-0">1,000+</p>
+<p class="card-text text-muted">additional CVEs<br><strong>Not Applicable — subsystem not compiled</strong><br><small>zero attack surface by kernel configuration</small></p>
+</div>
+</div>
+</div>
+</div>
+
+| CVE | Component | Base Score | Effective Score | Status |
+|-----|-----------|-----------|-----------------|--------|
 | [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge bg-secondary">—</span> | <span class="badge bg-success">0.0</span> | Not Affected — code not compiled in |
 | [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge bg-success">0.0</span> | Affected — trigger not present in default configuration |
 | [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent on server deployments |
@@ -42,8 +69,8 @@ The **Env. Score** column shows the CVSS v3.1 Environmental Score for the HeartS
 | [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_BLK_CGROUP_IOCOST=y`; Lockdown limits post-exploitation |
 | [CVE-2024-38560](#cve-2024-38560) | Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA` not set |
 | [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_KPROBES=y`; Lockdown limits post-exploitation |
-| [CVE-2024-40901](#cve-2024-40901) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires LSI/Avago mpt3sas SAS/NVMe HBA |
-| [CVE-2024-40978](#cve-2024-40978) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires QLogic qedi iSCSI HBA |
+| [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
+| [CVE-2024-40978](#cve-2024-40978) | QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QEDI` not set |
 | [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
 | [CVE-2024-42136](#cve-2024-42136) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; CD-ROM drive absent on server |
 | [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
@@ -676,10 +703,18 @@ Currently, we allocate a `nbytes`-sized kernel buffer and copy `nbytes` from use
 **Component**: kprobes (`CONFIG_KPROBES`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-KASAN reports a bug: BUG: KASAN: use-after-free in ftrace_location+0x90/0x120 Read of size 8 at addr ffff888141d40010 by task insmod/424
+In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(ip, ip)` at line 1583 to obtain a `dyn_ftrace *rec` pointer without holding `ftrace_lock`. On a concurrent path, module unloading frees the pages that back ftrace records for module functions. If a module is removed between the `lookup_rec()` return and the `return rec->ip` dereference at line 1594, the pointer references freed memory. The race is reached through the kprobe registration path: `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()` — all called without the lock that serialises ftrace record lifetime.
 
-`CONFIG_KPROBES=y` is compiled in and 5.19.6 falls within the affected range. kprobes and ftrace are kernel debugging infrastructure requiring `CAP_SYS_ADMIN`. Not normally active on a production server. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_KPROBES=y` is compiled in and HS 5.19.6 falls within the affected range.
+
+Once an exploit reaches root in userspace, Lockdown's constraints apply in full. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; at that point `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. An attacker who has escalated through this UAF cannot alter what the system will run, cannot install a persistent backdoor, and loses their access on the next reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-40901
