@@ -25,7 +25,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 <div class="cve-hero-card cve-hero-neutralized">
 <p class="cve-hero-number text-success">{{< cve-stat type="neutralized" >}}</p>
 <p class="cve-hero-label">High &amp; Critical CVEs reduced to Effective Score <strong>0.0</strong></p>
-<p class="cve-hero-detail">Attack surface absent by design — the vulnerable code was never compiled in.</p>
+<p class="cve-hero-detail">Attack surface absent by design — no reachable code path on any HeartSuite deployment.</p>
 </div>
 </div>
 <div class="col-md-4">
@@ -47,26 +47,26 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 
 | CVE | Component | Base Score | Effective Score | Status |
 |-----|-----------|-----------|-----------------|--------|
-| [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge bg-secondary">—</span> | <span class="badge bg-success">0.0</span> | Not Affected — code not compiled in |
-| [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge bg-success">0.0</span> | Affected — trigger not present in default configuration |
-| [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent on server deployments |
-| [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent on server deployments |
-| [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent on server deployments |
+| [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge bg-secondary">—</span> | <span class="badge badge-erased">0.0</span> | Risk erased — code not compiled in |
+| [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Affected — trigger not present in default configuration |
+| [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — hardware absent on server deployments |
+| [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — hardware absent on server deployments |
+| [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.9 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 | [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">6.7 HIGH</span> | <span class="badge bg-warning text-dark">6.8 MEDIUM</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_CRYPTO=y`; Lockdown limits post-exploitation |
-| [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-26842](#cve-2024-26842) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; UFS flash storage absent on x86 server |
-| [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
+| [CVE-2024-26842](#cve-2024-26842) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — UFS flash storage absent on x86 server |
+| [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
 | [CVE-2024-26934](#cve-2024-26934) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
-| [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
+| [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
 | [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
-| [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Not Affected — `CONFIG_SND_USB_AUDIO` not set |
-| [CVE-2022-48702](#cve-2022-48702) | EMU10K1 audio driver (`CONFIG_SND_EMU10K1`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Not Affected — `CONFIG_SND_EMU10K1` not set |
-| [CVE-2022-48695](#cve-2022-48695) | mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
-| [CVE-2024-35789](#cve-2024-35789) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CONFIG_SND_USB_AUDIO` not set |
+| [CVE-2022-48702](#cve-2022-48702) | EMU10K1 audio driver (`CONFIG_SND_EMU10K1`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CONFIG_SND_EMU10K1` not set |
+| [CVE-2022-48695](#cve-2022-48695) | mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — `CONFIG_SCSI_MPT3SAS` not set |
+| [CVE-2024-35789](#cve-2024-35789) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_THERMAL=y`; Lockdown limits post-exploitation |
@@ -75,16 +75,16 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_KPROBES=y`; Lockdown limits post-exploitation |
 | [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-40978](#cve-2024-40978) | QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QEDI` not set |
-| [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
-| [CVE-2024-42136](#cve-2024-42136) | CD-ROM subsystem (`CONFIG_CDROM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; CD-ROM drive absent on server |
+| [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
+| [CVE-2024-42136](#cve-2024-42136) | CD-ROM subsystem (`CONFIG_CDROM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — CD-ROM drive absent on server |
 | [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-46673](#cve-2024-46673) | Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_AACRAID` not set |
 | [CVE-2024-46746](#cve-2024-46746) | AMD SFH HID driver (`CONFIG_AMD_SFH_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AMD_SFH_HID` not set |
-| [CVE-2024-46747](#cve-2024-46747) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
-| [CVE-2024-46798](#cve-2024-46798) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2024-46849](#cve-2024-46849) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2024-46747](#cve-2024-46747) | Cougar HID driver (`CONFIG_HID_COUGAR`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_HID_COUGAR` not set |
+| [CVE-2024-46798](#cve-2024-46798) | ALSA rawmidi subsystem (`CONFIG_SND_RAWMIDI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_RAWMIDI` not compiled |
+| [CVE-2024-46849](#cve-2024-46849) | Amlogic Meson ASoC driver (`CONFIG_SND_MESON_CARD_UTILS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — driver not compiled in |
 | [CVE-2024-47682](#cve-2024-47682) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 | [CVE-2024-47701](#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49852](#cve-2024-49852) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex libefc Fibre Channel HBA |
@@ -94,94 +94,94 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50007](#cve-2024-50007) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2022-48951](#cve-2022-48951) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2024-50007](#cve-2024-50007) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2022-48951](#cve-2022-48951) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49022](#cve-2022-49022) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
-| [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2022-49022](#cve-2022-49022) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
+| [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2024-50278](#cve-2024-50278) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50279](#cve-2024-50279) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53147](#cve-2024-53147) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-53150](#cve-2024-53150) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2024-53150](#cve-2024-53150) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NFS_V4=y`; Lockdown limits post-exploitation |
-| [CVE-2024-53214](#cve-2024-53214) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2024-53214](#cve-2024-53214) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2024-53227](#cve-2024-53227) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Brocade bfa Fibre Channel HBA |
-| [CVE-2024-53239](#cve-2024-53239) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2024-56609](#cve-2024-56609) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2024-53239](#cve-2024-53239) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2024-56609](#cve-2024-56609) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2024-56631](#cve-2024-56631) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
-| [CVE-2024-56663](#cve-2024-56663) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
-| [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2024-56663](#cve-2024-56663) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
+| [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
-| [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
-| [CVE-2023-52988](#cve-2023-52988) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
+| [CVE-2023-52988](#cve-2023-52988) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-21993](#cve-2025-21993) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires iSCSI Boot Firmware Table (iBFT, iSCSI boot configuration) |
-| [CVE-2025-22083](#cve-2025-22083) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; vhost-scsi not applicable — no KVM host mode in HS |
+| [CVE-2025-22083](#cve-2025-22083) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — vhost-scsi not applicable — no KVM host mode in HS |
 | [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49789](#cve-2022-49789) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; IBM Z Fibre Channel hardware absent |
-| [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2022-49789](#cve-2022-49789) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — IBM Z Fibre Channel hardware absent |
+| [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53037](#cve-2023-53037) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
-| [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37861](#cve-2025-37861) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
-| [CVE-2025-37979](#cve-2025-37979) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
-| [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2025-37979](#cve-2025-37979) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
+| [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2025-38206](#cve-2025-38206) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38239](#cve-2025-38239) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires LSI MegaRAID SAS controller |
-| [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no Intel display GPU present |
-| [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
+| [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2025-38550](#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38556](#cve-2025-38556) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2025-38556](#cve-2025-38556) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38699](#cve-2025-38699) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Brocade bfa Fibre Channel HBA |
-| [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-39760](#cve-2025-39760) | USB core (`CONFIG_USB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_USB=y`; Lockdown limits post-exploitation |
-| [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; UFS flash storage absent on x86 server |
+| [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — UFS flash storage absent on x86 server |
 | [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2023-53282](#cve-2023-53282) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex lpfc Fibre Channel HBA |
 | [CVE-2023-53285](#cve-2023-53285) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53320](#cve-2023-53320) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
-| [CVE-2023-53321](#cve-2023-53321) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2023-53321](#cve-2023-53321) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2023-53322](#cve-2023-53322) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires QLogic qla2xxx Fibre Channel HBA |
-| [CVE-2022-50378](#cve-2022-50378) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Amlogic Meson ARM SoC GPU absent |
+| [CVE-2022-50378](#cve-2022-50378) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Amlogic Meson ARM SoC GPU absent |
 | [CVE-2023-53376](#cve-2023-53376) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
-| [CVE-2023-53392](#cve-2023-53392) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no USB HID input devices on headless server |
+| [CVE-2023-53392](#cve-2023-53392) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2025-39841](#cve-2025-39841) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex lpfc Fibre Channel HBA |
-| [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no WiFi NIC present |
+| [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2025-39866](#cve-2025-39866) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50422](#cve-2022-50422) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SAS libsas library (requires SAS HBA) |
 | [CVE-2022-50432](#cve-2022-50432) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; UFS flash storage absent on x86 server |
+| [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — UFS flash storage absent on x86 server |
 | [CVE-2023-53521](#cve-2023-53521) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
 | [CVE-2022-50488](#cve-2022-50488) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2023-53675](#cve-2023-53675) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
 | [CVE-2023-53676](#cve-2023-53676) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
 | [CVE-2025-71075](#cve-2025-71075) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Adaptec aic94xx SAS HBA |
-| [CVE-2026-23076](#cve-2026-23076) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2026-23078](#cve-2026-23078) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2026-23089](#cve-2026-23089) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2026-23191](#cve-2026-23191) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2026-23076](#cve-2026-23076) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2026-23078](#cve-2026-23078) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2026-23089](#cve-2026-23089) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2026-23191](#cve-2026-23191) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-23193](#cve-2026-23193) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge bg-danger">9.0 CRITICAL</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
-| [CVE-2026-23208](#cve-2026-23208) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2026-23208](#cve-2026-23208) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-23216](#cve-2026-23216) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
 | [CVE-2025-71238](#cve-2025-71238) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires QLogic qla2xxx Fibre Channel HBA |
-| [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
-| [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_RELAY=y`; Lockdown limits post-exploitation |
 | [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_VT=y`; Lockdown limits post-exploitation |
 | [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_UNIX=y`; Lockdown limits post-exploitation |
@@ -192,11 +192,11 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_WATCHDOG=y`; Lockdown limits post-exploitation |
 | [CVE-2024-34777](#cve-2024-34777) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_DMA_ENGINE=y`; Lockdown limits post-exploitation |
 | [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_9P_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
-| [CVE-2022-48867](#cve-2022-48867) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
-| [CVE-2024-46759](#cve-2024-46759) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; ADC128D818 I2C ADC chip absent |
+| [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Intel IAX/DSA accelerator hardware absent |
+| [CVE-2022-48867](#cve-2022-48867) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Intel IAX/DSA accelerator hardware absent |
+| [CVE-2024-46759](#cve-2024-46759) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — ADC128D818 I2C ADC chip absent |
 | [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49029](#cve-2022-49029) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; IBM Power Management Extension hardware absent |
+| [CVE-2022-49029](#cve-2022-49029) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — IBM Power Management Extension hardware absent |
 | [CVE-2024-50127](#cve-2024-50127) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 | [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53057](#cve-2024-53057) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
@@ -210,18 +210,18 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-37914](#cve-2025-37914) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37923](#cve-2025-37923) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_TRACING=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38369](#cve-2025-38369) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Intel IAX/DSA accelerator hardware absent |
-| [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Corsair Commander Pro hardware absent |
+| [CVE-2025-38369](#cve-2025-38369) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Intel IAX/DSA accelerator hardware absent |
+| [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Corsair Commander Pro hardware absent |
 | [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53395](#cve-2023-53395) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
-| [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; Texas Instruments eDMA hardware absent |
+| [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Texas Instruments eDMA hardware absent |
 | [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
 | [CVE-2026-23378](#cve-2026-23378) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NET_SCHED=y`; Lockdown limits post-exploitation |
 | [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-36971](#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
 | [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NET_NS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; no audio hardware present |
+| [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_DMA_SHARED_BUFFER=y`; Lockdown limits post-exploitation |
 | [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
@@ -231,7 +231,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_X86_64=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
-| [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-success">0.0</span> | Affected — hardware absent; DisplayPort MST display hardware absent |
+| [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — DisplayPort MST display hardware absent |
 
 Over 1,000 CVEs across 178 disabled-feature groups are listed in [Not Affected — Disabled Features](#not-affected-disabled-features) below.
 
@@ -251,7 +251,7 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 
 ## CVE-2024-47685
 
-**Status**: Affected — not reachable in default configuration  
+**Status**: Effective Score 0.0 — trigger not present in default configuration
 **Component**: nf_reject_ipv6 — IPv6 netfilter TCP RST generation (`CONFIG_NF_REJECT_IPV6`, `CONFIG_IP6_NF_TARGET_REJECT`)  
 **Base Score**: 9.1 CRITICAL (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H)  
 **Environmental Score**: 0.0 — trigger not present; HeartSuite installs no ip6tables REJECT rules  
@@ -271,7 +271,7 @@ The result is a two-layer guarantee: Secure Mode prevents the trigger from being
 
 ## CVE-2022-41674, CVE-2022-42719, CVE-2022-42720
 
-**Status**: Affected — attack surface absent on server deployments  
+**Status**: Risk erased
 **Component**: mac80211 — 802.11 wireless stack (`CONFIG_MAC80211`)  
 **Base Scores**: CVE-2022-42719: 8.8 HIGH (AV:A); CVE-2022-41674: 8.1 HIGH (AV:A); CVE-2022-42720: 7.8 HIGH (AV:A)  
 **Environmental Score**: 0.0 — no WiFi hardware present; attack vector (frame injection via wireless NIC) has no path to execution  
@@ -296,7 +296,7 @@ The combined effect is that an attacker who reaches root through one of these Wi
 
 ## CVE-2023-0266
 
-**Status**: Affected — hardware-dependent  
+**Status**: Risk erased
 **Component**: ALSA PCM — in-kernel sound subsystem (`CONFIG_SND`)  
 **Base Score**: 7.9 HIGH (AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H)  
 **Environmental Score**: 0.0 — no audio hardware present; no `/dev/snd` devices; ioctl path unreachable  
@@ -317,7 +317,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2022-4139
 
-**Status**: Affected — hardware-dependent  
+**Status**: Risk erased
 **Component**: i915 GPU driver (`CONFIG_DRM_I915`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Environmental Score**: 0.0 — no i915 GPU present; GPU context entry point unreachable  
@@ -383,7 +383,7 @@ If exploitation were to succeed, Lockdown closes the post-exploitation path: the
 
 ## CVE-2023-52530
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present; WoWLAN path unreachable
@@ -425,7 +425,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-26654
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: ALSA AICA Dreamcast sound driver (`CONFIG_SND_AICA`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in; no code path exists
@@ -458,7 +458,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-26842
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: UFS host controller driver (`CONFIG_SCSI_UFSHCD`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in; no code path exists
@@ -471,7 +471,7 @@ This CVE describes an out-of-bounds memory access in the UFS host controller dri
 
 ## CVE-2022-48662
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: Intel i915 DRM driver — i915_perf (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
@@ -513,7 +513,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-26939
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
@@ -549,7 +549,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2022-48701
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: USB audio driver (`CONFIG_SND_USB_AUDIO`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -563,7 +563,7 @@ There may be a bad USB audio device with a USB ID of (0x04fa, 0x4201) and fewer 
 
 ## CVE-2022-48702
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: EMU10K1 audio driver (`CONFIG_SND_EMU10K1`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -577,7 +577,7 @@ The voice allocator sometimes begins allocating from near the end of the array a
 
 ## CVE-2022-48695
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -591,7 +591,7 @@ A use-after-free occurs during controller reset in the mpt3sas firmware event cl
 
 ## CVE-2024-35789
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -689,7 +689,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-38560
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -723,7 +723,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-40901
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -737,7 +737,7 @@ In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the `pd_handles` bitmap is allocated 
 
 ## CVE-2024-40978
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: QLogic qedi iSCSI driver (`CONFIG_SCSI_QEDI`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -751,7 +751,7 @@ In `drivers/scsi/qedi/qedi_debugfs.c`, `qedi_dbg_do_not_recover_cmd_read()` at l
 
 ## CVE-2024-41092
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
@@ -767,7 +767,7 @@ On a HeartSuite system with this hardware installed, Lockdown's constraints woul
 
 ## CVE-2024-42136
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: CD-ROM subsystem (`CONFIG_CDROM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — CD-ROM drive absent on server
@@ -843,7 +843,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-46673
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -857,7 +857,7 @@ The combined effect is that an attacker who reaches root through this CVE finds 
 
 ## CVE-2024-46746
 
-**Status**: Not Affected — driver not compiled in
+**Status**: Risk erased
 **Component**: AMD Sensor Fusion Hub HID driver (`CONFIG_AMD_SFH_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — driver not compiled in
@@ -871,44 +871,44 @@ In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `dev
 
 ## CVE-2024-46747
 
-**Status**: Affected — hardware absent on server deployments
-**Component**: HID subsystem (`CONFIG_HID`)
+**Status**: Risk erased
+**Component**: Cougar HID driver (`CONFIG_HID_COUGAR`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 0.0 — no USB HID input devices on headless server
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-report_fixup for the Cougar 500k Gaming Keyboard was not verifying that the report descriptor size was correct before accessing it
+`cougar_report_fixup()` at `drivers/hid/hid-cougar.c:109` reads `rdesc[2]`, `rdesc[3]`, `rdesc[115]`, and `rdesc[116]`, and conditionally writes to `rdesc[115]`–`rdesc[116]` at lines 113–114, without first checking that `*rsize >= 117`. If the Cougar 500k Gaming Keyboard presents a report descriptor shorter than 117 bytes, the fixed-offset accesses go beyond the descriptor buffer, producing an out-of-bounds memory read/write.
 
-`CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_HID_COUGAR` is not set in the HS 5.19.6 configuration. The Cougar HID driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-46798
 
-**Status**: Affected — hardware absent on server deployments
-**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Status**: Risk erased
+**Component**: ALSA rawmidi subsystem (`CONFIG_SND_RAWMIDI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Environmental Score**: 0.0 — `CONFIG_SND_RAWMIDI` not compiled
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-When using kernel with the following extra config, - CONFIG_KASAN=y - CONFIG_KASAN_GENERIC=y
+In `sound/core/rawmidi.c`, `snd_rawmidi_drain_output()` at line 224 saves `runtime = substream->runtime` at line 228, then calls `wait_event_interruptible_timeout(runtime->sleep, ...)` at line 232, waiting up to 10 seconds for the output buffer to drain. If `close_substream()` runs concurrently and calls `snd_rawmidi_runtime_free(substream)` at line 528 — freeing `substream->runtime` — while the drain wait is still sleeping, the `runtime` pointer saved at line 228 becomes dangling. When the wait exits, accesses to `runtime->avail` and `runtime->buffer_size` at line 237 use freed memory.
 
-`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_SND_RAWMIDI` is not compiled in the HS 5.19.6 configuration — no enabled driver selects it. The vulnerable `rawmidi.c` code path does not exist in the binary.
 
 
 ## CVE-2024-46849
 
-**Status**: Affected — hardware absent on server deployments
-**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Status**: Risk erased
+**Component**: Amlogic Meson ASoC driver (`CONFIG_SND_MESON_CARD_UTILS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Environmental Score**: 0.0 — driver not compiled in
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-Buffer 'card->dai_link' is reallocated in 'meson_card_reallocate_links()', so move 'pad' pointer initialization after this function when memory is already reallocated.
+In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pad = &card->dai_link[*index]` — a pointer into the current `dai_link` array. At line 113, `meson_card_reallocate_links()` calls `krealloc()` on `card->dai_link`, potentially moving the array to a new address and freeing the original buffer. At lines 119 and 133, `pad->name` and `pad->cpus->of_node` are accessed through the now-dangling `pad` pointer. The fix moves the `pad` assignment to after the reallocation, where `card->dai_link` has been updated.
 
-`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_SND_MESON_CARD_UTILS` is not compiled in the HS 5.19.6 configuration — the Amlogic Meson ASoC platform requires `ARCH_MESON` which is not set on x86. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-47682
@@ -1023,7 +1023,7 @@ When calling ext4_force_split_extent_at() in ext4_ext_replay_update_ex(), the 'p
 
 ## CVE-2024-50007
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1037,7 +1037,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-48951
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1063,7 +1063,7 @@ Blamed commit claimed rcu_read_lock() was held by ip6_fragment() callers. It see
 
 ## CVE-2022-49022
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1077,7 +1077,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-49023
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1127,7 +1127,7 @@ In the case of the directory size is greater than or equal to the cluster size, 
 
 ## CVE-2024-53150
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1165,7 +1165,7 @@ Yang Erkun reports that when two threads are opening files at the same time, and
 
 ## CVE-2024-53214
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1193,7 +1193,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2024-53239
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1207,7 +1207,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2024-56609
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1233,7 +1233,7 @@ Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN: BUG: KA
 
 ## CVE-2024-56663
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1247,7 +1247,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2024-57899
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1273,7 +1273,7 @@ sqe->opcode is used for different tables, make sure we santitise it against spec
 
 ## CVE-2023-52930
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
@@ -1287,7 +1287,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-52988
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1315,7 +1315,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2025-22083
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — vhost-scsi not applicable — no KVM host mode in HS
@@ -1377,7 +1377,7 @@ Once inside 'ext4_xattr_inode_dec_ref_all' we should ignore xattrs entries past 
 
 ## CVE-2022-49789
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — IBM Z Fibre Channel hardware absent
@@ -1391,7 +1391,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-49842
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1431,7 +1431,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2023-53039
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1471,7 +1471,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2025-37979
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1485,7 +1485,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-49934
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1499,7 +1499,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38103
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1539,7 +1539,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2025-38249
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1553,7 +1553,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38389
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: Intel i915 DRM driver (`CONFIG_DRM_I915`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no Intel display GPU present
@@ -1567,7 +1567,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38494
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1593,7 +1593,7 @@ pmc->idev is still used in ip6_mc_clear_src(), so as mld_clear_delrec() does, th
 
 ## CVE-2025-38556
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1657,7 +1657,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2025-38729
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1683,7 +1683,7 @@ To prevent timing attacks, MACs need to be compared in constant time. Use the ap
 
 ## CVE-2025-39757
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -1709,7 +1709,7 @@ usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling
 
 ## CVE-2025-39788
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — UFS flash storage absent on x86 server
@@ -1735,7 +1735,7 @@ For scan loop must ensure that at least EXT4_FC_TAG_BASE_LEN space. If remain sp
 
 ## CVE-2023-53257
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1789,7 +1789,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2023-53321
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: mac80211 wireless stack (`CONFIG_MAC80211`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1817,7 +1817,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2022-50378
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — Amlogic Meson ARM SoC GPU absent
@@ -1845,7 +1845,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2023-53392
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: HID subsystem (`CONFIG_HID`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no USB HID input devices on headless server
@@ -1873,7 +1873,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2025-39864
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: cfg80211 wireless framework (`CONFIG_CFG80211`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no WiFi NIC present
@@ -1937,7 +1937,7 @@ The ext4_dirhash() will *almost* never fail, especially when the hash tree featu
 
 ## CVE-2023-53510
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — UFS flash storage absent on x86 server
@@ -2001,7 +2001,7 @@ Syzbot found the following issue: ==============================================
 
 ## CVE-2023-53640
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2057,7 +2057,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2026-23076
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2071,7 +2071,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-23078
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2085,7 +2085,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-23089
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2099,7 +2099,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-23191
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2127,7 +2127,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2026-23208
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2169,7 +2169,7 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 
 ## CVE-2026-23318
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2183,7 +2183,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-31581
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2317,7 +2317,7 @@ Fix a use-after-free on dentry's d_fsdata fid list when a thread looks up a fid 
 
 ## CVE-2024-40956
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
@@ -2331,7 +2331,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2022-48867
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
@@ -2345,7 +2345,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2024-46759
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — ADC128D818 I2C ADC chip absent
@@ -2371,7 +2371,7 @@ Only buffer objects are valid return values of _STR. If something else is return
 
 ## CVE-2022-49029
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — IBM Power Management Extension hardware absent
@@ -2541,7 +2541,7 @@ syzbot reported this bug: ======================================================
 
 ## CVE-2025-38369
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — Intel IAX/DSA accelerator hardware absent
@@ -2555,7 +2555,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-38548
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: hardware monitoring subsystem (`CONFIG_HWMON`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — Corsair Commander Pro hardware absent
@@ -2593,7 +2593,7 @@ ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5 According to the ACPI spe
 
 ## CVE-2025-39869
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DMA engine framework (`CONFIG_DMA_ENGINE`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Environmental Score**: 0.0 — Texas Instruments eDMA hardware absent
@@ -2679,7 +2679,7 @@ Syzkaller hit a warning: refcount_t: addition on 0; use-after-free. WARNING: CPU
 
 ## CVE-2024-41039
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: ALSA sound subsystem (`CONFIG_SND`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — no audio hardware present
@@ -2801,7 +2801,7 @@ sock_init_data() attaches the allocated sk object to the provided sock object. I
 
 ## CVE-2024-56616
 
-**Status**: Affected — hardware absent on server deployments
+**Status**: Risk erased
 **Component**: DRM subsystem (`CONFIG_DRM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 0.0 — DisplayPort MST display hardware absent
@@ -2820,184 +2820,184 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|
-| [`CONFIG_BPF_SYSCALL` not set](#bpf-syscall-interface) | CVE-2021-20194, CVE-2023-2163, CVE-2023-39191, CVE-2023-52452, CVE-2024-26589, CVE-2023-52621, CVE-2023-52642, CVE-2024-26883, CVE-2024-26884, CVE-2024-26885, CVE-2024-38538, CVE-2024-40954, CVE-2024-41045, CVE-2024-49861, CVE-2022-49030, CVE-2024-50063, CVE-2024-50067, CVE-2024-50164, CVE-2024-50262, CVE-2024-53099, CVE-2024-56614, CVE-2024-56615, CVE-2024-56633, CVE-2024-56664, CVE-2023-53024, CVE-2022-49840, CVE-2025-37822, CVE-2022-49961, CVE-2022-49970, CVE-2022-49975, CVE-2025-38280, CVE-2025-38502, CVE-2025-38538, CVE-2025-39744, CVE-2023-53192, CVE-2023-53338, CVE-2025-39913, CVE-2022-50490, CVE-2022-50536, CVE-2026-23343, CVE-2026-23359  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NF_TABLES` not set](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_SCH_QFQ`, `CONFIG_NET_CLS_TCINDEX` not set](#network-traffic-control-schedulers) | CVE-2023-31436, CVE-2023-1829, CVE-2023-1281 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BT` not set](#bluetooth-stack) | CVE-2022-42896, CVE-2022-45934, CVE-2022-3564, CVE-2022-3640, CVE-2023-1989, and 3 additional, CVE-2023-40283, CVE-2024-21803, CVE-2024-27000, CVE-2024-27398, CVE-2024-35963, CVE-2024-35965, CVE-2024-35966, CVE-2024-35967, CVE-2023-52766, CVE-2024-36012, CVE-2024-36032, CVE-2024-36880, CVE-2024-40927, CVE-2024-41087, CVE-2022-48871, CVE-2022-48878, CVE-2024-43883, CVE-2024-49950, CVE-2024-50125, CVE-2024-50234, CVE-2024-53208, CVE-2024-56604, CVE-2024-56605, CVE-2025-21969, CVE-2025-22022, CVE-2022-49826, CVE-2022-49910, CVE-2023-53057, CVE-2025-37882, CVE-2023-53145, CVE-2025-38117, CVE-2025-38118, CVE-2025-38250, CVE-2025-38593, CVE-2022-50315, CVE-2023-53252, CVE-2023-53305, CVE-2022-50386, CVE-2023-53386, CVE-2022-50419, CVE-2022-50470, CVE-2023-53673, CVE-2025-71082, CVE-2026-23395, CVE-2026-31500  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TLS`, `CONFIG_RDS`, `CONFIG_ROSE`, `CONFIG_MCTP`, `CONFIG_AF_RXRPC` not set](#protocol-families-tls-rds-rose-mctp-and-af_rxrpc) | CVE-2023-28466, CVE-2023-1078, CVE-2022-2961, CVE-2022-3977, CVE-2023-2006 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NFSD` not set](#nfs-server) | CVE-2022-43945, CVE-2022-4379, CVE-2023-1652, CVE-2024-26907, CVE-2023-52885, CVE-2024-50106, CVE-2024-50121, CVE-2024-53168, CVE-2025-38724, CVE-2022-50235, CVE-2022-50241, CVE-2022-50401, CVE-2022-50410, CVE-2023-53680, CVE-2026-22980  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_XFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set](#filesystem-drivers) | CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set](#hardware-specific-and-virtualization-drivers) | CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_NET_RNDIS_WLAN`, `CONFIG_SMB_SERVER` not set](#usb-network-adapter-and-smb-server) | CVE-2023-23559, CVE-2023-0210 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_ADV748X` not set](#config-video-adv748x) | CVE-2025-71136 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MD_RAID10` not set](#config-md-raid10) | CVE-2023-53357 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_NET_CDCETHER` not set](#config-usb-net-cdcether) | CVE-2025-38153 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_XLNX` not set](#config-drm-xlnx) | CVE-2024-56538 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_LAN78XX` not set](#config-usb-lan78xx) | CVE-2024-53213 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HYPERV_VSOCKETS` not set](#config-hyperv-vsockets) | CVE-2024-53103 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_XE` not set](#drm-xe-driver) | CVE-2024-53098 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ARM_SCMI_PROTOCOL` not set](#config-arm-scmi-protocol) | CVE-2024-53068 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_S5P_JPEG` not set](#config-video-s5p-jpeg) | CVE-2024-53061 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MSE102X` not set](#config-mse102x) | CVE-2024-50276 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TYPEC` not set](#config-typec) | CVE-2024-50150 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HSR` not set](#config-hsr) | CVE-2022-49015 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HI_GMAC` not set](#config-hi-gmac) | CVE-2022-48960, CVE-2022-48962 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_STM` not set](#config-drm-stm) | CVE-2024-49992 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PCI_KIRIN` not set](#config-pci-kirin) | CVE-2024-47751 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_ASPEED_GFX` not set](#config-drm-aspeed-gfx) | CVE-2023-52916 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BNA` not set](#config-bna) | CVE-2024-43839 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CRYPTO_DEV_HISI_SEC2` not set](#config-crypto-dev-hisi-sec2) | CVE-2024-42147, CVE-2024-47730 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IONIC` not set](#config-ionic) | CVE-2024-39502 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_GREYBUS` not set](#config-greybus) | CVE-2024-39495 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_STM` not set](#config-stm) | CVE-2024-38627 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DEBUG_MUTEXES` not set](#config-debug-mutexes) | CVE-2023-52836 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RCU_NOCB_CPU` not set](#config-rcu-nocb-cpu) | CVE-2024-35929, CVE-2025-38704 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SECURITY_APPARMOR` not set](#config-security-apparmor) | CVE-2026-23408 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MACVLAN` not set](#config-macvlan) | CVE-2026-23001 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_TEAM` not set](#config-net-team) | CVE-2025-71091 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DLM` not set](#config-dlm) | CVE-2023-53629 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TRACE_BUF` not set](#config-trace-buf) | CVE-2023-53587 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PTP_1588_CLOCK_OCP` not set](#config-ptp-1588-clock-ocp) | CVE-2025-39859 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_XDP_SOCKETS` not set](#config-xdp-sockets) | CVE-2023-53426 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NUBUS` not set](#config-nubus) | CVE-2023-53217 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_COMEDI` not set](#config-comedi) | CVE-2025-38482, CVE-2025-38483, CVE-2025-38529, CVE-2025-38530, CVE-2025-39685, CVE-2025-39686 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IPV6_SEG6_LWTUNNEL` not set](#config-ipv6-seg6-lwtunnel) | CVE-2025-38476 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CORESIGHT` not set](#config-coresight) | CVE-2025-38131 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_STAGING` not set](#config-staging) | CVE-2022-49956, CVE-2023-53554 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MCB` not set](#config-mcb) | CVE-2025-37817 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_UDMABUF` not set](#config-udmabuf) | CVE-2025-37803 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SLIMBUS` not set](#config-slimbus) | CVE-2025-21914 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_GENEVE` not set](#config-geneve) | CVE-2025-21858 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ORANGEFS_FS` not set](#config-orangefs-fs) | CVE-2025-21782 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PKTGEN` not set](#config-pktgen) | CVE-2025-21680 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SPI_MPC52xx` not set](#config-spi-mpc52xx) | CVE-2024-50051 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SUPERH` not set](#config-superh) | CVE-2024-53165 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_MUSB_HDRC` not set](#config-usb-musb-hdrc) | CVE-2024-50269 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_SERIAL` not set](#config-usb-serial) | CVE-2024-50267 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VDPA` not set](#config-vdpa) | CVE-2024-47748, CVE-2024-53126, CVE-2023-53082, CVE-2023-53543 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SPI_NXP_FLEXSPI` not set](#config-spi-nxp-flexspi) | CVE-2024-46853 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_UML` not set](#config-uml) | CVE-2024-46844 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_SCH_NETEM` not set](#config-net-sch-netem) | CVE-2024-46800 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PARISC` not set](#config-parisc) | CVE-2024-44949, CVE-2022-50518 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_FOU` not set](#config-net-fou) | CVE-2024-44940, CVE-2026-23083 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VHOST_VSOCK` not set](#config-vhost-vsock) | CVE-2024-43873 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IIO` not set](#config-iio) | CVE-2024-42086, CVE-2024-57906, CVE-2024-57907, CVE-2024-57908, CVE-2024-57910, CVE-2024-57911, CVE-2024-57912, CVE-2022-49792, CVE-2025-38485 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SND_SOC` not set](#config-snd-soc) | CVE-2024-41069, CVE-2022-50325 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CACHEFILES` not set](#config-cachefiles) | CVE-2024-41050, CVE-2024-41057, CVE-2024-41074 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_WWAN` not set](#config-wwan) | CVE-2024-40939 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VMWARE_VMCI` not set](#config-vmware-vmci) | CVE-2024-39499, CVE-2024-46738, CVE-2025-38403 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BONDING` not set](#config-bonding) | CVE-2024-39487, CVE-2026-23099 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TEE` not set](#tee-subsystem) | CVE-2023-52503 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_INPUT_POWERMATE` not set](#powermate-driver) | CVE-2023-52475 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PWM` not set](#pwm-subsystem) | CVE-2024-26599 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_PVRUSB2` not set](#pvrusb2-driver) | CVE-2023-52445 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ATALK` not set](#appletalk) | CVE-2023-51781 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IGB` not set](#igb-driver) | CVE-2023-45871 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_RKVDEC` not set](#rkvdec-driver) | CVE-2023-35829 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_RENESAS_USBHS3` not set](#renesas-usb3) | CVE-2023-35828 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_SUNXI_CEDRUS` not set](#cedrus-driver) | CVE-2023-35826 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_DM1105` not set](#dm1105-driver) | CVE-2023-35824 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_SAA7134` not set](#saa7134-driver) | CVE-2023-35823 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_CLS_U32` not set](#tc-cls-u32) | CVE-2026-23204 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_WILC1000` not set](#wilc1000-driver) | CVE-2025-39952 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MWIFIEX` not set](#mwifiex-driver) | CVE-2025-39891 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_AF_RXRPC` not set](#config-af-rxrpc) | CVE-2023-53218 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_SCH_QFQ` not set](#config-net-sch-qfq) | CVE-2025-37913 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NTFS_FS` not set](#config-ntfs-fs) | CVE-2022-49763 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IP_SCTP` not set](#sctp-protocol) | CVE-2025-23142, CVE-2025-38718, CVE-2022-50243, CVE-2023-53372  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MEMSTICK` not set](#memstick) | CVE-2025-22020, CVE-2023-3141  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BRCMFMAC` not set](#brcmfmac-driver) | CVE-2022-49740, CVE-2022-50258, CVE-2023-53213, CVE-2022-50408, CVE-2025-39863, CVE-2022-50551  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RTLWIFI` not set](#rtlwifi-driver) | CVE-2024-58072, CVE-2022-50279  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_LOONGARCH` not set](#loongarch-arch) | CVE-2024-56628 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_UDF_FS` not set](#udf-filesystem) | CVE-2024-50143, CVE-2022-49846, CVE-2023-53107, CVE-2023-53506  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RMNET` not set](#rmnet-driver) | CVE-2024-50128, CVE-2024-26597  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PPP` not set](#ppp) | CVE-2024-50033, CVE-2024-50035, CVE-2025-37749, CVE-2025-38574  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_XEN` not set](#xen-hypervisor) | CVE-2024-49936, CVE-2024-56704  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_OCFS2_FS` not set](#ocfs2-filesystem) | CVE-2024-47670, CVE-2024-49966, CVE-2024-53155, CVE-2024-57892, CVE-2025-22079, CVE-2023-53081  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PLATFORM_X86` not set](#config-platform-x86) | CVE-2024-46859, CVE-2024-49986, CVE-2025-38077  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ISDN` not set](#isdn) | CVE-2024-42280 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HFSPLUS_FS` not set](#hfsplus-filesystem) | CVE-2024-41059, CVE-2024-56548, CVE-2025-38713, CVE-2025-38714  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_XFS_FS` not set](#config-xfs-fs) | CVE-2024-41013, CVE-2024-41014, CVE-2025-39835, CVE-2022-50406  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PPC` not set](#powerpc-arch) | CVE-2024-40974, CVE-2024-46774, CVE-2022-48998, CVE-2024-56765, CVE-2025-38088, CVE-2025-39776, CVE-2023-53487, CVE-2025-71078, CVE-2023-52451  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IMA` not set](#ima) | CVE-2024-38667, CVE-2024-53106, CVE-2024-57798, CVE-2025-39730  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_SCH_MULTIQ` not set](#tc-multiq) | CVE-2024-36978 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_VMWGFX` not set](#vmwgfx-driver) | CVE-2024-36960 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PINCTRL` not set](#pinctrl) | CVE-2024-36940, CVE-2025-38286  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_GPIOLIB` not set](#gpiolib) | CVE-2024-36898, CVE-2024-36899, CVE-2024-42092, CVE-2025-38395  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TIPC` not set](#tipc-protocol) | CVE-2024-36886, CVE-2024-42284, CVE-2022-49017, CVE-2024-56642, CVE-2025-38052, CVE-2025-38464  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PPDEV` not set](#ppdev-driver) | CVE-2024-36015 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_RADEON` not set](#radeon-driver) | CVE-2023-52867 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_WMI` not set](#wmi-driver) | CVE-2023-52864 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HW_PERF_EVENTS_HISI` not set](#config-hw-perf-events-hisi) | CVE-2023-52859, CVE-2024-38569  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_VIDEO_BT848` not set](#bttv-driver) | CVE-2023-52847 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RMI4_CORE` not set](#rmi4-driver) | CVE-2023-52840 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BLK_DEV_NBD` not set](#nbd-driver) | CVE-2023-52837, CVE-2024-49855, CVE-2025-38443  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_KVM_AMD` not set](#kvm-amd) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HNS3` not set](#hns3-driver) | CVE-2023-52807, CVE-2024-46833, CVE-2025-71112  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IPVLAN` not set](#ipvlan) | CVE-2023-52796 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SMC` not set](#smc-driver) | CVE-2023-52775, CVE-2024-56640, CVE-2024-57791, CVE-2025-38734  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_GSPCA_CORE` not set](#gspca-driver) | CVE-2023-52764 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_GFS2_FS` not set](#gfs2-filesystem) | CVE-2023-52760, CVE-2024-38570, CVE-2023-53622  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_FB` not set](#config-fb) | CVE-2023-52731, CVE-2024-49924, CVE-2024-50180, CVE-2025-38685, CVE-2025-38702  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DMA_DIRECT_REMAP` not set](#config-dma-direct-remap) | CVE-2024-35939 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_AX25` not set](#ax25-hamradio) | CVE-2024-35887, CVE-2026-23098  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MLX5_CORE` not set](#mlx5-driver) | CVE-2023-52667, CVE-2024-38555, CVE-2024-38556, CVE-2024-40940, CVE-2022-48883, CVE-2022-49025, CVE-2023-53340  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ATLANTIC` not set](#atlantic-driver) | CVE-2023-52664 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_KVM` not set](#config-kvm) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_FIREWIRE` not set](#firewire) | CVE-2024-27401, CVE-2023-53432  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_OPENVSWITCH` not set](#openvswitch) | CVE-2024-27395, CVE-2025-37789, CVE-2025-38146  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_EROFS_FS` not set](#erofs-filesystem) | CVE-2022-48674, CVE-2024-41058  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_OF` not set](#config-of) | CVE-2022-48672 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_PECI` not set](#config-peci) | CVE-2022-48670 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DVB_CORE` not set](#config-dvb-core) | CVE-2024-27075, CVE-2024-43900, CVE-2024-47697, CVE-2024-47698, CVE-2025-38227, CVE-2022-50274, CVE-2023-53219, CVE-2022-50499  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_NOUVEAU` not set](#nouveau-driver) | CVE-2024-27008, CVE-2022-50454  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_GADGET` not set](#usb-gadget) | CVE-2024-26996, CVE-2024-46836, CVE-2022-48948, CVE-2024-58055, CVE-2022-49980, CVE-2025-38497, CVE-2025-38555  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_COMMON_CLK_QCOM` not set](#config-common-clk-qcom) | CVE-2024-26965 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NILFS2_FS` not set](#config-nilfs2-fs) | CVE-2024-26955, CVE-2024-26956, CVE-2024-26981, CVE-2024-38583, CVE-2024-37078, CVE-2024-39469, CVE-2024-42104, CVE-2024-42105, CVE-2024-47757, CVE-2024-50230, CVE-2022-49834, CVE-2023-53035, CVE-2023-53311, CVE-2022-50367, CVE-2022-50478, CVE-2023-53608  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ARM64` not set](#arm64-arch) | CVE-2022-48657, CVE-2024-26989, CVE-2024-40989, CVE-2025-21785, CVE-2022-49888, CVE-2025-37849, CVE-2024-26598  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MLXBF_I2C` not set](#config-mlxbf-i2c) | CVE-2022-48632 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TUN` not set](#tun-tap-driver) | CVE-2024-26882, CVE-2022-49014, CVE-2023-3812  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RDS` not set](#config-rds) | CVE-2024-26865, CVE-2022-48637, CVE-2024-27024, CVE-2024-42138, CVE-2024-42148, CVE-2024-46782, CVE-2024-46786, CVE-2024-57900, CVE-2025-23156, CVE-2025-23158, CVE-2023-53075, CVE-2025-37921, CVE-2025-39710, CVE-2022-50412, CVE-2023-53541, CVE-2025-39967, CVE-2026-31578  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SPARX5_SWITCH` not set](#config-sparx5-switch) | CVE-2024-26856 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_THINKPAD_LMI` not set](#config-thinkpad-lmi) | CVE-2024-26836 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_BTRFS_FS` not set](#btrfs-filesystem) | CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MPTCP` not set](#mptcp) | CVE-2024-26782, CVE-2024-44974, CVE-2024-46858, CVE-2024-50083, CVE-2023-53072, CVE-2023-53088, CVE-2025-38552  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DM_CRYPT` not set](#config-dm-crypt) | CVE-2024-26763 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_GTP` not set](#config-gtp) | CVE-2024-26754, CVE-2024-26793, CVE-2024-27396, CVE-2024-44999  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CRYPTO_DEV_VIRTIO` not set](#config-crypto-dev-virtio) | CVE-2024-26753 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_USB_CDNS3` not set](#config-usb-cdns3) | CVE-2024-26748, CVE-2024-26749 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_ACT_MIRRED` not set](#tc-act-mirred) | CVE-2024-26739 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_AFS_FS` not set](#config-afs-fs) | CVE-2024-26736 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IP_TUNNEL` not set](#config-ip-tunnel) | CVE-2024-26665, CVE-2023-53600  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MHI_BUS` not set](#config-mhi-bus) | CVE-2023-52494, CVE-2025-39790  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_LLC` not set](#config-llc) | CVE-2024-26625 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_JFS_FS` not set](#config-jfs-fs) | CVE-2023-52599, CVE-2023-52600, CVE-2023-52603, CVE-2023-52604, CVE-2023-52799, CVE-2023-52804, CVE-2023-52805, CVE-2024-40902, CVE-2024-43858, CVE-2024-47723, CVE-2024-49900, CVE-2024-49903, CVE-2024-56595, CVE-2024-56596, CVE-2024-56597, CVE-2024-56598, CVE-2025-38204, CVE-2025-38230, CVE-2025-38697, CVE-2025-39743, CVE-2022-50333, CVE-2023-53222, CVE-2023-53485, CVE-2023-53616  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_S390` not set](#config-s390) | CVE-2023-52598, CVE-2024-26957, CVE-2023-52669, CVE-2024-36931, CVE-2024-45026, CVE-2022-48954, CVE-2024-57838, CVE-2024-57849, CVE-2022-49804, CVE-2023-53123, CVE-2025-38257, CVE-2025-38320, CVE-2022-50307, CVE-2023-53205, CVE-2026-31568  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_MSM` not set](#config-drm-msm) | CVE-2023-52586, CVE-2023-53316, CVE-2022-50368, CVE-2022-50437, CVE-2022-50492, CVE-2022-50526  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SECURITY_TOMOYO` not set](#config-security-tomoyo) | CVE-2024-26622 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IWLWIFI` not set](#iwlwifi-driver) | CVE-2023-52531, CVE-2024-26610, CVE-2024-36921, CVE-2024-40929, CVE-2024-53059, CVE-2025-21905, CVE-2022-50248, CVE-2023-53524  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SPI_SUN6I` not set](#config-spi-sun6i) | CVE-2023-52517 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_INFINIBAND` not set](#infiniband-rdma) | CVE-2023-52515, CVE-2024-26872, CVE-2022-48694, CVE-2023-52851, CVE-2024-38545, CVE-2024-42285, CVE-2025-38024, CVE-2025-38211, CVE-2025-71133, CVE-2026-31493  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IEEE802154` not set](#ieee802154-wpan) | CVE-2023-52510, CVE-2024-56602  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_RAVB` not set](#ravb-driver) | CVE-2023-52509, CVE-2022-48964, CVE-2023-35827  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NFC` not set](#nfc) | CVE-2023-52507, CVE-2024-36915, CVE-2022-48967, CVE-2025-21735, CVE-2023-53106, CVE-2025-38416, CVE-2023-53495  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_FUSE_FS` not set](#fuse-filesystem) | CVE-2023-52504, CVE-2024-35932, CVE-2024-41090, CVE-2024-41091, CVE-2024-58054, CVE-2022-49945, CVE-2025-38385, CVE-2023-53286, CVE-2023-53577  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_MCTP` not set](#config-mctp) | CVE-2023-52483 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ATH` not set](#ath-wireless-driver) | CVE-2023-52464, CVE-2023-52594, CVE-2023-52491, CVE-2024-26958, CVE-2024-26983, CVE-2024-26988, CVE-2024-27043, CVE-2023-52679, CVE-2024-35847, CVE-2023-52777, CVE-2023-52827, CVE-2024-36906, CVE-2024-36979, CVE-2024-38578, CVE-2024-38621, CVE-2024-41096, CVE-2024-42271, CVE-2024-43830, CVE-2022-48873, CVE-2022-48881, CVE-2024-46674, CVE-2024-47695, CVE-2024-47742, CVE-2024-49930, CVE-2024-49931, CVE-2022-48980, CVE-2022-48981, CVE-2022-48999, CVE-2024-53142, CVE-2024-53156, CVE-2024-56672, CVE-2024-57887, CVE-2024-57980, CVE-2025-21934, CVE-2025-37780, CVE-2023-53084, CVE-2023-53090, CVE-2025-37840, CVE-2025-38022, CVE-2025-38069, CVE-2025-38157, CVE-2025-38259, CVE-2025-38313, CVE-2025-38456, CVE-2025-38708, CVE-2025-39701, CVE-2025-39749, CVE-2022-50234, CVE-2025-39810, CVE-2022-50384, CVE-2022-50411, CVE-2025-39905, CVE-2025-39911, CVE-2023-53454, CVE-2023-53500, CVE-2023-53556, CVE-2023-53559, CVE-2023-53604, CVE-2022-50543, CVE-2023-53659, CVE-2023-53668, CVE-2023-54207, CVE-2026-23068, CVE-2026-23209, CVE-2026-23397, CVE-2026-31489, CVE-2026-31576, CVE-2026-31583  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_F2FS_FS` not set](#f2fs-filesystem) | CVE-2023-52436, CVE-2023-52444, CVE-2023-52588, CVE-2023-52682, CVE-2023-52748, CVE-2023-52852, CVE-2024-39467, CVE-2024-42160, CVE-2024-44942, CVE-2024-47691, CVE-2024-41935, CVE-2022-49738, CVE-2025-37739, CVE-2025-38579, CVE-2025-38652, CVE-2025-38677, CVE-2022-50270, CVE-2023-53214, CVE-2023-53301, CVE-2023-53537, CVE-2026-23234, CVE-2026-23235  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_DRM_AMDGPU` not set](#amdgpu-driver) | CVE-2023-51042, CVE-2023-52624, CVE-2024-26699, CVE-2024-27045, CVE-2023-52691, CVE-2023-52812, CVE-2023-52818, CVE-2024-36914, CVE-2024-38552, CVE-2024-38581, CVE-2024-39471, CVE-2024-42118, CVE-2024-42119, CVE-2024-42120, CVE-2024-42121, CVE-2024-42228, CVE-2024-44977, CVE-2024-46722, CVE-2024-46723, CVE-2024-46724, CVE-2024-46729, CVE-2024-46804, CVE-2024-46811, CVE-2024-46813, CVE-2024-46814, CVE-2024-46815, CVE-2024-46818, CVE-2024-46871, CVE-2024-49894, CVE-2024-49895, CVE-2024-49969, CVE-2024-49989, CVE-2024-49991, CVE-2022-48990, CVE-2023-52921, CVE-2024-50282, CVE-2024-53108, CVE-2024-53133, CVE-2024-56551, CVE-2024-56608, CVE-2024-56775, CVE-2024-56784, CVE-2025-21780, CVE-2025-21968, CVE-2025-21985, CVE-2023-53077, CVE-2025-37903, CVE-2022-49969, CVE-2025-38361, CVE-2022-50303, CVE-2023-53471, CVE-2023-52469, CVE-2024-41011, CVE-2024-46731, CVE-2024-46821, CVE-2025-37854  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_IP_DCCP` not set](#dccp-protocol) | CVE-2023-39197, CVE-2024-36904, CVE-2024-50154, CVE-2023-53333  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_TLS` not set](#config-tls) | CVE-2024-0646, CVE-2024-58240, CVE-2025-40149  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ROSE` not set](#config-rose) | CVE-2023-51782, CVE-2025-21718, CVE-2025-38377, CVE-2025-39826  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_ATM` not set](#atm-protocol) | CVE-2023-51780, CVE-2023-52578, CVE-2024-26895, CVE-2024-44998, CVE-2025-38180, CVE-2025-38236, CVE-2025-38245, CVE-2025-38323, CVE-2025-38459, CVE-2025-39828, CVE-2025-39839  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CIFS` not set](#cifs-smb-client) | CVE-2023-1194, CVE-2023-52434, CVE-2023-52440, CVE-2023-52572, CVE-2024-26928, CVE-2024-35861, CVE-2024-35862, CVE-2024-35864, CVE-2024-35866, CVE-2024-35867, CVE-2024-35868, CVE-2023-52741, CVE-2023-52751, CVE-2023-52752, CVE-2023-52757, CVE-2024-49996, CVE-2024-50047, CVE-2024-50151, CVE-2024-53179, CVE-2025-38051, CVE-2025-38527, CVE-2025-38728, CVE-2023-53427  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NVME_CORE` not set](#nvme-driver) | CVE-2023-5178, CVE-2023-6356, CVE-2023-6536, CVE-2022-48658, CVE-2022-48686, CVE-2024-41073, CVE-2024-58069, CVE-2025-21927, CVE-2023-53116, CVE-2025-39783  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CEPH_FS` not set](#ceph-filesystem) | CVE-2023-44466, CVE-2024-26689, CVE-2022-49770, CVE-2025-39880, CVE-2025-71116, CVE-2026-22984, CVE-2026-31580  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_HFS_FS` not set](#hfs-filesystem) | CVE-2023-4623, CVE-2024-26982, CVE-2024-46744, CVE-2025-21702, CVE-2025-37797, CVE-2025-37823, CVE-2025-37890, CVE-2025-38000, CVE-2025-38415, CVE-2025-38715, CVE-2026-23388  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_SMB_SERVER` not set](#config-smb-server) | CVE-2023-32250, CVE-2023-32254, CVE-2023-32247, CVE-2023-32248, CVE-2023-32252, CVE-2023-32257, CVE-2023-32258, CVE-2024-22705, CVE-2023-52441, CVE-2024-26592, CVE-2024-26594, CVE-2023-52480, CVE-2024-26936, CVE-2024-26952, CVE-2024-26954, CVE-2024-50086, CVE-2024-50283, CVE-2024-50286, CVE-2024-56626, CVE-2024-56627, CVE-2025-21945, CVE-2025-21946, CVE-2025-21967, CVE-2025-22038, CVE-2025-22039, CVE-2025-37776, CVE-2025-37777, CVE-2025-37778, CVE-2025-37899, CVE-2025-37924, CVE-2025-37926, CVE-2025-37947, CVE-2025-37952, CVE-2025-38437, CVE-2025-38501, CVE-2023-3865, CVE-2023-3867, CVE-2023-53358, CVE-2025-39943  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_CAN` not set](#can-bus) | CVE-2023-3090, CVE-2023-3389, CVE-2023-3609, CVE-2023-3611, CVE-2023-3776, CVE-2023-4206, CVE-2023-4207, CVE-2023-4208, CVE-2023-4622, CVE-2023-4921, CVE-2023-5717, CVE-2023-46813, CVE-2023-6931, CVE-2023-6932, CVE-2023-6546, CVE-2023-6270, CVE-2024-25744, CVE-2023-52438, CVE-2023-52439, CVE-2023-52474, CVE-2023-52501, CVE-2022-47518, CVE-2022-47519, CVE-2022-47520, CVE-2022-47521, CVE-2023-2235, CVE-2023-2156, CVE-2023-52519, CVE-2023-52614, CVE-2024-26669, CVE-2023-52637, CVE-2024-26898, CVE-2022-48655, CVE-2024-26951, CVE-2024-26961, CVE-2024-26974, CVE-2024-35855, CVE-2024-35871, CVE-2024-35937, CVE-2023-52701, CVE-2023-52707, CVE-2023-52772, CVE-2023-52846, CVE-2023-52854, CVE-2024-36934, CVE-2024-36974, CVE-2024-38599, CVE-2024-38610, CVE-2024-39277, CVE-2023-52340, CVE-2024-39494, CVE-2024-40900, CVE-2024-40913, CVE-2024-40935, CVE-2024-40994, CVE-2024-41040, CVE-2024-42093, CVE-2024-42094, CVE-2024-42313, CVE-2024-43842, CVE-2024-43882, CVE-2022-48872, CVE-2022-48874, CVE-2022-48892, CVE-2023-52906, CVE-2024-44934, CVE-2024-46740, CVE-2024-46854, CVE-2024-47659, CVE-2024-47727, CVE-2024-47745, CVE-2024-47750, CVE-2024-49853, CVE-2024-49854, CVE-2022-48988, CVE-2022-48991, CVE-2022-49006, CVE-2022-49031, CVE-2022-49032, CVE-2024-50036, CVE-2024-50059, CVE-2024-50061, CVE-2024-50073, CVE-2024-50074, CVE-2024-50209, CVE-2024-50264, CVE-2024-50268, CVE-2024-50275, CVE-2024-50301, CVE-2024-53104, CVE-2024-53166, CVE-2024-53171, CVE-2024-53203, CVE-2024-56570, CVE-2024-56603, CVE-2024-56651, CVE-2024-52332, CVE-2024-57850, CVE-2024-57904, CVE-2024-57929, CVE-2025-21687, CVE-2025-21704, CVE-2024-57982, CVE-2025-21791, CVE-2025-21855, CVE-2023-53000, CVE-2025-21919, CVE-2025-21920, CVE-2025-21928, CVE-2025-22107, CVE-2025-23157, CVE-2025-37786, CVE-2022-49775, CVE-2022-49779, CVE-2022-49900, CVE-2023-53135, CVE-2025-37839, CVE-2025-37892, CVE-2025-37927, CVE-2025-37928, CVE-2025-37991, CVE-2025-38004, CVE-2025-38081, CVE-2022-49939, CVE-2022-49948, CVE-2025-38102, CVE-2025-38108, CVE-2025-38129, CVE-2025-38248, CVE-2025-38342, CVE-2025-38346, CVE-2025-38375, CVE-2025-38445, CVE-2025-38535, CVE-2025-38595, CVE-2025-38666, CVE-2025-38679, CVE-2025-38680, CVE-2025-38722, CVE-2025-39683, CVE-2025-39687, CVE-2025-39689, CVE-2025-39766, CVE-2025-39797, CVE-2022-50255, CVE-2023-53148, CVE-2023-53153, CVE-2023-53215, CVE-2023-53232, CVE-2023-53259, CVE-2023-53272, CVE-2025-39817, CVE-2025-39824, CVE-2022-50394, CVE-2023-53388, CVE-2023-53446, CVE-2025-39873, CVE-2025-39877, CVE-2025-39883, CVE-2025-39901, CVE-2022-50421, CVE-2023-53465, CVE-2025-39951, CVE-2023-53536, CVE-2023-53560, CVE-2023-53569, CVE-2023-53570, CVE-2022-50552, CVE-2025-71073, CVE-2025-71089, CVE-2025-71093, CVE-2025-71152, CVE-2025-71162, CVE-2026-23073, CVE-2026-23074, CVE-2026-23102, CVE-2026-23171, CVE-2025-71221, CVE-2026-23221, CVE-2026-23227, CVE-2026-23361, CVE-2026-31788, CVE-2026-23410, CVE-2026-23411, CVE-2026-31527, CVE-2026-31532, CVE-2026-31582  | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NET_CLS_FLOWER` not set](#tc-cls-flower) | CVE-2023-35788 | <span class="badge bg-success">Not Affected</span> |
-| [`CONFIG_NTFS3_FS` not set](#config-ntfs3-fs) | CVE-2022-48502, CVE-2023-26606, CVE-2023-52640, CVE-2024-50242, CVE-2024-50246, CVE-2024-50247, CVE-2025-38707, CVE-2025-39691, CVE-2023-53194, CVE-2023-53420, CVE-2022-50442, CVE-2023-53486, CVE-2022-50507  | <span class="badge bg-success">Not Affected</span> |
+| [`CONFIG_BPF_SYSCALL` not set](#bpf-syscall-interface) | CVE-2021-20194, CVE-2023-2163, CVE-2023-39191, CVE-2023-52452, CVE-2024-26589, CVE-2023-52621, CVE-2023-52642, CVE-2024-26883, CVE-2024-26884, CVE-2024-26885, CVE-2024-38538, CVE-2024-40954, CVE-2024-41045, CVE-2024-49861, CVE-2022-49030, CVE-2024-50063, CVE-2024-50067, CVE-2024-50164, CVE-2024-50262, CVE-2024-53099, CVE-2024-56614, CVE-2024-56615, CVE-2024-56633, CVE-2024-56664, CVE-2023-53024, CVE-2022-49840, CVE-2025-37822, CVE-2022-49961, CVE-2022-49970, CVE-2022-49975, CVE-2025-38280, CVE-2025-38502, CVE-2025-38538, CVE-2025-39744, CVE-2023-53192, CVE-2023-53338, CVE-2025-39913, CVE-2022-50490, CVE-2022-50536, CVE-2026-23343, CVE-2026-23359  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NF_TABLES` not set](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_SCH_QFQ`, `CONFIG_NET_CLS_TCINDEX` not set](#network-traffic-control-schedulers) | CVE-2023-31436, CVE-2023-1829, CVE-2023-1281 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BT` not set](#bluetooth-stack) | CVE-2022-42896, CVE-2022-45934, CVE-2022-3564, CVE-2022-3640, CVE-2023-1989, and 3 additional, CVE-2023-40283, CVE-2024-21803, CVE-2024-27000, CVE-2024-27398, CVE-2024-35963, CVE-2024-35965, CVE-2024-35966, CVE-2024-35967, CVE-2023-52766, CVE-2024-36012, CVE-2024-36032, CVE-2024-36880, CVE-2024-40927, CVE-2024-41087, CVE-2022-48871, CVE-2022-48878, CVE-2024-43883, CVE-2024-49950, CVE-2024-50125, CVE-2024-50234, CVE-2024-53208, CVE-2024-56604, CVE-2024-56605, CVE-2025-21969, CVE-2025-22022, CVE-2022-49826, CVE-2022-49910, CVE-2023-53057, CVE-2025-37882, CVE-2023-53145, CVE-2025-38117, CVE-2025-38118, CVE-2025-38250, CVE-2025-38593, CVE-2022-50315, CVE-2023-53252, CVE-2023-53305, CVE-2022-50386, CVE-2023-53386, CVE-2022-50419, CVE-2022-50470, CVE-2023-53673, CVE-2025-71082, CVE-2026-23395, CVE-2026-31500  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TLS`, `CONFIG_RDS`, `CONFIG_ROSE`, `CONFIG_MCTP`, `CONFIG_AF_RXRPC` not set](#protocol-families-tls-rds-rose-mctp-and-af_rxrpc) | CVE-2023-28466, CVE-2023-1078, CVE-2022-2961, CVE-2022-3977, CVE-2023-2006 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NFSD` not set](#nfs-server) | CVE-2022-43945, CVE-2022-4379, CVE-2023-1652, CVE-2024-26907, CVE-2023-52885, CVE-2024-50106, CVE-2024-50121, CVE-2024-53168, CVE-2025-38724, CVE-2022-50235, CVE-2022-50241, CVE-2022-50401, CVE-2022-50410, CVE-2023-53680, CVE-2026-22980  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_XFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set](#filesystem-drivers) | CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set](#hardware-specific-and-virtualization-drivers) | CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_NET_RNDIS_WLAN`, `CONFIG_SMB_SERVER` not set](#usb-network-adapter-and-smb-server) | CVE-2023-23559, CVE-2023-0210 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_ADV748X` not set](#config-video-adv748x) | CVE-2025-71136 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MD_RAID10` not set](#config-md-raid10) | CVE-2023-53357 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_NET_CDCETHER` not set](#config-usb-net-cdcether) | CVE-2025-38153 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_XLNX` not set](#config-drm-xlnx) | CVE-2024-56538 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_LAN78XX` not set](#config-usb-lan78xx) | CVE-2024-53213 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HYPERV_VSOCKETS` not set](#config-hyperv-vsockets) | CVE-2024-53103 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_XE` not set](#drm-xe-driver) | CVE-2024-53098 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ARM_SCMI_PROTOCOL` not set](#config-arm-scmi-protocol) | CVE-2024-53068 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_S5P_JPEG` not set](#config-video-s5p-jpeg) | CVE-2024-53061 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MSE102X` not set](#config-mse102x) | CVE-2024-50276 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TYPEC` not set](#config-typec) | CVE-2024-50150 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HSR` not set](#config-hsr) | CVE-2022-49015 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HI_GMAC` not set](#config-hi-gmac) | CVE-2022-48960, CVE-2022-48962 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_STM` not set](#config-drm-stm) | CVE-2024-49992 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PCI_KIRIN` not set](#config-pci-kirin) | CVE-2024-47751 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_ASPEED_GFX` not set](#config-drm-aspeed-gfx) | CVE-2023-52916 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BNA` not set](#config-bna) | CVE-2024-43839 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CRYPTO_DEV_HISI_SEC2` not set](#config-crypto-dev-hisi-sec2) | CVE-2024-42147, CVE-2024-47730 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IONIC` not set](#config-ionic) | CVE-2024-39502 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_GREYBUS` not set](#config-greybus) | CVE-2024-39495 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_STM` not set](#config-stm) | CVE-2024-38627 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DEBUG_MUTEXES` not set](#config-debug-mutexes) | CVE-2023-52836 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RCU_NOCB_CPU` not set](#config-rcu-nocb-cpu) | CVE-2024-35929, CVE-2025-38704 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SECURITY_APPARMOR` not set](#config-security-apparmor) | CVE-2026-23408 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MACVLAN` not set](#config-macvlan) | CVE-2026-23001 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_TEAM` not set](#config-net-team) | CVE-2025-71091 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DLM` not set](#config-dlm) | CVE-2023-53629 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TRACE_BUF` not set](#config-trace-buf) | CVE-2023-53587 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PTP_1588_CLOCK_OCP` not set](#config-ptp-1588-clock-ocp) | CVE-2025-39859 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_XDP_SOCKETS` not set](#config-xdp-sockets) | CVE-2023-53426 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NUBUS` not set](#config-nubus) | CVE-2023-53217 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_COMEDI` not set](#config-comedi) | CVE-2025-38482, CVE-2025-38483, CVE-2025-38529, CVE-2025-38530, CVE-2025-39685, CVE-2025-39686 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IPV6_SEG6_LWTUNNEL` not set](#config-ipv6-seg6-lwtunnel) | CVE-2025-38476 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CORESIGHT` not set](#config-coresight) | CVE-2025-38131 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_STAGING` not set](#config-staging) | CVE-2022-49956, CVE-2023-53554 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MCB` not set](#config-mcb) | CVE-2025-37817 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_UDMABUF` not set](#config-udmabuf) | CVE-2025-37803 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SLIMBUS` not set](#config-slimbus) | CVE-2025-21914 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_GENEVE` not set](#config-geneve) | CVE-2025-21858 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ORANGEFS_FS` not set](#config-orangefs-fs) | CVE-2025-21782 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PKTGEN` not set](#config-pktgen) | CVE-2025-21680 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SPI_MPC52xx` not set](#config-spi-mpc52xx) | CVE-2024-50051 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SUPERH` not set](#config-superh) | CVE-2024-53165 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_MUSB_HDRC` not set](#config-usb-musb-hdrc) | CVE-2024-50269 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_SERIAL` not set](#config-usb-serial) | CVE-2024-50267 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VDPA` not set](#config-vdpa) | CVE-2024-47748, CVE-2024-53126, CVE-2023-53082, CVE-2023-53543 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SPI_NXP_FLEXSPI` not set](#config-spi-nxp-flexspi) | CVE-2024-46853 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_UML` not set](#config-uml) | CVE-2024-46844 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_SCH_NETEM` not set](#config-net-sch-netem) | CVE-2024-46800 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PARISC` not set](#config-parisc) | CVE-2024-44949, CVE-2022-50518 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_FOU` not set](#config-net-fou) | CVE-2024-44940, CVE-2026-23083 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VHOST_VSOCK` not set](#config-vhost-vsock) | CVE-2024-43873 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IIO` not set](#config-iio) | CVE-2024-42086, CVE-2024-57906, CVE-2024-57907, CVE-2024-57908, CVE-2024-57910, CVE-2024-57911, CVE-2024-57912, CVE-2022-49792, CVE-2025-38485 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SND_SOC` not set](#config-snd-soc) | CVE-2024-41069, CVE-2022-50325 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CACHEFILES` not set](#config-cachefiles) | CVE-2024-41050, CVE-2024-41057, CVE-2024-41074 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_WWAN` not set](#config-wwan) | CVE-2024-40939 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VMWARE_VMCI` not set](#config-vmware-vmci) | CVE-2024-39499, CVE-2024-46738, CVE-2025-38403 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BONDING` not set](#config-bonding) | CVE-2024-39487, CVE-2026-23099 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TEE` not set](#tee-subsystem) | CVE-2023-52503 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_INPUT_POWERMATE` not set](#powermate-driver) | CVE-2023-52475 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PWM` not set](#pwm-subsystem) | CVE-2024-26599 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_PVRUSB2` not set](#pvrusb2-driver) | CVE-2023-52445 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ATALK` not set](#appletalk) | CVE-2023-51781 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IGB` not set](#igb-driver) | CVE-2023-45871 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_RKVDEC` not set](#rkvdec-driver) | CVE-2023-35829 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_RENESAS_USBHS3` not set](#renesas-usb3) | CVE-2023-35828 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_SUNXI_CEDRUS` not set](#cedrus-driver) | CVE-2023-35826 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_DM1105` not set](#dm1105-driver) | CVE-2023-35824 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_SAA7134` not set](#saa7134-driver) | CVE-2023-35823 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_CLS_U32` not set](#tc-cls-u32) | CVE-2026-23204 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_WILC1000` not set](#wilc1000-driver) | CVE-2025-39952 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MWIFIEX` not set](#mwifiex-driver) | CVE-2025-39891 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_AF_RXRPC` not set](#config-af-rxrpc) | CVE-2023-53218 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_SCH_QFQ` not set](#config-net-sch-qfq) | CVE-2025-37913 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NTFS_FS` not set](#config-ntfs-fs) | CVE-2022-49763 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IP_SCTP` not set](#sctp-protocol) | CVE-2025-23142, CVE-2025-38718, CVE-2022-50243, CVE-2023-53372  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MEMSTICK` not set](#memstick) | CVE-2025-22020, CVE-2023-3141  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BRCMFMAC` not set](#brcmfmac-driver) | CVE-2022-49740, CVE-2022-50258, CVE-2023-53213, CVE-2022-50408, CVE-2025-39863, CVE-2022-50551  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RTLWIFI` not set](#rtlwifi-driver) | CVE-2024-58072, CVE-2022-50279  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_LOONGARCH` not set](#loongarch-arch) | CVE-2024-56628 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_UDF_FS` not set](#udf-filesystem) | CVE-2024-50143, CVE-2022-49846, CVE-2023-53107, CVE-2023-53506  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RMNET` not set](#rmnet-driver) | CVE-2024-50128, CVE-2024-26597  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PPP` not set](#ppp) | CVE-2024-50033, CVE-2024-50035, CVE-2025-37749, CVE-2025-38574  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_XEN` not set](#xen-hypervisor) | CVE-2024-49936, CVE-2024-56704  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_OCFS2_FS` not set](#ocfs2-filesystem) | CVE-2024-47670, CVE-2024-49966, CVE-2024-53155, CVE-2024-57892, CVE-2025-22079, CVE-2023-53081  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PLATFORM_X86` not set](#config-platform-x86) | CVE-2024-46859, CVE-2024-49986, CVE-2025-38077  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ISDN` not set](#isdn) | CVE-2024-42280 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HFSPLUS_FS` not set](#hfsplus-filesystem) | CVE-2024-41059, CVE-2024-56548, CVE-2025-38713, CVE-2025-38714  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_XFS_FS` not set](#config-xfs-fs) | CVE-2024-41013, CVE-2024-41014, CVE-2025-39835, CVE-2022-50406  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PPC` not set](#powerpc-arch) | CVE-2024-40974, CVE-2024-46774, CVE-2022-48998, CVE-2024-56765, CVE-2025-38088, CVE-2025-39776, CVE-2023-53487, CVE-2025-71078, CVE-2023-52451  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IMA` not set](#ima) | CVE-2024-38667, CVE-2024-53106, CVE-2024-57798, CVE-2025-39730  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_SCH_MULTIQ` not set](#tc-multiq) | CVE-2024-36978 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_VMWGFX` not set](#vmwgfx-driver) | CVE-2024-36960 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PINCTRL` not set](#pinctrl) | CVE-2024-36940, CVE-2025-38286  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_GPIOLIB` not set](#gpiolib) | CVE-2024-36898, CVE-2024-36899, CVE-2024-42092, CVE-2025-38395  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TIPC` not set](#tipc-protocol) | CVE-2024-36886, CVE-2024-42284, CVE-2022-49017, CVE-2024-56642, CVE-2025-38052, CVE-2025-38464  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PPDEV` not set](#ppdev-driver) | CVE-2024-36015 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_RADEON` not set](#radeon-driver) | CVE-2023-52867 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_WMI` not set](#wmi-driver) | CVE-2023-52864 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HW_PERF_EVENTS_HISI` not set](#config-hw-perf-events-hisi) | CVE-2023-52859, CVE-2024-38569  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_VIDEO_BT848` not set](#bttv-driver) | CVE-2023-52847 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RMI4_CORE` not set](#rmi4-driver) | CVE-2023-52840 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BLK_DEV_NBD` not set](#nbd-driver) | CVE-2023-52837, CVE-2024-49855, CVE-2025-38443  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_KVM_AMD` not set](#kvm-amd) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HNS3` not set](#hns3-driver) | CVE-2023-52807, CVE-2024-46833, CVE-2025-71112  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IPVLAN` not set](#ipvlan) | CVE-2023-52796 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SMC` not set](#smc-driver) | CVE-2023-52775, CVE-2024-56640, CVE-2024-57791, CVE-2025-38734  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_GSPCA_CORE` not set](#gspca-driver) | CVE-2023-52764 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_GFS2_FS` not set](#gfs2-filesystem) | CVE-2023-52760, CVE-2024-38570, CVE-2023-53622  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_FB` not set](#config-fb) | CVE-2023-52731, CVE-2024-49924, CVE-2024-50180, CVE-2025-38685, CVE-2025-38702  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DMA_DIRECT_REMAP` not set](#config-dma-direct-remap) | CVE-2024-35939 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_AX25` not set](#ax25-hamradio) | CVE-2024-35887, CVE-2026-23098  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MLX5_CORE` not set](#mlx5-driver) | CVE-2023-52667, CVE-2024-38555, CVE-2024-38556, CVE-2024-40940, CVE-2022-48883, CVE-2022-49025, CVE-2023-53340  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ATLANTIC` not set](#atlantic-driver) | CVE-2023-52664 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_KVM` not set](#config-kvm) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_FIREWIRE` not set](#firewire) | CVE-2024-27401, CVE-2023-53432  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_OPENVSWITCH` not set](#openvswitch) | CVE-2024-27395, CVE-2025-37789, CVE-2025-38146  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_EROFS_FS` not set](#erofs-filesystem) | CVE-2022-48674, CVE-2024-41058  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_OF` not set](#config-of) | CVE-2022-48672 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_PECI` not set](#config-peci) | CVE-2022-48670 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DVB_CORE` not set](#config-dvb-core) | CVE-2024-27075, CVE-2024-43900, CVE-2024-47697, CVE-2024-47698, CVE-2025-38227, CVE-2022-50274, CVE-2023-53219, CVE-2022-50499  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_NOUVEAU` not set](#nouveau-driver) | CVE-2024-27008, CVE-2022-50454  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_GADGET` not set](#usb-gadget) | CVE-2024-26996, CVE-2024-46836, CVE-2022-48948, CVE-2024-58055, CVE-2022-49980, CVE-2025-38497, CVE-2025-38555  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_COMMON_CLK_QCOM` not set](#config-common-clk-qcom) | CVE-2024-26965 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NILFS2_FS` not set](#config-nilfs2-fs) | CVE-2024-26955, CVE-2024-26956, CVE-2024-26981, CVE-2024-38583, CVE-2024-37078, CVE-2024-39469, CVE-2024-42104, CVE-2024-42105, CVE-2024-47757, CVE-2024-50230, CVE-2022-49834, CVE-2023-53035, CVE-2023-53311, CVE-2022-50367, CVE-2022-50478, CVE-2023-53608  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ARM64` not set](#arm64-arch) | CVE-2022-48657, CVE-2024-26989, CVE-2024-40989, CVE-2025-21785, CVE-2022-49888, CVE-2025-37849, CVE-2024-26598  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MLXBF_I2C` not set](#config-mlxbf-i2c) | CVE-2022-48632 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TUN` not set](#tun-tap-driver) | CVE-2024-26882, CVE-2022-49014, CVE-2023-3812  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RDS` not set](#config-rds) | CVE-2024-26865, CVE-2022-48637, CVE-2024-27024, CVE-2024-42138, CVE-2024-42148, CVE-2024-46782, CVE-2024-46786, CVE-2024-57900, CVE-2025-23156, CVE-2025-23158, CVE-2023-53075, CVE-2025-37921, CVE-2025-39710, CVE-2022-50412, CVE-2023-53541, CVE-2025-39967, CVE-2026-31578  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SPARX5_SWITCH` not set](#config-sparx5-switch) | CVE-2024-26856 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_THINKPAD_LMI` not set](#config-thinkpad-lmi) | CVE-2024-26836 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_BTRFS_FS` not set](#btrfs-filesystem) | CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MPTCP` not set](#mptcp) | CVE-2024-26782, CVE-2024-44974, CVE-2024-46858, CVE-2024-50083, CVE-2023-53072, CVE-2023-53088, CVE-2025-38552  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DM_CRYPT` not set](#config-dm-crypt) | CVE-2024-26763 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_GTP` not set](#config-gtp) | CVE-2024-26754, CVE-2024-26793, CVE-2024-27396, CVE-2024-44999  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CRYPTO_DEV_VIRTIO` not set](#config-crypto-dev-virtio) | CVE-2024-26753 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_USB_CDNS3` not set](#config-usb-cdns3) | CVE-2024-26748, CVE-2024-26749 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_ACT_MIRRED` not set](#tc-act-mirred) | CVE-2024-26739 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_AFS_FS` not set](#config-afs-fs) | CVE-2024-26736 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IP_TUNNEL` not set](#config-ip-tunnel) | CVE-2024-26665, CVE-2023-53600  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MHI_BUS` not set](#config-mhi-bus) | CVE-2023-52494, CVE-2025-39790  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_LLC` not set](#config-llc) | CVE-2024-26625 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_JFS_FS` not set](#config-jfs-fs) | CVE-2023-52599, CVE-2023-52600, CVE-2023-52603, CVE-2023-52604, CVE-2023-52799, CVE-2023-52804, CVE-2023-52805, CVE-2024-40902, CVE-2024-43858, CVE-2024-47723, CVE-2024-49900, CVE-2024-49903, CVE-2024-56595, CVE-2024-56596, CVE-2024-56597, CVE-2024-56598, CVE-2025-38204, CVE-2025-38230, CVE-2025-38697, CVE-2025-39743, CVE-2022-50333, CVE-2023-53222, CVE-2023-53485, CVE-2023-53616  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_S390` not set](#config-s390) | CVE-2023-52598, CVE-2024-26957, CVE-2023-52669, CVE-2024-36931, CVE-2024-45026, CVE-2022-48954, CVE-2024-57838, CVE-2024-57849, CVE-2022-49804, CVE-2023-53123, CVE-2025-38257, CVE-2025-38320, CVE-2022-50307, CVE-2023-53205, CVE-2026-31568  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_MSM` not set](#config-drm-msm) | CVE-2023-52586, CVE-2023-53316, CVE-2022-50368, CVE-2022-50437, CVE-2022-50492, CVE-2022-50526  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SECURITY_TOMOYO` not set](#config-security-tomoyo) | CVE-2024-26622 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IWLWIFI` not set](#iwlwifi-driver) | CVE-2023-52531, CVE-2024-26610, CVE-2024-36921, CVE-2024-40929, CVE-2024-53059, CVE-2025-21905, CVE-2022-50248, CVE-2023-53524  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SPI_SUN6I` not set](#config-spi-sun6i) | CVE-2023-52517 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_INFINIBAND` not set](#infiniband-rdma) | CVE-2023-52515, CVE-2024-26872, CVE-2022-48694, CVE-2023-52851, CVE-2024-38545, CVE-2024-42285, CVE-2025-38024, CVE-2025-38211, CVE-2025-71133, CVE-2026-31493  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IEEE802154` not set](#ieee802154-wpan) | CVE-2023-52510, CVE-2024-56602  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_RAVB` not set](#ravb-driver) | CVE-2023-52509, CVE-2022-48964, CVE-2023-35827  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NFC` not set](#nfc) | CVE-2023-52507, CVE-2024-36915, CVE-2022-48967, CVE-2025-21735, CVE-2023-53106, CVE-2025-38416, CVE-2023-53495  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_FUSE_FS` not set](#fuse-filesystem) | CVE-2023-52504, CVE-2024-35932, CVE-2024-41090, CVE-2024-41091, CVE-2024-58054, CVE-2022-49945, CVE-2025-38385, CVE-2023-53286, CVE-2023-53577  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_MCTP` not set](#config-mctp) | CVE-2023-52483 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ATH` not set](#ath-wireless-driver) | CVE-2023-52464, CVE-2023-52594, CVE-2023-52491, CVE-2024-26958, CVE-2024-26983, CVE-2024-26988, CVE-2024-27043, CVE-2023-52679, CVE-2024-35847, CVE-2023-52777, CVE-2023-52827, CVE-2024-36906, CVE-2024-36979, CVE-2024-38578, CVE-2024-38621, CVE-2024-41096, CVE-2024-42271, CVE-2024-43830, CVE-2022-48873, CVE-2022-48881, CVE-2024-46674, CVE-2024-47695, CVE-2024-47742, CVE-2024-49930, CVE-2024-49931, CVE-2022-48980, CVE-2022-48981, CVE-2022-48999, CVE-2024-53142, CVE-2024-53156, CVE-2024-56672, CVE-2024-57887, CVE-2024-57980, CVE-2025-21934, CVE-2025-37780, CVE-2023-53084, CVE-2023-53090, CVE-2025-37840, CVE-2025-38022, CVE-2025-38069, CVE-2025-38157, CVE-2025-38259, CVE-2025-38313, CVE-2025-38456, CVE-2025-38708, CVE-2025-39701, CVE-2025-39749, CVE-2022-50234, CVE-2025-39810, CVE-2022-50384, CVE-2022-50411, CVE-2025-39905, CVE-2025-39911, CVE-2023-53454, CVE-2023-53500, CVE-2023-53556, CVE-2023-53559, CVE-2023-53604, CVE-2022-50543, CVE-2023-53659, CVE-2023-53668, CVE-2023-54207, CVE-2026-23068, CVE-2026-23209, CVE-2026-23397, CVE-2026-31489, CVE-2026-31576, CVE-2026-31583  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_F2FS_FS` not set](#f2fs-filesystem) | CVE-2023-52436, CVE-2023-52444, CVE-2023-52588, CVE-2023-52682, CVE-2023-52748, CVE-2023-52852, CVE-2024-39467, CVE-2024-42160, CVE-2024-44942, CVE-2024-47691, CVE-2024-41935, CVE-2022-49738, CVE-2025-37739, CVE-2025-38579, CVE-2025-38652, CVE-2025-38677, CVE-2022-50270, CVE-2023-53214, CVE-2023-53301, CVE-2023-53537, CVE-2026-23234, CVE-2026-23235  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_DRM_AMDGPU` not set](#amdgpu-driver) | CVE-2023-51042, CVE-2023-52624, CVE-2024-26699, CVE-2024-27045, CVE-2023-52691, CVE-2023-52812, CVE-2023-52818, CVE-2024-36914, CVE-2024-38552, CVE-2024-38581, CVE-2024-39471, CVE-2024-42118, CVE-2024-42119, CVE-2024-42120, CVE-2024-42121, CVE-2024-42228, CVE-2024-44977, CVE-2024-46722, CVE-2024-46723, CVE-2024-46724, CVE-2024-46729, CVE-2024-46804, CVE-2024-46811, CVE-2024-46813, CVE-2024-46814, CVE-2024-46815, CVE-2024-46818, CVE-2024-46871, CVE-2024-49894, CVE-2024-49895, CVE-2024-49969, CVE-2024-49989, CVE-2024-49991, CVE-2022-48990, CVE-2023-52921, CVE-2024-50282, CVE-2024-53108, CVE-2024-53133, CVE-2024-56551, CVE-2024-56608, CVE-2024-56775, CVE-2024-56784, CVE-2025-21780, CVE-2025-21968, CVE-2025-21985, CVE-2023-53077, CVE-2025-37903, CVE-2022-49969, CVE-2025-38361, CVE-2022-50303, CVE-2023-53471, CVE-2023-52469, CVE-2024-41011, CVE-2024-46731, CVE-2024-46821, CVE-2025-37854  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_IP_DCCP` not set](#dccp-protocol) | CVE-2023-39197, CVE-2024-36904, CVE-2024-50154, CVE-2023-53333  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_TLS` not set](#config-tls) | CVE-2024-0646, CVE-2024-58240, CVE-2025-40149  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ROSE` not set](#config-rose) | CVE-2023-51782, CVE-2025-21718, CVE-2025-38377, CVE-2025-39826  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_ATM` not set](#atm-protocol) | CVE-2023-51780, CVE-2023-52578, CVE-2024-26895, CVE-2024-44998, CVE-2025-38180, CVE-2025-38236, CVE-2025-38245, CVE-2025-38323, CVE-2025-38459, CVE-2025-39828, CVE-2025-39839  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CIFS` not set](#cifs-smb-client) | CVE-2023-1194, CVE-2023-52434, CVE-2023-52440, CVE-2023-52572, CVE-2024-26928, CVE-2024-35861, CVE-2024-35862, CVE-2024-35864, CVE-2024-35866, CVE-2024-35867, CVE-2024-35868, CVE-2023-52741, CVE-2023-52751, CVE-2023-52752, CVE-2023-52757, CVE-2024-49996, CVE-2024-50047, CVE-2024-50151, CVE-2024-53179, CVE-2025-38051, CVE-2025-38527, CVE-2025-38728, CVE-2023-53427  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NVME_CORE` not set](#nvme-driver) | CVE-2023-5178, CVE-2023-6356, CVE-2023-6536, CVE-2022-48658, CVE-2022-48686, CVE-2024-41073, CVE-2024-58069, CVE-2025-21927, CVE-2023-53116, CVE-2025-39783  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CEPH_FS` not set](#ceph-filesystem) | CVE-2023-44466, CVE-2024-26689, CVE-2022-49770, CVE-2025-39880, CVE-2025-71116, CVE-2026-22984, CVE-2026-31580  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_HFS_FS` not set](#hfs-filesystem) | CVE-2023-4623, CVE-2024-26982, CVE-2024-46744, CVE-2025-21702, CVE-2025-37797, CVE-2025-37823, CVE-2025-37890, CVE-2025-38000, CVE-2025-38415, CVE-2025-38715, CVE-2026-23388  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_SMB_SERVER` not set](#config-smb-server) | CVE-2023-32250, CVE-2023-32254, CVE-2023-32247, CVE-2023-32248, CVE-2023-32252, CVE-2023-32257, CVE-2023-32258, CVE-2024-22705, CVE-2023-52441, CVE-2024-26592, CVE-2024-26594, CVE-2023-52480, CVE-2024-26936, CVE-2024-26952, CVE-2024-26954, CVE-2024-50086, CVE-2024-50283, CVE-2024-50286, CVE-2024-56626, CVE-2024-56627, CVE-2025-21945, CVE-2025-21946, CVE-2025-21967, CVE-2025-22038, CVE-2025-22039, CVE-2025-37776, CVE-2025-37777, CVE-2025-37778, CVE-2025-37899, CVE-2025-37924, CVE-2025-37926, CVE-2025-37947, CVE-2025-37952, CVE-2025-38437, CVE-2025-38501, CVE-2023-3865, CVE-2023-3867, CVE-2023-53358, CVE-2025-39943  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_CAN` not set](#can-bus) | CVE-2023-3090, CVE-2023-3389, CVE-2023-3609, CVE-2023-3611, CVE-2023-3776, CVE-2023-4206, CVE-2023-4207, CVE-2023-4208, CVE-2023-4622, CVE-2023-4921, CVE-2023-5717, CVE-2023-46813, CVE-2023-6931, CVE-2023-6932, CVE-2023-6546, CVE-2023-6270, CVE-2024-25744, CVE-2023-52438, CVE-2023-52439, CVE-2023-52474, CVE-2023-52501, CVE-2022-47518, CVE-2022-47519, CVE-2022-47520, CVE-2022-47521, CVE-2023-2235, CVE-2023-2156, CVE-2023-52519, CVE-2023-52614, CVE-2024-26669, CVE-2023-52637, CVE-2024-26898, CVE-2022-48655, CVE-2024-26951, CVE-2024-26961, CVE-2024-26974, CVE-2024-35855, CVE-2024-35871, CVE-2024-35937, CVE-2023-52701, CVE-2023-52707, CVE-2023-52772, CVE-2023-52846, CVE-2023-52854, CVE-2024-36934, CVE-2024-36974, CVE-2024-38599, CVE-2024-38610, CVE-2024-39277, CVE-2023-52340, CVE-2024-39494, CVE-2024-40900, CVE-2024-40913, CVE-2024-40935, CVE-2024-40994, CVE-2024-41040, CVE-2024-42093, CVE-2024-42094, CVE-2024-42313, CVE-2024-43842, CVE-2024-43882, CVE-2022-48872, CVE-2022-48874, CVE-2022-48892, CVE-2023-52906, CVE-2024-44934, CVE-2024-46740, CVE-2024-46854, CVE-2024-47659, CVE-2024-47727, CVE-2024-47745, CVE-2024-47750, CVE-2024-49853, CVE-2024-49854, CVE-2022-48988, CVE-2022-48991, CVE-2022-49006, CVE-2022-49031, CVE-2022-49032, CVE-2024-50036, CVE-2024-50059, CVE-2024-50061, CVE-2024-50073, CVE-2024-50074, CVE-2024-50209, CVE-2024-50264, CVE-2024-50268, CVE-2024-50275, CVE-2024-50301, CVE-2024-53104, CVE-2024-53166, CVE-2024-53171, CVE-2024-53203, CVE-2024-56570, CVE-2024-56603, CVE-2024-56651, CVE-2024-52332, CVE-2024-57850, CVE-2024-57904, CVE-2024-57929, CVE-2025-21687, CVE-2025-21704, CVE-2024-57982, CVE-2025-21791, CVE-2025-21855, CVE-2023-53000, CVE-2025-21919, CVE-2025-21920, CVE-2025-21928, CVE-2025-22107, CVE-2025-23157, CVE-2025-37786, CVE-2022-49775, CVE-2022-49779, CVE-2022-49900, CVE-2023-53135, CVE-2025-37839, CVE-2025-37892, CVE-2025-37927, CVE-2025-37928, CVE-2025-37991, CVE-2025-38004, CVE-2025-38081, CVE-2022-49939, CVE-2022-49948, CVE-2025-38102, CVE-2025-38108, CVE-2025-38129, CVE-2025-38248, CVE-2025-38342, CVE-2025-38346, CVE-2025-38375, CVE-2025-38445, CVE-2025-38535, CVE-2025-38595, CVE-2025-38666, CVE-2025-38679, CVE-2025-38680, CVE-2025-38722, CVE-2025-39683, CVE-2025-39687, CVE-2025-39689, CVE-2025-39766, CVE-2025-39797, CVE-2022-50255, CVE-2023-53148, CVE-2023-53153, CVE-2023-53215, CVE-2023-53232, CVE-2023-53259, CVE-2023-53272, CVE-2025-39817, CVE-2025-39824, CVE-2022-50394, CVE-2023-53388, CVE-2023-53446, CVE-2025-39873, CVE-2025-39877, CVE-2025-39883, CVE-2025-39901, CVE-2022-50421, CVE-2023-53465, CVE-2025-39951, CVE-2023-53536, CVE-2023-53560, CVE-2023-53569, CVE-2023-53570, CVE-2022-50552, CVE-2025-71073, CVE-2025-71089, CVE-2025-71093, CVE-2025-71152, CVE-2025-71162, CVE-2026-23073, CVE-2026-23074, CVE-2026-23102, CVE-2026-23171, CVE-2025-71221, CVE-2026-23221, CVE-2026-23227, CVE-2026-23361, CVE-2026-31788, CVE-2026-23410, CVE-2026-23411, CVE-2026-31527, CVE-2026-31532, CVE-2026-31582  | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NET_CLS_FLOWER` not set](#tc-cls-flower) | CVE-2023-35788 | <span class="badge badge-erased">Risk erased</span> |
+| [`CONFIG_NTFS3_FS` not set](#config-ntfs3-fs) | CVE-2022-48502, CVE-2023-26606, CVE-2023-52640, CVE-2024-50242, CVE-2024-50246, CVE-2024-50247, CVE-2025-38707, CVE-2025-39691, CVE-2023-53194, CVE-2023-53420, CVE-2022-50442, CVE-2023-53486, CVE-2022-50507  | <span class="badge badge-erased">Risk erased</span> |
 
 ### BPF Syscall Interface
 
