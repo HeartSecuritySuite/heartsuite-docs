@@ -87,15 +87,15 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-46849](#cve-2024-46849) | Amlogic Meson ASoC driver (`CONFIG_SND_MESON_CARD_UTILS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — driver not compiled in |
 | [CVE-2024-47682](#cve-2024-47682) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 | [CVE-2024-47701](#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49852](#cve-2024-49852) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex libefc Fibre Channel HBA |
+| [CVE-2024-49852](#cve-2024-49852) | Emulex EFC FC driver (`CONFIG_SCSI_EFCT`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_EFCT` not compiled |
 | [CVE-2024-49882](#cve-2024-49882) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49883](#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49884](#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50007](#cve-2024-50007) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
-| [CVE-2022-48951](#cve-2022-48951) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
+| [CVE-2024-50007](#cve-2024-50007) | ASIHPI soundcard driver (`CONFIG_SND_ASIHPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_ASIHPI` not compiled |
+| [CVE-2022-48951](#cve-2022-48951) | ALSA SoC layer (`CONFIG_SND_SOC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC` not compiled |
 | [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2022-49022](#cve-2022-49022) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
@@ -106,7 +106,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_NFS_V4=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53214](#cve-2024-53214) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
-| [CVE-2024-53227](#cve-2024-53227) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Brocade bfa Fibre Channel HBA |
+| [CVE-2024-53227](#cve-2024-53227) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2024-53239](#cve-2024-53239) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2024-56609](#cve-2024-56609) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2024-56631](#cve-2024-56631) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
@@ -115,7 +115,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IO_URING=y`; Lockdown limits post-exploitation |
 | [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
 | [CVE-2023-52988](#cve-2023-52988) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
-| [CVE-2025-21993](#cve-2025-21993) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires iSCSI Boot Firmware Table (iBFT, iSCSI boot configuration) |
+| [CVE-2025-21993](#cve-2025-21993) | iSCSI iBFT driver (`CONFIG_ISCSI_IBFT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_IBFT` not set |
 | [CVE-2025-22083](#cve-2025-22083) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — vhost-scsi not applicable — no KVM host mode in HS |
 | [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
@@ -124,15 +124,15 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2022-49789](#cve-2022-49789) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — IBM Z Fibre Channel hardware absent |
 | [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53037](#cve-2023-53037) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
+| [CVE-2023-53037](#cve-2023-53037) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2023-53039](#cve-2023-53039) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2023-53065](#cve-2023-53065) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
-| [CVE-2025-37861](#cve-2025-37861) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
+| [CVE-2025-37861](#cve-2025-37861) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2025-37979](#cve-2025-37979) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2022-49934](#cve-2022-49934) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
 | [CVE-2025-38206](#cve-2025-38206) | FAT/exFAT filesystem (`CONFIG_FAT_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_FAT_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38239](#cve-2025-38239) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires LSI MegaRAID SAS controller |
+| [CVE-2025-38239](#cve-2025-38239) | LSI MegaRAID SAS driver (`CONFIG_MEGARAID_SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_MEGARAID_SAS` not set |
 | [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no Intel display GPU present |
 | [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
@@ -141,7 +141,7 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_PERF_EVENTS=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38699](#cve-2025-38699) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Brocade bfa Fibre Channel HBA |
+| [CVE-2025-38699](#cve-2025-38699) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-39757](#cve-2025-39757) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
@@ -149,37 +149,37 @@ The **Effective Score** column shows the CVSS v3.1 Environmental Score for a Hea
 | [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — UFS flash storage absent on x86 server |
 | [CVE-2022-50306](#cve-2022-50306) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53257](#cve-2023-53257) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
-| [CVE-2023-53282](#cve-2023-53282) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex lpfc Fibre Channel HBA |
+| [CVE-2023-53282](#cve-2023-53282) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2023-53285](#cve-2023-53285) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53320](#cve-2023-53320) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
+| [CVE-2023-53320](#cve-2023-53320) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2023-53321](#cve-2023-53321) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
-| [CVE-2023-53322](#cve-2023-53322) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires QLogic qla2xxx Fibre Channel HBA |
+| [CVE-2023-53322](#cve-2023-53322) | QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QLA_FC` not compiled |
 | [CVE-2022-50378](#cve-2022-50378) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — Amlogic Meson ARM SoC GPU absent |
-| [CVE-2023-53376](#cve-2023-53376) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Broadcom mpi3mr SAS 3.0 HBA |
+| [CVE-2023-53376](#cve-2023-53376) | Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPI3MR` not set |
 | [CVE-2023-53392](#cve-2023-53392) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no USB HID input devices on headless server |
-| [CVE-2025-39841](#cve-2025-39841) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Emulex lpfc Fibre Channel HBA |
+| [CVE-2025-39841](#cve-2025-39841) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no WiFi NIC present |
 | [CVE-2025-39866](#cve-2025-39866) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-50422](#cve-2022-50422) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SAS libsas library (requires SAS HBA) |
+| [CVE-2022-50422](#cve-2022-50422) | SAS libsas library (`CONFIG_SCSI_SAS_LIBSAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_SAS_LIBSAS` not set |
 | [CVE-2022-50432](#cve-2022-50432) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — UFS flash storage absent on x86 server |
-| [CVE-2023-53521](#cve-2023-53521) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
+| [CVE-2023-53521](#cve-2023-53521) | SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set |
 | [CVE-2022-50488](#cve-2022-50488) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
 | [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
-| [CVE-2023-53675](#cve-2023-53675) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires SCSI Enclosure Services (SAS enclosure hardware) |
-| [CVE-2023-53676](#cve-2023-53676) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
-| [CVE-2025-71075](#cve-2025-71075) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Adaptec aic94xx SAS HBA |
+| [CVE-2023-53675](#cve-2023-53675) | SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set |
+| [CVE-2023-53676](#cve-2023-53676) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
+| [CVE-2025-71075](#cve-2025-71075) | Adaptec aic94xx SAS driver (`CONFIG_SCSI_AIC94XX`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_AIC94XX` not set |
 | [CVE-2026-23076](#cve-2026-23076) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-23078](#cve-2026-23078) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-23089](#cve-2026-23089) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-23191](#cve-2026-23191) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
-| [CVE-2026-23193](#cve-2026-23193) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge bg-danger">9.0 CRITICAL</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
+| [CVE-2026-23193](#cve-2026-23193) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
 | [CVE-2026-23208](#cve-2026-23208) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
-| [CVE-2026-23216](#cve-2026-23216) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires Linux iSCSI target (requires iscsi-target configuration) |
-| [CVE-2025-71238](#cve-2025-71238) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — requires QLogic qla2xxx Fibre Channel HBA |
+| [CVE-2026-23216](#cve-2026-23216) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
+| [CVE-2025-71238](#cve-2025-71238) | QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QLA_FC` not compiled |
 | [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Risk erased — no audio hardware present |
 | [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.9 HIGH</span> | Affected — `CONFIG_RELAY=y`; Lockdown limits post-exploitation |
@@ -917,10 +917,18 @@ In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pa
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-Ff the device returns page 0xb1 with length 8 (happens with qemu v2.x, for example), sd_read_block_characteristics() may attempt an out-of-bounds memory access when
+If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x does), `sd_read_block_characteristics()` proceeds past the guard at `drivers/scsi/sd.c:2921` (`vpd->len < 8`), then reads `vpd->data[8]` at line 2927. With `len == 8` the valid indices are 0–7; index 8 is one byte past the end of the buffer.
 
-`CONFIG_SCSI=y` is compiled in and 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 (SATA via libata, NVMe via the SCSI translation layer). On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable read occurs during device enumeration when a SCSI disk returns a malformed VPD page. The SCSI subsystem underpins block storage on Debian 11 (SATA via libata, NVMe via the SCSI translation layer).
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-47701
@@ -929,24 +937,30 @@ Ff the device returns page 0xb1 with length 8 (happens with qemu v2.x, for examp
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-When looking up for an entry in an inlined directory, if e_value_offs is changed underneath the filesystem by some change in the block device, it will lead t
+When ext4 searches an inlined directory, `ext4_find_inline_entry()` at `fs/ext4/inline.c:1709` calls `ext4_get_inline_xattr_pos()` to locate the extended-attribute portion of the inline data. At `inline.c:1077`, that function returns `IFIRST(header) + le16_to_cpu(entry->e_value_offs)` without validating that the offset stays within the inode body buffer. A crafted block device can supply an `e_value_offs` that pushes the resulting pointer out of bounds; that pointer is then passed directly to `ext4_search_dir()` at line 1712, causing an OOB memory access.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49852
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_EFCT` not compiled
+**Component**: Emulex EFC FC driver (`CONFIG_SCSI_EFCT`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_EFCT` not compiled in HS kernel
 
 The kref_put() function will call nport->release if the refcount drops to zero. The nport->release release function is _efc_nport_free() which frees "nport"
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex libefc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_EFCT` is not set in the HS 5.19.6 configuration. The Emulex EFC Fibre Channel target driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-49882
@@ -955,10 +969,18 @@ Where the hardware is present: on a HeartSuite Core Secure system, an attacker c
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been released, otherwise it may be released twice.
+In `ext4_ext_try_to_merge_up()` at `fs/ext4/extents.c:1871`, `brelse(path[1].p_bh)` releases the depth-1 extent block buffer but leaves `path[1].p_bh` non-NULL. When the caller subsequently runs cleanup via `ext4_ext_drop_refs()`, it iterates the path and calls `brelse()` on every non-NULL `p_bh`, releasing the same buffer head a second time — a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49883
@@ -967,10 +989,18 @@ In ext4_ext_try_to_merge_up(), set path[1].p_bh to NULL after it has been releas
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is reallocated in ext4_ext_create_new_leaf(), we'll use the stale path and cause UAF.
+In `ext4_ext_insert_extent()` at `fs/ext4/extents.c:2094`, the call to `ext4_ext_create_new_leaf()` may internally call `ext4_ext_grow_indepth()`, which reallocates the `path` array via `kcalloc()`. After the call returns, the caller continues using the original `path` pointer — now stale — causing a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49884
@@ -979,10 +1009,18 @@ As Ojaswin mentioned in Link, in ext4_ext_insert_extent(), if the path is reallo
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-We hit the following use-after-free: ================================================================== BUG: KASAN: slab-use-after-free in ext4_split_extent_at+0xba8/0xcc0
+In `ext4_split_extent_at()` at `fs/ext4/extents.c:3178`, the function saves the path pointer as `path = *ppath`. At line 3248 it calls `ext4_ext_insert_extent(handle, inode, ppath, ...)`, which may reallocate `*ppath`, freeing the memory that `path` still points to. Subsequent uses of `path` at lines 3281, 3282, 3301, and 3304 — in both the success and error-recovery branches — dereference the now-freed pointer, constituting a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49889
@@ -991,10 +1029,18 @@ We hit the following use-after-free: ===========================================
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-In ext4_find_extent(), path may be freed by error or be reallocated, so using a previously saved *ppath may have been freed and thus may trigger use-after-free, as follows:
+`ext4_find_extent()` at `fs/ext4/extents.c:874` takes an optional `**orig_path` argument allowing callers to reuse an existing path allocation. On two code paths it frees the old allocation: when the tree depth has grown beyond the cached maximum (lines 898–901, `kfree(path); *orig_path = NULL`) and on any I/O or corruption error (lines 953–957, same sequence). Callers that save a local `path = *ppath` copy before invoking a sub-function that internally calls `ext4_find_extent()` — such as `ext4_split_convert_extents()` — retain a pointer to the freed memory. Subsequent use of that stale pointer constitutes a use-after-free.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49960
@@ -1003,10 +1049,18 @@ In ext4_find_extent(), path may be freed by error or be reallocated, so using a 
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-Syzbot has found an ODEBUG bug in ext4_fill_super The del_timer_sync function cancels the s_err_report timer, which reminds about filesystem errors daily.
+In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...)` runs at line 4995 and `INIT_WORK(&sbi->s_error_work, flush_stashed_error_work)` at line 4997. During the `failed_mount3:` error-unwind at line 5454, `flush_work(&sbi->s_error_work)` is called at line 5456 immediately before `del_timer_sync(&sbi->s_err_report)` at line 5457. The work callback `flush_stashed_error_work` can call `mod_timer` on `s_err_report`, arming the timer during the same unwind that is about to cancel it. When the code path passes through `failed_mount_wq:` (line 5439), `flush_work` runs a second time at line 5448 before falling through to `failed_mount3:`, doubling the exposure. Syzbot detected this as an ODEBUG (Object Debug) object-state inconsistency.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; the bug is triggered during a failed mount, for example when `ext4_es_register_shrinker()` or journal loading fails part way through setup.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-49983
@@ -1015,38 +1069,38 @@ Syzbot has found an ODEBUG bug in ext4_fill_super The del_timer_sync function ca
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-When calling ext4_force_split_extent_at() in ext4_ext_replay_update_ex(), the 'ppath' is updated but it is the 'path' that is freed, thus potentially triggerin
+In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns `ppath = path`, making both local variables alias the same allocation. Line 5881 then calls `ext4_force_split_extent_at(NULL, inode, &ppath, start, 1)`, passing the address of `ppath`. Inside, `ext4_split_extent_at()` calls `ext4_ext_insert_extent()` which may invoke `ext4_ext_grow_indepth()` and reallocate `*ppath` via `kcalloc()`. When that happens, the outer `ppath` is updated to the new allocation and the original memory is freed — but `path` still holds the original (now stale) pointer. The `kfree(path)` call at line 5885 then frees already-freed memory, constituting a double-free/use-after-free. The bug is exercised during fast-commit journal replay.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. The SCSI and VFS layers that expose this path are active for normal disk I/O. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot. File Backup creates a versioned copy before each write to protected directories, so even if an approved program corrupts a file, the previous version remains recoverable from the Dashboard's Backup.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; the vulnerable path runs during fast-commit replay, which is triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2024-50007
 
-**Status**: Risk erased
-**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Status**: Not Affected
+**Component**: ASIHPI soundcard driver (`CONFIG_SND_ASIHPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Environmental Score**: 0.0 — `CONFIG_SND_ASIHPI` not compiled
 
-ASIHPI driver stores some values in the static array upon a response from the driver, and its index depends on the firmware.
-
-`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+The ASIHPI driver writes firmware-controlled index values into a static array without bounds-checking the index. `CONFIG_SND_ASIHPI` is not set in the HS 5.19.6 kernel configuration; the driver and this code path are absent from the compiled kernel image.
 
 
 ## CVE-2022-48951
 
-**Status**: Risk erased
-**Component**: ALSA sound subsystem (`CONFIG_SND`)
+**Status**: Not Affected
+**Component**: ALSA SoC layer (`CONFIG_SND_SOC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 0.0 — no audio hardware present
+**Environmental Score**: 0.0 — `CONFIG_SND_SOC` not compiled
 
-The bounds checks in snd_soc_put_volsw_sx() are only being applied to the first channel, meaning it is possible to write out of bounds values to the second chann
-
-`CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
-
-The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`snd_soc_put_volsw_sx()` applies bounds checks only to the first channel, allowing out-of-bounds writes to the second. `CONFIG_SND_SOC` is not set in the HS 5.19.6 kernel configuration; the ALSA SoC layer and this function are absent from the compiled kernel image.
 
 
 ## CVE-2022-48956
@@ -1055,10 +1109,18 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Environmental Score**: 7.9 HIGH — Lockdown reduces MI: High→Low
+**Affected range**: pre-fix
+**Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
-Blamed commit claimed rcu_read_lock() was held by ip6_fragment() callers. It seems to not be always true, at least for UDP stack. syzbot reported:
+`ip6_fragment()` at `net/ipv6/ip6_output.c:831` handles IPv6 packet fragmentation. The function and its callees access RCU-protected routing and neighbor table entries; a prior commit added an assumption that all callers hold the RCU read lock at entry. For the IPv4-style fast path via `ip6_finish_output2()` this holds — `rcu_read_lock_bh()` is acquired at line 119. However the UDP egress path (`ip6_send_skb()` at line 1940 → `ip6_local_out()` → `ip6_output()` → `ip6_finish_output()` → `ip6_fragment()`) does not guarantee the lock is held before entry into the fragmentation code. Under concurrent route or neighbor table modification this produces a use-after-free. Syzbot confirmed the race.
 
-`CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 is compiled in and the stack is active when IPv6 is configured. On a HeartSuite Core Secure system in Secure Mode, reaching this code path requires an approved process to invoke the relevant kernel interface. An attacker cannot execute a new exploit binary — it has no allowlist entry and the kernel refuses to run it. After gaining root, Lockdown closes the post-exploitation path: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+`CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket.
+
+Lockdown enforces a hard boundary on post-exploitation actions after an attacker has used this CVE to gain a foothold. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`; from that point `FS_IOC_SETFLAGS` returns `EPERM` (`kernel/ioctl.c:561–569`), all mount paths return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`), and the reactivation path is blocked (`hs_sandbox_caching.c:1942`). Root cannot modify the allowlist, install backdoors into writable system paths, or preserve access across a reboot.
+
+Secure Mode adds a further constraint that operates entirely independently. Every execution is checked against the SPF allowlist inside the kernel before the process is permitted to run — applying equally to root. A backdoor or tool written to exploit this path and dropped onto the filesystem will not execute: it carries no allowlist entry, and the kernel refuses it regardless of file ownership or capability bits.
+
+The combined effect is that an attacker who reaches root through this CVE finds themselves in a contained environment: they cannot add new programs, cannot modify what existing programs are permitted to do, cannot install persistence, and lose their access entirely on the next reboot.
 
 
 ## CVE-2022-49022
@@ -1179,16 +1241,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2024-53227
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_BFA_FC` not compiled
+**Component**: Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled in HS kernel
 
 BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20 Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303 Call Trace:
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Brocade bfa Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_BFA_FC` is not set in the HS 5.19.6 configuration. The Brocade bfa Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2024-53239
@@ -1301,16 +1361,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-21993
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ISCSI_IBFT` not set
+**Component**: iSCSI iBFT driver (`CONFIG_ISCSI_IBFT`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ISCSI_IBFT` not compiled in HS kernel
 
 When performing an iSCSI boot using IPv6, iscsistart still reads the /sys/firmware/ibft/ethernetX/subnet-mask entry.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the iSCSI Boot Firmware Table (iBFT, iSCSI boot configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ISCSI_IBFT` is not set in the HS 5.19.6 configuration. The iSCSI Boot Firmware Table (iBFT) driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-22083
@@ -1417,16 +1475,14 @@ When copying a `struct ifaddrlblmsg` to the network, __ifal_reserved remained un
 
 ## CVE-2023-53037
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
+**Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 When the SAS Transport Layer support is enabled and a device exposed to the OS by the driver fails INQUIRY commands, the driver frees up the memory allocated for an internal
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53039
@@ -1457,16 +1513,14 @@ syzkaller reportes a KASAN issue with stack-out-of-bounds. The call trace is as 
 
 ## CVE-2025-37861
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
+**Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 When the task management thread processes reply queues while the reset thread resets them, the task management thread accesses an invalid queue ID (0xFFFF),
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-37979
@@ -1525,16 +1579,14 @@ The double free could happen in the following path. exfat_create_upcase_table() 
 
 ## CVE-2025-38239
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_MEGARAID_SAS` not set
+**Component**: LSI MegaRAID SAS driver (`CONFIG_MEGARAID_SAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_MEGARAID_SAS` not compiled in HS kernel
 
 On a system with DRAM interleave enabled, out-of-bound access is detected: megaraid_sas 0000:3f:00.0: requested/available msix 128/128 poll_queue 0
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the LSI MegaRAID SAS controller driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_MEGARAID_SAS` is not set in the HS 5.19.6 configuration. The LSI/Broadcom MegaRAID SAS controller driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-38249
@@ -1643,16 +1695,14 @@ syzbot was able to craft a packet with very long IPv6 extension headers leading 
 
 ## CVE-2025-38699
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_BFA_FC` not compiled
+**Component**: Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_BFA_FC` not compiled in HS kernel
 
 When the bfad_im_probe() function fails during initialization, the memory pointed to by bfad->im is freed without setting bfad->im to NULL.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Brocade bfa Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_BFA_FC` is not set in the HS 5.19.6 configuration. The Brocade bfa Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-38729
@@ -1749,16 +1799,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53282
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
+**Component**: Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
 
 During the sysfs firmware write process, a use-after-free read warning is logged from the lpfc_wr_object() routine: BUG: KFENCE: use-after-free read in
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex lpfc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_LPFC` is not set in the HS 5.19.6 configuration. The Emulex lpfc Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53285
@@ -1775,16 +1823,14 @@ Normally the extended attributes in the inode body would have been checked when 
 
 ## CVE-2023-53320
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
+**Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 The function mpi3mr_get_all_tgt_info() has four issues: 1) It calculates valid entry length in alltgt_info assuming the header part of the struct mpi3mr_device_map_info wou
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53321
@@ -1803,16 +1849,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53322
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
+**Component**: QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
 
 System crash due to use after free. Current code allows terminate_rport_io to exit before making sure all IOs has returned.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qla2xxx Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_QLA_FC` is not set in the HS 5.19.6 configuration. The QLogic qla2xxx Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2022-50378
@@ -1831,16 +1875,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53376
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
+**Component**: Broadcom mpi3mr SAS driver (`CONFIG_SCSI_MPI3MR`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_MPI3MR` not compiled in HS kernel
 
 To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using byte as unit.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Broadcom mpi3mr SAS 3.0 HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53392
@@ -1859,16 +1901,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2025-39841
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
+**Component**: Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_LPFC` not compiled in HS kernel
 
 Fix a use-after-free window by correcting the buffer release sequence in the deferred receive path.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Emulex lpfc Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_LPFC` is not set in the HS 5.19.6 configuration. The Emulex lpfc Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-39864
@@ -1899,16 +1939,14 @@ An use-after-free issue occurred when __mark_inode_dirty() get the bdi_writeback
 
 ## CVE-2022-50422
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_SAS_LIBSAS` not set
+**Component**: SAS libsas library (`CONFIG_SCSI_SAS_LIBSAS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_SAS_LIBSAS` not compiled in HS kernel
 
 When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to delete "slow_task->timer".
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SAS libsas library (requires SAS HBA) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_SAS_LIBSAS` is not set in the HS 5.19.6 configuration. The SAS libsas library — used by SAS host bus adapter drivers — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2022-50432
@@ -1951,16 +1989,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53521
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
+**Component**: SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
 
 A fix for: BUG: KASAN: slab-out-of-bounds in ses_intf_remove+0x23f/0x270 [ses] Read of size 8 at addr ffff88a10d32e5d8 by task rmmod/12013
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SCSI Enclosure Services (SAS enclosure hardware) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ENCLOSURE_SERVICES` is not set in the HS 5.19.6 configuration. The SCSI Enclosure Services driver (ses) — and its dependence on SAS HBA infrastructure — is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2022-50488
@@ -2015,44 +2051,38 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2023-53675
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
+**Component**: SCSI Enclosure Services (`CONFIG_ENCLOSURE_SERVICES`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ENCLOSURE_SERVICES` not compiled in HS kernel
 
 Sanitize possible desc_ptr out-of-bounds accesses in ses_enclosure_data_process().
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the SCSI Enclosure Services (SAS enclosure hardware) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ENCLOSURE_SERVICES` is not set in the HS 5.19.6 configuration. The SCSI Enclosure Services driver (ses) is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2023-53676
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
+**Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 The function lio_target_nacl_info_show() uses sprintf() in a loop to print details for every iSCSI connection in a session without checking for the buffer len
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-71075
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_AIC94XX` not set
+**Component**: Adaptec aic94xx SAS driver (`CONFIG_SCSI_AIC94XX`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_AIC94XX` not compiled in HS kernel
 
 The asd_pci_remove() function fails to synchronize with pending tasklets before freeing the asd_ha structure, leading to a potential use-after-free vulnerability.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Adaptec aic94xx SAS HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_AIC94XX` is not set in the HS 5.19.6 configuration. The Adaptec aic94xx SAS HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2026-23076
@@ -2113,16 +2143,14 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-23193
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
+**Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 8.8 HIGH (AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 9.0 CRITICAL — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 In iscsit_dec_session_usage_count(), the function calls complete() while holding the sess->session_usage_lock.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2026-23208
@@ -2141,30 +2169,26 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## CVE-2026-23216
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
+**Component**: Linux iSCSI target (`CONFIG_ISCSI_TARGET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_ISCSI_TARGET` not compiled in HS kernel
 
 In iscsit_dec_conn_usage_count(), the function calls complete() while holding the conn->conn_usage_lock.
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the Linux iSCSI target (requires iscsi-target configuration) driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2025-71238
 
-**Status**: Affected — requires specific hardware
-**Component**: SCSI subsystem (`CONFIG_SCSI`)
+**Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
+**Component**: QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Environmental Score**: 7.9 HIGH — hardware-conditional; Lockdown reduces MI: High→Low
+**Environmental Score**: 0.0 — `CONFIG_SCSI_QLA_FC` not compiled in HS kernel
 
 Kernel panic observed on system, [5353358.825191] BUG: unable to handle page fault for address: ff5f5e897b024000 [5353358.825194] #PF: supervisor write access in kernel mode
 
-`CONFIG_SCSI=y` is compiled in. This vulnerability is in the QLogic qla2xxx Fibre Channel HBA driver. The attack surface is present only on servers equipped with this hardware. On a standard Debian 11 server without this adapter, the driver is compiled in but never bound to hardware, and the affected code path is unreachable.
-
-Where the hardware is present: on a HeartSuite Core Secure system, an attacker cannot run a new exploit binary (no allowlist entry). After gaining root, Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_SCSI_QLA_FC` is not set in the HS 5.19.6 configuration. The QLogic qla2xxx Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist in the binary.
 
 
 ## CVE-2026-23318
