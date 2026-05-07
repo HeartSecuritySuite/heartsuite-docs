@@ -70,7 +70,7 @@ Across every reachable CVE in this document, the answer is the same — and shor
 
 - **Sensitive-data disclosure during the live session.** A root attacker can read disk content while the session is active. Confidentiality during the breach is the role of disk encryption, not Secure Mode + Lockdown.
 - **Hardware-level and pre-boot threats.** Firmware compromise, baseboard management exploits, and physical attacks on the boot chain are outside the HS attack surface.
-- **Misconfigured APOs.** Operators who allowlist tools they should not — `modprobe`, `bpftool`, networked exfiltration utilities — move outcomes from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-effective-scores-and-deployment-tuning).
+- **Misconfigured APOs.** Operators who allowlist tools they should not — `modprobe`, `bpftool`, networked exfiltration utilities — move outcomes from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-scores-on-heartsuite-and-deployment-tuning).
 
 > **The reason the answer is the same for every reachable CVE in this document is that HeartSuite's enforcement is structural, not state-based.** Most kernel hardening products gate enforcement on a state variable that an attacker with arbitrary kernel write can clear in a single instruction. Secure Mode's allowlist is consulted on every `execve` regardless of any state variable. There is no kill-switch.
 
