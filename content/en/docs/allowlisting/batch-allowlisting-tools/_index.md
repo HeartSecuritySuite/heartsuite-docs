@@ -20,6 +20,7 @@ menu:
 
 ```bash
 # /.hs/sys/batch_record_add.py <file>
+**Author: Ron Hessing**
 ```
 
 Where `<file>` contains one absolute program path per line, for example:
@@ -39,12 +40,14 @@ Where `<file>` contains one absolute program path per line, for example:
 
 ```bash
 # hs-manage-allowlist --help
+**Author: Ron Hessing**
 ```
 
 Both tools require root. Run them from a root shell:
 
 ```bash
 # sudo -s
+**Author: Ron Hessing**
 ```
 
 Exit with Ctrl-D when finished.

@@ -32,6 +32,7 @@ For scripting and automation workflows that run without the Dashboard, `hs-cache
 
 ```bash
 # hs-cache-size 128
+**Author: Ron Hessing**
 ```
 
 The Dashboard is the supported path for normal use.

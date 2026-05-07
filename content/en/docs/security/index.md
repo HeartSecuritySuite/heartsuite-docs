@@ -48,6 +48,13 @@ The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a
 </div>
 </div>
 
+### Understanding CVE Scores in HeartSuite
+CVEs are rated by severity (e.g., HIGH means a score of 7+). A "0.0" score here means HeartSuite fully neutralizes the vulnerability—it's not reachable. A "non-zero" score means the flaw can still be exploited in HS, but its impact is limited, often to temporary effects that a reboot clears. This helps you see real risks clearly.
+
+
+
+
+
 ## What malware can and cannot do on this system
 
 Across every reachable CVE in this document, the answer is the same — and short.
@@ -400,12 +407,18 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 **Affected ranges**: CVE-2023-2236: 5.19 through 6.0.10; CVE-2022-3910: 5.18 through 5.19.10  
 **Upstream fix**: CVE-2023-2236: 6.0.11; CVE-2022-3910: 5.19.11 (5.19 branch is EOL for CVE-2023-2236; CVE-2022-3910 fix was in-branch but 5.19.6 predates it)
 
+**What this means for an attacker:**
+
 Both CVEs describe use-after-free conditions in io_uring's fixed file management, exploitable by a local user to gain root:
 
 - **CVE-2023-2236** — double `fput()` in the `io_install_fixed_file()` path. When an async open operation installs a fixed file and encounters an error, `io_install_fixed_file()` calls `fput(file)` at its error label; the caller then calls `fput(file)` a second time. The file's reference count reaches zero while the object is still referenced, producing a use-after-free.
 - **CVE-2022-3910** — improper reference count update in io_uring's fixed file handling that leads to a use-after-free and local privilege escalation.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IO_URING=y` is compiled in. The `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -457,9 +470,15 @@ Secure Mode adds a further constraint that runs independently of Lockdown: every
 **Affected range**: kernels prior to stable fixes in the 6.7.x, 6.6.x, 6.1.x, 5.15.x, 5.10.x, and 5.4.x series (5.19 branch is EOL; no backport)
 **Upstream fix**: merged in Linux 6.8-rc; backported across active stable series
 
+**What this means for an attacker:**
+
 This CVE describes a buffer overflow in the kernel software compression (`scomp`) interface in `crypto/scompress.c`. The `scomp_acomp_comp_decomp()` function uses a per-CPU scratch buffer of `SCOMP_SCRATCH_SIZE` bytes as working space. If the caller provides a `req->dst` scatter list smaller than `SCOMP_SCRATCH_SIZE`, the function still caps `req->dlen` to `SCOMP_SCRATCH_SIZE` and then copies the full output — up to that size — into `req->dst` via `scatterwalk_map_and_copy()`. No check verifies that `req->dst` can hold `req->dlen` bytes before the copy. A caller who controls `req->dst` and triggers a compression or decompression that fills the scratch buffer can write beyond the end of the destination scatter list.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. The kernel crypto framework is used by IPsec, dm-crypt, TLS, and other subsystems — all active on a Debian 11 server. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -563,9 +582,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: 4.14–pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 A syzbot report identified a misuse of pfmemalloc page status in TCP zerocopy receive paths. In `tcp_zerocopy_receive()` (`net/ipv4/tcp.c:2086`), socket buffer fragment pages are collected into a batch (line 2178: `page = skb_frag_page(frags)`) and mapped directly into userspace via `vm_insert_pages()`. No `page_is_pfmemalloc()` check is performed before adding a fragment page to the batch. Pages allocated from pfmemalloc reserves (used to break memory-pressure deadlocks in the network receive path) carry special lifecycle accounting; mapping them into userspace circumvents that accounting. A local attacker who can induce a pfmemalloc allocation into the TCP receive path can map a reserve page into their own address space, potentially corrupting page refcount state in ways that lead to privilege escalation.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP zerocopy receive path (`TCP_ZEROCOPY_RECEIVE` ioctl on a connected socket) is reachable by any local user with network access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -638,9 +663,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: pre-fix
 **Upstream fix**: 6.9 series
 
+**What this means for an attacker:**
+
 syzkaller reported infinite recursive calls of `fib6_dump_done()` during netlink socket destruction. From the log, syzkaller sent an AF_UNSPEC RTM_GETROUTE message, and then closed the netlink socket. The IPv6 FIB dump handler at `net/ipv6/ip6_fib.c:652` hooks the callback destructor by setting `cb->done = fib6_dump_done` (saving the original callback in `cb->args[3]`). When the netlink socket closes, netlink core invokes the destructor, calling `fib6_dump_done()` at line 570. This function calls `cb->done(cb)` — but `cb->done` is now `fib6_dump_done` itself, creating infinite recursion that exhausts the kernel stack. The HS 5.19.6 kernel carries the unpatched FIB dump callback at `net/ipv6/ip6_fib.c:645–684`.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Triggering the infinite recursion requires sending an `AF_UNSPEC RTM_GETROUTE` netlink message and then closing the socket — reachable by any local user with a netlink socket. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -785,9 +816,15 @@ On a HeartSuite system with an optical drive installed, Lockdown's constraints w
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `net/ipv6/ip6_output.c`, `ip6_finish_output2()` saves `idev = ip6_dst_idev(dst)` at line 63. At line 72, `skb_expand_head(skb, hh_len)` makes room for the link-layer header; when allocation fails, `skb_expand_head()` frees the original `skb` and returns NULL. The `idev` pointer saved before the call now references memory associated with the freed `skb`. At line 74, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences the stale `idev` — a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -802,9 +839,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `net/ipv6/ip6_output.c`, `ip6_xmit()` saves `idev = ip6_dst_idev(dst)` at line 256. At line 271, `skb_expand_head(skb, head_room)` expands the buffer to accommodate the IPv6 header and IP options; when allocation fails, the original `skb` is freed and NULL is returned. The `idev` pointer is now stale. At line 273, `IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS)` dereferences freed memory — a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -819,9 +862,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `net/ipv6/ip6_output.c`, `ip6_send_skb()` at line 1943 saves `rt = (struct rt6_info *)skb_dst(skb)` without holding `rcu_read_lock()`. At line 1946, `ip6_local_out()` transmits the packet and may consume the `skb`, releasing the associated route. If `ip6_local_out()` returns a non-zero error code, lines 1951–1952 dereference `rt->rt6i_idev` — but `rt` is an RCU-protected pointer and may be freed before the dereference. Holding `rcu_read_lock()` for the duration of the `rt` dereference is required.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. Any local process that sends IPv6 network traffic can trigger the vulnerable allocation failure paths; no capability gate is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -920,9 +969,15 @@ If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 When ext4 searches an inlined directory, `ext4_find_inline_entry()` at `fs/ext4/inline.c:1709` calls `ext4_get_inline_xattr_pos()` to locate the extended-attribute portion of the inline data. At `inline.c:1077`, that function returns `IFIRST(header) + le16_to_cpu(entry->e_value_offs)` without validating that the offset stays within the inode body buffer. A crafted block device can supply an `e_value_offs` that pushes the resulting pointer out of bounds; that pointer is then passed directly to `ext4_search_dir()` at line 1712, causing an OOB memory access.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; inlined directory processing runs for any small directory during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -949,9 +1004,15 @@ The kref_put() function will call nport->release if the refcount drops to zero. 
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `ext4_ext_try_to_merge_up()` at `fs/ext4/extents.c:1871`, `brelse(path[1].p_bh)` releases the depth-1 extent block buffer but leaves `path[1].p_bh` non-NULL. When the caller subsequently runs cleanup via `ext4_ext_drop_refs()`, it iterates the path and calls `brelse()` on every non-NULL `p_bh`, releasing the same buffer head a second time — a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent tree merge-up runs during any truncate or extent modification on a two-level extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -966,9 +1027,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `ext4_ext_insert_extent()` at `fs/ext4/extents.c:2094`, the call to `ext4_ext_create_new_leaf()` may internally call `ext4_ext_grow_indepth()`, which reallocates the `path` array via `kcalloc()`. After the call returns, the caller continues using the original `path` pointer — now stale — causing a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent insertion runs during any file write that extends or modifies the extent tree. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -983,9 +1050,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 In `ext4_split_extent_at()` at `fs/ext4/extents.c:3178`, the function saves the path pointer as `path = *ppath`. At line 3248 it calls `ext4_ext_insert_extent(handle, inode, ppath, ...)`, which may reallocate `*ppath`, freeing the memory that `path` still points to. Subsequent uses of `path` at lines 3281, 3282, 3301, and 3304 — in both the success and error-recovery branches — dereference the now-freed pointer, constituting a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; extent splitting is triggered during any write that bisects an existing extent. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1000,9 +1073,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: pre-fix
 **Upstream fix**: mainline; not backported to 5.19.x (5.19 EOL)
 
+**What this means for an attacker:**
+
 `ext4_find_extent()` at `fs/ext4/extents.c:874` takes an optional `**orig_path` argument allowing callers to reuse an existing path allocation. On two code paths it frees the old allocation: when the tree depth has grown beyond the cached maximum (lines 898–901, `kfree(path); *orig_path = NULL`) and on any I/O or corruption error (lines 953–957, same sequence). Callers that save a local `path = *ppath` copy before invoking a sub-function that internally calls `ext4_find_extent()` — such as `ext4_split_convert_extents()` — retain a pointer to the freed memory. Subsequent use of that stale pointer constitutes a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server; any extent-modifying write that triggers a tree depth change or encounters a read error while holding a saved path pointer is a triggering condition. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1259,9 +1338,15 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 **Affected range**: Linux ≤ 6.13-rc6
 **Upstream fix**: commit 838154be1ea7 ("io_uring: sanitise sqe->opcode against speculations")
 
+**What this means for an attacker:**
+
 In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and checks it against `IORING_OP_LAST` at line 8385. Without a Spectre v1 barrier, the CPU's speculative execution engine can index into `io_op_defs[]` at line 8389 before the bounds-check branch resolves, enabling a microarchitectural side-channel read of kernel memory at speculative offsets. The upstream fix inserts `array_index_nospec(opcode, IORING_OP_LAST)` before the array access.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1316,9 +1401,15 @@ In `drivers/vhost/scsi.c`, `vhost_scsi_set_endpoint()` at line 1531 does not gua
 **Affected range**: Linux ≤ 6.13-rc3
 **Upstream fix**: commit 34f96e89f84c ("ext4: fix UAF in ext4_xattr_inode_dec_ref_all()")
 
+**What this means for an attacker:**
+
 In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1127 iterates over xattr entries, calling `ext4_xattr_inode_iget()` at line 1148 to obtain each `ea_inode`. If `ext4_expand_inode_array()` at line 1154 fails, `iput(ea_inode)` at line 1158 frees the inode. When the journal restart function (`ext4_xattr_restart_fn`) subsequently runs, it can re-encounter the same entry and dereference the freed inode at line 1182 (`ext4_xattr_inode_dec_ref`), producing a use-after-free. The published vector is C:H/I:N/A:H — disclosure and crash, not direct privilege escalation.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Reaching the xattr teardown path requires a process to manipulate extended attributes on an ext4 filesystem — a standard operation available to any user with file access. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1347,9 +1438,15 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 **Affected range**: Linux ≤ 6.14-rc5
 **Upstream fix**: commit 0f2122045b94 ("io_uring: don't import buffers for async preparation")
 
+**What this means for an attacker:**
+
 In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchronous copy of a request's state. For requests using provided buffers (`IOSQE_BUFFER_SELECT`), the function can select and consume a buffer slot during the async preparation phase. If the ring state is then discarded before the I/O completes — for example, when the async path is abandoned and the request is retried — the buffer slot is consumed but the reference is lost, allowing the slot to be selected again by a subsequent request and producing a use-after-free of the shared buffer metadata.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1402,9 +1499,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: Linux 5.4–5.19.6
 **Upstream fix**: kernel.org stable queue (net/ipv6/addrlabel.c)
 
+**What this means for an attacker:**
+
 In `net/ipv6/addrlabel.c`, `ip6addrlbl_putmsg()` (line 438) constructs a `struct ifaddrlblmsg` for a netlink reply. The function writes `ifal_family`, `ifal_prefixlen`, `ifal_flags`, and `ifal_seq` but never zeroes the `__ifal_reserved` padding byte. That uninitialised byte is subsequently copied to userspace via `nlmsg_unicast()`, leaking one byte of kernel stack memory per IPv6 address-label query.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Any process with access to a `NETLINK_ROUTE` socket can trigger the infoleak — no elevated privilege is required. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **The attacker cannot turn this leak into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1576,9 +1679,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/mcast.c
 
+**What this means for an attacker:**
+
 In `net/ipv6/mcast.c`, `mld_clear_delrec()` releases the `pmc->idev` reference before calling `ip6_mc_clear_src()`, but `ip6_mc_clear_src()` accesses `pmc->idev` internally. The reference drop must be deferred until after `ip6_mc_clear_src()` returns; releasing it early causes a use-after-free when `ip6_mc_clear_src()` subsequently dereferences the freed pointer.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and the IPv6 stack is active on configured interfaces. IPv6 multicast listener discovery (MLD) is reachable via network interfaces that join multicast groups — a common configuration on servers. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1632,9 +1741,15 @@ When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped()
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/
 
+**What this means for an attacker:**
+
 syzbot demonstrated that a crafted IPv6 packet with excessively long chained extension headers causes `skb->transport_header` to overflow. The field is a `__u16`; when the cumulative extension header length wraps past 65535, the kernel misidentifies the transport layer offset when parsing subsequent headers, potentially accessing incorrect memory.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and the IPv6 stack processes all inbound IPv6 packets, including those with extension headers. This path is reachable from the network without requiring a local process. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to escalate further — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1676,9 +1791,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/
 
+**What this means for an attacker:**
+
 In `net/ipv6/`, a Message Authentication Code comparison used a variable-time function rather than a constant-time one (such as `crypto_memneq()`). An attacker who can observe response timing can iteratively determine whether partial MAC bytes are correct, eventually recovering a valid MAC and bypassing authentication in IPv6 protocol handling.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. Exploiting a timing side-channel requires high network precision and repeated measurements (AC:H), which significantly reduces practical exploitability. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to follow up on a bypassed MAC check — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1894,9 +2015,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/fs-writeback.c
 
+**What this means for an attacker:**
+
 In `fs/fs-writeback.c`, `__mark_inode_dirty()` acquires a reference to a `bdi_writeback` structure. A concurrent `bdi_writeback_switch()` can free the structure before the reference is dropped, resulting in a use-after-free when the writeback pointer is subsequently accessed.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `fs/fs-writeback.c` is always compiled in on a system with block device support. The writeback subsystem is active for all block I/O on any mounted filesystem. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1924,9 +2051,15 @@ When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to d
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/kernfs/dir.c
 
+**What this means for an attacker:**
+
 Syzkaller triggered concurrent calls to `kernfs_remove_by_name_ns()` for the same kernfs node, resulting in a KASAN-detected use-after-free in `fs/kernfs/dir.c`. The race occurs because `kernfs_remove_by_name_ns()` does not prevent concurrent removals of the same node from two threads.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_KERNFS=y` is compiled in and 5.19.6 falls within the affected range. kernfs underpins sysfs and is active on every running Linux system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1942,9 +2075,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/hash.c
 
+**What this means for an attacker:**
+
 In `fs/ext4/hash.c`, `__ext4fs_dirhash()` returns `-1` in two cases: when a directory uses the `DX_HASH_SIPHASH` algorithm but the inode lacks an encryption key (line 271: "Siphash requires key"), and on an unknown hash version (line 280). Callers of `ext4fs_dirhash()` did not consistently check for this error and proceeded with a stale or zero `hinfo->hash`, potentially corrupting hash-tree directory lookups or writes.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server and directory lookups occur during normal operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -1998,9 +2137,15 @@ In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involv
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/md/dm-cache-target.c
 
+**What this means for an attacker:**
+
 In `drivers/md/dm-cache-target.c`, `cache_resume()` (line 2971) calls `allow_background_work()`, which schedules work on `cache->wq`. If `cache_dtr()` runs concurrently, `destroy()` (line 1881) frees `cache->wq` at line 1891 while those work items are still active, resulting in a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_BLK_DEV_DM=y` is compiled in and device mapper is used for LVM on a standard Debian 11 installation. Triggering this race requires concurrent resume and destroy operations on a device mapper target. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to set up this race — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2016,9 +2161,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: fs/ext4/inode.c
 
+**What this means for an attacker:**
+
 In `ext4_evict_inode()` (`fs/ext4/inode.c:180`), the function checks `EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL` to determine whether the inode being evicted is an extended attribute inode. Under certain error paths during inode allocation, the ext4-specific `i_flags` field in `ext4_inode_info` is not fully initialized before the inode reaches eviction, causing the flag test to read from uninitialized memory. KMSAN reported the uninitialized-value access at this check.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server and inode eviction occurs during normal filesystem operation. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2229,9 +2380,15 @@ An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/tty/vt/vc_screen.c
 
+**What this means for an attacker:**
+
 In `drivers/tty/vt/vc_screen.c`, `vcs_read()` accesses virtual console screen data through a `vc_screen` reference without holding appropriate locks for the full duration of the read. A concurrent write or deallocation of the virtual console can free the underlying `vc_screen` structure while `vcs_read()` is still referencing it, causing a use-after-free. The published vector is C:H/I:N/A:H — disclosure and crash, not direct privilege escalation.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_VT=y` is compiled in and 5.19.6 falls within the affected range. Reading `/dev/vcs*` virtual console screen devices requires membership in the `tty` group on Debian. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. Executing a non-allowlisted program requires an allowlist entry; an attacker cannot reach this code path without one.
+
+**What this means for you as an HS user:**
 
 **The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2246,9 +2403,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/unix/garbage.c
 
+**What this means for an attacker:**
+
 In `net/unix/garbage.c`, the Unix socket garbage collector frees orphaned socket buffers (SKBs) without coordinating with concurrent `unix_stream_read_generic()` operations on the socket those SKBs are queued on. The race allows `unix_stream_read_generic()` to access an SKB that the garbage collector has already freed, causing a use-after-free. AC:H reflects that exploitation requires precise timing between the GC sweep and a concurrent stream read.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_UNIX=y` is compiled in and 5.19.6 falls within the affected range. Unix domain sockets are used by virtually all inter-process communication on a Debian 11 server (systemd, D-Bus, logging daemons). The narrow race window (AC:H) makes reliable exploitation difficult. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone race-exploit program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2302,9 +2465,15 @@ In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block pr
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/net/ethernet/realtek/r8169_main.c
 
+**What this means for an attacker:**
+
 In `drivers/net/ethernet/realtek/r8169_main.c`, transmitting small fragmented scatter-gather packets on an RTL8125b NIC causes the driver to populate TX ring buffer descriptors with invalid state. The NIC subsequently processes the malformed descriptors, leading to incorrect DMA operations that can corrupt memory.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_R8169=y` is compiled in and 5.19.6 falls within the affected range. The r8169 driver is active on systems with a Realtek NIC and handles all network TX traffic; the faulty path is reachable through normal network operation on affected hardware. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2655,9 +2824,15 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 **Affected range**: Linux 5.x–5.19
 **Upstream fix**: drivers/acpi/acpica/utdelete.c (reference count ordering fix)
 
+**What this means for an attacker:**
+
 In `drivers/acpi/acpica/utdelete.c`, `acpi_ut_remove_reference()` is called on an ACPI operand object that has already been freed by a concurrent or error-handling code path. The function reads `object->common.descriptor_type` (via `ACPI_GET_DESCRIPTOR_TYPE`, line 720) and `object->common.reference_count` (via `acpi_ut_update_object_reference`, line 740) from the already-freed memory. KASAN detects the access as a use-after-free at offset +0x3b in `acpi_ut_remove_reference()`.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. The ACPI subsystem is active from boot; triggering this use-after-free requires manipulating the ACPI reference count lifecycle via method evaluation during device enumeration or hotplug events. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot drop and execute a new exploit program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2692,15 +2867,21 @@ In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — th
 ### CVE-2024-36971
 
 **Status**: Affected
-**Component**: TCP/IP networking (`CONFIG_INET`)
+**Component**: TCP/IP destination cache (`CONFIG_INET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 7.3 HIGH — Secure Mode + Lockdown reduce MI: High→Low
-**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
-**Upstream fix**: net/core/dst.c
+**Affected range**: 5.19.6 falls within the affected range
+**Upstream fix**: net/core/dst.c — RCU locking in `__dst_negative_advice()`
 
-In `net/core/dst.c`, `__dst_negative_advice()` clears `sk->dst_cache` when a cached destination entry is marked invalid. The function reads `sk->dst_cache`, determines it should be dropped, then calls the protocol-specific `sk_dst_reset()` — but without proper RCU locking across this sequence. A concurrent operation can free the destination entry between the initial read and the reset, resulting in a use-after-free on the freed `dst` entry.
+**What this means for an attacker:**
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active; `__dst_negative_advice()` is invoked whenever a cached destination becomes invalid — reachable through normal network activity or by triggering ICMP unreachable messages. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+This CVE was actively exploited in the wild (Google Threat Analysis Group, 2024). It describes a use-after-free in `net/core/dst.c`. `__dst_negative_advice()` clears `sk->dst_cache` when a cached destination entry is marked invalid — reading the entry, determining it should be dropped, then calling `sk_dst_reset()` — without proper RCU locking across this sequence. A concurrent operation can free the destination entry between the initial read and the reset, producing a use-after-free on the freed `dst` entry. The result is local privilege escalation to root; attack vector is local (AV:L), not remote.
+
+**Why HeartSuite does not reduce this to 0.0:**
+
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. `__dst_negative_advice()` is invoked whenever a cached destination becomes invalid, reachable through normal network activity or by triggering ICMP unreachable messages from a local process. There is no hardware dependency and no special configuration required to reach the code path. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot drop and execute a new exploit program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2715,9 +2896,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: kernel/rcu/tasks.h
 
+**What this means for an attacker:**
+
 In `kernel/rcu/tasks.h`, `show_rcu_tasks_trace_gp_kthread()` formats diagnostic counters for the RCU tasks trace grace-period kthread into a fixed-size buffer using `sprintf()`. The function does not bound the number of characters written; if individual counter values are sufficiently large, the formatted output overflows the buffer. The sysfs interface exposing this data is readable by any local user via `/sys/kernel/rcu_tasks_kthread_status` or equivalent debugfs entries.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_TASKS_RCU=y` is compiled in and 5.19.6 falls within the affected range. RCU tasks is a core kernel synchronisation mechanism active at all times; the overflow condition requires unusually large counter values, making reliable exploitation difficult on a production system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2806,9 +2993,15 @@ In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xm
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: drivers/base/bus.c
 
+**What this means for an attacker:**
+
 In `drivers/base/bus.c`, `bus_register()` allocates a `subsys_private` struct (`@priv`) and calls `kset_register()` to publish the bus kobject. If a subsequent step in `bus_register()` fails — for example, during sysfs attribute file creation — the error path calls `kset_unregister()`, which frees `@priv` through its kobject release callback. `bus_register()` then also frees `@priv` directly in its own error path, causing a double-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_BASE_FULL=y` is compiled in and 5.19.6 falls within the affected range. `bus_register()` is called during driver probe and device enumeration, typically at boot or when kernel modules are loaded. Triggering the double-free requires causing a bus registration to fail partway through a specific sysfs error. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot load an exploit module or execute an exploit program without an allowlist entry.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2848,9 +3041,15 @@ On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied 
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv6/af_inet6.c
 
+**What this means for an attacker:**
+
 In `net/ipv6/af_inet6.c`, `sock_init_data()` attaches the newly allocated `sk` pointer to `sock->sk` before `inet6_create()` completes setup. If `inet6_create()` fails at a later step and frees the `sk`, `sock->sk` retains the dangling pointer. The socket cleanup path subsequently calls `sock->sk->sk_prot->close()` on the freed `sk`, causing a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_IPV6=y` is compiled in and 5.19.6 falls within the affected range. IPv6 socket creation is triggered whenever a process opens an IPv6 socket — a common operation on any networked system. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to reach this path — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
@@ -2866,9 +3065,15 @@ A reboot is a clean slate. The attack does not survive it.
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/ipv4/af_inet.c
 
+**What this means for an attacker:**
+
 In `net/ipv4/af_inet.c`, `sock_init_data()` attaches the newly allocated `sk` pointer to `sock->sk` before `inet_create()` completes setup. If `inet_create()` fails at a later step and frees the `sk`, `sock->sk` retains the dangling pointer. The socket cleanup path subsequently calls `sock->sk->sk_prot->close()` on the freed `sk`, causing a use-after-free.
 
+**Why HeartSuite does not reduce this to 0.0:**
+
 `CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The TCP/IP stack is always active; INET socket creation occurs on every TCP or UDP connection. In Secure Mode, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program — it has no allowlist entry and the kernel refuses to run it.
+
+**What this means for you as an HS user:**
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 

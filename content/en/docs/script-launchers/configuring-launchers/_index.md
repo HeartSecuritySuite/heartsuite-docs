@@ -68,6 +68,7 @@ Before or after Dashboard activation, you can run a script through a specific la
 
 ```bash
 # hs-python-launcher /path/to/your-script.py
+**Author: Ron Hessing**
 ```
 
 This applies the script's allowlist entry rather than the interpreter's. Running the same script with `python3` directly uses the interpreter's broader permissions. This is useful for verifying per-script permissions in isolation before relying on them in Secure Mode.

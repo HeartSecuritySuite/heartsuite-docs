@@ -104,6 +104,7 @@ When booted into a Non-HS kernel, set the mode before rebooting to the HeartSuit
 
 ```bash
 # sudo hs-mode-switch on
+**Author: Ron Hessing**
 ```
 
 ## Lockdown: Securing Your System in Secure Mode

@@ -30,6 +30,7 @@ analysis of the Docsy 0.14.0 Upgrade blog post and the current state of the
 ---
 
 # Docsy 0.14.0 Upgrade Report for `google/docsy-example`
+**Author: Ron Hessing**
 
 ## Executive Summary
 
@@ -48,6 +49,7 @@ uses standard Docsy project files and doesn't override internal theme files.
 ```bash
 go get github.com/google/docsy@main
 # or: hugo mod get -u github.com/google/docsy@main
+**Author: Ron Hessing**
 
 hugo mod tidy && hugo mod graph
 ```

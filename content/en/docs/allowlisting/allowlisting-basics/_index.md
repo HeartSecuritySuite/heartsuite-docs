@@ -20,6 +20,8 @@ In Setup Mode, HeartSuite Core Secure logs every program execution, file access 
 
 The Dashboard shows pending counts for each queue and provides a Suggested Next Step directing you to the queue that needs attention first.
 
+**The queues build on each other.** File access and network violations are only recorded for programs that have already been approved in the Programs queue. A program making live network connections will not appear in the Internet Access queue until you have approved it in the Programs queue first. If Internet Access or File Access appears empty while you know the system is active, check whether the Programs queue still has pending items.
+
 ## Working Through a Queue
 
 ### Starting a Review
@@ -215,6 +217,7 @@ For scripting and automation workflows that run without the Dashboard, `hs-manag
 
 ```bash
 # hs-manage-allowlist --help
+**Author: Ron Hessing**
 ```
 
 The Dashboard is the supported path for normal use.

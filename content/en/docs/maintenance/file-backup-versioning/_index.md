@@ -56,10 +56,15 @@ For scripting and automation workflows that run without the Dashboard, the follo
 
 ```bash
 # hs-backup-config-manager add /var/www
+**Author: Ron Hessing**
 # hs-backup-config-manager remove /home
+**Author: Ron Hessing**
 # hs-backup-config-manager list
+**Author: Ron Hessing**
 # hs-version-manager list /home/user/document.txt
+**Author: Ron Hessing**
 # hs-version-manager restore /home/user/document.txt --version 2023-11-01
+**Author: Ron Hessing**
 ```
 
 The Dashboard is the supported path for normal use.

@@ -1,4 +1,5 @@
 # HeartSuite Documentation
+**Author: Ron Hessing**
 
 Welcome to the official documentation for **HeartSuite Core Secure** — the enterprise-grade security suite built on a hardened Linux kernel.
 
