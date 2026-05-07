@@ -173,3 +173,5 @@ These are the actual scripts Lockdown uses. Most users never invoke them directl
 - **`HS_lockdown.sh`** — runs when you apply Lockdown from the Dashboard, and automatically on every HeartSuite kernel boot when auto-engagement is enabled. It seals HeartSuite Core Secure's configuration with `chattr +i`, disables file editors, replaces `rm`/`cp`/`mv` with restricted copies, then engages Lockdown via the kernel.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh`. The Maintenance runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only for recovery outside the Dashboard.
 - **`hs-unlock-progs`** — internal helper called by `HS_unlock.sh`. Not invoked directly in normal use.
+
+Setup is complete. When you need to install software, update configuration, or recover from Lockdown, see [Maintenance](../maintenance/).

@@ -221,3 +221,5 @@ For scripting and automation workflows that run without the Dashboard, `hs-manag
 ```
 
 The Dashboard is the supported path for normal use.
+
+When the Programs queue (Phase 2) is empty, the Dashboard's Suggested Next Step directs you to [Phase 3: Script Launchers](../../script-launchers/) — or to Phase 4 (File Access) if launchers are not applicable. The Dashboard tracks which phases remain and always shows what needs attention next.

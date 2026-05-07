@@ -1,6 +1,6 @@
 ---
 title: "Script Launchers and Python Setup"
-weight: 60
+weight: 50
 description: "Setting up secure launchers for scripts like Python, Perl, and PHP."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "security", "interpreters"]
@@ -15,3 +15,5 @@ toc: true
 - [How Script Launchers Work](how-launchers-work/) — Security rationale and how Secure Script Launchers enforce script permissions.
 - [Configuring Script Launchers](configuring-launchers/) — Direct use for testing and permanent symbolic link setups.
 - [Included Script Launchers](included-launchers/) — List of available launchers for Python, Perl, PHP, etc.
+
+Once launchers are configured (or skipped), the Dashboard directs you to Phase 4: File Access Allowlisting via the File Access queue (`[f]`) — see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
