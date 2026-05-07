@@ -77,3 +77,5 @@ If Phase 1 does not complete, or the indicator at the top shows a state you did 
 > ```
 >
 > The Dashboard provides this same information in the protection state indicator and the status line at the bottom.
+
+With Phase 1 confirmed, follow the Dashboard's Suggested Next Step to begin [Phase 2: Program Allowlisting](../allowlisting/).

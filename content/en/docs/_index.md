@@ -25,9 +25,11 @@ HeartSuite Core Secure is a strong fit for production servers, regulated worksta
 
 ## Get Started
 
-- [Quick Start](getting-started/) — Install, allowlist, and switch modes.
-- [Obtaining and Installing HeartSuite Core Secure](installation/) — Download and setup steps.
-- [Verifying Installation](verification/) — Confirm activation and basic configuration via the Dashboard.
+Start with [Quick Start](getting-started/) — it covers both paths (Cloud and Local) and links each step in order: prerequisites, download, install, verify, and allowlist.
+
+The pages below are the individual steps, linked from Quick Start:
+- [Obtaining and Installing HeartSuite Core Secure](installation/) — Download and setup steps (Local Path).
+- [Verifying Installation](verification/) — Confirm Phase 1 is complete in the Dashboard.
 
 ## Use and Manage
 

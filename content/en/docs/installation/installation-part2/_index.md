@@ -58,3 +58,5 @@ Two options are available:
 
 > [!WARNING]
 > The boot setup must complete before you switch to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.
+
+When the Dashboard appears and Phase 1 is confirmed, continue to [Verifying Installation](../../verification/).

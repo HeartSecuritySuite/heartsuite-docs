@@ -136,3 +136,5 @@ Syslog and webhook emit every alert immediately, without grouping or windowing. 
 
 > [!NOTE]
 > Alerts begin flowing only after Secure Mode is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.
+
+With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Secure Mode](../mode-switching/).
