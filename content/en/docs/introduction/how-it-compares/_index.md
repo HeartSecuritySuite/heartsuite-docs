@@ -30,7 +30,7 @@ Every published Linux kernel CVE comes with the same question: is that kernel fe
 
 ## What HeartSuite Core Secure Replaces
 
-These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Core Secure row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
+The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What HeartSuite Core Secure Complements](#what-heartsuite-core-secure-complements). These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Core Secure row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
 
 | Product | What it does | How it can be disabled | How HeartSuite Core Secure compares |
 |---|---|---|---|
@@ -41,6 +41,18 @@ These products provide runtime confinement or kernel-level enforcement of some k
 | **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the kernel module, or tamper with the driver. Many breaches include "disable EDR" as an early step | HeartSuite Core Secure has no agent and no module to unload — it is the kernel. When attackers use legitimate tools rather than new malware — the pattern in most modern breaches — EDR detects the suspicious behavior. HeartSuite Core Secure constrains it differently: even a legitimate tool can only reach the files and network destinations its allowlist entry approves. Note: EDR provides telemetry and response HeartSuite Core Secure does not. Treat HeartSuite Core Secure as a replacement for the preventive-enforcement dimension only; for detection and response, see the complementary table below. |
 
 **The common pattern.** Every product in this table can be disabled by an attacker who has already reached root. HeartSuite Core Secure cannot — its enforcement is compiled into the kernel and its allowlist is sealed by filesystem immutability under Lockdown. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
+
+**What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each product above retains strengths HeartSuite Core Secure does not replicate.
+
+*eBPF observers* — Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace — ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters where HeartSuite Core Secure does not fit — those tools remain the right answer, and they can observe a HeartSuite Core Secure host from adjacent infrastructure via network taps or log forwarding.
+
+*Userspace LSM frameworks* — AppArmor, SELinux, SMACK, Landlock — offer policy capabilities HeartSuite Core Secure does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. HeartSuite Core Secure's value is the sealed boundary — `chattr +i` immutability plus a running kernel that refuses runtime changes — not richer policy syntax.
+
+*seccomp-bpf sandboxes* in systemd services, browser sandboxes, bubblewrap, and firejail sit closer to the syscall surface than HeartSuite Core Secure can. A Chromium renderer's own seccomp filter is genuine defence-in-depth from inside the program; HeartSuite Core Secure does not replace it, and both layers are worth keeping.
+
+*gVisor* addresses a different threat model — host protected from untrusted guest, via a userspace syscall-emulating kernel. HeartSuite Core Secure addresses workloads protected from compromised root inside the kernel they run on. The two compose: HeartSuite Core Secure as the guest kernel inside a gVisor-isolated container is a coherent stack.
+
+*Linux EDR* — CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint — provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. HeartSuite Core Secure provides none of those. The honest position is *prevention versus detection*; most regulated environments will run both.
 
 ## Trust Boundaries and Bypass Surface
 
