@@ -1,5 +1,6 @@
 # Contributing to HeartSuite Documentation
 
+
 Welcome! HeartSuite Core Secure is an enterprise-grade security suite built on a hardened Linux kernel. We greatly appreciate your help in improving our documentation. This guide explains how to contribute effectively to the HeartSuite docs.
 
 ## Ways to Contribute

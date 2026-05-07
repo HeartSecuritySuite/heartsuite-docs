@@ -1,5 +1,6 @@
 # HeartSuite Documentation
 
+
 Welcome to the official documentation for **HeartSuite Core Secure** — the enterprise-grade security suite built on a hardened Linux kernel.
 
 Built with [Hugo](https://gohugo.io/) and the [Docsy](https://www.docsy.dev/) theme.
