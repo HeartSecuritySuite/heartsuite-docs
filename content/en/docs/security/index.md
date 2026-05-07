@@ -62,6 +62,9 @@ Across every reachable CVE in this document, the answer is the same — and shor
 ### Blocked
 
 - **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The allowlist is populated only at boot from operator-authorized sources; any in-memory tampering is wiped on the next boot.
+
+> **Supply-chain compromise: contained, not prevented.**  
+> If malware arrives inside a trusted update, HeartSuite does not block it from running — it was authorized. What HeartSuite does enforce is the blast radius. The malware cannot launch processes outside the allowlist, cannot reach unallowlisted network destinations, and cannot install additional code. A compromised supplier gets one program slot, not the system.
 - **New program execution.** The kernel refuses to run any program not in the Secure Mode allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
 - **Kernel module loading post-boot.** `modprobe` and `insmod` are not in the default APO and are not promoted by normal workload, so the kernel allowlist refuses to execute them. Module-based rootkits cannot be installed.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
