@@ -36,7 +36,7 @@ The footer shows the primary actions available at any point:
 |-----|--------|
 | `[a]` | Approve |
 | `[s]` | Skip for now (defer without approving) |
-| `[n]` | Navigate to the next denied item — Secure Mode only |
+| `[n]` | Navigate to the next denied item — Lockdown only |
 | `[?]` | Explain — what this approval means |
 | `[q]` | Return to the Dashboard |
 
@@ -200,16 +200,16 @@ All program events resolved.
 Returning to Dashboard…
 ```
 
-Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before proceeding to Secure Mode.
+Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before activating Lockdown.
 
-## Review Queues in Secure Mode
+## Review Queues in Lockdown
 
-In Secure Mode the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Secure Mode. The queues show **denied** items (actions HeartSuite Core Secure blocked), not pending items awaiting approval.
+In Lockdown the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Lockdown. The queues show **denied** items (actions HeartSuite Core Secure blocked), not pending items awaiting approval.
 
 Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance (`[t]`) — this switches to Setup Mode where the review queues become interactive again.
 
 > [!NOTE]
-> Denied items in Secure Mode are a normal part of operation, not failures. A denied item means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
+> Denied items in Lockdown are a normal part of operation, not failures. A denied item means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
 
 ## CLI Access for Scripting and Automation
 

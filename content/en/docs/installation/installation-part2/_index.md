@@ -44,7 +44,7 @@ If repeated reconnects still show the status line rather than the Dashboard:
    ```bash
    uname -r
    ```
-   Expected output ends in `HeartSuite` (for example, `6.18.23-HeartSuite-1.0`).
+   Expected output ends in `HeartSuite` (for example, `6.18.9-HeartSuite-1.0`).
 3. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
 
 ## If Setup Stops With an Error
@@ -57,6 +57,6 @@ Two options are available:
 - **`[q]` Open shell** — drops you to a shell to investigate before retrying.
 
 > [!WARNING]
-> The boot setup must complete before you switch to Secure Mode. If the initial allowlist is incomplete, the system may hang on boot or shutdown after the mode switch.
+> The boot setup must complete before you activate Lockdown. If the initial allowlist is incomplete, the system may hang on boot or shutdown after activating Lockdown.
 
 When the Dashboard appears and Phase 1 is confirmed, continue to [Verifying Installation](../../verification/).

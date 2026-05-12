@@ -1,33 +1,33 @@
 ---
 title: "Mode Switching and Lockdown"
 weight: 80
-description: "How to activate Secure Mode, apply Lockdown, and manage the trust boundary through maintenance."
+description: "How to activate Lockdown, and manage the trust boundary through maintenance."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
 toc: true
 type: docs
 ---
 
-**Overview**: When you switch from Setup Mode to Secure Mode, the kernel blocks every program not on the allowlist — including any you forgot to approve. The Dashboard guides the switch through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist after the switch: no program or user, including root, can modify it while the server is running.
+**Overview**: When you lock down from Setup Mode, the kernel blocks every program not on the allowlist — including any you forgot to approve. The Dashboard guides the activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.
 
 ## System States
 
-HeartSuite Core Secure has two modes: Setup Mode and Secure Mode. Both run on the HeartSuite Core Secure kernel. Lockdown is a separate decision you make after activating Secure Mode — it seals the configuration with filesystem immutability. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations depending on your security requirements. Lockdown can only be applied within Secure Mode; it is not a separate mode. Booting the original Non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
+HeartSuite Core Secure has two modes: Setup Mode and Lockdown. Both run on the HeartSuite Core Secure kernel. Lockdown seals the configuration with filesystem immutability. Both running Lockdown without the immutable seal and running Lockdown with the seal are valid configurations depending on your security requirements. Booting the original Non-HS kernel is not a HeartSuite Core Secure mode at all; it is the system running without HeartSuite Core Secure.
 
 | | HeartSuite Core Secure kernel loaded | Blocking | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
 | **Setup Mode** | Yes | No — logs only | Yes | Yes | Dashboard and all features available |
-| **Secure Mode** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available |
-| **Secure Mode + Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
+| **Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available |
+| **Lockdown + sealed** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
 | **Non-HS kernel** *(not a HeartSuite Core Secure mode)* | No — HeartSuite Core Secure absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup Mode and Secure Mode, the HS kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means HeartSuite Core Secure is completely absent — the HS kernel is not loaded, no blocking or logging takes place, and backups do not run.
+In Setup Mode and Lockdown, the HS kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means HeartSuite Core Secure is completely absent — the HS kernel is not loaded, no blocking or logging takes place, and backups do not run.
 
 The indicator at the top of the Dashboard shows the current protection state, and the Suggested Next Step tells you what to do next.
 
 ### Trust Graduation Across Modes
 
-Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Secure Mode, trust is withdrawn from running programs regardless of which user runs them; any program, including one running as root, must be on the allowlist. With Lockdown applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
+Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Lockdown, trust is withdrawn from running programs regardless of which user runs them; any program, including one running as root, must be on the allowlist. With the immutable seal applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the Non-HS kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
 
 ### Protection State
 
@@ -36,45 +36,41 @@ The indicator at the top of the Dashboard reflects the current protection state:
 | State | Indicator text |
 |---|---|
 | Setup Mode | **SETUP MODE** — logging only, nothing is blocked |
-| Secure Mode (no Lockdown) | **SECURE MODE** — Lockdown not applied |
-| Secure Mode + Lockdown | Silent (blank) |
+| Lockdown (no immutable seal) | **LOCKDOWN** — immutable seal not applied |
+| Lockdown + sealed | Silent (blank) |
 | Non-HS kernel | **NON-HS KERNEL** — HeartSuite Core Secure is not active. No blocking. No logging. No backups. |
 
-## Setup Mode and Secure Mode
+## Setup Mode and Lockdown
 
-At some point, you need to switch to Secure Mode to prevent malicious programs from starting, or to restrict the files and network destinations those programs can reach. Secure Mode activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Secure Mode activation is available as the Suggested Next Step.
+At some point, you need to lock down to prevent malicious programs from starting, or to restrict the files and network destinations those programs can reach. Lockdown activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Lockdown activation is available as the Suggested Next Step.
 
 > [!NOTE]
-> The Dashboard prevents Secure Mode activation until all preconditions are met — including completion of all setup phases and the System Setup steps. If any precondition is not satisfied, the Mode Switch (`[m]`) displays "Mode switch is not available yet" and lists what remains.
+> The Dashboard prevents Lockdown activation until all preconditions are met — including completion of all setup phases and the System Setup steps. If any precondition is not satisfied, the Lockdown button (`[m]`) displays "Lockdown is not available yet" and lists what remains.
 
-If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite Core Secure will block programs from accessing those files and network addresses when you switch to Secure Mode.
+If you have not added the necessary access permissions or network address permissions to allowlist entries, HeartSuite Core Secure will block programs from accessing those files and network addresses when you activate Lockdown.
 
-Once HeartSuite Core Secure is set up, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before switching to Secure Mode.
+Once HeartSuite Core Secure is set up, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before activating Lockdown.
 
-When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Secure Mode, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then return to Secure Mode.
+When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Lockdown, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then re-engage Lockdown.
 
 ```mermaid
 graph TD
-    A["Dashboard: Phase Progress complete"] --> B["Review queues empty — ready for Secure Mode"];
-    B --> C["Dashboard Mode Switch — type YES to confirm"];
-    C --> D["[r] Reboot — Secure Mode activates, configuration remains editable"];
-    D --> E["Secure Mode active"];
-    E --> F["Apply Lockdown from Dashboard when ready"];
+    A["Dashboard: Phase Progress complete"] --> B["Review queues empty — ready for Lockdown"];
+    B --> C["Dashboard Lockdown button — type YES to confirm"];
+    C --> D["[r] Reboot — Lockdown active on next boot"];
+    D --> E["Lockdown active"];
     E --> G{Maintenance needed?};
-    F --> G;
-    G --> |"No Lockdown"| H["Maintenance [t] → safety checklist → switch to Setup Mode\nHeartSuite Core Secure still active — logs, backups, Dashboard all run"];
-    G --> |"Lockdown active"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
-    H --> J["Make changes, update allowlist from Dashboard"];
-    I --> J;
-    J --> N["Return to Secure Mode from Dashboard"];
+    G --> |"Yes"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
+    I --> J["Make changes, update allowlist from Dashboard"];
+    J --> N["Return to Lockdown from Dashboard"];
     N --> E;
 ```
 
 ## Switching Between Modes
 
-### Dashboard-First Mode Switch
+### Dashboard-First Lockdown Activation
 
-The Dashboard is where you switch modes. When all preconditions are met, the Suggested Next Step will offer Secure Mode activation. The precondition checklist includes:
+The Dashboard is where you activate Lockdown. When all preconditions are met, the Suggested Next Step will offer Lockdown activation. The precondition checklist includes:
 
 - All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
 - Boot configuration is complete (System Setup)
@@ -82,21 +78,21 @@ The Dashboard is where you switch modes. When all preconditions are met, the Sug
 
 When preconditions are satisfied, the Dashboard presents the activation option.
 
-### Activating Secure Mode
+### Activating Lockdown
 
-From the Dashboard, select the Mode Switch (`[m]`). The Mode Switch displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
+From the Dashboard, select the Lockdown button (`[m]`). The Lockdown screen displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
 
-![Mode Switch with all preconditions met](test_docs_mode_switch_all_clear.svg)
+![Lockdown screen with all preconditions met](test_docs_mode_switch_all_clear.svg)
 
 After confirming, the Dashboard offers one reboot option:
 
-- `[r]` **Reboot** — Secure Mode activates, configuration remains editable
+- `[r]` **Reboot** — Lockdown active on next boot
 
-HeartSuite Core Secure boots in Secure Mode from that point forward until you switch back to Setup Mode. Apply Lockdown separately from the Dashboard when you are ready — this gives you the opportunity to verify Secure Mode is working before sealing the configuration.
+Lockdown is applied on the next reboot and persists — to make changes, use the Dashboard's Maintenance (`[t]`), which guides you through booting the Non-HS kernel and removing the seal.
 
 ### Returning to Setup Mode
 
-From the Dashboard, use the Mode Switch (`[m]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Secure Mode would block.
+From the Dashboard, use the Lockdown button (`[m]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Lockdown would block.
 
 ### Switching Mode from a Non-HS Kernel
 
@@ -107,13 +103,13 @@ When booted into a Non-HS kernel, set the mode before rebooting to the HeartSuit
 **Author: Ron Hessing**
 ```
 
-## Lockdown: Securing Your System in Secure Mode
+## Lockdown: Sealing the System
 
 Lockdown seals HeartSuite Core Secure's configuration with filesystem immutability, so a compromised root account cannot tamper with the allowlist while the system runs. The seal is system-wide: configuration, system files, accounts, scheduled tasks, and the maintenance tools themselves — all sealed in one step. The Dashboard displays the current Lockdown status and provides the Suggested Next Step for managing it.
 
-Lockdown is a separate decision you make after activating Secure Mode. Both running Secure Mode without Lockdown and running Secure Mode with Lockdown are valid configurations — the choice depends on how strictly you want to lock down the system. The table below summarises what changes when you apply Lockdown.
+Lockdown is applied automatically as part of activating Lockdown from the Dashboard. Once engaged, it persists until you exit through the Dashboard's Maintenance (`[t]`), which guides you through booting the Non-HS kernel to remove the seal. The table below shows what changes between Lockdown without the immutable seal and Lockdown with the seal.
 
-| | Secure Mode | Secure Mode + Lockdown |
+| | Lockdown | Lockdown + sealed |
 |---|---|---|
 | Blocks unauthorised programs, file access, and network access | Yes | Yes |
 | Logging | Yes | Yes |
@@ -122,9 +118,9 @@ Lockdown is a separate decision you make after activating Secure Mode. Both runn
 | Can an attacker with root tamper with security settings? | Possible | **No** — protected by immutability |
 | Can you modify files made immutable by Lockdown? | Yes | **No** — until the seal is removed via the Maintenance on the Non-HS kernel |
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
-| Can Lockdown be engaged in Setup Mode? | N/A | No — Secure Mode is required first |
-| How long does Lockdown last? | N/A | Until immutable flags are removed through the maintenance journey — Lockdown persists across reboots and re-engages automatically on every HeartSuite kernel boot |
-| How do you exit Lockdown? | N/A | Use the Dashboard's Maintenance (`[t]`) — it sets the GRUB default to the non-HS kernel automatically before rebooting, guides you through removing the seal on the non-HS kernel, then returns to the HeartSuite kernel. Console access (keyboard and monitor, serial port, or cloud serial console) is required only if automatic GRUB configuration does not apply. |
+| Can the immutable seal be engaged in Setup Mode? | N/A | No — Lockdown is required first |
+| How long does the seal last? | N/A | Until immutable flags are removed through the maintenance journey — the seal persists across reboots and re-engages automatically on every HeartSuite kernel boot |
+| How do you exit the seal? | N/A | Use the Dashboard's Maintenance (`[t]`) — it sets the GRUB default to the non-HS kernel automatically before rebooting, guides you through removing the seal on the non-HS kernel, then returns to the HeartSuite kernel. Console access (keyboard and monitor, serial port, or cloud serial console) is required only if automatic GRUB configuration does not apply. |
 
 ### What Lockdown Does
 
@@ -168,7 +164,7 @@ Before rebooting, the Maintenance (`[t]`) sets the GRUB default to the non-HS ke
 
 ### Lockdown Commands
 
-These are the actual scripts Lockdown uses. Most users never invoke them directly — the Dashboard's `[m]` Mode Switch and `[t]` Maintenances run them for you.
+These are the actual scripts Lockdown uses. Most users never invoke them directly — the Dashboard's `[m]` Lockdown button and `[t]` Maintenances run them for you.
 
 - **`HS_lockdown.sh`** — runs when you apply Lockdown from the Dashboard, and automatically on every HeartSuite kernel boot when auto-engagement is enabled. It seals HeartSuite Core Secure's configuration with `chattr +i`, disables file editors, replaces `rm`/`cp`/`mv` with restricted copies, then engages Lockdown via the kernel.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh`. The Maintenance runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only for recovery outside the Dashboard.

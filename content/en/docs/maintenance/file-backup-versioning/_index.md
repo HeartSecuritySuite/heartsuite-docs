@@ -11,7 +11,7 @@ toc: true
 
 ## Automatic Versioning
 
-HeartSuite Core Secure monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite Core Secure silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Secure Mode — protection begins from first boot, before you have reviewed a single item.
+HeartSuite Core Secure monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite Core Secure silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
 
 Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. HeartSuite Core Secure backs up on every write. There is no window. Other security products that offer rollback on Linux — including endpoint products with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
@@ -33,7 +33,7 @@ From here you can:
 Recommended directories include those containing user documents, executable files, configuration, and shared libraries. Avoid high-churn directories like log directories — backup creates a new version on every write.
 
 > [!NOTE]
-> Backup is optional. You can remove all directories, disabling backup entirely. Mode Switch does not require backup to be configured.
+> Backup is optional. You can remove all directories, disabling backup entirely. Lockdown does not require backup to be configured.
 
 ## Restoring File Versions
 

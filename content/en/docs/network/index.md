@@ -12,7 +12,7 @@ toc: true
 
 ## Per-Program, Per-Destination Enforcement
 
-In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Secure Mode, any connection to a destination not on the allowlist is blocked and an alert is generated.
+In Setup Mode, HeartSuite Core Secure logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
 Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address — each program must have its own approved destinations. HeartSuite Core Secure approves specific IPv4 and IPv6 addresses — not CIDR ranges, hostnames, or wildcards.
 

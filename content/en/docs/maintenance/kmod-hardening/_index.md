@@ -8,17 +8,17 @@ type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure does not add `kmod`, `modprobe`, or `insmod` to the allowlist during installation — in Secure Mode, none of them can execute, and no additional configuration is needed for module loading on a standard deployment. If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. In that case, restrict kmod's file access permissions to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the system.
+**Overview**: HeartSuite Core Secure does not add `kmod`, `modprobe`, or `insmod` to the allowlist during installation — in Lockdown, none of them can execute, and no additional configuration is needed for module loading on a standard deployment. If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. In that case, restrict kmod's file access permissions to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the system.
 
 ## Default Deployments: No Action Required
 
-If kmod, modprobe, and insmod have no allowlist entries, HeartSuite Core Secure refuses to execute them in Secure Mode. No module-loading hardening is needed — skip this page.
+If kmod, modprobe, and insmod have no allowlist entries, HeartSuite Core Secure refuses to execute them in Lockdown. No module-loading hardening is needed — skip this page.
 
 ## When kmod Is Allowlisted
 
 Some hardware configurations require kmod at startup to dynamically load drivers or filesystem modules the system needs to boot. Once kmod has an allowlist entry, it can execute — and without further restriction, kmod's file access permissions determine which modules it can load.
 
-The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod attempts to load a module outside its permitted paths, HeartSuite Core Secure blocks the file access in Secure Mode before the module can be read.
+The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod attempts to load a module outside its permitted paths, HeartSuite Core Secure blocks the file access in Lockdown before the module can be read.
 
 ## Restricting kmod's File Access Permissions
 
@@ -28,7 +28,7 @@ When kmod's startup activity appears in the **File Access queue (`[f]`)** during
 
 If kmod already has directory-level file access permissions, use `hs-manage-allowlist` to remove the broad entries and re-add specific paths. See `hs-manage-allowlist --help` for usage.
 
-After narrowing kmod's file access permissions, reboot and confirm the system starts normally with no kmod access denials in the review queues. Then engage Lockdown from Mode Switch (`[m]`). If kmod still has directory-level access at that point, the Lockdown confirmation surfaces an advisory before the YES prompt — you have one more opportunity to act before the configuration is sealed.
+After narrowing kmod's file access permissions, reboot and confirm the system starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[m]`). If kmod still has directory-level access at that point, the Lockdown confirmation surfaces an advisory before the YES prompt — you have one more opportunity to act before the configuration is sealed.
 
 ## Per-User Shell Profile Coverage
 

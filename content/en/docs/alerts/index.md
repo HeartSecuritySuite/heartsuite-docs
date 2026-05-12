@@ -1,14 +1,14 @@
 ---
 title: "Alert Settings"
 weight: 70
-description: "Configuring push alert channels for blocks and state changes in Secure Mode."
+description: "Configuring push alert channels for blocks and state changes in Lockdown."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "alerts", "email", "syslog", "webhook", "security", "notifications"]
 toc: true
 type: docs
 ---
 
-**Overview**: In Secure Mode, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
+**Overview**: In Lockdown, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
 
 ![Alert Settings configured with SMTP and syslog](test_docs_alert_settings_configured.svg)
 
@@ -16,7 +16,7 @@ type: docs
 
 Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
 
-Alerts are suppressed entirely in Setup Mode. Setup Mode is a high-volume observation phase — logging everything without blocking. Alerting during this phase would produce constant noise before the allowlist is complete. Alerts become active only when Secure Mode is enabled.
+Alerts are suppressed entirely in Setup Mode. Setup Mode is a high-volume observation phase — logging everything without blocking. Alerting during this phase would produce constant noise before the allowlist is complete. Alerts become active only when Lockdown is active.
 
 ## Configuring Alerts
 
@@ -65,7 +65,7 @@ To forward to a SIEM, configure an rsyslog output rule in `/etc/rsyslog.d/hearts
   "node_id":    "prod-web-03",
   "event_type": "new_program_blocked",
   "timestamp":  "2026-03-31T14:22:00Z",
-  "mode":       "Secure Mode",
+  "mode":       "Lockdown",
   "lockdown":   false,
   "paths":      ["/tmp/dropper", "/tmp/payload"],
   "count":      2
@@ -83,7 +83,7 @@ To receive this payload, create an integration in your incident management tool 
 > [!TIP]
 > At fleet scale, syslog is the primary integration path: enable syslog on all nodes, forward via rsyslog to your SIEM, and alert centrally from the SIEM's own rule engine. Webhook covers incident management tools (PagerDuty, OpsGenie). Status JSON covers Ansible health checks. Email is for single-machine deployments or as a supplementary channel.
 
-When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Secure Mode).
+When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
 
 ## What Triggers an Alert
 
@@ -93,19 +93,19 @@ These alerts fire immediately on every configured channel, regardless of accumul
 
 | Alert | When it fires |
 |-------|---------------|
-| Mode switch (Setup → Secure or Secure → Setup) | Immediately on mode change |
+| Mode switch (Setup → Lockdown or Lockdown → Setup) | Immediately on mode change |
 | Lockdown activated or deactivated | Immediately on state change |
 | New allowlist file pushed while Lockdown is active | On detection |
 
-### Blocks in Secure Mode
+### Blocks in Lockdown
 
-These blocks apply a threshold filter and are active in Secure Mode only:
+These blocks apply a threshold filter and are active in Lockdown only:
 
 | Block | Trigger condition |
 |-------|------------------|
 | Previously unseen program blocked | A program path appears in the denial log that has never appeared in any prior log session |
 | Network burst to new destinations | A single program generates blocked connections to previously unseen destinations within a 2-hour window |
-| Critical file version created outside maintenance | A new backup version is created for a file under `/etc/`, `/bin/`, `/usr/bin/`, `/sbin/`, `/lib/`, or `/usr/lib/` while in Secure Mode with no maintenance window open |
+| Critical file version created outside maintenance | A new backup version is created for a file under `/etc/`, `/bin/`, `/usr/bin/`, `/sbin/`, `/lib/`, or `/usr/lib/` while in Lockdown with no maintenance window open |
 
 **Never alerted under any circumstances:**
 
@@ -126,7 +126,7 @@ Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 se
 - At window close, one email is dispatched covering all accumulated blocks
 - Blocks of different types accumulate independently — a network burst does not delay a file modification alert
 
-**Digest mode:** If more than 3 block alerts are dispatched within a single hour, HeartSuite Core Secure switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — mode switches and lockdown changes are always delivered immediately.
+**Digest mode:** If more than 3 block alerts are dispatched within a single hour, HeartSuite Core Secure switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — Lockdown activations and state changes are always delivered immediately.
 
 The 5-minute window and hourly cap are fixed, not user-configurable.
 
@@ -135,6 +135,6 @@ The 5-minute window and hourly cap are fixed, not user-configurable.
 Syslog and webhook emit every alert immediately, without grouping or windowing. SIEM platforms (Splunk, Elastic) and incident management tools (PagerDuty, OpsGenie) apply their own correlation and deduplication — grouping alerts before they reach these systems removes information they need.
 
 > [!NOTE]
-> Alerts begin flowing only after Secure Mode is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.
+> Alerts begin flowing only after Lockdown is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.
 
-With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Secure Mode](../mode-switching/).
+With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/).

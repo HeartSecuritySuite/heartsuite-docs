@@ -31,7 +31,7 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 4 | File Access Allowlisting | Review and approve file read/write access for programs |
 | 5 | Internet Access Allowlisting | Review and approve outbound internet connections |
 | 6 | Alert Configuration | Set up notification channels (email, syslog, webhook) |
-| 7 | Secure Mode | Activate Secure Mode — locked until phases 2–6 are complete |
+| 7 | Lockdown | Activate Lockdown — locked until phases 2–6 are complete |
 
 ## Reduced Kernel Footprint
 
@@ -67,20 +67,20 @@ Each queue manages volume through intelligent grouping — not blind bulk approv
 
 File access is divided into **read access** and **write access**. Write access always includes read access. These are approved separately — approving a file read grants read access; approving a file write upgrades to write access.
 
-### 2. Setup Mode and Secure Mode
+### 2. Setup Mode and Lockdown
 
 HeartSuite Core Secure operates in two modes:
 
 - **Setup Mode**: The kernel logs all program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist by reviewing queues and approving programs and their access patterns. The Dashboard guides this process.
-- **Secure Mode**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
+- **Lockdown**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
 
-Activating Secure Mode requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist and requires typing `YES` (case-sensitive) to confirm.
+Activating Lockdown requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist and requires typing `YES` (case-sensitive) to confirm.
 
 ### 3. Lockdown
 
 Lockdown protects the integrity of allowlist entries by making them immutable. Once applied, no changes can be made to the allowlist while the server is running — preventing attackers from modifying the security configuration, even with root access.
 
-After activating Secure Mode, the Dashboard offers two reboot options: `[r]` Reboot (enforcement active, configuration remains editable) or `[l]` Reboot + Lockdown (enforcement active, configuration sealed with filesystem immutability). Lockdown holds for the life of the boot — no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance (`[t]`) guides you through the correct maintenance path — including a guided 3-step process when Lockdown requires booting the Non-HS kernel.
+After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot; no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance (`[t]`) guides you through the correct maintenance path — including a guided 3-step process that boots the Non-HS kernel.
 
 Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root, while the HeartSuite Core Secure kernel is running.
 
