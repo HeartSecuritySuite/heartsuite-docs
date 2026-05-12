@@ -12,7 +12,7 @@ type: docs
 
 {{< details summary="How is HeartSuite Core Secure different from other anti-malware solutions?" >}}
 
-A: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, HeartSuite Core Secure requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Secure Mode, anything not approved is blocked. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+A: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, HeartSuite Core Secure requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Lockdown, anything not approved is blocked. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
 
 {{< /details >}}
 
@@ -84,13 +84,13 @@ A: Yes. Every time a file in a configured directory is modified, HeartSuite Core
 
 {{< details summary="Will HeartSuite Core Secure flood me with alerts?" >}}
 
-A: No. Most security products generate high volumes of alerts because they flag suspicious patterns — leading to alert fatigue where real threats get lost in the noise. HeartSuite Core Secure only alerts on genuinely unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Events are deduplicated and batched in 5-minute windows, with an hourly cap on email alerts. In Secure Mode with a complete allowlist, alerts are rare — because the allowlist already covers all legitimate activity. Configure alerts through the Dashboard's Alert Settings (`[e]`) (email, syslog, or webhook).
+A: No. Most security products generate high volumes of alerts because they flag suspicious patterns — leading to alert fatigue where real threats get lost in the noise. HeartSuite Core Secure only alerts on genuinely unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Events are deduplicated and batched in 5-minute windows, with an hourly cap on email alerts. In Lockdown with a complete allowlist, alerts are rare — because the allowlist already covers all legitimate activity. Configure alerts through the Dashboard's Alert Settings (`[e]`) (email, syslog, or webhook).
 
 {{< /details >}}
 
 {{< details summary="What does the free trial include?" >}}
 
-A: Secure Mode and Lockdown require a subscription. Setup Mode logs activity without blocking — you can observe your workload but blocking is not active.
+A: Lockdown requires a subscription. Setup Mode logs activity without blocking — you can observe your workload but blocking is not active.
 
 {{< /details >}}
 
@@ -102,13 +102,13 @@ A: Yes. Allowlist the SSH program and the IP addresses you connect from — remo
 
 {{< details summary="What is the Dashboard?" >}}
 
-A: The Dashboard is how you manage HeartSuite Core Secure. It shows your current mode (Setup or Secure), progress through each setup phase, pending or denied counts, and a Suggested Next Step that tells you exactly what to do next. The indicator at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
+A: The Dashboard is how you manage HeartSuite Core Secure. It shows your current mode (Setup or Lockdown), progress through each setup phase, pending or denied counts, and a Suggested Next Step that tells you exactly what to do next. The indicator at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
 
 {{< /details >}}
 
 {{< details summary="How does HeartSuite Core Secure guide me through setup?" >}}
 
-A: The Dashboard walks you through seven phases, from verifying your installation to activating full protection. Each phase focuses on one task — approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`). The Dashboard tracks your progress and always shows the next step. Secure Mode unlocks only after all prior phases are complete.
+A: The Dashboard walks you through seven phases, from verifying your installation to activating full protection. Each phase focuses on one task — approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`). The Dashboard tracks your progress and always shows the next step. Lockdown unlocks only after all prior phases are complete.
 
 {{< /details >}}
 
@@ -116,13 +116,13 @@ A: The Dashboard walks you through seven phases, from verifying your installatio
 
 {{< details summary="Once I've installed HeartSuite Core Secure, can a program access files without adding the directories to the allowlist entry?" >}}
 
-A: No. In Secure Mode, a program can only access files and directories that have been explicitly approved through the Dashboard's File Access review queue. After allowlisting a program's execution in Phase 2, you approve its file access in Phase 4 — the Dashboard shows every file the program attempted to read or write.
+A: No. In Lockdown, a program can only access files and directories that have been explicitly approved through the Dashboard's File Access review queue. After allowlisting a program's execution in Phase 2, you approve its file access in Phase 4 — the Dashboard shows every file the program attempted to read or write.
 
 {{< /details >}}
 
 {{< details summary="Why do I need to reboot multiple times during installation?" >}}
 
-A: The HeartSuite Core Secure kernel must be loaded during the installation process. Each setup step — run via the System Setup — captures startup and shutdown programs that appeared in the previous boot. Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Secure Mode.
+A: The HeartSuite Core Secure kernel must be loaded during the installation process. Each setup step — run via the System Setup — captures startup and shutdown programs that appeared in the previous boot. Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Lockdown.
 
 {{< /details >}}
 
@@ -140,9 +140,9 @@ A: Check the Dashboard's Suggested Next Step — it will indicate what remains. 
 
 ## Allowlisting
 
-{{< details summary="A new program is being blocked in Secure Mode — what should I do?" >}}
+{{< details summary="A new program is being blocked in Lockdown — what should I do?" >}}
 
-A: In Secure Mode, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs HeartSuite Core Secure has not seen before. To resolve it, select Maintenance (`[t]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then return to Secure Mode.
+A: In Lockdown, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs HeartSuite Core Secure has not seen before. To resolve it, select Maintenance (`[t]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then re-engage Lockdown.
 
 {{< /details >}}
 
@@ -152,21 +152,21 @@ A: Yes. When the Dashboard's File Access review queue presents grouped accesses 
 
 {{< /details >}}
 
-{{< details summary="How do I activate Secure Mode?" >}}
+{{< details summary="How do I activate Lockdown?" >}}
 
-A: The Dashboard unlocks Secure Mode when all prior phases are complete and shows it as the Suggested Next Step. Activation requires typing `YES` (case-sensitive) to confirm.
+A: The Dashboard unlocks Lockdown when all prior phases are complete and shows it as the Suggested Next Step. Activation requires typing `YES` (case-sensitive) to confirm.
 
 {{< /details >}}
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: HeartSuite Core Secure requires every outbound connection to be explicitly approved per program. When a program attempts a connection during Setup Mode, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there. In Secure Mode, any connection not on the allowlist is refused at the kernel.
+A: HeartSuite Core Secure requires every outbound connection to be explicitly approved per program. When a program attempts a connection during Setup Mode, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there. In Lockdown, any connection not on the allowlist is refused at the kernel.
 
 {{< /details >}}
 
 ## Modes and Security
 
-{{< details summary="When should I switch to Secure Mode?" >}}
+{{< details summary="When should I activate Lockdown?" >}}
 
 A: After the Dashboard shows all review phases complete. Take your time in Setup Mode — allow several days to a week for systemd timers, cron jobs, and infrequent services to appear in the review queues. The status line at the bottom of the Dashboard shows how long Setup Mode has been active (e.g., "Setup Mode — active for 3d 7h"), so you can easily track your observation period. Switching too early will block programs that have not been approved.
 
@@ -174,23 +174,23 @@ A: After the Dashboard shows all review phases complete. Take your time in Setup
 
 {{< details summary="What is Lockdown, and when to use it?" >}}
 
-A: Lockdown makes all allowlist entries and configuration files immutable (`chattr +i`), then disables the ability to change immutability flags at the kernel level. No user or program — including root — can modify, delete, or add allowlist entries while Lockdown is active. Use it in production after confirming all programs work correctly in Secure Mode.
+A: Lockdown makes all allowlist entries and configuration files immutable (`chattr +i`), then disables the ability to change immutability flags at the kernel level. No user or program — including root — can modify, delete, or add allowlist entries while Lockdown is active. Use it in production after confirming all programs work correctly in Lockdown.
 
 {{< /details >}}
 
 {{< details summary="How do I activate Lockdown?" >}}
 
-A: Once Secure Mode is active and verified, activate Lockdown from the Dashboard. This requires typing `YES` (case-sensitive) to confirm.
+A: Once Lockdown is active and verified, apply the immutable seal from the Dashboard. This requires typing `YES` (case-sensitive) to confirm.
 
 {{< /details >}}
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select the Maintenance (`[t]`) from the Dashboard. It detects that Lockdown is active and guides you through a 3-step process: booting the Non-HS kernel to remove immutable flags (`[u]`), making your changes, then rebooting back to the HeartSuite Core Secure kernel to review new activity and return to Secure Mode. The Dashboard resumes at the correct step after each reboot.
+A: Select the Maintenance (`[t]`) from the Dashboard. It detects that Lockdown is active and guides you through a 3-step process: booting the Non-HS kernel to remove immutable flags (`[u]`), making your changes, then rebooting back to the HeartSuite Core Secure kernel to review new activity and re-engage Lockdown. The Dashboard resumes at the correct step after each reboot.
 
 {{< /details >}}
 
-{{< details summary="How do I maintain or update in Secure Mode?" >}}
+{{< details summary="How do I maintain or update in Lockdown?" >}}
 
 A: Select the Maintenance (`[t]`) from the Dashboard. It detects whether Lockdown is active and guides you through the correct path — either a simple switch to Setup Mode, or a guided 3-step process across two reboots if Lockdown requires the Non-HS kernel. The Dashboard handles all steps including a pre-maintenance safety checklist.
 

@@ -9,7 +9,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure enforces default-deny on all three at the kernel level — per program, not per user. In Secure Mode, anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Secure Mode activation.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
 
 HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
@@ -21,7 +21,7 @@ HeartSuite Core Secure is a strong fit for production servers, regulated worksta
 - [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
 - [How HeartSuite Core Secure Compares](introduction/how-it-compares/) — What HeartSuite Core Secure replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
 - [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
-- [Mode Switching and Lockdown](mode-switching/) — Setup Mode, Secure Mode, and Lockdown.
+- [Mode Switching and Lockdown](mode-switching/) — Setup Mode and Lockdown.
 
 ## Get Started
 
@@ -35,7 +35,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 - [Network and Remote Access](network/) — Configure network permissions.
 - [Script Launchers](script-launchers/) — Secure interpreted script execution.
-- [Alert Settings](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Secure Mode).
+- [Alert Settings](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Lockdown).
 - [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
 ## Troubleshoot and Reference
@@ -47,7 +47,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 ## Subscription and Support
 
-- [Subscription](licensing/) — Activate your subscription for Secure Mode.
+- [Subscription](licensing/) — Activate your subscription for Lockdown.
 - For updates or help, visit [heartsecsuite.com](https://heartsecsuite.com).
 
 ## Ready to get started?

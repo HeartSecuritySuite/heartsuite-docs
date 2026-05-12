@@ -120,7 +120,7 @@ Every security system has a known way to be taken out of the picture. Being expl
 
 HeartSuite Core Secure's allowlist can be changed through one path only:
 
-1. **Maintenance window** — you switch to Setup Mode, make changes, and return to Secure Mode. Logged and intentional.
+1. **Maintenance window** — you switch to Setup Mode, make changes, and re-engage Lockdown. Logged and intentional.
 2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, running `HS_unlock.sh`, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
 
 What this means for security:

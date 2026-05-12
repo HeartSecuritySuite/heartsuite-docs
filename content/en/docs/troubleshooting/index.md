@@ -8,21 +8,21 @@ toc: true
 type: docs
 ---
 
-**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Secure, Lockdown active, or the Non-HS kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
+**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Lockdown, immutable seal active, or the Non-HS kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
 
 ## Where to Start
 
 The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
-- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "SECURE MODE — Lockdown not applied", or "NON-HS KERNEL", you immediately know what protection level is active. No indicator means Secure Mode with Lockdown — full protection.
+- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", or "NON-HS KERNEL", you immediately know what protection level is active. No indicator means Lockdown with immutable seal — full protection.
 - **Status line at the bottom**: Shows kernel type (`HS` or `Non-HS`), current mode with uptime, and lockdown status.
-- **Pending/Denied counts**: In Setup Mode, these are pending items awaiting approval. In Secure Mode, these are denied actions that may need allowlisting.
+- **Pending/Denied counts**: In Setup Mode, these are pending items awaiting approval. In Lockdown, these are denied actions that may need allowlisting.
 - **Suggested Next Step**: Provides a single, actionable recommendation based on the current system state.
 
 > [!TIP]
 > If you suspect a program is being blocked, check the Dashboard first. Denied items appear as counts on the Dashboard, grouped by category (Programs, File reads, File writes, Network). For example, if `nano` is blocked from executing, the Dashboard shows `Programs: 1 denied` and the Programs queue (`[p]`) presents it with full metadata for approval.
 
-![Dashboard in Secure Mode with denied counts: 2 programs, 1 file read, 1 network connection denied](test_docs_dashboard_secure_denied.svg)
+![Dashboard in Lockdown with denied counts: 2 programs, 1 file read, 1 network connection denied](test_docs_dashboard_secure_denied.svg)
 
 ## Log Management
 

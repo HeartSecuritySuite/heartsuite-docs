@@ -38,8 +38,8 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 | State | Indicator |
 |-------|-----------|
 | Setup Mode | SETUP MODE — logging only, nothing is blocked |
-| Secure Mode (no Lockdown) | SECURE MODE — Lockdown not applied |
-| Secure Mode + Lockdown | No indicator (silence means safety) |
+| Lockdown (no immutable seal) | LOCKDOWN — immutable seal not applied |
+| Lockdown + sealed | No indicator (silence means safety) |
 | Non-HS kernel | NON-HS KERNEL — HeartSuite Core Secure is not active. No blocking. No logging. No backups. |
 
 ## Status Line at the Bottom
@@ -52,7 +52,7 @@ Kernel: HS    Mode: Setup — active for 3d 7h    Lockdown: —
 
 - **Kernel**: `HS` (HeartSuite Core Secure kernel) or `Non-HS` (standard kernel)
 - **Mode**: Setup or Secure, with time in current mode
-- **Lockdown**: `—` (Setup Mode), `Not applied` (Secure Mode without Lockdown), or `Applied` (Secure Mode with Lockdown)
+- **Lockdown**: `—` (Setup Mode), `Not applied` (Lockdown without immutable seal), or `Applied` (Lockdown with immutable seal)
 
 ## What to Do if Verification Fails
 

@@ -23,16 +23,16 @@ This is what you use in normal operation. The Dashboard guides you through every
 - **Allowed** (`[a]`) — Dashboard screen to browse and edit existing allowlist entries.
 - **Browser View** (`[w]`) — Dashboard screen to enable or disable browser-based access to HeartSuite Core Secure via SSH tunnel.
 - **Launchers** (`[l]`) — Dashboard screen to configure Secure Script Launchers (Phase 3).
-- **Alert Settings** (`[e]`) — Dashboard screen to configure alert channels (email, syslog, or webhook). At least one channel must be configured before Secure Mode activation. See [Alert Configuration](../alerts/).
-- **Mode Switch** (`[m]`) — Dashboard screen for Secure Mode activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot or `[l]` Reboot + Lockdown.
-- **Maintenance** (`[t]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Secure Mode, Secure+Lockdown, and Non-HS kernel states — hidden in Setup Mode by design.
+- **Alert Settings** (`[e]`) — Dashboard screen to configure alert channels (email, syslog, or webhook). At least one channel must be configured before Lockdown activation. See [Alert Configuration](../alerts/).
+- **Lockdown** (`[m]`) — Dashboard screen for Lockdown activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot.
+- **Maintenance** (`[t]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Lockdown, Lockdown+sealed, and Non-HS kernel states — hidden in Setup Mode by design.
 - **Backup** (`[b]`) — Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 
 ## Lockdown Scripts
 
 These run automatically when you engage or unlock Lockdown via the Dashboard. You do not need to invoke or edit them yourself.
 
-- **`HS_lockdown.sh`** — runs when you press `[m]` Mode Switch → `[l]` Reboot + Lockdown, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
+- **`HS_lockdown.sh`** — runs when you press `[m]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals HeartSuite Core Secure's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Core Secure's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & Scripting CLI
@@ -40,9 +40,9 @@ These run automatically when you engage or unlock Lockdown via the Dashboard. Yo
 For scripting, automation, and recovery scenarios. UI users rarely need these — most have a Dashboard equivalent that handles them automatically.
 
 - **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
-- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Secure Mode on next boot. The Dashboard's Mode Switch (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
+- **`hs-mode-switch`** — change whether HeartSuite Core Secure starts in Setup or Lockdown on next boot. The Dashboard's Lockdown button (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
 - **`hs-cache-size`** — set the kernel allowlist cache size (10–255). The Dashboard auto-adjusts this on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
-- **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Secure Mode can be enabled.
+- **`hs-activate-subscription`** — activates the server using your HeartSuite Core Secure subscription. Required before Lockdown can be activated.
 - **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup (`[b]`) for directory management.
 - **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
 - **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers (`[l]`) for normal use. View `--help` for scripting details.

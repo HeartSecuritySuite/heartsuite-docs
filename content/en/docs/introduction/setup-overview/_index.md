@@ -2,7 +2,7 @@
 title: "The Setup Journey"
 linkTitle: "The Setup Journey"
 weight: 2
-description: "How HeartSuite Core Secure guides you from installation to Secure Mode through seven phases."
+description: "How HeartSuite Core Secure guides you from installation to Lockdown through seven phases."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "setup", "modes", "secure", "allowlist", "overview"]
 type: docs
@@ -13,15 +13,15 @@ menu:
     identifier: "setup-overview"
 ---
 
-**Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Secure Mode.
+**Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Lockdown.
 
 ## Why Setup Mode Is Necessary
 
-HeartSuite Core Secure enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system entered Secure Mode at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
+HeartSuite Core Secure enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system activated Lockdown at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. You review activity through the Dashboard queues, approve programs and their access, and build an allowlist that reflects the system's actual workload. Once the allowlist is complete, you transition to Secure Mode.
+Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all activity without blocking anything. You review activity through the Dashboard queues, approve programs and their access, and build an allowlist that reflects the system's actual workload. Once the allowlist is complete, you activate Lockdown.
 
-Setup Mode is the default after installation. HeartSuite Core Secure's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Secure Mode is on.
+Setup Mode is the default after installation. HeartSuite Core Secure's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Lockdown is active.
 
 ## The 7 Phases
 
@@ -35,7 +35,7 @@ HeartSuite Core Secure organizes the setup journey into seven phases. The Dashbo
 | 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
 | 5 | Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
 | 6 | Alert Configuration | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings (`[e]`). |
-| 7 | Secure Mode | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Mode Switch (`[m]`). |
+| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[m]`). |
 
 ## Cloud vs. Local Path
 
@@ -56,9 +56,9 @@ Both paths converge at the Dashboard after Phase 1. From that point forward, the
 
 ![Dashboard after Phase 1: Phase 2 Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
 
-## From Installation to Secure Mode
+## From Installation to Lockdown
 
-The following diagram shows the path from installation to Secure Mode, including the maintenance cycle.
+The following diagram shows the path from installation to Lockdown, including the maintenance cycle.
 
 ```mermaid
 graph TD
@@ -72,29 +72,26 @@ graph TD
     G --> H["Phase 4: File Access queue — approve file access"]
     H --> I["Phase 5: Internet Access queue — approve connections"]
     I --> J["Phase 6: Configure alerts"]
-    J --> K["Phase 7: Activate Secure Mode"]
-    K --> L["[r] Reboot — Secure Mode active, apply Lockdown separately when ready"]
+    J --> K["Phase 7: Activate Lockdown"]
+    K --> L["[r] Reboot — Lockdown active on next boot"]
     L --> M{Maintenance needed?}
     M -- Yes --> N["Maintenance guides through steps"]
     N --> K
     M -- No --> O[System secured]
 ```
 
-## Switching to Secure Mode
+## Activating Lockdown
 
 > [!WARNING]
 >
-> Complete all allowlisting phases in Setup Mode before switching to Secure Mode. If boot and shutdown programs have not been approved, the system will fail to start or shut down correctly.
+> Complete all allowlisting phases in Setup Mode before activating Lockdown. If boot and shutdown programs have not been approved, the system will fail to start or shut down correctly.
 
-When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Secure Mode. Activating Secure Mode requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
+When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
 
-After activating Secure Mode, the Dashboard offers one reboot option: `[r]` Reboot — Secure Mode becomes active, configuration remains editable. Apply Lockdown separately from the Dashboard when you are ready.
+After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot.
 
-## Maintenance in Secure Mode
+## Maintenance in Lockdown
 
-To perform system maintenance after entering Secure Mode, select Maintenance (`[t]`) from the Dashboard. The Dashboard detects whether Lockdown is active and guides you through the correct path:
-
-- **Without Lockdown**: The Maintenance walks you through a safety checklist, switches to Setup Mode, and reboots. The HeartSuite Core Secure kernel stays active with logging and backups running. Make your changes, then return to Secure Mode from the Dashboard.
-- **With Lockdown**: The Maintenance guides you through a 3-step process across two reboots — removing immutable flags on the Non-HS kernel, making changes, then returning to the HeartSuite Core Secure kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
+To perform system maintenance after activating Lockdown, select Maintenance (`[t]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the Non-HS kernel, making changes, then returning to the HeartSuite Core Secure kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
 
 For full details, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
