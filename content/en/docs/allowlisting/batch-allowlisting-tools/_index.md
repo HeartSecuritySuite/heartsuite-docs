@@ -10,6 +10,7 @@ menu:
   main:
     parent: "allowlisting"
     identifier: "batch-allowlisting-tools"
+author: Ron Hessing
 ---
 
 **Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.
@@ -20,7 +21,6 @@ menu:
 
 ```bash
 # /.hs/sys/batch_record_add.py <file>
-**Author: Ron Hessing**
 ```
 
 Where `<file>` contains one absolute program path per line, for example:
@@ -40,14 +40,12 @@ Where `<file>` contains one absolute program path per line, for example:
 
 ```bash
 # hs-manage-allowlist --help
-**Author: Ron Hessing**
 ```
 
 Both tools require root. Run them from a root shell:
 
 ```bash
 # sudo -s
-**Author: Ron Hessing**
 ```
 
 Exit with Ctrl-D when finished.

@@ -6,6 +6,7 @@ categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "security", "interpreters"]
 type: docs
 toc: true
+author: Ron Hessing
 ---
 
 **Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers (`[l]`) shows detected interpreters and activates launchers in one step.
@@ -68,7 +69,6 @@ Before or after Dashboard activation, you can run a script through a specific la
 
 ```bash
 # hs-python-launcher /path/to/your-script.py
-**Author: Ron Hessing**
 ```
 
 This applies the script's allowlist entry rather than the interpreter's. Running the same script with `python3` directly uses the interpreter's broader permissions. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.

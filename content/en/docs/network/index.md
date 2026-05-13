@@ -6,6 +6,7 @@ type: docs
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "network", "permissions", "security", "remote-access"]
 toc: true
+author: Ron Hessing
 ---
 
 **Overview**: Programs make outbound connections you never approved — telemetry, update beacons, C2 callbacks. HeartSuite Core Secure blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
@@ -48,7 +49,6 @@ Suppose `wget` is on the program allowlist but no network destinations have been
 
 ```bash
 # wget https://example.com/agreement.html
-**Author: Ron Hessing**
 ```
 
 HeartSuite Core Secure intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 — example.com`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
@@ -63,18 +63,15 @@ For scripting and automation workflows that run without the Dashboard, `hs-manag
 
 ```bash
 # hs-manage-allowlist add -x /usr/bin/wget -n 45.60.22.168
-**Author: Ron Hessing**
 ```
 
 Or look up the entry number first:
 
 ```bash
 # hs-manage-allowlist list | grep wget
-**Author: Ron Hessing**
 277
 /usr/bin/wget
 # hs-manage-allowlist add -r 277 -n 192.142.166.196
-**Author: Ron Hessing**
 ```
 
 The Dashboard is the supported path for normal use.

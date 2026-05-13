@@ -6,6 +6,7 @@ categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "cache", "performance", "tuning"]
 type: docs
 toc: true
+author: Ron Hessing
 ---
 
 **Overview**: HeartSuite Core Secure caches allowlist entries in kernel memory for performance — each cache slot holds one program. The Dashboard automatically expands the cache to match your allowlist size, so for most systems no tuning is needed. Manual adjustment is only relevant when the allowlist exceeds the kernel cache maximum of 255 entries.
@@ -32,7 +33,6 @@ For scripting and automation workflows that run without the Dashboard, `hs-cache
 
 ```bash
 # hs-cache-size 128
-**Author: Ron Hessing**
 ```
 
 The Dashboard is the supported path for normal use.
