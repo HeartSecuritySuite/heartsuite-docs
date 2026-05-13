@@ -81,9 +81,9 @@ When preconditions are satisfied, the Dashboard presents the activation option.
 
 ### Activating Lockdown
 
-From the Dashboard, select the Lockdown button (`[m]`). The Lockdown screen displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
+From the Dashboard, select the Lockdown button (`[m]`). Lockdown displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
 
-![Lockdown screen with all preconditions met](test_docs_mode_switch_all_clear.svg)
+![Lockdown with all preconditions met](test_docs_mode_switch_all_clear.svg)
 
 After confirming, the Dashboard offers one reboot option:
 
