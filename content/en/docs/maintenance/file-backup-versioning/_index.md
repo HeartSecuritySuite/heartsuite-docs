@@ -5,6 +5,7 @@ description: "Automatic backups for designated directories and version restorati
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security", "files"]
 toc: true
+
 ---
 
 **Overview**: Allowlisting controls what programs can run, but an approved program that malware takes over can still write files — ransomware running inside an approved process can encrypt whatever that process can reach. Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted. HeartSuite Core Secure automatically creates a versioned backup every time a file in a protected directory is written, and under Lockdown the kernel itself prevents any program from reaching those backups. No other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
@@ -56,15 +57,10 @@ For scripting and automation workflows that run without the Dashboard, the follo
 
 ```bash
 # hs-backup-config-manager add /var/www
-
 # hs-backup-config-manager remove /home
-
 # hs-backup-config-manager list
-
 # hs-version-manager list /home/user/document.txt
-
 # hs-version-manager restore /home/user/document.txt --version 2023-11-01
-
 ```
 
 The Dashboard is the supported path for normal use.
