@@ -18,7 +18,7 @@ A: Every attack does three things: run a program, access files, make a network c
 
 {{< details summary="Who is HeartSuite Core Secure for?" >}}
 
-A: HeartSuite Core Secure fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Container host support (Docker, containerd, Kubernetes) is coming in v2. Currently it is not a fit for hosts that run eBPF-based observability tools like Falco, Cilium, or Tetragon. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+A: HeartSuite Core Secure fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Container host support is available via the Container-host install for steady-state workloads (Docker, containerd, Kubernetes on EKS, GKE, AKS) — see [Deployment Scenarios](introduction/deployment-scenarios/) for the specifics. Currently it is not a fit for hosts that run eBPF-based observability tools like Falco, Cilium, or Tetragon. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
 {{< /details >}}
 
@@ -42,7 +42,7 @@ A: No. HeartSuite Core Secure enforces at the kernel level on each host individu
 
 {{< details summary="Why is kernel-level enforcement better than eBPF or agent-based security?" >}}
 
-A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes within the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them. HeartSuite Core Secure's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the HeartSuite Core Secure kernel is running, enforcement is active. This is the difference between a lock on the door and a guard standing next to it.
+A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes within the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them. HeartSuite Core Secure's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the HeartSuite Core Secure kernel is running, blocking is active. This is the difference between a lock on the door and a guard standing next to it.
 
 {{< /details >}}
 
@@ -90,7 +90,7 @@ A: No. Most security products generate high volumes of alerts because they flag 
 
 {{< details summary="What does the free trial include?" >}}
 
-A: Lockdown requires a subscription. Setup Mode logs activity without blocking — you can observe your workload but blocking is not active.
+A: Lockdown requires an active subscription, all review queues to be cleared, and alert settings to be configured. Setup Mode logs activity without blocking — you can observe your workload, but blocking is not active. The Dashboard presents a precondition checklist before activation.
 
 {{< /details >}}
 

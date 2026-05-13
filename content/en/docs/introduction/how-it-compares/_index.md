@@ -107,10 +107,10 @@ HeartSuite Core Secure makes a class of attacks impossible rather than merely vi
 
 Some software depends on kernel features the HeartSuite Core Secure kernel does not include. Those workloads run on the Non-HS kernel or a separate system:
 
-- Hosts requiring continuous container scheduling — dynamic deployments, autoscaling, and pod rescheduling after node loss each require new mount operations; Lockdown refuses those to prevent attackers from constructing paths to shadow protected files. Container hosts with a steady-state workload are supported via the Container-host install; see [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts)
-- Hosts where eBPF-based tooling must run locally — BPF syscalls are not present on the HS kernel; these tools can still observe the HS host from adjacent infrastructure via network taps or log forwarding
-- Hypervisor hosts running virtual machines via KVM — KVM is not compiled in; the kernel features KVM requires have been removed to reduce the features attackers can reach. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
-- Systems that require rootless containers (unprivileged user namespaces) — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials
+- **Kubernetes nodes where new containers start or pods reschedule after Lockdown engages** — running many instances of the same binary across pods is explicitly supported: one allowlist entry covers all instances, with no per-pod overhead. HeartSuite Core Secure installs on Kubernetes nodes (EKS, GKE, AKS) without modification. The limitation is container lifecycle events after Lockdown: HPA scale-out, pod rescheduling after node failure, and new container starts each require mount operations that Lockdown refuses. If the pod set is fixed before Lockdown engages and doesn't change between maintenance windows, the Container-host install supports that; see [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts)
+- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools** — the BPF syscall is not compiled in; removing it is what prevents an attacker from unloading these tools. They can still observe the HS host from adjacent infrastructure via network taps or log forwarding
+- **Hypervisor hosts running virtual machines via KVM** — KVM is not compiled in; the kernel features KVM requires have been removed to reduce the features attackers can reach. HeartSuite Core Secure runs as a guest inside VMs — it does not host them.
+- **Systems that require rootless containers (unprivileged user namespaces)** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
@@ -121,7 +121,7 @@ Every security system has a known way to be taken out of the picture. Being expl
 HeartSuite Core Secure's allowlist can be changed through one path only:
 
 1. **Maintenance window** — you switch to Setup Mode, make changes, and re-engage Lockdown. Logged and intentional.
-2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, running `HS_unlock.sh`, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
+2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the HeartSuite Core Secure kernel. Recovery requires booting the Non-HS kernel, using the Dashboard's Maintenance (`[t]`) to remove the seal, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
 
 What this means for security:
 
@@ -131,4 +131,20 @@ What this means for security:
 
 Compare this to the products in the first table: in most of them, remote root is sufficient to disable enforcement. HeartSuite Core Secure is deliberately not in that category.
 
+Nothing the attacker ran survives a reboot.
+
 To see the three enforcement mechanisms tested against real attacks — including what happens when attackers stay within approved boundaries — see [When Root Isn't Enough](../in-practice/).
+
+## Security as Economics
+
+No security control is unconditionally unbreakable. The right question is not "can this be defeated?" but "what does defeating it cost the attacker, and does that cost exceed their expected return?"
+
+**The boundary holds regardless of privilege.** A process running as root can only reach the files its allowlist entry permits. Credentials, configuration, and data outside that slice are unreachable regardless of privilege level. Network destinations outside the allowlist are unreachable regardless of privilege level. Under Lockdown the allowlist itself is sealed — even root cannot edit it remotely. Each additional step the attacker takes requires a new custom exploit targeted at the specific program and allowlist slice they are confined to. The cost compounds. At some point the attack is no longer worth finishing.
+
+**Cost to implement.** A finite window: run the programs you want to allow, the allowlist builds, engage Lockdown. Most customers complete it during a standard change window.
+
+**Cost to maintain.** No signature updates. No rule libraries. No agent fleet. The allowlist changes when software legitimately changes — new binaries, updated dependencies, changed network destinations — in a maintenance window on your schedule. The more frequently software changes, the more frequently those windows are needed.
+
+**Cost to buy.** HeartSuite Core Secure replaces the preventive-enforcement layer of several overlapping tools — the blocking dimension of EDR, LSM policy tuning, FIM enforcement — while leaving their detection and response capabilities intact. Whether that consolidation saves money depends on your stack. Fewer moving parts is consistent.
+
+**The CISO case.** An attacker who reaches root still cannot exceed the per-program, per-file, per-IP boundaries already in place. The blast radius is structurally bounded — not detected after the fact, not mitigated after the fact, bounded before anything runs. That changes the economics of every attack that reaches the host. It does not eliminate breach risk. It makes lateral movement, exfiltration, and privilege escalation substantially more expensive to execute — before detection has a chance to respond.
