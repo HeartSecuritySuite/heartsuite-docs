@@ -1,5 +1,6 @@
 baseURL: https://docs.heartsecsuite.com
 title: HeartSuite Core Secure
+description: "HeartSuite Core Secure | Zero Day Secure-by-design"
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
 
@@ -150,7 +151,7 @@ params:
 
   copyright:
     authors: >-
-      Heart Security Suite, LLC |
+      Heart Security Suite, LLC | Zero Day Secure-by-design |
     from_year: 2022
     to_year: 2026
 
