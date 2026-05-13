@@ -47,4 +47,13 @@ for term in "${BANNED[@]}"; do
     found=1
   fi
 done
+
+# R45: headings must name what the user sees/does/gets — not "How X Works"
+how_works=$(grep -rEn --include="*.md" "^##+ How .+ Works" content/ || true)
+if [[ -n "$how_works" ]]; then
+  echo "BANNED PATTERN: \"## How ... Works\" heading (R45 — name what the user sees, not the mechanism)"
+  echo "$how_works"
+  found=1
+fi
+
 exit $found

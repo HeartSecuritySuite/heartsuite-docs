@@ -11,7 +11,7 @@ author: Ron Hessing
 
 **Overview**: HeartSuite Core Secure caches allowlist entries in kernel memory for performance — each cache slot holds one program. The Dashboard automatically expands the cache to match your allowlist size, so for most systems no tuning is needed. Manual adjustment is only relevant when the allowlist exceeds the kernel cache maximum of 255 entries.
 
-## How Auto-Adjustment Works
+## Automatic Cache Expansion
 
 On startup and every state refresh, the Dashboard compares the size of your allowlist against the current kernel cache size. If the allowlist is larger, the Dashboard silently expands the cache to fit — up to the kernel maximum of 255 entries. The minimum cache size is 10 entries.
 
