@@ -30,7 +30,7 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 3 | Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
 | 4 | File Access Allowlisting | Review and approve file read/write access for programs |
 | 5 | Internet Access Allowlisting | Review and approve outbound internet connections |
-| 6 | Alert Configuration | Set up notification channels (email, syslog, webhook) |
+| 6 | Alert Settings | Set up notification channels (email, syslog, webhook) |
 | 7 | Lockdown | Activate Lockdown — locked until phases 2–6 are complete |
 
 ## Reduced Kernel Footprint
@@ -104,12 +104,12 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## How HeartSuite Core Secure Stands Alone
 
-No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Core Secure the right choice for deployments where the security layer itself must be protected from the attacker who is already inside.
+No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Core Secure the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the HeartSuite Core Secure kernel itself, not by filesystem permissions.
 
 ## Is HeartSuite Core Secure Right for You?
 
 HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
-If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, and how it can be circumvented.
+If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, how it can be circumvented, and [the economics of why that model works in the defender's favour](../how-it-compares/#security-as-economics).
 
 To get HeartSuite Core Secure: launch a pre-installed cloud instance or download the Local Path package from [heartsecsuite.com](https://heartsecsuite.com). Both arrive at the Dashboard — [Getting Started](../../getting-started/) covers the rest.

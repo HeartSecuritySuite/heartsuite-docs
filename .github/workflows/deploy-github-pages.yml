@@ -69,6 +69,9 @@ jobs:
         with:
           config: .htmltest.yml
 
+      - name: Check for banned terminology
+        run: npm run check:terms
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

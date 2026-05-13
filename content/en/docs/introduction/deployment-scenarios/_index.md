@@ -19,7 +19,7 @@ menu:
 
 A web server serves pages. A database answers queries. A reverse proxy forwards traffic. Each has a shape that Setup Mode captures over a few days of logging — the programs that run, the files they touch, the destinations they reach — which you then review and approve in the Dashboard queues before activating Lockdown. Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Lockdown. The immutable seal goes one step further: while the server runs, even root can no longer change the allowlist. An attacker with root is left with nowhere to go.
 
-CVE-2026-31431 — algif_aead, privilege escalation via AF_ALG — demonstrates what this means. An attacker exploiting it reaches root. On a HeartSuite Core Secure kernel, that path does not exist — AF_ALG is not compiled in. But even if it had been, Lockdown closes every path from there. The kernel refuses to clear immutable flags. Mount operations are blocked. Writes to the audit log are blocked. Root cannot modify configuration, cannot add a backdoor, and cannot survive a reboot.
+CVE-2026-31431 — privilege escalation via AF_ALG — demonstrates what this means. An attacker exploiting it reaches root. On a HeartSuite Core Secure kernel, that path does not exist — AF_ALG is not compiled in. But even if it had been, Lockdown closes every path from there. The kernel refuses to clear immutable flags. Mount operations are blocked. Writes to the audit log are blocked. Root cannot modify configuration, cannot add a backdoor, and cannot survive a reboot.
 
 See [Kernel Security Transparency](../../security/) for the full CVE status table and scanner guidance.
 
@@ -58,9 +58,9 @@ Autonomous agents are powerful because they decide what to do next. That is also
 > [!NOTE]
 > Setup Mode captures the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
-## Container Hosts *(coming soon)* {#container-hosts}
+## Container Hosts {#container-hosts}
 
-Docker, containerd, Kubernetes, and CRI-O all run on a HeartSuite Core Secure host. *(Coming in v2)* The installer detects which container engine is present and asks you to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode logs container-runtime programs, overlay mounts, and each container image intended to run under Lockdown so you can review and approve them in the Dashboard queues before activating Lockdown.
+Docker, containerd, Kubernetes, and CRI-O all run on a HeartSuite Core Secure host. The installer detects which container engine is present and asks you to choose a **Container host** or **Standard host** install. Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes — Setup Mode logs container-runtime programs, overlay mounts, and each container image intended to run under Lockdown so you can review and approve them in the Dashboard queues before activating Lockdown.
 
 Lockdown seals the running container set — the kernel stops accepting new mount operations, including the overlay mounts and bind-mounts every container start requires. The same protection blocks attackers from constructing paths to shadow protected files. Containers running at the moment Lockdown engages continue running. New containers, image pulls, and restarts after exit each require a maintenance window — reboot to Setup Mode, start the containers, return to steady state, and re-engage Lockdown. The Dashboard shows mount-refusal messages from the kernel when a container engine tries to start a new container after Lockdown.
 
