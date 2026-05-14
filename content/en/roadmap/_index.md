@@ -396,4 +396,4 @@ Join the conversation—suggest features, report issues, or discuss the architec
 [Discord/GitHub links here via config params.links]
 
 ### Get Started
-[Get Started](/docs/) | [Join Community](/community/)
+[Get Started](/docs/) | [Open an Issue](https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new)
