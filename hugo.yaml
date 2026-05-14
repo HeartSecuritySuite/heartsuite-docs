@@ -1,6 +1,6 @@
 baseURL: https://docs.heartsecsuite.com
 title: HeartSuite Core Secure
-description: "HeartSuite Core Secure | Zero Day Secure-by-design"
+description: 'HeartSuite Core Secure | Zero Day Secure-by-design'
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
 
@@ -65,7 +65,8 @@ languages:
     title: HeartSuite Core Secure
     params:
       description:
-        Documentation for HeartSuite Core Secure, a Linux kernel-level security product
+        Documentation for HeartSuite Core Secure, a Linux kernel-level security
+        product
 
 markup:
   goldmark:
@@ -87,8 +88,9 @@ markup:
 
 # Comment out if you don't want the "print entire section" link enabled.
 outputs:
-  home: [HTML, print, RSS, redirects]
-  section: [HTML, print, RSS]
+  home: [HTML, print, RSS, redirects, markdown, LLMS]
+  page: [HTML, markdown]
+  section: [HTML, print, RSS, markdown]
 
 params:
   taxonomy:
@@ -181,12 +183,12 @@ params:
       # The responses that the user sees after clicking "yes" (the page was helpful) or "no" (the page was not helpful).
       yes: >-
         Glad to hear it! Please <a
-        href="https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new">tell us how we
-        can improve</a>.
+        href="https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new">tell
+        us how we can improve</a>.
       no: >-
         Sorry to hear that. Please <a
-        href="https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new">tell us how we
-        can improve</a>.
+        href="https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new">tell
+        us how we can improve</a>.
 
     # Adds a reading time to the top of each doc.
     # If you want this feature, but occasionally need to remove the Reading time from a single page,
