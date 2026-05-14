@@ -10,7 +10,7 @@ on:
 env:
   REPO_NAME: ${{ github.event.repository.name }}
   REPO_OWNER: ${{ github.repository_owner }}
-  HUGO_VERSION: "0.155.3"
+  HUGO_VERSION: "0.157.0"
   GO_VERSION: "1.22.0"
 
 # Required for the modern deploy-pages action

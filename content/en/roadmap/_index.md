@@ -93,8 +93,8 @@ gantt
 
 ## Feature Details by Status
 
-{{< tabs >}}
-{{< tab name="Done" >}}
+{{< tabpane text=true >}}
+{{< tab header="Done" >}}
 
 ### Design & Architecture (2021)
 
@@ -307,7 +307,7 @@ gantt
 > All UI actions logged to a rotating file. Silent `except` blocks eliminated across `src/ui/` and `src/core/`. CI AST walker enforces the no-silent-except rule on every commit.
 
 {{< /tab >}}
-{{< tab name="In Progress" >}}
+{{< tab header="In Progress" >}}
 
 > [!WARNING]
 > **Phase 1 Unattended Install Service — Code Implementation**  
@@ -326,7 +326,7 @@ gantt
 > Now that Lockdown is automatic, the five-category inventory screen has no decision left to confirm. Open question: standalone viewing surface, or fold into the Lockdown button ceremony?
 
 {{< /tab >}}
-{{< tab name="Planned" >}}
+{{< tab header="Planned" >}}
 
 ### User-Facing Features
 
@@ -387,7 +387,7 @@ gantt
 > Defined in the gate taxonomy; deferred pending resource allocation.
 
 {{< /tab >}}
-{{< /tabs >}}
+{{< /tabpane >}}
 
 ## Community-Driven Development
 
@@ -396,5 +396,4 @@ Join the conversation—suggest features, report issues, or discuss the architec
 [Discord/GitHub links here via config params.links]
 
 ### Get Started
-{{< button href="/docs/" >}}Get Started{{< /button >}}
-{{< button href="/community/" >}}Join Community{{< /button >}}
+[Get Started](/docs/) | [Join Community](/community/)

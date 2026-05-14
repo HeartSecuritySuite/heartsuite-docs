@@ -11,6 +11,17 @@ $td-link-underline-offsets: (
   4: 0.5em,
 ) !default;
 
+@mixin td-navbar-dropdown-item-icon($fa-icon) {
+  &::before {
+    content: fa-content($fa-icon);
+    font: var(--fa-font-solid);
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
 .td-navbar {
   @extend .navbar;
   @extend .navbar-expand;
@@ -111,7 +122,7 @@ $td-link-underline-offsets: (
   }
 
   .td-light-dark-menu {
-    position: unset !important;
+    position: unset;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,12 +137,41 @@ $td-link-underline-offsets: (
     }
   }
 
-  .td-lang-menu {
-    position: unset !important;
+  .td-lang-menu,
+  .td-version-menu {
+    position: unset;
     display: flex;
     align-items: center;
     justify-content: center;
 
+    .dropdown-item {
+      position: relative;
+      padding-left: 2.5rem;
+
+      &.active {
+        @include td-navbar-dropdown-item-icon($fa-var-check);
+      }
+
+      &-home {
+        @include td-navbar-dropdown-item-icon($fa-var-house);
+      }
+
+      &-latest {
+        font-weight: $font-weight-semibold;
+        &::after {
+          content: ' (latest)';
+        }
+      }
+
+      &-next {
+        &::after {
+          content: ' (next)';
+        }
+      }
+    }
+  }
+
+  .td-lang-menu {
     &__title {
       padding-left: 0;
       padding-right: 0;
@@ -158,20 +198,6 @@ $td-link-underline-offsets: (
         &::before {
           padding-right: 0;
         }
-      }
-    }
-
-    .dropdown-item {
-      position: relative;
-      padding-left: 2.5rem;
-
-      &.active::before {
-        font: var(--fa-font-solid);
-        content: fa-content($fa-var-check);
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
       }
     }
   }
