@@ -52,6 +52,8 @@ The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a
 
 CVEs are rated by severity (e.g., HIGH means a score of 7+). A "0.0" score here means HeartSuite fully neutralizes the vulnerability—it's not reachable. A "non-zero" score means the flaw can still be exploited in HS, but its impact is limited, often to temporary effects that a reboot clears. This helps you see real risks clearly.
 
+The **Upstream fix** field in each entry describes the patch landscape in the Linux kernel stable series. Where it reads "5.19 branch is EOL; no backport," this means the upstream kernel maintainers have not issued a patch for the 5.19 branch (which has reached end-of-life) — not that HeartSuite Core Secure is unprotected. For **Not exploitable** and **Not Affected** entries, the upstream fix status is informational: the patch is not required because the trigger is architecturally unreachable on a HeartSuite deployment. For **Affected** entries, "no backport" means the bug is present in the HS kernel with no upstream patch available; the Score on HeartSuite reflects that residual risk.
+
 ## What malware can and cannot do on this system
 
 Across every reachable CVE in this document, the answer is the same — and short.
