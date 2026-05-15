@@ -13,7 +13,6 @@ Traditional endpoint security detects threats after they execute. HeartSuite tak
 
 The five core features that make this possible—program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers—were designed together as a single coherent architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 
-Last updated: {{ .Lastmod.Format "2006-01-02" }}
 
 ## Development Timeline
 
@@ -387,8 +386,6 @@ gantt
 ## Community-Driven Development
 
 Join the conversation—suggest features, report issues, or discuss the architecture.
-
-[Discord/GitHub links here via config params.links]
 
 ### Get Started
 
