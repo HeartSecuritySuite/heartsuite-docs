@@ -338,7 +338,7 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 **Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
 **Base Score**: 8.8 HIGH — NVD full vector assessment pending  
 **Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a default HeartSuite Core Secure deployment  
-**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport)
+**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes a write-what-where condition in the `esp_output` page-write path. The vulnerable code is at `net/ipv6/esp6.c:524`: `tail = page_address(page) + pfrag->offset` followed by `esp_output_fill_trailer(tail, esp->tfclen, esp->plen, esp->proto)`. If `pfrag->offset` is corrupted or attacker-influenced, the trailer write reaches an arbitrary kernel page address. The identical pattern exists in `net/ipv4/esp4.c:489` (`CONFIG_INET_ESP`, not compiled), but the absence of IPv4 ESP is irrelevant — `esp6.c` carries the same code. The bug is one half of the "Dirty Frag" exploit chain; chaining it with CVE-2026-43500 produces a deterministic privilege escalation.
 
@@ -355,7 +355,7 @@ If your deployment adds XFRM management tooling (`ip xfrm`, `setkey`, strongSwan
 **Status**: Not Affected  
 **Component**: rxrpc — RxRPC transport protocol (`CONFIG_AF_RXRPC`)  
 **Base Score**: 7.8 HIGH — NVD full vector assessment pending  
-**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport)
+**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes a local privilege escalation through an out-of-bounds write in the rxrpc transport protocol implementation. It is the second half of the "Dirty Frag" exploit chain (paired with CVE-2026-43284); chaining both produces a deterministic privilege escalation to root.
 
@@ -369,7 +369,7 @@ The trigger cannot be reached on any HeartSuite Core Secure deployment.
 **Component**: nf_reject_ipv6 — IPv6 netfilter TCP RST generation (`CONFIG_NF_REJECT_IPV6`, `CONFIG_IP6_NF_TARGET_REJECT`)  
 **Base Score**: 9.1 CRITICAL (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H)  
 **Score on HeartSuite**: 0.0 — trigger not present; HeartSuite installs no ip6tables REJECT rules  
-**Upstream fix**: Linux 4.19.323, 5.4.285, 5.10.227, 5.15.168, 6.1.113, 6.6.54, 6.10.13, 6.11.2 (5.19 branch is EOL; no backport)
+**Upstream fix**: Linux 4.19.323, 5.4.285, 5.10.227, 5.15.168, 6.1.113, 6.6.54, 6.10.13, 6.11.2 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes an information disclosure in the IPv6 netfilter TCP reset path. When the kernel sends a TCP RST packet in response to a connection rejected by an ip6tables rule, `nf_reject_ip6_tcphdr_put()` allocates a TCP header via `skb_put()` without zeroing the buffer. The function then writes every field in the header explicitly except the four reserved bits (`th->res1`) in byte 12. Those bits retain whatever value was in the allocated kernel memory region. The RST packet is sent with that uninitialized content on the wire.
 
@@ -413,7 +413,7 @@ Lockdown's allowlist adds a further constraint on program execution: every execu
 **Base Score**: 7.9 HIGH (AV:L/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:H)  
 **Score on HeartSuite**: 0.0 — no audio hardware present; no `/dev/snd` devices; ioctl path unreachable  
 **Affected range**: Linux 5.16 through 6.1.5  
-**Upstream fix**: Linux 4.14.303, 4.19.270, 5.4.229, 5.10.163, 5.15.88, 6.1.6 (5.19 branch is EOL; no backport)
+**Upstream fix**: Linux 4.14.303, 4.19.270, 5.4.229, 5.10.163, 5.15.88, 6.1.6 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes a use-after-free in the ALSA PCM control interface. `SNDRV_CTL_IOCTL_ELEM_READ` and `SNDRV_CTL_IOCTL_ELEM_WRITE` (32-bit compat variants) are missing locks that allow a local user to trigger a use-after-free and gain elevated privilege.
 
@@ -432,7 +432,7 @@ Lockdown's allowlist adds a further constraint on program execution: every execu
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Score on HeartSuite**: 0.0 — no i915 GPU present; GPU context entry point unreachable  
 **Affected range**: Linux 5.16 through 6.0.10  
-**Upstream fix**: Linux 5.4.226, 5.10.157, 5.15.81, 6.0.11 (5.19 branch is EOL; no backport)
+**Upstream fix**: Linux 5.4.226, 5.10.157, 5.15.81, 6.0.11 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes an incorrect TLB flush in the Intel i915 GPU driver. When GPU memory mappings are changed, a missing or incorrect TLB invalidation can leave stale translation entries active, allowing writes to land in the wrong physical pages. This can corrupt kernel memory and is exploitable by a local user with access to a GPU context to gain elevated privilege.
 
@@ -528,7 +528,7 @@ With no compression algorithm registered, the scomp backend has no handler to di
 **Component**: ALSA AICA Dreamcast sound driver (`CONFIG_SND_AICA`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 0.0 — driver not compiled in; no code path exists
-**Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport)
+**Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes a use-after-free caused by a circular scheduling race between `dreamcastcard->timer` and `spu_dma_work` in the AICA Yamaha sound chip driver (`sound/sh/aica.c`). The timer callback `aica_period_elapsed()` schedules `spu_dma_work` via `schedule_work()`; the work handler then re-arms the timer via `mod_timer()`. `spu_begin_dma()` independently schedules the work and arms the timer in the same call. These two execution paths can race against each other and against card teardown, producing a use-after-free on the `snd_card_aica` object while the timer or work item is still pending.
 
@@ -555,7 +555,7 @@ If your deployment adds `e4defrag` or any other extent-defragmentation tool to t
 **Component**: UFS host controller driver (`CONFIG_SCSI_UFSHCD`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 0.0 — driver not compiled in; no code path exists
-**Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport)
+**Upstream fix**: merged in Linux 6.8; backported across active stable series (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes an out-of-bounds memory access in the UFS host controller driver's MCQ (Multi-Circular Queue) mode. When `task_tag >= 32` and `sizeof(unsigned int) == 4`, the expression `1U << task_tag` is undefined behaviour in C — shifting a 32-bit value by 32 or more positions. In practice this produces incorrect bitmask values in the per-queue task tracking, allowing the computed mask to index outside the valid task range and corrupt adjacent memory.
 
