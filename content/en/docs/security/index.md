@@ -49,11 +49,8 @@ The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a
 </div>
 
 ### Understanding CVE Scores in HeartSuite
+
 CVEs are rated by severity (e.g., HIGH means a score of 7+). A "0.0" score here means HeartSuite fully neutralizes the vulnerability—it's not reachable. A "non-zero" score means the flaw can still be exploited in HS, but its impact is limited, often to temporary effects that a reboot clears. This helps you see real risks clearly.
-
-
-
-
 
 ## What malware can and cannot do on this system
 
@@ -65,6 +62,7 @@ Across every reachable CVE in this document, the answer is the same — and shor
 
 > **Supply-chain compromise: contained, not prevented.**  
 > If malware arrives inside a trusted update, HeartSuite does not block it from running — it was authorized. What HeartSuite does enforce is the blast radius. The malware cannot launch processes outside the allowlist, cannot reach unallowlisted network destinations, and cannot install additional code. A compromised supplier gets one program slot, not the system.
+
 - **New program execution.** The kernel refuses to run any program not in the Lockdown allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
 - **Kernel module loading post-boot.** On Debian 12, `modprobe` and `insmod` are symlinks to `kmod`, which is added to the allowlist during standard Setup Mode via `systemd-modules-load.service`. Lockdown's file-access enforcement denies `kmod` access to `/usr/lib/modprobe.d/` by default — module loading fails at the file-read stage before any module can be loaded. Module-based rootkits cannot be installed.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
@@ -370,6 +368,7 @@ If exploited on a deployment with WiFi hardware, all three CVEs lead to kernel m
 HeartSuite makes the allowlist database files immutable before Lockdown is engaged. Once Lockdown is active, `FS_IOC_SETFLAGS` returns `EPERM` for all callers (`kernel/ioctl.c`), so root cannot use `chattr` to clear those immutable flags and rewrite the allowlist. `mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c`), blocking any bind-mount or remount attempt to shadow or replace the allowlist files. HeartSuite reactivation is disabled during Lockdown, so the service cannot be reconfigured to accept new entries through any path.
 
 Lockdown's allowlist adds a further constraint on program execution: every execution is checked at the kernel level, applying equally to root. An attacker who has gained root cannot execute a backdoor program they drop onto the filesystem — it has no allowlist entry, and the kernel refuses to run it regardless of file ownership or permission bits.
+
 ### CVE-2023-0266
 
 **Status**: Not exploitable
@@ -388,6 +387,7 @@ If exploited on a deployment with audio hardware, the CVE achieves local privile
 The allowlist database files are made immutable before Lockdown is engaged. Once Lockdown is active, `FS_IOC_SETFLAGS` returns `EPERM` for all callers (`kernel/ioctl.c`), so root cannot use `chattr` to clear those immutable flags and rewrite the allowlist. `mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c`), blocking any bind-mount or remount attempt to shadow or replace the allowlist files. HeartSuite reactivation is disabled during Lockdown, so the service cannot be reconfigured to accept new entries through any path.
 
 Lockdown's allowlist adds a further constraint on program execution: every execution is checked at the kernel level, applying equally to root. An attacker who has gained root cannot execute a backdoor program they drop onto the filesystem — it has no allowlist entry, and the kernel refuses to run it regardless of file ownership or permission bits.
+
 ### CVE-2022-4139
 
 **Status**: Not exploitable
@@ -446,7 +446,6 @@ This CVE describes a use-after-free in the `__ext4_remount()` error path in `fs/
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server. `__ext4_remount()` is reached exclusively via `mount(MS_REMOUNT)` — a privileged operation that Lockdown blocks unconditionally. `do_mount()` returns `EPERM` whenever `HS_locked_down()` is true (`kernel/namespace.c:4218`), so root cannot call `mount()` at all; the CVE's entry point is blocked at the syscall level before any ext4 code is reached. In Lockdown, the allowlist additionally prevents execution of any exploit program that would invoke the remount path.
 
-
 ### CVE-2023-52530
 
 **Status**: Not exploitable
@@ -501,7 +500,6 @@ This CVE describes a use-after-free caused by a circular scheduling race between
 
 `CONFIG_SND_AICA` is not set in the HeartSuite Core Secure kernel. `sound/sh/aica.c` is gated by `obj-$(CONFIG_SND_AICA)` in `sound/sh/Makefile` and is not compiled. There is no AICA driver code present in the running kernel — not merely absent hardware, but absent code. An attempt to reach this path has no code to execute. The HeartSuite Core Secure kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
 
-
 ### CVE-2024-26704
 
 **Status**: Not exploitable
@@ -515,7 +513,6 @@ This CVE describes a use-after-free in `ext4_move_extents()` in `fs/ext4/move_ex
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The `EXT4_IOC_MOVE_EXT` ioctl is the sole entry point to the vulnerable `ext4_move_extents()` path; it is invoked by extent-defragmentation tools (`e4defrag`) and not by normal filesystem read or write operations. No defragmentation tool appears in the HS allowlist, and the kernel blocks any process without an allowlist entry from executing. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-26842
 
 **Status**: Not exploitable
@@ -527,7 +524,6 @@ This CVE describes a use-after-free in `ext4_move_extents()` in `fs/ext4/move_ex
 This CVE describes an out-of-bounds memory access in the UFS host controller driver's MCQ (Multi-Circular Queue) mode. When `task_tag >= 32` and `sizeof(unsigned int) == 4`, the expression `1U << task_tag` is undefined behaviour in C — shifting a 32-bit value by 32 or more positions. In practice this produces incorrect bitmask values in the per-queue task tracking, allowing the computed mask to index outside the valid task range and corrupt adjacent memory.
 
 `CONFIG_SCSI_UFSHCD` is not set in the HeartSuite Core Secure kernel. The UFS host controller driver is not compiled, and no UFS source files are present under `drivers/scsi/ufs/` in the kernel tree. The prior claim that "ufshcd is compiled in but never bound to hardware" was incorrect — the driver does not exist in the running kernel image at all. The HeartSuite Core Secure kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
-
 
 ### CVE-2022-48662
 
@@ -561,7 +557,6 @@ Among the attribute file callback routines in `drivers/usb/core/sysfs.c`, `inter
 
 `CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Triggering the ABBA deadlock race requires writing to the `/sys/.../authorized` sysfs attribute of an enumerated USB interface device while a concurrent USB operation is in progress. HeartSuite Core Secure runs on headless server hardware with no external USB devices connected; no USB interface device is enumerated, so the sysfs path does not exist and the race condition is unreachable. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-26939
 
 **Status**: Not exploitable
@@ -576,7 +571,6 @@ Object debugging tools were sporadically reporting illegal attempts to free a st
 `CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment. Without display hardware, DRM device nodes are not created and the GT power-management paths that call `i915_vma_parked()` are never reached. The environmental score reflects this: the vulnerable code path is structurally unreachable on the deployed hardware configuration.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-48689
 
@@ -614,7 +608,6 @@ There may be a bad USB audio device with a USB ID of (0x04fa, 0x4201) and fewer 
 
 `CONFIG_SND_USB_AUDIO` is not set in the HS 5.19.6 configuration. The USB audio driver — including the vulnerable `sound/usb/stream.c` altsetting parser — is not compiled into the kernel image. A USB device with this ID cannot be claimed by any USB audio driver, and the vulnerable code path does not exist on this system.
 
-
 ### CVE-2022-48702
 
 **Status**: Not exploitable
@@ -628,7 +621,6 @@ The voice allocator sometimes begins allocating from near the end of the array a
 
 `CONFIG_SND_EMU10K1` is not set in the HS 5.19.6 configuration. The EMU10K1 driver — including the vulnerable `sound/pci/emu10k1/emupcm.c` channel allocator — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2022-48695
 
 **Status**: Not exploitable
@@ -641,7 +633,6 @@ The voice allocator sometimes begins allocating from near the end of the array a
 A use-after-free occurs during controller reset in the mpt3sas firmware event cleanup path. In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the reset handler iterates queued firmware events and calls `cancel_work_sync()` on each. When `cancel_work_sync()` returns non-zero (the work was never executed), the handler calls `fw_event_work_put()` at line 3752 to release the work's reference — then unconditionally calls `fw_event_work_put()` again at line 3754. This double decrement underflows the `kref` reference count, freeing the `fw_event_work` object while other paths may still hold pointers to it.
 
 `CONFIG_SCSI_MPT3SAS` is not set in the HS 5.19.6 configuration. The mpt3sas driver — including the vulnerable firmware event cleanup path — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-35789
 
@@ -657,7 +648,6 @@ When moving a station out of a VLAN and deleting the VLAN afterwards, the fast_r
 `CONFIG_MAC80211=y` is compiled in. No WiFi network interface card is present on a server deployment. Without WiFi hardware, mac80211 creates no wireless interfaces and the relevant code paths are never reached.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2024-35886
 
@@ -695,7 +685,6 @@ When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -
 
 `CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2023-52868
 
 **Status**: Not exploitable
@@ -708,7 +697,6 @@ When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -
 The `dev->id` value comes from `ida_alloc()`, so it is a number between zero and INT_MAX. In `drivers/thermal/thermal_core.c`, this ID is formatted into fixed-size `THERMAL_NAME_LENGTH` (20-byte) buffers using `sprintf()`. At line 681, `sprintf(dev->attr_name, "cdev%d_trip_point", dev->id)` produces a string of the form `"cdev<N>_trip_point"`. For large IDs, the full string exceeds 20 bytes: `"cdev2147483647_trip_point"` is 25 characters plus a null terminator (26 bytes total), overflowing `attr_name` by 6 bytes. The same overflow applies at line 690 for `sprintf(dev->weight_attr_name, "cdev%d_weight", dev->id)`, which produces up to 22 bytes into a 20-byte buffer. Both overflows corrupt adjacent kernel heap memory and can be leveraged for privilege escalation.
 
 `CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. Triggering the overflow requires registering a thermal cooling device with a sufficiently large ID — this path requires access to the thermal sysfs interface, which is not included in the HS allowlist. On a HeartSuite Core Secure system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the thermal registration interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-36916
 
@@ -723,7 +711,6 @@ UBSAN catches undefined behavior in blk-iocost, where sometimes `iocg->delay` is
 
 `CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. The blk-iocost controller is active whenever cgroups are in use with I/O cost weighting enabled. Configuring iocost requires writing to cgroup control files under `/sys/fs/cgroup/` — no cgroup management tool that exposes iocost configuration appears in the HS allowlist. On a HeartSuite Core Secure system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the iocost configuration path. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-38560
 
 **Status**: Not exploitable
@@ -736,7 +723,6 @@ UBSAN catches undefined behavior in blk-iocost, where sometimes `iocg->delay` is
 Currently, we allocate a `nbytes`-sized kernel buffer and copy `nbytes` from userspace to that buffer. In `drivers/scsi/bfa/bfad_bsg.c`, the BSG passthrough handler at line 3373 allocates `kzalloc(bsg_data->payload_len, GFP_KERNEL)` where `payload_len` comes directly from the user-supplied BSG request structure, with no upper-bound validation. Line 3379 then calls `copy_from_user(..., bsg_data->payload_len)` using the same unchecked value. An attacker with access to the BSG device node can supply an oversized `payload_len` to exhaust kernel memory or, with a carefully chosen value, produce a heap overflow.
 
 `CONFIG_SCSI_BFA` is not set in the HS 5.19.6 configuration. The Brocade bfa Fibre Channel HBA driver — including the vulnerable `bfad_bsg.c` BSG handler — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-38588
 
@@ -751,7 +737,6 @@ In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(i
 
 `CONFIG_KPROBES=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2024-40901
 
 **Status**: Not exploitable
@@ -765,7 +750,6 @@ In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the `pd_handles` bitmap is allocated 
 
 `CONFIG_SCSI_MPT3SAS` is not set in the HS 5.19.6 configuration. The LSI/Avago mpt3sas SAS/SATA/NVMe HBA driver — including the vulnerable `mpt3sas_scsih.c` bitmap access paths — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2024-40978
 
 **Status**: Not exploitable
@@ -778,7 +762,6 @@ In `drivers/scsi/mpt3sas/mpt3sas_scsih.c`, the `pd_handles` bitmap is allocated 
 In `drivers/scsi/qedi/qedi_debugfs.c`, `qedi_dbg_do_not_recover_cmd_read()` at line 128 calls `sprintf(buffer, "do_not_recover=%d\n", qedi_do_not_recover)` where `buffer` is the `char __user *` argument passed directly from the debugfs file read handler. `sprintf()` writes to a kernel virtual address rather than staging data in a kernel buffer first; on a system with SMAP (Supervisor Mode Access Prevention) enabled, the kernel write to a userspace pointer faults immediately and panics the kernel. The correct fix is to stage into a kernel buffer and use `simple_read_from_buffer()` to copy to userspace.
 
 `CONFIG_SCSI_QEDI` is not set in the HS 5.19.6 configuration. The QLogic qedi iSCSI HBA driver — including the vulnerable `qedi_dbg_do_not_recover_cmd_read()` debugfs handler — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-41092
 
@@ -795,7 +778,6 @@ In the i915 GT reset path, `intel_gt_handle_error()` at `intel_reset.c:1309` cal
 
 On a HeartSuite system with this hardware installed, Lockdown's constraints would still apply after any escalation: `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. Lockdown independently prevents any unauthorised program — including a backdoor dropped post-exploit — from executing regardless of file ownership or capability bits.
 
-
 ### CVE-2024-42136
 
 **Status**: Not exploitable
@@ -810,7 +792,6 @@ In `drivers/cdrom/cdrom.c`, `cdrom_read_cd()` at line 2080 computes `cgc->buflen
 `CONFIG_CDROM=y` is compiled in and HS 5.19.6 falls within the affected range. No optical drive is present on a standard Debian 11 server deployment. Without this hardware the CD-ROM device nodes are not created and the ioctl paths that call `cdrom_read_cd()` and `cdrom_read_block()` are never reached. The vulnerable code path cannot be triggered.
 
 On a HeartSuite system with an optical drive installed, Lockdown's constraints would still apply after any escalation: `FS_IOC_SETFLAGS` returns EPERM (`kernel/ioctl.c:561–569`), every mount path returns EPERM (`kernel/namespace.c:4218, 4300, 4453`), and allowlist modification is blocked at `hs_sandbox_caching.c:1942`. Lockdown independently prevents any unauthorised program — including a backdoor dropped post-exploit — from executing regardless of file ownership or capability bits.
-
 
 ### CVE-2024-44985
 
@@ -894,7 +875,6 @@ A reboot is a clean slate. The attack does not survive it.
 
 `CONFIG_SCSI_AACRAID` is not set in the HS 5.19.6 configuration. The Adaptec aacraid RAID controller driver — including the vulnerable `aac_probe_one()` and `aac_init_adapter()` paths — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2024-46746
 
 **Status**: Not exploitable
@@ -907,7 +887,6 @@ A reboot is a clean slate. The attack does not survive it.
 In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `devm_kfree(dev, cl_data->report_descr[i])` at lines 259 and 276 to free the HID report descriptor before `hid_destroy_device()` at line 178. The `amdtp_hid_parse()` callback at `amd_sfh_hid.c:32` accesses `cli_data->report_descr[hid_data->index]` during device initialisation or tear-down. If the descriptor is freed before `hid_destroy_device()` has completed its disconnect sequence — and the callback fires in that window — it dereferences freed memory.
 
 `CONFIG_AMD_SFH_HID` is not set in the HS 5.19.6 configuration. The AMD Sensor Fusion Hub HID driver — including the vulnerable `amd_sfh_client.c` cleanup path and `amdtp_hid_parse()` callback — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-46747
 
@@ -922,7 +901,6 @@ In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `dev
 
 `CONFIG_HID_COUGAR` is not set in the HS 5.19.6 configuration. The Cougar HID driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2024-46798
 
 **Status**: Not exploitable
@@ -935,7 +913,6 @@ In `drivers/hid/amd-sfh-hid/amd_sfh_client.c`, the error cleanup path calls `dev
 In `sound/core/rawmidi.c`, `snd_rawmidi_drain_output()` at line 224 saves `runtime = substream->runtime` at line 228, then calls `wait_event_interruptible_timeout(runtime->sleep, ...)` at line 232, waiting up to 10 seconds for the output buffer to drain. If `close_substream()` runs concurrently and calls `snd_rawmidi_runtime_free(substream)` at line 528 — freeing `substream->runtime` — while the drain wait is still sleeping, the `runtime` pointer saved at line 228 becomes dangling. When the wait exits, accesses to `runtime->avail` and `runtime->buffer_size` at line 237 use freed memory.
 
 `CONFIG_SND_RAWMIDI` is not compiled in the HS 5.19.6 configuration — no enabled driver selects it. The vulnerable `rawmidi.c` code path does not exist on this system.
-
 
 ### CVE-2024-46849
 
@@ -950,7 +927,6 @@ In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pa
 
 `CONFIG_SND_MESON_CARD_UTILS` is not compiled in the HS 5.19.6 configuration — the Amlogic Meson ASoC platform requires `ARCH_MESON` which is not set on x86. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2024-47682
 
 **Status**: Not exploitable
@@ -963,7 +939,6 @@ In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pa
 If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x does), `sd_read_block_characteristics()` proceeds past the guard at `drivers/scsi/sd.c:2921` (`vpd->len < 8`), then reads `vpd->data[8]` at line 2927. With `len == 8` the valid indices are 0–7; index 8 is one byte past the end of the buffer.
 
 `CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The OOB read occurs during device enumeration when a SCSI disk returns VPD page 0xb1 with a length of exactly 8 bytes — behaviour documented in QEMU v2.x, not present on production SAS/SATA/NVMe drives. Standard enterprise storage conforms to the SCSI VPD specification and returns page 0xb1 with the correct length. On a HeartSuite Core Secure server deployment, no non-conformant storage device is present; the OOB read path in `sd_read_block_characteristics()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-47701
 
@@ -995,10 +970,9 @@ A reboot is a clean slate. The attack does not survive it.
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 0.0 — `CONFIG_SCSI_EFCT` not compiled in HS kernel
 
-The kref_put() function will call nport->release if the refcount drops to zero. The nport->release release function is _efc_nport_free() which frees "nport"
+The kref_put() function will call nport->release if the refcount drops to zero. The nport->release release function is_efc_nport_free() which frees "nport"
 
 `CONFIG_SCSI_EFCT` is not set in the HS 5.19.6 configuration. The Emulex EFC Fibre Channel target driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-49882
 
@@ -1105,7 +1079,6 @@ In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...
 
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during a failed mount — for example when `ext4_es_register_shrinker()` or journal loading fails partway through `ext4_fill_super()`. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-49983
 
 **Status**: Not exploitable
@@ -1119,7 +1092,6 @@ In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns 
 
 `CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during fast-commit journal replay, triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-50007
 
 **Status**: Not Affected
@@ -1129,7 +1101,6 @@ In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns 
 
 The ASIHPI driver writes firmware-controlled index values into a static array without bounds-checking the index. `CONFIG_SND_ASIHPI` is not set in the HS 5.19.6 kernel configuration; the driver and this code path are absent from the compiled kernel image.
 
-
 ### CVE-2022-48951
 
 **Status**: Not Affected
@@ -1138,7 +1109,6 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 **Score on HeartSuite**: 0.0 — `CONFIG_SND_SOC` not compiled
 
 `snd_soc_put_volsw_sx()` applies bounds checks only to the first channel, allowing out-of-bounds writes to the second. `CONFIG_SND_SOC` is not set in the HS 5.19.6 kernel configuration; the ALSA SoC layer and this function are absent from the compiled kernel image.
-
 
 ### CVE-2022-48956
 
@@ -1170,7 +1140,6 @@ In `ieee80211_get_rate_duration()` at `net/mac80211/airtime.c:455`, `airtime_mcs
 
 `CONFIG_MAC80211=y` is compiled in. No WiFi NIC is present on a Debian 11 server deployment; mac80211 creates no wireless interfaces without hardware and this code path is never reached. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or preserve access across a reboot.
 
-
 ### CVE-2022-49023
 
 **Status**: Not exploitable
@@ -1184,7 +1153,6 @@ In `net/wireless/scan.c:338`, when merging per-STA profile elements in the multi
 
 `CONFIG_CFG80211=y` is compiled in. No WiFi NIC is present on a Debian 11 server deployment; cfg80211 creates no wireless interfaces without hardware and this code path is never reached. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or preserve access across a reboot.
 
-
 ### CVE-2024-50278
 
 **Status**: Not Affected
@@ -1194,7 +1162,6 @@ In `net/wireless/scan.c:338`, when merging per-STA profile elements in the multi
 
 If the cache device is expanded between initial load and first-time resume, the bitsets (`dirty_bitset`, `discard_bitset`) allocated in `dm-cache-target.c` are sized to the pre-expansion block count. On resume, cache-block indices derived from the new device size exceed the allocated bitset bounds, causing an out-of-bounds access. `CONFIG_DM_CACHE` is not set in the HS 5.19.6 kernel configuration; the dm-cache target and this code path are absent from the compiled kernel image.
 
-
 ### CVE-2024-50279
 
 **Status**: Not Affected
@@ -1203,7 +1170,6 @@ If the cache device is expanded between initial load and first-time resume, the 
 **Score on HeartSuite**: 0.0 — `CONFIG_DM_CACHE` not compiled
 
 When shrinking the fast (cache) device, dm-cache iterates the `dirty_bitset` to identify cache blocks that must be flushed before being dropped. An index error in the bitset iteration produces a bit index that exceeds the allocated bitset bounds, causing an out-of-bounds access. `CONFIG_DM_CACHE` is not set in the HS 5.19.6 kernel configuration; the dm-cache target and this code path are absent from the compiled kernel image.
-
 
 ### CVE-2024-53147
 
@@ -1218,7 +1184,6 @@ In `fs/exfat/dir.c`, when iterating directory entries, the cluster-walk loop at 
 
 `CONFIG_FAT_FS=y` is compiled in and HS 5.19.6 falls within the affected range. exFAT is compiled in and is used for the EFI system partition; the vulnerable path is triggered by traversing a corrupted exFAT directory. The adversary must be able to present a crafted exFAT image — mounting an external device or network share requires `mount()`, which Lockdown blocks unconditionally. The EFI system partition is already mounted at boot time and its contents are controlled by the administrator; an external attacker cannot inject a malformed exFAT directory into the in-use ESP. On a HeartSuite Core Secure system in Lockdown, the kernel additionally blocks any process without an allowlist entry from executing, closing the exploitation path before it can reach the vulnerable directory traversal code.
 
-
 ### CVE-2024-53150
 
 **Status**: Not Affected
@@ -1227,7 +1192,6 @@ In `fs/exfat/dir.c`, when iterating directory entries, the cluster-walk loop at 
 **Score on HeartSuite**: 0.0 — `CONFIG_SND_USB_AUDIO` not compiled
 
 The USB-audio driver does not validate `bLength` of each descriptor when traversing clock descriptors, allowing a malformed USB device to cause an out-of-bounds read. `CONFIG_SND_USB_AUDIO` is not set in the HS 5.19.6 kernel configuration; the USB audio driver and this descriptor-traversal path are absent from the compiled kernel image.
-
 
 ### CVE-2024-53170
 
@@ -1259,7 +1223,6 @@ A reboot is a clean slate. The attack does not survive it.
 
 `CONFIG_NFS_V4=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable seqid use-after-free path is only reachable when an NFS v4 share is mounted. On a HeartSuite Core Secure system, Lockdown blocks `mount()` unconditionally — `do_mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`). No NFS v4 filesystem can be mounted by any process, so the vulnerable code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-53214
 
 **Status**: Not Affected
@@ -1268,7 +1231,6 @@ A reboot is a clean slate. The attack does not survive it.
 **Score on HeartSuite**: 0.0 — `CONFIG_VFIO` not compiled
 
 In `drivers/vfio/pci/vfio_pci_config.c`, the VFIO PCI extended-capability enumeration loop at line 1638 hides capabilities with unknown length by rewriting the `next` pointer in the previous entry's header. When a capability should be hidden but occupies the first position in the extended-capability chain, the pointer fixup path has incorrect behaviour, allowing a misconfigured or malicious guest to reach memory it should not. `CONFIG_VFIO` is not set in the HS 5.19.6 kernel configuration; the VFIO subsystem and this PCI config-space virtualisation path are absent from the compiled kernel image.
-
 
 ### CVE-2024-53227
 
@@ -1279,7 +1241,6 @@ In `drivers/vfio/pci/vfio_pci_config.c`, the VFIO PCI extended-capability enumer
 
 In the Brocade bfa Fibre Channel adapter driver (`drivers/scsi/bfa/`), a use-after-free occurs during driver load: an internal object containing an embedded spinlock is freed while lockdep still holds a reference to that lock, producing a KASAN `slab-use-after-free` splat inside `__lock_acquire`. `CONFIG_SCSI_BFA_FC` is not set in the HS 5.19.6 kernel configuration; the Brocade bfa driver is absent from the compiled kernel image.
 
-
 ### CVE-2024-53239
 
 **Status**: Not Affected
@@ -1289,7 +1250,6 @@ In the Brocade bfa Fibre Channel adapter driver (`drivers/scsi/bfa/`), a use-aft
 
 In the TerraTec AUREON 6fire USB audio driver (`sound/usb/6fire/chip.c`), `usb6fire_chip_disconnect()` calls `usb6fire_chip_abort()` at line 183 — which schedules a deferred `snd_card_free_when_closed()` and nulls `chip->card` — immediately followed by `usb6fire_chip_destroy()` at line 184, which frees the underlying sub-resources. When userspace still holds the card open, the deferred free races against the destroy path, producing a use-after-free. `CONFIG_SND_USB_6FIRE` is not set in the HS 5.19.6 kernel configuration; the driver is absent from the compiled kernel image.
 
-
 ### CVE-2024-56609
 
 **Status**: Not Affected
@@ -1298,7 +1258,6 @@ In the TerraTec AUREON 6fire USB audio driver (`sound/usb/6fire/chip.c`), `usb6f
 **Score on HeartSuite**: 0.0 — `CONFIG_RTW88` not compiled
 
 In the Realtek rtw88 802.11ac/ax wireless driver (`drivers/net/wireless/realtek/rtw88/tx.c`), `rtw_tx_report_purge_timer()` at line 160 calls `skb_queue_purge()` at line 172 to discard queued TX-report SKBs when the firmware fails to acknowledge them. Because `ieee80211_tx_status()` is never called for the discarded SKBs, mac80211 retains a reference to the associated station structure after it has been freed, producing a use-after-free during driver teardown. `CONFIG_RTW88` is not set in the HS 5.19.6 kernel configuration; the rtw88 driver family is absent from the compiled kernel image.
-
 
 ### CVE-2024-56631
 
@@ -1313,7 +1272,6 @@ In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 
 
 `CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No HeartSuite Core Secure deployment includes raw SCSI access in the Lockdown allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2024-56663
 
 **Status**: Not exploitable
@@ -1323,7 +1281,6 @@ In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 
 
 In `net/wireless/nl80211.c`, the netlink policy for `NL80211_ATTR_MLO_LINK_ID` at line 797 uses `NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS)` — where `IEEE80211_MLD_MAX_NUM_LINKS = 15` (`include/linux/ieee80211.h:4349`). Since the range check is inclusive, link ID 15 passes validation. Structures such as `cfg80211_bss` size their `links[]` array with 15 entries (valid indices 0–14); an attacker-supplied link ID of 15 indexes one element past the end of the array, producing an out-of-bounds access. `CONFIG_CFG80211=y` is compiled in. No WiFi network interface card is present on a server deployment; without WiFi hardware, no wireless interfaces are created and the MLO link ID path is never reachable.
 
-
 ### CVE-2024-57899
 
 **Status**: Not Affected
@@ -1332,7 +1289,6 @@ In `net/wireless/nl80211.c`, the netlink policy for `NL80211_ATTR_MLO_LINK_ID` a
 **Score on HeartSuite**: 0.0 — 32-bit-specific vulnerability; HS kernel is x86_64
 
 In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 bytes on 32-bit) and `u64` (8 bytes) causes incorrect arithmetic or storage on 32-bit architectures. On x86_64, `sizeof(unsigned long) == sizeof(u64) == 8`; the size mismatch condition cannot arise. `CONFIG_X86_64=y` in the HS 5.19.6 configuration; additionally, no WiFi hardware is present on a server deployment.
-
 
 ### CVE-2025-21863
 
@@ -1366,7 +1322,6 @@ A reboot is a clean slate. The attack does not survive it.
 
 In `drivers/gpu/drm/i915/gem/i915_gem_tiling.c`, `i915_gem_object_set_tiling()` releases the gem object lock at line 308, then performs an unguarded check-and-free of `obj->bit_17` at lines 314–322. Two threads concurrently calling `I915_GEM_SET_TILING` to set tiling to `I915_TILING_NONE` can both enter the `else` branch at line 319 and both call `bitmap_free(obj->bit_17)` at line 320, producing a double-free. Conversely, two threads setting a swizzled tiling mode can both pass the `!obj->bit_17` check at line 315 and both call `bitmap_zalloc`, leaking the first allocation. `CONFIG_DRM_I915=y` is compiled in. No Intel integrated or discrete display GPU is present on this server deployment; DRM device nodes are not created and the GEM ioctl path is unreachable.
 
-
 ### CVE-2023-52988
 
 **Status**: Not exploitable
@@ -1375,7 +1330,6 @@ In `drivers/gpu/drm/i915/gem/i915_gem_tiling.c`, `i915_gem_object_set_tiling()` 
 **Score on HeartSuite**: 0.0 — no audio hardware present
 
 In `sound/pci/hda/patch_via.c`, `via_auto_init_analog_input()` calls `snd_hda_get_connections()` at line 820 and stores the return value in `nums`. The function can return a negative error code. The subsequent loop at line 822 (`for (i = 0; i < nums; i++)`) is a no-op for negative `nums`, but the `conn[nums++]` write at line 832 then indexes the `conn[]` array at a negative offset, producing an out-of-bounds write. `CONFIG_SND_HDA_INTEL=y` is compiled in. No audio hardware is present on a headless server deployment; HDA codec probing never runs and the vulnerable path is never reached.
-
 
 ### CVE-2025-21993
 
@@ -1386,7 +1340,6 @@ In `sound/pci/hda/patch_via.c`, `via_auto_init_analog_input()` calls `snd_hda_ge
 
 In the iSCSI Boot Firmware Table (iBFT) kernel driver, the subnet-mask field read from `/sys/firmware/ibft/ethernetX/subnet-mask` during an IPv6 iSCSI boot contains a memory safety issue. `CONFIG_ISCSI_IBFT` is not set in the HS 5.19.6 kernel configuration; the iBFT sysfs interface is absent from the compiled kernel image.
 
-
 ### CVE-2025-22083
 
 **Status**: Not Affected
@@ -1395,7 +1348,6 @@ In the iSCSI Boot Firmware Table (iBFT) kernel driver, the subnet-mask field rea
 **Score on HeartSuite**: 0.0 — `CONFIG_VHOST_SCSI` not compiled
 
 In `drivers/vhost/scsi.c`, `vhost_scsi_set_endpoint()` at line 1531 does not guard against being called multiple times without an intervening `vhost_scsi_clear_endpoint()`. Duplicate invocations corrupt the `vs_tpg` pointer array and reference counts, triggering use-after-free and null-pointer conditions. `CONFIG_VHOST_SCSI` is not set in the HS 5.19.6 kernel configuration; the vhost-SCSI virtualisation driver is absent from the compiled kernel image.
-
 
 ### CVE-2025-22121
 
@@ -1433,7 +1385,6 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the out-of-bounds read requires mounting an ext4 filesystem image containing a corrupted directory block. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 directory parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
-
 ### CVE-2025-40364
 
 **Status**: Affected
@@ -1470,7 +1421,6 @@ In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1143 iterates xat
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the unbounded xattr loop requires mounting a filesystem with a corrupted xattr block that lacks the valid zero-terminator sentinel. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 xattr parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
-
 ### CVE-2022-49789
 
 **Status**: Not Affected
@@ -1479,7 +1429,6 @@ In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1143 iterates xat
 **Score on HeartSuite**: 0.0 — `CONFIG_ZFCP` not compiled
 
 In `drivers/s390/scsi/zfcp_fsf.c`, `zfcp_fsf_req_send()` stores the FSF request ID in a variable of the wrong integer type, causing the ID to be truncated on architectures where the required width exceeds that type. `CONFIG_ZFCP` is not present in the HS 5.19.6 kernel configuration; the IBM Z Fibre Channel driver is s390-architecture-specific and is absent from the x86_64 compiled kernel image.
-
 
 ### CVE-2022-49842
 
@@ -1493,7 +1442,6 @@ In the ALSA sound subsystem, a use-after-free occurs in `device_del()` during dr
 `CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-49865
 
@@ -1529,7 +1477,6 @@ When the SAS Transport Layer support is enabled and a device exposed to the OS b
 
 `CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2023-53039
 
 **Status**: Not Affected
@@ -1540,7 +1487,6 @@ When the SAS Transport Layer support is enabled and a device exposed to the OS b
 When a reset notify IPC message is received by the Intel Integrated Sensor Hub Transfer Protocol (ISHTP) subsystem, the ISR schedules a work item and passes the device struct via the global `ishtp_dev` pointer. A race between the reset notify path and device teardown can leave `ishtp_dev` pointing to a freed object, triggering a use-after-free.
 
 `CONFIG_INTEL_ISH_HID` is not set in the HS 5.19.6 configuration. The Intel ISH HID driver (`drivers/hid/intel-ish-hid/`) is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2023-53065
 
@@ -1555,7 +1501,6 @@ In `kernel/events/core.c`, a stack-out-of-bounds issue discovered by syzkaller o
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-37861
 
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
@@ -1567,7 +1512,6 @@ When the task management thread processes reply queues while the reset thread si
 
 `CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2025-37979
 
 **Status**: Not Affected — `CONFIG_SND_SOC_SC7280` not compiled
@@ -1578,7 +1522,6 @@ When the task management thread processes reply queues while the reset thread si
 Commit 5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution") introduced switch-case values in the Qualcomm sc7280 machine driver that index into fixed-size arrays without bounds checking, causing out-of-bounds access when unexpected codec or CPU DAI link types are encountered during probe.
 
 `CONFIG_SND_SOC_SC7280` is not set in the HS 5.19.6 configuration. This driver targets the Qualcomm sc7280 SoC, an ARM-based mobile/embedded platform. It is not selected on x86_64 server builds. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2022-49934
 
@@ -1593,7 +1536,6 @@ In `net/mac80211/scan.c`, `ieee80211_scan_rx()` accesses `scan_req->flags` after
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38103
 
 **Status**: Not exploitable
@@ -1607,7 +1549,6 @@ Update struct hid_descriptor to better reflect the mandatory and optional parts 
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38206
 
 **Status**: Not Affected — `CONFIG_EXFAT_FS` not compiled
@@ -1619,7 +1560,6 @@ In `fs/exfat/nls.c`, `exfat_load_upcase_table()` frees `sbi->vol_utbl` via `exfa
 
 `CONFIG_EXFAT_FS` is not set in the HS 5.19.6 configuration. The exFAT filesystem driver — including `fs/exfat/nls.c` — is not compiled into the kernel image. Note that `CONFIG_FAT_FS=y` (VFAT/FAT32) is compiled for EFI system partition support, but that is a separate driver with no shared code. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2025-38239
 
 **Status**: Not Affected — `CONFIG_MEGARAID_SAS` not set
@@ -1630,7 +1570,6 @@ In `fs/exfat/nls.c`, `exfat_load_upcase_table()` frees `sbi->vol_utbl` via `exfa
 On systems with DRAM interleave enabled, the MegaRAID SAS driver miscalculates the MSI-X poll queue allocation, requesting poll queues beyond the number of available vectors. This results in an out-of-bounds access during driver initialization when the hardware exposes a specific MSI-X configuration.
 
 `CONFIG_MEGARAID_SAS` is not set in the HS 5.19.6 configuration. The LSI/Broadcom MegaRAID SAS controller driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2025-38249
 
@@ -1645,7 +1584,6 @@ In snd_usb_get_audioformat_uac3(), the length value returned from snd_usb_ctl_ms
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38389
 
 **Status**: Not exploitable
@@ -1659,7 +1597,6 @@ On ring submission GPU platforms, unbinding the i915 driver during testing spora
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38494
 
 **Status**: Not exploitable
@@ -1672,7 +1609,6 @@ hid_hw_raw_request() is actually useful to ensure the provided buffer and length
 `CONFIG_HID=y` is compiled in. No USB human interface devices (keyboard, mouse, or other HID peripherals) are connected to a headless production server. HID device paths are never instantiated, making this code path unreachable.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2025-38550
 
@@ -1711,7 +1647,6 @@ Testing by the syzbot fuzzer showed that the HID core gets a shift-out-of-bounds
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38563
 
 **Status**: Not exploitable
@@ -1723,7 +1658,6 @@ The perf mmap code is careful about mmap()'ing the user page with the ringbuffer
 
 `CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2025-38565
 
 **Status**: Not exploitable
@@ -1734,7 +1668,6 @@ The perf mmap code is careful about mmap()'ing the user page with the ringbuffer
 When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped() callback of the related event.
 
 `CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2025-38572
 
@@ -1771,7 +1704,6 @@ When the bfad_im_probe() function fails during initialization, the memory pointe
 
 `CONFIG_SCSI_BFA_FC` is not set in the HS 5.19.6 configuration. The Brocade bfa Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2025-38729
 
 **Status**: Not exploitable
@@ -1784,7 +1716,6 @@ UAC3 power domain descriptors need to be verified with its variable bLength for 
 `CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2025-39702
 
@@ -1823,7 +1754,6 @@ UAC3 class segment descriptors need to be verified whether their sizes match wit
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-39760
 
 **Status**: Not exploitable
@@ -1834,7 +1764,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
 `CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. The `usb_parse_ss_endpoint_companion()` descriptor parsing path is triggered during USB device enumeration when a device is connected. HeartSuite Core Secure runs on headless server hardware with no external USB devices; no USB device enumeration occurs, so the vulnerable descriptor parsing code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2025-39788
 
@@ -1848,7 +1777,6 @@ On Google gs101, the number of UTP transfer request slots (nutrs) is 32, and in 
 `CONFIG_SCSI=y` is compiled in. UFS (Universal Flash Storage) is used in mobile and embedded platforms. This bug is in the Samsung Exynos UFS variant (`ufs-exynos`). A Debian 11 x86 server has no UFS hardware; the driver is never active.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-50306
 
@@ -1864,7 +1792,6 @@ In `fs/ext4/fast_commit.c`, the fast commit replay scan loop reads the tag-lengt
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The vulnerable path runs during the fast commit replay scan triggered on mount of a filesystem whose fast commit area has a malformed tag-length header. On a HeartSuite Core Secure system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2023-53257
 
 **Status**: Not exploitable
@@ -1878,7 +1805,6 @@ Before checking the action code, check that it even exists in the frame.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-53282
 
 **Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
@@ -1889,7 +1815,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 In `drivers/scsi/lpfc/`, `lpfc_wr_object()` performs a use-after-free read during the sysfs firmware write process. KFENCE detects that a firmware object buffer is read after being freed during the firmware update write sequence.
 
 `CONFIG_SCSI_LPFC` is not set in the HS 5.19.6 configuration. The Emulex lpfc Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2023-53285
 
@@ -1905,7 +1830,6 @@ ext4 validates `i_extra_isize` when an inode is first loaded into memory (`fs/ex
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Exploiting this bug requires writing directly to the block device while the filesystem is mounted — an operation that requires root or `CAP_SYS_RAWIO` and a tool that issues raw writes to the block device (e.g., `dd`, `badblocks`, or a custom exploit program). On a HeartSuite Core Secure system, no approved process in the HS allowlist writes raw block device data; the SPF allowlist blocks execution of any unapproved program at the kernel gate before the block device can be reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2023-53320
 
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
@@ -1916,7 +1840,6 @@ ext4 validates `i_extra_isize` when an inode is first loaded into memory (`fs/ex
 In the mpi3mr driver, `mpi3mr_get_all_tgt_info()` has multiple issues in its device map handling: the function miscalculates the valid entry length in `alltgt_info` by incorrectly sizing the `struct mpi3mr_device_map_info` header, leading to out-of-bounds reads when iterating target device entries.
 
 `CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2023-53321
 
@@ -1931,7 +1854,6 @@ In `net/mac80211/`, control frames such as ACK frames that legally omit Address 
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-53322
 
 **Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
@@ -1942,7 +1864,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 System crash due to use after free. Current code allows terminate_rport_io to exit before making sure all IOs has returned.
 
 `CONFIG_SCSI_QLA_FC` is not set in the HS 5.19.6 configuration. The QLogic qla2xxx Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2022-50378
 
@@ -1957,7 +1878,6 @@ In `drivers/gpu/drm/meson/`, unloading the Amlogic Meson display driver triggers
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-53376
 
 **Status**: Not Affected — `CONFIG_SCSI_MPI3MR` not set
@@ -1968,7 +1888,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 To allocate bitmaps, the mpi3mr driver calculates sizes of bitmaps using byte as unit.
 
 `CONFIG_SCSI_MPI3MR` is not set in the HS 5.19.6 configuration. The Broadcom mpi3mr SAS 3.0 HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2023-53392
 
@@ -1983,7 +1902,6 @@ In the Intel ISHTP HID driver, during a warm reset `device->fw_client` is set to
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-39841
 
 **Status**: Not Affected — `CONFIG_SCSI_LPFC` not compiled
@@ -1994,7 +1912,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 Fix a use-after-free window by correcting the buffer release sequence in the deferred receive path.
 
 `CONFIG_SCSI_LPFC` is not set in the HS 5.19.6 configuration. The Emulex lpfc Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2025-39864
 
@@ -2008,7 +1925,6 @@ In `net/wireless/scan.c`, `cfg80211_update_known_bss()` frees the last beacon fr
 `CONFIG_CFG80211=y` is compiled in. No WiFi network interface card is present on a server deployment. cfg80211 manages wireless interfaces; without hardware, no interface is created and the affected code paths are unreachable.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2025-39866
 
@@ -2044,7 +1960,6 @@ A reboot is a clean slate. The attack does not survive it.
 When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to delete "slow_task->timer".
 
 `CONFIG_SCSI_SAS_LIBSAS` is not set in the HS 5.19.6 configuration. The SAS libsas library — used by SAS host bus adapter drivers — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2022-50432
 
@@ -2107,7 +2022,6 @@ ufshcd_queuecommand() may be called two times in a row for a SCSI command before
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-53521
 
 **Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
@@ -2119,7 +2033,6 @@ In `drivers/scsi/ses.c`, `ses_intf_remove()` performs an out-of-bounds slab read
 
 `CONFIG_ENCLOSURE_SERVICES` is not set in the HS 5.19.6 configuration. The SCSI Enclosure Services driver (ses) — and its dependence on SAS HBA infrastructure — is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2022-50488
 
 **Status**: Not Affected
@@ -2130,7 +2043,6 @@ In `drivers/scsi/ses.c`, `ses_intf_remove()` performs an out-of-bounds slab read
 In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involving `bfqq->bic`. A BFQ I/O queue object is freed while a reference to its `bic` (BFQ I/O context) is still live, leading to a use-after-free when `bfq_select_queue()` subsequently accesses the freed `bfqq` pointer.
 
 `CONFIG_IOSCHED_BFQ` is not set in the HS 5.19.6 configuration. The BFQ (Budget Fair Queueing) block I/O scheduler is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2022-50496
 
@@ -2193,7 +2105,6 @@ In the ALSA sound subsystem, `regcache_flat_read()` performs a slab-out-of-bound
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-53675
 
 **Status**: Not Affected — `CONFIG_ENCLOSURE_SERVICES` not set
@@ -2204,7 +2115,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 Sanitize possible desc_ptr out-of-bounds accesses in ses_enclosure_data_process().
 
 `CONFIG_ENCLOSURE_SERVICES` is not set in the HS 5.19.6 configuration. The SCSI Enclosure Services driver (ses) is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2023-53676
 
@@ -2217,7 +2127,6 @@ In `drivers/target/iscsi/`, `lio_target_nacl_info_show()` uses `sprintf()` in a 
 
 `CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2025-71075
 
 **Status**: Not Affected — `CONFIG_SCSI_AIC94XX` not set
@@ -2228,7 +2137,6 @@ In `drivers/target/iscsi/`, `lio_target_nacl_info_show()` uses `sprintf()` in a 
 The asd_pci_remove() function fails to synchronize with pending tasklets before freeing the asd_ha structure, leading to a potential use-after-free vulnerability.
 
 `CONFIG_SCSI_AIC94XX` is not set in the HS 5.19.6 configuration. The Adaptec aic94xx SAS HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2026-23076
 
@@ -2243,7 +2151,6 @@ In the ALSA ctxfi audio driver's mixer handling code, the `conf` field is used a
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2026-23078
 
 **Status**: Not exploitable
@@ -2256,7 +2163,6 @@ The scarlett2_usb_get_config() function has a logic error in the endianness conv
 `CONFIG_SND=y` is compiled in. No audio hardware is present on a headless Debian 11 server. The ALSA subsystem does not create `/dev/snd` device nodes without an audio card. The ioctl path that exposes this bug is never instantiated.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2026-23089
 
@@ -2271,7 +2177,6 @@ When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees mixer->id_elems bu
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2026-23191
 
 **Status**: Not exploitable
@@ -2285,7 +2190,6 @@ The PCM trigger callback of aloop driver tries to check the PCM state and stop t
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2026-23193
 
 **Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
@@ -2296,7 +2200,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 In iscsit_dec_session_usage_count(), the function calls complete() while holding the sess->session_usage_lock.
 
 `CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2026-23208
 
@@ -2311,7 +2214,6 @@ In this case, the user constructed the parameters with maxpacksize 40 for rate 2
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2026-23216
 
 **Status**: Not Affected — `CONFIG_ISCSI_TARGET` not compiled
@@ -2323,7 +2225,6 @@ In iscsit_dec_conn_usage_count(), the function calls complete() while holding th
 
 `CONFIG_ISCSI_TARGET` is not set in the HS 5.19.6 configuration. The Linux iSCSI target (`drivers/target/iscsi/`) subsystem is not compiled into the kernel image. The vulnerable code path does not exist on this system.
 
-
 ### CVE-2025-71238
 
 **Status**: Not Affected — `CONFIG_SCSI_QLA_FC` not compiled
@@ -2334,7 +2235,6 @@ In iscsit_dec_conn_usage_count(), the function calls complete() while holding th
 In `drivers/scsi/qla2xxx/`, the QLogic Fibre Channel HBA driver writes to an invalid kernel address during a specific error recovery path, triggering a page fault with a supervisor write access error. The invalid address indicates a use-after-free or uninitialized pointer dereference within the driver's interrupt or completion handling.
 
 `CONFIG_SCSI_QLA_FC` is not set in the HS 5.19.6 configuration. The QLogic qla2xxx Fibre Channel HBA driver is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2026-23318
 
@@ -2349,7 +2249,6 @@ The entry of the validators table for UAC3 AC header descriptor is defined with 
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2026-31581
 
 **Status**: Not exploitable
@@ -2363,7 +2262,6 @@ In usb6fire_chip_abort(), the chip struct is allocated as the card's private dat
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2023-3268
 
 **Status**: Not exploitable
@@ -2374,7 +2272,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay_file_read_start_pos in kernel/relay.c in the relayfs.
 
 `CONFIG_RELAY=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and read access to relay channel files under debugfs — paths used exclusively by kernel tracing tools (SystemTap, etc.) that have no place in a production server allowlist. Without an allowlist entry covering debugfs relay access, the kernel refuses it. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2023-3567
 
@@ -2433,7 +2330,6 @@ In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-f
 
 `CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The `drm_atomic` race condition requires a process to initiate GPU mode-setting operations — specifically a nonblocking atomic commit — concurrent with driver unload. HeartSuite Core Secure runs on headless server hardware with no display GPU; the DRM device nodes are absent, so no mode-setting operation can be initiated. No GPU or display tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-0841
 
 **Status**: Not exploitable
@@ -2447,7 +2343,6 @@ In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs su
 
 `CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Triggering `hugetlbfs_fill_super()` requires calling `mount(2)` with `hugetlbfs` as the filesystem type, which additionally requires `CAP_SYS_ADMIN` on Debian 11. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any hugetlbfs setup begins. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
-
 ### CVE-2024-26593
 
 **Status**: Not exploitable
@@ -2458,7 +2353,6 @@ In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs su
 In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block process call transactions incorrectly. Intel datasheets specify that the block buffer index must be reset twice: once before writing the outgoing data to the buffer, and once before reading the incoming response. The driver resets the index only once, causing the response to be read from the wrong buffer position and potentially returning incorrect data to callers.
 
 `CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers for BMC, temperature sensor, and management bus communication. Accessing it requires root or `i2c` group membership and an i2c-tools or lm-sensors program — no such tool appears in the HS allowlist. On a HeartSuite Core Secure system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the I2C device interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-38586
 
@@ -2495,7 +2389,6 @@ When the cpu5wdt module is removing, the origin code uses del_timer() to de-acti
 
 `CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. The cpu5wdt driver targets a PC-era ISA watchdog timer; this hardware is absent on any modern HS server deployment. Even on configurations where the hardware exists, the trigger requires a process to open and interact with `/dev/watchdog` — no watchdog daemon appears in the HS allowlist. On a HeartSuite Core Secure system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the cpu5wdt interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2024-34777
 
 **Status**: Not Affected — `CONFIG_DMA_MAP_BENCHMARK` not compiled
@@ -2506,7 +2399,6 @@ When the cpu5wdt module is removing, the origin code uses del_timer() to de-acti
 In `kernel/dma/map_benchmark.c`, `map_benchmark_ioctl()` passes the user-supplied NUMA node ID directly to `node_possible()` (line 211) without first verifying that it falls within `[0, MAX_NUMNODES-1]`. `node_possible()` uses the node ID as a bitmap index; an out-of-range value causes an out-of-bounds read in the `node_possible_map` bitmap.
 
 `CONFIG_DMA_MAP_BENCHMARK` is not set in the HS 5.19.6 configuration. The DMA mapping benchmark module is a debug/testing facility accessible via `/sys/kernel/debug/dma_map_benchmark`; it is not compiled into the kernel image. The vulnerable code path does not exist on this system.
-
 
 ### CVE-2024-39463
 
@@ -2521,7 +2413,6 @@ In `fs/9p/`, a use-after-free occurs on a dentry's `d_fsdata` fid list when one 
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
-
 ### CVE-2024-40956
 
 **Status**: Not exploitable
@@ -2534,7 +2425,6 @@ Use list_for_each_entry_safe() to allow iterating through the list and deleting 
 `CONFIG_DMA_ENGINE=y` is compiled in. idxd is the driver for Intel Data Streaming Accelerator (DSA) and Intelligence Analytics Accelerator (IAX), available in Intel Sapphire Rapids and later server CPUs. These accelerators require specific Intel hardware not present on a standard Debian 11 server.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-48867
 
@@ -2549,7 +2439,6 @@ In `drivers/dma/idxd/`, when the Intel Data Streaming Accelerator driver is unlo
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2024-46759
 
 **Status**: Not exploitable
@@ -2562,7 +2451,6 @@ DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large negative 
 `CONFIG_HWMON=y` is compiled in. adc128d818 drives the Texas Instruments ADC128D818 — a specific 8-channel I2C ADC chip used on some custom boards. This chip is not part of standard server hardware; the hwmon driver is never bound.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2024-49860
 
@@ -2577,7 +2465,6 @@ In the ACPI subsystem, the `_STR` ACPI method must return a buffer object contai
 
 `CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI tables are loaded from OEM firmware at boot and are read-only thereafter — no userspace process can modify them without firmware-level access outside the HS adversary model. Standard OEM server firmware conforms to the ACPI specification and returns a Buffer object from `_STR`. On a HeartSuite Core Secure server deployment, no malformed `_STR` firmware is present; the invalid-memory path in `description_show()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2022-49029
 
 **Status**: Not exploitable
@@ -2591,7 +2478,6 @@ In `drivers/hwmon/ibmpex.c`, `ibmpex_register_bmc()` at line 509 adds a BMC devi
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2024-50127
 
 **Status**: Not exploitable
@@ -2602,7 +2488,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 In `net/sched/sch_taprio.c`, `taprio_change()` holds the `admin` schedule pointer while a concurrent `advance_sched()` call can switch or remove the schedule, making `admin` a dangling pointer. The critical section protected by `q->current_entry_lock` does not prevent this race, allowing access to freed schedule memory.
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2024-50131
 
@@ -2615,7 +2500,6 @@ In the kernel tracing subsystem, `strlen()` returns the string length excluding 
 
 `CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2024-53057
 
 **Status**: Not exploitable
@@ -2626,7 +2510,6 @@ In the kernel tracing subsystem, `strlen()` returns the string length excluding 
 In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be either root or ingress.
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2024-56606
 
@@ -2639,7 +2522,6 @@ After sock_init_data() the allocated sk object is attached to the provided sock 
 
 `CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No HeartSuite Core Secure HeartSuite Core Secure deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2025-21692
 
 **Status**: Not exploitable
@@ -2650,7 +2532,6 @@ After sock_init_data() the allocated sk object is attached to the provided sock 
 Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an Out-Of-Bound class in ets_class_from_arg() when passed clid of 0.
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2022-49799
 
@@ -2663,7 +2544,6 @@ In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` a
 
 `CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2022-49892
 
 **Status**: Not exploitable
@@ -2674,7 +2554,6 @@ In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` a
 KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore that perf had registered two ops with the same content successively, both dynamic.
 
 `CONFIG_FTRACE=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2022-49921
 
@@ -2687,7 +2566,6 @@ We can't use "skb" again after passing it to qdisc_enqueue(). This is basically 
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2023-53111
 
 **Status**: Not exploitable
@@ -2698,7 +2576,6 @@ We can't use "skb" again after passing it to qdisc_enqueue(). This is basically 
 do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronously when using asynchronous I/O unless memory allocation fails.
 
 `CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering the bug requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No HeartSuite Core Secure production workload uses loop devices — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2025-37879
 
@@ -2713,7 +2590,6 @@ In `net/9p/client.c`, `p9_client_write()` and `p9_client_read_once()` do not val
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
-
 ### CVE-2025-37914
 
 **Status**: Not exploitable
@@ -2724,7 +2600,6 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2025-37915
 
@@ -2737,7 +2612,6 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2025-37923
 
 **Status**: Not exploitable
@@ -2748,7 +2622,6 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 In `kernel/trace/trace.c`, `trace_seq_to_buffer()` at line 1830 performs a slab-out-of-bounds write. syzbot reproduced a KASAN report showing that a trace sequence buffer copy operation writes beyond the allocated slab boundary, reachable through the kernel tracing filesystem interface under `CAP_SYS_ADMIN`.
 
 `CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Core Secure HeartSuite Core Secure deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
-
 
 ### CVE-2025-38369
 
@@ -2763,7 +2636,6 @@ Running IDXD workloads in a container with the /dev directory mounted can trigge
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2025-38548
 
 **Status**: Not exploitable
@@ -2776,7 +2648,6 @@ Add buffer_recv_size to store the size of the received bytes. Validate buffer_re
 `CONFIG_HWMON=y` is compiled in. corsair-cpro drives the Corsair Commander Pro — a desktop PC fan/cooler controller connected via USB HID. This device is not present in a production server environment.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-50320
 
@@ -2791,7 +2662,6 @@ In `drivers/acpi/acpi_fpdt.c`, `acpi_init_fpdt()` (line 253) passes FPDT subtabl
 
 `CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. FPDT parsing runs at `fs_initcall` priority — early boot, before any user-space process is running. Triggering the invalid-address crash requires malformed FPDT entries in the system's ACPI firmware; HeartSuite deployments use standard OEM server firmware that conforms to the ACPI specification. Injecting a crafted ACPI table requires physical or firmware-level access, which is outside the HS software-based adversary model. An adversary with firmware access has already bypassed the OS security boundary; the ACPI parsing path is therefore not a reachable software attack surface on any standard HS deployment.
 
-
 ### CVE-2023-53395
 
 **Status**: Not exploitable
@@ -2805,7 +2675,6 @@ In the ACPICA AML interpreter, the opcode table entries for the AML `Timer` inst
 
 `CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. AML execution runs at boot using ACPI tables supplied by the system firmware. Exploiting the walk-state corruption requires crafted AML bytecode — on a server with a reputable firmware vendor, ACPI tables are loaded from firmware storage at boot and are read-only thereafter; no userspace process can replace or modify the AML after boot without firmware-level access. This places the trigger outside the HS software-based adversary model. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2025-39869
 
 **Status**: Not exploitable
@@ -2818,7 +2687,6 @@ Fix a critical memory allocation bug in edma_setup_from_hw() where queue_priorit
 `CONFIG_DMA_ENGINE=y` is compiled in. ti-edma is the DMA controller driver for Texas Instruments Keystone/OMAP/AM embedded SoC platforms. This driver and hardware are not present on an x86 Debian 11 server.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
-
 
 ### CVE-2022-50423
 
@@ -2854,7 +2722,6 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 
 `CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Core Secure HeartSuite Core Secure deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2024-36883
 
 **Status**: Not exploitable
@@ -2867,7 +2734,6 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — the size of the generic pointers array — to determine how much memory to allocate for a new network namespace. This read occurs without holding `pernet_ops_rwsem`. `register_pernet_operations()` can increment `max_gen_ptrs` concurrently while holding the write side of that lock. The race can cause `net_alloc_generic()` to allocate an undersized array, leading to out-of-bounds access when the new namespace is subsequently populated.
 
 `CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines), so the race cannot be triggered post-Lockdown unless a new kernel module is loaded. New module loading is blocked by **Lockdown**, not by the Linux kernel's built-in lockdown LSM: on Debian 12, `modprobe` and `insmod` are symlinks to `/usr/bin/kmod`, which is added to the allowlist by standard Setup Mode via `systemd-modules-load.service`. HeartSuite does not refuse `execve` on `kmod`; the block operates at the file-access layer — Lockdown denies `kmod` access to `/usr/lib/modprobe.d/` by default, so module loading fails at the file-read stage before any module can be loaded. There is no `HS_locked_down()` check site in the `init_module` / `finit_module` syscall path — the block is at the file-access layer, enforced by Lockdown. (If you follow the [kmod hardening procedure](../maintenance/kmod-hardening/), kmod's module-path access records are explicitly scoped to permitted paths, hardening against configuration drift.) After Lockdown engages at boot, all statically-linked pernet operations have already registered and `max_gen_ptrs` is stable; no concurrent write is possible. Separately, creating a network namespace requires `CAP_NET_ADMIN` with user namespaces disabled on the HS kernel; no unprivileged process can initiate the namespace-creation side of the race. The race condition cannot be triggered on any HeartSuite Core Secure deployment where `kmod` does not have file-access permissions to `/usr/lib/modprobe.d/`.
-
 
 ### CVE-2024-36971
 
@@ -2926,7 +2792,6 @@ In the network namespace subsystem, a use-after-free occurs through a refcount u
 
 `CONFIG_NET_NS=y` is compiled in. Creating a network namespace requires `CLONE_NEWNET` with `CAP_NET_ADMIN`. User namespaces (which would bypass the capability requirement) are disabled on the HS kernel. No HeartSuite Core Secure production service creates network namespaces — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
-
 ### CVE-2024-41039
 
 **Status**: Not exploitable
@@ -2940,7 +2805,6 @@ Fix the checking that firmware file buffer is large enough for the wmfw header, 
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
 
-
 ### CVE-2024-46713
 
 **Status**: Not exploitable
@@ -2951,7 +2815,6 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 Ole reported that event->mmap_mutex is strictly insufficient to serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
 `CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-46852
 
@@ -2964,7 +2827,6 @@ Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't tra
 
 `CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF buffer sharing requires access to a DRM or V4L2 device. HeartSuite Core Secure runs on headless server hardware with no GPU or video capture device; the DRM and V4L2 device nodes are absent, so the exploitation path — opening a DRM device and issuing `mmap()` on its DMA-BUF — is hardware-unreachable. No GPU or multimedia tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2022-48950
 
 **Status**: Not exploitable
@@ -2976,7 +2838,6 @@ In `kernel/events/core.c`, `perf_pending_task()` can execute after the associate
 
 `CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
-
 ### CVE-2022-49026
 
 **Status**: Not exploitable
@@ -2987,7 +2848,6 @@ In `kernel/events/core.c`, `perf_pending_task()` can execute after the associate
 In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xmit_frame() will return NETDEV_TX_BUSY and the upper layer will resend the skb.
 
 `CONFIG_E100=y` is compiled in and 5.19.6 falls within the affected range. The Intel e100 driver supports legacy Intel Pro/100 Fast Ethernet cards, a line discontinued in the early 2000s. No modern server or datacenter hardware ships with or supports this NIC; the driver code is compiled in but the hardware is universally absent on any HS deployment. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-50055
 
@@ -3021,7 +2881,6 @@ A reboot is a clean slate. The attack does not survive it.
 
 Linear Address Masking (LAM) is an x86_64 feature that allows software to store metadata in the upper bits of a canonical virtual address; it requires explicit kernel support — `arch_prctl` LAM commands, CR3 tag bit management, and associated data structures — to activate. The SLAM transient execution attack exploits an interaction between LAM tag bits and the speculative address-translation pipeline when a LAM-enabled process is running. This LAM kernel infrastructure was introduced upstream in Linux 6.2. The 5.19.6 kernel contains no LAM code paths; no process can enable LAM regardless of privilege level, and the transient execution oracle the SLAM paper describes does not exist in this kernel.
 
-
 ### CVE-2024-50193
 
 **Status**: Not exploitable
@@ -3034,7 +2893,6 @@ Linear Address Masking (LAM) is an x86_64 feature that allows software to store 
 On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied after `exc_nmi()` completes but before IRET restores register state. This ordering leaves a window in which speculative execution can observe uninitialised microarchitectural buffer contents from the interrupted context — a same-CPU information disclosure in the MDS (Microarchitectural Data Sampling) class.
 
 `CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a HeartSuite Core Secure system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
-
 
 ### CVE-2024-56600
 
@@ -3386,7 +3244,6 @@ These CVEs cover four hardware-specific drivers absent from the HeartSuite Core 
 
 Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the HeartSuite Core Secure kernel. There is no RNDIS driver to probe and no `ksmbd` listener to reach — there is no reachable code path for either CVE in this group.
 
-
 ### Ntfs3 Fs {#config-ntfs3-fs}
 
 **Status**: Not Affected
@@ -3394,7 +3251,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-48502
 
 `CONFIG_NTFS3_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Traffic Control: cls_flower {#tc-cls-flower}
 
@@ -3404,7 +3260,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_CLS_FLOWER` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### CAN Bus
 
 **Status**: Not Affected
@@ -3412,7 +3267,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-3090, CVE-2023-3389, CVE-2023-3609, CVE-2023-3611, CVE-2023-3776, CVE-2023-4206, CVE-2023-4207, CVE-2023-4208, CVE-2023-4622, CVE-2023-4921, CVE-2023-5717, CVE-2023-46813, CVE-2023-6931, CVE-2023-6932, CVE-2023-6546, CVE-2023-6270, CVE-2024-25744, CVE-2023-52438, CVE-2023-52439, CVE-2023-52474, CVE-2023-52501
 
 `CONFIG_CAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Smb Server {#config-smb-server}
 
@@ -3422,7 +3276,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SMB_SERVER` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### HFS Filesystem
 
 **Status**: Not Affected
@@ -3430,7 +3283,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-4623
 
 `CONFIG_HFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Ceph Filesystem
 
@@ -3440,7 +3292,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_CEPH_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### NVMe Driver
 
 **Status**: Not Affected
@@ -3448,7 +3299,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-5178, CVE-2023-6356, CVE-2023-6536
 
 `CONFIG_NVME_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### CIFS/SMB Client {#cifs-smb-client}
 
@@ -3458,7 +3308,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_CIFS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### ATM Protocol
 
 **Status**: Not Affected
@@ -3466,7 +3315,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-51780
 
 `CONFIG_ATM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Rose {#config-rose}
 
@@ -3476,7 +3324,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_ROSE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Tls {#config-tls}
 
 **Status**: Not Affected
@@ -3484,7 +3331,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-0646
 
 `CONFIG_TLS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### DCCP Protocol
 
@@ -3494,7 +3340,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IP_DCCP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### AMD GPU (amdgpu) {#amdgpu-driver}
 
 **Status**: Not Affected
@@ -3502,7 +3347,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-51042
 
 `CONFIG_DRM_AMDGPU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### F2FS Filesystem
 
@@ -3512,7 +3356,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_F2FS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Atheros Wireless Driver {#ath-wireless-driver}
 
 **Status**: Not Affected
@@ -3520,7 +3363,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52464
 
 `CONFIG_ATH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Mctp {#config-mctp}
 
@@ -3530,7 +3372,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_MCTP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### FUSE Filesystem
 
 **Status**: Not Affected
@@ -3538,7 +3379,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52504
 
 `CONFIG_FUSE_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### NFC
 
@@ -3548,7 +3388,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NFC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Renesas Ethernet AVB Driver {#ravb-driver}
 
 **Status**: Not Affected
@@ -3556,7 +3395,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52509
 
 `CONFIG_RAVB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### IEEE 802.15.4 (WPAN) {#ieee802154-wpan}
 
@@ -3566,7 +3404,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IEEE802154` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### InfiniBand / RDMA {#infiniband-rdma}
 
 **Status**: Not Affected
@@ -3574,7 +3411,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52515, CVE-2024-26872
 
 `CONFIG_INFINIBAND` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Spi Sun6I {#config-spi-sun6i}
 
@@ -3584,7 +3420,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SPI_SUN6I` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Intel WiFi (iwlwifi) {#iwlwifi-driver}
 
 **Status**: Not Affected
@@ -3592,7 +3427,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52531, CVE-2024-26610
 
 `CONFIG_IWLWIFI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Security Tomoyo {#config-security-tomoyo}
 
@@ -3602,7 +3436,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SECURITY_TOMOYO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Drm Msm {#config-drm-msm}
 
 **Status**: Not Affected
@@ -3610,7 +3443,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52586
 
 `CONFIG_DRM_MSM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### S390 {#config-s390}
 
@@ -3620,7 +3452,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_S390` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Jfs Fs {#config-jfs-fs}
 
 **Status**: Not Affected
@@ -3628,7 +3459,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52599, CVE-2023-52600, CVE-2023-52603, CVE-2023-52604
 
 `CONFIG_JFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Llc {#config-llc}
 
@@ -3638,7 +3468,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_LLC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Mhi Bus {#config-mhi-bus}
 
 **Status**: Not Affected
@@ -3646,7 +3475,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52494
 
 `CONFIG_MHI_BUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Ip Tunnel {#config-ip-tunnel}
 
@@ -3656,7 +3484,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IP_TUNNEL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Afs Fs {#config-afs-fs}
 
 **Status**: Not Affected
@@ -3664,7 +3491,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26736
 
 `CONFIG_AFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Traffic Control: act_mirred {#tc-act-mirred}
 
@@ -3674,7 +3500,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_ACT_MIRRED` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Usb Cdns3 {#config-usb-cdns3}
 
 **Status**: Not Affected
@@ -3682,7 +3507,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26748, CVE-2024-26749
 
 `CONFIG_USB_CDNS3` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Crypto Dev Virtio {#config-crypto-dev-virtio}
 
@@ -3692,7 +3516,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_CRYPTO_DEV_VIRTIO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Gtp {#config-gtp}
 
 **Status**: Not Affected
@@ -3700,7 +3523,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26754, CVE-2024-26793
 
 `CONFIG_GTP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Dm Crypt {#config-dm-crypt}
 
@@ -3710,7 +3532,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DM_CRYPT` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### MPTCP
 
 **Status**: Not Affected
@@ -3718,7 +3539,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26782
 
 `CONFIG_MPTCP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Btrfs Filesystem
 
@@ -3728,7 +3548,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_BTRFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Thinkpad Lmi {#config-thinkpad-lmi}
 
 **Status**: Not Affected
@@ -3736,7 +3555,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26836
 
 `CONFIG_THINKPAD_LMI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Sparx5 Switch {#config-sparx5-switch}
 
@@ -3746,7 +3564,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SPARX5_SWITCH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Rds {#config-rds}
 
 **Status**: Not Affected
@@ -3754,7 +3571,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26865, CVE-2022-48637, CVE-2024-27024
 
 `CONFIG_RDS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### TUN/TAP Driver {#tun-tap-driver}
 
@@ -3764,7 +3580,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_TUN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Mlxbf I2C {#config-mlxbf-i2c}
 
 **Status**: Not Affected
@@ -3772,7 +3587,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-48632
 
 `CONFIG_MLXBF_I2C` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### ARM64 Architecture {#arm64-arch}
 
@@ -3782,7 +3596,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_ARM64` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Nilfs2 Fs {#config-nilfs2-fs}
 
 **Status**: Not Affected
@@ -3790,7 +3603,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26955, CVE-2024-26956, CVE-2024-26981
 
 `CONFIG_NILFS2_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Common Clk Qcom {#config-common-clk-qcom}
 
@@ -3800,7 +3612,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_COMMON_CLK_QCOM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### USB Gadget
 
 **Status**: Not Affected
@@ -3808,7 +3619,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26996
 
 `CONFIG_USB_GADGET` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Nouveau (NVIDIA open-source) {#nouveau-driver}
 
@@ -3818,7 +3628,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DRM_NOUVEAU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Dvb Core {#config-dvb-core}
 
 **Status**: Not Affected
@@ -3826,7 +3635,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-27075
 
 `CONFIG_DVB_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Peci {#config-peci}
 
@@ -3836,7 +3644,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_PECI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Of {#config-of}
 
 **Status**: Not Affected
@@ -3844,7 +3651,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-48672
 
 `CONFIG_OF` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### EROFS Filesystem
 
@@ -3854,7 +3660,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_EROFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Open vSwitch {#openvswitch}
 
 **Status**: Not Affected
@@ -3862,7 +3667,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-27395
 
 `CONFIG_OPENVSWITCH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### FireWire
 
@@ -3872,7 +3676,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_FIREWIRE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Kvm {#config-kvm}
 
 **Status**: Not Affected
@@ -3880,7 +3683,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-35791
 
 `CONFIG_KVM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Aquantia Atlantic Driver {#atlantic-driver}
 
@@ -3890,7 +3692,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_ATLANTIC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Mellanox mlx5 Driver {#mlx5-driver}
 
 **Status**: Not Affected
@@ -3898,7 +3699,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52667
 
 `CONFIG_MLX5_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### AX.25 / Ham Radio {#ax25-hamradio}
 
@@ -3908,7 +3708,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_AX25` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Dma Direct Remap {#config-dma-direct-remap}
 
 **Status**: Not Affected
@@ -3916,7 +3715,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-35939
 
 `CONFIG_DMA_DIRECT_REMAP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Fb {#config-fb}
 
@@ -3926,7 +3724,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_FB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### GFS2 Shared Filesystem {#gfs2-filesystem}
 
 **Status**: Not Affected
@@ -3934,7 +3731,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52760
 
 `CONFIG_GFS2_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### GSPCA USB Webcam Driver {#gspca-driver}
 
@@ -3944,7 +3740,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_USB_GSPCA_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### SMC (RDMA over Converged Ethernet) {#smc-driver}
 
 **Status**: Not Affected
@@ -3952,7 +3747,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52775
 
 `CONFIG_SMC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### IPVLAN Driver {#ipvlan}
 
@@ -3962,7 +3756,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IPVLAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### HiSilicon HNS3 Driver {#hns3-driver}
 
 **Status**: Not Affected
@@ -3970,7 +3763,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52807
 
 `CONFIG_HNS3` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### KVM AMD
 
@@ -3980,7 +3772,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_KVM_AMD` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Network Block Device (NBD) {#nbd-driver}
 
 **Status**: Not Affected
@@ -3988,7 +3779,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52837
 
 `CONFIG_BLK_DEV_NBD` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Synaptics RMI4 Driver {#rmi4-driver}
 
@@ -3998,7 +3788,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_RMI4_CORE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Bt848 Video Capture Driver {#bttv-driver}
 
 **Status**: Not Affected
@@ -4006,7 +3795,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52847
 
 `CONFIG_VIDEO_BT848` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Hw Perf Events Hisi {#config-hw-perf-events-hisi}
 
@@ -4016,7 +3804,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_HW_PERF_EVENTS_HISI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### WMI Driver
 
 **Status**: Not Affected
@@ -4024,7 +3811,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52864
 
 `CONFIG_WMI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### AMD Radeon GPU {#radeon-driver}
 
@@ -4034,7 +3820,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DRM_RADEON` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Parallel Port Device {#ppdev-driver}
 
 **Status**: Not Affected
@@ -4042,7 +3827,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-36015
 
 `CONFIG_PPDEV` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### TIPC Protocol
 
@@ -4052,7 +3836,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_TIPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### GPIO Library {#gpiolib}
 
 **Status**: Not Affected
@@ -4060,7 +3843,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-36898, CVE-2024-36899
 
 `CONFIG_GPIOLIB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Pin Controller Subsystem {#pinctrl}
 
@@ -4070,7 +3852,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_PINCTRL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### VMware SVGA (vmwgfx) {#vmwgfx-driver}
 
 **Status**: Not Affected
@@ -4078,7 +3859,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-36960
 
 `CONFIG_DRM_VMWGFX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Traffic Control: sch_multiq {#tc-multiq}
 
@@ -4088,7 +3868,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_SCH_MULTIQ` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### IMA (Integrity Measurement Architecture) {#ima}
 
 **Status**: Not Affected
@@ -4096,7 +3875,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-38667
 
 `CONFIG_IMA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### PowerPC Architecture {#powerpc-arch}
 
@@ -4106,7 +3884,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_PPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Xfs Fs {#config-xfs-fs}
 
 **Status**: Not Affected
@@ -4114,7 +3891,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-41013, CVE-2024-41014
 
 `CONFIG_XFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### HFS+ Filesystem {#hfsplus-filesystem}
 
@@ -4124,7 +3900,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_HFSPLUS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### ISDN
 
 **Status**: Not Affected
@@ -4132,7 +3907,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-42280
 
 `CONFIG_ISDN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Platform X86 {#config-platform-x86}
 
@@ -4142,7 +3916,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_PLATFORM_X86` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### OCFS2 Filesystem
 
 **Status**: Not Affected
@@ -4150,7 +3923,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-47670
 
 `CONFIG_OCFS2_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Xen Hypervisor
 
@@ -4160,7 +3932,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_XEN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### PPP
 
 **Status**: Not Affected
@@ -4168,7 +3939,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-50033, CVE-2024-50035
 
 `CONFIG_PPP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### QCOM RmNet Driver {#rmnet-driver}
 
@@ -4178,7 +3948,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_RMNET` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### UDF Filesystem
 
 **Status**: Not Affected
@@ -4186,7 +3955,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-50143
 
 `CONFIG_UDF_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### LoongArch Architecture {#loongarch-arch}
 
@@ -4196,7 +3964,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_LOONGARCH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Realtek WiFi Driver {#rtlwifi-driver}
 
 **Status**: Not Affected
@@ -4204,7 +3971,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-58072
 
 `CONFIG_RTLWIFI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Broadcom WiFi Driver {#brcmfmac-driver}
 
@@ -4214,7 +3980,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_BRCMFMAC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### MemStick Driver {#memstick}
 
 **Status**: Not Affected
@@ -4222,7 +3987,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-22020
 
 `CONFIG_MEMSTICK` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### SCTP Protocol
 
@@ -4232,7 +3996,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IP_SCTP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Ntfs Fs {#config-ntfs-fs}
 
 **Status**: Not Affected
@@ -4240,7 +4003,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-49763
 
 `CONFIG_NTFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Net Sch Qfq {#config-net-sch-qfq}
 
@@ -4250,7 +4012,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_SCH_QFQ` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Af Rxrpc {#config-af-rxrpc}
 
 **Status**: Not Affected
@@ -4258,7 +4019,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-53218
 
 `CONFIG_AF_RXRPC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Marvell WiFi Driver {#mwifiex-driver}
 
@@ -4268,7 +4028,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_MWIFIEX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Microchip WILC1000 WiFi Driver {#wilc1000-driver}
 
 **Status**: Not Affected
@@ -4276,7 +4035,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-39952
 
 `CONFIG_WILC1000` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Traffic Control: cls_u32 {#tc-cls-u32}
 
@@ -4286,7 +4044,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_CLS_U32` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### SAA7134 Media Driver {#saa7134-driver}
 
 **Status**: Not Affected
@@ -4294,7 +4051,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-35823
 
 `CONFIG_VIDEO_SAA7134` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### DM1105 DVB Driver {#dm1105-driver}
 
@@ -4304,7 +4060,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_VIDEO_DM1105` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Allwinner Cedrus Video Codec {#cedrus-driver}
 
 **Status**: Not Affected
@@ -4312,7 +4067,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-35826
 
 `CONFIG_VIDEO_SUNXI_CEDRUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Renesas USB3 Driver {#renesas-usb3}
 
@@ -4322,7 +4076,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_USB_RENESAS_USBHS3` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Rockchip Video Decoder {#rkvdec-driver}
 
 **Status**: Not Affected
@@ -4330,7 +4083,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-35829
 
 `CONFIG_VIDEO_RKVDEC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Intel IGB Ethernet Driver {#igb-driver}
 
@@ -4340,7 +4092,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IGB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### AppleTalk Protocol {#appletalk}
 
 **Status**: Not Affected
@@ -4348,7 +4099,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-51781
 
 `CONFIG_ATALK` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Hauppauge pvrusb2 Driver {#pvrusb2-driver}
 
@@ -4358,7 +4108,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_VIDEO_PVRUSB2` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### PWM Subsystem
 
 **Status**: Not Affected
@@ -4366,7 +4115,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-26599
 
 `CONFIG_PWM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Griffin PowerMate Driver {#powermate-driver}
 
@@ -4376,7 +4124,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_INPUT_POWERMATE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### TEE Subsystem
 
 **Status**: Not Affected
@@ -4384,7 +4131,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-52503
 
 `CONFIG_TEE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Bonding {#config-bonding}
 
@@ -4394,7 +4140,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_BONDING` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Vmware Vmci {#config-vmware-vmci}
 
 **Status**: Not Affected
@@ -4402,7 +4147,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-39499, CVE-2024-46738, CVE-2025-38403
 
 `CONFIG_VMWARE_VMCI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Wwan {#config-wwan}
 
@@ -4412,7 +4156,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_WWAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Cachefiles {#config-cachefiles}
 
 **Status**: Not Affected
@@ -4420,7 +4163,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-41050, CVE-2024-41057, CVE-2024-41074
 
 `CONFIG_CACHEFILES` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Snd Soc {#config-snd-soc}
 
@@ -4430,7 +4172,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SND_SOC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Iio {#config-iio}
 
 **Status**: Not Affected
@@ -4438,7 +4179,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-42086, CVE-2024-57906, CVE-2024-57907, CVE-2024-57908, CVE-2024-57910, CVE-2024-57911, CVE-2024-57912, CVE-2022-49792, CVE-2025-38485
 
 `CONFIG_IIO` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Vhost Vsock {#config-vhost-vsock}
 
@@ -4448,7 +4188,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_VHOST_VSOCK` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Net Fou {#config-net-fou}
 
 **Status**: Not Affected
@@ -4456,7 +4195,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-44940, CVE-2026-23083
 
 `CONFIG_NET_FOU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Parisc {#config-parisc}
 
@@ -4466,7 +4204,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_PARISC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Net Sch Netem {#config-net-sch-netem}
 
 **Status**: Not Affected
@@ -4474,7 +4211,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-46800
 
 `CONFIG_NET_SCH_NETEM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Uml {#config-uml}
 
@@ -4484,7 +4220,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_UML` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Spi Nxp Flexspi {#config-spi-nxp-flexspi}
 
 **Status**: Not Affected
@@ -4492,7 +4227,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-46853
 
 `CONFIG_SPI_NXP_FLEXSPI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Vdpa {#config-vdpa}
 
@@ -4502,7 +4236,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_VDPA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Usb Serial {#config-usb-serial}
 
 **Status**: Not Affected
@@ -4510,7 +4243,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-50267
 
 `CONFIG_USB_SERIAL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Usb Musb Hdrc {#config-usb-musb-hdrc}
 
@@ -4520,7 +4252,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_USB_MUSB_HDRC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Superh {#config-superh}
 
 **Status**: Not Affected
@@ -4528,7 +4259,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-53165
 
 `CONFIG_SUPERH` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Spi Mpc52Xx {#config-spi-mpc52xx}
 
@@ -4538,7 +4268,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SPI_MPC52xx` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Pktgen {#config-pktgen}
 
 **Status**: Not Affected
@@ -4546,7 +4275,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-21680
 
 `CONFIG_PKTGEN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Orangefs Fs {#config-orangefs-fs}
 
@@ -4556,7 +4284,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_ORANGEFS_FS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Geneve {#config-geneve}
 
 **Status**: Not Affected
@@ -4564,7 +4291,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-21858
 
 `CONFIG_GENEVE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Slimbus {#config-slimbus}
 
@@ -4574,7 +4300,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SLIMBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Udmabuf {#config-udmabuf}
 
 **Status**: Not Affected
@@ -4582,7 +4307,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-37803
 
 `CONFIG_UDMABUF` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Mcb {#config-mcb}
 
@@ -4592,7 +4316,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_MCB` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Staging {#config-staging}
 
 **Status**: Not Affected
@@ -4600,7 +4323,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-49956, CVE-2023-53554
 
 `CONFIG_STAGING` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Coresight {#config-coresight}
 
@@ -4610,7 +4332,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_CORESIGHT` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Ipv6 Seg6 Lwtunnel {#config-ipv6-seg6-lwtunnel}
 
 **Status**: Not Affected
@@ -4618,7 +4339,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-38476
 
 `CONFIG_IPV6_SEG6_LWTUNNEL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Comedi {#config-comedi}
 
@@ -4628,7 +4348,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_COMEDI` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Nubus {#config-nubus}
 
 **Status**: Not Affected
@@ -4636,7 +4355,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-53217
 
 `CONFIG_NUBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Xdp Sockets {#config-xdp-sockets}
 
@@ -4646,7 +4364,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_XDP_SOCKETS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Ptp 1588 Clock Ocp {#config-ptp-1588-clock-ocp}
 
 **Status**: Not Affected
@@ -4654,7 +4371,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2025-39859
 
 `CONFIG_PTP_1588_CLOCK_OCP` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Trace Buf {#config-trace-buf}
 
@@ -4664,7 +4380,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_TRACE_BUF` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Dlm {#config-dlm}
 
 **Status**: Not Affected
@@ -4672,7 +4387,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-53629
 
 `CONFIG_DLM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Net Team {#config-net-team}
 
@@ -4682,7 +4396,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_NET_TEAM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Macvlan {#config-macvlan}
 
 **Status**: Not Affected
@@ -4690,7 +4403,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2026-23001
 
 `CONFIG_MACVLAN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Security Apparmor {#config-security-apparmor}
 
@@ -4700,7 +4412,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_SECURITY_APPARMOR` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Rcu Nocb Cpu {#config-rcu-nocb-cpu}
 
 **Status**: Not Affected
@@ -4708,7 +4419,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-35929, CVE-2025-38704
 
 `CONFIG_RCU_NOCB_CPU` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Debug Mutexes {#config-debug-mutexes}
 
@@ -4718,7 +4428,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DEBUG_MUTEXES` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Stm {#config-stm}
 
 **Status**: Not Affected
@@ -4726,7 +4435,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-38627
 
 `CONFIG_STM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Greybus {#config-greybus}
 
@@ -4736,7 +4444,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_GREYBUS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Ionic {#config-ionic}
 
 **Status**: Not Affected
@@ -4744,7 +4451,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-39502
 
 `CONFIG_IONIC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Crypto Dev Hisi Sec2 {#config-crypto-dev-hisi-sec2}
 
@@ -4754,7 +4460,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_CRYPTO_DEV_HISI_SEC2` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Bna {#config-bna}
 
 **Status**: Not Affected
@@ -4762,7 +4467,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-43839
 
 `CONFIG_BNA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Drm Aspeed Gfx {#config-drm-aspeed-gfx}
 
@@ -4772,7 +4476,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DRM_ASPEED_GFX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Pci Kirin {#config-pci-kirin}
 
 **Status**: Not Affected
@@ -4780,7 +4483,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-47751
 
 `CONFIG_PCI_KIRIN` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Drm Stm {#config-drm-stm}
 
@@ -4790,7 +4492,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DRM_STM` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Hi Gmac {#config-hi-gmac}
 
 **Status**: Not Affected
@@ -4798,7 +4499,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2022-48960, CVE-2022-48962
 
 `CONFIG_HI_GMAC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Hsr {#config-hsr}
 
@@ -4808,7 +4508,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_HSR` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Typec {#config-typec}
 
 **Status**: Not Affected
@@ -4816,7 +4515,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-50150
 
 `CONFIG_TYPEC` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Mse102X {#config-mse102x}
 
@@ -4826,7 +4524,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_MSE102X` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Video S5P Jpeg {#config-video-s5p-jpeg}
 
 **Status**: Not Affected
@@ -4834,7 +4531,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-53061
 
 `CONFIG_VIDEO_S5P_JPEG` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Arm Scmi Protocol {#config-arm-scmi-protocol}
 
@@ -4844,7 +4540,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_ARM_SCMI_PROTOCOL` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Intel Xe GPU Driver {#drm-xe-driver}
 
 **Status**: Not Affected
@@ -4852,7 +4547,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-53098
 
 `CONFIG_DRM_XE` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Hyperv Vsockets {#config-hyperv-vsockets}
 
@@ -4862,7 +4556,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_HYPERV_VSOCKETS` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Usb Lan78Xx {#config-usb-lan78xx}
 
 **Status**: Not Affected
@@ -4870,7 +4563,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2024-53213
 
 `CONFIG_USB_LAN78XX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Drm Xlnx {#config-drm-xlnx}
 
@@ -4880,7 +4572,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_DRM_XLNX` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Usb Net Cdcether {#config-usb-net-cdcether}
 
 **Status**: Not Affected
@@ -4889,7 +4580,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_USB_NET_CDCETHER` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
-
 ### Md Raid10 {#config-md-raid10}
 
 **Status**: Not Affected
@@ -4897,7 +4587,6 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **CVEs covered**: CVE-2023-53357
 
 `CONFIG_MD_RAID10` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
-
 
 ### Video Adv748X {#config-video-adv748x}
 
@@ -4914,7 +4603,7 @@ When a scanner flags HeartSuite Core Secure for a CVE listed as Not Affected on 
 Share this page with your auditor or scanner vendor as the reference for any disputed CVE entry. For compliance teams that require a configuration-level proof, the config gate for any entry on this page can be confirmed on the HeartSuite Core Secure host:
 
 ```bash
-$ grep CONFIG_<GATE> /boot/config-$(uname -r)
+grep CONFIG_<GATE> /boot/config-$(uname -r)
 ```
 
 For example, to confirm CVE-2026-31431:

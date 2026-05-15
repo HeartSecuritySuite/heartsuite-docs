@@ -24,6 +24,7 @@ HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it
 **While setup is running, you will see:**
 
 - **Over SSH**: each time you reconnect, the login shows a brief status line and drops you at a regular shell — no action needed:
+
   ```
   HeartSuite Phase 1 is running — step N of unknown total.
   The system reboots automatically. Reconnect in a few minutes.
@@ -41,9 +42,11 @@ If repeated reconnects still show the status line rather than the Dashboard:
 
 1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL) and press Enter to see the current step. If it has not advanced across reboots, run `journalctl -u heartsuite-phase1` to see the setup output.
 2. Verify the HeartSuite Core Secure kernel is loaded:
+
    ```bash
    uname -r
    ```
+
    Expected output ends in `HeartSuite` (for example, `6.18.9-HeartSuite-1.0`).
 3. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
 

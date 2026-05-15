@@ -1,0 +1,23 @@
+config:
+  # Disabled: incompatible with Hugo/Docsy conventions
+  MD013: false  # Line length — prose-heavy documentation
+  MD033: false  # Inline HTML — Hugo shortcodes use template syntax
+  MD041: false  # First line heading — front matter precedes headings
+  MD025: false  # Multiple top-level headings — allowed in this doc style
+  MD040: false  # Fenced code language — not enforced on all existing blocks
+
+  # Disabled: intentional style choices in this project
+  MD034: false  # Bare URLs — email addresses used intentionally in plain text
+  MD036: false  # Emphasis as heading — **Label**: pattern used for inline labels
+  MD028: false  # Blank line in blockquote — used as separator between callout blocks
+  MD060: false  # Table column style — 182 pre-existing cosmetic violations; fix as separate pass
+
+  # Configured for project conventions
+  MD003:
+    style: atx        # Enforce # style headings only
+  MD004:
+    style: dash       # Unordered list marker must be -
+  MD046:
+    style: fenced     # Code blocks must use ``` fences
+  MD048:
+    style: backtick   # Fences must use backticks, not tildes
