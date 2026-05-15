@@ -89,8 +89,10 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Score on HeartSuite 0.0 — trigger not present in default configuration |
 | [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-23193](#cve-2026-23193) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
+| [CVE-2026-43284](#cve-2026-43284) | XFRM/IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-high">8.1 HIGH</span> | Affected — `CONFIG_XFRM=y`, `CONFIG_INET6_ESP=y`; Dirty Frag chain broken (rxrpc absent); Lockdown limits post-exploitation |
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Code not compiled in |
+| [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on HeartSuite Core Secure |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -325,6 +327,45 @@ This CVE describes a privilege escalation through the AF_ALG socket interface. A
 Lockdown closes the remaining question. Even if the code path were present, Lockdown — `chattr +i` filesystem immutability combined with the HeartSuite Core Secure kernel refusing runtime changes to the allowlist — removes every useful action root can take after gaining privilege. The kernel refuses to clear immutable flags. Mount operations are blocked in Lockdown. Writes to the audit log are blocked. Root cannot modify the allowlist, add a backdoor, or persist across a reboot.
 
 See [Deployment Scenarios → Production Servers](../introduction/deployment-scenarios/) for the architectural context of how Lockdown interacts with a privilege escalation reaching root.
+
+### CVE-2026-43284
+
+**Status**: Affected  
+**Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
+**Base Score**: 8.8 HIGH — NVD full vector assessment pending  
+**Score on HeartSuite**: 8.1 HIGH — Lockdown reduces MI: High→Low (no new code execution, no allowlist modification, no persistence); approximate pending NVD vector confirmation  
+**Upstream fix**: pending distribution
+
+**What this means for an attacker:**
+
+This CVE describes a write-what-where condition in the esp/xfrm component, exploitable by a low-privileged local user after initial access — SSH, web shell, container escape, or account compromise — to overwrite kernel memory and gain root. It is one half of the "Dirty Frag" exploit chain; combining it with CVE-2026-43500 produces a deterministic privilege escalation.
+
+**The Dirty Frag chain does not execute on HeartSuite Core Secure.** CVE-2026-43500 requires the rxrpc transport protocol (`CONFIG_AF_RXRPC`). rxrpc is not compiled into the HeartSuite Core Secure kernel — the second link of the chain is absent.
+
+**Why HeartSuite does not reduce CVE-2026-43284 to 0.0:**
+
+`CONFIG_XFRM=y` and `CONFIG_INET6_ESP=y` are compiled in. The XFRM framework core (`net/xfrm/`) and IPv6 ESP (`net/ipv6/esp6.c`) are present in the running kernel. IPv4 ESP (`net/ipv4/esp4.c`) is absent — `CONFIG_INET_ESP` is not set — but does not determine the outcome: the esp/xfrm component extends beyond IPv4 ESP, and both XFRM core and IPv6 ESP are part of that component. The upstream patch has not yet reached distributions at the time of writing; once the fix commit is published, it will identify the specific source file and allow an exact Gate 1 determination. Until then this entry reflects the conservative position: compiled-in code, component name matches, no config gate closure available. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker who reaches root cannot drop and execute a new program without an allowlist entry.
+
+**What this means for you as an HS user:**
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+The residual risks are in-memory data exfiltration (reading live process memory) and availability impact (crashing the system). These are the limits of what Lockdown addresses.
+
+### CVE-2026-43500
+
+**Status**: Not Affected  
+**Component**: rxrpc — RxRPC transport protocol (`CONFIG_AF_RXRPC`)  
+**Base Score**: 7.8 HIGH — NVD full vector assessment pending  
+**Upstream fix**: pending distribution
+
+This CVE describes a local privilege escalation through an out-of-bounds write in the rxrpc transport protocol implementation. It is the second half of the "Dirty Frag" exploit chain (paired with CVE-2026-43284); chaining both produces a deterministic privilege escalation to root.
+
+`CONFIG_AF_RXRPC` is not compiled into the HeartSuite Core Secure kernel. The rxrpc address family is not available; an attempt to open an `AF_RXRPC` socket returns `EAFNOSUPPORT`. The vulnerable code in `net/rxrpc/` is entirely absent from the running kernel. The HeartSuite Core Secure kernel predates the upstream fix, but the fix is not required: there is no reachable code path for this bug on any HeartSuite Core Secure deployment. The Dirty Frag chain has no second link on this system.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 ### CVE-2024-47685
 
