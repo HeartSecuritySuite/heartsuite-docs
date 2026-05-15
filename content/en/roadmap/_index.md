@@ -91,7 +91,7 @@ gantt
 ## Feature Details by Status
 
 {{< tabpane text=true >}}
-{{< tab header="Done" >}}
+{{% tab header="Done" %}}
 
 ### Design & Architecture (2021)
 
@@ -303,8 +303,8 @@ gantt
 > **Always-On UI Audit Log + Safe Error Handling** (May 2026)  
 > All UI actions logged to a rotating file. Silent error handling eliminated across the UI and core layers. A CI walker enforces this on every commit.
 
-{{< /tab >}}
-{{< tab header="In Progress" >}}
+{{% /tab %}}
+{{% tab header="In Progress" %}}
 
 > [!WARNING]
 > **Phase 1 Unattended Install Service — Code Implementation**  
@@ -322,8 +322,8 @@ gantt
 > **Lockdown Screen — Final UX Form**  
 > Now that Lockdown is automatic, the inventory screen has no decision left to confirm. Open question: standalone viewing surface, or fold into the Lockdown button ceremony?
 
-{{< /tab >}}
-{{< tab header="Planned" >}}
+{{% /tab %}}
+{{% tab header="Planned" %}}
 
 ### User-Facing Features
 
@@ -379,7 +379,7 @@ gantt
 > **Extended Fuzz Testing**  
 > Fuzz testing of the allowlist record parser and the custom system call interfaces is planned as a future verification gate.
 
-{{< /tab >}}
+{{% /tab %}}
 {{< /tabpane >}}
 
 ## Community-Driven Development
