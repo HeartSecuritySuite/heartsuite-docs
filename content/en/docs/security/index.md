@@ -89,14 +89,14 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Score on HeartSuite 0.0 — trigger not present in default configuration |
 | [CVE-2022-41674, CVE-2022-42719, CVE-2022-42720](#cve-2022-41674-cve-2022-42719-cve-2022-42720) | mac80211 | <span class="badge badge-cve-high">8.8 / 8.1 / 7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-23193](#cve-2026-23193) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
-| [CVE-2026-43284](#cve-2026-43284) | XFRM/IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-high">8.1 HIGH</span> | Affected — `CONFIG_XFRM=y`, `CONFIG_INET6_ESP=y`; Dirty Frag chain broken (rxrpc absent); Lockdown limits post-exploitation |
+| [CVE-2026-43284](#cve-2026-43284) | XFRM/IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `esp_output` unreachable; no XFRM SA can be established; IPsec management tools absent from HS allowlist; Dirty Frag chain broken (rxrpc absent) |
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Code not compiled in |
 | [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on HeartSuite Core Secure |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
-| [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_CRYPTO=y`; Lockdown limits post-exploitation |
+| [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework — scomp interface (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `CONFIG_INET_IPCOMP` not compiled; no compression algorithm registered; `scomp_acomp_comp_decomp()` unreachable |
 | [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `EXT4_IOC_MOVE_EXT` ioctl only reached by defrag tools; none in HS allowlist |
 | [CVE-2024-26842](#cve-2024-26842) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
 | [CVE-2022-48662](#cve-2022-48662) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
@@ -330,29 +330,19 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 
 ### CVE-2026-43284
 
-**Status**: Affected  
+**Status**: Not exploitable  
 **Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
 **Base Score**: 8.8 HIGH — NVD full vector assessment pending  
-**Score on HeartSuite**: 8.1 HIGH — Lockdown reduces MI: High→Low (no new code execution, no allowlist modification, no persistence); approximate pending NVD vector confirmation  
+**Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a standard HeartSuite Core Secure deployment  
 **Upstream fix**: pending distribution
 
-**What this means for an attacker:**
+This CVE describes a write-what-where condition in the `esp_output` page-write path. The vulnerable code is at `net/ipv6/esp6.c:524`: `tail = page_address(page) + pfrag->offset` followed by `esp_output_fill_trailer(tail, esp->tfclen, esp->plen, esp->proto)`. If `pfrag->offset` is corrupted or attacker-influenced, the trailer write reaches an arbitrary kernel page address. The identical pattern exists in `net/ipv4/esp4.c:489` (`CONFIG_INET_ESP`, not compiled), but the absence of IPv4 ESP is irrelevant — `esp6.c` carries the same code. The bug is one half of the "Dirty Frag" exploit chain; chaining it with CVE-2026-43500 produces a deterministic privilege escalation.
 
-This CVE describes a write-what-where condition in the esp/xfrm component, exploitable by a low-privileged local user after initial access — SSH, web shell, container escape, or account compromise — to overwrite kernel memory and gain root. It is one half of the "Dirty Frag" exploit chain; combining it with CVE-2026-43500 produces a deterministic privilege escalation.
+`CONFIG_INET6_ESP=y` is compiled in and `esp6.c:524` is present in the running kernel. The `esp_output` function is called only when the kernel encrypts an outgoing packet that matches a configured XFRM security association. With no security association configured, `esp_output` is never reached — by any user, at any privilege level. Configuring a XFRM security association requires XFRM management tooling: `ip xfrm` (iproute2), `setkey`, strongSwan, libreswan, or an equivalent IKE daemon. None of these are in the HeartSuite Core Secure default allowlist. Under Lockdown, the allowlist is `chattr +i` immutable and `FS_IOC_SETFLAGS` returns `EPERM` for all callers — root cannot add management tools and therefore cannot establish a security association. The `esp_output` page-write path is unreachable for the lifetime of the boot.
 
-**The Dirty Frag chain does not execute on HeartSuite Core Secure.** CVE-2026-43500 requires the rxrpc transport protocol (`CONFIG_AF_RXRPC`). rxrpc is not compiled into the HeartSuite Core Secure kernel — the second link of the chain is absent.
+The Dirty Frag chain has no second link on this system regardless: `CONFIG_AF_RXRPC` is not compiled (see CVE-2026-43500).
 
-**Why HeartSuite does not reduce CVE-2026-43284 to 0.0:**
-
-`CONFIG_XFRM=y` and `CONFIG_INET6_ESP=y` are compiled in. The XFRM framework core (`net/xfrm/`) and IPv6 ESP (`net/ipv6/esp6.c`) are present in the running kernel. IPv4 ESP (`net/ipv4/esp4.c`) is absent — `CONFIG_INET_ESP` is not set — but does not determine the outcome: the esp/xfrm component extends beyond IPv4 ESP, and both XFRM core and IPv6 ESP are part of that component. The upstream patch has not yet reached distributions at the time of writing; once the fix commit is published, it will identify the specific source file and allow an exact Gate 1 determination. Until then this entry reflects the conservative position: compiled-in code, component name matches, no config gate closure available. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker who reaches root cannot drop and execute a new program without an allowlist entry.
-
-**What this means for you as an HS user:**
-
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
-
-A reboot is a clean slate. The attack does not survive it.
-
-The residual risks are in-memory data exfiltration (reading live process memory) and availability impact (crashing the system). These are the limits of what Lockdown addresses.
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 ### CVE-2026-43500
 
@@ -508,26 +498,23 @@ Lockdown's allowlist adds a further constraint on program execution: every execu
 
 ### CVE-2023-52612
 
-**Status**: Affected
+**Status**: Not exploitable
 **Component**: kernel crypto framework — scomp interface (`CONFIG_CRYPTO`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on HeartSuite**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Score on HeartSuite**: 0.0 — `CONFIG_INET_IPCOMP` not compiled; no compression algorithm registered; `scomp_acomp_comp_decomp()` unreachable
 **Affected range**: kernels prior to stable fixes in the 6.7.x, 6.6.x, 6.1.x, 5.15.x, 5.10.x, and 5.4.x series (5.19 branch is EOL; no backport)
 **Upstream fix**: merged in Linux 6.8-rc; backported across active stable series
 
-**What this means for an attacker:**
-
 This CVE describes a buffer overflow in the kernel software compression (`scomp`) interface in `crypto/scompress.c`. The `scomp_acomp_comp_decomp()` function uses a per-CPU scratch buffer of `SCOMP_SCRATCH_SIZE` bytes as working space. If the caller provides a `req->dst` scatter list smaller than `SCOMP_SCRATCH_SIZE`, the function still caps `req->dlen` to `SCOMP_SCRATCH_SIZE` and then copies the full output — up to that size — into `req->dst` via `scatterwalk_map_and_copy()`. No check verifies that `req->dst` can hold `req->dlen` bytes before the copy. A caller who controls `req->dst` and triggers a compression or decompression that fills the scratch buffer can write beyond the end of the destination scatter list.
 
-**Why HeartSuite does not reduce this to 0.0:**
+The `scomp` interface is the software-side of the kernel's `acomp` (asynchronous compression) API. It is not a general-purpose path used by dm-crypt, TLS, or cipher operations — it exists exclusively to service IPsec compression transforms (IPCOMP, RFC 3173). `scomp_acomp_comp_decomp()` is only reached when a compression algorithm is registered with the scomp backend and a caller submits a request to it. On HeartSuite Core Secure there are no such callers and no such registrations:
 
-`CONFIG_CRYPTO=y` is compiled in and 5.19.6 falls within the affected range. The kernel crypto framework is used by IPsec, dm-crypt, TLS, and other subsystems — all active on a Debian 11 server. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+- `# CONFIG_INET_IPCOMP is not set` — the IPv4/IPv6 IPsec compression module is not compiled; no IPCOMP transform can be configured
+- `# CONFIG_CRYPTO_DEFLATE is not set` — DEFLATE not compiled; not registered with scomp
+- `# CONFIG_CRYPTO_LZ4 is not set` — LZ4 not compiled; not registered with scomp
+- `# CONFIG_CRYPTO_ZSTD is not set` — ZSTD not compiled; not registered with scomp
 
-**What this means for you as an HS user:**
-
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
-
-A reboot is a clean slate. The attack does not survive it.
+With no compression algorithm registered, the scomp backend has no handler to dispatch to. `CONFIG_CRYPTO=y` means the crypto framework is present, but framework presence is not trigger reachability. The trigger cannot be reached on any HeartSuite Core Secure deployment.
 
 ### CVE-2024-26654
 
