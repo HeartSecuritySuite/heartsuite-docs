@@ -2,12 +2,12 @@
 title: "Roadmap"
 linkTitle: "Roadmap"
 description: "See where HeartSuite Core Secure is headed—kernel-level enforcement that root cannot bypass."
-lastmod: "2026-05-14"  # Update manually or via Git commit
-weight: 50  # Orders in nav if needed
-no_list: true  # Hides auto-list of children (clean landing)
+lastmod: "2026-05-14"
+weight: 50
+type: docs
+toc: true
+no_list: true
 ---
-
-# Roadmap
 
 Traditional endpoint security detects threats after they execute. HeartSuite takes the opposite approach: it prevents malware from executing in the first place—at the kernel level, where not even root can override the controls. Even if malware is downloaded to a HeartSuite server, the architecture prevents it from running its harmful commands. That stops zero-day attacks before any signature, rule, or heuristic could catch them.
 
