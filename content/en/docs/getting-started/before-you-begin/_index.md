@@ -26,5 +26,6 @@ If your setup differs, check the [Introduction](../../introduction/) for compati
 Both paths merge at the Dashboard after Phase 1 (System Verification) is complete.
 
 **Ready to install?**
+
 - **Local Path**: proceed to [Obtaining HeartSuite Core Secure](../../installation/obtaining-heartsuite/).
 - **Cloud Path**: launch your instance — the Dashboard appears on first login and confirms Phase 1 is complete.

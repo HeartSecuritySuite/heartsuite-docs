@@ -72,6 +72,19 @@ jobs:
       - name: Check for banned terminology
         run: npm run check:terms
 
+      - name: Lint Markdown
+        run: npm run check:markdown
+
+      - name: Check for invalid Goldmark alert types
+        run: |
+          invalid=$(grep -rn '\[!' content/ --include="*.md" \
+            | grep -Ev '\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]')
+          if [ -n "$invalid" ]; then
+            echo "$invalid"
+            echo "Error: invalid Goldmark alert type — allowed: NOTE, TIP, IMPORTANT, WARNING, CAUTION"
+            exit 1
+          fi
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

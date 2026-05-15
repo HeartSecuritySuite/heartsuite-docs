@@ -25,6 +25,7 @@
     "build": "npm run _build -- ",
     "check:links:all": "HTMLTEST_ARGS= npm run _check:links",
     "check:links": "npm run _check:links",
+    "check:markdown": "markdownlint-cli2 \"content/**/*.md\"",
     "check:terms": "bash tools/check-terms.sh",
     "ci:prepare": "npm run _get:docsy && hugo mod graph && hugo mod tidy",
     "ci:test": "npm run ci:prepare && npm run fix:format && npm run test && npm run _diff:check",
@@ -52,6 +53,7 @@
     "update": "npm run update:packages && npm run update:docsy:mod"
   },
   "devDependencies": {
+    "markdownlint-cli2": "^0.21.0",
     "autoprefixer": "^10.4.24",
     "cross-env": "^10.1.0",
     "hugo-extended": "0.155.3",

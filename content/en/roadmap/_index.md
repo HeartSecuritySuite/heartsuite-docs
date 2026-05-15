@@ -329,31 +329,31 @@ gantt
 
 ### User-Facing Features
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Java Shim Launcher**  
 > The five shipped Secure Script Launchers cover Python 2, Python 3, Perl, and PHP. A Java launcher is planned: Java scripts and applications would receive the same per-script APO enforcement that Python/Perl/PHP enjoy today. Without it, Java deployments are APO-gated at the JVM binary level only, not at the individual `.jar` or script level.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Network Allowlist — CIDR and DNS Support**  
 > The current network allowlist is literal-IP-only: no CIDR ranges, no DNS resolution, no wildcards. Adding CIDR support would allow a subnet to be expressed as a single entry rather than enumerating every IP individually—significant for cloud deployments where destination IPs are dynamic or managed via DNS.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Mode-Flip Audit Log**  
 > When the kernel switches between Setup Mode and Lockdown, no log entry is currently emitted. A future improvement will log every state transition with the source state, destination state, triggering process, and timestamp—so an unexpected mode change is visible after the fact.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Compromise Response Screen**  
 > Accessible from the dashboard when a non-HS kernel is detected. Guides through: forensic scan, allowlist audit, restore from backup, and controlled return to Lockdown. Design brief exists; not yet implemented.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Backup Retention — Configuration Backend Integration**  
 > Tiered retention policy UI is designed (7-day full / 90-day daily / monthly). The backup configuration tool needs per-directory retention subcommands before the UI can connect.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Multi-File Selection in Restore**  
 > Version manager currently restores one file at a time. Multi-file and directory-level restore selection planned.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **UEFI Secure Boot / MOK Signing**  
 > Azure Gen2 VMs default to Trusted Launch (Secure Boot on), blocking unsigned kernels—a confirmed customer blocker. MOK enrolment flow not yet designed.
 
@@ -361,11 +361,11 @@ gantt
 
 ### Kernel / Userspace Tools
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Userspace Backup Versioning & Rollback**  
 > The in-kernel backup-on-write subsystem is complete. The userspace versioning and rollback tool that operators use to retrieve previous file versions is not yet finished.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Shim Manager, Version Manager, APO Manager (compiled binaries)**  
 > These tools exist in source form but are not yet in the shipped binary release. They will replace their current script-driven equivalents.
 
@@ -373,11 +373,11 @@ gantt
 
 ### Testing & Verification
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Kernel Self-Tests + Filesystem Test Suite**  
 > Two additional test suites are defined in the verification framework and deferred pending resource allocation.
 
-> [!ABSTRACT]
+> [!NOTE]
 > **Extended Fuzz Testing**  
 > Fuzz testing of the allowlist record parser and the custom system call interfaces is planned as a future verification gate.
 
@@ -391,4 +391,5 @@ Join the conversation—suggest features, report issues, or discuss the architec
 [Discord/GitHub links here via config params.links]
 
 ### Get Started
+
 [Get Started](/docs/) | [Open an Issue](https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new)
