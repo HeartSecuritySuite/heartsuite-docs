@@ -78,7 +78,7 @@ jobs:
       - name: Check for invalid Goldmark alert types
         run: |
           invalid=$(grep -rn '\[!' content/ --include="*.md" \
-            | grep -Ev '\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]')
+            | grep -Ev '\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]' || true)
           if [ -n "$invalid" ]; then
             echo "$invalid"
             echo "Error: invalid Goldmark alert type — allowed: NOTE, TIP, IMPORTANT, WARNING, CAUTION"
