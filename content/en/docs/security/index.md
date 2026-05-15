@@ -310,6 +310,8 @@ Several Not-exploitable entries below justify their 0.0 Score on HeartSuite with
 - `tc` (iproute2 traffic control) — qdisc/filter manipulation. Allowlisting reverts CVE-2025-37914 / 37915 / 37923 / 22121 and other `NET_SCHED` CVEs to **Affected**.
 - `bpftool`, `trace-cmd`, `perf`, debugfs/tracefs writers — kernel instrumentation. Allowlisting reverts the kprobe / tracing / perf CVE cluster (CVE-2024-38588 etc.) to **Affected**.
 - `dmsetup`, raw block-device tools, `cryptsetup` mappings created post-boot — block-layer mutation. Same shape.
+- `ip xfrm`, `setkey`, strongSwan, libreswan, or any IKE daemon — XFRM management. Allowlisting any of these enables XFRM security association setup, making `esp_output` reachable and reverting CVE-2026-43284 to **Affected 8.8 HIGH**.
+- `e4defrag` or any extent-defragmentation tool — ext4 online defragmentation. Allowlisting reverts CVE-2024-26704 to **Affected 7.8 HIGH**.
 
 If you run a development, debug, or instrumentation-heavy deployment and legitimately need any of the above, treat the corresponding Not-exploitable entries in this document as **Affected** for your environment, and apply the standard Affected backstop logic (Lockdown's allowlist still refuses *unknown* programs, but the now-allowlisted utility is itself the trigger). The "Not exploitable" classifications below are correct for HeartSuite Core Secure deployments; they are not universal.
 
@@ -542,6 +544,8 @@ This CVE describes a use-after-free caused by a circular scheduling race between
 This CVE describes a use-after-free in `ext4_move_extents()` in `fs/ext4/move_extent.c`, reachable via the `EXT4_IOC_MOVE_EXT` ioctl. The function moves file extents between an original inode and a donor inode. If the first move operation fails, `o_start` has not advanced past `orig_blk`, so `*moved_len` is set to zero. Preallocation blocks set up for `orig_inode` and `donor_inode` are discarded only when `*moved_len` is non-zero — the guard at `move_extent.c:692`. With `*moved_len == 0`, those preallocations are never discarded, leaving stale preallocation state that produces a use-after-free when the preallocations are later released. The `EXT4_IOC_MOVE_EXT` ioctl requires only write access to the file — no `CAP_SYS_ADMIN`, consistent with the `PR:L` CVSS score.
 
 `CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The `EXT4_IOC_MOVE_EXT` ioctl is the sole entry point to the vulnerable `ext4_move_extents()` path; it is invoked by extent-defragmentation tools (`e4defrag`) and not by normal filesystem read or write operations. No defragmentation tool appears in the HS allowlist, and the kernel blocks any process without an allowlist entry from executing. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+
+If your deployment adds `e4defrag` or any other extent-defragmentation tool to the HS allowlist, the `EXT4_IOC_MOVE_EXT` ioctl becomes reachable and this CVE applies at its base score of 7.8 HIGH. Treat it as Affected and apply the standard backstop logic.
 
 ### CVE-2024-26842
 
