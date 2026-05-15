@@ -333,7 +333,7 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 **Status**: Not exploitable  
 **Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
 **Base Score**: 8.8 HIGH — NVD full vector assessment pending  
-**Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a standard HeartSuite Core Secure deployment  
+**Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a default HeartSuite Core Secure deployment  
 **Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport)
 
 This CVE describes a write-what-where condition in the `esp_output` page-write path. The vulnerable code is at `net/ipv6/esp6.c:524`: `tail = page_address(page) + pfrag->offset` followed by `esp_output_fill_trailer(tail, esp->tfclen, esp->plen, esp->proto)`. If `pfrag->offset` is corrupted or attacker-influenced, the trailer write reaches an arbitrary kernel page address. The identical pattern exists in `net/ipv4/esp4.c:489` (`CONFIG_INET_ESP`, not compiled), but the absence of IPv4 ESP is irrelevant — `esp6.c` carries the same code. The bug is one half of the "Dirty Frag" exploit chain; chaining it with CVE-2026-43500 produces a deterministic privilege escalation.
@@ -342,7 +342,9 @@ This CVE describes a write-what-where condition in the `esp_output` page-write p
 
 The Dirty Frag chain has no second link on this system regardless: `CONFIG_AF_RXRPC` is not compiled (see CVE-2026-43500).
 
-The trigger cannot be reached on any HeartSuite Core Secure deployment.
+The trigger cannot be reached on any default HeartSuite Core Secure deployment.
+
+If your deployment adds XFRM management tooling (`ip xfrm`, `setkey`, strongSwan, libreswan, or an equivalent IKE daemon) to the HS allowlist, a security association can be established and `esp_output` becomes reachable. In that configuration this CVE applies at its base score of 8.8 HIGH. Treat it as Affected and apply the standard backstop logic.
 
 ### CVE-2026-43500
 
