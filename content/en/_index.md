@@ -17,6 +17,7 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 
 ## Learn About HeartSuite Core Secure
 
+- [Roadmap](roadmap/) — Development timeline and upcoming features.
 - [Introduction and Overview](docs/introduction/) — Overview, setup process, Dashboard guidance, and requirements.
 - [Deployment Scenarios](docs/introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
 - [How HeartSuite Core Secure Compares](docs/introduction/how-it-compares/) — What HeartSuite Core Secure replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
