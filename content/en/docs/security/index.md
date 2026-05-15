@@ -334,7 +334,7 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 **Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
 **Base Score**: 8.8 HIGH — NVD full vector assessment pending  
 **Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a standard HeartSuite Core Secure deployment  
-**Upstream fix**: pending distribution
+**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport)
 
 This CVE describes a write-what-where condition in the `esp_output` page-write path. The vulnerable code is at `net/ipv6/esp6.c:524`: `tail = page_address(page) + pfrag->offset` followed by `esp_output_fill_trailer(tail, esp->tfclen, esp->plen, esp->proto)`. If `pfrag->offset` is corrupted or attacker-influenced, the trailer write reaches an arbitrary kernel page address. The identical pattern exists in `net/ipv4/esp4.c:489` (`CONFIG_INET_ESP`, not compiled), but the absence of IPv4 ESP is irrelevant — `esp6.c` carries the same code. The bug is one half of the "Dirty Frag" exploit chain; chaining it with CVE-2026-43500 produces a deterministic privilege escalation.
 
@@ -349,7 +349,7 @@ The trigger cannot be reached on any HeartSuite Core Secure deployment.
 **Status**: Not Affected  
 **Component**: rxrpc — RxRPC transport protocol (`CONFIG_AF_RXRPC`)  
 **Base Score**: 7.8 HIGH — NVD full vector assessment pending  
-**Upstream fix**: pending distribution
+**Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport)
 
 This CVE describes a local privilege escalation through an out-of-bounds write in the rxrpc transport protocol implementation. It is the second half of the "Dirty Frag" exploit chain (paired with CVE-2026-43284); chaining both produces a deterministic privilege escalation to root.
 
