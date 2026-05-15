@@ -4,6 +4,9 @@ linkTitle: "Roadmap"
 description: "See where HeartSuite Core Secure is headed—kernel-level enforcement that root cannot bypass."
 lastmod: "2026-05-14"
 weight: 50
+menu:
+  main:
+    weight: 40
 type: docs
 toc: true
 no_list: true
@@ -31,19 +34,19 @@ gantt
     LSM replacement — all competing LSMs disabled      :done, 2022-01-01, 2022-09-30
     eBPF intentionally disabled (BPF verifier surface) :done, 2022-01-01, 2022-09-30
     Network allowlist — IP-literal kernel enforcement  :done, 2022-06-01, 2022-12-31
-    APO log infrastructure (HS_log.txt)                :done, 2022-11-01, 2023-01-31
+    APO audit logging                                  :done, 2022-11-01, 2023-01-31
 
     section Tooling Build-out (2023)
-    Backup subsystem + hs_monitor_state               :done, 2023-01-01, 2023-06-30
+    Backup subsystem                                  :done, 2023-01-01, 2023-06-30
     Shim programs — Python / Perl / PHP               :done, 2023-02-20, 2023-10-25
     Hash-based file versioning (supply-chain defence) :done, 2023-03-01, 2023-07-01
     Management tools — first compiled release (6 bins) :done, 2023-06-01, 2023-07-01
-    Lockdown tooling (lockdown_HS, HS_lockdown.sh)    :done, 2023-09-11, 2023-10-31
+    Lockdown tooling                                  :done, 2023-09-11, 2023-10-31
     APO manager + batch tools + shim manager          :done, 2023-10-01, 2023-11-30
     US Patent 11,822,699 B1                           :done, 2023-11-21, 2023-11-22
 
     section v1.0 Release (2024)
-    Beta installer + setup documentation (Karen)      :done, 2023-07-31, 2024-01-20
+    Beta installer + setup documentation              :done, 2023-07-31, 2024-01-20
     HeartSuite v1.0 — Linux 5.19.6 released           :done, 2024-01-20, 2024-01-21
     US Patent 11,983,288 B1                           :done, 2024-05-14, 2024-05-15
 
@@ -53,16 +56,13 @@ gantt
     Decision: target Linux 6.18 LTS instead           :done, 2026-02-24, 2026-02-25
 
     section Open-Source Launch (2026 Q1)
-    6.18.9 porting reference (Karen)                  :done, 2026-02-25, 2026-03-17
+    Linux 6.18 LTS kernel port                        :done, 2026-02-25, 2026-03-17
     Public open-source release — v1.6.2 tagged        :done, 2026-03-05, 2026-03-12
     TUI overlay prototype                             :done, 2026-03-18, 2026-03-26
-    Linux 6.18.23 build + syscall ABI fixes           :done, 2026-03-18, 2026-04-24
 
     section v1.6.4 Multi-Distro (2026 Q2)
-    Repo split: heartsuite UI + core-secure           :done, 2026-04-21, 2026-04-22
     Distro validation gate — 8 distributions          :done, 2026-04-22, 2026-04-26
     GRUB automation + Alpine / OpenRC support         :done, 2026-04-23, 2026-04-29
-    Docker / OverlayFS integration design             :done, 2026-04-24, 2026-04-28
     v1.6.4 commercial release — kernel 6.18.9         :done, 2026-04-26, 2026-04-27
 
     section TUI Dashboard (2026 Q2)
@@ -71,12 +71,11 @@ gantt
     Alert system — SMTP, PagerDuty, OpsGenie          :done, 2026-04-28, 2026-05-07
     Allowlist management + backup & restore           :done, 2026-05-04, 2026-05-10
     Lockdown — activated on startup                   :done, 2026-05-07, 2026-05-12
-    CI enforcement gates + SPDX compliance            :done, 2026-05-07, 2026-05-14
-    Shell → Python migration + audit log hardening    :done, 2026-05-09, 2026-05-14
 
     section In Progress
     Phase 1 unattended install service                :active, 2026-05-14, 2026-06-30
     Allowlist provenance UI                           :active, 2026-05-14, 2026-07-15
+    Docker / container support                        :active, 2026-05-14, 2026-07-31
 
     section Planned
     Java shim launcher                               :2026-07-01, 2026-08-31
@@ -220,8 +219,8 @@ gantt
 ### Open-Source Launch — v1.6.2 (2026 Q1)
 
 > [!NOTE]
-> **6.18.9 Kernel Porting Reference Document** (March 2026)  
-> Documents every hook change from the 5.19.6 line to 6.18, including the execution hook relocation and syscall slot renumbering. Authored by Karen.
+> **Linux 6.18 LTS Kernel Port** (March 2026)  
+> Full port from the 5.19.6 line to Linux 6.18 LTS, covering hook relocations and syscall ABI changes. Documented as a reference for future kernel version upgrades.
 
 > [!NOTE]
 > **Public Open-Source Release — v1.6.2** (March 5–11, 2026)  
@@ -231,17 +230,9 @@ gantt
 > **TUI Overlay Prototype** (March 18–26, 2026)  
 > First working Textual TUI overlay: naming overlay, log viewer, tree parser, and Layer 1 CLI tools. Category colors and three-pane dashboard layout established.
 
-> [!NOTE]
-> **Linux 6.18.23 Build** (March–April 2026)  
-> Three build iterations required to resolve configuration, syscall ABI, and type-compatibility issues discovered during the port.
-
 ---
 
 ### v1.6.4 Multi-Distro Release (April 2026)
-
-> [!NOTE]
-> **Repository Split** (April 21, 2026)  
-> TUI overlay and installer move to the sibling public `heartsuite` repo. Kernel, tools, and porting docs remain in `heartsuite-core-secure`. The `main` branch is archived; development continues on `kernel-6.18`.
 
 > [!NOTE]
 > **Multi-Distro Validation Gate — 8 Distributions** (April 22–26, 2026)  
@@ -250,10 +241,6 @@ gantt
 > [!NOTE]
 > **GRUB Automation + Alpine / OpenRC Support** (April 23–29, 2026)  
 > Installer sets HeartSuite kernel as GRUB default and reboots automatically. Falls back to console instructions on Alpine/extlinux. Both systemd and OpenRC service unit variants ship.
-
-> [!NOTE]
-> **Docker / OverlayFS Integration Design** (April 24, 2026)  
-> OverlayFS support added as a loadable module for container hosts. HeartSuite-internal error codes are mapped to standard POSIX error codes for container-compatible output.
 
 > [!NOTE]
 > **v1.6.4 Commercial Release — Kernel 6.18.9** (April 26, 2026)  
@@ -292,14 +279,6 @@ gantt
 > A multi-gate verification framework covers build checks, static analysis, syscall smoke testing on both allow and deny paths, memory safety testing, cross-distro validation across all 8 supported distributions, post-Lockdown mount refusal verification, and a source-surface manifest that ensures no enforcement hook is silently removed or disabled.
 
 > [!NOTE]
-> **CI Enforcement Integrity Gates** (May 2026)  
-> CI gates prevent enforcement code from shipping in a disabled state. Every enforcement hook is tracked; a linter rejects any new commented-out enforcement code; Lockdown and unlock path symmetry is asserted on every run.
-
-> [!NOTE]
-> **Shell → Python Migration + SPDX Compliance** (May 2026)  
-> All installer scripts converted to Python equivalents for cross-distro portability. SPDX headers applied throughout; REUSE compliance verified. License transitioned from AGPL-3.0 to BUSL-1.1.
-
-> [!NOTE]
 > **Always-On UI Audit Log + Safe Error Handling** (May 2026)  
 > All UI actions logged to a rotating file. Silent error handling eliminated across the UI and core layers. A CI walker enforces this on every commit.
 
@@ -313,6 +292,10 @@ gantt
 > [!WARNING]
 > **Allowlist Provenance UI**  
 > Design brief complete (May 12, 2026). Each allowlist entry will show how, when, and by whom it was approved. Backend extension and UI rendering are pending.
+
+> [!WARNING]
+> **Docker / Container Support**  
+> OverlayFS support is being added as a loadable module for container hosts. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
 
 > [!WARNING]
 > **File-Access Consequence Text**  
