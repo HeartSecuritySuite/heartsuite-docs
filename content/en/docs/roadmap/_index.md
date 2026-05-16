@@ -75,7 +75,6 @@ gantt
     Phase 1 unattended install service                :done, 2026-05-12, 2026-05-14
 
     section In Progress
-    Allowlist audit trail                             :active, 2026-05-14, 2026-07-15
     Docker / container support                        :active, 2026-05-14, 2026-07-31
 
     section Planned
@@ -290,10 +289,6 @@ gantt
 
 {{% /tab %}}
 {{% tab header="In Progress" %}}
-
-> [!WARNING]
-> **Allowlist Audit Trail**  
-> Design complete (May 12, 2026). Each allowlist entry will show how, when, and by whom it was approved—giving operators a full history of every access decision. Backend extension and UI rendering are in progress.
 
 > [!WARNING]
 > **Docker / Container Support**  
