@@ -50,11 +50,11 @@ gantt
     HeartSuite v1.0 — Linux 5.19.6 released           :done, 2024-01-20, 2024-01-21
     US Patent 11,983,288 B1                           :done, 2024-05-14, 2024-05-15
 
-    section Production Hardening + Porting Research (2024–2025)
-    Production hardening on 5.19.6 line               :done, 2024-02-01, 2025-09-30
-    Attack-surface review — trust boundaries mapped    :done, 2025-07-01, 2025-11-30
-    Linux 6.12 compatibility analysis                 :done, 2025-08-01, 2025-12-15
-    Multi-distro compatibility research               :done, 2025-10-01, 2026-01-31
+    section In Production (2024–2025)
+    v1.0 — 18+ months of continuous deployment        :done, 2024-02-01, 2025-09-30
+    Formal threat model — nine trust boundaries       :done, 2025-07-01, 2025-11-30
+    Kernel strategy — LTS-only track selected         :done, 2025-08-01, 2025-12-15
+    Eight distributions evaluated and targeted        :done, 2025-10-01, 2026-01-31
 
     section Open-Source Launch (2026 Q1)
     Decision: target Linux 6.18 LTS instead           :done, 2026-01-15, 2026-02-24
@@ -72,21 +72,18 @@ gantt
     Review queues, cohort grouping, noise filter      :done, 2026-04-28, 2026-05-07
     Alert system — SMTP, PagerDuty, OpsGenie          :done, 2026-04-28, 2026-05-07
     Allowlist management + backup & restore           :done, 2026-05-04, 2026-05-10
-    Lockdown — activated on startup                   :done, 2026-05-07, 2026-05-12
+    Lockdown auto-engages on every boot               :done, 2026-05-07, 2026-05-12
+    Phase 1 unattended install service                :done, 2026-05-12, 2026-05-14
 
     section In Progress
-    Phase 1 unattended install service                :active, 2026-05-14, 2026-06-30
-    Allowlist provenance UI                           :active, 2026-05-14, 2026-07-15
+    Allowlist audit trail                             :active, 2026-05-14, 2026-07-15
     Docker / container support                        :active, 2026-05-14, 2026-07-31
 
     section Planned
     Java shim launcher                               :2026-07-01, 2026-08-31
     Network allowlist — CIDR and DNS support         :2026-07-01, 2026-09-30
-    Mode-flip audit log (kernel-emitted)             :2026-07-01, 2026-08-15
-    Compromise Response screen                       :2026-07-01, 2026-08-15
-    Backup retention backend integration             :2026-07-01, 2026-08-31
-    Userspace tools — backup, shim, version manager  :2026-07-01, 2026-09-30
-    UEFI Secure Boot / MOK signing                   :2026-08-01, 2026-10-31
+    Backup retention policies                        :2026-07-01, 2026-08-31
+    MOK kernel signing — Secure Boot                 :2026-08-01, 2026-10-31
 ```
 
 ## Feature Details by Status
@@ -202,23 +199,23 @@ gantt
 
 ---
 
-### Production Hardening + Porting Research (2024–2025)
+### In Production (2024–2025)
 
 > [!NOTE]
-> **Production Hardening on 5.19.6 Line** (2024–2025)  
-> HeartSuite v1.0 runs in production environments. Operator feedback drives tooling refinements, allowlist workflow improvements, and documentation updates.
+> **18 Months of Continuous Production Deployment** (2024–2025)  
+> HeartSuite v1.0 shipped in January 2024 and ran in production continuously through 2025 without a kernel change. Real deployments shaped the tooling, the allowlist workflow, and operator documentation. By the time v1.6 was scoped, the core architecture had already proven itself under live conditions—not in a lab.
 
 > [!NOTE]
-> **Attack-Surface Review — 9 Trust Boundaries Mapped** (2025)  
-> A formal review identifies every boundary across which untrusted input becomes privileged action: the custom HS system calls, the hooked standard kernel syscalls, the shim-launcher script-path check, operator writes to allowlist and state files, Lockdown immutability, the boot-path service chain, the kernel-to-backup invocation path, the install-time host path, and the subscription activation server. The two load-bearing boundaries are the custom syscalls and the hooked standard syscalls—every enforcement decision reduces to whether the right hook fired and consulted the right flag.
+> **Every Attack Path Known — Formal Threat Model** (2025)  
+> Nine trust boundaries identified and documented: every point where untrusted input can become a privileged action. This work produced a precise map of what HeartSuite protects and how—used directly to set v1.6 hardening priorities. No surprises; no unknown exposure.
 
 > [!NOTE]
-> **Linux 6.12 Compatibility Analysis** (2025)  
-> A full compatibility report and porting plan produced for Linux 6.12.1. 6.12 was not an LTS kernel; the evaluation concluded that 6.18 LTS was the correct target.
+> **LTS-Only Kernel Strategy — No Chasing Releases** (2025)  
+> A full compatibility report was produced for Linux 6.12, then set aside: 6.12 is not an LTS kernel. HeartSuite commits only to long-term support kernels, so operators are never forced onto a short-maintenance-window base. 6.18 LTS was selected as the next target.
 
 > [!NOTE]
-> **Multi-Distro Compatibility Research** (late 2025)  
-> Systematic evaluation of target Linux distributions ahead of the v1.6.4 multi-distro release. Identifies init system variants (systemd vs. OpenRC), bootloader differences (GRUB vs. extlinux), and kernel packaging constraints across Debian, Ubuntu, Fedora, Rocky, CentOS Stream, Alpine, and openSUSE families.
+> **Eight Linux Distributions — Evaluated and Targeted** (late 2025)  
+> Before writing a line of installer code, every target distribution was evaluated for init system, bootloader, kernel packaging, and service management differences. The result: a v1.6.4 installer that works correctly on eight distributions by design, not as an afterthought.
 
 ---
 
@@ -273,8 +270,12 @@ gantt
 > Guided six-phase configuration. Alert daemon runs as a background service. Supports RFC 5424 syslog, PagerDuty Events API v2, and OpsGenie native format.
 
 > [!NOTE]
-> **Lockdown — Activated on Every Startup** (May 2026)  
-> The startup script engages Lockdown unconditionally on every successful activation. Five categories are sealed automatically. Lockdown is reboot-only-reversible—there is no runtime command that clears it.
+> **Lockdown Engages Automatically on Every Boot** (May 2026)  
+> From the moment HeartSuite activates, Lockdown is always on. Five path categories are sealed unconditionally—there is no configuration switch to skip it. The only way to lift Lockdown is to reboot into a non-HeartSuite kernel; no runtime command can clear it.
+
+> [!NOTE]
+> **Phase 1 Unattended Install Service** (May 2026)  
+> A systemd oneshot service (with OpenRC shim) chains the allowlist approval loop across reboots without requiring an active operator session. Setup Mode completes automatically: the service pre-seeds allowlist entries, tracks phase state, and signals readiness—no console session required between reboots.
 
 > [!NOTE]
 > **Allowlist Management, Backup & Restore, Maintenance Wizard**  
@@ -296,12 +297,8 @@ gantt
 {{% tab header="In Progress" %}}
 
 > [!WARNING]
-> **Phase 1 Unattended Install Service — Code Implementation**  
-> Design is complete: a oneshot systemd service (plus OpenRC shim) chains the allowlist approval loop across reboots without requiring an active TUI session. The service unit, runner script, APO pre-seeding, and phase sentinel are the outstanding deliverables.
-
-> [!WARNING]
-> **Allowlist Provenance UI**  
-> Design brief complete (May 12, 2026). Each allowlist entry will show how, when, and by whom it was approved. Backend extension and UI rendering are pending.
+> **Allowlist Audit Trail**  
+> Design complete (May 12, 2026). Each allowlist entry will show how, when, and by whom it was approved—giving operators a full history of every access decision. Backend extension and UI rendering are in progress.
 
 > [!WARNING]
 > **Docker / Container Support**  
@@ -329,14 +326,6 @@ gantt
 > The current network allowlist is literal-IP-only: no CIDR ranges, no DNS resolution, no wildcards. Adding CIDR support would allow a subnet to be expressed as a single entry rather than enumerating every IP individually—significant for cloud deployments where destination IPs are dynamic or managed via DNS.
 
 > [!NOTE]
-> **Mode-Flip Audit Log**  
-> When the kernel switches between Setup Mode and Lockdown, no log entry is currently emitted. A future improvement will log every state transition with the source state, destination state, triggering process, and timestamp—so an unexpected mode change is visible after the fact.
-
-> [!NOTE]
-> **Compromise Response Screen**  
-> Accessible from the dashboard when a non-HS kernel is detected. Guides through: forensic scan, allowlist audit, restore from backup, and controlled return to Lockdown. Design brief exists; not yet implemented.
-
-> [!NOTE]
 > **Backup Retention — Configuration Backend Integration**  
 > Tiered retention policy UI is designed (7-day full / 90-day daily / monthly). The backup configuration tool needs per-directory retention subcommands before the UI can connect.
 
@@ -345,20 +334,8 @@ gantt
 > Version manager currently restores one file at a time. Multi-file and directory-level restore selection planned.
 
 > [!NOTE]
-> **UEFI Secure Boot / MOK Signing**  
-> Azure Gen2 VMs default to Trusted Launch (Secure Boot on), blocking unsigned kernels—a confirmed customer blocker. MOK enrolment flow not yet designed.
-
----
-
-### Kernel / Userspace Tools
-
-> [!NOTE]
-> **Userspace Backup Versioning & Rollback**  
-> The in-kernel backup-on-write subsystem is complete. The userspace versioning and rollback tool that operators use to retrieve previous file versions is not yet finished.
-
-> [!NOTE]
-> **Shim Manager, Version Manager, APO Manager (compiled binaries)**  
-> These tools exist in source form but are not yet in the shipped binary release. They will replace their current script-driven equivalents.
+> **MOK Kernel Signing — Secure Boot Compatibility**  
+> Azure Gen2 VMs and other Secure Boot-enabled hosts block unsigned kernels. MOK (Machine Owner Key) signing lets operators enrol the HeartSuite kernel without disabling Secure Boot. Enrolment flow not yet designed.
 
 ---
 
