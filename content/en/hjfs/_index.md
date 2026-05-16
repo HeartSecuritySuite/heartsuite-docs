@@ -1,7 +1,6 @@
 ---
 title: "HeartSuite Joint File System"
 linkTitle: "HJFS (Preview)"
-weight: 20
 description: "Prototype documentation for HeartSuite Joint File System (HJFS), a filesystem-based security layer."
 categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "security", "prototype"]
