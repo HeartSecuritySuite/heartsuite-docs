@@ -6,10 +6,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "architecture", "compatibility", "deployment", "os-support"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-architecture"
-    weight: 25
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.

@@ -6,10 +6,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "overview", "concepts"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-introduction"
-    weight: 15
 ---
 
 ---

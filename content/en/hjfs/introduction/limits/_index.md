@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "security", "limits", "exfiltration", "network", "in-practice"]
 type: docs
 toc: true
-menu:
-  main:
-    parent: "hjfs-introduction"
-    identifier: "hjfs-limits"
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.

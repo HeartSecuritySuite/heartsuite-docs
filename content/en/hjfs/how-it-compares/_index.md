@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "comparison", "heartsuite", "deployment", "security"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-how-it-compares"
-    weight: 40
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.

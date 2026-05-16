@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "security", "malware", "plenary-power", "design"]
 type: docs
 toc: true
-menu:
-  main:
-    parent: "hjfs-introduction"
-    identifier: "hjfs-security-problem"
 ---
 
 ## The scribe analogy
