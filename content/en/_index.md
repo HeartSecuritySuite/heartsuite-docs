@@ -44,4 +44,8 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 - [Appendices](docs/appendices/) — List of included tools.
 - [Subscription](docs/licensing/) — Activate your subscription for Lockdown.
 
+## Also in This Documentation
+
+- [HeartSuite Joint File System (HJFS)](hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard kernels where the HS kernel is not available.
+
 For support email support@heartsecsuite.com.
