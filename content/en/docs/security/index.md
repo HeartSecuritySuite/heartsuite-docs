@@ -33,14 +33,14 @@ The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a
 </div>
 <div class="col-md-4">
 <div class="cve-hero-card cve-hero-contained">
-<p class="cve-hero-number text-warning">{{< cve-stat type="reachable" >}}</p>
+<p class="cve-hero-number text-teal">{{< cve-stat type="reachable" >}}</p>
 <p class="cve-hero-label">CVEs with reachable code paths</p>
 <p class="cve-hero-detail">Even with root, the system refuses new code. No persistence. No survival after reboot.</p>
 </div>
 </div>
 <div class="col-md-4">
 <div class="cve-hero-card cve-hero-compiled">
-<p class="cve-hero-number text-secondary">1,000+</p>
+<p class="cve-hero-number text-info">{{< cve-stat type="compiled-out" >}}</p>
 <p class="cve-hero-label">Additional CVEs</p>
 <p class="cve-hero-detail">Kernel features never compiled in.</p>
 </div>

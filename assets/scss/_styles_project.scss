@@ -108,8 +108,8 @@ main.td-main {
   padding: 2rem 1.25rem 3rem;
 
   &.cve-hero-neutralized { border-top-color: var(--bs-success); background-color: var(--bs-success-bg-subtle); }
-  &.cve-hero-contained   { border-top-color: var(--bs-warning); }
-  &.cve-hero-compiled    { border-top-color: var(--bs-secondary-color); }
+  &.cve-hero-contained   { border-top-color: var(--bs-teal); }
+  &.cve-hero-compiled    { border-top-color: var(--bs-info); }
 }
 
 .cve-hero-number {
@@ -119,6 +119,8 @@ main.td-main {
   letter-spacing: -0.03em;
   margin-bottom: 1rem;
 }
+
+.text-teal { color: var(--bs-teal) !important; }
 
 .cve-hero-label {
   font-size: 0.925rem;
