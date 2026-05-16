@@ -10,7 +10,7 @@ type: docs
 
 **Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Lockdown, immutable seal active, or the Non-HS kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
 
-## Where to Start
+## Where to start
 
 The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
@@ -24,7 +24,7 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ![Dashboard in Lockdown with denied counts: 2 programs, 1 file read, 1 network connection denied](test_docs_dashboard_secure_denied.svg)
 
-## Log Management
+## Log management
 
 HeartSuite Core Secure captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[t]`) provides guided workflows for common maintenance tasks.
 
@@ -32,7 +32,7 @@ The review queues are how you see and resolve what needs attention. The underlyi
 
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 
-## Kernel Log
+## Kernel log
 
 The Dashboard's review queues automatically collect entries from both the HeartSuite Core Secure activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
 
@@ -44,6 +44,6 @@ dmesg | grep HEARTSUITE
 
 The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Core Secure kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and blocking is inactive.
 
-## Reporting Issues
+## Reporting issues
 
 If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com.

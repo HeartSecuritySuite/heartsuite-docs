@@ -15,7 +15,7 @@ menu:
 
 **Overview**: HeartSuite Core Secure controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. The question is not "can this user access this file?" but "can this specific program?" Two programs running as the same user get different permissions. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
 
-## Kernel Architecture
+## Kernel architecture
 
 | Standard Linux | HeartSuite Core Secure |
 |---|---|
@@ -28,7 +28,7 @@ menu:
 
 Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features HeartSuite Core Secure has compiled out, the answer is always no — without patching, without policy, without an agent checking.
 
-## What HeartSuite Core Secure Replaces
+## What HeartSuite Core Secure replaces
 
 The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What HeartSuite Core Secure Complements](#what-heartsuite-core-secure-complements). These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Core Secure row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
 
@@ -54,7 +54,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 *Linux EDR* — CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint — provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. HeartSuite Core Secure provides none of those. The honest position is *prevention versus detection*; most regulated environments will run both.
 
-## Trust Boundaries and Bypass Surface
+## Trust boundaries and bypass surface
 
 Three questions cut to the core of any enforcement mechanism: *who is trusted to set the policy, who is gated at runtime, and what does a bypass look like?*
 
@@ -90,7 +90,7 @@ The table below answers each question in full for the main enforcement mechanism
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes — one container, one labelled domain, one process tree, one observed program. HeartSuite Core Secure narrows it to *every* program via a system-wide allowlist, root included. And where every competitor's bypass is something an attacker can do remotely once they have root, HeartSuite Core Secure's bypass requires physical presence at the console. Those two shifts are the substance of the HeartSuite Core Secure position.
 
-## What HeartSuite Core Secure Complements
+## What HeartSuite Core Secure complements
 
 These products do not overlap with HeartSuite Core Secure. They answer different questions, and mature security programs run both.
 
@@ -103,7 +103,7 @@ These products do not overlap with HeartSuite Core Secure. They answer different
 
 HeartSuite Core Secure makes a class of attacks impossible rather than merely visible. Your SIEM, NDR, and VA scanner work on what remains — a smaller, more focused set of events.
 
-## Where a Separate Kernel Is Required
+## Where a separate kernel is required
 
 Some software depends on kernel features the HeartSuite Core Secure kernel does not include. Those workloads run on the Non-HS kernel or a separate system:
 
@@ -114,7 +114,7 @@ Some software depends on kernel features the HeartSuite Core Secure kernel does 
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
-## Circumvention and Recovery
+## Circumvention and recovery
 
 Every security system has a known way to be taken out of the picture. Being explicit about it is how customers evaluate fit.
 
@@ -135,7 +135,7 @@ Nothing the attacker ran survives a reboot.
 
 To see the three enforcement mechanisms tested against real attacks — including what happens when attackers stay within approved boundaries — see [When Root Isn't Enough](../in-practice/).
 
-## Security as Economics
+## Security as economics
 
 No security control is unconditionally unbreakable. The right question is not "can this be defeated?" but "what does defeating it cost the attacker, and does that cost exceed their expected return?"
 

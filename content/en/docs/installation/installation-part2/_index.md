@@ -17,7 +17,7 @@ menu:
 > [!NOTE]
 > Cloud users skip this step. On a pre-configured cloud instance, the Dashboard confirms Phase 1 (System Verification) is complete on first boot.
 
-## What Happens After the First Boot
+## What happens after the first boot
 
 HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
 
@@ -34,7 +34,7 @@ HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it
 
 The first time you connect and the Dashboard appears, setup is complete. The Dashboard shows the reboot history and the Suggested Next Step directs you into Phase 2 (Program Allowlisting).
 
-## If the Dashboard Does Not Appear
+## If the Dashboard does not appear
 
 If setup is still running, SSH reconnects show the status line above instead of the Dashboard. Wait a few minutes and reconnect.
 
@@ -50,7 +50,7 @@ If repeated reconnects still show the status line rather than the Dashboard:
    Expected output ends in `HeartSuite` (for example, `6.18.9-HeartSuite-1.0`).
 3. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
 
-## If Setup Stops With an Error
+## If setup stops with an error
 
 If something goes wrong during setup, the next login shows an error with the reason and the last output from the setup process.
 

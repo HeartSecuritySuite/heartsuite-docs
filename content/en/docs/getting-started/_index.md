@@ -10,7 +10,7 @@ type: docs
 
 **Overview**: HeartSuite Core Secure runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.
 
-## Before You Begin
+## Before you begin
 
 Check [Before You Begin](before-you-begin/) for system requirements and prerequisites, then follow your path below.
 

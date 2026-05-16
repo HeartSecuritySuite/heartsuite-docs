@@ -17,7 +17,7 @@ menu:
 > [!NOTE]
 > Cloud users skip this step entirely. The HeartSuite Core Secure kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. The Dashboard appears automatically on first boot.
 
-## Verify the Download
+## Verify the download
 
 ```bash
 sha256sum -c heartsuite-install.sh.sha256
@@ -33,7 +33,7 @@ sudo bash heartsuite-install.sh
 
 The installer sets up the HeartSuite Core Secure kernel, tools, and Dashboard.
 
-## Reboot into the HeartSuite Core Secure Kernel
+## Reboot into the HeartSuite Core Secure kernel
 
 The installer sets the HeartSuite kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
 
@@ -45,7 +45,7 @@ After reboot, HeartSuite Core Secure reads the startup and shutdown logs and add
 > [!NOTE]
 > **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the HeartSuite kernel from the GRUB menu manually.
 
-## If the System Does Not Boot into HeartSuite
+## If the system does not boot into HeartSuite
 
 If the system boots to the wrong kernel or hangs:
 

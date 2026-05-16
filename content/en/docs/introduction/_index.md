@@ -20,7 +20,7 @@ menu:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, any program not on the allowlist — including malware running as root — is blocked before it can execute. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](../mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase journey from installation to Lockdown, always showing your current progress and the Suggested Next Step.
 
-## In This Section
+## In this section
 
 - [HeartSuite Core Secure Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7 phases.
 - [The Setup Journey](setup-overview/) — The seven phases from installation to Lockdown, the Cloud and Local paths, and how the Dashboard guides you.

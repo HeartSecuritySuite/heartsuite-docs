@@ -31,7 +31,7 @@ After copying the subscription file, activate it using `hs-activate-subscription
 
 If activation is successful, the program creates an activation key and displays a confirmation message. If an error occurs, an error message is displayed. You need to activate each server only once.
 
-## Dashboard Subscription Status
+## Dashboard subscription status
 
 The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning on the Dashboard with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing. Phase 7 (Lockdown) unlocks when phases 2-6 are complete.
 

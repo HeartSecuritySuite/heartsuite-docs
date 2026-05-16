@@ -13,7 +13,7 @@ Maintenance is a time period during which you temporarily step out of Lockdown t
 
 The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel. It is not shown in Setup Mode — because in Setup Mode, you are already in the maintenance-ready state and the Dashboard's review queues and Suggested Next Step are the workflow.
 
-## In This Section
+## In this section
 
 - [Protecting During Maintenance](protecting-during-maintenance/) — Step-by-step guidance for maintenance windows, from the safety checklist through Lockdown recovery across two reboots.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups that even root cannot reach under Lockdown — restore any earlier version of a file when needed.

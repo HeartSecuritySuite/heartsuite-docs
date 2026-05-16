@@ -15,13 +15,13 @@ menu:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three — per program, not per user. Your SSH server and your web server both run as root; they still get different permissions because they are different programs. Any program not on the allowlist is blocked at the kernel before it can run or cause damage.
 
-## Kernel-Level Enforcement
+## Kernel-level enforcement
 
 HeartSuite Core Secure uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute without an allowlist entry — and each allowlist entry also controls which files the program can read or write, and which network connections it can make. Even if malware is downloaded to a HeartSuite Core Secure server, the kernel prevents it from running or causing damage.
 
 The **Dashboard** is the central interface. It tracks your progress through a 7-phase setup journey, shows what's waiting for review, and always suggests the next step.
 
-### The 7 Phases
+### The 7 phases
 
 | Phase | Name | Purpose |
 |-------|------|---------|
@@ -33,7 +33,7 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 | 6 | Alert Settings | Set up notification channels (email, syslog, webhook) |
 | 7 | Lockdown | Activate Lockdown — locked until phases 2–6 are complete |
 
-## Reduced Kernel Footprint
+## Reduced kernel footprint
 
 The security industry patches vulnerabilities one at a time. HeartSuite Core Secure removes the features attackers rely on instead.
 
@@ -84,7 +84,7 @@ After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot 
 
 Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root, while the HeartSuite Core Secure kernel is running.
 
-### 4. File Backup and Versioning
+### 4. File backup and versioning
 
 HeartSuite Core Secure automatically backs up files in designated directories and prevents all programs from accessing the backups — only HeartSuite Core Secure itself can reach them. The version manager can restore any version of a backed-up file, regardless of whether it was encrypted, deleted, or modified.
 
@@ -96,17 +96,17 @@ The allowlist blocks most attacks at the kernel. When an approved program is com
 
 Allowlist entries can be created for interpreted code such as Python, PHP, and Perl. HeartSuite Core Secure provides Secure Script Launchers that identify the specific script being run when an interpreter is launched, enabling per-script access control with the same granularity as compiled programs.
 
-## Two Setup Paths
+## Two setup paths
 
 **Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete. Proceed directly to the review queues.
 
 **Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. The System Setup guides you through multiple setup steps with a step counter. Once the Dashboard confirms Phase 1 is complete, both paths merge.
 
-## How HeartSuite Core Secure Stands Alone
+## How HeartSuite Core Secure stands alone
 
 No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Core Secure the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the HeartSuite Core Secure kernel itself, not by filesystem permissions.
 
-## Is HeartSuite Core Secure Right for You?
+## Is HeartSuite Core Secure right for you?
 
 HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 

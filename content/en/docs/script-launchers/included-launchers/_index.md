@@ -10,7 +10,7 @@ toc: true
 
 **Overview**: HeartSuite Core Secure ships with Secure Script Launchers for common interpreters. The Dashboard presents these during Phase 3 (if applicable) when the corresponding interpreters are detected on the system.
 
-## Available Launchers
+## Available launchers
 
 - Python 3 (`hs-python-launcher`)
 - Python 2 (`hs-python2-launcher`)
