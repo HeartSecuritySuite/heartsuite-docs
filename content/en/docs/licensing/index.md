@@ -20,13 +20,13 @@ The subscription is a simple text file. One subscription can cover up to 9999 se
 After downloading the subscription file, copy it to each server it covers. Regardless of the original filename, it must be copied as `HS_license.txt` in the `/.hs/sys` directory. For example:
 
 ```bash
-# sudo cp MyCompany_HS_subscription_3-10-26.txt /.hs/sys/HS_license.txt
+# sudo cp MyCompany_HS_license.txt /.hs/sys/HS_license.txt
 ```
 
-After copying the subscription file, activate it using `hs-activate-subscription`. The command requires the IP address of the HeartSuite Core Secure Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from the HeartSuite Core Secure website:
+After copying the subscription file, register it using `register_HS_license`. The command requires the IP address of the HeartSuite Core Secure Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from your activation email:
 
 ```bash
-# sudo /.hs/sys/hs-activate-subscription <ip> 6121
+# sudo /.hs/sys/register_HS_license <ip> 6121
 ```
 
 If activation is successful, the program creates an activation key and displays a confirmation message. If an error occurs, an error message is displayed. You need to activate each server only once.
