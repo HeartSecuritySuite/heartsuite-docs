@@ -81,7 +81,6 @@ gantt
     Java shim launcher                               :2026-07-01, 2026-08-31
     Network allowlist — CIDR and DNS support         :2026-07-01, 2026-09-30
     Backup retention policies                        :2026-07-01, 2026-08-31
-    MOK kernel signing — Secure Boot                 :2026-08-01, 2026-10-31
 ```
 
 ## Feature Details by Status
@@ -322,10 +321,6 @@ gantt
 > [!NOTE]
 > **Multi-File Selection in Restore**  
 > Version manager currently restores one file at a time. Multi-file and directory-level restore selection planned.
-
-> [!NOTE]
-> **MOK Kernel Signing — Secure Boot Compatibility**  
-> Azure Gen2 VMs and other Secure Boot-enabled hosts block unsigned kernels. MOK (Machine Owner Key) signing lets operators enrol the HeartSuite kernel without disabling Secure Boot. Enrolment flow not yet designed.
 
 ---
 
