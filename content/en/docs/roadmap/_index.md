@@ -54,10 +54,10 @@ gantt
     18+ months of continuous deployment        :done, 2024-02-01, 2025-09-30
     Kernel strategy — LTS-only track selected         :done, 2025-08-01, 2025-12-15
     Eight distributions evaluated and targeted        :done, 2025-10-01, 2026-01-31
+    Linux 6.18 LTS kernel port                        :done, 2025-11-15, 2025-12-31
 
     section Open-Source Launch (2026 Q1)
     Linux 6.18 LTS          :done, 2026-01-15, 2026-02-24
-    Linux 6.18 LTS kernel port                        :done, 2026-02-25, 2026-03-17
     Public open-source release — v1.6.2 tagged        :done, 2026-03-05, 2026-03-12
     TUI overlay prototype                             :done, 2026-03-18, 2026-03-26
 
@@ -212,6 +212,10 @@ gantt
 > **Eight Linux Distributions — Evaluated and Targeted** (late 2025)  
 > Before writing a line of installer code, every target distribution was evaluated for init system, bootloader, kernel packaging, and service management differences. The result: a v1.6.4 installer that works correctly on eight distributions by design, not as an afterthought.
 
+> [!NOTE]
+> **Linux 6.18 LTS Kernel Port** (late 2025)  
+> Full port from the 5.19.6 line to Linux 6.18 LTS, covering hook relocations and syscall ABI changes. Documented as a reference for future kernel version upgrades.
+
 ---
 
 ### Open-Source Launch — v1.6.2 (2026 Q1)
@@ -219,10 +223,6 @@ gantt
 > [!NOTE]
 > **Decision: Target Linux 6.18 LTS** (January–February 2026)  
 > Following the 6.12 compatibility analysis, 6.18 was selected as the porting target: it is a long-term support kernel with a stable maintenance window that matches HeartSuite's release cadence.
-
-> [!NOTE]
-> **Linux 6.18 LTS Kernel Port** (March 2026)  
-> Full port from the 5.19.6 line to Linux 6.18 LTS, covering hook relocations and syscall ABI changes. Documented as a reference for future kernel version upgrades.
 
 > [!NOTE]
 > **Public Open-Source Release — v1.6.2** (March 5–11, 2026)  
