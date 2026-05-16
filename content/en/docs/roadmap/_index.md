@@ -51,13 +51,12 @@ gantt
     US Patent 11,983,288 B1                           :done, 2024-05-14, 2024-05-15
 
     section In Production (2024–2025)
-    v1.0 — 18+ months of continuous deployment        :done, 2024-02-01, 2025-09-30
-    Formal threat model — nine trust boundaries       :done, 2025-07-01, 2025-11-30
+    18+ months of continuous deployment        :done, 2024-02-01, 2025-09-30
     Kernel strategy — LTS-only track selected         :done, 2025-08-01, 2025-12-15
     Eight distributions evaluated and targeted        :done, 2025-10-01, 2026-01-31
 
     section Open-Source Launch (2026 Q1)
-    Decision: target Linux 6.18 LTS instead           :done, 2026-01-15, 2026-02-24
+    Linux 6.18 LTS          :done, 2026-01-15, 2026-02-24
     Linux 6.18 LTS kernel port                        :done, 2026-02-25, 2026-03-17
     Public open-source release — v1.6.2 tagged        :done, 2026-03-05, 2026-03-12
     TUI overlay prototype                             :done, 2026-03-18, 2026-03-26
@@ -204,10 +203,6 @@ gantt
 > [!NOTE]
 > **18 Months of Continuous Production Deployment** (2024–2025)  
 > HeartSuite v1.0 shipped in January 2024 and ran in production continuously through 2025 without a kernel change. Real deployments shaped the tooling, the allowlist workflow, and operator documentation. By the time v1.6 was scoped, the core architecture had already proven itself under live conditions—not in a lab.
-
-> [!NOTE]
-> **Every Attack Path Known — Formal Threat Model** (2025)  
-> Nine trust boundaries identified and documented: every point where untrusted input can become a privileged action. This work produced a precise map of what HeartSuite protects and how—used directly to set v1.6 hardening priorities. No surprises; no unknown exposure.
 
 > [!NOTE]
 > **LTS-Only Kernel Strategy — No Chasing Releases** (2025)  
