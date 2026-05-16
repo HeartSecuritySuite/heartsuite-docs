@@ -6,6 +6,10 @@ tags: ["heartsuite", "linux", "installation", "quickstart"]
 weight: 15
 toc: true
 type: docs
+menu:
+  main:
+    identifier: "getting-started"
+    weight: 18
 ---
 
 **Overview**: HeartSuite Core Secure runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.

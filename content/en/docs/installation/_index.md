@@ -9,6 +9,7 @@ type: docs
 menu:
   main:
     identifier: "installation"
+    weight: 20
 ---
 
 **Overview**: HeartSuite Core Secure installation follows one of two paths depending on your deployment method. Both paths end at the Dashboard, where Phase 1 (System Verification) confirms that the system is ready for allowlisting.
