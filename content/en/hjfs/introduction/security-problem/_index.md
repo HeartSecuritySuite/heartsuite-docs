@@ -1,6 +1,6 @@
 ---
-title: "The Security Problem HJFS Solves"
-linkTitle: "The Security Problem"
+title: "The security problem HJFS solves"
+linkTitle: "The security problem"
 weight: 1
 description: "The OS design flaw that makes malware damage possible, and how HJFS addresses it."
 categories: ["Essentials"]
@@ -11,7 +11,7 @@ toc: true
 
 ## The scribe analogy
 
-Imagine you need to write documents but cannot write yourself, so you hire a scribe. The scribe writes faithfully as you dictate, then leaves at the end of the session — taking your documents. At that point the scribe holds custody of your work. The scribe could demand payment before returning the documents, alter them outside your presence, or copy them for others. This is only possible because you gave the scribe custody — plenary control over your documents.
+Imagine you need to write documents but cannot write yourself, so you hire a scribe. The scribe writes faithfully as you dictate. Then the session ends — and the scribe leaves with your documents. At that point the scribe holds custody of your work. The scribe could demand payment before returning the documents, alter them outside your presence, or copy them for others. This is only possible because you gave the scribe custody over your documents.
 
 A word processor on your computer plays the role of the scribe. When you run any program, the OS grants it your full file access rights. Ransomware exploits exactly this: it opens your files using the same system call as any legitimate program, reads them into memory, encrypts them, and overwrites the originals — all because the OS hands over custody to any program you run, without asking whether you intended it.
 
@@ -27,24 +27,22 @@ This single assumption creates three persistent vulnerabilities that layered sec
 
 ### 1. Unrestricted file access
 
-The OS function `open()` allows any running program to access, read, write, or delete any file the current user has permission to touch — regardless of what program is asking. Malware uses this to encrypt files for ransom, exfiltrate data, or silently corrupt application data.
-
-Backup tools take point-in-time snapshots but cannot prevent in-place encryption before the next snapshot. Detection tools identify known attack signatures but react after access has already been granted — and miss attacks with no prior signature.
+The OS function `open()` allows any running program to read, write, or delete any file the current user owns. Malware uses this to encrypt files for ransom, exfiltrate data, or silently corrupt application state. Backup tools can only restore from a previous snapshot taken before the damage; detection tools identify known attack patterns but react after access has already been granted, and miss any attack without a prior signature.
 
 ### 2. Unrestricted network communication
 
-The OS function `connect()` allows any running program to open outbound network connections. Malware uses this to exfiltrate data and communicate with command-and-control infrastructure. Network filtering blocks known patterns but cannot identify malicious traffic from a trusted-looking process already running inside the perimeter.
+The OS function `connect()` allows any running program to open outbound network connections. Malware uses this to exfiltrate data and communicate with command-and-control infrastructure. Network filtering blocks known patterns but cannot distinguish malicious traffic from a trusted-looking process already running inside the perimeter.
 
 ### 3. Unrestricted program spawning
 
-The OS function `exec()` allows any running program to launch other programs. Malware uses this to establish persistence, escalate privileges, and move laterally. Policy tools attempt to govern this behavior from the outside, but the underlying capability is available to every process by default.
+The OS function `exec()` allows any running program to launch other programs. Malware uses this to persist on the system, gain higher access rights, and reach other programs and systems. Policy tools attempt to govern this behavior from outside the OS, but the underlying capability is available to every process by default.
 
 ## Why layered defenses do not solve this
 
-Each additional security layer addresses a symptom without removing the cause. The OS continues to grant programs unrestricted access; detection and prevention tools observe the resulting behavior and attempt to react. Novel and zero-day attacks consistently evade this model — they exploit the same OS design before a detection rule or signature exists.
+Each additional security layer treats a symptom without removing the cause. Detection and prevention tools observe the behavior that results from unrestricted OS access and react — after access has already been granted, and only to attacks they already recognize.
 
-## How HJFS addresses this
+## HJFS addresses this differently
 
-HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem at the `open()` call. Each program is confined to its own storage area. No program can access files belonging to another, regardless of what user account is running it. File access is no longer inherited from the user — it is specific to the program.
+HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem at the `open()` call. Each program is confined to its own storage area. Under HJFS, no program can read or write files belonging to another — including when that program runs as root. File access is specific to the program, not inherited from the user.
 
-HJFS v1.0 addresses the file access flaw. Network access control is planned for a subsequent version. For kernel-level program execution control, see [HeartSuite Core Secure](../../../docs/).
+HJFS addresses the file access dimension. Network connection control and program execution control are handled by [HeartSuite Core Secure](../../../docs/). Deployed together, they close all three dimensions.

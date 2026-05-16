@@ -1,5 +1,5 @@
 ---
-title: "Introduction and Overview"
+title: "Introduction and overview"
 weight: 10
 description: "Overview of HeartSuite Joint File System, its design goals, and how it differs from kernel-based security."
 categories: ["Essentials"]
@@ -14,11 +14,11 @@ toc: true
 
 ---
 
-**Overview**: HJFS enforces access control at the filesystem layer — controlling which programs can read, write, or traverse specific paths — without requiring a modified kernel. This makes it deployable on standard kernels where HeartSuite Core Secure's kernel-level enforcement is not available.
+**Overview**: By default, every program runs with the user's full file access rights. The OS grants this to any process — including malware and compromised software. HJFS changes that at the filesystem layer. Each program is confined to its own storage area. No other program can read or write its files. This holds even for programs running as root. HJFS works on a standard Linux kernel, so it is available wherever the HeartSuite kernel is not deployed. For execution and network blocking, HeartSuite Core Secure operates at the kernel level. The two products address different layers and can be used together.
 
 ## In this section
 
-- [The Security Problem HJFS Solves](security-problem/) — The OS design flaw behind malware damage, why layered defenses don't fix it, and how HJFS does.
-- [HJFS Overview](hjfs-overview/) — Core mechanisms, per-version storage, secure file transfer, version management, and patents.
+- [The security problem HJFS solves](security-problem/) — Why default OS file permissions enable malware damage and how HJFS closes that gap.
+- [HJFS overview](hjfs-overview/) — Core mechanisms, per-version storage, secure file transfer, version management, and patents.
 - [Walkthrough](walkthrough/) — A short CLI example showing per-version isolation and rollback in action.
-- [What HJFS Does and Does Not Cover](limits/) — Where the file isolation boundary holds, where it does not, and what to use alongside it.
+- [What HJFS does and does not cover](limits/) — Where the file isolation boundary holds, where it does not, and what to use alongside it.

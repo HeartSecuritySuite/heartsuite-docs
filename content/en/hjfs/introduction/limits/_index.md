@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: HJFS enforces one thing: file access is per program and per version — no program can access files belonging to another, regardless of user privilege. An attacker who stays entirely within a compromised program's own storage area is constrained but not stopped. This page describes exactly where the boundary is, and what handles the rest.
+**Overview**: HJFS enforces one thing: file read/write access is per program and per version — including programs running as root. No program can read or write files belonging to another. An attacker who stays within a compromised program's own storage area is constrained but not stopped. This page states exactly where the boundary is, and what handles the rest.
 
 ---
 
@@ -19,23 +19,21 @@ toc: true
 
 **The scenario.** An attacker gains control of a running program — through a vulnerability, a malicious update, or a backdoor compiled into an approved binary. The program is already running and has legitimate access to its own storage area.
 
-**What HJFS enforces.** The attacker is confined to that program's storage area. Files belonging to other programs are not reachable — not readable, not writable, not enumerable. The blast radius is structurally bounded.
+**What HJFS enforces.** Files belonging to other programs are not reachable — not by name, not by path enumeration, not by any program on the system. The blast radius is structurally bounded to the compromised program's own area.
 
-Within the program's own storage area, the attacker can read, modify, and move files to trash. Every write is automatically backed up by HJFS to a protected area no program can access. Recovery is always available: the restore utility returns any data file to any prior version, including versions created before the compromise.
+Within that area, every write is automatically backed up to a protected location no program can access. Recovery is always available: the restore utility returns any file to any prior version, including versions created before the compromise.
 
-**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, HJFS v1.0 does not block the outbound connection. File isolation limits what data is reachable — but once data is in memory, the network is open. See [Network exfiltration](#network-exfiltration) below.
+**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is outside HJFS's scope. Once data is in memory, the network path is open. HeartSuite Core Secure closes this gap. See [Network exfiltration](#network-exfiltration) below.
 
 ---
 
 ## Network exfiltration
 
-**The scenario.** A compromised program reads data from its own storage area, then opens an outbound network connection to send it to an attacker-controlled server.
+**The scenario.** A compromised program reads data from its own storage area, then opens an outbound connection to an attacker-controlled server.
 
-**What HJFS enforces.** The program can only reach files within its own storage area. It cannot access credentials, documents, or configuration files belonging to other programs. The data it can exfiltrate is bounded by its isolation.
+**What HJFS enforces.** The program can only reach files within its own storage area. Credentials, documents, and configuration files belonging to other programs are inaccessible. The data available for exfiltration is bounded by isolation.
 
-**What HJFS does not cover.** HJFS v1.0 has no network controls. A program that has data in its own storage area and an open network path can exfiltrate that data. The isolation limits the scope of what can be stolen — it does not prevent transmission.
-
-For network-level enforcement — per-program control over which destinations a program can connect to — [HeartSuite Core Secure](../../../docs/network/) provides kernel-level gating of outbound connections. Used alongside HJFS, it closes this gap.
+**What HJFS does not cover.** HJFS controls what data a program can reach; it does not control which connections a program can open. A program that holds data in its own storage area and has an open network path can exfiltrate that data. HeartSuite Core Secure provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [HeartSuite Core Secure](../../../docs/network/).
 
 ---
 
@@ -43,33 +41,33 @@ For network-level enforcement — per-program control over which destinations a 
 
 **The scenario.** An attacker downloads a tool — a privilege escalation script, a credential dumper, a reverse shell — and attempts to run it.
 
-**What HJFS enforces.** HJFS confines what running programs can access. It does not gate which programs can run.
+**What HJFS enforces.** HJFS controls what running programs can access. Execution control is HeartSuite Core Secure's domain. This is a deliberate division of layers, not a gap.
 
-**What HJFS does not cover.** HJFS v1.0 has no execution controls. A program placed on the system can be launched. For kernel-level program execution control — which requires a new binary to have an allowlist entry before it can run — [HeartSuite Core Secure](../../../docs/) handles this. The two products address complementary layers: HJFS at the filesystem, Core Secure at the kernel.
+**What HJFS does not cover.** A binary placed on the system can be launched. HeartSuite Core Secure requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; Core Secure operates at the kernel. See [HeartSuite Core Secure](../../../docs/).
 
 ---
 
 ## Sensitive data within a program's own storage area
 
-**The scenario.** A program stores credentials, API keys, or other secrets in its own data files. A malicious update to that same program — or an attacker who has compromised it — reads those files.
+**The scenario.** A program stores credentials, API keys, or other secrets in its own data files. A malicious update to that program — or an attacker who has compromised it — reads those files.
 
-**What HJFS enforces.** No other program can reach those files. The isolation is between programs.
+**What HJFS enforces.** No other program can reach those files. The isolation is between programs, not between a program and its own data.
 
-**What HJFS does not cover.** HJFS does not isolate a program from its own data. A malicious version of a program has the same access to that program's storage area as the legitimate version. Secrets stored in a program's own files are accessible to any version of that program — including a compromised one.
+**What HJFS does not cover.** A malicious version of a program has the same access to that program's storage area as the legitimate version. Secrets stored in a program's own files are accessible to any version of that program, including a compromised one.
 
-[Advanced protection](../../advanced-protection/) partially addresses this for user-facing files: under the advanced tier, user files can only be opened through an OS-mediated dialog, limiting silent reads even within the program. Internal files remain accessible to the program by name.
+Advanced Protection partially closes this gap for user-facing files. Under the advanced tier, user files can only be opened through an OS-mediated dialog, limiting silent reads even within the program. Internal files remain accessible to the program by name. See [Advanced Protection](../../advanced-protection/).
 
 ---
 
 ## Physical access
 
-HJFS enforcement is defeated by physical access to the machine combined with deletion of the HJFS drive. This is documented in [Security Guarantees](../hjfs-overview/#security-guarantees). Protect physical access to systems running HJFS through standard facility controls.
+Physical access is the only path that defeats HJFS file isolation. All software-based attempts to cross program storage boundaries are prevented at the filesystem layer. The specific defeat path is physical access combined with deletion of the HJFS drive. Standard facility controls — locked racks, access logging, physical security policies — are the appropriate countermeasure. See [Security guarantees](../hjfs-overview/#security-guarantees) for details.
 
 ---
 
 ## Complementary tools
 
-HJFS is a filesystem-level protection layer. It does not replace detection, network monitoring, or execution control.
+HJFS provides filesystem-level file isolation. Network monitoring, detection, and execution control address different layers and work alongside it.
 
 | Gap | Complementary tool |
 |---|---|
@@ -78,4 +76,4 @@ HJFS is a filesystem-level protection layer. It does not replace detection, netw
 | Detection within approved boundaries | SIEM, NDR, endpoint detection tools |
 | Secrets management within a program | Secrets management tools; Advanced Protection for user files |
 
-For the full picture of how Core Secure and HJFS work together, see [How HJFS Differs from HeartSuite Core Secure](../hjfs-overview/#how-hjfs-differs-from-heartsuite-core-secure).
+For the full picture of how Core Secure and HJFS work together, see [HJFS and HeartSuite Core Secure: what each covers](../hjfs-overview/#hjfs-and-heartsuite-core-secure-what-each-covers).

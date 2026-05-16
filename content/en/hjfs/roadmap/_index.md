@@ -9,23 +9,23 @@ type: docs
 toc: true
 ---
 
-> **Prototype**: HJFS is under active development. This page reflects current scope and known planned work.
+> **Prototype**: HJFS is under active development.
 
-## Current prototype
+## Current capabilities
 
-The following capabilities are implemented in the current HJFS prototype:
+HJFS currently includes the following capabilities:
 
 | Capability | Notes |
 |---|---|
-| Per-program file isolation | `open()` enforcement — programs confined to their own storage area |
+| Per-program file isolation | `open()` interception — programs are confined to their own storage area |
 | Per-version storage | Each installed program version receives its own isolated storage area |
 | Version rollback | Non-destructive — prior versions and their data remain intact |
 | Secure file transfer | Copy utility and transfer area for explicit cross-program data movement |
-| Trash-only deletion | Programs cannot permanently delete files; permanent deletion requires explicit user action via a separate utility |
-| Automatic data file backup | Every data file version backed up to a protected area inaccessible to ordinary programs |
+| Trash-only deletion | Programs cannot permanently delete files. Permanent deletion requires explicit user action through a separate utility |
+| Automatic data file backup | Every data file version is backed up to a protected area inaccessible to ordinary programs |
 | Version management utilities | `HJFS_update_program` and `HJFS_version_manager` |
 
-The current prototype implements core file organization without modifying the host file system's code directly. See [Architecture and Compatibility](../architecture/) for details.
+HJFS implements core file organization with the host file system code left unchanged — enabling deployment on standard, unmodified kernels. See [Architecture and compatibility](../architecture/) for details.
 
 ## Planned
 
@@ -33,13 +33,13 @@ The current prototype implements core file organization without modifying the ho
 
 | Item | Notes |
 |---|---|
-| FS source code integration | Minimal HJFS source code integrated into the host file system's `open()` call — required for production deployment |
-| Kernel registration | HJFS-modified file system registered with the kernel — requires FS vendor cooperation on non-Linux platforms |
+| FS source code integration | Integrates minimal HJFS source code into the host file system's `open()` call. Required for production deployment |
+| Kernel registration | Registers the HJFS-modified file system with the kernel. Requires FS vendor cooperation on non-Linux platforms |
 
 ### Subsequent releases
 
 | Item | Notes |
 |---|---|
-| Network access control | New outbound connections mediated by the OS; user confirmation on desktop, policy-based on server |
-| Python script compartmentalization | Individual Python scripts confined to separate file spaces rather than sharing the interpreter's area — requires a small amount of kernel cooperation |
-| Advanced protection | Internal/user file separation and OS-mediated file dialogs — requires application updates. See [Advanced Protection](../advanced-protection/) for design details |
+| Network access control | New outbound connections are mediated by the OS. Desktop deployments prompt the user for confirmation; server deployments apply policy rules |
+| Python script compartmentalization | Confines individual Python scripts to separate file spaces. Scripts no longer share the interpreter's storage area. Requires a small amount of kernel cooperation |
+| Advanced protection | Separates internal and user files and introduces OS-mediated file dialogs. Requires application updates. See [Advanced Protection](../advanced-protection/) for design details |
