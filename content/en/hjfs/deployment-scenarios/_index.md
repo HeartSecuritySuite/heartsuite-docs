@@ -6,10 +6,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "deployment", "scenarios", "compatibility", "use-cases"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-deployment-scenarios"
-    weight: 18
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.

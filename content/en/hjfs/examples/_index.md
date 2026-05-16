@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "security", "malware", "ransomware", "cve", "examples"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-examples"
-    weight: 35
 ---
 
 > **Prototype**: The protections described on this page reflect HJFS design intent. HJFS is under active development.

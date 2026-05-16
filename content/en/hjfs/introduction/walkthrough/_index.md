@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "walkthrough", "example", "version-management"]
 type: docs
 toc: true
-menu:
-  main:
-    parent: "hjfs-introduction"
-    identifier: "hjfs-walkthrough"
 ---
 
 > **Prototype**: Commands and output shown reflect the current prototype and may change.

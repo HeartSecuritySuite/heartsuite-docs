@@ -6,10 +6,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "advanced", "user-files", "internal-files", "volition", "export", "import"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-advanced-protection"
-    weight: 28
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.

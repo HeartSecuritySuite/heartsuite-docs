@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "roadmap", "planned", "prototype"]
 type: docs
 toc: true
-menu:
-  main:
-    identifier: "hjfs-roadmap"
-    weight: 40
 ---
 
 > **Prototype**: HJFS is under active development. This page reflects current scope and known planned work.

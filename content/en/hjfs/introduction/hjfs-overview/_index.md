@@ -7,10 +7,6 @@ categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "overview", "security", "concepts"]
 type: docs
 toc: true
-menu:
-  main:
-    parent: "hjfs-introduction"
-    identifier: "hjfs-overview"
 ---
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
