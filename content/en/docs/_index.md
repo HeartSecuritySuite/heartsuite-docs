@@ -63,6 +63,10 @@ The pages below are the individual steps, linked from Quick Start:
 
 **Evaluating?** Cloud instances and the Local Path package are available at [heartsecsuite.com](https://heartsecsuite.com).
 
+## Also in this documentation
+
+- [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard kernels where the HS kernel is not available.
+
 ---
 
 *About this Documentation*: Covers HeartSuite Core Secure v1.6.4.

@@ -6,6 +6,10 @@ categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 toc: true
 type: docs
+menu:
+  main:
+    identifier: "allowlisting"
+    weight: 25
 ---
 
 **Overview**: By default, any program on a Linux server can execute, access any file, and connect to any destination. HeartSuite Core Secure controls all three per program — not per user, per program. Two different programs running under the same user get separate allowlist entries with separate permissions. The Dashboard guides you through each approval phase and tracks your progress.

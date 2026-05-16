@@ -7,6 +7,10 @@ tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
 toc: true
 type: docs
 author: Ron Hessing
+menu:
+  main:
+    identifier: "mode-switching"
+    weight: 30
 ---
 
 **Overview**: When you lock down from Setup Mode, the kernel blocks every program not on the allowlist — including any you forgot to approve. The Dashboard guides the activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.

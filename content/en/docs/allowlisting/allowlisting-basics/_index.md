@@ -7,6 +7,10 @@ tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"
 type: docs
 toc: true
 author: Ron Hessing
+menu:
+  main:
+    parent: "allowlisting"
+    identifier: "allowlisting-basics"
 ---
 
 **Overview**: A program running without restrictions on a server can read any file, write anywhere, and connect to any destination. HeartSuite Core Secure requires every program to be explicitly approved to execute, to access files, and to make network connections — each independently. Even a legitimate tool already on your allowlist — curl, python, a system utility — can only reach the files and network destinations its specific allowlist entry approves. The Dashboard and its review queues walk you through each approval, with full metadata and intelligent grouping to manage volume.
