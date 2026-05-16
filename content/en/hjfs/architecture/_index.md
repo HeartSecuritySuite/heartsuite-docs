@@ -1,5 +1,5 @@
 ---
-title: "Architecture and Compatibility"
+title: "Architecture and compatibility"
 weight: 20
 description: "Technical architecture, OS compatibility, application notes, and scope for HeartSuite Joint File System."
 categories: ["Essentials"]
@@ -47,29 +47,25 @@ See [Advanced Protection](../advanced-protection/) for the tier that does requir
 
 ## Container compatibility
 
-HJFS is designed to co-exist with container environments such as Docker. Containers running on an HJFS-compliant host filesystem benefit from the same per-program file isolation as native processes — each containerised program is confined to its own storage area. Container orchestration and scheduling are not affected by HJFS at the filesystem layer.
+Containers running on an HJFS-compliant host filesystem benefit from the same per-program file isolation as native processes. Each containerized program is confined to its own storage area. Container orchestration and scheduling are unaffected.
 
 ## Network access control
 
-HJFS 1.0 does not include network access control. Network access control is planned for a subsequent version.
+[HeartSuite Core Secure](../../docs/network/) provides network access control today, with kernel-level gating of outbound connections that can be deployed alongside HJFS. HJFS 1.0 does not include its own network access control; that is planned for a subsequent version.
 
-When implemented, new outbound connections and user-file opens will be mediated by the OS rather than statically configured. The mediation model differs by deployment type:
+When implemented in HJFS, each new outbound connection will require explicit user approval rather than relying on static configuration. The approval model differs by deployment type:
 
-- **Desktop**: The OS prompts the user for approval when a program attempts a new connection or file access outside its storage area.
+- **Desktop**: The user approves each new connection through an OS confirmation dialog.
 - **Server**: Access is governed by pre-approved utilities or admin-defined policies, without per-action prompts.
 
-The diagram below illustrates the planned desktop flow: the program suggests a domain name, the OS intercepts the `connect()` call and presents a confirmation dialog, and the connection is only established after the user approves or types the server name:
+When network access control is available, the user approves each new connection through an OS dialog:
 
 ![Diagram 2.5 — Network connection flow: the Chess Client calls connect("chess_online.com"), the OS intercepts and shows a dialog "Confirm or type server name," the user's selection triggers connection creation, and the request is sent via the Internet to the Chess Server.](/images/hjfs/diagram-004.jpg)
 
-For current network-level enforcement, see [HeartSuite Core Secure](../../docs/network/).
+## Blocking simulated user input
 
-## GUI automation
-
-Operating systems distributed to ordinary users must disable user action simulation — the ability for a program to programmatically simulate user mouse clicks or keypresses. Without this restriction, a malicious program could simulate a user emptying the trash, approving a file open dialog, or confirming a network connection, bypassing the user-mediated controls that HJFS relies on. These simulated actions can happen faster than a user can observe or stop them.
-
-HJFS-compliant OS distributions disable GUI automation for ordinary user sessions.
+HJFS-compliant OS distributions disable the ability for a program to simulate user mouse clicks or keypresses in ordinary user sessions. Without this, a malicious program could simulate a user emptying the trash, approving a file open dialog, or confirming a network connection — faster than a user can observe or stop them.
 
 ## Local deployment requirement
 
-HJFS must run locally on every machine it protects. Remote or cloud storage alone does not protect the client program — enforcement happens at the filesystem layer on the local host. A program running on a machine without HJFS is not subject to HJFS access controls, regardless of where its data is stored.
+HJFS must run locally on every machine it protects. Remote or cloud storage alone does not protect the client program. HJFS applies file isolation at the filesystem layer on the local host. A program running on a machine without HJFS is not subject to HJFS file isolation, regardless of where its data is stored.

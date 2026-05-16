@@ -75,7 +75,7 @@ $ ./start_TinyDemo r FileA
 The apple was a shiny red color.
 ```
 
-The original data is restored — no backup retrieval, no restore process. The user can switch between versions at will, and HJFS preserves data across every version, including versions that turn out to be malicious updates.
+The original data is restored — no backup retrieval, no restore process. The user can switch between versions at will; per-version storage keeps data intact across every installed version, including versions that turn out to be malicious updates.
 
 ## What this demonstrates
 
