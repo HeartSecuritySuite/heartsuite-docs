@@ -56,4 +56,17 @@ if [[ -n "$how_works" ]]; then
   found=1
 fi
 
+# §6: sentence-case headings — function words must not be capitalised mid-heading.
+# Catches the most common Title Case mistakes: conjunctions, articles, short prepositions.
+# Words at the very start of a heading are always correct (first word is capitalised).
+# Proper nouns (HeartSuite, Dashboard, Lockdown, CLI, …) are never in this list.
+title_case=$(grep -rEn --include="*.md" \
+  "^#{1,6} .+[[:space:]](And|Or|But|Nor|The|For|With|In|On|Of|To|From|At|By|An)[[:space:]]" \
+  content/ || true)
+if [[ -n "$title_case" ]]; then
+  echo "STYLE: Title Case function word mid-heading (§6 — use sentence case; only capitalise the first word and proper nouns)"
+  echo "$title_case"
+  found=1
+fi
+
 exit $found
