@@ -1,0 +1,16 @@
+{{- /*
+  loom: embeds a Loom video by share ID.
+
+  Usage:
+    {{< loom d972ad038c1549d5aceaccc1466659ee >}}
+*/ -}}
+<div class="ratio ratio-16x9 mb-4">
+  <iframe
+    src="https://www.loom.com/embed/{{ .Get 0 }}"
+    frameborder="0"
+    webkitallowfullscreen
+    mozallowfullscreen
+    allowfullscreen
+    allow="fullscreen">
+  </iframe>
+</div>
