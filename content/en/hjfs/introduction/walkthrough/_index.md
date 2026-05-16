@@ -37,14 +37,14 @@ The apple was a shiny red color.
 ## 3. Build and install a new version
 
 ```sh
-$ ./make_TinyDemo-2.sh
-$ ./HJFS_update_program TinyDemo TinyDemo TinyDemo.hash
+./make_TinyDemo-2.sh
+./HJFS_update_program TinyDemo TinyDemo TinyDemo.hash
 ```
 
 List installed versions:
 
 ```sh
-$ ./HJFS_version_manager TinyDemo -l
+./HJFS_version_manager TinyDemo -l
 ```
 
 ## 4. Read the existing file from the new version
