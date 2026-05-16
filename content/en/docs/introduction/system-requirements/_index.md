@@ -14,7 +14,7 @@ menu:
 
 **Overview**: HeartSuite Core Secure requires an x86 Linux system running a supported distribution — Debian/Ubuntu-derived or Alpine. RPM-based distributions (RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE) are coming soon. It ships with two HeartSuite Core Secure kernels (5.19 and 6.18) and a set of tools that enforce allowlist-based security at the kernel level.
 
-## Supported Platforms
+## Supported platforms
 
 | Component | Supported |
 |-----------|-----------|
@@ -28,7 +28,7 @@ HeartSuite Core Secure supports Debian/Ubuntu-derived and Alpine distributions o
 
 HeartSuite Core Secure is distributed with two HeartSuite Core Secure kernels based on mainline Linux: 5.19 and 6.18. One of these kernels must be booted for HeartSuite Core Secure to function. The Dashboard verifies kernel activation as part of Phase 1 (System Verification) and provides orientation on every boot.
 
-## Software Compatibility Notes
+## Software compatibility notes
 
 The HeartSuite Core Secure kernel is compiled without several features that attackers use to gain elevated access or escape security restrictions — keeping them in would undermine kernel-level allowlisting. Software that relies on those features will not run on the HeartSuite Core Secure kernel — use the Non-HS kernel or a separate system for those workloads.
 

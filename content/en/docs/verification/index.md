@@ -20,7 +20,7 @@ When you launch a pre-installed HeartSuite Core Secure cloud instance, the Dashb
 
 After completing the local installation process (download, GRUB preparation, kernel install, and the System Setup's multiple steps), the Dashboard appears once Phase 1 is complete. From here, both paths proceed identically.
 
-## What the Dashboard Shows
+## What the Dashboard shows
 
 When Phase 1 is complete, the Dashboard confirms:
 
@@ -31,7 +31,7 @@ When Phase 1 is complete, the Dashboard confirms:
 
 No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
 
-## Protection State
+## Protection state
 
 The protection state indicator appears as a full-width, high-contrast bar at the top of the Dashboard. Its content depends on the current system state:
 
@@ -42,7 +42,7 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 | Lockdown + sealed | No indicator (silence means safety) |
 | Non-HS kernel | NON-HS KERNEL — HeartSuite Core Secure is not active. No blocking. No logging. No backups. |
 
-## Status Line at the Bottom
+## Status line at the bottom
 
 Below the protection state indicator, a status line shows:
 
@@ -54,7 +54,7 @@ Kernel: HS    Mode: Setup — active for 3d 7h    Lockdown: —
 - **Mode**: Setup or Secure, with time in current mode
 - **Lockdown**: `—` (Setup Mode), `Not applied` (Lockdown without immutable seal), or `Applied` (Lockdown with immutable seal)
 
-## What to Do if Verification Fails
+## What to do if verification fails
 
 If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "NON-HS KERNEL" when you intended to boot HeartSuite Core Secure):
 

@@ -12,17 +12,17 @@ type: docs
 
 ![Alert Settings configured with SMTP and syslog](test_docs_alert_settings_configured.svg)
 
-## When Alerts Fire
+## When alerts fire
 
 Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
 
 Alerts are suppressed entirely in Setup Mode. Setup Mode is a high-volume observation phase — logging everything without blocking. Alerting during this phase would produce constant noise before the allowlist is complete. Alerts become active only when Lockdown is active.
 
-## Configuring Alerts
+## Configuring alerts
 
 From the Dashboard, select Alert Settings (`[e]`). Alert Settings has two tabs: **Email** and **Fleet**.
 
-### Email Tab
+### Email tab
 
 Configure SMTP credentials to receive email alerts directly. Required fields:
 
@@ -41,7 +41,7 @@ Check your credentials and try again. No alerts have been sent.
 
 Once configured, the tab shows current settings with the password displayed as `(set)`. Select Edit to modify — the password field is always blank when editing. You must re-enter the password to prevent credentials from appearing in the terminal scroll buffer.
 
-### Fleet Tab
+### Fleet tab
 
 Configure syslog and webhook delivery for fleet and SIEM integrations. All channels are independent — enable any combination.
 
@@ -85,9 +85,9 @@ To receive this payload, create an integration in your incident management tool 
 
 When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
 
-## What Triggers an Alert
+## What triggers an alert
 
-### Administrative State Changes
+### Administrative state changes
 
 These alerts fire immediately on every configured channel, regardless of accumulation windows or digest mode:
 
@@ -115,9 +115,9 @@ These blocks apply a threshold filter and are active in Lockdown only:
 - Dashboard sessions opened or closed
 - Successful allowlist approvals
 
-## How Alerts Are Delivered
+## How alerts are delivered
 
-### Email — 5-Minute Accumulation Window
+### Email — 5-minute accumulation window
 
 Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 seconds produces one email — *"40 previously unseen programs blocked in 90 seconds"* — not 40 individual messages. Volume and velocity are the attack signal; 40 separate emails fragment that signal into noise.
 
@@ -130,7 +130,7 @@ Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 se
 
 The 5-minute window and hourly cap are fixed, not user-configurable.
 
-### Syslog and Webhook — Immediate
+### Syslog and webhook — immediate
 
 Syslog and webhook emit every alert immediately, without grouping or windowing. SIEM platforms (Splunk, Elastic) and incident management tools (PagerDuty, OpsGenie) apply their own correlation and deduplication — grouping alerts before they reach these systems removes information they need.
 

@@ -10,7 +10,7 @@ author: Ron Hessing
 
 **Overview**: Allowlisting controls what programs can run, but an approved program that malware takes over can still write files — ransomware running inside an approved process can encrypt whatever that process can reach. Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted. HeartSuite Core Secure automatically creates a versioned backup every time a file in a protected directory is written, and under Lockdown the kernel itself prevents any program from reaching those backups. No other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
-## Automatic Versioning
+## Automatic versioning
 
 HeartSuite Core Secure monitors a list of protected directories. When any file in those directories (including subdirectories) is written, HeartSuite Core Secure silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
 
@@ -20,7 +20,7 @@ CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the
 
 By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup.
 
-## Configuring Protected Directories
+## Configuring protected directories
 
 From the Dashboard, select Backup (`[b]`). The Dashboard shows your current backup configuration — which directories are protected and when they were last backed up.
 
@@ -36,7 +36,7 @@ Recommended directories include those containing user documents, executable file
 > [!NOTE]
 > Backup is optional. You can remove all directories, disabling backup entirely. Lockdown does not require backup to be configured.
 
-## Restoring File Versions
+## Restoring file versions
 
 If a file is compromised — for example, encrypted by ransomware — the Dashboard's Backup lets you browse version history and restore any previous version of any file in a protected directory. The Backup offers two browse modes:
 
@@ -47,11 +47,11 @@ To restore a single file, select it and choose the version to restore. Each vers
 
 For ransomware recovery where many files were modified on the same date, use the Timeline view (`[t]`), press `[d]` to filter by date, review the affected files, and press `[b]` to batch restore all of them in one operation.
 
-## Lockdown and Backup
+## Lockdown and backup
 
 When Lockdown is active, the backup configuration file is sealed — no user or program, including root, can add or remove directories. This prevents an attacker who compromises a running process from silently disabling backup. To change the backup configuration, enter a maintenance period first (see [Protecting During Maintenance](../protecting-during-maintenance/)).
 
-## CLI Access for Scripting and Automation
+## CLI access for scripting and automation
 
 For scripting and automation workflows that run without the Dashboard, the following CLI tools are available:
 

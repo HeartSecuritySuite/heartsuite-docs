@@ -15,7 +15,7 @@ menu:
 
 **Overview**: HeartSuite Core Secure must complete a guided setup journey in Setup Mode before it can enforce security in Lockdown.
 
-## Why Setup Mode Is Necessary
+## Why Setup Mode is necessary
 
 HeartSuite Core Secure enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system activated Lockdown at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
@@ -23,7 +23,7 @@ Setup Mode solves this problem. In Setup Mode, HeartSuite Core Secure logs all a
 
 Setup Mode is the default after installation. HeartSuite Core Secure's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Lockdown is active.
 
-## The 7 Phases
+## The 7 phases
 
 HeartSuite Core Secure organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
 
@@ -56,7 +56,7 @@ Both paths converge at the Dashboard after Phase 1. From that point forward, the
 
 ![Dashboard after Phase 1: Phase 2 Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
 
-## From Installation to Lockdown
+## From installation to Lockdown
 
 The following diagram shows the path from installation to Lockdown, including the maintenance cycle.
 

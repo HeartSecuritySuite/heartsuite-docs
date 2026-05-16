@@ -11,7 +11,7 @@ author: Ron Hessing
 
 **Overview**: A program running without restrictions on a server can read any file, write anywhere, and connect to any destination. HeartSuite Core Secure requires every program to be explicitly approved to execute, to access files, and to make network connections — each independently. Even a legitimate tool already on your allowlist — curl, python, a system utility — can only reach the files and network destinations its specific allowlist entry approves. The Dashboard and its review queues walk you through each approval, with full metadata and intelligent grouping to manage volume.
 
-## The Three Review Queues
+## The three review queues
 
 In Setup Mode, HeartSuite Core Secure logs every program execution, file access attempt, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
 
@@ -23,13 +23,13 @@ The Dashboard shows pending counts for each queue and provides a Suggested Next 
 
 **The queues build on each other.** File access and network violations are only recorded for programs that have already been approved in the Programs queue. A program making live network connections will not appear in the Internet Access queue until you have approved it in the Programs queue first. If Internet Access or File Access appears empty while you know the system is active, check whether the Programs queue still has pending items.
 
-## Working Through a Queue
+## Working through a queue
 
-### Starting a Review
+### Starting a review
 
 The Dashboard displays pending counts for each queue. The Suggested Next Step directs you to the queue that needs attention first. Select a queue to begin reviewing.
 
-### Single-Key Actions
+### Single-key actions
 
 The footer shows the primary actions available at any point:
 
@@ -47,7 +47,7 @@ Two additional keys appear contextually, not in the footer:
 |-----|---------------|
 | `[u]` | Undo — available for 5 seconds after an approval; cancels the last approval and returns the item to the queue |
 
-### Metadata Shown in Review
+### Metadata shown in review
 
 Every review item displays metadata directly in the primary prompt — you do not need to press a key to see it. The fields shown include:
 
@@ -62,11 +62,11 @@ Every review item displays metadata directly in the primary prompt — you do no
 
 When a program has no entry in any package database, HeartSuite Core Secure displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden — the absence of information is itself a signal.
 
-## Individual and Grouped Review
+## Individual and grouped review
 
 The review queues handle large volumes without requiring blind bulk approval. Volume is managed through intelligent grouping, not through approving things you cannot see.
 
-### Individual Review
+### Individual review
 
 Each item is presented one at a time with full metadata. Example for a program execution:
 
@@ -83,22 +83,22 @@ This program has not been allowlisted.
 [?] What does approving this mean?
 ```
 
-### Grouped Review
+### Grouped review
 
 Related items are grouped together (e.g., "847 file reads from /usr/lib/python3/"). HeartSuite Core Secure shows a sample of the grouped items so you can confirm the grouping makes sense before approving.
 
-### Queue Summary
+### Queue summary
 
 When the volume of remaining items is large, HeartSuite Core Secure presents a summary of what is ahead — total counts and a breakdown by program — before you begin reviewing. This is an orientation view, not an approval surface. Press `[a]` or `[Enter]` to proceed into individual review.
 
 > [!NOTE]
 > Review grouping and sort order are independent dimensions. A program in any group may appear in any grouping presentation. For example, a program with no package entry that generated 200 file reads would appear in the "Unknown origin" group (sorted first) but could be presented as a grouped review (because the items are groupable by directory).
 
-## Programs Queue (Phase 2)
+## Programs queue (Phase 2)
 
 When a program executes without an allowlist entry, HeartSuite Core Secure logs it. The Programs queue presents it for review.
 
-### What the Groups Mean
+### What the groups mean
 
 Programs are grouped into sections in the program list on the left. These groups determine the order items appear, placing items that need the most investigation first:
 
@@ -115,7 +115,7 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 ![Programs queue review item with package metadata and action keys](test_docs_programs_queue_review.svg)
 
-## File Access Queue (Phase 4)
+## File Access queue (Phase 4)
 
 Once you approve a program's execution, HeartSuite Core Secure begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
 
@@ -164,7 +164,7 @@ From the Dashboard, select the File Access queue (`[f]`).
 > [!NOTE]
 > Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 exist, 34 no longer exist."
 
-## Internet Access Queue (Phase 5)
+## Internet Access queue (Phase 5)
 
 Programs that attempt outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.
 
@@ -186,7 +186,7 @@ From the Dashboard, select the Internet Access queue (`[i]`).
 
 ![Internet access queue with destination IP and reverse DNS](test_docs_internet_access_populated.svg)
 
-## Progress and Completion
+## Progress and completion
 
 While working through a queue, a progress indicator shows your position:
 
@@ -203,7 +203,7 @@ Returning to Dashboard…
 
 Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before activating Lockdown.
 
-## Review Queues in Lockdown
+## Review queues in Lockdown
 
 In Lockdown the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Lockdown. The queues show **denied** items (actions HeartSuite Core Secure blocked), not pending items awaiting approval.
 
@@ -212,7 +212,7 @@ Use `[n]` to navigate through denied items one by one. To approve a denied progr
 > [!NOTE]
 > Denied items in Lockdown are a normal part of operation, not failures. A denied item means HeartSuite Core Secure blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.
 
-## CLI Access for Scripting and Automation
+## CLI access for scripting and automation
 
 For scripting and automation workflows that run without the Dashboard, `hs-manage-allowlist` provides a browser and editor for existing allowlist entries. See its built-in help:
 

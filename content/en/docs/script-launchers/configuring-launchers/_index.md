@@ -11,7 +11,7 @@ author: Ron Hessing
 
 **Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers (`[l]`) shows detected interpreters and activates launchers in one step.
 
-## Activating Launchers
+## Activating launchers
 
 From the Dashboard, select Launchers (`[l]`). The Dashboard shows two sections:
 
@@ -41,7 +41,7 @@ these interpreters will be reviewed on their own permission terms.
 
 Press `[q]` to return to the Dashboard. The Dashboard marks Phase 3 complete.
 
-## If No Script Interpreters Are Detected
+## If no script interpreters are detected
 
 If none of the known interpreters have appeared in the activity log yet, the Dashboard shows:
 
@@ -52,7 +52,7 @@ You may proceed to the next phase without activating any launchers.
 
 Phase 3 is not required if your system does not use script interpreters.
 
-## Skipping Launcher Setup
+## Skipping launcher setup
 
 Press `[s]` to skip without activating. HeartSuite Core Secure notifies you:
 
@@ -63,7 +63,7 @@ Interpreters will remain blocked in Lockdown until approved.
 
 You can return to the Launchers (`[l]`) at any time to activate launchers before activating Lockdown.
 
-## Testing a Launcher Directly
+## Testing a launcher directly
 
 Before or after Dashboard activation, you can run a script through a specific launcher directly to verify it works under its own permissions:
 

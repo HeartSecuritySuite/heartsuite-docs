@@ -164,7 +164,7 @@ A: HeartSuite Core Secure requires every outbound connection to be explicitly ap
 
 {{< /details >}}
 
-## Modes and Security
+## Modes and security
 
 {{< details summary="When should I activate Lockdown?" >}}
 

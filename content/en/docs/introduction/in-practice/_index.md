@@ -17,7 +17,7 @@ menu:
 
 Each attack below was actively exploited within days of its disclosure. The gap between a vulnerability being published and attackers using it has collapsed to hours, not weeks. Patching cannot keep pace. HeartSuite Core Secure's enforcement blocks these attacks regardless of whether the vulnerable software has been patched — because it gates what each program can reach, not whether a vulnerability exists.
 
-## A New Program Tries to Run
+## A new program tries to run
 
 **The attack.** An attacker gains a foothold on a server — a compromised web application, a stolen credential, a misconfigured service. Their next move is to get more capability. They download a tool: a reconnaissance script, a credential dumper, a reverse shell. On a standard Linux server, a file downloaded to `/tmp` is executable the moment it arrives. As root, there are no further gates.
 
@@ -29,7 +29,7 @@ This applies equally to interpreted scripts. A malicious Python script dropped a
 
 ---
 
-## An Approved Program Reads What It Shouldn't
+## An approved program reads what it shouldn't
 
 **The attack.** CVE-2021-41773 — Apache HTTP Server 2.4.49. A flaw in how Apache validates URL paths allows an attacker to craft a request that escapes the web root. Apache fetches and returns arbitrary files from the filesystem. The attacker requests `/etc/passwd`. Apache reads it and returns it. No authentication required.
 
@@ -45,7 +45,7 @@ The same mechanism applies to binary replacement. If an attacker with root tries
 
 ---
 
-## An Approved Program Sends Data It Shouldn't
+## An approved program sends data it shouldn't
 
 **The attack.** An attacker on a server uses `curl` — a standard utility present on nearly every Linux system — to send data out:
 
@@ -65,7 +65,7 @@ Log4Shell (CVE-2021-44228) shows the same gate working in reverse. The attack wo
 
 ---
 
-## When Attackers Stay Within Approved Boundaries
+## When attackers stay within approved boundaries
 
 HeartSuite Core Secure enforces three things per program. An attacker who stays entirely within those approved boundaries is constrained — but not stopped. Each scenario below shows what remains enforced even then, and which defenses handle the rest.
 

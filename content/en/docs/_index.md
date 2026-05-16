@@ -21,7 +21,7 @@ HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Goog
 
 HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts. Hosts where eBPF-based tooling must run locally require a non-HS kernel.
 
-## Introduction and Concepts
+## Introduction and concepts
 
 - [Introduction and Overview](introduction/) — Overview, setup process, Dashboard guidance, and requirements.
 - [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
@@ -29,7 +29,7 @@ HeartSuite Core Secure is a strong fit for production servers, regulated worksta
 - [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
 - [Mode Switching and Lockdown](mode-switching/) — Setup Mode and Lockdown.
 
-## Get Started
+## Get started
 
 Start with [Quick Start](getting-started/) — it covers both paths (Cloud and Local) and links each step in order: prerequisites, download, install, verify, and allowlist.
 
@@ -38,21 +38,21 @@ The pages below are the individual steps, linked from Quick Start:
 - [Obtaining and Installing HeartSuite Core Secure](installation/) — Download and setup steps (Local Path).
 - [Verifying Installation](verification/) — Confirm Phase 1 is complete in the Dashboard.
 
-## Use and Manage
+## Use and manage
 
 - [Network and Remote Access](network/) — Configure network permissions.
 - [Script Launchers](script-launchers/) — Secure interpreted script execution.
 - [Alert Settings](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Lockdown).
 - [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
-## Troubleshoot and Reference
+## Troubleshoot and reference
 
 - [Troubleshooting and Logs](troubleshooting/) — Common issues and solutions.
 - [FAQs](faqs/) — Answers to frequent questions.
 - [Kernel Security Transparency](security/) — CVE status and Not Affected rationale for the HeartSuite Core Secure kernel.
 - [Appendices](appendices/) — List of included tools.
 
-## Subscription and Support
+## Subscription and support
 
 - [Subscription](licensing/) — Activate your subscription for Lockdown.
 - For updates or help, visit [heartsecsuite.com](https://heartsecsuite.com).

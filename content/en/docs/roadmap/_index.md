@@ -16,7 +16,7 @@ Traditional endpoint security detects threats after they execute. HeartSuite tak
 
 The five core features that make this possible—program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers—were designed together as a single coherent architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 
-## Development Timeline
+## Development timeline
 
 ```mermaid
 gantt
@@ -83,12 +83,12 @@ gantt
     Backup retention policies                        :2026-07-01, 2026-08-31
 ```
 
-## Feature Details by Status
+## Feature details by status
 
 {{< tabpane text=true >}}
 {{% tab header="Done" %}}
 
-### Design & Architecture (2021)
+### Design & architecture (2021)
 
 > [!NOTE]
 > **Five Core Features Designed — Prevent-Before-Detect Architecture** (~2021)  
@@ -108,7 +108,7 @@ gantt
 
 ---
 
-### Kernel Engine (2022)
+### Kernel engine (2022)
 
 > [!NOTE]
 > **APO Enforcement Engine — Setup Mode + Lockdown** (2022)  
@@ -144,7 +144,7 @@ gantt
 
 ---
 
-### Tooling Build-out (2023)
+### Tooling build-out (2023)
 
 > [!NOTE]
 > **Backup Subsystem** (January 2023)  
@@ -176,7 +176,7 @@ gantt
 
 ---
 
-### v1.0 Release (2024)
+### v1.0 release (2024)
 
 > [!NOTE]
 > **HeartSuite v1.0 — Linux 5.19.6** (January 20, 2024)  
@@ -196,7 +196,7 @@ gantt
 
 ---
 
-### In Production (2024–2025)
+### In production (2024–2025)
 
 > [!NOTE]
 > **18 Months of Continuous Production Deployment** (2024–2025)  
@@ -216,7 +216,7 @@ gantt
 
 ---
 
-### Open-Source Launch — v1.6.2 (2026 Q1)
+### Open-source launch — v1.6.2 (2026 Q1)
 
 > [!NOTE]
 > **Decision: Target Linux 6.18 LTS** (January–February 2026)  
@@ -232,7 +232,7 @@ gantt
 
 ---
 
-### v1.6.4 Multi-Distro Release (April 2026)
+### v1.6.4 multi-distro release (April 2026)
 
 > [!NOTE]
 > **Multi-Distro Validation Gate — 8 Distributions** (April 22–26, 2026)  
@@ -304,7 +304,7 @@ gantt
 {{% /tab %}}
 {{% tab header="Planned" %}}
 
-### User-Facing Features
+### User-facing features
 
 > [!NOTE]
 > **Java Shim Launcher**  
@@ -324,7 +324,7 @@ gantt
 
 ---
 
-### Testing & Verification
+### Testing & verification
 
 > [!NOTE]
 > **Kernel Self-Tests + Filesystem Test Suite**  
@@ -337,10 +337,10 @@ gantt
 {{% /tab %}}
 {{< /tabpane >}}
 
-## Community-Driven Development
+## Community-driven development
 
 Join the conversation—suggest features, report issues, or discuss the architecture.
 
-### Get Started
+### Get started
 
 [Get Started](/docs/) | [Open an Issue](https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new)
