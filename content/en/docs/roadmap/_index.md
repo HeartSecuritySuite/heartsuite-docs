@@ -1,5 +1,5 @@
 ---
-title: "Roadmap"
+title: "Roadmap 2022 — present"
 linkTitle: "Roadmap"
 description: "See where HeartSuite Core Secure is headed—kernel-level enforcement that root cannot bypass."
 lastmod: "2026-05-14"
@@ -16,7 +16,7 @@ Traditional endpoint security detects threats after they execute. HeartSuite tak
 
 The five core features that make this possible—program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers—were designed together as a single coherent architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 
-## Development timeline
+## Development timeline (2021-2026)
 
 ```mermaid
 gantt
