@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Every program on a Linux system can, by default, read any file the user owns, execute any binary it can reach, and open any network connection — and so can any malware running under that user. HJFS addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including when the program runs as root. The question HJFS answers is not "can this user access this file?" but "did this specific program version create it?" Execution control and network connection control are outside HJFS's scope. HeartSuite Core Secure handles those. This page describes what HJFS controls, what it leaves open, how it can be defeated, and how to decide whether to deploy it alongside Core Secure.
+**Overview**: Every program on a Linux system can, by default, read any file the user owns, execute any binary it can reach, and open any network connection — and so can any malware running under that user. HJFS addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including when the program runs as root. The question HJFS answers is not "can this user access this file?" but "did this specific program version create it?" Execution control and network connection control are outside HJFS's scope. HeartSuite Core Secure handles those dimensions but is not currently compatible with HJFS. This page describes what HJFS controls, what it leaves open, how it can be defeated, and how to think about complementary controls.
 
 ---
 
@@ -35,14 +35,14 @@ toc: true
 
 | Gap HJFS leaves open | Complementary control |
 |---|---|
-| Network connections — which destinations a program can reach | HeartSuite Core Secure (kernel-level network allowlisting) |
-| Program execution — which binaries are permitted to run | HeartSuite Core Secure (kernel-level program allowlisting) |
+| Network connections — which destinations a program can reach | Dedicated network allowlisting tools; HeartSuite Core Secure handles this but is not currently compatible with HJFS |
+| Program execution — which binaries are permitted to run | Dedicated execution allowlisting tools; HeartSuite Core Secure handles this but is not currently compatible with HJFS |
 | Detection and alerting on suspicious behaviour | SIEM, NDR, endpoint detection tools |
 | Secrets isolation within a single program's own storage area | Secrets management tools; [Advanced Protection](../advanced-protection/) for user files |
 | Encryption of data at rest | Standard disk or volume encryption |
 | Off-site backup and disaster recovery | Dedicated backup infrastructure |
 
-HJFS and HeartSuite Core Secure address complementary OS-level controls. HJFS covers file read and write access at the filesystem layer, with per-program and per-version isolation. Core Secure covers network communication and program execution at the kernel layer. Together they address all three OS-level controls that malware typically exploits.
+HJFS and HeartSuite Core Secure address complementary OS-level controls. HJFS covers file read and write access at the filesystem layer, with per-program and per-version isolation. Core Secure covers network communication and program execution at the kernel layer. The two products are not currently compatible and cannot be deployed together.
 
 ---
 
@@ -50,9 +50,7 @@ HJFS and HeartSuite Core Secure address complementary OS-level controls. HJFS co
 
 **HJFS alone** fits deployments where the primary risk is lateral file access across programs, data destruction by ransomware, or supply chain updates that taint data created by prior versions. It runs on a standard kernel, which makes it the right choice for cloud instances where the kernel is provider-managed, systems under kernel certification requirements, or organisations with strict change-control policies. Network and execution control are left to other means — network-layer egress filtering, separate allowlisting tools, or existing controls already in place.
 
-**HJFS alongside HeartSuite Core Secure** is the right fit for production servers and regulated environments that need the full picture. Core Secure blocks unauthorised program execution and network connections at the kernel level, regardless of privilege. HJFS adds per-program, per-version file isolation and automatic data file backup at the filesystem layer. Together they close all three OS-level controls.
-
-**HeartSuite Core Secure without HJFS** is appropriate when kernel-level blocking is available and per-version file isolation is not required. Core Secure's program allowlisting and network blocking provide strong protection on their own. HJFS adds the per-version dimension and automatic data file backup, which matter most in supply chain scenarios and regulated environments.
+**HeartSuite Core Secure** covers network connection and program execution control at the kernel level. It is not currently compatible with HJFS and cannot be deployed alongside it. Organisations that need file isolation together with execution and network control should use HJFS with a compatible dedicated allowlisting tool for network and execution coverage.
 
 ---
 
