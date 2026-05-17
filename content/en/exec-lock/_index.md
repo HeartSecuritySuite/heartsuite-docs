@@ -33,11 +33,11 @@ HJFS confines every program to its own storage area at the filesystem layer. Hea
 
 Together the two products close all three OS-level attack surfaces: execution, file access, and network communication. Neither product alone provides the full set.
 
-## Relationship to HeartSuite Root Lock
+## Relationship to HeartSuite Core Secure
 
-Customers who do not need HJFS continue to use HeartSuite Root Lock unchanged. That product still supplies execution, network, and file controls in a single package.
+Customers who do not need HJFS continue to use HeartSuite Core Secure unchanged. That product still supplies execution, network, and file controls in a single package.
 
-Customers who want HJFS's stronger file isolation use HeartSuite Exec Lock alongside HJFS. The two together give the same three-layer coverage that HeartSuite Root Lock once provided, but with the file layer now handled by HJFS.
+Customers who want HJFS's stronger file isolation use HeartSuite Exec Lock alongside HJFS. The two together give the same three-layer coverage that HeartSuite Core Secure once provided, but with the file layer now handled by HJFS.
 
 ## Current status
 
