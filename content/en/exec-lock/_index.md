@@ -1,7 +1,6 @@
 ---
 title: "HeartSuite Exec Lock"
 linkTitle: "Exec Lock"
-weight: 5
 description: "Kernel-level program execution control and network allowlisting, designed to work alongside HJFS."
 categories: ["Essentials"]
 tags: ["heartsuite", "execution", "network", "allowlisting", "hjfs"]
@@ -23,7 +22,7 @@ toc: true
 
 Full HeartSuite Core Secure and HJFS currently cannot be used together because both implement file access controls at different layers. Removing file access management from Core Secure removes that conflict. The resulting product supplies exactly the two controls that HJFS does not yet provide.
 
-Administrators who adopt HJFS for its file protections can add HeartSuite Exec Lock to regain strong kernel-level execution and network enforcement without replacing HJFS’s file model.
+Administrators who adopt HJFS for its file protections can add HeartSuite Exec Lock to regain strong kernel-level execution and network enforcement without replacing HJFS's file model.
 
 ## How it works with HJFS
 
@@ -38,7 +37,7 @@ Together the two products close all three OS-level attack surfaces: execution, f
 
 Customers who do not need HJFS continue to use HeartSuite Root Lock unchanged. That product still supplies execution, network, and file controls in a single package.
 
-Customers who want HJFS’s stronger file isolation use HeartSuite Exec Lock alongside HJFS. The two together give the same three-layer coverage that HeartSuite Root Lock once provided, but with the file layer now handled by HJFS.
+Customers who want HJFS's stronger file isolation use HeartSuite Exec Lock alongside HJFS. The two together give the same three-layer coverage that HeartSuite Root Lock once provided, but with the file layer now handled by HJFS.
 
 ## Current status
 
@@ -46,6 +45,6 @@ This product is a proposal. No engineering work has begun and no release timelin
 
 ## See also
 
-- [HJFS Overview](../../../hjfs/introduction/hjfs-overview/)
-- [HeartSuite Core Secure overview](../../introduction/heartsuite-overview/)
-- [How HeartSuite Core Secure compares](../../introduction/how-it-compares/)
+- [HJFS Overview](../hjfs/introduction/hjfs-overview/)
+- [HeartSuite Core Secure overview](../docs/introduction/heartsuite-overview/)
+- [How HeartSuite Core Secure compares](../docs/introduction/how-it-compares/)
