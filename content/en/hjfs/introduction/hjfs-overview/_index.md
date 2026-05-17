@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: On a standard Linux system, any program can open any file the current user can reach — including programs running as root. That is the root cause of most malware damage. HJFS addresses it directly by binding data files to the program that created them. The modified `open()` call enforces that binding at every file access: no other program can read or write those files, regardless of privilege. Access control is enforced per program and per program version. Execution control and network connection control are handled by [HeartSuite Core Secure](../../../../docs/). See [The security problem HJFS solves](../security-problem/) for the underlying OS design flaw this corrects.
+**Overview**: On a standard Linux system, any program can open any file the current user can reach — including programs running as root. That is the root cause of most malware damage. HJFS addresses it directly by binding data files to the program that created them. The modified `open()` call enforces that binding at every file access: no other program can read or write those files, regardless of privilege. Access control is enforced per program and per program version. Execution control and network connection control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/) for the underlying OS design flaw this corrects.
 
 ## File isolation in practice
 
@@ -84,6 +84,8 @@ HJFS includes two utilities:
 
 Because each version has its own storage area, rolling back is non-destructive. Setting the active version to a prior release makes the original files immediately accessible — no restore process, no backup retrieval. Prior executables, libraries, and data files remain untouched in their own subareas.
 
+If the user created data files under the version being rolled back from — for example, a malicious update installed since the last legitimate version — those files exist only in that version's storage area. The file transfer utility can copy them to the target version's storage area before or after the rollback, preserving any legitimate work done under the compromised version.
+
 The example below shows a program called SimpleEdit after an update on November 12. The May 6 version is preserved in its own subarea; the installer stores the prior executables before overwriting the current ones:
 
 ![Diagram 2.4 — SimpleEdit executable storage: current version (Nov 12) contains editor.exe and editor_functions.dll; a preserved "May 6" subarea contains the same files from the prior install. Shared libraries contains c_functions.dll.](/images/hjfs/diagram-003.jpg)
@@ -130,17 +132,19 @@ HJFS is based on innovations patented by HeartSuite:
 
 ## HJFS and HeartSuite Core Secure: what each covers
 
+HeartSuite Core Secure and HJFS are not currently compatible and cannot be deployed together. The table below describes what each product covers for reference.
+
 | | HeartSuite Core Secure | HJFS |
 |---|---|---|
 | Enforcement layer | Kernel | Filesystem (`open()` call) |
 | Kernel requirement | Modified HS kernel | Standard kernel |
 | Program execution control | Yes | No |
 | Filesystem path control | Yes | Yes |
-| Network access control | Yes | Not in v1.0 scope — handled by HeartSuite Core Secure |
+| Network access control | Yes | Not in v1.0 scope |
 | Per-program-version file isolation | No | Yes |
 | Audited cross-program file transfer | No | Yes |
 
-Both products can be used together. HeartSuite Core Secure blocks unauthorized program execution and network access at the kernel. HJFS adds per-version file isolation at the filesystem layer. Each covers a dimension the other does not.
+Each product covers dimensions the other does not, but they cannot currently be deployed together. Program execution control and network access control remain outside HJFS scope; organizations requiring those controls should use a dedicated allowlisting tool alongside HJFS.
 
 ## Status
 
