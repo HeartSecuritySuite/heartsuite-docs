@@ -46,7 +46,7 @@ This product is a proposal. No engineering work has begun and no release timelin
 
 ## See also
 
-- [HJFS Overview](../../hjfs/introduction/hjfs-overview/)
-- [HeartSuite Core Secure overview](../introduction/heartsuite-overview/)
-- [How HeartSuite Core Secure compares](../introduction/how-it-compares/)
+- [HJFS Overview](../../../hjfs/introduction/hjfs-overview/)
+- [HeartSuite Core Secure overview](../../introduction/heartsuite-overview/)
+- [How HeartSuite Core Secure compares](../../introduction/how-it-compares/)
 ```
