@@ -38,13 +38,16 @@ HeartSuite Core Secure is not active while the Non-HS kernel is running. Schedul
 
 1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`.
 2. Verify integrity:
+
    ```bash
    sha256sum -c heartsuite-install.sh.sha256
    ```
+
    Expected output: `heartsuite-install.sh: OK`
 3. Reboot and select the Non-HS kernel at the GRUB menu.
 4. Log in as root over SSH or the serial console.
 5. Run the installer:
+
    ```bash
    bash heartsuite-install.sh
    ```
