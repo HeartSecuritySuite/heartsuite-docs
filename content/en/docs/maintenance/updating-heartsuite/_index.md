@@ -51,6 +51,7 @@ HeartSuite Core Secure is not active while the Non-HS kernel is running. Schedul
    ```bash
    bash heartsuite-install.sh
    ```
+
 6. The installer applies the update and reboots automatically into the new HeartSuite Core Secure kernel.
 7. If new programs are encountered, HeartSuite Core Secure reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
 8. Re-engage Lockdown from the Dashboard if it was active before the update.
