@@ -90,6 +90,8 @@ The table below answers each question in full for the main enforcement mechanism
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes — one container, one labelled domain, one process tree, one observed program. HeartSuite Core Secure narrows it to *every* program via a system-wide allowlist, root included. And where every competitor's bypass is something an attacker can do remotely once they have root, HeartSuite Core Secure's bypass requires physical presence at the console. Those two shifts are the substance of the HeartSuite Core Secure position.
 
+The May 2026 TanStack npm attack illustrated the trust-boundary distinction from the supply chain direction. The attacker operated inside a legitimate build pipeline using valid credentials — SLSA provenance, OIDC, and 2FA all functioned as designed. No credential check or trust-chain verification registered anything to block. HeartSuite Core Secure's per-program network allowlist bounds what pipeline processes can reach from the host regardless of credential validity; connections to unapproved destinations are refused at the kernel.
+
 ## What HeartSuite Core Secure complements
 
 These products do not overlap with HeartSuite Core Secure. They answer different questions, and mature security programs run both.
