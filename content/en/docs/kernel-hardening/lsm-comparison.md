@@ -51,6 +51,7 @@ The table below lists the kernel-level bypass vectors most relevant to MAC enfor
 | `FUSE_FS` — path confusion via userspace filesystem | **Closed** (`=n`) | Open | Open | Open |
 | `OVERLAY_FS` — `d_path()` mismatch in overlay mounts | **Closed** (`=n`) | Open | Open | Open |
 | `USER_NS` — fake root via user namespace | **Closed** (`=n`) | Open | Open | Open |
+
 An attacker who can reach any "Open" primitive has a path to bypass LSM enforcement regardless of how well the policy is written. HeartSuite closes all four vectors above at the kernel config level.
 
 ---

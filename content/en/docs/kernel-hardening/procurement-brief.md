@@ -80,12 +80,14 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 ## Decision Guide
 
 **Choose HeartSuite if your primary concern is:**
+
 - Preventing a compromised application from escaping its security boundary
 - Ensuring no in-kernel feature (BPF, FUSE, namespaces) can be used to bypass your security policy
 - Minimizing the total kernel attack surface (9 loadable modules vs. thousands)
 - Running a single-purpose security appliance, not a general-purpose server
 
 **Consider adding a hardened kernel layer if your concern is also:**
+
 - Protection against kernel-level exploitation (heap corruption, use-after-free, ROP)
 - Compliance requirements that enumerate specific KSPP mitigations
 - Environments where root access cannot be fully constrained

@@ -74,6 +74,7 @@ A notable measurement artifact: HS 5.19.6 and a vanilla x86_64 5.17 defconfig sc
 This is because the automated checker measures *current state* (option is off), not *intent or mechanism* (was it off because it was never configured, or because it was explicitly suppressed?). Both HS and the vanilla defconfig happen to have BPF, FUSE, and AppArmor disabled — one by design, the other by default.
 
 The distinction is operationally significant:
+
 - A production system built on a vanilla defconfig will accumulate enabled features over time (package installs, driver additions, container runtimes).
 - HS's build procedure enforces disables by construction. The deviation registry documents each disable with threat-model rationale, and the release process enforces registry-source parity mechanically on every port.
 

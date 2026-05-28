@@ -60,6 +60,7 @@ Under Lockdown, the allowlist is sealed using filesystem immutability (`chattr +
 **Scope**: HeartSuite records a timestamp and TTY for every allowlist approval action. In environments where multiple administrators share root access, TTY-to-person attribution requires correlating this log against customer-side session records — terminal session logging (`auditd`) or a privileged access management tool provides this attribution. Dashboard access requires Linux root credentials; there is no additional authentication layer within HeartSuite.
 
 **Evidence artifacts**:
+
 - Dashboard allowlist export (Programs, File Access, Internet Access queues)
 - Allowlist approval audit log showing timestamp, TTY, and entry details for each approval action
 - Lockdown status screenshot showing "Applied"
@@ -79,6 +80,7 @@ HeartSuite does not implement role-based access control within the Dashboard. Ev
 CC6.3 is an organizational control for this product. Restricting which personnel can reach root — and attributing their actions — requires customer-side controls: `sudoers` policy, a privileged access management tool, bastion host session recording, or equivalent.
 
 **Evidence artifacts**:
+
 - `sudoers` policy or PAM configuration showing which users can execute which HeartSuite commands
 - Privileged access management records (bastion logs, PAM session records, or equivalent)
 - Documentation of which personnel hold root access and under what job function
@@ -110,6 +112,7 @@ This means an attacker who reaches root via SSH cannot modify the SSH server con
 **Scope**: HeartSuite installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the Non-HS kernel without further authentication from HeartSuite. Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 
 **Evidence artifacts**:
+
 - Lockdown activation log showing the five sealed categories and their file counts
 - Demonstration that `/etc/passwd` cannot be modified while Lockdown+sealed is active
 - Demonstration that SSH config cannot be modified while Lockdown+sealed is active
@@ -136,6 +139,7 @@ Specific transmission controls:
 **Scope**: HeartSuite enforces no inbound connection controls. Inbound network filtering (port restrictions, protocol controls) is a customer-side responsibility via the OS (`iptables`, `nftables`, `ufw`) or cloud security groups.
 
 **Evidence artifacts**:
+
 - Internet Access queue showing per-program, per-IP approvals
 - Alert log showing blocked outbound connections (in Lockdown)
 - Webhook configuration showing HTTPS requirement
@@ -156,6 +160,7 @@ This is the primary use case of HeartSuite Core Secure. The implementation is st
 **Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not — in Lockdown, it is blocked before the interpreter processes it.
 
 **Reduced kernel features attackers can reach**: Features commonly exploited by rootkits and malware to escalate privilege or hide activity are not compiled into the HeartSuite kernel:
+
 - eBPF (`CONFIG_BPF_SYSCALL` not present — no BPF-based process hiding)
 - FUSE (`CONFIG_FUSE_FS` not present — no FUSE-based filesystem redirection)
 - Overlay filesystem (not present — no overlay-based directory shadowing)
@@ -169,6 +174,7 @@ This is the primary use case of HeartSuite Core Secure. The implementation is st
 **Alert on new blocked programs**: In Lockdown, any program path that appears in the denial log and has never appeared in any prior log session triggers an alert to all configured channels immediately.
 
 **Evidence artifacts**:
+
 - Alert log showing blocked execution attempts in Lockdown
 - Dashboard Programs queue showing items blocked and denied
 - Kernel configuration file (`/.hs/sys/` kernel config) showing compiled-out features
@@ -202,6 +208,7 @@ This is the primary use case of HeartSuite Core Secure. The implementation is st
 **Integration with vulnerability management**: HeartSuite is explicitly designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). HeartSuite reduces the blast radius of an unpatched vulnerability; the scanner maps what needs patching. Both controls are needed for SOC 2.
 
 **Evidence artifacts**:
+
 - Alert channel configuration (email, syslog, webhook)
 - Alert log showing state-change alerts
 - Syslog forwarding configuration to SIEM (rsyslog rule in `/etc/rsyslog.d/heartsuite.conf`)
@@ -255,6 +262,7 @@ This payload can drive PagerDuty, OpsGenie, Slack, or any incident management to
 **Log retention**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The UI audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB with no time-based retention. For SOC 2 Type II evidence spanning a 6- or 12-month audit period, syslog forwarding to a customer-operated SIEM is required — on-device logs alone do not support audit-period-length retention.
 
 **Evidence artifacts**:
+
 - Syslog forwarding rule in `/etc/rsyslog.d/heartsuite.conf`
 - Sample alert payloads from webhook endpoint
 - `/.hs/sys/hs-status.json` showing current system state
@@ -272,16 +280,19 @@ This payload can drive PagerDuty, OpsGenie, Slack, or any incident management to
 HeartSuite classifies security events into two tiers:
 
 **Immediate alerts (administrative state changes)** — these fire on all channels with no delay:
+
 - Mode switch (Setup Mode ↔ Lockdown)
 - Lockdown activation or deactivation
 - New allowlist file pushed while Lockdown is active
 
 **Threshold-filtered alerts (operational blocks)** — these apply noise reduction before delivery, while syslog and webhook receive them immediately:
+
 - Previously unseen program blocked (appears in denial log for the first time)
 - Network burst to new destinations (single program, multiple new destinations, 2-hour window)
 - Critical file version created outside maintenance window
 
 **What is never alerted** (documented in the product to prevent alert fatigue):
+
 - Anything in Setup Mode
 - Repeated blocks of a program-destination pair already seen in the current session
 - File version activity under `/tmp/`, `/var/tmp/`, or `/dev/shm/`
@@ -289,6 +300,7 @@ HeartSuite classifies security events into two tiers:
 In Lockdown, the Dashboard's review queues shift from approval mode to read-only investigation mode. Denied items appear in the queues. Use `[n]` to navigate denied items. Each denied item shows the program, path, and attempt count — the same metadata used during approval.
 
 **Evidence artifacts**:
+
 - Alert Settings configuration screenshot showing configured channels
 - Alert log from a known test event (using the Test Email function)
 - Dashboard Lockdown queue showing denied items and investigation workflow
@@ -305,26 +317,31 @@ In Lockdown, the Dashboard's review queues shift from approval mode to read-only
 HeartSuite provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control. HeartSuite's role in incident response:
 
 **Containment (structural)**:
+
 - Under Lockdown, a compromised program cannot launch new programs, cannot exceed its file access permissions, cannot connect to unapproved network destinations, and cannot modify the allowlist or system configuration
 - These constraints apply automatically — they do not require responder action during the incident
 - Nothing the attacker ran survives a reboot (allowlist modifications are in-memory only; the on-disk allowlist is immutable)
 
 **Investigation**:
+
 - Dashboard Lockdown queue shows all denied items (blocked programs, file accesses, network connections) with timestamps and paths
 - `journalctl -t heartsuite-alert` provides a timestamped log of all alerts
 - File version history in Dashboard Backup shows what changed and when, supporting forensic timeline reconstruction
 
 **Allowlist update during active incident**:
+
 - If a compromised program must be removed from the allowlist, a maintenance window is required (Option 1: switch to Setup Mode, or Option 2: boot Non-HS kernel for Lockdown recovery)
 - Maintenance presents a safety checklist (network isolation, daemon shutdown, SSH restriction) before allowing mode changes
 
 **Recovery**:
+
 - File Backup allows restoring any file to any prior version, including versions from before a compromise began
 - Timeline view allows batch restore of all files modified on a given date — the appropriate tool for ransomware recovery
 
 **Scope**: HeartSuite does not provide a customer-facing incident response policy template. An IR policy covering escalation contacts, communication plan, SLAs, and regulatory notification is an organizational control that must be supplied by the customer. HeartSuite's technical containment and investigation capabilities serve as the evidence base for that policy.
 
 **Evidence artifacts**:
+
 - Incident response policy document (organizational — customer-supplied)
 - Alert logs from the incident under investigation
 - Maintenance window log showing the date and steps of allowlist update
@@ -360,6 +377,7 @@ If the HeartSuite kernel fails to load, the startup script isolates the primary 
 **Scope**: Backup files are versioned filesystem copies — there is no encryption at the HeartSuite layer. If backup confidentiality at rest is required, disk-level encryption (dm-crypt/LUKS) must be configured at the OS level by the customer. An alert fires when backup transitions from enabled to disabled, and when any previously-covered directory is removed from coverage.
 
 **Evidence artifacts**:
+
 - Backup configuration showing protected directories
 - Test restore log demonstrating successful file recovery
 - Backup directory listing showing version history for a protected file
@@ -405,6 +423,7 @@ The allowlist is the authoritative record of every program, file access, and net
 **Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint. Each server manages its own allowlist independently; there is no centralized allowlist distribution or push mechanism. In fleet deployments, allowlist changes must be applied per server.
 
 **Evidence artifacts**:
+
 - Maintenance window log showing dates of mode changes
 - Update installation log at `/var/log/heartsuite/install.log`
 - SHA-256 verification output from update procedure
@@ -422,6 +441,7 @@ The allowlist is the authoritative record of every program, file access, and net
 **How HeartSuite satisfies this**:
 
 **Ransomware resilience**: The primary availability threat to production servers is ransomware. HeartSuite addresses this at two layers:
+
 1. **Prevention layer**: In Lockdown, programs not on the allowlist cannot execute — a ransomware binary dropped on the server cannot run.
 2. **Recovery layer**: If ransomware runs inside an approved process (e.g., malware that hijacks a legitimate application), per-write backups preserve all file versions. Under Lockdown, the kernel protects backup files from the compromised process.
 
@@ -432,6 +452,7 @@ The allowlist is the authoritative record of every program, file access, and net
 **Scope**: HeartSuite does not prevent denial-of-service (DoS) at the application or network layer. Root can `kill -9` approved services or panic the kernel. Availability hardening against DoS requires a separate control. An alert fires when backup is disabled or a covered directory is removed from coverage. HeartSuite's ransomware prevention and per-write recovery remain in place regardless.
 
 **Evidence artifacts**:
+
 - Backup configuration showing protected directories and version history
 - Alert log showing ransomware-related blocked execution attempts
 - Maintenance window log showing safety checklist completion
@@ -453,6 +474,7 @@ The allowlist is the authoritative record of every program, file access, and net
 **Scope**: An attacker who reaches root on the running system can read disk content with direct kernel-level access. Confidentiality *during* a live breach session is the role of disk encryption (dm-crypt/LUKS), not HeartSuite Lockdown. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; disk-level encryption covers backup files if applied at the OS level. HeartSuite limits what data can be *exfiltrated*, not what data can be *read* from a running kernel session.
 
 **Evidence artifacts**:
+
 - File access allowlist showing that programs are scoped to their required paths
 - Network allowlist showing outbound destinations per program
 - Disk encryption configuration (separate control — customer-supplied)
