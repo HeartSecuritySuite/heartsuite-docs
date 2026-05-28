@@ -30,7 +30,19 @@ A: Yes. Each host runs the HeartSuite Core Secure kernel with the same allowlist
 
 {{< details summary="How does HeartSuite Core Secure compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only).
+A: HeartSuite Core Secure replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. HeartSuite Core Secure has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how HeartSuite Core Secure can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only). For a detailed SELinux comparison, see "How does HeartSuite Core Secure compare to SELinux specifically?" below.
+
+{{< /details >}}
+
+{{< details summary="How does HeartSuite Core Secure compare to SELinux specifically?" >}}
+
+A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that HeartSuite Core Secure does not replicate; SELinux's domain transitions and per-service profiles are deliberate capabilities, not gaps.
+
+The limitation is the trust boundary. Root with the right capability can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly. If the system is compromised before SELinux policy is fully hardened, the attacker has the same access as any root process and can dismantle the policy from there.
+
+HeartSuite Core Secure's distinction is where enforcement is anchored. Under Lockdown, the allowlist is sealed at the filesystem level (`chattr +i`) and the HS kernel refuses to lift that seal at runtime — by any process, including root. There is no remote path to disable enforcement; modifying the allowlist requires booting the Non-HS kernel, which requires physical presence — a keyboard and monitor, serial port, or your cloud provider's serial console.
+
+The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth HeartSuite Core Secure does not provide; HeartSuite Core Secure adds the sealed boundary SELinux does not. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/) for the full side-by-side.
 
 {{< /details >}}
 
