@@ -114,6 +114,16 @@ A: The Dashboard walks you through seven phases, from verifying your installatio
 
 ## Installation
 
+{{< details summary="Will installing the HeartSuite Core Secure kernel break my existing software?" >}}
+
+A: The HS kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot back to the Non-HS kernel at any time from the GRUB menu, and the Dashboard remains accessible on both. The HS kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
+
+Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the system logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. You see what is affected before anything is blocked.
+
+All feature removals are intentional and documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification. The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are kernel features attackers use to escalate privilege or escape security restrictions; most production server workloads do not depend on them.
+
+{{< /details >}}
+
 {{< details summary="Once I've installed HeartSuite Core Secure, can a program access files without adding the directories to the allowlist entry?" >}}
 
 A: No. In Lockdown, a program can only access files and directories that have been explicitly approved through the Dashboard's File Access review queue. After allowlisting a program's execution in Phase 2, you approve its file access in Phase 4 — the Dashboard shows every file the program attempted to read or write.
