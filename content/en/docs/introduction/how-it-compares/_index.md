@@ -28,6 +28,8 @@ menu:
 
 Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features HeartSuite Core Secure has compiled out, the answer is always no — without patching, without policy, without an agent checking.
 
+Most runtime security products sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). HeartSuite Core Secure sits at Layer 2: enforcement is compiled into the kernel binary itself, not applied to it from outside. That placement is why every bypass in the table below requires physical presence rather than a remote privilege escalation. For the full taxonomy with all products mapped by layer, see [Layer Analysis](../layer-analysis/).
+
 ## What HeartSuite Core Secure replaces
 
 The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What HeartSuite Core Secure Complements](#what-heartsuite-core-secure-complements). These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Core Secure row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
@@ -136,6 +138,8 @@ Compare this to the products in the first table: in most of them, remote root is
 Nothing the attacker ran survives a reboot.
 
 To see the three enforcement mechanisms tested against real attacks — including what happens when attackers stay within approved boundaries — see [When Root Isn't Enough](../in-practice/).
+
+**The compliance answer.** SOC 2, PCI DSS, and ISO 27001 each include a privileged-access control question: can an administrator, or an attacker who has compromised one, remotely disable security controls? Under Lockdown, no remote path — including root — can modify the allowlist or disable enforcement. Bypass requires the physical presence described above. Every product in the bypass table earlier in this page can be disabled by an attacker with remote root; HeartSuite Core Secure cannot. For managed security providers, this is the answer they give to auditors — the same for every HeartSuite-protected server they manage in financial services, healthcare, and defence.
 
 ## Security as economics
 

@@ -1,7 +1,7 @@
 ---
 title: "When Root Isn't Enough"
 linkTitle: "When Root Isn't Enough"
-weight: 6
+weight: 7
 description: "How HeartSuite Core Secure's three enforcement mechanisms hold against real attacks — one example per mechanism, including what it does not cover."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "attacks", "exfiltration", "cve", "binary", "ransomware", "in-practice"]
