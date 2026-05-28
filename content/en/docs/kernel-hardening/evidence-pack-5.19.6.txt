@@ -1,0 +1,241 @@
+HeartSuite Core Secure — Kernel Hardening Evidence Pack
+Subject: HeartSuite kernel 5.19.6 (config versions 1.0 and 2.0; security-relevant options identical)
+Retrieved: 2026-05-19
+Tool: kernel-hardening-checker commit b9b83a0 (github.com/a13xp0p0v/kernel-hardening-checker)
+Runtime verification: hs-test-debian-12 VM (192.168.122.119), 2026-05-19 05:52 UTC
+
+=== 1. CONFIG FILE IDENTITY ===
+
+Version 1.0 (static analysis basis):
+  SHA-256: d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc
+  Path: HS code/kernel/5.19.6-HeartSuite-1.0/config-5.19.6-HeartSuite-1.0
+  Line count: 5050
+  Compiler recorded: GCC 100201 (GCC 10.2.1, Debian Bullseye build environment)
+
+Version 2.0 (installed on test VM — security-relevant options identical to 1.0):
+  SHA-256: fa227f1d00fc00512402ae75db4cc06566a197b1898a162f68a3c23f249ad7a8
+  Path: HS code/kernel/5.19.6-HeartSuite-2.0/config-5.19.6-HeartSuite-2.0
+  Line count: 5057
+  Compiler recorded: GCC 110500 (GCC 11.5.0, Ubuntu 24.04 build environment)
+  Diff from 1.0: 7 lines — toolchain version headers only (GCC/binutils version strings,
+    AS/LD version numbers, CC_HAS_ASM_GOTO_OUTPUT, CC_HAS_SLS, CC_HAS_ZERO_CALL_USED_REGS
+    stubs, KCSAN stub). No security-relevant option differs.
+
+Runtime kernel (VM boot, 2026-05-19):
+  uname -r: 5.19.6-HeartSuite-2.0
+  vmlinuz SHA-256: c897c044487a90bbd802ac706841eb540c060ab8f4e815f37f27ef9cdf65211a
+  /boot/config-5.19.6-HeartSuite-2.0 SHA-256: fa227f1d00fc00512402ae75db4cc06566a197b1898a162f68a3c23f249ad7a8
+  Config on disk matches running kernel ✓
+
+Architecture (detected by checker): X86_64
+Kernel version (detected by checker): 5.19.6
+
+=== 2. MODULE INVENTORY ===
+
+Runtime lsmod (hs-test-debian-12, 2026-05-19): EMPTY — 0 modules loaded
+  (lsmod output: "Module  Size  Used by" — no entries)
+  All kernel functionality in this configuration runs from the built-in image.
+
+Loadable .ko files available (9 total, from 5.19.6-HeartSuite-1.0 package):
+  efivarfs.ko
+  iptable_nat.ko
+  nf_log_syslog.ko
+  x86_pkg_temp_thermal.ko
+  xt_addrtype.ko
+  xt_LOG.ko
+  xt_mark.ko
+  xt_MASQUERADE.ko
+  xt_nat.ko
+
+modules.builtin line count: 334
+(modules.builtin lists all objects compiled into the kernel image, including base kernel subsystems)
+
+modules_disabled sysctl (runtime): 0 — module loading is not locked after boot
+kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y
+
+Comparison: a standard Debian 12 running config ships 3500–4000 loadable modules.
+
+=== 3. BYPASS-PRIMITIVE DISABLES (6+1 from deployment-hardening.md item 1) ===
+
+Verified directly from config file:
+
+  CONFIG_BPF_SYSCALL      -> # CONFIG_BPF_SYSCALL is not set  [DISABLED ✓]
+  CONFIG_IO_URING         -> CONFIG_IO_URING=y                [ENABLED — known gap in 5.19.6]
+  CONFIG_FUSE_FS          -> # CONFIG_FUSE_FS is not set      [DISABLED ✓]
+  CONFIG_OVERLAY_FS       -> # CONFIG_OVERLAY_FS is not set   [DISABLED ✓]
+  CONFIG_SECURITY_APPARMOR-> # CONFIG_SECURITY_APPARMOR is not set [DISABLED ✓]
+  CONFIG_SECURITY_TOMOYO  -> # CONFIG_SECURITY_TOMOYO is not set   [DISABLED ✓]
+  CONFIG_KEXEC            -> CONFIG_KEXEC=y                   [ENABLED — known gap in 5.19.6]
+  CONFIG_KEXEC_FILE       -> # CONFIG_KEXEC_FILE is not set   [DISABLED ✓]
+
+Score: 5/7 intentional disables verified in config.
+IO_URING and KEXEC remain enabled in 5.19.6; both are explicitly disabled in the 6.18.x successor config (HS-DEV-005 in docs/porting/HS-DEVIATIONS.md).
+
+=== 4. ALTERNATIVE LSMs (all disabled) ===
+
+  CONFIG_SECURITY_YAMA         -> # CONFIG_SECURITY_YAMA is not set        [DISABLED ✓]
+  CONFIG_SECURITY_LOCKDOWN_LSM -> # CONFIG_SECURITY_LOCKDOWN_LSM is not set [DISABLED ✓]
+  CONFIG_SECURITY_LANDLOCK     -> # CONFIG_SECURITY_LANDLOCK is not set     [DISABLED ✓]
+  CONFIG_IMA                   -> # CONFIG_IMA is not set                   [DISABLED ✓]
+  CONFIG_EVM                   -> # CONFIG_EVM is not set                   [DISABLED ✓]
+
+Score: 5/5 alternative LSMs disabled.
+
+=== 5. SELinux AND RUNTIME LSM STATE ===
+
+Config shows:
+  CONFIG_SECURITY_SELINUX=y
+  CONFIG_SECURITY_SELINUX_BOOTPARAM=y
+  CONFIG_SECURITY_SELINUX_DISABLE=y
+  CONFIG_SECURITY_SELINUX_DEVELOP=y
+  CONFIG_DEFAULT_SECURITY_SELINUX=y
+
+Runtime verification (hs-test-debian-12, 2026-05-19):
+
+  Boot cmdline: BOOT_IMAGE=/boot/vmlinuz-5.19.6-HeartSuite-2.0 root=UUID=... ro
+    console=tty0 console=ttyS0,115200 earlyprintk=ttyS0,115200 consoleblank=0
+    (no selinux=0 or security= parameter)
+
+  /sys/kernel/security/lsm: NOT ACCESSIBLE — securityfs is not mounted by this kernel.
+    The absence of securityfs is intentional (not in HS kernel config);
+    /sys/kernel/security/lsm therefore does not exist.
+
+  SELinux enforcement state:
+    /sys/fs/selinux/enforce: 0  [PERMISSIVE — not enforcing]
+    selinuxfs mount: present (rw,nosuid,noexec,relatime)
+    /proc/self/attr/current: "kernel"  [initial context; no policy loaded]
+
+  dmesg LSM init sequence:
+    [0.162429] LSM: Security Framework initializing
+    [0.162429] SELinux:  Initializing.          <- SELinux loads (compiled-in)
+    [0.518204] HEARTSUITE INFO: state variables initialized  <- HeartSuite loads
+
+  HeartSuite enforcement active (from dmesg, t+4s):
+    [4.135529] HEARTSUITE INFO: activating Heartsuite service...
+    [4.137118] HEARTSUITE INFO: setting APO records cache size to 25
+    [4.139265] HEARTSUITE: backup activated
+    [4.140091] HEARTSUITE INFO: turning monitor state ON
+    [34.029934] HEARTSUITE ERROR! NO FILE ACCESS: program: /usr/lib/systemd/systemd-timesyncd;
+                file: /run/systemd/resolve/resolv.conf  <- live enforcement running
+
+  HeartSuite kernel symbols confirmed in /proc/kallsyms:
+    HS_unload_sandbox_record, HS_lockdown_hs (custom syscall),
+    HS_activate_hs (custom syscall), HS_is_on, HS_locked_down,
+    HS_capable_backup_from_path_and_pid, HS_file_is_in_sandbox
+
+CONCLUSION (open item resolved):
+  SELinux is compiled-in but runs in permissive mode with no policy loaded —
+  it observes but does not deny. HeartSuite is the sole enforcing MAC LSM.
+  The design invariant ("HeartSuite is the first and final enforcement authority")
+  holds at runtime on this deployment.
+
+  Caveat: enforcement state depends on runtime boot and service configuration,
+  not the kernel config alone. The evidence above reflects the current test VM
+  boot configuration; production deployments should independently verify
+  /sys/fs/selinux/enforce = 0 and confirm HeartSuite activation in dmesg.
+
+=== 6. CPU MITIGATIONS (5.19.6 naming convention) ===
+
+5.19.6 uses pre-6.1 option names. The following are confirmed present in the config
+(the checker reports these as FAIL because it uses the 6.1+ CONFIG_MITIGATION_* names):
+
+  CONFIG_RETPOLINE=y          (Spectre v2 mitigation)
+  CONFIG_RETHUNK=y            (return thunk hardening)
+  CONFIG_CPU_IBPB_ENTRY=y     (IBPB on kernel entry)
+  CONFIG_CPU_IBRS_ENTRY=y     (IBRS on kernel entry)
+  CONFIG_CC_HAS_IBT=y         (IBT support in compiler)
+
+Checker FAILs for CONFIG_MITIGATION_SPECTRE_V1, CONFIG_MITIGATION_SPECTRE_V2, etc.
+are naming artifacts — the mitigations are present under the older option names.
+
+=== 7. AUTOMATED CHECKER SCORES ===
+
+kernel-hardening-checker commit b9b83a0, run 2026-05-19
+Applied identically to all configs below. Same tool, same version, same invocation.
+
+ERA-MATCHED COMPARISON (same kernel generation — scores are directly comparable):
+
+Config                               | OK  | FAIL | Total | OK%  | Source
+-------------------------------------|-----|------|-------|------|-------------------
+HS 5.19.6 (HeartSuite-2.0)          | 129 |  129 |  258  | 50.0 | HS code/kernel/5.19.6-HeartSuite-2.0/config
+Arch linux-hardened 5.19.11-hardened1| 158 |  100 |  258  | 61.2 | gitlab.archlinux.org/archlinux/packaging/packages/linux-hardened @ 5.19.11.hardened1-1 (SHA256: da1664e5...)
+Vanilla x86_64 defconfig 5.17        | 126 |  132 |  258  | 48.8 | bundled in kernel-hardening-checker
+
+CROSS-VERSION REFERENCE (version mismatch — scores not directly comparable to HS 5.19.6; included for orientation only):
+
+Config                         | OK  | FAIL | Total | OK%  | Kernel ver  | Source
+-------------------------------|-----|------|-------|------|-------------|-------
+NixOS linux_hardened           | 163 |   95 |  258  | 63.2 | 6.12.50     | bundled in checker (NOTE: linux_hardened removed from nixpkgs 2025 due to lack of maintenance)
+Arch Linux hardened (current)  | 179 |   79 |  258  | 69.4 | 6.15.11     | bundled in checker
+KSPP recommended x86-64        | 235 |   21 |  256  | 91.8 | 6.17.3      | bundled in checker (version-agnostic intent, anchored to 6.17)
+
+=== 8. PER-CATEGORY CHECKER SCORES ===
+
+ERA-MATCHED (all 5.19.x — directly comparable):
+
+Category              | HS 5.19.6 | Arch lh 5.19.11 | Vanilla 5.17
+----------------------|-----------|-----------------|-------------
+cut_attack_surface    | 91/132 (68.9%) | 77/132 (58.3%) | 90/132 (68.2%)
+self_protection       | 31/109 (28.4%) | 69/109 (63.3%) | 29/109 (26.6%)
+security_policy       |  7/13          |  9/12          |  7/13
+harden_userspace      |  0/5           |  2/5           |  0/5
+network_security      |  1/1           |  1/1           |  1/1
+TOTAL                 | 129/258 (50.0%)| 158/258 (61.2%)| 126/258 (48.8%)
+
+CROSS-VERSION REFERENCE (orientation only — not comparable to 5.19.x scores):
+
+Category              | NixOS lh 6.12  | Arch lh 6.15   | KSPP 6.17
+----------------------|----------------|----------------|----------
+cut_attack_surface    | 61/132 (46.2%) | 76/132 (57.6%) | 131/132 (99.2%)
+self_protection       | 88/109 (80.7%) | 90/109 (82.6%) |  93/109 (85.3%)
+security_policy       | 10/12          |  9/12          |   8/12
+harden_userspace      |  3/5           |  3/5           |   2/3
+network_security      |  1/1           |  1/1           |   1/1
+TOTAL                 | 163/258 (63.2%)| 179/258 (69.4%)| 235/256 (91.8%)
+
+=== 9. HS UNIQUE ATTACK-SURFACE WINS VS ARCH HARDENED ===
+
+Options where HS passes (=n) but Arch hardened fails (=y):
+  CONFIG_BPF_SYSCALL, CONFIG_USER_NS, CONFIG_KSM, CONFIG_TIPC, CONFIG_MPTCP,
+  CONFIG_TLS, CONFIG_SMB_SERVER, CONFIG_CRYPTO_USER_API, CONFIG_CRYPTO_USER_API_AEAD,
+  CONFIG_CRYPTO_USER_API_HASH, CONFIG_CRYPTO_USER_API_RNG, CONFIG_CRYPTO_USER_API_SKCIPHER,
+  CONFIG_STAGING, CONFIG_FB, CONFIG_INET_DIAG, CONFIG_FUNCTION_TRACER,
+  CONFIG_STACK_TRACER, CONFIG_MMIOTRACE, CONFIG_MODULE_FORCE_LOAD,
+  CONFIG_ACPI_CONFIGFS, CONFIG_BLK_DEV_FD, CONFIG_BLK_DEV_UBLK,
+  CONFIG_HWPOISON_INJECT, CONFIG_MTD_PHRAM, CONFIG_SUNRPC_DEBUG,
+  CONFIG_X86_INTEL_TSX_MODE_OFF, CONFIG_CACHESTAT_SYSCALL, CONFIG_ZSMALLOC_STAT,
+  CONFIG_BLK_DEV_WRITE_MOUNTED, CONFIG_XFS_SUPPORT_V4
+(30 options total)
+
+=== 10. ARCH HARDENED UNIQUE WINS VS HS ===
+
+Options where Arch hardened passes (=n) but HS fails (=y):
+  CONFIG_KEXEC, CONFIG_DEVMEM, CONFIG_PROC_KCORE, CONFIG_PROC_VMCORE,
+  CONFIG_HIBERNATION, CONFIG_MAGIC_SYSRQ, CONFIG_MAGIC_SYSRQ_SERIAL,
+  CONFIG_MODIFY_LDT_SYSCALL, CONFIG_CRASH_DUMP,
+  CONFIG_IO_STRICT_DEVMEM, CONFIG_DEVPORT, CONFIG_X86_16BIT,
+  CONFIG_X86_VSYSCALL_EMULATION, CONFIG_SECURITY_DMESG_RESTRICT,
+  CONFIG_PROVIDE_OHCI1394_DMA_INIT
+(15 options total)
+
+=== 11. CHECKER SELF-PROTECTION KSPP FAILS (HS — 77 items) ===
+
+Key missing exploit-resistance options in HS 5.19.6 not present in vanilla either:
+  INIT_ON_ALLOC_DEFAULT_ON, INIT_ON_FREE_DEFAULT_ON, HARDENED_USERCOPY,
+  FORTIFY_SOURCE, SLAB_FREELIST_RANDOM, SLAB_FREELIST_HARDENED,
+  BUG_ON_DATA_CORRUPTION, DEBUG_NOTIFIERS, KFENCE, RANDSTRUCT_FULL,
+  GCC_PLUGIN_LATENT_ENTROPY, UBSAN_BOUNDS, KSTACK_ERASE,
+  RANDOMIZE_KSTACK_OFFSET_DEFAULT, PAGE_TABLE_CHECK, ZERO_CALL_USED_REGS,
+  SECURITY_LOCKDOWN_LSM (upstream lockdown — separate from HS Lockdown feature),
+  MODULE_SIG, MODULE_SIG_FORCE, IOMMU_DEFAULT_DMA_STRICT
+
+=== 12. SOURCE CITATIONS ===
+
+All HS design decisions documented in:
+  docs/porting/HS-DEVIATIONS.md (threat-model deviation registry)
+  docs/security-checklists/kernel_c/sandbox-enforcement.md (architectural invariants)
+  docs/security-checklists/tooling/deployment-hardening.md (6+1 disable list with rationale)
+  docs/porting/BUILD_PROVENANCE.md (build provenance)
+
+Checker source: github.com/a13xp0p0v/kernel-hardening-checker
+Reference configs bundled with checker; KSPP recommendations: kspp-kconfig-x86-64.config
