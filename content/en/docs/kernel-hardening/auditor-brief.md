@@ -55,7 +55,7 @@ HS provides no additional protection beyond vanilla upstream defaults for heap-b
 - `/proc/self/attr/current` = `kernel` — initial context, no confinement active
 - securityfs is not mounted (no `/sys/kernel/security/lsm` file)
 
-SELinux initializes at boot but does not enforce. HeartSuite is the sole enforcing MAC LSM. dmesg confirms HeartSuite's enforcement is active within 4 seconds of boot.
+SELinux initializes at boot but does not enforce. HeartSuite is the sole enforcing MAC LSM. dmesg confirms HeartSuite is enforcing within 4 seconds of boot.
 
 *Residual note for production:* this relies on runtime service configuration keeping SELinux permissive. Verify `cat /sys/fs/selinux/enforce` = `0` on each production deployment. A loaded SELinux policy that flips to enforcing mode would add a competing LSM to the stack.
 
