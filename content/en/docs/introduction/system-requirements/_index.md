@@ -32,6 +32,8 @@ HeartSuite Core Secure is distributed with two HeartSuite Core Secure kernels ba
 
 The HeartSuite Core Secure kernel is compiled without several features that attackers use to gain elevated access or escape security restrictions — keeping them in would undermine kernel-level allowlisting. Software that relies on those features will not run on the HeartSuite Core Secure kernel — use the Non-HS kernel or a separate system for those workloads.
 
+The HS kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
+
 | Not available on HS kernel | Affects |
 |-----------|---------|
 | eBPF program loading (`CONFIG_BPF_SYSCALL`) | Cilium, Falco, Tetragon, Pixie, bpftrace, bcc, Tracee, and other eBPF-based observability and runtime-detection tools |
