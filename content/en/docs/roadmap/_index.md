@@ -1,8 +1,8 @@
 ---
-title: "Roadmap 2022 — present"
+title: "Roadmap 2016 — present"
 linkTitle: "Roadmap"
 description: "See where HeartSuite Core Secure is headed—kernel-level enforcement that root cannot bypass."
-lastmod: "2026-05-14"
+lastmod: "2026-05-27"
 weight: 110
 menu:
   main:
@@ -17,13 +17,25 @@ Traditional endpoint security detects threats after they execute. HeartSuite tak
 
 The five core features that make this possible—program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers—were designed together as a single coherent architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 
-## Development timeline (2021-2026)
+The architecture's foundations reach back to 2016, when Karen Heart first identified that security had become an incoherent patchwork of disconnected tools with no unified design. Years of academic research followed—seven peer-reviewed papers on database security, forensics, and cryptographic erasure—culminating in *Zero Day Secure*, the book that articulates the problem HeartSuite is built to solve.
+
+## Development timeline (2016–2026)
 
 ```mermaid
 gantt
     title HeartSuite Core Secure — Development Timeline
     dateFormat YYYY-MM-DD
     axisFormat %m/%Y
+
+    section Research Foundation (2016–2021)
+    Problem identified — fragmented security, no coherent solution :done, 2016-01-01, 2016-12-31
+    Database Forensic Analysis with DBCarver — CIDR 2017         :done, 2017-01-04, 2017-01-05
+    Carving Database Storage — Digital Investigation 2017        :done, 2017-08-01, 2017-08-02
+    Detecting Database File Tampering — EDBT 2018                :done, 2018-03-26, 2018-03-27
+    DB3F & DF-Toolkit — Digital Investigation 2019               :done, 2019-07-01, 2019-07-02
+    DF-Toolkit — VLDB Endowment 2020                             :done, 2020-08-31, 2020-09-01
+    Purging Data from Backups — DEXA 2021                        :done, 2021-08-01, 2021-08-02
+    Purging Compliance from Backups — CYBER 2021                 :done, 2021-10-03, 2021-10-04
 
     section Design & Architecture (2021)
     5 core features designed — prevent-before-detect  :done, 2021-01-01, 2021-12-31
@@ -56,6 +68,7 @@ gantt
     Kernel strategy — LTS-only track selected         :done, 2025-08-01, 2025-12-15
     Eight distributions evaluated and targeted        :done, 2025-10-01, 2026-01-31
     Linux 6.18 LTS kernel port                        :done, 2025-11-15, 2025-12-31
+    Zero Day Secure — published (Simon & Schuster)    :done, 2025-10-01, 2025-10-02
 
     section Open-Source Launch (2026 Q1)
     Linux 6.18 LTS          :done, 2026-01-15, 2026-02-24
@@ -88,6 +101,42 @@ gantt
 
 {{< tabpane text=true >}}
 {{% tab header="Done" %}}
+
+### Research foundation (2016–2021)
+
+> [!NOTE]
+> **Problem Identified — Fragmented Security Landscape** (2016)  
+> Karen Heart identified that security had become an incoherent patchwork of disconnected tools, each addressing a narrow concern with no unified design. This diagnosis—and the conviction that a single principled architecture could replace the patchwork—became the founding motivation behind HeartSuite. The idea was developed together with Alexander Rasin. No code yet: only the problem statement and the conviction that a coherent solution was possible.
+
+> [!NOTE]
+> **Database Forensic Analysis with DBCarver** (January 4, 2017)  
+> First published paper. DBCarver reconstructs database content from disk images without relying on log files or system metadata, using page carving to recover both live and deleted data. Published at the 8th Biennial Conference on Innovative Data Systems Research (CIDR 2017). Co-authors: Alexander Rasin, Tanu Malik, Hugo Jehle, Jonathan Grier.
+
+> [!NOTE]
+> **Carving Database Storage to Detect and Trace Security Breaches** (August 2017)  
+> Shows how storage-layer carving can identify and trace unauthorized database modifications that are invisible to the application tier. Published in *Digital Investigation*, Volume 22 Supplement. Co-authors: Alexander Rasin, Boris Glavic, Jacob D. Furst, Lucas Bressan, Jonathan Grier.
+
+> [!NOTE]
+> **Detecting Database File Tampering through Page Carving** (March 2018)  
+> Proposes a method to detect direct modifications to database files that bypass standard DBMS security mechanisms—attacks that sit below the software layer and are invisible to the application. Published at the 21st International Conference on Extending Database Technology (EDBT 2018, Vienna). Co-authors: Alexander Rasin, Tanu Malik, Jacob D. Furst, Jonathan Grier.
+
+> [!NOTE]
+> **DB3F & DF-Toolkit: Database Forensic File Format and Toolkit** (July 2019)  
+> Introduces a standardized file format (DB3F) and toolkit for forensic interaction with database storage layers, enabling consistent abstracted access to deleted or unallocated data. Published in *Digital Investigation*, Volume 29 Supplement. Co-authors: Alexander Rasin, Rebecca Jacob, Jonathan Grier.
+
+> [!NOTE]
+> **DF-Toolkit: Interacting with Low-Level Database Storage** (August 2020)  
+> Formalizes the toolkit for direct, abstracted access to DBMS storage—establishing the research infrastructure for broader forensic and compliance work. Published in the *Proceedings of the VLDB Endowment*, Volume 13, Issue 12 (VLDB 2020). Co-authors: James Wagner, Alexander Rasin, Tanu Malik, Jonathan Grier.
+
+> [!NOTE]
+> **Purging Data from Backups by Encryption** (2021)  
+> Presents a cryptographic erasure framework for targeted data destruction in database backups to meet compliance regulations—addressing the fundamental problem that backups cannot be edited without destroying their integrity. Published at the International Conference on Database and Expert Systems Applications (DEXA 2021). Co-authors: Nick Scope, Alexander Rasin, James Wagner, Ben Lenard.
+
+> [!NOTE]
+> **Purging Compliance from Database Backups by Encryption** (CYBER 2021 / February 2022)  
+> Extends the cryptographic erasure approach to broader compliance scenarios. Presented at CYBER 2021 (October 2021); published in *Journal of Data Intelligence*, Volume 3, Issue 1 (February 2022). Co-authors: Nick Scope, Alexander Rasin, Ben Lenard, James Wagner.
+
+---
 
 ### Design & architecture (2021)
 
@@ -214,6 +263,10 @@ gantt
 > [!NOTE]
 > **Linux 6.18 LTS Kernel Port** (late 2025)  
 > Full port from the 5.19.6 line to Linux 6.18 LTS, covering hook relocations and syscall ABI changes. Documented as a reference for future kernel version upgrades.
+
+> [!NOTE]
+> **Zero Day Secure — Book Published** (~October 2025)  
+> Karen Heart's *Zero Day Secure: Why Modern Operating Systems Can't Stop Malware and How to Fix Them*, published by Simon & Schuster (ISBN 9781968865078). The book presents the architectural argument that HeartSuite implements in code: that operating systems must be redesigned to prevent malware execution at the kernel level, not detect it after the fact. It is the written form of the insight that motivated nine years of research and development—from the first frustration in 2016 to a running kernel in production.
 
 ---
 
