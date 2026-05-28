@@ -154,67 +154,67 @@ The following are questions a compliance officer or auditor would reasonably ask
 
 ### Access Control & Identity
 
-6. **Does HeartSuite support multiple administrative roles?** The documentation describes a single administrative interface. ISO 27001 A.5.15 and NIST PR.AC-4 require separation of duties. Can review and approval of allowlist entries be assigned to different individuals, with one approving and another confirming?
+1. **Does HeartSuite support multiple administrative roles?** The documentation describes a single administrative interface. ISO 27001 A.5.15 and NIST PR.AC-4 require separation of duties. Can review and approval of allowlist entries be assigned to different individuals, with one approving and another confirming?
 
-7. **Is Dashboard access authenticated and logged?** Who can access the Dashboard, by what credential, and is that access itself logged? The documentation notes the Dashboard is a trust boundary at console access, but does not define the authentication model.
+2. **Is Dashboard access authenticated and logged?** Who can access the Dashboard, by what credential, and is that access itself logged? The documentation notes the Dashboard is a trust boundary at console access, but does not define the authentication model.
 
-8. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** Regulated environments often require centralised identity management. The documentation does not describe integration with directory services.
+3. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** Regulated environments often require centralised identity management. The documentation does not describe integration with directory services.
 
-9. **Can the allowlist be managed remotely, and if so, what protects that management channel?** The documentation describes Lockdown as sealing configuration, but does not clearly state whether remote allowlist changes are possible and, if so, what the authentication and authorisation model is.
+4. **Can the allowlist be managed remotely, and if so, what protects that management channel?** The documentation describes Lockdown as sealing configuration, but does not clearly state whether remote allowlist changes are possible and, if so, what the authentication and authorisation model is.
 
 ### Cryptography & Data Protection
 
-10. **What encryption, if any, protects HeartSuite's own configuration files?** The allowlist files are described as sealed by immutability flags but not encrypted. A physical attacker with access to the disk could read or, on a non-HS kernel, modify them. Is there a plan to add encryption at rest for configuration?
+1. **What encryption, if any, protects HeartSuite's own configuration files?** The allowlist files are described as sealed by immutability flags but not encrypted. A physical attacker with access to the disk could read or, on a non-HS kernel, modify them. Is there a plan to add encryption at rest for configuration?
 
-11. **Are backup snapshots encrypted?** File Backup & Versioning creates versioned snapshots but the documentation does not describe whether snapshot contents are encrypted. For environments subject to data-at-rest requirements (GDPR, HIPAA, PCI DSS), unencrypted backups of `/home` may be a compliance finding.
+2. **Are backup snapshots encrypted?** File Backup & Versioning creates versioned snapshots but the documentation does not describe whether snapshot contents are encrypted. For environments subject to data-at-rest requirements (GDPR, HIPAA, PCI DSS), unencrypted backups of `/home` may be a compliance finding.
 
-12. **Does HeartSuite validate the integrity of its own kernel image at boot?** Secure Boot integration and kernel image signing are referenced in the sealed directory list, but the documentation does not confirm whether Secure Boot is required, optional, or verified by HeartSuite during startup.
+3. **Does HeartSuite validate the integrity of its own kernel image at boot?** Secure Boot integration and kernel image signing are referenced in the sealed directory list, but the documentation does not confirm whether Secure Boot is required, optional, or verified by HeartSuite during startup.
 
 ### Vulnerability & Patch Management
 
-13. **How does HeartSuite handle kernel CVEs in its own kernel build?** The product ships a custom kernel. When a kernel CVE is disclosed, what is the patch cadence, how are customers notified, and what is the expected update window?
+1. **How does HeartSuite handle kernel CVEs in its own kernel build?** The product ships a custom kernel. When a kernel CVE is disclosed, what is the patch cadence, how are customers notified, and what is the expected update window?
 
-14. **Is there a published software bill of materials (SBOM) for the HeartSuite kernel and Dashboard components?** ISO 27001 A.5.23 and NIST SP 800-204C reference SBOM as a supply-chain control. An SBOM would allow customers to correlate HeartSuite components against vulnerability databases.
+2. **Is there a published software bill of materials (SBOM) for the HeartSuite kernel and Dashboard components?** ISO 27001 A.5.23 and NIST SP 800-204C reference SBOM as a supply-chain control. An SBOM would allow customers to correlate HeartSuite components against vulnerability databases.
 
-15. **What is HeartSuite's own vulnerability disclosure and response programme?** For procurement and supplier-risk assessments under ISO 27001 A.5.22, customers need to understand the vendor's vulnerability management process, including responsible disclosure policy and CVE numbering authority (CNA) status.
+3. **What is HeartSuite's own vulnerability disclosure and response programme?** For procurement and supplier-risk assessments under ISO 27001 A.5.22, customers need to understand the vendor's vulnerability management process, including responsible disclosure policy and CVE numbering authority (CNA) status.
 
 ### Network & Monitoring
 
-16. **Does HeartSuite support CIDR notation or DNS-based network allowlisting?** The documentation explicitly states only literal IPv4/IPv6 addresses are supported. For cloud-hosted services with dynamic IPs or CDN endpoints, this creates a maintenance burden. Is this a planned feature, and is there a recommended workaround?
+1. **Does HeartSuite support CIDR notation or DNS-based network allowlisting?** The documentation explicitly states only literal IPv4/IPv6 addresses are supported. For cloud-hosted services with dynamic IPs or CDN endpoints, this creates a maintenance burden. Is this a planned feature, and is there a recommended workaround?
 
-17. **Can syslog output be shipped to a remote SIEM in real time under Lockdown?** The documentation lists syslog as an alert channel, but Lockdown seals network access. Is a syslog forwarder pre-allowlisted, and if so, what is its allowlist configuration?
+2. **Can syslog output be shipped to a remote SIEM in real time under Lockdown?** The documentation lists syslog as an alert channel, but Lockdown seals network access. Is a syslog forwarder pre-allowlisted, and if so, what is its allowlist configuration?
 
-18. **What is the retention period for kernel log data before it is overwritten?** The documentation notes logs are cleared from the Dashboard when review queues are emptied. For compliance programmes requiring 90-day or 1-year log retention, what is the recommended architecture?
+3. **What is the retention period for kernel log data before it is overwritten?** The documentation notes logs are cleared from the Dashboard when review queues are emptied. For compliance programmes requiring 90-day or 1-year log retention, what is the recommended architecture?
 
-19. **Does HeartSuite provide any inbound connection monitoring?** The network allowlist is described as controlling outbound connections. Inbound threat detection (port scans, brute-force) is not mentioned. What is the recommended complementary control?
+4. **Does HeartSuite provide any inbound connection monitoring?** The network allowlist is described as controlling outbound connections. Inbound threat detection (port scans, brute-force) is not mentioned. What is the recommended complementary control?
 
 ### Incident Response & Recovery
 
-20. **What is the documented recovery time objective (RTO) for restoring a Lockdown host after a security incident?** The maintenance window process requires a two-reboot sequence and manual review. For environments with defined RTO requirements, is there a faster recovery path?
+1. **What is the documented recovery time objective (RTO) for restoring a Lockdown host after a security incident?** The maintenance window process requires a two-reboot sequence and manual review. For environments with defined RTO requirements, is there a faster recovery path?
 
-21. **Can HeartSuite backups be restored to a different host?** The documentation describes file versioning for recovery on the same host. For disaster recovery scenarios, can backup snapshots be transferred to and restored on a replacement machine?
+2. **Can HeartSuite backups be restored to a different host?** The documentation describes file versioning for recovery on the same host. For disaster recovery scenarios, can backup snapshots be transferred to and restored on a replacement machine?
 
-22. **Is there a procedure for revoking a compromised allowlist entry without disabling Lockdown?** If a specific programme is found to be malicious, the current process appears to require a maintenance window to modify the allowlist. Is there an emergency revocation path?
+3. **Is there a procedure for revoking a compromised allowlist entry without disabling Lockdown?** If a specific programme is found to be malicious, the current process appears to require a maintenance window to modify the allowlist. Is there an emergency revocation path?
 
-23. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** ISO 27001 A.5.24 requires an information security incident management process. Does HeartSuite have a defined customer notification process for product-level security events?
+4. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** ISO 27001 A.5.24 requires an information security incident management process. Does HeartSuite have a defined customer notification process for product-level security events?
 
 ### Scalability & Fleet Management
 
-24. **How is the allowlist managed across a fleet of identical servers?** The documentation describes a per-host allowlist workflow. For environments with hundreds of identical servers, is there a mechanism to define and push a common allowlist, or must each host be configured individually?
+1. **How is the allowlist managed across a fleet of identical servers?** The documentation describes a per-host allowlist workflow. For environments with hundreds of identical servers, is there a mechanism to define and push a common allowlist, or must each host be configured individually?
 
-25. **Is there a centralised management plane for multi-host deployments?** The Dashboard is described as a per-host interface. For SOC and compliance teams that need a fleet-wide view of Lockdown status, blocked events, and approval history, is there a management server or API?
+2. **Is there a centralised management plane for multi-host deployments?** The Dashboard is described as a per-host interface. For SOC and compliance teams that need a fleet-wide view of Lockdown status, blocked events, and approval history, is there a management server or API?
 
-26. **What does the licensing model look like at scale?** The documentation notes that licensing operates on a per-host basis, but does not provide pricing tiers, volume discount structures, or terms for managed service providers (MSPs) that may need to report licence compliance to customers.
+3. **What does the licensing model look like at scale?** The documentation notes that licensing operates on a per-host basis, but does not provide pricing tiers, volume discount structures, or terms for managed service providers (MSPs) that may need to report licence compliance to customers.
 
 ### Compliance Certifications
 
-27. **Has HeartSuite itself undergone an independent security assessment, penetration test, or third-party audit?** For procurement under ISO 27001 A.5.22, customers need evidence that the supplier has assessed its own product. Is a report or summary available under NDA?
+1. **Has HeartSuite itself undergone an independent security assessment, penetration test, or third-party audit?** For procurement under ISO 27001 A.5.22, customers need evidence that the supplier has assessed its own product. Is a report or summary available under NDA?
 
-28. **Is HeartSuite listed in any government or regulatory approved-products list** (e.g., UK NCSC CPA, US NIAP, Common Criteria)? Certain regulated sectors (defence, government, critical infrastructure) require products to appear on such lists before deployment.
+2. **Is HeartSuite listed in any government or regulatory approved-products list** (e.g., UK NCSC CPA, US NIAP, Common Criteria)? Certain regulated sectors (defence, government, critical infrastructure) require products to appear on such lists before deployment.
 
-29. **Does HeartSuite map to any specific sector compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? The documentation addresses NIST CSF and ISO 27001 at a general level. Sector-specific frameworks have additional requirements (e.g., PCI DSS Requirement 10 for audit log integrity, HIPAA §164.312 for access controls) that may have specific HeartSuite answers.
+3. **Does HeartSuite map to any specific sector compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? The documentation addresses NIST CSF and ISO 27001 at a general level. Sector-specific frameworks have additional requirements (e.g., PCI DSS Requirement 10 for audit log integrity, HIPAA §164.312 for access controls) that may have specific HeartSuite answers.
 
-30. **Is there a shared-responsibility model document for cloud deployments?** When HeartSuite runs as a guest VM on AWS, GCP, or Azure, the cloud provider controls the hypervisor layer. A shared-responsibility matrix would clarify which controls HeartSuite addresses, which the cloud provider addresses, and which remain the customer's responsibility.
+4. **Is there a shared-responsibility model document for cloud deployments?** When HeartSuite runs as a guest VM on AWS, GCP, or Azure, the cloud provider controls the hypervisor layer. A shared-responsibility matrix would clarify which controls HeartSuite addresses, which the cloud provider addresses, and which remain the customer's responsibility.
 
 ---
 
