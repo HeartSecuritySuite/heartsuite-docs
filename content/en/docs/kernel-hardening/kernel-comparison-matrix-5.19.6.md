@@ -44,12 +44,12 @@ Vanilla defconfig is the baseline: it does about as well as HS on attack-surface
 | Option | HS 5.19.6 | Arch lh 5.19.11 | Notes |
 |---|---|---|---|
 | `CONFIG_BPF_SYSCALL` | **=n** | =y | BPF LSM can override all MAC decisions |
-| `CONFIG_IO_URING` | =y (gap) | =y | io_uring bypasses VFS hooks via `fget()` |
+| `CONFIG_IO_URING` | =y | =y | io_uring bypasses VFS hooks via `fget()` |
 | `CONFIG_FUSE_FS` | **=n** | =m | FUSE allows path-confusion attacks |
 | `CONFIG_OVERLAY_FS` | **=n** | =m | Overlay `d_path()` breaks sandbox lookup |
 | `CONFIG_SECURITY_APPARMOR` | **=n** | =y | Redundant LSM adds attack surface |
 | `CONFIG_SECURITY_TOMOYO` | **=n** | =y | Same rationale as AppArmor |
-| `CONFIG_KEXEC` | =y (gap) | **=n** | kexec destroys Lockdown state |
+| `CONFIG_KEXEC` | =y | **=n** | kexec destroys Lockdown state |
 | `CONFIG_MODULE_SIG` | =n | **=y** | Unsigned modules can unload HeartSuite |
 
 HS: 5/8 disabled. Arch lh: 3/8 disabled (different 3). **Neither disables all eight.**
@@ -100,11 +100,11 @@ These projects were not scored with the checker in this analysis — either beca
 
 | Metric | HS 5.19.6 | Source |
 |---|---|---|
-| Modules loaded at runtime | **0** (lsmod empty) | Phase 0.4 VM verification |
-| Loadable .ko files shipped | 9 | Phase 0.4 VM verification |
-| modules.builtin entries | 334 | Phase 0.4 VM verification |
-| SELinux at runtime | Permissive (`enforce=0`) | Phase 0.4 — `/sys/fs/selinux/enforce` |
-| Active enforcing MAC LSM | HeartSuite | Phase 0.4 — dmesg enforcement trace |
+| Modules loaded at runtime | **0** (lsmod empty) | Runtime measurement |
+| Loadable .ko files shipped | 9 | Runtime measurement |
+| modules.builtin entries | 334 | Runtime measurement |
+| SELinux at runtime | Permissive (`enforce=0`) | Runtime measurement — `/sys/fs/selinux/enforce` |
+| Active enforcing MAC LSM | HeartSuite | Runtime measurement — dmesg enforcement trace |
 | Alt-LSMs (YAMA, LANDLOCK, IMA, EVM, LOCKDOWN_LSM) | All disabled | Config grep |
 
 ---

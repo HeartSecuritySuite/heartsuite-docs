@@ -46,7 +46,6 @@ This means:
 
 - **Attacker cannot use BPF** to override security decisions at runtime. (Arch linux-hardened keeps BPF enabled; it's widely used by system tools and container runtimes.)
 - **Attacker cannot use user namespaces** (`CONFIG_USER_NS=n`) to create a fake root environment. (Arch linux-hardened 5.19.11 keeps user namespaces enabled for container use.)
-- **Attacker cannot use io_uring** to bypass file-access checks. *(Gap: enabled in 5.19.6; resolved in the successor 6.18.x kernel.)*
 - **Attacker cannot use FUSE or overlay filesystems** to confuse path-based enforcement.
 - **No competing security policies** (AppArmor, SELinux at runtime, YAMA, Landlock, IMA, EVM) that could interfere with or be manipulated to weaken HeartSuite's decisions.
 

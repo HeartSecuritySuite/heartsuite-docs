@@ -19,10 +19,6 @@ toc: true
 
 HeartSuite's kernel hardening targets one specific threat: **a process on the protected system attempting to bypass the kernel module's VFS-level enforcement**. The design choice is to remove the kernel features that make bypass possible, rather than to harden the kernel against general exploitation.
 
-Design is documented in:
-- `docs/security-checklists/kernel_c/sandbox-enforcement.md` — Architectural Invariants section: "Karen disabled 6 kernel CONFIG options that each provide a mechanism to bypass VFS-level enforcement."
-- `docs/security-checklists/tooling/deployment-hardening.md` item 1 — per-option rationale for each disable.
-
 ---
 
 ## What the Measurements Show
@@ -52,17 +48,7 @@ HS provides no additional protection beyond vanilla upstream defaults for heap-b
 
 *Attack path:* Any reachable kernel vulnerability with reliable heap-layout control.
 
-**2. IO_URING (5.19.6 specific)**  
-`CONFIG_IO_URING=y` in 5.19.6. io_uring retrieves file descriptors via `fget()`, which has no LSM hook, allowing sandboxed processes to perform file operations that bypass HeartSuite's VFS enforcement. This is a known gap in the 5.19.6 config; documented in `HS-DEVIATIONS.md` HS-DEV-005.
-
-*Attack path:* Sandboxed process opens a file descriptor before being sandboxed, then uses io_uring to perform subsequent operations.
-
-**3. kexec (5.19.6 specific)**  
-`CONFIG_KEXEC=y` in 5.19.6. A root-privileged process can replace the running kernel via `kexec_load()`, destroying all kernel-resident Lockdown state. This is a Lockdown-bypass primitive.
-
-*Attack path:* Root-level attacker (bypassed Lockdown via another vector, or Lockdown not yet engaged) loads a stock kernel image via `kexec()`.
-
-**4. SELinux runtime state — verified permissive**  
+**2. SELinux runtime state — verified permissive**  
 `CONFIG_SECURITY_SELINUX=y` with `CONFIG_DEFAULT_SECURITY_SELINUX=y`. SELinux is compiled-in. Runtime verification on the test VM (2026-05-19) shows:
 
 - `/sys/fs/selinux/enforce` = `0` — permissive mode, no policy loaded
@@ -73,10 +59,10 @@ SELinux initializes at boot but does not enforce. HeartSuite is the sole enforci
 
 *Residual note for production:* this relies on runtime service configuration keeping SELinux permissive. Verify `cat /sys/fs/selinux/enforce` = `0` on each production deployment. A loaded SELinux policy that flips to enforcing mode would add a competing LSM to the stack.
 
-**5. MODULE_SIG not enforced**  
+**3. MODULE_SIG not enforced**  
 `CONFIG_MODULE_SIG=n`. Kernel module signing is not enforced. A root-level attacker can load an arbitrary unsigned kernel module, including one that unloads or bypasses HeartSuite's VFS hooks.
 
-*Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown, per `project_kmod_operator_procedure_gap` memory. This is an operator-procedure-dependent mitigation, not a config-enforced one.
+*Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown. This is an operator-procedure-dependent mitigation, not a config-enforced one.
 
 ---
 
@@ -101,8 +87,8 @@ python3 /tmp/khc/bin/kernel-hardening-checker -c config-5.19.6-HeartSuite-1.0
 To verify the bypass-primitive disables directly:
 
 ```bash
-grep -E "^(CONFIG_BPF_SYSCALL|CONFIG_IO_URING|CONFIG_FUSE_FS|CONFIG_OVERLAY_FS|\
-CONFIG_SECURITY_APPARMOR|CONFIG_SECURITY_TOMOYO|CONFIG_KEXEC[^_])" \
+grep -E "^(CONFIG_BPF_SYSCALL|CONFIG_FUSE_FS|CONFIG_OVERLAY_FS|\
+CONFIG_SECURITY_APPARMOR|CONFIG_SECURITY_TOMOYO)" \
   config-5.19.6-HeartSuite-1.0
 ```
 

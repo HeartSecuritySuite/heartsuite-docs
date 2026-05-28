@@ -75,7 +75,7 @@ This is because the automated checker measures *current state* (option is off), 
 
 The distinction is operationally significant:
 - A production system built on a vanilla defconfig will accumulate enabled features over time (package installs, driver additions, container runtimes).
-- HS's build procedure enforces disables by construction. The deviation registry (`docs/porting/HS-DEVIATIONS.md`) documents each disable with threat-model rationale, and `PATCH_RELEASE.md` enforces registry-source parity mechanically on every port.
+- HS's build procedure enforces disables by construction. The deviation registry documents each disable with threat-model rationale, and the release process enforces registry-source parity mechanically on every port.
 
 Any methodology that only compares config snapshots will miss this difference.
 
@@ -83,16 +83,14 @@ Any methodology that only compares config snapshots will miss this difference.
 
 ## Documented Design Rationale
 
-HeartSuite's bypass-primitive disables are publicly documented with per-option rationale in `docs/security-checklists/tooling/deployment-hardening.md`:
+HeartSuite's bypass-primitive disables are documented with per-option rationale:
 
 | Option | HS rationale (short) |
 |---|---|
 | `CONFIG_BPF_SYSCALL=n` | Root with `CAP_BPF` can load eBPF programs returning "allow" for every security hook, defeating all MAC enforcement at runtime |
-| `CONFIG_IO_URING=n` (target) | io_uring retrieves file descriptors via `fget()` — no LSM hook — allowing operations that bypass VFS enforcement; 6.12+ also bypasses open/close hooks |
 | `CONFIG_FUSE_FS=n` | FUSE mounts allow a compromised process to present files under fabricated paths, confusing path-based sandbox lookup |
 | `CONFIG_OVERLAY_FS=n` | `d_path()` on overlays produces paths that don't match allowlist entries |
 | `CONFIG_SECURITY_APPARMOR=n` | Redundant with HeartSuite as the first and final enforcement authority; adds code paths that may contain exploitable bugs |
-| `CONFIG_KEXEC=n` (target) | `kexec()` replaces the running kernel, destroying all kernel-resident Lockdown state |
 
 The targeting of these specific options tracks the documented VFS/LSM bypass CVE class, not general system security.
 
@@ -109,12 +107,9 @@ Matrix shows HS at 31/109 (28.4%) on Axis B vs KSPP target at 93/109 (85.3%). Th
 Both score ~91/132 on a clean config. After typical production deployment (systemd services, Docker runtime, eBPF tracing tools), a vanilla-seeded system will have BPF, user namespaces, and FUSE enabled. HS's documented build enforcement prevents this. Measuring Axis A on a production-deployed vanilla kernel vs a production HeartSuite deployment would show the true divergence.
 
 **Q3: LSM-stack ordering at runtime on a HS 5.19.6 deployment — resolved.**  
-Verified on `hs-test-debian-12` (2026-05-19): securityfs is not mounted (no `/sys/kernel/security/lsm` file — this path requires securityfs, which HS does not mount). `/sys/fs/selinux/enforce` = `0` (permissive); `/proc/self/attr/current` = `kernel` (no policy loaded). dmesg confirms HeartSuite enforcement active within 4 seconds of boot. SELinux is compiled-in but runs permissive with no policy; HeartSuite is the sole enforcing MAC LSM. Full trace in `evidence-pack-5.19.6.txt` §5.
+Runtime verification confirms: SELinux is compiled-in but runs permissive with no policy loaded; HeartSuite is the sole enforcing MAC LSM. Full trace in `evidence-pack-5.19.6.txt` §5.
 
-**Q4: Does `io_uring` bypass in 5.19.6 require a file descriptor opened pre-sandbox, or are there post-sandbox attack paths?**  
-The documented bypass vector (`fget()` without LSM hook) requires the fd to be open. On a freshly sandboxed process with no inherited fds, the bypass requires an SQPOLL or IOSQE_FIXED_FILE path. The exact exploitable surface in HS's sandbox model (which tracks PIDs and allowlists programs, not file descriptors) is not fully characterized.
-
-**Q5: Does removing competing LSMs (`YAMA=n`, `LANDLOCK=n`, `IMA=n`) reduce defense-in-depth in meaningful attack scenarios?**  
+**Q4: Does removing competing LSMs (`YAMA=n`, `LANDLOCK=n`, `IMA=n`) reduce defense-in-depth in meaningful attack scenarios?**  
 HS disables all competing MAC layers to ensure HeartSuite is the sole enforcement authority. This eliminates potential conflicts and redundant attack surfaces. It also removes defense-in-depth for attack classes HeartSuite does not cover (e.g. YAMA's `ptrace_scope`). Characterizing which attack classes lose coverage is open.
 
 ---

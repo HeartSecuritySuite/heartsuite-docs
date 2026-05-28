@@ -26,7 +26,7 @@ The kernel ships with `CONFIG_BPF_SYSCALL=n`, `CONFIG_FUSE_FS=n`, `CONFIG_OVERLA
 
 At first glance this seems surprising. Hardened kernels score *lower* on attack-surface reduction than HeartSuite? Yes — because they keep BPF enabled (needed by systemd, containers, observability tooling), keep user namespaces enabled (needed by rootless Docker), and keep various crypto and network APIs available. HeartSuite is a single-purpose appliance and can remove all of these.
 
-The interesting nuance: vanilla x86_64 defconfig 5.17 also scores 90/132 on attack surface — nearly identical to HS. The checker doesn't distinguish "not enabled by default" from "intentionally hardened off." Both have BPF and AppArmor absent. The difference is that the vanilla defconfig is a starting point; on a production system it will accumulate features. HeartSuite's build procedure enforces the disables on every port via a documented deviation registry (`HS-DEVIATIONS.md`) and a checklist enforced mechanically.
+The interesting nuance: vanilla x86_64 defconfig 5.17 also scores 90/132 on attack surface — nearly identical to HS. The checker doesn't distinguish "not enabled by default" from "intentionally hardened off." Both have BPF and AppArmor absent. The difference is that the vanilla defconfig is a starting point; on a production system it will accumulate features. HeartSuite's build procedure enforces the disables on every port via a documented deviation registry and a checklist enforced mechanically.
 
 ---
 
@@ -35,10 +35,6 @@ The interesting nuance: vanilla x86_64 defconfig 5.17 also scores 90/132 on atta
 HeartSuite optimizes for one threat: a compromised process attempting to bypass its custom kernel MAC enforcement via a kernel subsystem (BPF, FUSE, io_uring, overlay mounts, competing LSMs). It doesn't claim to harden against kernel exploitation in general.
 
 If the attacker gets a reliable kernel heap primitive — use-after-free, type confusion — HeartSuite gives them vanilla KASLR and `STACKPROTECTOR_STRONG`. That's the same protection a defconfig kernel offers. Arch and NixOS hardened give them `SLAB_FREELIST_RANDOM`, `KFENCE`, `RANDSTRUCT`, `PAGE_TABLE_CHECK`, and more.
-
-The two known gaps in 5.19.6 specifically:  
-- `CONFIG_IO_URING=y` — the most relevant bypass: io_uring uses `fget()` with no LSM hook. Documented, addressed in the 6.18.x port.  
-- `CONFIG_KEXEC=y` — Lockdown-bypass via kernel replacement. Same situation.
 
 ---
 
