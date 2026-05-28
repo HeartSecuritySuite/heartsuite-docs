@@ -15,6 +15,35 @@ toc: true
 
 ---
 
+## HeartSuite Core Secure and HJFS: two approaches
+
+Three OS-level controls are unrestricted by default on Linux: file access, network communication, and program execution. Every program can open any user file, connect to any network destination, and launch any binary it can reach — and so can any malware running under the same user.
+
+HeartSuite Core Secure and HJFS share the same goal: closing all three of those controls. They do it in different ways.
+
+**HeartSuite Core Secure** is production-ready today. It works with the existing Linux OS: you configure allowlist entries, tighten them down, and enable Lockdown. With Lockdown enabled, only explicitly permitted programs, files, and network destinations are allowed. Everything else is blocked.
+
+**HJFS** redesigns the file access layer from the ground up. Every program is confined to its own private storage area at the filesystem level. Prior versions of programs are preserved automatically before any update overwrites them. Cross-program file access is architecturally impossible, not policy-dependent. Network access mediation and OS-mediated user-file access are planned for subsequent releases.
+
+| Aspect | HeartSuite Core Secure | HJFS | What This Means in Practice |
+|---|---|---|---|
+| File isolation | Global filesystem; the admin adds allowlist entries for directories and paths (commonly `/usr/lib`, `/etc`, `/home`) | Per-program isolated storage area; the filesystem blocks any overlap | Core Secure can allow accidental cross-program access if allowlist entries are not kept tight. HJFS makes overlap impossible by design. |
+| Handling malicious updates | No automatic program versioning. Data backup applies only to admin-configured directories (default: `/home`) | Per-version isolation: prior executable and libraries are preserved automatically before any update overwrites them | HJFS stops a supply-chain attack from destroying the clean version of a program (for example, a tainted `sshd`). Core Secure requires the admin to detect the problem and manually restore the prior binary if it was backed up. |
+| Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: user approval on desktops, policy rules on servers (not in v1.0 scope) | Core Secure handles network and user-file access today via static allowlist entries. HJFS will prevent programs from silently connecting anywhere or touching user files without explicit permission once that capability ships. |
+| Executables and updates | Standard Linux paths; updates often require switching to Setup Mode | Separate read-only area for executables; only the official HJFS installer can write to it | Core Secure depends on admin discipline for update discipline. HJFS enforces the separation automatically. |
+| Data sharing and deletion | Any program can read, write, or delete anything its allowlist entry permits | Cross-program transfers require an explicit copy utility; programs can only move files to trash, not permanently delete them | Core Secure is more convenient to administer but places more risk on correct allowlist configuration. HJFS forces deliberate, auditable data movement. |
+| Lockdown | Enabled via `HS_lockdown.sh`; immutable flags seal key files | Enforced by the filesystem structure — no separate Lockdown step required | Core Secure provides strong immediate Lockdown. HJFS provides stronger long-term structural guarantees. |
+
+### For production deployments today
+
+**HeartSuite Core Secure** is production-ready for Linux servers. Tight allowlist configuration, Lockdown enabled, and restricted backup directories provide strong real-world protection with existing software.
+
+**HJFS** eliminates entire risk classes — cross-program file leakage, malicious updates reaching prior-version data, programs permanently deleting files — by design, without depending on correct admin configuration. It runs on a standard unmodified kernel. Network access mediation and execution control are planned for subsequent releases; for those controls today, use HeartSuite Core Secure.
+
+The two products are not currently compatible and cannot be deployed together.
+
+---
+
 ## What HJFS is not
 
 **HJFS is not network security.** HJFS does not control which network connections a program can open. A confined program can still reach any network destination. Isolation limits what data is reachable — a confined program can only read its own files — but the outbound connection itself is not blocked by HJFS. See [Network exfiltration](../introduction/limits/#network-exfiltration).
