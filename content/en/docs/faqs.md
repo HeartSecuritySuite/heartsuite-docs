@@ -53,7 +53,7 @@ A: HeartSuite Core Secure replaces the preventive-enforcement layer of the follo
 **Can remove or reduce:**
 - **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — enforcement is covered by the allowlist, and the BPF syscall is absent from the HS kernel so these tools cannot run on it anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
 - **gVisor** — if used solely to protect workloads from root-level compromise inside a VM or microVM, HeartSuite Core Secure is a direct replacement as the guest kernel.
-- **AppArmor / SELinux** — no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/#security-as-economics) for the full comparison.
+- **AppArmor / SELinux** — no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [Security as Economics](introduction/security-as-economics/) for the full comparison.
 - **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE) — prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to HeartSuite Core Secure.
 
 **Cannot remove:**

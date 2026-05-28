@@ -1,7 +1,7 @@
 ---
 title: "Linux Security Layer Analysis"
 linkTitle: "Layer Analysis"
-weight: 6
+weight: 7
 description: "A taxonomy of Linux host security products by enforcement layer — where each mechanism sits in the stack and what that means for bypass surface."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "comparison", "edr", "ebpf", "selinux", "apparmor", "gvisor", "layers", "taxonomy"]

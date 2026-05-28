@@ -1,7 +1,7 @@
 ---
 title: "When Root Isn't Enough"
 linkTitle: "When Root Isn't Enough"
-weight: 7
+weight: 8
 description: "How HeartSuite Core Secure's three enforcement mechanisms hold against real attacks — one example per mechanism, including what it does not cover."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "attacks", "exfiltration", "cve", "binary", "ransomware", "in-practice"]
@@ -79,4 +79,4 @@ HeartSuite Core Secure enforces three things per program. An attacker who stays 
 
 Under Lockdown, the kernel controls three things per program — whether it can execute, which files it can read or write, and which network destinations it can reach — and holds those controls regardless of user privilege, including root. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the HeartSuite Core Secure kernel itself, not by filesystem permissions. Nothing the attacker ran survives a reboot.
 
-For detection and response when an attack stays within approved boundaries, see [How HeartSuite Core Secure Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../how-it-compares/#security-as-economics).
+For detection and response when an attack stays within approved boundaries, see [How HeartSuite Core Secure Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../security-as-economics/).
