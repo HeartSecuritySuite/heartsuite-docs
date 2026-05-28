@@ -56,7 +56,14 @@ No security control is unconditionally unbreakable. The right question is not "c
 
 **Linux EDR.** CrowdStrike Falcon, SentinelOne, and Microsoft Defender for Endpoint generate alerts that require analyst triage. The attack classes HeartSuite Core Secure prevents — unauthorized binary execution, file access outside approved scope, outbound connections to unapproved destinations — never reach the EDR because the attack cannot progress past the kernel gate. Fewer alerts is not filtering; it is that the attack class is structurally absent from the host. EDR's telemetry, behavioural analytics, and incident response capabilities remain valid for what HeartSuite Core Secure does not cover. The honest position: HeartSuite Core Secure changes what the EDR has to process, not whether you run one.
 
-**Cost to buy.** HeartSuite Core Secure replaces the preventive-enforcement layer of several overlapping tools — the blocking dimension of EDR, LSM policy tuning, FIM enforcement — while leaving their detection and response capabilities intact. Whether that consolidation saves money depends on your stack. Fewer moving parts is consistent.
+**Cost to buy.** HeartSuite Core Secure replaces the preventive-enforcement layer of several overlapping tools, leaving detection and response capabilities intact. What that means in practice for each category:
+
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — HeartSuite Core Secure removes the BPF syscall; these cannot run on the HS kernel, and their enforcement is covered by the allowlist. These are budget lines that can be removed.
+- **gVisor** — if you are running it solely to protect workloads from root-level compromise inside a container or VM, HeartSuite Core Secure is a direct replacement as the guest kernel. No second userspace kernel layer.
+- **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE) — prevention is replaced; telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing for telemetry-only deployments.
+- **AppArmor and SELinux** — no licensing cost, but the policy-authoring overhead is real; see the SELinux comparison above.
+
+Whether the licensing savings cover the HeartSuite Core Secure subscription depends on your current stack. The operational consolidation — no signature updates, no rule libraries, no agent fleet — is consistent regardless.
 
 **CTEM programs** — Continuous Threat Exposure Management — cover exposure discovery, prioritisation, and validation across a whole estate: continuously mapping what an attacker could reach and ranking what to fix first. That scope fits large organisations managing complex, heterogeneous environments. For most deployments it is broader than the problem and carries corresponding cost. HeartSuite Core Secure addresses one specific problem: the OS design assumption that grants every running program the file and network rights of the user who launched it. Removing that assumption at the kernel level does not require a continuous discovery and ranking program.
 

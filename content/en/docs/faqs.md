@@ -46,6 +46,21 @@ The two are not mutually exclusive. SELinux's domain transitions and distributio
 
 {{< /details >}}
 
+{{< details summary="What software can I remove or stop paying for if I run HeartSuite Core Secure?" >}}
+
+A: HeartSuite Core Secure replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a product entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
+
+**Can remove or reduce:**
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — enforcement is covered by the allowlist, and the BPF syscall is absent from the HS kernel so these tools cannot run on it anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
+- **gVisor** — if used solely to protect workloads from root-level compromise inside a VM or microVM, HeartSuite Core Secure is a direct replacement as the guest kernel.
+- **AppArmor / SELinux** — no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/#security-as-economics) for the full comparison.
+- **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE) — prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to HeartSuite Core Secure.
+
+**Cannot remove:**
+- **SIEM, NDR, vulnerability scanners, and HIDS/FIM** — these answer questions HeartSuite Core Secure does not: fleet correlation, traffic analysis, compliance reporting, and patch prioritisation. See "Does HeartSuite Core Secure replace my SIEM, NDR, or vulnerability scanner?" below.
+
+{{< /details >}}
+
 {{< details summary="Does HeartSuite Core Secure replace my SIEM, NDR, or vulnerability scanner?" >}}
 
 A: No. HeartSuite Core Secure enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or produce compliance reports across a fleet. (The same allowlist can be distributed to any number of hosts; see the FAQ below: "Can I use the same allowlist across a fleet or Kubernetes cluster?") SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that HeartSuite Core Secure does not address. Run HeartSuite Core Secure alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. HeartSuite Core Secure's activity log is a useful SIEM input. See [How HeartSuite Core Secure Compares](introduction/how-it-compares/).
