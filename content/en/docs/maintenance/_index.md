@@ -11,6 +11,8 @@ toc: true
 
 Maintenance is a time period during which you temporarily step out of Lockdown to make changes. It is not a separate mode. HeartSuite Core Secure has two modes: Setup Mode and Lockdown. During maintenance, you either switch to Setup Mode (the kernel logs but stops blocking) or boot the Non-HS kernel (HeartSuite Core Secure is not loaded at all) depending on whether the immutable seal is active — the Dashboard's Maintenance (`[t]`) detects this automatically and guides you through the correct path.
 
+For most maintenance — installing packages, applying patches, editing configuration — the correct path is switching to Setup Mode. That requires one reboot, stays on the HeartSuite Core Secure kernel, and needs no GRUB interaction. Booting the Non-HS kernel is only required when Lockdown+sealed is active.
+
 The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel. It is not shown in Setup Mode — because in Setup Mode, you are already in the maintenance-ready state and the Dashboard's review queues and Suggested Next Step are the workflow.
 
 ## In this section

@@ -10,6 +10,8 @@ toc: true
 
 **Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce HeartSuite Core Secure's protection to make changes. The Dashboard's Maintenance (`[t]`) guides you through the entire process, from safety preparation to re-engaging Lockdown. The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
+Most maintenance uses **Option 1** below — a single reboot that stays on the HeartSuite Core Secure kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the Non-HS kernel) is only needed when the immutable seal is active, which is the less common path.
+
 ## Starting maintenance
 
 From the Dashboard in Lockdown, select Maintenance (`[t]`). The Dashboard automatically detects whether the immutable seal is active and presents the correct path — you do not need to determine this yourself.

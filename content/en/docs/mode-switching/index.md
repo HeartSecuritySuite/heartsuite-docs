@@ -65,8 +65,10 @@ graph TD
     C --> D["[r] Reboot — Lockdown active on next boot"];
     D --> E["Lockdown active"];
     E --> G{Maintenance needed?};
-    G --> |"Yes"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
+    G --> |"Yes — immutable seal active"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
+    G --> |"Yes — no immutable seal\n(most installs and patches)"| O["Maintenance [t] → switch to Setup Mode\nOne reboot, HS kernel stays active"];
     I --> J["Make changes, update allowlist from Dashboard"];
+    O --> J;
     J --> N["Return to Lockdown from Dashboard"];
     N --> E;
 ```
