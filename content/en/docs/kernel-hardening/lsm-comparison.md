@@ -51,10 +51,10 @@ The table below lists the kernel-level bypass vectors most relevant to MAC enfor
 | `FUSE_FS` — path confusion via userspace filesystem | **Closed** (`=n`) | Open | Open | Open |
 | `OVERLAY_FS` — `d_path()` mismatch in overlay mounts | **Closed** (`=n`) | Open | Open | Open |
 | `USER_NS` — fake root via user namespace | **Closed** (`=n`) | Open | Open | Open |
-| `KEXEC` — kernel replacement destroying Lockdown state | Open | Varies by distro | Varies by distro | Varies by distro |
-| `IO_URING` — file ops via `fget()` bypassing VFS hooks | Open | Open | Open | Open |
+| `KEXEC` — kernel replacement destroying Lockdown state | **Closed** (`=n`) | Varies by distro | Varies by distro | Varies by distro |
+| `IO_URING` — file ops via `fget()` bypassing VFS hooks | **Closed** (`=n`) | Open | Open | Open |
 
-An attacker who can reach any "Open" primitive has a path to bypass LSM enforcement regardless of how well the policy is written. HeartSuite closes four of the six vectors at the kernel config level.
+An attacker who can reach any "Open" primitive has a path to bypass LSM enforcement regardless of how well the policy is written. HeartSuite closes all six vectors at the kernel config level.
 
 ---
 
@@ -66,7 +66,7 @@ HeartSuite is not a general-purpose MAC replacement. Choose SELinux, AppArmor, o
 - You require **MLS / MCS** (Multi-Level Security / Multi-Category Security) for labeled data separation.
 - You need **container runtime support** that depends on USER_NS or overlayfs (Kubernetes, Docker, Podman, LXC).
 - Your compliance framework mandates a specific named LSM (e.g., STIG-mandated SELinux).
-- You need **per-object audit trails and policy introspection** — SELinux and TOMOYO both provide this; HeartSuite does not.
+- You need to audit **permitted accesses**, not just denials — HeartSuite logs every denied file access, socket connection, and sandbox violation with the specific program path and target resource, but successful accesses are not logged. SELinux and TOMOYO can record both. If a full allowed-access trail is also required, SELinux can run alongside HeartSuite on supported deployments — see [Co-existence](#co-existence).
 
 ---
 
@@ -77,7 +77,8 @@ Choose HeartSuite when:
 - You are deploying a **single-purpose appliance** running one or a small set of known workloads.
 - Your threat model centers on **containment escape** — a compromised application attempting to break out of its enforcement boundary.
 - You want **zero policy surface** — no policy file, no `audit2allow`, no profile to misconfigure.
-- You can accept that BPF tooling, container runtimes, FUSE mounts, and user namespaces are **not available** on the system.
+- BPF tooling, container runtimes, FUSE mounts, and user namespaces are **not part of the system's attack surface** — they are absent from the kernel, not restricted by policy.
+- You want a **violation-focused audit trail**: every denied file access, network connection, and sandbox violation is logged with the specific program path and target resource. In Setup Mode, would-be denials are logged and permitted simultaneously — giving full visibility into the policy surface without blocking anything.
 - You want independent verifiability: the kernel config SHA-256 is published and measurements are reproducible with an open-source tool.
 
 ---
@@ -95,7 +96,7 @@ HeartSuite's VFS hooks fire **before** the LSM chain (`security_path_*()` calls)
 
 This is intentional and safe. On RHEL/Fedora, SELinux is Enforcing by default; the stacking is additive, not conflicting. On Debian/Ubuntu, no SELinux policy is loaded by default. Either way, HeartSuite's enforcement cannot be bypassed via the SELinux layer.
 
-*RHEL operational note:* SELinux may deny operations that HeartSuite's own tools need to perform. Check for AVC denials with `ausearch -m AVC -ts recent | audit2why` and create a targeted SELinux policy module if needed. Do not set HeartSuite's domain to permissive — the conflict is unidirectional (SELinux restricts HS tools, not HS enforcement).
+*RHEL operational note:* As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for HeartSuite's specific operations. If AVC denials appear, `ausearch -m AVC -ts recent | audit2why` identifies them and `audit2allow` generates the targeted module. HeartSuite's enforcement is unaffected — SELinux operates after HS in the hook chain and cannot override HS decisions.
 
 ---
 
