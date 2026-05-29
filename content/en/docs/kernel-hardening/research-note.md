@@ -1,6 +1,7 @@
 ---
 title: "Research Note: Bypass-Primitive Removal vs Exploit-Resistance Hardening"
 weight: 40
+draft: true
 description: "Technical research note on HeartSuite Core Secure's kernel hardening approach — design-space analysis, empirical measurements, and open research questions for security researchers and competing projects."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "research", "LSM", "design"]

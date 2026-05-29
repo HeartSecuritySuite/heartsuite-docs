@@ -15,7 +15,7 @@ toc: true
 
 ---
 
-## Part 1 — Measured Comparison (Same Kernel Era)
+## Part 1 — Measured comparison (same kernel era)
 
 All three configs below are built from the 5.19.x kernel tree. Checker scores are directly comparable — same Kconfig namespace, same option universe.
 
@@ -39,7 +39,7 @@ Arch linux-hardened leads on exploit-resistance (69 vs 31): it enables `HARDENED
 
 Vanilla defconfig is the baseline: it does about as well as HS on attack-surface (most things aren't enabled by default) but even worse on exploit-resistance.
 
-### Bypass-Primitive Disables — Side by Side
+### Bypass-primitive disables — side by side
 
 | Option | HS 5.19.6 | Arch lh 5.19.11 | Notes |
 |---|---|---|---|
@@ -54,7 +54,7 @@ Vanilla defconfig is the baseline: it does about as well as HS on attack-surface
 
 HS: 5/8 disabled. Arch lh: 3/8 disabled (different 3). **Neither disables all eight.**
 
-### Exploit-Resistance Mitigations — Side by Side
+### Exploit-resistance mitigations — side by side
 
 | Mitigation | HS 5.19.6 | Arch lh 5.19.11 |
 |---|---|---|
@@ -70,7 +70,7 @@ HS: 5/8 disabled. Arch lh: 3/8 disabled (different 3). **Neither disables all ei
 
 ---
 
-## Part 2 — Qualitative Orientation (Cross-Project)
+## Part 2 — Qualitative orientation (cross-project)
 
 These projects were not scored with the checker in this analysis — either because their configs were unavailable for the 5.19 era, because they are paywalled, or because a meaningful config was not locatable. Characterizations are drawn from each project's public documentation and design goals.
 
@@ -96,7 +96,7 @@ These projects were not scored with the checker in this analysis — either beca
 
 ---
 
-## Part 3 — LSM Stack and Module Count (Measured)
+## Part 3 — LSM stack and module count (measured)
 
 | Metric | HS 5.19.6 | Source |
 |---|---|---|
@@ -109,7 +109,7 @@ These projects were not scored with the checker in this analysis — either beca
 
 ---
 
-## Part 4 — CPU Mitigations (5.19.6 naming)
+## Part 4 — CPU mitigations (5.19.6 naming)
 
 5.19.6 uses pre-6.1 option names. Checker reports these as FAIL (uses the 6.1+ `CONFIG_MITIGATION_*` names). Mitigations confirmed present:
 

@@ -13,7 +13,7 @@ toc: true
 
 ---
 
-## The Core Distinction
+## The core distinction
 
 SELinux, AppArmor, and TOMOYO all answer the same question: *given that a kernel feature is present, what should a process be allowed to do with it?*
 
@@ -41,7 +41,7 @@ This is not a claim that one approach is universally superior. For **single-purp
 
 ---
 
-## Bypass Primitives: Open vs Closed
+## Bypass primitives: open vs closed
 
 The table below lists the kernel-level bypass vectors most relevant to MAC enforcement. "Closed" means the kernel option is disabled — the attack vector does not exist on the system. "Open" means the feature is present and policy must account for it.
 
@@ -56,7 +56,7 @@ An attacker who can reach any "Open" primitive has a path to bypass LSM enforcem
 
 ---
 
-## When SELinux, AppArmor, or TOMOYO Is the Right Choice
+## When SELinux, AppArmor, or TOMOYO is the right choice
 
 HeartSuite is not a general-purpose MAC replacement. Choose SELinux, AppArmor, or TOMOYO when:
 
@@ -68,7 +68,7 @@ HeartSuite is not a general-purpose MAC replacement. Choose SELinux, AppArmor, o
 
 ---
 
-## When HeartSuite Is the Right Choice
+## When HeartSuite is the right choice
 
 Choose HeartSuite when:
 
@@ -98,7 +98,7 @@ This is intentional and safe. On RHEL/Fedora, SELinux is Enforcing by default; t
 
 ---
 
-## Further Reading
+## Further reading
 
 - [Comparison Matrix](../kernel-comparison-matrix-5.19.6/) — Measured kernel-hardening-checker scores: HeartSuite vs Arch linux-hardened vs vanilla defconfig.
 - [Auditor Brief](../auditor-brief/) — Residual risks, threat model, and self-reproduction instructions.

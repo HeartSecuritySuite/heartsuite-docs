@@ -234,7 +234,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 | Lockdown + sealed | Blank (silence means safety) |
 | Non-HS kernel | NON-HS KERNEL — no blocking, logging, or backups |
 
-**Status JSON polling surface**: `/.hs/sys/hs-status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
+**Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
 
 **Syslog integration**: When syslog is enabled, all alerts are written to the system log via `/dev/log` using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. These can be forwarded to any SIEM via an rsyslog output rule:
 
@@ -265,7 +265,7 @@ This payload can drive PagerDuty, OpsGenie, Slack, or any incident management to
 
 - Syslog forwarding rule in `/etc/rsyslog.d/heartsuite.conf`
 - Sample alert payloads from webhook endpoint
-- `/.hs/sys/hs-status.json` showing current system state
+- `~/.cache/heartsuite/status.json` showing current system state
 - SIEM alert records covering the audit period (customer-operated SIEM required for Type II evidence)
 - Verification: `journalctl -t heartsuite-alert --since "1 hour ago"` showing alert activity
 

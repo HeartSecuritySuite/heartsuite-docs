@@ -14,7 +14,7 @@ toc: true
 
 ---
 
-## What This Document Covers
+## What this document covers
 
 Every Linux kernel ships with hundreds of configuration choices that determine how easy it is to exploit vulnerabilities or escape security controls. This document compares HeartSuite's kernel choices to a directly comparable community-hardened kernel and the KSPP industry benchmark.
 
@@ -22,7 +22,7 @@ All numbers on this page are outputs of the same measurement tool applied identi
 
 ---
 
-## At a Glance
+## At a glance
 
 | What you care about | HS 5.19.6 | Arch linux-hardened 5.19.11 | KSPP benchmark |
 |---|---|---|---|
@@ -38,7 +38,7 @@ All numbers on this page are outputs of the same measurement tool applied identi
 
 ---
 
-## What HeartSuite Is Optimized For
+## What HeartSuite is optimized for
 
 HeartSuite removes or disables the kernel features that are most commonly used to *bypass* security controls — not necessarily those used to *exploit* vulnerabilities.
 
@@ -57,11 +57,11 @@ What HeartSuite does *not* add — and dedicated hardened kernels do:
 - Allocator randomization (`SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`)
 - Kernel stack erasure on syscall return (`KSTACK_ERASE`)
 
-These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs HS's 31/109 (28.4%). HeartSuite 5.19.6 sits at the vanilla upstream baseline for exploit-resistance.
+These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs HS's 31/109 (28.4%). HeartSuite 5.19.6 sits at the vanilla upstream baseline for exploit-resistance. For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — HeartSuite covers the relevant threat at the right operating point; the Decision guide below covers when adding exploit-resistance hardening alongside HeartSuite makes sense.
 
 ---
 
-## Broader Market Landscape
+## Broader market landscape
 
 | Product | Bypass Prevention | Exploit Resistance | Module Footprint | Availability |
 |---|---|---|---|---|
@@ -77,7 +77,7 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 
 ---
 
-## Decision Guide
+## Decision guide
 
 **Choose HeartSuite if your primary concern is:**
 

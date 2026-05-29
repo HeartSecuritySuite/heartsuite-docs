@@ -1,6 +1,7 @@
 ---
 title: "Kernel Hardening: HeartSuite's Unusual Design Choice"
 weight: 50
+draft: true
 description: "A discussion-style post on HeartSuite Core Secure's kernel hardening philosophy — written for the kernel hardening and Linux security community."
 categories: ["Community"]
 tags: ["kernel", "hardening", "security", "BPF", "LSM", "design"]
