@@ -178,31 +178,31 @@ The following 11 questions remain without a complete public answer. Status annot
 
 ### Access Control & Identity
 
-3. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** No HeartSuite code calls PAM, LDAP, or any directory service. Regulated environments requiring centralised identity management must bridge this at the OS layer.
+1. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** No HeartSuite code calls PAM, LDAP, or any directory service. Regulated environments requiring centralised identity management must bridge this at the OS layer.
 
 ### Vulnerability & Patch Management
 
-4. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Partially answerable.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. However, no patch SLA (e.g., "within 30 days of NVD publication") and no customer notification process are publicly documented.
+1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Partially answerable.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. However, no patch SLA (e.g., "within 30 days of NVD publication") and no customer notification process are publicly documented.
 
-5. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* A detailed internal component inventory exists. The gaps to a publishable SBOM are format (SPDX or CycloneDX), upstream dependency tracking against NVD, and a publication decision — not a research problem. Update bundles are currently authenticated by SHA-256 only; there is no GPG or PGP signature against a HeartSuite-controlled key.
+1. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* A detailed internal component inventory exists. The gaps to a publishable SBOM are format (SPDX or CycloneDX), upstream dependency tracking against NVD, and a publication decision — not a research problem. Update bundles are currently authenticated by SHA-256 only; there is no GPG or PGP signature against a HeartSuite-controlled key.
 
-6. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
+1. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 
 ### Incident Response & Recovery
 
-7. **What is the documented RTO for restoring a Lockdown host after a security incident?** Recovery requires a minimum three-step, two-reboot sequence with manual Dashboard queue review. No time estimate is defined; duration is queue-dependent. There is no fast path.
+1. **What is the documented RTO for restoring a Lockdown host after a security incident?** Recovery requires a minimum three-step, two-reboot sequence with manual Dashboard queue review. No time estimate is defined; duration is queue-dependent. There is no fast path.
 
-8. **Can HeartSuite backups be restored to a different host?** The restore mechanism is local-only. There is no export, archive, or transfer capability; cross-host restore is architecturally absent.
+1. **Can HeartSuite backups be restored to a different host?** The restore mechanism is local-only. There is no export, archive, or transfer capability; cross-host restore is architecturally absent.
 
-9. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** *(Organisational — not in the product.)* ISO 27001 A.5.24 requires a defined customer notification process for product-level events.
+1. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** *(Organisational — not in the product.)* ISO 27001 A.5.24 requires a defined customer notification process for product-level events.
 
 ### Scalability & Fleet Management
 
-10. **What does the licensing model look like at scale?** *(Organisational — not in the product.)* No pricing tiers, volume discount structures, or MSP terms are publicly documented.
+1. **What does the licensing model look like at scale?** *(Organisational — not in the product.)* No pricing tiers, volume discount structures, or MSP terms are publicly documented.
 
 ### Compliance Certifications
 
-11. **Does HeartSuite map to sector-specific compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? *(Derivable without new research.)* The evidence base is the same as the NIST CSF and ISO 27001 mappings in this document. PCI DSS Req 7 (least privilege) and Req 10 (log integrity), HIPAA §164.312(a) (access controls) and §164.312(b) (audit controls), and NIS2/CMMC controls that derive from NIST 800-171 all map directly to controls already described here. This is a document task, not an investigation.
+1. **Does HeartSuite map to sector-specific compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? *(Derivable without new research.)* The evidence base is the same as the NIST CSF and ISO 27001 mappings in this document. PCI DSS Req 7 (least privilege) and Req 10 (log integrity), HIPAA §164.312(a) (access controls) and §164.312(b) (audit controls), and NIS2/CMMC controls that derive from NIST 800-171 all map directly to controls already described here. This is a document task, not an investigation.
 
 ---
 
