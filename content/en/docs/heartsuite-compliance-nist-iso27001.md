@@ -125,7 +125,7 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
 | **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
 | **A.8.15** — Logging | Kernel logs all programme execution, file access, and network connection attempts. Dashboard queues surface denied activity. On-device retention: `/.hs/sys/HS_log.txt` is cleared on each maintenance cycle; `/var/log/heartsuite/ui.log` is size-capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log; a customer-operated SIEM receiving the syslog alert feed is required for audit-period-length evidence. |
-| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`/.hs/sys/hs-status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no inbound API, no remote allowlist control, and no centralised view across hosts. No fleet-wide or behavioural monitoring. |
+| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no inbound API, no remote allowlist control, and no centralised view across hosts. No fleet-wide or behavioural monitoring. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
 | **A.8.18** — Use of privileged utility programmes | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
 | **A.8.19** — Installation of software on operational systems | Per-programme execution allowlist enforces "approved programmes only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
@@ -142,7 +142,7 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 
 #### `hs-status.json` field reference
 
-Written to `/.hs/sys/hs-status.json` every 60 seconds by the HeartSuite daemon. Read-only; does not accumulate history.
+Written to `~/.cache/heartsuite/status.json` every 60 seconds by the HeartSuite daemon. Read-only; does not accumulate history.
 
 | Field | Type | Notes |
 |---|---|---|

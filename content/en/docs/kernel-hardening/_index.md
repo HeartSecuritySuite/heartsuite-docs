@@ -18,7 +18,4 @@ This section documents that posture with reproducible measurements. Every number
 - [LSM Comparison](lsm-comparison/) — HeartSuite vs SELinux, AppArmor, and TOMOYO: enforcement model, bypass-primitive resistance, and co-existence.
 - [Auditor Brief](auditor-brief/) — Threat model, measured strengths and gaps, residual risks, and self-reproduction commands for security auditors and red teams.
 - [Procurement Brief](procurement-brief/) — Plain-language comparison table and decision guide for buyers.
-- [Research Note](research-note/) — Design-space analysis and open research questions for security researchers and competing projects.
-- [Community Post](community-post/) — Discussion-style write-up for the kernel hardening community.
 - [Analyst Summary](analyst-summary/) — Non-technical summary for journalists and analysts, with fact-checker citations.
-- [Evidence Pack](evidence-pack-5.19.6.txt) — Raw command outputs, config hash, and checker scores that back every claim in this section.

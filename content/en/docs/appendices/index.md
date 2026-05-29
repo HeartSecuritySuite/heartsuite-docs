@@ -83,7 +83,7 @@ These files are written automatically by HeartSuite Core Secure. They are not to
 - **`/.hs/sys/HS_log.txt`** — the on-device activity log. Records program executions, file accesses, and network connection attempts observed during Setup Mode. The Dashboard auto-clears this log when all review queues are empty; `hs-clear-logs` clears it manually. Not retained across maintenance cycles — forward alerts to a SIEM via syslog for audit-period-length retention.
 - **`/var/log/heartsuite/install.log`** — written by the installer during updates. Records the steps and outcome of each update bundle application.
 - **`/var/log/heartsuite/ui.log`** — the Dashboard UI event log. Records Dashboard interactions and internal state transitions. Size-capped at approximately 8 MB with automatic rotation; no time-based retention policy. For compliance evidence spanning an audit period, rely on the syslog alert feed rather than this file.
-- **`/.hs/sys/hs-status.json`** — system status snapshot updated every 60 seconds. Read-only; used by Ansible, Nagios, Zabbix, and similar tools for automated health checks. Not a log — does not accumulate history.
+- **`~/.cache/heartsuite/status.json`** — system status snapshot updated every 60 seconds. Read-only; used by Ansible, Nagios, Zabbix, and similar tools for automated health checks. Not a log — does not accumulate history.
 
   | Field | Type | Notes |
   |---|---|---|

@@ -21,9 +21,9 @@ HeartSuite's kernel hardening targets one specific threat: **a process on the pr
 
 ---
 
-## What the Measurements Show
+## What the measurements show
 
-### Attack-Surface Reduction
+### Attack-surface reduction
 
 Automated score: **91/132 (68.9%)**  
 Reference points (era-matched, same 5.19.x kernel generation): Arch linux-hardened 5.19.11: 77/132 (58.3%). Vanilla upstream defconfig 5.17: 90/132 (68.2%). KSPP target (6.17, version-agnostic intent): 131/132 (99.2%).
@@ -32,7 +32,7 @@ HS outperforms production distros and common hardened-distro kernels on this axi
 
 **Caveat:** the automated checker scores vanilla 5.17 defconfig at 90/132, nearly identical to HS. This is because the checker does not distinguish *intentionally hardened to* a value from *never configured to begin with.* The vanilla defconfig also doesn't enable BPF or AppArmor by default. The operational difference is enforcement: a production system built on a vanilla defconfig will have these features added over time; HS's build procedure enforces the disables regardless.
 
-### Exploit-Resistance (KSPP-style mitigations)
+### Exploit-resistance (KSPP-style mitigations)
 
 Automated score: **31/109 (28.4%)**  
 Reference points (era-matched): Arch linux-hardened 5.19.11: 69/109 (63.3%). Vanilla upstream defconfig 5.17: 29/109 (26.6%). KSPP target (6.17): 93/109 (85.3%).
@@ -41,7 +41,7 @@ HS's exploit-resistance posture is at the vanilla upstream baseline. It does not
 
 ---
 
-## Residual Risks
+## Residual risks
 
 **1. Kernel memory corruption / exploitation**  
 HS provides no additional protection beyond vanilla upstream defaults for heap-based exploits (use-after-free, double-free, type confusion). An attacker who can reach a vulnerable in-kernel code path with sufficient primitive quality has no extra mitigations to contend with beyond `STACKPROTECTOR_STRONG`, `KASLR`, `RANDOMIZE_MEMORY`, and `STRICT_KERNEL_RWX` — all of which are vanilla defaults.
@@ -66,7 +66,7 @@ SELinux initializes at boot but does not enforce. HeartSuite is the sole enforci
 
 ---
 
-## How to Reproduce These Measurements
+## How to reproduce these measurements
 
 Run on any Linux host with Python 3:
 

@@ -78,7 +78,7 @@ To receive this payload, create an integration in your incident management tool 
 - [OpsGenie — Incoming webhook integration](https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-webhook/)
 - [Slack — Incoming webhooks](https://api.slack.com/incoming-webhooks)
 
-**Status JSON** — A passive monitoring surface at `/.hs/sys/hs-status.json`, updated every 60 seconds. Ansible, Nagios, and [Zabbix](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks) can read this file via SSH pull. No configuration required — always active when the alert daemon is running. This is read-only; it does not push notifications.
+**Status JSON** — A passive monitoring surface at `~/.cache/heartsuite/status.json`, updated every 60 seconds. Ansible, Nagios, and [Zabbix](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks) can read this file via SSH pull. No configuration required — always active when the alert daemon is running. This is read-only; it does not push notifications.
 
 > [!TIP]
 > At fleet scale, syslog is the primary integration path: enable syslog on all nodes, forward via rsyslog to your SIEM, and alert centrally from the SIEM's own rule engine. Webhook covers incident management tools (PagerDuty, OpsGenie). Status JSON covers Ansible health checks. Email is for single-machine deployments or as a supplementary channel.
