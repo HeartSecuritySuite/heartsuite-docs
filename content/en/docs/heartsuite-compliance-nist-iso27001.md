@@ -11,6 +11,8 @@ This document maps HeartSuite Core Secure capabilities to the NIST Cybersecurity
 
 HeartSuite is a **preventive enforcement layer**, not a comprehensive compliance platform. It addresses a specific, high-value problem: enforcing a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise. This document clarifies what that means for your compliance programme and what questions remain open.
 
+For SOC 2 Trust Services Criteria mapping, see the [SOC 2 Control Mapping](../soc2/) document.
+
 ---
 
 ## What HeartSuite Enforces
@@ -89,7 +91,7 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 |---|---|
 | **A.5.7** — Threat intelligence | Not covered. HeartSuite has no threat feed integration. |
 | **A.5.15** — Access control | Kernel-enforced per-programme access control, overriding user and root privilege. Supports enforcement of an access control policy. |
-| **A.5.22** — Monitoring, review and change management of supplier services | Not covered. |
+| **A.5.22** — Monitoring, review and change management of supplier services | HeartSuite has conducted a rigorous internal security audit covering 42 formally evidenced properties across multiple scenario categories. No independent third-party engagement has been commissioned. HeartSuite is not submitted to NCSC CPA, NIAP, or Common Criteria evaluation. Several kernel hardening choices (`CONFIG_BPF_SYSCALL=n`, `CONFIG_KEXEC_FILE=n`, removal of eBPF verifier exposure, `chattr`-based immutability) align with the attack-surface-reduction objectives of Common Criteria Protection Profiles, but the certification process has not been initiated. |
 | **A.5.23** — ICT supply chain security | Partially. HeartSuite blocks new or modified binaries at the execution gate, preventing a trojanised update from running unless it replaces an already-allowlisted binary with identical path. |
 | **A.5.28** — Collection of evidence | Kernel logs and Dashboard queue data constitute evidence of denied activity. Export requires SIEM integration. |
 | **A.5.29** — Information security during disruption | Not covered. No continuity or DR controls. |
@@ -99,34 +101,38 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 
 Not covered. HeartSuite has no personnel management, background check, training, or separation-of-duties features. Separation of duties at the access-control layer is partially supported (per-programme file access limits what any individual programme can reach), but organisational duty separation is out of scope.
 
+HeartSuite does not implement role-based access control within the Dashboard. Every user with Linux root access has identical, unrestricted access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and maintenance mode. There is no operator/administrator distinction, no per-function permission check, and no audit trail that distinguishes one root user's actions from another. Restricting which personnel can reach root — and attributing their actions to individuals — requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
+
 ### A.7 — Physical Controls
 
 Not covered. HeartSuite's Lockdown state requires **physical access to bypass** (reboot to a non-HeartSuite kernel to clear immutability flags). This means physical security of the host is a dependency, not a capability HeartSuite provides.
+
+In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) provides the same bypass path as physical keyboard access. HeartSuite installs `agetty` autologin on `/dev/ttyS0`; restricting serial console access in the cloud provider's IAM is therefore a customer-side dependency that must be addressed to maintain the integrity of Lockdown's protection model.
 
 ### A.8 — Technological Controls
 
 | Control | HeartSuite contribution |
 |---|---|
-| **A.8.2** — Privileged access rights | Immutable seal and per-programme enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. |
+| **A.8.2** — Privileged access rights | Immutable seal and per-programme enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with a timestamp and TTY in `/var/log/heartsuite/ui.log`; attributing TTY sessions to named personnel requires customer-side session logging (auditd or a PAM tool). |
 | **A.8.3** — Information access restriction | Per-programme file-access allowlist restricts which paths each programme can read or write. |
 | **A.8.4** — Access to source code | Not covered natively; HeartSuite does not distinguish source code files. File-access allowlists can be configured to restrict access to specific paths. |
 | **A.8.5** — Secure authentication | Immutable seal protects `/etc/passwd`, `/etc/shadow`, and SSH configuration from runtime modification. HeartSuite does not provide authentication mechanisms itself. |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
 | **A.8.8** — Management of technical vulnerabilities | Not covered. HeartSuite constrains the impact of unpatched vulnerabilities via allowlist boundaries but does not scan for, report on, or remediate them. |
-| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. |
+| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. The allowlist is managed per-host only; there is no remote management interface or centralised distribution mechanism. Revoking a compromised allowlist entry requires a maintenance window — no emergency revocation path exists while Lockdown is active. Boot-path integrity: `CONFIG_IMA` is not set (Integrity Measurement Architecture disabled) and `CONFIG_KEXEC_FILE` is not set (signed-image kexec variant compiled out). The kernel image directory is sealed under Lockdown via `chattr +i`, but there is no Secure Boot enforcement, no shim, and no IMA measurement log. |
 | **A.8.10** — Information deletion | Not covered. HeartSuite's restricted `rm` under Lockdown limits accidental deletion but has no secure-deletion or data-retention controls. |
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
-| **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. No encryption of backup data, no offsite copy. |
-| **A.8.15** — Logging | Kernel logs all programme execution, file access, and network connection attempts. Dashboard queues surface denied activity. Raw logs accessible via `dmesg` and syslog. |
-| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint. No fleet-wide or behavioural monitoring. |
+| **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
+| **A.8.15** — Logging | Kernel logs all programme execution, file access, and network connection attempts. Dashboard queues surface denied activity. On-device retention: `/.hs/sys/HS_log.txt` is cleared on each maintenance cycle; `/var/log/heartsuite/ui.log` is size-capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log; a customer-operated SIEM receiving the syslog alert feed is required for audit-period-length evidence. |
+| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`/.hs/sys/hs-status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no inbound API, no remote allowlist control, and no centralised view across hosts. No fleet-wide or behavioural monitoring. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
 | **A.8.18** — Use of privileged utility programmes | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
 | **A.8.19** — Installation of software on operational systems | Per-programme execution allowlist enforces "approved programmes only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
-| **A.8.20** — Networks security | Per-programme network allowlist controls outbound connections. Inbound traffic management, VLAN segregation, and firewall policy are out of scope. |
+| **A.8.20** — Networks security | Per-programme network allowlist controls outbound connections using literal IPv4/IPv6 addresses only; CIDR notation and DNS-based rules are not supported. Inbound connection monitoring is not provided; inbound filtering is a customer-side responsibility via OS firewall (`iptables`, `nftables`) or cloud security groups. VLAN segregation and firewall policy are out of scope. |
 | **A.8.22** — Segregation of networks | Network allowlist controls which programmes reach which destinations. This is host-level segregation, not network-layer segregation. |
 | **A.8.23** — Web filtering | Not covered. HeartSuite filters by destination IP, not URL or content category. |
-| **A.8.24** — Use of cryptography | Not covered. No native encryption. HeartSuite is compatible with OS-level disk encryption (LUKS or equivalent). |
+| **A.8.24** — Use of cryptography | No native encryption. HeartSuite configuration files (allowlist, mode state) are sealed by filesystem immutability flags but are not encrypted; they can be read from disk on a non-HS kernel boot. Backup snapshots are also unencrypted at the HeartSuite layer. OS-level disk encryption (dm-crypt/LUKS) is the required complementary control for data-at-rest compliance. |
 | **A.8.28** — Secure coding | Not covered. HeartSuite does not inspect code or enforce secure development practices. |
 | **A.8.29** — Security testing in development and production | Not covered. |
 | **A.8.30** — Outsourced development | Not covered. |
@@ -134,87 +140,96 @@ Not covered. HeartSuite's Lockdown state requires **physical access to bypass** 
 | **A.8.33** — Test information | Not covered. |
 | **A.8.34** — Protection of information systems during audit testing | Not directly covered. Immutable Lockdown state protects system integrity during audit activities. |
 
+#### `hs-status.json` field reference
+
+Written to `/.hs/sys/hs-status.json` every 60 seconds by the HeartSuite daemon. Read-only; does not accumulate history.
+
+| Field | Type | Notes |
+|---|---|---|
+| `node_id` | string | Configured host identifier |
+| `mode` | string | `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"` |
+| `is_hs_kernel` | bool | Whether the running kernel is the HeartSuite kernel |
+| `lockdown` | bool | Whether Lockdown is currently active |
+| `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
+| `pending_programs` | int | Programmes awaiting review |
+| `pending_files` | int | Sum of `pending_file_r` + `pending_file_w` |
+| `pending_network` | int | Network destinations awaiting review |
+| `last_alert_at` | string | ISO 8601 UTC timestamp of last alert, or empty string |
+| `updated_at` | string | ISO 8601 UTC timestamp of last daemon write |
+| `daemon_ok` | bool | Whether the HeartSuite daemon is running normally |
+| `channel_errors` | object | **Optional** — present only when the daemon passes an `AlertState` with errors |
+| └ `email.message` / `email.at` | string | Last email delivery error and its timestamp |
+| └ `syslog.message` / `syslog.at` | string | Last syslog delivery error and its timestamp |
+| └ `webhook.message` / `webhook.at` | string | Last webhook delivery error and its timestamp |
+
+For Nagios/Zabbix/Ansible polling, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that constitute a healthy Lockdown state.
+
 ---
 
-## What the Documentation Does Not Answer
+## Open Questions
 
-The following are questions a compliance officer or auditor would reasonably ask about HeartSuite when assessing its contribution to a NIST CSF or ISO 27001 programme. The product documentation does not contain answers to these questions. They represent either genuine gaps in current HeartSuite capability or documentation gaps that may reflect capability not yet described.
+The following 11 questions remain without a complete public answer. Status annotations indicate how close each is to being closeable.
 
 ### Evidence & Attestation
 
 1. **Can HeartSuite export a signed compliance evidence package** — a machine-readable record of the current allowlist, Lockdown state, and alert history — for submission to an auditor or GRC platform?
 
-2. **Is there an audit log that cannot be cleared by the local administrator?** Kernel logs and Dashboard queues are local; a determined local administrator with physical access could clear them before an audit. Is there a tamper-evident, off-host log record?
-
-3. **Does HeartSuite generate a time-stamped attestation of Lockdown state?** A control assessment requires point-in-time evidence that Lockdown was active during a given period. The current documentation describes Lockdown state but not how to prove it was active continuously.
-
-4. **What is the format and schema of the JSON status endpoint?** Compliance teams integrating HeartSuite with a GRC or SIEM platform need field definitions, retention guarantees, and version stability commitments.
-
-5. **Are Dashboard approval records retained across reboots?** If the activity log is cleared on reboot, there is no audit trail of who approved what programme and when.
+2. **Does HeartSuite generate a time-stamped attestation of continuous Lockdown state?** `hs-status.json` reflects current state only; the daemon's reboot history records reboots, not continuous Lockdown state. There is no historical attestation record.
 
 ### Access Control & Identity
 
-1. **Does HeartSuite support multiple administrative roles?** The documentation describes a single administrative interface. ISO 27001 A.5.15 and NIST PR.AC-4 require separation of duties. Can review and approval of allowlist entries be assigned to different individuals, with one approving and another confirming?
-
-2. **Is Dashboard access authenticated and logged?** Who can access the Dashboard, by what credential, and is that access itself logged? The documentation notes the Dashboard is a trust boundary at console access, but does not define the authentication model.
-
-3. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** Regulated environments often require centralised identity management. The documentation does not describe integration with directory services.
-
-4. **Can the allowlist be managed remotely, and if so, what protects that management channel?** The documentation describes Lockdown as sealing configuration, but does not clearly state whether remote allowlist changes are possible and, if so, what the authentication and authorisation model is.
-
-### Cryptography & Data Protection
-
-1. **What encryption, if any, protects HeartSuite's own configuration files?** The allowlist files are described as sealed by immutability flags but not encrypted. A physical attacker with access to the disk could read or, on a non-HS kernel, modify them. Is there a plan to add encryption at rest for configuration?
-
-2. **Are backup snapshots encrypted?** File Backup & Versioning creates versioned snapshots but the documentation does not describe whether snapshot contents are encrypted. For environments subject to data-at-rest requirements (GDPR, HIPAA, PCI DSS), unencrypted backups of `/home` may be a compliance finding.
-
-3. **Does HeartSuite validate the integrity of its own kernel image at boot?** Secure Boot integration and kernel image signing are referenced in the sealed directory list, but the documentation does not confirm whether Secure Boot is required, optional, or verified by HeartSuite during startup.
+3. **How does HeartSuite interact with PAM, LDAP, or Active Directory?** No HeartSuite code calls PAM, LDAP, or any directory service. Regulated environments requiring centralised identity management must bridge this at the OS layer.
 
 ### Vulnerability & Patch Management
 
-1. **How does HeartSuite handle kernel CVEs in its own kernel build?** The product ships a custom kernel. When a kernel CVE is disclosed, what is the patch cadence, how are customers notified, and what is the expected update window?
+4. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Partially answerable.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. However, no patch SLA (e.g., "within 30 days of NVD publication") and no customer notification process are publicly documented.
 
-2. **Is there a published software bill of materials (SBOM) for the HeartSuite kernel and Dashboard components?** ISO 27001 A.5.23 and NIST SP 800-204C reference SBOM as a supply-chain control. An SBOM would allow customers to correlate HeartSuite components against vulnerability databases.
+5. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* A detailed internal component inventory exists. The gaps to a publishable SBOM are format (SPDX or CycloneDX), upstream dependency tracking against NVD, and a publication decision — not a research problem. Update bundles are currently authenticated by SHA-256 only; there is no GPG or PGP signature against a HeartSuite-controlled key.
 
-3. **What is HeartSuite's own vulnerability disclosure and response programme?** For procurement and supplier-risk assessments under ISO 27001 A.5.22, customers need to understand the vendor's vulnerability management process, including responsible disclosure policy and CVE numbering authority (CNA) status.
-
-### Network & Monitoring
-
-1. **Does HeartSuite support CIDR notation or DNS-based network allowlisting?** The documentation explicitly states only literal IPv4/IPv6 addresses are supported. For cloud-hosted services with dynamic IPs or CDN endpoints, this creates a maintenance burden. Is this a planned feature, and is there a recommended workaround?
-
-2. **Can syslog output be shipped to a remote SIEM in real time under Lockdown?** The documentation lists syslog as an alert channel, but Lockdown seals network access. Is a syslog forwarder pre-allowlisted, and if so, what is its allowlist configuration?
-
-3. **What is the retention period for kernel log data before it is overwritten?** The documentation notes logs are cleared from the Dashboard when review queues are emptied. For compliance programmes requiring 90-day or 1-year log retention, what is the recommended architecture?
-
-4. **Does HeartSuite provide any inbound connection monitoring?** The network allowlist is described as controlling outbound connections. Inbound threat detection (port scans, brute-force) is not mentioned. What is the recommended complementary control?
+6. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 
 ### Incident Response & Recovery
 
-1. **What is the documented recovery time objective (RTO) for restoring a Lockdown host after a security incident?** The maintenance window process requires a two-reboot sequence and manual review. For environments with defined RTO requirements, is there a faster recovery path?
+7. **What is the documented RTO for restoring a Lockdown host after a security incident?** Recovery requires a minimum three-step, two-reboot sequence with manual Dashboard queue review. No time estimate is defined; duration is queue-dependent. There is no fast path.
 
-2. **Can HeartSuite backups be restored to a different host?** The documentation describes file versioning for recovery on the same host. For disaster recovery scenarios, can backup snapshots be transferred to and restored on a replacement machine?
+8. **Can HeartSuite backups be restored to a different host?** The restore mechanism is local-only. There is no export, archive, or transfer capability; cross-host restore is architecturally absent.
 
-3. **Is there a procedure for revoking a compromised allowlist entry without disabling Lockdown?** If a specific programme is found to be malicious, the current process appears to require a maintenance window to modify the allowlist. Is there an emergency revocation path?
-
-4. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** ISO 27001 A.5.24 requires an information security incident management process. Does HeartSuite have a defined customer notification process for product-level security events?
+9. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** *(Organisational — not in the product.)* ISO 27001 A.5.24 requires a defined customer notification process for product-level events.
 
 ### Scalability & Fleet Management
 
-1. **How is the allowlist managed across a fleet of identical servers?** The documentation describes a per-host allowlist workflow. For environments with hundreds of identical servers, is there a mechanism to define and push a common allowlist, or must each host be configured individually?
-
-2. **Is there a centralised management plane for multi-host deployments?** The Dashboard is described as a per-host interface. For SOC and compliance teams that need a fleet-wide view of Lockdown status, blocked events, and approval history, is there a management server or API?
-
-3. **What does the licensing model look like at scale?** The documentation notes that licensing operates on a per-host basis, but does not provide pricing tiers, volume discount structures, or terms for managed service providers (MSPs) that may need to report licence compliance to customers.
+10. **What does the licensing model look like at scale?** *(Organisational — not in the product.)* No pricing tiers, volume discount structures, or MSP terms are publicly documented.
 
 ### Compliance Certifications
 
-1. **Has HeartSuite itself undergone an independent security assessment, penetration test, or third-party audit?** For procurement under ISO 27001 A.5.22, customers need evidence that the supplier has assessed its own product. Is a report or summary available under NDA?
+11. **Does HeartSuite map to sector-specific compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? *(Derivable without new research.)* The evidence base is the same as the NIST CSF and ISO 27001 mappings in this document. PCI DSS Req 7 (least privilege) and Req 10 (log integrity), HIPAA §164.312(a) (access controls) and §164.312(b) (audit controls), and NIS2/CMMC controls that derive from NIST 800-171 all map directly to controls already described here. This is a document task, not an investigation.
 
-2. **Is HeartSuite listed in any government or regulatory approved-products list** (e.g., UK NCSC CPA, US NIAP, Common Criteria)? Certain regulated sectors (defence, government, critical infrastructure) require products to appear on such lists before deployment.
+---
 
-3. **Does HeartSuite map to any specific sector compliance frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? The documentation addresses NIST CSF and ISO 27001 at a general level. Sector-specific frameworks have additional requirements (e.g., PCI DSS Requirement 10 for audit log integrity, HIPAA §164.312 for access controls) that may have specific HeartSuite answers.
+## Cloud Shared-Responsibility Matrix
 
-4. **Is there a shared-responsibility model document for cloud deployments?** When HeartSuite runs as a guest VM on AWS, GCP, or Azure, the cloud provider controls the hypervisor layer. A shared-responsibility matrix would clarify which controls HeartSuite addresses, which the cloud provider addresses, and which remain the customer's responsibility.
+When HeartSuite Core Secure runs as a guest VM on a cloud platform, responsibility for controls is split across three parties.
+
+| Control layer | HeartSuite | Cloud provider | Customer |
+|---|---|---|---|
+| Kernel-level execution enforcement | Primary | — | — |
+| Per-programme file access control | Primary | — | — |
+| Outbound network allowlist | Primary | — | — |
+| Configuration immutability (Lockdown) | Primary | — | — |
+| File backup & versioning | Primary | — | Offsite / encrypted copy for DR |
+| Hypervisor and host hardware security | — | Primary | — |
+| Physical data centre security | — | Primary | — |
+| Network infrastructure (VPC, routing) | — | Primary | — |
+| Serial / out-of-band console access control | Installs `agetty` autologin on `/dev/ttyS0` | Provides console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console) | **Must restrict console access via cloud IAM** |
+| Inbound firewall / security groups | — | Provides capability | Customer configures |
+| Disk encryption at rest | — | Provides capability (EBS encryption, etc.) | Customer enables; LUKS recommended |
+| Identity & access management | — | Provides IAM | Customer configures; controls who reaches root and serial console |
+| OS-level audit logging (login, sudo) | — | — | Customer configures (auditd, CloudTrail) |
+| SIEM / log retention beyond device | — | — | Customer operates |
+| Vulnerability scanning | — | — | Customer operates |
+| Incident response programme | — | — | Customer defines |
+
+The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. HeartSuite installs `agetty` autologin on `/dev/ttyS0`, meaning anyone who can reach the cloud provider's out-of-band serial console can boot to the non-HS kernel without further authentication from HeartSuite. Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
 
 ---
 

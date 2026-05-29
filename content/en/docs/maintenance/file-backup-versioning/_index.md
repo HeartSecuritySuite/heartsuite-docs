@@ -51,6 +51,10 @@ For ransomware recovery where many files were modified on the same date, use the
 
 When Lockdown is active, the backup configuration file is sealed — no user or program, including root, can add or remove directories. This prevents an attacker who compromises a running process from silently disabling backup. To change the backup configuration, enter a maintenance period first (see [Protecting During Maintenance](../protecting-during-maintenance/)).
 
+## Backup encryption
+
+HeartSuite Core Secure backup files are versioned filesystem copies. They are not encrypted at the HeartSuite layer. If your environment requires data-at-rest encryption — for example, to meet GDPR, HIPAA, or PCI DSS requirements — configure full-disk encryption (dm-crypt/LUKS) at the OS level. LUKS encryption covers the backup files automatically, since they reside on the same filesystem as the rest of the host.
+
 ## CLI access for scripting and automation
 
 For scripting and automation workflows that run without the Dashboard, the following CLI tools are available:

@@ -85,6 +85,26 @@ These files are written automatically by HeartSuite Core Secure. They are not to
 - **`/var/log/heartsuite/ui.log`** — the Dashboard UI event log. Records Dashboard interactions and internal state transitions. Size-capped at approximately 8 MB with automatic rotation; no time-based retention policy. For compliance evidence spanning an audit period, rely on the syslog alert feed rather than this file.
 - **`/.hs/sys/hs-status.json`** — system status snapshot updated every 60 seconds. Read-only; used by Ansible, Nagios, Zabbix, and similar tools for automated health checks. Not a log — does not accumulate history.
 
+  | Field | Type | Notes |
+  |---|---|---|
+  | `node_id` | string | Configured host identifier |
+  | `mode` | string | `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"` |
+  | `is_hs_kernel` | bool | Whether the running kernel is the HeartSuite kernel |
+  | `lockdown` | bool | Whether Lockdown is currently active |
+  | `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
+  | `pending_programs` | int | Programmes awaiting review |
+  | `pending_files` | int | Sum of pending read + pending write entries |
+  | `pending_network` | int | Network destinations awaiting review |
+  | `last_alert_at` | string | ISO 8601 UTC timestamp of last alert, or empty string |
+  | `updated_at` | string | ISO 8601 UTC timestamp of last daemon write |
+  | `daemon_ok` | bool | Whether the HeartSuite daemon is running normally |
+  | `channel_errors` | object | Optional — present only when a delivery error has occurred |
+  | └ `email.message` / `email.at` | string | Last email delivery error and its timestamp |
+  | └ `syslog.message` / `syslog.at` | string | Last syslog delivery error and its timestamp |
+  | └ `webhook.message` / `webhook.at` | string | Last webhook delivery error and its timestamp |
+
+  For monitoring integrations, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that together confirm a healthy Lockdown state.
+
 ## Kernel CVE coverage
 
 For CVE status entries with full technical rationale and scanner guidance, see [Kernel Security Transparency](../security/).

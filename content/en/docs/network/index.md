@@ -79,3 +79,7 @@ The Dashboard is the supported path for normal use.
 For general allowlisting concepts (program execution, file access, write permissions), see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
 
 When the Internet Access queue is empty, the Dashboard marks Phase 5 complete and directs you to [Phase 6: Alert Settings](../alerts/).
+
+## Inbound connections
+
+HeartSuite Core Secure manages outbound connections only. Inbound connection filtering — restricting which ports are reachable, blocking port scans, rate-limiting login attempts — is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.

@@ -3910,6 +3910,8 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 `CONFIG_IMA` is not compiled into the HeartSuite Core Secure kernel. There is no reachable code path for any CVE in this group.
 
+IMA's measurement and appraisal functions — runtime file integrity checking and boot-time measurement logs — are also absent as a result. Boot-path protection in HeartSuite Core Secure is provided structurally: the kernel image directory and `/boot` are sealed under Lockdown using `chattr +i` immutability, preventing modification while the HeartSuite kernel is running. `CONFIG_KEXEC_FILE` (the signed-image kexec variant) is also not set. Secure Boot is not enforced or verified by HeartSuite Core Secure; if Secure Boot is required, it must be configured at the firmware and bootloader level independently.
+
 ### PowerPC Architecture {#powerpc-arch}
 
 **Status**: Not Affected
