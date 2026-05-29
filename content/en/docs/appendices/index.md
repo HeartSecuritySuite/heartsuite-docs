@@ -88,7 +88,7 @@ These files are written automatically by HeartSuite Core Secure. They are not to
   | Field | Type | Notes |
   |---|---|---|
   | `node_id` | string | Configured host identifier |
-  | `mode` | string | `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"` |
+  | `mode` | string | `"Lockdown"`, `"Setup Mode"`, or `"Unknown"` |
   | `is_hs_kernel` | bool | Whether the running kernel is the HeartSuite kernel |
   | `lockdown` | bool | Whether Lockdown is currently active |
   | `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
