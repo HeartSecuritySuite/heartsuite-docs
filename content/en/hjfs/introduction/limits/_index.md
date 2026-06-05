@@ -43,7 +43,7 @@ Within that area, every write is automatically backed up to a protected location
 
 **What HJFS enforces.** HJFS controls what running programs can access. Execution control is HeartSuite Root Lock's domain. This is a deliberate division of layers, not a gap.
 
-**What HJFS does not cover.** A binary placed on the system can be launched. HeartSuite Root Lock requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; Core Secure operates at the kernel. See [HeartSuite Root Lock](../../../docs/).
+**What HJFS does not cover.** A binary placed on the system can be launched. HeartSuite Root Lock requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; HeartSuite Root Lock operates at the kernel. See [HeartSuite Root Lock](../../../docs/).
 
 ---
 
@@ -76,4 +76,4 @@ HJFS provides filesystem-level file isolation. Network monitoring, detection, an
 | Detection within approved boundaries | SIEM, NDR, endpoint detection tools |
 | Secrets management within a program | Secrets management tools; Advanced Protection for user files |
 
-For the full picture of how Core Secure and HJFS work together, see [HJFS and HeartSuite Root Lock: what each covers](../hjfs-overview/#hjfs-and-heartsuite-core-secure-what-each-covers).
+For the full picture of how HeartSuite Root Lock and HJFS work together, see [HJFS and HeartSuite Root Lock: what each covers](../hjfs-overview/#hjfs-and-heartsuite-root-lock-what-each-covers).
