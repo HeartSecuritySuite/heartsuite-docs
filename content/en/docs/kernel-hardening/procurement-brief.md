@@ -1,14 +1,14 @@
 ---
 title: "Procurement Brief: Kernel Hardening at a Glance"
 weight: 30
-description: "Plain-language comparison of HeartSuite Root Lock kernel hardening against industry alternatives — for buyers and security decision-makers."
+description: "Plain-language comparison of Root Lock by HeartSuite kernel hardening against industry alternatives — for buyers and security decision-makers."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "procurement", "comparison"]
 type: docs
 toc: true
 ---
 
-**Subject:** HeartSuite Root Lock, kernel 5.19.6  
+**Subject:** Root Lock by HeartSuite, kernel 5.19.6  
 **Measured:** 2026-05-19 using kernel-hardening-checker, an independent open-source tool  
 **Full technical data:** `kernel-comparison-matrix-5.19.6.md`
 

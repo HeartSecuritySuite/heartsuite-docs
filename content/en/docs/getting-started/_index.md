@@ -12,7 +12,7 @@ menu:
     weight: 18
 ---
 
-**Overview**: HeartSuite Root Lock runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.
+**Overview**: Root Lock by HeartSuite runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.
 
 ## Before you begin
 
@@ -20,14 +20,14 @@ Check [Before You Begin](before-you-begin/) for system requirements and prerequi
 
 ## Cloud Path
 
-Launch a pre-installed HeartSuite Root Lock cloud instance (AWS AMI, GCP image). No download or kernel installation required — boot directly into Setup Mode and the Dashboard appears on first login. Follow the Suggested Next Step to begin Phase 2.
+Launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image). No download or kernel installation required — boot directly into Setup Mode and the Dashboard appears on first login. Follow the Suggested Next Step to begin Phase 2.
 
 ## Local Path
 
-Install HeartSuite Root Lock on bare-metal or a custom VM:
+Install Root Lock by HeartSuite on bare-metal or a custom VM:
 
-1. **[Obtaining HeartSuite Root Lock](../installation/obtaining-heartsuite/)** — download the installer from heartsecsuite.com.
-2. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the HeartSuite Root Lock kernel.
+1. **[Obtaining Root Lock by HeartSuite](../installation/obtaining-heartsuite/)** — download the installer from heartsecsuite.com.
+2. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the Root Lock by HeartSuite kernel.
 3. **[Installation Part 2](../installation/installation-part2/)** — complete the System Setup through multiple reboot cycles until the Dashboard confirms Phase 1 is complete.
 4. **[Verifying Installation](../verification/)** — confirm Phase 1 is complete in the Dashboard.
 

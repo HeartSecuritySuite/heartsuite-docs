@@ -1,13 +1,13 @@
 ---
 title: "Compliance Reference: NIST CSF & ISO 27001"
 weight: 112
-description: "How HeartSuite Root Lock maps to NIST Cybersecurity Framework and ISO 27001:2022 Annex A controls."
+description: "How Root Lock by HeartSuite maps to NIST Cybersecurity Framework and ISO 27001:2022 Annex A controls."
 categories: ["Reference"]
 tags: ["compliance", "NIST", "ISO 27001"]
 type: docs
 ---
 
-This document maps HeartSuite Root Lock capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. It is intended for compliance officers, auditors, and security staff evaluating where HeartSuite contributes to an organisation's compliance posture and where complementary controls are required.
+This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. It is intended for compliance officers, auditors, and security staff evaluating where HeartSuite contributes to an organisation's compliance posture and where complementary controls are required.
 
 HeartSuite is a **preventive enforcement layer**, not a comprehensive compliance platform. It addresses a specific, high-value problem: enforcing a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise. This document clarifies what that means for your compliance programme and what questions remain open.
 
@@ -208,7 +208,7 @@ The following 11 questions remain without a complete public answer. Status annot
 
 ## Cloud Shared-Responsibility Matrix
 
-When HeartSuite Root Lock runs as a guest VM on a cloud platform, responsibility for controls is split across three parties.
+When Root Lock by HeartSuite runs as a guest VM on a cloud platform, responsibility for controls is split across three parties.
 
 | Control layer | HeartSuite | Cloud provider | Customer |
 |---|---|---|---|

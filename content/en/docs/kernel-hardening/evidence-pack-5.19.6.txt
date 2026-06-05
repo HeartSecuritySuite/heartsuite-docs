@@ -1,4 +1,4 @@
-HeartSuite Root Lock — Kernel Hardening Evidence Pack
+Root Lock by HeartSuite — Kernel Hardening Evidence Pack
 Subject: HeartSuite kernel 5.19.6 (config versions 1.0 and 2.0; security-relevant options identical)
 Retrieved: 2026-05-19
 Tool: kernel-hardening-checker commit b9b83a0 (github.com/a13xp0p0v/kernel-hardening-checker)

@@ -1,20 +1,20 @@
 ---
 title: "Verifying Installation and Basic Setup"
 weight: 30
-description: "Checking HeartSuite Root Lock activation and initial configuration."
+description: "Checking Root Lock by HeartSuite activation and initial configuration."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "verification", "testing", "setup"]
 toc: true
 type: docs
 ---
 
-**Overview**: Phase 1 (System Verification) confirms that HeartSuite Root Lock is active and the system is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
+**Overview**: Phase 1 (System Verification) confirms that Root Lock by HeartSuite is active and the system is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
 
 ## Cloud Path and Local Path
 
 ### Cloud Path
 
-When you launch a pre-installed HeartSuite Root Lock cloud instance, the Dashboard confirms Phase 1 is complete on first boot and suggests the next step.
+When you launch a pre-installed Root Lock by HeartSuite cloud instance, the Dashboard confirms Phase 1 is complete on first boot and suggests the next step.
 
 ### Local Path
 
@@ -24,7 +24,7 @@ After completing the local installation process (download, GRUB preparation, ker
 
 When Phase 1 is complete, the Dashboard confirms:
 
-- **Protection state** (indicator at the top): Shows **SETUP MODE** — HeartSuite Root Lock is active, logging only, nothing blocked
+- **Protection state** (indicator at the top): Shows **SETUP MODE** — Root Lock by HeartSuite is active, logging only, nothing blocked
 - **Phase Progress**: Shows Phase 1 as **Complete**
 - **Status line at the bottom**: Shows kernel type (`HS`), current mode, time in mode, and lockdown status
 - **Suggested Next Step**: Directs you to begin Phase 2: Program Allowlisting
@@ -40,7 +40,7 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 | Setup Mode | SETUP MODE — logging only, nothing is blocked |
 | Lockdown (no immutable seal) | LOCKDOWN — immutable seal not applied |
 | Lockdown + sealed | No indicator (silence means safety) |
-| Non-HS kernel | NON-HS KERNEL — HeartSuite Root Lock is not active. No blocking. No logging. No backups. |
+| Non-HS kernel | NON-HS KERNEL — Root Lock by HeartSuite is not active. No blocking. No logging. No backups. |
 
 ## Status line at the bottom
 
@@ -50,16 +50,16 @@ Below the protection state indicator, a status line shows:
 Kernel: HS    Mode: Setup — active for 3d 7h    Lockdown: —
 ```
 
-- **Kernel**: `HS` (HeartSuite Root Lock kernel) or `Non-HS` (standard kernel)
+- **Kernel**: `HS` (Root Lock by HeartSuite kernel) or `Non-HS` (standard kernel)
 - **Mode**: Setup or Secure, with time in current mode
 - **Lockdown**: `—` (Setup Mode), `Not applied` (Lockdown without immutable seal), or `Applied` (Lockdown with immutable seal)
 
 ## What to do if verification fails
 
-If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "NON-HS KERNEL" when you intended to boot HeartSuite Root Lock):
+If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "NON-HS KERNEL" when you intended to boot Root Lock by HeartSuite):
 
-1. Check the status line at the bottom of the Dashboard — it shows the kernel type (`HS` or `Non-HS`). If it shows `Non-HS`, reboot and select the HeartSuite Root Lock kernel from the GRUB menu.
-2. Check that the HeartSuite Root Lock systemd service is running:
+1. Check the status line at the bottom of the Dashboard — it shows the kernel type (`HS` or `Non-HS`). If it shows `Non-HS`, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu.
+2. Check that the Root Lock by HeartSuite systemd service is running:
 
    ```bash
    systemctl status heartsuite
