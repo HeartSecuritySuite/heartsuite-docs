@@ -26,7 +26,7 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ## Log management
 
-HeartSuite Core Secure captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[t]`) provides guided workflows for common maintenance tasks.
+HeartSuite Root Lock captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[t]`) provides guided workflows for common maintenance tasks.
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
@@ -34,16 +34,16 @@ Allow several days to a week of observation in Setup Mode. Systemd timers, cron 
 
 ## Kernel log
 
-The Dashboard's review queues automatically collect entries from both the HeartSuite Core Secure activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
+The Dashboard's review queues automatically collect entries from both the HeartSuite Root Lock activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
 
-The kernel log is useful for advanced troubleshooting in three situations: a program fails but the Dashboard shows zero pending or denied items for it; the HeartSuite Core Secure activity log has been cleared or rotated; or you need to correlate HeartSuite Core Secure entries with other kernel messages:
+The kernel log is useful for advanced troubleshooting in three situations: a program fails but the Dashboard shows zero pending or denied items for it; the HeartSuite Root Lock activity log has been cleared or rotated; or you need to correlate HeartSuite Root Lock entries with other kernel messages:
 
 ```bash
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Core Secure kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and blocking is inactive.
+The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the HeartSuite Root Lock kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and blocking is inactive.
 
 ## Reporting issues
 
-If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Core Secure version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com.
+If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your HeartSuite Root Lock version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com.

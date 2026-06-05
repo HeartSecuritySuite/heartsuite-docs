@@ -1,14 +1,14 @@
 ---
 title: "Kernel Hardening"
 weight: 108
-description: "Objective, measurement-backed analysis of HeartSuite Core Secure's kernel hardening posture — design rationale, comparison against industry references, and reproducible evidence."
+description: "Objective, measurement-backed analysis of HeartSuite Root Lock's kernel hardening posture — design rationale, comparison against industry references, and reproducible evidence."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison"]
 type: docs
 toc: false
 ---
 
-HeartSuite Core Secure runs a custom-built Linux kernel (5.19.6) with a specific hardening philosophy: remove the kernel subsystems that make security-control bypass possible, rather than patch around them.
+HeartSuite Root Lock runs a custom-built Linux kernel (5.19.6) with a specific hardening philosophy: remove the kernel subsystems that make security-control bypass possible, rather than patch around them.
 
 This section documents that posture with reproducible measurements. Every number derives from the open-source `kernel-hardening-checker` tool applied identically to HeartSuite and the reference kernels. No estimates. The raw evidence file and the config SHA-256 are included so any qualified team can verify independently.
 

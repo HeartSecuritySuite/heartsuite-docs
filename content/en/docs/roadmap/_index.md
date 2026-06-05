@@ -1,7 +1,7 @@
 ---
 title: "Roadmap 2016 — present"
 linkTitle: "Roadmap"
-description: "See where HeartSuite Core Secure is headed—kernel-level enforcement that root cannot bypass."
+description: "See where HeartSuite Root Lock is headed—kernel-level enforcement that root cannot bypass."
 lastmod: "2026-05-27"
 weight: 110
 menu:
@@ -23,7 +23,7 @@ The architecture's foundations reach back to 2016, when Karen Heart first identi
 
 ```mermaid
 gantt
-    title HeartSuite Core Secure — Development Timeline
+    title HeartSuite Root Lock — Development Timeline
     dateFormat YYYY-MM-DD
     axisFormat %m/%Y
 
@@ -278,7 +278,7 @@ gantt
 
 > [!NOTE]
 > **Public Open-Source Release — v1.6.2** (March 5–11, 2026)  
-> HeartSuite Core Secure published under AGPL-3.0. Includes kernel source, tools, porting guides, internal security checklists, and CONTRIBUTING documentation.
+> HeartSuite Root Lock published under AGPL-3.0. Includes kernel source, tools, porting guides, internal security checklists, and CONTRIBUTING documentation.
 
 > [!NOTE]
 > **TUI Overlay Prototype** (March 18–26, 2026)  

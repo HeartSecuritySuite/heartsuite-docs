@@ -23,7 +23,7 @@ toc: true
 
 Within that area, every write is automatically backed up to a protected location no program can access. Recovery is always available: the restore utility returns any file to any prior version, including versions created before the compromise.
 
-**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is outside HJFS's scope. Once data is in memory, the network path is open. HeartSuite Core Secure closes this gap. See [Network exfiltration](#network-exfiltration) below.
+**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is outside HJFS's scope. Once data is in memory, the network path is open. HeartSuite Root Lock closes this gap. See [Network exfiltration](#network-exfiltration) below.
 
 ---
 
@@ -33,7 +33,7 @@ Within that area, every write is automatically backed up to a protected location
 
 **What HJFS enforces.** The program can only reach files within its own storage area. Credentials, documents, and configuration files belonging to other programs are inaccessible. The data available for exfiltration is bounded by isolation.
 
-**What HJFS does not cover.** HJFS controls what data a program can reach; it does not control which connections a program can open. A program that holds data in its own storage area and has an open network path can exfiltrate that data. HeartSuite Core Secure provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [HeartSuite Core Secure](../../../docs/network/).
+**What HJFS does not cover.** HJFS controls what data a program can reach; it does not control which connections a program can open. A program that holds data in its own storage area and has an open network path can exfiltrate that data. HeartSuite Root Lock provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [HeartSuite Root Lock](../../../docs/network/).
 
 ---
 
@@ -41,9 +41,9 @@ Within that area, every write is automatically backed up to a protected location
 
 **The scenario.** An attacker downloads a tool — a privilege escalation script, a credential dumper, a reverse shell — and attempts to run it.
 
-**What HJFS enforces.** HJFS controls what running programs can access. Execution control is HeartSuite Core Secure's domain. This is a deliberate division of layers, not a gap.
+**What HJFS enforces.** HJFS controls what running programs can access. Execution control is HeartSuite Root Lock's domain. This is a deliberate division of layers, not a gap.
 
-**What HJFS does not cover.** A binary placed on the system can be launched. HeartSuite Core Secure requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; Core Secure operates at the kernel. See [HeartSuite Core Secure](../../../docs/).
+**What HJFS does not cover.** A binary placed on the system can be launched. HeartSuite Root Lock requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; Core Secure operates at the kernel. See [HeartSuite Root Lock](../../../docs/).
 
 ---
 
@@ -71,9 +71,9 @@ HJFS provides filesystem-level file isolation. Network monitoring, detection, an
 
 | Gap | Complementary tool |
 |---|---|
-| Network exfiltration | HeartSuite Core Secure (kernel-level network allowlisting) or network-layer egress controls |
-| Unauthorized program execution | HeartSuite Core Secure (kernel-level program allowlisting) |
+| Network exfiltration | HeartSuite Root Lock (kernel-level network allowlisting) or network-layer egress controls |
+| Unauthorized program execution | HeartSuite Root Lock (kernel-level program allowlisting) |
 | Detection within approved boundaries | SIEM, NDR, endpoint detection tools |
 | Secrets management within a program | Secrets management tools; Advanced Protection for user files |
 
-For the full picture of how Core Secure and HJFS work together, see [HJFS and HeartSuite Core Secure: what each covers](../hjfs-overview/#hjfs-and-heartsuite-core-secure-what-each-covers).
+For the full picture of how Core Secure and HJFS work together, see [HJFS and HeartSuite Root Lock: what each covers](../hjfs-overview/#hjfs-and-heartsuite-core-secure-what-each-covers).

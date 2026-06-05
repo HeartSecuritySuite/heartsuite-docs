@@ -51,7 +51,7 @@ Containers running on an HJFS-compliant host filesystem benefit from the same pe
 
 ## Network access control
 
-[HeartSuite Core Secure](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. It is not currently compatible with HJFS and cannot be deployed alongside it. HJFS 1.0 does not include its own network access control; that is planned for a subsequent version.
+[HeartSuite Root Lock](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. It is not currently compatible with HJFS and cannot be deployed alongside it. HJFS 1.0 does not include its own network access control; that is planned for a subsequent version.
 
 When implemented in HJFS, each new outbound connection will require explicit user approval rather than relying on static configuration. The approval model differs by deployment type:
 

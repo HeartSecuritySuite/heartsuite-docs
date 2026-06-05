@@ -31,7 +31,7 @@ Configure SMTP credentials to receive email alerts directly. Required fields:
 - **Sender** and **Recipient** addresses
 - **Password** (masked on entry; never displayed after saving)
 
-Select Save to store the configuration. HeartSuite Core Secure validates all fields but does not attempt a live connection at save time. Select Test to send a test email — this is the only moment where SMTP connectivity is verified. If the test fails, the exact SMTP error code is shown:
+Select Save to store the configuration. HeartSuite Root Lock validates all fields but does not attempt a live connection at save time. Select Test to send a test email — this is the only moment where SMTP connectivity is verified. If the test fails, the exact SMTP error code is shown:
 
 ```text
 Test email failed: [535 Authentication credentials invalid]
@@ -45,7 +45,7 @@ Once configured, the tab shows current settings with the password displayed as `
 
 Configure syslog and webhook delivery for fleet and SIEM integrations. All channels are independent — enable any combination.
 
-**Syslog** — A toggle (Enabled/Disabled). When enabled, HeartSuite Core Secure writes all alerts to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the HeartSuite Core Secure node. After enabling, the Alert Settings provides an rsyslog forwarding rule example for your SIEM.
+**Syslog** — A toggle (Enabled/Disabled). When enabled, HeartSuite Root Lock writes all alerts to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the HeartSuite Root Lock node. After enabling, the Alert Settings provides an rsyslog forwarding rule example for your SIEM.
 
 Verify syslog delivery with:
 
@@ -58,7 +58,7 @@ To forward to a SIEM, configure an rsyslog output rule in `/etc/rsyslog.d/hearts
 - [Splunk — Get data from TCP and UDP ports](https://docs.splunk.com/Documentation/Splunk/latest/Data/Monitornetworkports)
 - [Elastic — Filebeat syslog input](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-syslog.html)
 
-**Webhook** — Enter an HTTPS URL. HeartSuite Core Secure POSTs a JSON payload to this URL on every alert. HTTP (non-TLS) URLs are rejected. Example payload:
+**Webhook** — Enter an HTTPS URL. HeartSuite Root Lock POSTs a JSON payload to this URL on every alert. HTTP (non-TLS) URLs are rejected. Example payload:
 
 ```json
 {
@@ -126,7 +126,7 @@ Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 se
 - At window close, one email is dispatched covering all accumulated blocks
 - Blocks of different types accumulate independently — a network burst does not delay a file modification alert
 
-**Digest mode:** If more than 3 block alerts are dispatched within a single hour, HeartSuite Core Secure switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — Lockdown activations and state changes are always delivered immediately.
+**Digest mode:** If more than 3 block alerts are dispatched within a single hour, HeartSuite Root Lock switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — Lockdown activations and state changes are always delivered immediately.
 
 The 5-minute window and hourly cap are fixed, not user-configurable.
 

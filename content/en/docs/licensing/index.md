@@ -23,7 +23,7 @@ After downloading the subscription file, copy it to each server it covers. Regar
 # sudo cp MyCompany_HS_license.txt /.hs/sys/HS_license.txt
 ```
 
-After copying the subscription file, register it using `register_HS_license`. The command requires the IP address of the HeartSuite Core Secure Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from your activation email:
+After copying the subscription file, register it using `register_HS_license`. The command requires the IP address of the HeartSuite Root Lock Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from your activation email:
 
 ```bash
 # sudo /.hs/sys/register_HS_license <ip> 6121

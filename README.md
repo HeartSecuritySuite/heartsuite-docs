@@ -1,9 +1,9 @@
 # HeartSuite Documentation
 **Author: Ron Hessing**
 
-Welcome to the official documentation for **HeartSuite Core Secure** — the enterprise-grade security suite built on a hardened Linux kernel.
+Welcome to the official documentation for **HeartSuite Root Lock** — the enterprise-grade security suite built on a hardened Linux kernel.
 
-*HeartSuite Core Secure | Zero Day Secure-by-design*
+*HeartSuite Root Lock | Zero Day Secure-by-design*
 
 Built with [Hugo](https://gohugo.io/) and the [Docsy](https://www.docsy.dev/) theme.
 

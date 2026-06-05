@@ -13,7 +13,7 @@ toc: true
 
 HJFS gives every program its own isolated storage area. No program can read or write files belonging to another. The examples below show what that means for real attacks: damage that would normally cascade across a system stops at the boundary of the program that was compromised.
 
-Where an attack also involves network exfiltration or unauthorized program spawning — beyond HJFS v1.0's file access scope — those dimensions are addressed by [HeartSuite Core Secure](../../docs/) when deployed alongside HJFS.
+Where an attack also involves network exfiltration or unauthorized program spawning — beyond HJFS v1.0's file access scope — those dimensions are addressed by [HeartSuite Root Lock](../../docs/) when deployed alongside HJFS.
 
 ---
 
@@ -63,7 +63,7 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 **HJFS containment**: The backdoored library version carries a different cryptographic hash than the prior legitimate release, so HJFS installs it into its own separate storage area. Data files created under the legitimate version stay in the legitimate version's storage area — the backdoored version cannot reach them. When the backdoor is discovered, the affected company rolls back to the prior verified version with a single utility command, with no data loss. This is precisely the malicious sleeper attack pattern HJFS automatic data file backup is designed to defeat: even if the backdoored version had been dormant for months before activation, every data file written during that period remains recoverable from the protected backup area — which no program, including the backdoored version, can access or destroy.
 
-Where the attack involves network-level exfiltration or unauthorized program execution, those dimensions are addressed by [HeartSuite Core Secure](../../docs/) when deployed alongside HJFS.
+Where the attack involves network-level exfiltration or unauthorized program execution, those dimensions are addressed by [HeartSuite Root Lock](../../docs/) when deployed alongside HJFS.
 
 ---
 

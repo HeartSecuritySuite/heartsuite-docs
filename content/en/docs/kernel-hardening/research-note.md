@@ -2,14 +2,14 @@
 title: "Research Note: Bypass-Primitive Removal vs Exploit-Resistance Hardening"
 weight: 40
 draft: true
-description: "Technical research note on HeartSuite Core Secure's kernel hardening approach — design-space analysis, empirical measurements, and open research questions for security researchers and competing projects."
+description: "Technical research note on HeartSuite Root Lock's kernel hardening approach — design-space analysis, empirical measurements, and open research questions for security researchers and competing projects."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "research", "LSM", "design"]
 type: docs
 toc: true
 ---
 
-**Subject:** HeartSuite Core Secure, kernel 5.19.6  
+**Subject:** HeartSuite Root Lock, kernel 5.19.6  
 **Config SHA-256:** `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`  
 **Measured:** 2026-05-19, kernel-hardening-checker commit `b9b83a0`  
 **Full data:** `kernel-comparison-matrix-5.19.6.md`, `evidence-pack-5.19.6.txt`

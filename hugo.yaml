@@ -1,6 +1,6 @@
 baseURL: https://docs.heartsecsuite.com
-title: HeartSuite Core Secure
-description: 'HeartSuite Core Secure | Zero Day Secure-by-design'
+title: HeartSuite Root Lock
+description: 'HeartSuite Root Lock | Zero Day Secure-by-design'
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
 
@@ -62,10 +62,10 @@ imaging:
 languages:
   en:
     languageName: English
-    title: HeartSuite Core Secure
+    title: HeartSuite Root Lock
     params:
       description:
-        Documentation for HeartSuite Core Secure, a Linux kernel-level security
+        Documentation for HeartSuite Root Lock, a Linux kernel-level security
         product
 
 markup:
