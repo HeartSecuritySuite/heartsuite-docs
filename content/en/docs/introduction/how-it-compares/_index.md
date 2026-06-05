@@ -66,7 +66,7 @@ For an analysis of attacker cost, defender operational cost, and ROI comparison 
 
 ## What HeartSuite Root Lock replaces
 
-The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What HeartSuite Root Lock Complements](#what-heartsuite-core-secure-complements). These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Root Lock row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
+The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What HeartSuite Root Lock Complements](#what-heartsuite-root-lock-complements). These products provide runtime confinement or kernel-level enforcement of some kind. Each has a known bypass path. The HeartSuite Root Lock row is included in the same format for direct comparison — see [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
 
 | Product | What it does | How it can be disabled | How HeartSuite Root Lock compares |
 |---|---|---|---|
