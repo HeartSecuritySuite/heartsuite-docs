@@ -1,8 +1,8 @@
 ---
-title: "HeartSuite Core Secure Overview"
-linkTitle: "HeartSuite Core Secure Overview"
+title: "HeartSuite Root Lock Overview"
+linkTitle: "HeartSuite Root Lock Overview"
 weight: 1
-description: "Core concepts and purpose of HeartSuite Core Secure security suite."
+description: "Core concepts and purpose of HeartSuite Root Lock security suite."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "overview", "security", "concepts"]
 type: docs
@@ -13,11 +13,11 @@ menu:
     identifier: "heartsuite-overview"
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure controls all three — per program, not per user. Your SSH server and your web server both run as root; they still get different permissions because they are different programs. Any program not on the allowlist is blocked at the kernel before it can run or cause damage.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Root Lock controls all three — per program, not per user. Your SSH server and your web server both run as root; they still get different permissions because they are different programs. Any program not on the allowlist is blocked at the kernel before it can run or cause damage.
 
 ## Kernel-level enforcement
 
-HeartSuite Core Secure uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute without an allowlist entry — and each allowlist entry also controls which files the program can read or write, and which network connections it can make. Even if malware is downloaded to a HeartSuite Core Secure server, the kernel prevents it from running or causing damage.
+HeartSuite Root Lock uses a modified Linux kernel that enforces an allowlist-based security model. No program can execute without an allowlist entry — and each allowlist entry also controls which files the program can read or write, and which network connections it can make. Even if malware is downloaded to a HeartSuite Root Lock server, the kernel prevents it from running or causing damage.
 
 The **Dashboard** is the central interface. It tracks your progress through a 7-phase setup journey, shows what's waiting for review, and always suggests the next step.
 
@@ -35,15 +35,15 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 
 ## Reduced kernel footprint
 
-The security industry patches vulnerabilities one at a time. HeartSuite Core Secure removes the features attackers rely on instead.
+The security industry patches vulnerabilities one at a time. HeartSuite Root Lock removes the features attackers rely on instead.
 
 Most malware escalates privilege by reaching for the same handful of kernel features. eBPF to hide processes. FUSE to redirect reads. Overlay filesystems to shadow protected directories. Userspace security frameworks — AppArmor, SMACK, Landlock — to pivot through. Unprivileged user namespaces to become root without credentials.
 
-The HeartSuite Core Secure kernel is compiled without any of them.
+The HeartSuite Root Lock kernel is compiled without any of them.
 
-A stock Ubuntu kernel ships with over 6,600 loadable modules and a configuration file of more than 12,000 lines. The HeartSuite Core Secure kernel ships with 13 modules and 5,050 lines — one file you can read in an afternoon.
+A stock Ubuntu kernel ships with over 6,600 loadable modules and a configuration file of more than 12,000 lines. The HeartSuite Root Lock kernel ships with 13 modules and 5,050 lines — one file you can read in an afternoon.
 
-Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. HeartSuite Core Secure takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker.
+Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. HeartSuite Root Lock takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker. For a visual comparison of enforcement layers, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
 
@@ -51,7 +51,7 @@ For the practical implications of these compile-time choices, see [System Requir
 
 ### 1. Program Allowlist
 
-An allowlist entry defines what a program is permitted to do — whether it can execute, which files it can read or write, and which network connections it can make. The HeartSuite Core Secure kernel requires every program to have an allowlist entry before it is permitted to run.
+An allowlist entry defines what a program is permitted to do — whether it can execute, which files it can read or write, and which network connections it can make. The HeartSuite Root Lock kernel requires every program to have an allowlist entry before it is permitted to run.
 
 The **Dashboard review queues** present pending items for approval:
 
@@ -69,7 +69,7 @@ File access is divided into **read access** and **write access**. Write access a
 
 ### 2. Setup Mode and Lockdown
 
-HeartSuite Core Secure operates in two modes:
+HeartSuite Root Lock operates in two modes:
 
 - **Setup Mode**: The kernel logs all program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist by reviewing queues and approving programs and their access patterns. The Dashboard guides this process.
 - **Lockdown**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
@@ -82,34 +82,34 @@ Lockdown protects the integrity of allowlist entries by making them immutable. O
 
 After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot; no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance (`[t]`) guides you through the correct maintenance path — including a guided 3-step process that boots the Non-HS kernel.
 
-Because access permissions are enforced inside the HeartSuite Core Secure kernel itself, HeartSuite Core Secure cannot be circumvented by any program or user, including root, while the HeartSuite Core Secure kernel is running.
+Because access permissions are enforced inside the HeartSuite Root Lock kernel itself, HeartSuite Root Lock cannot be circumvented by any program or user, including root, while the HeartSuite Root Lock kernel is running.
 
 ### 4. File backup and versioning
 
-HeartSuite Core Secure automatically backs up files in designated directories and prevents all programs from accessing the backups — only HeartSuite Core Secure itself can reach them. The version manager can restore any version of a backed-up file, regardless of whether it was encrypted, deleted, or modified.
+HeartSuite Root Lock automatically backs up files in designated directories and prevents all programs from accessing the backups — only HeartSuite Root Lock itself can reach them. The version manager can restore any version of a backed-up file, regardless of whether it was encrypted, deleted, or modified.
 
-Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. HeartSuite Core Secure's backups are not permission-protected: under Lockdown, the kernel itself blocks write access to backup files. No program, including root, can reach them.
+Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. HeartSuite Root Lock's backups are not permission-protected: under Lockdown, the kernel itself blocks write access to backup files. No program, including root, can reach them.
 
 The allowlist blocks most attacks at the kernel. When an approved program is compromised, a backup on every write means recovery starts from the moment before damage began — not the last scheduled snapshot.
 
 ### 5. Secure Script Launchers
 
-Allowlist entries can be created for interpreted code such as Python, PHP, and Perl. HeartSuite Core Secure provides Secure Script Launchers that identify the specific script being run when an interpreter is launched, enabling per-script access control with the same granularity as compiled programs.
+Allowlist entries can be created for interpreted code such as Python, PHP, and Perl. HeartSuite Root Lock provides Secure Script Launchers that identify the specific script being run when an interpreter is launched, enabling per-script access control with the same granularity as compiled programs.
 
 ## Two setup paths
 
 **Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete. Proceed directly to the review queues.
 
-**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Core Secure kernel. The System Setup guides you through multiple setup steps with a step counter. Once the Dashboard confirms Phase 1 is complete, both paths merge.
+**Local Path**: Download from heartsecsuite.com, extract, install, and boot the HeartSuite Root Lock kernel. The System Setup guides you through multiple setup steps with a step counter. Once the Dashboard confirms Phase 1 is complete, both paths merge.
 
-## How HeartSuite Core Secure stands alone
+## How HeartSuite Root Lock stands alone
 
-No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Core Secure the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the HeartSuite Core Secure kernel itself, not by filesystem permissions.
+No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make HeartSuite Root Lock the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the HeartSuite Root Lock kernel itself, not by filesystem permissions.
 
-## Is HeartSuite Core Secure right for you?
+## Is HeartSuite Root Lock right for you?
 
-HeartSuite Core Secure is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+HeartSuite Root Lock is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
-If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Core Secure Compares](../how-it-compares/) to understand which tools HeartSuite Core Secure replaces, which it runs alongside, how it can be circumvented, and [how the operational cost compares to SELinux, EDR, and tools like Zafran — including what changes for patching urgency and alert volume](../security-as-economics/).
+If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How HeartSuite Root Lock Compares](../how-it-compares/) to understand which tools HeartSuite Root Lock replaces, which it runs alongside, how it can be circumvented, and [how the operational cost compares to SELinux, EDR, and tools like Zafran — including what changes for patching urgency and alert volume](../security-as-economics/).
 
-To get HeartSuite Core Secure: launch a pre-installed cloud instance or download the Local Path package from [heartsecsuite.com](https://heartsecsuite.com). Both arrive at the Dashboard — [Getting Started](../../getting-started/) covers the rest.
+To get HeartSuite Root Lock: launch a pre-installed cloud instance or download the Local Path package from [heartsecsuite.com](https://heartsecsuite.com). Both arrive at the Dashboard — [Getting Started](../../getting-started/) covers the rest.

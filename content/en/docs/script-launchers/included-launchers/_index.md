@@ -1,14 +1,14 @@
 ---
 title: "Included Script Launchers"
 weight: 3
-description: "List of available secure script launchers in HeartSuite Core Secure."
+description: "List of available secure script launchers in HeartSuite Root Lock."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "launchers"]
 type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Core Secure ships with Secure Script Launchers for common interpreters. The Dashboard presents these during Phase 3 (if applicable) when the corresponding interpreters are detected on the system.
+**Overview**: HeartSuite Root Lock ships with Secure Script Launchers for common interpreters. The Dashboard presents these during Phase 3 (if applicable) when the corresponding interpreters are detected on the system.
 
 ## Available launchers
 

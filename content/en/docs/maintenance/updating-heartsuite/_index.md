@@ -8,26 +8,26 @@ type: docs
 toc: true
 ---
 
-**Overview**: A HeartSuite update is delivered as a single self-extracting bundle (`heartsuite-install.sh`) that replaces the HeartSuite Core Secure kernel and its userspace tools in one operation.
+**Overview**: A HeartSuite update is delivered as a single self-extracting bundle (`heartsuite-install.sh`) that replaces the HeartSuite Root Lock kernel and its userspace tools in one operation.
 
 ## What an update changes
 
-- The HeartSuite Core Secure kernel (`vmlinuz-<version>-HeartSuite-<patch>`)
+- The HeartSuite Root Lock kernel (`vmlinuz-<version>-HeartSuite-<patch>`)
 - HeartSuite userspace tools (`activate_HS`, `lockdown_HS`, Secure Script Launchers, setup scripts)
 - The Dashboard files under `/opt/heartsuite/`
 - GRUB configuration, so the new kernel becomes the default boot target
 
-It does not modify user data, the existing allowlist entries, or backup files. HeartSuite Core Secure may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
+It does not modify user data, the existing allowlist entries, or backup files. HeartSuite Root Lock may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
 
 ## Why two reboots are required
 
-The running HeartSuite Core Secure kernel cannot replace itself. The installer verifies this and aborts if it detects it is running on the HeartSuite Core Secure kernel. An update therefore requires:
+The running HeartSuite Root Lock kernel cannot replace itself. The installer verifies this and aborts if it detects it is running on the HeartSuite Root Lock kernel. An update therefore requires:
 
-1. A reboot from the HeartSuite Core Secure kernel to the Non-HS kernel.
+1. A reboot from the HeartSuite Root Lock kernel to the Non-HS kernel.
 2. Running the installer on the Non-HS kernel.
-3. A reboot back into the new HeartSuite Core Secure kernel.
+3. A reboot back into the new HeartSuite Root Lock kernel.
 
-HeartSuite Core Secure is not active while the Non-HS kernel is running. Schedule updates during a planned maintenance window.
+HeartSuite Root Lock is not active while the Non-HS kernel is running. Schedule updates during a planned maintenance window.
 
 ## Before you begin
 
@@ -52,10 +52,10 @@ HeartSuite Core Secure is not active while the Non-HS kernel is running. Schedul
    bash heartsuite-install.sh
    ```
 
-6. The installer applies the update and reboots automatically into the new HeartSuite Core Secure kernel.
-7. If new programs are encountered, HeartSuite Core Secure reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
+6. The installer applies the update and reboots automatically into the new HeartSuite Root Lock kernel.
+7. If new programs are encountered, HeartSuite Root Lock reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
 8. Re-engage Lockdown from the Dashboard if it was active before the update.
 
 ## If the update fails
 
-If the new HeartSuite Core Secure kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Both the previous HeartSuite Core Secure kernel and the Non-HS kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.
+If the new HeartSuite Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Both the previous HeartSuite Root Lock kernel and the Non-HS kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.

@@ -1,14 +1,14 @@
 ---
 title: "LSM Comparison: HeartSuite vs SELinux, AppArmor, and TOMOYO"
 weight: 35
-description: "Comparison of HeartSuite Core Secure's enforcement model against SELinux, AppArmor, and TOMOYO — focused on bypass-primitive resistance and purpose-fit for containment deployments."
+description: "Comparison of HeartSuite Root Lock's enforcement model against SELinux, AppArmor, and TOMOYO — focused on bypass-primitive resistance and purpose-fit for containment deployments."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "SELinux", "AppArmor", "TOMOYO", "LSM", "comparison"]
 type: docs
 toc: true
 ---
 
-**Subject:** HeartSuite Core Secure, kernel 5.19.6  
+**Subject:** HeartSuite Root Lock, kernel 5.19.6  
 **Audience:** Security engineers familiar with SELinux, AppArmor, or TOMOYO evaluating HeartSuite for containment or appliance deployments.
 
 ---

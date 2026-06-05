@@ -45,4 +45,4 @@ Each additional security layer treats a symptom without removing the cause. Dete
 
 HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem at the `open()` call. Each program is confined to its own storage area. Under HJFS, no program can read or write files belonging to another — including when that program runs as root. File access is specific to the program, not inherited from the user.
 
-HJFS addresses the file access dimension. Network connection control and program execution control are outside HJFS scope. HeartSuite Core Secure handles those dimensions but is not currently compatible with HJFS.
+HJFS addresses the file access dimension. Network connection control and program execution control are outside HJFS scope. HeartSuite Root Lock handles those dimensions but is not currently compatible with HJFS.

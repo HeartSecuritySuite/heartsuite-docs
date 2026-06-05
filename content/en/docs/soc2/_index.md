@@ -1,13 +1,13 @@
 ---
 title: "SOC 2 Control Mapping"
 weight: 113
-description: "HeartSuite Core Secure mapped to AICPA Trust Services Criteria (TSC) for SOC 2 Type I and Type II audits."
+description: "HeartSuite Root Lock mapped to AICPA Trust Services Criteria (TSC) for SOC 2 Type I and Type II audits."
 categories: ["Reference"]
 tags: ["compliance", "SOC 2", "AICPA"]
 type: docs
 ---
 
-**Purpose**: This document maps HeartSuite Core Secure product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. It is written for use by HeartSuite customers preparing for SOC 2 Type I or Type II audits, and as a reference document to hand to auditors.
+**Purpose**: This document maps HeartSuite Root Lock product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. It is written for use by HeartSuite customers preparing for SOC 2 Type I or Type II audits, and as a reference document to hand to auditors.
 
 Each criterion entry includes: the control requirement, how HeartSuite satisfies it, where it does not, and what evidence an auditor should request.
 
@@ -27,7 +27,7 @@ Each criterion entry includes: the control requirement, how HeartSuite satisfies
 
 ## How to use this document
 
-HeartSuite Core Secure is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
+HeartSuite Root Lock is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
 
 - HeartSuite satisfies specific sub-criteria as a **technical control** in your control environment.
 - You still need **organizational controls** (policies, procedures, access reviews, training) alongside it.
@@ -43,7 +43,7 @@ HeartSuite Core Secure is deployed on Linux servers to enforce a default-deny se
 
 **How HeartSuite satisfies this**:
 
-HeartSuite Core Secure controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root. In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
+HeartSuite Root Lock controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root. In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
 
 The three dimensions of per-program access control:
 
@@ -153,7 +153,7 @@ Specific transmission controls:
 
 **How HeartSuite satisfies this**:
 
-This is the primary use case of HeartSuite Core Secure. The implementation is structural, not signature-based:
+This is the primary use case of HeartSuite Root Lock. The implementation is structural, not signature-based:
 
 **Default-deny execution**: In Lockdown, the HeartSuite kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether the file was detected by any scanner.
 

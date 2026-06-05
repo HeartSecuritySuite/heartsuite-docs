@@ -1,14 +1,14 @@
 ---
 title: "Kernel Hardening Comparison Matrix"
 weight: 10
-description: "Objective comparison of HeartSuite Core Secure 5.19.6 kernel configuration against industry hardened kernels and standard references, using kernel-hardening-checker (commit b9b83a0)."
+description: "Objective comparison of HeartSuite Root Lock 5.19.6 kernel configuration against industry hardened kernels and standard references, using kernel-hardening-checker (commit b9b83a0)."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison"]
 type: docs
 toc: true
 ---
 
-**Subject:** HeartSuite Core Secure, kernel 5.19.6  
+**Subject:** HeartSuite Root Lock, kernel 5.19.6  
 **Config SHA-256:** `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`  
 **Tool:** [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `b9b83a0`, run 2026-05-19  
 **Source file:** `evidence-pack-5.19.6.txt`

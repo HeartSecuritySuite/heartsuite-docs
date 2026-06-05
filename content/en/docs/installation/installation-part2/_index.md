@@ -1,7 +1,7 @@
 ---
-title: "Installing HeartSuite Core Secure – Part 2"
+title: "Installing HeartSuite Root Lock – Part 2"
 weight: 4
-description: "HeartSuite Core Secure builds the initial allowlist automatically after the first boot. The Dashboard appears when setup is complete."
+description: "HeartSuite Root Lock builds the initial allowlist automatically after the first boot. The Dashboard appears when setup is complete."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "allowlisting", "script"]
 type: docs
@@ -12,14 +12,14 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: No commands are needed after the first boot into the HeartSuite Core Secure kernel. HeartSuite Core Secure reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into Phase 2 (Program Allowlisting).
+**Overview**: No commands are needed after the first boot into the HeartSuite Root Lock kernel. HeartSuite Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into Phase 2 (Program Allowlisting).
 
 > [!NOTE]
 > Cloud users skip this step. On a pre-configured cloud instance, the Dashboard confirms Phase 1 (System Verification) is complete on first boot.
 
 ## What happens after the first boot
 
-HeartSuite Core Secure reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
+HeartSuite Root Lock reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
 
 **While setup is running, you will see:**
 
@@ -41,7 +41,7 @@ If setup is still running, SSH reconnects show the status line above instead of 
 If repeated reconnects still show the status line rather than the Dashboard:
 
 1. Open the serial console (`virsh console <vm>` for KVM, AWS/Azure/GCP serial console, IPMI SOL) and press Enter to see the current step. If it has not advanced across reboots, run `journalctl -u heartsuite-phase1` to see the setup output.
-2. Verify the HeartSuite Core Secure kernel is loaded:
+2. Verify the HeartSuite Root Lock kernel is loaded:
 
    ```bash
    uname -r

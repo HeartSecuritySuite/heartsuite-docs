@@ -1,8 +1,8 @@
 ---
-title: "HeartSuite Core Secure Documentation"
+title: "HeartSuite Root Lock Documentation"
 linkTitle: "Documentation"
 weight: 10
-description: "Complete guide for installing and configuring HeartSuite Core Secure security suite."
+description: "Complete guide for installing and configuring HeartSuite Root Lock security suite."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "security", "overview", "guide"]
 toc: true
@@ -11,21 +11,21 @@ type: docs
 
 ---
 
-*HeartSuite Core Secure | Zero Day Secure-by-design*
+*HeartSuite Root Lock | Zero Day Secure-by-design*
 
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Core Secure enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Root Lock enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
 
-HeartSuite Core Secure supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
+HeartSuite Root Lock supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
-HeartSuite Core Secure is a strong fit for production servers, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts. Hosts where eBPF-based tooling must run locally require a non-HS kernel.
+HeartSuite Root Lock is a strong fit for production servers, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts. Hosts where eBPF-based tooling must run locally require a non-HS kernel.
 
 ## Introduction and concepts
 
 - [Introduction and Overview](introduction/) — Overview, setup process, Dashboard guidance, and requirements.
-- [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Core Secure fits best, and where it doesn't.
-- [How HeartSuite Core Secure Compares](introduction/how-it-compares/) — What HeartSuite Core Secure replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
+- [Deployment Scenarios](introduction/deployment-scenarios/) — Where HeartSuite Root Lock fits best, and where it doesn't.
+- [How HeartSuite Root Lock Compares](introduction/how-it-compares/) — What HeartSuite Root Lock replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
 - [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
 - [Mode Switching and Lockdown](mode-switching/) — Setup Mode and Lockdown.
 
@@ -35,7 +35,7 @@ Start with [Quick Start](getting-started/) — it covers both paths (Cloud and L
 
 The pages below are the individual steps, linked from Quick Start:
 
-- [Obtaining and Installing HeartSuite Core Secure](installation/) — Download and setup steps (Local Path).
+- [Obtaining and Installing HeartSuite Root Lock](installation/) — Download and setup steps (Local Path).
 - [Verifying Installation](verification/) — Confirm Phase 1 is complete in the Dashboard.
 
 ## Use and manage
@@ -49,7 +49,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 - [Troubleshooting and Logs](troubleshooting/) — Common issues and solutions.
 - [FAQs](faqs/) — Answers to frequent questions.
-- [Kernel Security Transparency](security/) — CVE status and Not Affected rationale for the HeartSuite Core Secure kernel.
+- [Kernel Security Transparency](security/) — CVE status and Not Affected rationale for the HeartSuite Root Lock kernel.
 - [Appendices](appendices/) — List of included tools.
 
 ## Subscription and support
@@ -69,4 +69,4 @@ The pages below are the individual steps, linked from Quick Start:
 
 ---
 
-*About this Documentation*: Covers HeartSuite Core Secure v1.6.4.
+*About this Documentation*: Covers HeartSuite Root Lock v1.6.4.

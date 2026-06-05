@@ -96,7 +96,7 @@ HJFS automatically backs up every version of every data file to a protected stor
 
 This is distinct from program version rollback. Program version rollback restores a prior executable and its libraries. Data file backup maintains version history of the data files themselves, independent of which program version created them.
 
-HJFS automatic backup differs from HeartSuite Core Secure's backup mechanism in two ways. Core Secure backs up admin-configured directories on every write — an administrator selects which directories are protected. HJFS backup requires no configuration: every data file written by any program is backed up automatically by the filesystem, covering every program's storage area from first use.
+HJFS automatic backup differs from HeartSuite Root Lock's backup mechanism in two ways. Core Secure backs up admin-configured directories on every write — an administrator selects which directories are protected. HJFS backup requires no configuration: every data file written by any program is backed up automatically by the filesystem, covering every program's storage area from first use.
 
 #### The malicious sleeper attack
 
@@ -130,11 +130,11 @@ HJFS is based on innovations patented by HeartSuite:
 | US 11,822,699 B1 | Preventing Surreptitious Access to File Data by Malware | November 21, 2023 |
 | US 11,983,288 B1 | Operating System Enhancements to Prevent Surreptitious Access to User Data Files | May 14, 2024 |
 
-## HJFS and HeartSuite Core Secure: what each covers
+## HJFS and HeartSuite Root Lock: what each covers
 
-HeartSuite Core Secure and HJFS are not currently compatible and cannot be deployed together. The table below describes what each product covers for reference.
+HeartSuite Root Lock and HJFS are not currently compatible and cannot be deployed together. The table below describes what each product covers for reference.
 
-| | HeartSuite Core Secure | HJFS |
+| | HeartSuite Root Lock | HJFS |
 |---|---|---|
 | Enforcement layer | Kernel | Filesystem (`open()` call) |
 | Kernel requirement | Modified HS kernel | Standard kernel |

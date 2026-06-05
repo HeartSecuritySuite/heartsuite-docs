@@ -1,7 +1,7 @@
 ---
 title: "Deployment Scenarios"
 weight: 15
-description: "Environments where HJFS fits well, where it fits alongside HeartSuite Core Secure, and where it does not apply."
+description: "Environments where HJFS fits well, where it fits alongside HeartSuite Root Lock, and where it does not apply."
 categories: ["Essentials"]
 tags: ["hjfs", "deployment", "scenarios", "compatibility", "use-cases"]
 type: docs
@@ -36,9 +36,9 @@ Healthcare, financial, legal, and government systems often require demonstrable 
 
 HJFS runs on a standard kernel — no kernel modification required. This makes it deployable where a modified or custom kernel is not permitted: cloud instances on AWS, Google Cloud, Azure, DigitalOcean, or Linode, systems subject to kernel certification requirements, and organisations with strict change-control policies around the kernel.
 
-### Alongside HeartSuite Core Secure
+### Alongside HeartSuite Root Lock
 
-HJFS and HeartSuite Core Secure address complementary layers. Core Secure controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation. Together they cover all three OS-level controls — file access, network communication, and program execution.
+HJFS and HeartSuite Root Lock address complementary layers. Core Secure controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation. Together they cover all three OS-level controls — file access, network communication, and program execution.
 
 For production server and regulated deployments, running both closes all three dimensions. See [What HJFS Does and Does Not Cover](../introduction/limits/) for the specific gaps each fills.
 
@@ -48,11 +48,11 @@ For production server and regulated deployments, running both closes all three d
 
 ### Remote or cloud-only storage
 
-HJFS isolates files at the local filesystem layer. Data stored on remote or cloud-hosted filesystems is not protected by HJFS unless HJFS is running on the host where that data resides. A client program accessing remote storage over a network connection is outside HJFS's scope on the remote side. Network-level connection control for those programs is handled by HeartSuite Core Secure.
+HJFS isolates files at the local filesystem layer. Data stored on remote or cloud-hosted filesystems is not protected by HJFS unless HJFS is running on the host where that data resides. A client program accessing remote storage over a network connection is outside HJFS's scope on the remote side. Network-level connection control for those programs is handled by HeartSuite Root Lock.
 
 ### Environments needing execution or network control without HS1
 
-HJFS v1.0 does not control which programs can execute or which network connections programs can open. Where these controls are the primary requirement, use HeartSuite Core Secure, which enforces both at the kernel level. HJFS can be added alongside it for filesystem-layer isolation.
+HJFS v1.0 does not control which programs can execute or which network connections programs can open. Where these controls are the primary requirement, use HeartSuite Root Lock, which enforces both at the kernel level. HJFS can be added alongside it for filesystem-layer isolation.
 
 ### Windows and macOS
 
