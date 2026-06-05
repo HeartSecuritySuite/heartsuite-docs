@@ -2,14 +2,14 @@
 title: "Kernel Hardening: HeartSuite's Unusual Design Choice"
 weight: 50
 draft: true
-description: "A discussion-style post on HeartSuite Root Lock's kernel hardening philosophy — written for the kernel hardening and Linux security community."
+description: "A discussion-style post on Root Lock by HeartSuite's kernel hardening philosophy — written for the kernel hardening and Linux security community."
 categories: ["Community"]
 tags: ["kernel", "hardening", "security", "BPF", "LSM", "design"]
 type: docs
 toc: false
 ---
 
-*Subject: HeartSuite Root Lock, kernel 5.19.6. All numbers from kernel-hardening-checker (commit b9b83a0), run 2026-05-19. Config SHA-256: `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`. Full data: `evidence-pack-5.19.6.txt`.*
+*Subject: Root Lock by HeartSuite, kernel 5.19.6. All numbers from kernel-hardening-checker (commit b9b83a0), run 2026-05-19. Config SHA-256: `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`. Full data: `evidence-pack-5.19.6.txt`.*
 
 ---
 

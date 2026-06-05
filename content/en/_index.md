@@ -1,26 +1,26 @@
 ---
-title: "HeartSuite Root Lock"
+title: "Root Lock by HeartSuite"
 linkTitle: "Documentation"
 weight: 10
-description: "Complete guide for installing and configuring HeartSuite Root Lock."
+description: "Complete guide for installing and configuring Root Lock by HeartSuite."
 ---
 
 ---
 
-*HeartSuite Root Lock | Zero Day Secure-by-design*
+*Root Lock by HeartSuite | Zero Day Secure-by-design*
 
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. HeartSuite Root Lock enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](docs/mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](docs/mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
 
-HeartSuite Root Lock supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
+Root Lock by HeartSuite supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
-## Learn About HeartSuite Root Lock
+## Learn About Root Lock by HeartSuite
 
 - [Roadmap](docs/roadmap/) — Development timeline and upcoming features.
 - [Introduction and Overview](docs/introduction/) — Overview, setup process, Dashboard guidance, and requirements.
-- [Deployment Scenarios](docs/introduction/deployment-scenarios/) — Where HeartSuite Root Lock fits best, and where it doesn't.
-- [How HeartSuite Root Lock Compares](docs/introduction/how-it-compares/) — What HeartSuite Root Lock replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
+- [Deployment Scenarios](docs/introduction/deployment-scenarios/) — Where Root Lock by HeartSuite fits best, and where it doesn't.
+- [How Root Lock by HeartSuite Compares](docs/introduction/how-it-compares/) — What Root Lock by HeartSuite replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
 - [Allowlisting Programs](docs/allowlisting/) — How to approve programs and their file and network permissions using the review queues.
 - [Mode Switching and Lockdown](docs/mode-switching/) — Setup Mode and Lockdown.
 

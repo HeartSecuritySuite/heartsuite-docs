@@ -1,27 +1,27 @@
 ---
 title: "Appendices"
 weight: 110
-description: "List of included HeartSuite Root Lock tools."
+description: "List of included Root Lock by HeartSuite tools."
 categories: ["Reference"]
 tags: ["heartsuite", "linux", "tools", "executables", "scripts", "reference"]
 type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Root Lock includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day. Most CLI entries below are run automatically by the system or by the Dashboard, or kept for scripting, recovery, and advanced setup. A normal user does not invoke them directly.
+**Overview**: Root Lock by HeartSuite includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day. Most CLI entries below are run automatically by the system or by the Dashboard, or kept for scripting, recovery, and advanced setup. A normal user does not invoke them directly.
 
-With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The HeartSuite Root Lock installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to HeartSuite Root Lock databases must be run as root.
+With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The Root Lock by HeartSuite installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to Root Lock by HeartSuite databases must be run as root.
 
 ## Day-to-day: Dashboard screens
 
 This is what you use in normal operation. The Dashboard guides you through every phase, and these screens cover the full setup and maintenance workflow.
 
-- **Dashboard** — where you manage HeartSuite Root Lock. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `heartsuite`.
+- **Dashboard** — where you manage Root Lock by HeartSuite. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `heartsuite`.
 - **Programs queue** (`[p]`) — Dashboard screen to review and approve pending program executions (Phase 2). Presents items with full metadata, grouped intelligently.
 - **File Access queue** (`[f]`) — Dashboard screen to review and approve pending file accesses (Phase 4). Handles read access and write access approvals separately.
 - **Internet Access queue** (`[i]`) — Dashboard screen to review and approve pending internet connections (Phase 5). Allows allowlisting specific IPs per program.
 - **Allowed** (`[a]`) — Dashboard screen to browse and edit existing allowlist entries.
-- **Browser View** (`[w]`) — Dashboard screen to enable or disable browser-based access to HeartSuite Root Lock via SSH tunnel.
+- **Browser View** (`[w]`) — Dashboard screen to enable or disable browser-based access to Root Lock by HeartSuite via SSH tunnel.
 - **Launchers** (`[l]`) — Dashboard screen to configure Secure Script Launchers (Phase 3).
 - **Alert Settings** (`[e]`) — Dashboard screen to configure alert channels (email, syslog, or webhook). At least one channel must be configured before Lockdown activation. See [Alert Settings](../alerts/).
 - **Lockdown** (`[m]`) — Dashboard screen for Lockdown activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot.
@@ -32,32 +32,32 @@ This is what you use in normal operation. The Dashboard guides you through every
 
 These run automatically when you engage or unlock Lockdown via the Dashboard. You do not need to invoke or edit them yourself.
 
-- **`HS_lockdown.sh`** — runs when you press `[m]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals HeartSuite Root Lock's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
-- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to HeartSuite Root Lock's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
+- **`HS_lockdown.sh`** — runs when you press `[m]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals Root Lock by HeartSuite's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
+- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock by HeartSuite's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & scripting CLI
 
 For scripting, automation, and recovery scenarios. UI users rarely need these — most have a Dashboard equivalent that handles them automatically.
 
 - **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
-- **`hs-mode-switch`** — change whether HeartSuite Root Lock starts in Setup or Lockdown on next boot. The Dashboard's Lockdown button (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
+- **`hs-mode-switch`** — change whether Root Lock by HeartSuite starts in Setup or Lockdown on next boot. The Dashboard's Lockdown button (`[m]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
 - **`hs-cache-size`** — set the kernel allowlist cache size (10–255). The Dashboard auto-adjusts this on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
-- **`hs-activate-subscription`** — activates the server using your HeartSuite Root Lock subscription. Required before Lockdown can be activated.
+- **`hs-activate-subscription`** — activates the server using your Root Lock by HeartSuite subscription. Required before Lockdown can be activated.
 - **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup (`[b]`) for directory management.
 - **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
 - **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers (`[l]`) for normal use. View `--help` for scripting details.
-- **`hs-clear-logs`** — manually clears the HeartSuite Root Lock activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
+- **`hs-clear-logs`** — manually clears the Root Lock by HeartSuite activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
 
 ## Internal / automatic
 
 These run on their own — you do not need to invoke them yourself.
 
-- **`activate_HS`** — turns HeartSuite Root Lock service on. The installation routine adds a systemd service that runs this automatically at startup.
-- **`hs-curfew`** — stops HeartSuite Root Lock from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
+- **`activate_HS`** — turns Root Lock by HeartSuite service on. The installation routine adds a systemd service that runs this automatically at startup.
+- **`hs-curfew`** — stops Root Lock by HeartSuite from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
 - **`hs-unlock-progs`** — runs automatically as part of `HS_unlock.sh`. Not invoked directly in normal use.
 - **`hs-os-boot-setup.py`** — used internally by Installation during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation.
 - **`init_base_records.sh`** — used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.
-- **`HS_startup.sh`** — runs automatically when the system boots, turning HeartSuite Root Lock on. The Dashboard's Maintenance (`[t]`) edits this file when you change Lockdown re-engagement settings.
+- **`HS_startup.sh`** — runs automatically when the system boots, turning Root Lock by HeartSuite on. The Dashboard's Maintenance (`[t]`) edits this file when you change Lockdown re-engagement settings.
 
 ## Legacy / scripted deployment only
 
@@ -78,7 +78,7 @@ Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Laun
 
 ## Log files
 
-These files are written automatically by HeartSuite Root Lock. They are not tools and require no user invocation.
+These files are written automatically by Root Lock by HeartSuite. They are not tools and require no user invocation.
 
 - **`/.hs/sys/HS_log.txt`** — the on-device activity log. Records program executions, file accesses, and network connection attempts observed during Setup Mode. The Dashboard auto-clears this log when all review queues are empty; `hs-clear-logs` clears it manually. Not retained across maintenance cycles — forward alerts to a SIEM via syslog for audit-period-length retention.
 - **`/var/log/heartsuite/install.log`** — written by the installer during updates. Records the steps and outcome of each update bundle application.

@@ -1,7 +1,7 @@
 ---
 title: "Kernel Security Transparency"
 weight: 107
-description: "CVE status for the HeartSuite Root Lock kernel — precise status and technical rationale for each relevant vulnerability, including Not Affected entries where the vulnerable code path is absent by design."
+description: "CVE status for the Root Lock by HeartSuite kernel — precise status and technical rationale for each relevant vulnerability, including Not Affected entries where the vulnerable code path is absent by design."
 categories: ["Reference"]
 tags: ["heartsuite", "linux", "security", "cve", "kernel", "vulnerability"]
 type: docs
@@ -12,13 +12,13 @@ markup:
 ---
 
 <div class="cve-hero-statement">
-<p class="cve-hs-lead">HeartSuite Root Lock was designed to contain only what is necessary.<br>Everything else was never there to begin with.</p>
+<p class="cve-hs-lead">Root Lock by HeartSuite was designed to contain only what is necessary.<br>Everything else was never there to begin with.</p>
 <p class="cve-hs-stat"><strong>{{< cve-stat type="neutralized" >}}</strong> high and critical CVEs — Score on HeartSuite <strong>0.0</strong>.</p>
 </div>
 
-Every kernel CVE relevant to HeartSuite Root Lock — what it can do, what it cannot, and why.
+Every kernel CVE relevant to Root Lock by HeartSuite — what it can do, what it cannot, and why.
 
-The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a HeartSuite Root Lock deployment — the actual risk on your system, not the theoretical worst case. Where the attack surface is absent — hardware not present, trigger not installed — the Score on HeartSuite is 0.0 regardless of Base Score. Where the code path is reachable, MI is reduced from High to Low: Lockdown's allowlist refuses new code execution and blocks allowlist modification. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
+The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a Root Lock by HeartSuite deployment — the actual risk on your system, not the theoretical worst case. Where the attack surface is absent — hardware not present, trigger not installed — the Score on HeartSuite is 0.0 regardless of Base Score. Where the code path is reachable, MI is reduced from High to Low: Lockdown's allowlist refuses new code execution and blocks allowlist modification. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ## CVE Status
 
@@ -92,7 +92,7 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2026-43284](#cve-2026-43284) | XFRM/IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `esp_output` unreachable; no XFRM SA can be established; IPsec management tools absent from HS allowlist; Dirty Frag chain broken (rxrpc absent) |
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Code not compiled in |
-| [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on HeartSuite Root Lock |
+| [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on Root Lock by HeartSuite |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -278,7 +278,7 @@ Over 1,000 CVEs across 178 disabled-feature groups are listed in [Not Affected �
 
 #### How to read the backstop sections
 
-HeartSuite Root Lock runs **two independent kernel-level controls**, and the entries below reference both. They are not peers in a list — one is load-bearing, one is defense-in-depth, and the distinction matters when reading residual risk:
+Root Lock by HeartSuite runs **two independent kernel-level controls**, and the entries below reference both. They are not peers in a list — one is load-bearing, one is defense-in-depth, and the distinction matters when reading residual risk:
 
 - **Lockdown (load-bearing).** `hs_sandbox_caching.c` enforces the SPF allowlist on every `execve`. This check runs unconditionally — it is **not** gated by `HS_lockdown_state` — so it continues to refuse non-allowlisted programs even if an attacker with arbitrary kernel write clears Lockdown. The only Lockdown-conditional behavior in this file is an additional log-file write block; the allowlist match itself is independent.
 - **Lockdown (defense-in-depth).** `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`. While that atomic is nonzero, `kernel/ioctl.c:561,568` returns EPERM on `FS_IOC_GETFLAGS`/`FS_IOC_SETFLAGS` (closing the `chattr -i` path that would otherwise let root strip immutability from the allowlist file), and `kernel/namespace.c:4218,4300,4453` returns EPERM on all mount paths. There are five `HS_locked_down()` check sites total in the kernel — none in `fs/` or `net/` — so Lockdown is an API-gate layer, not an in-line corruption boundary.
@@ -289,7 +289,7 @@ Per-CVE entries below name the bug, then state which of these two layers limits 
 
 ##### Why this is unusual
 
-Most kernel hardening products gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. HeartSuite Root Lock does not work that way. **Lockdown's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined anywhere in this document, the system continues to refuse new code execution. That is the property that makes the per-CVE backstops below short, calm, and identical: the answer is the same for every CVE, because the answer is structural.
+Most kernel hardening products gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. Root Lock by HeartSuite does not work that way. **Lockdown's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined anywhere in this document, the system continues to refuse new code execution. That is the property that makes the per-CVE backstops below short, calm, and identical: the answer is the same for every CVE, because the answer is structural.
 
 ##### Note on Scores on HeartSuite and deployment tuning
 
@@ -304,7 +304,7 @@ These are deployment-specific reductions and are **not** baked into the publishe
 
 ##### Note on Not-exploitable entries that depend on allowlist composition
 
-Several Not-exploitable entries below justify their 0.0 Score on HeartSuite with phrasing of the form *"X not in allowlist."* These claims are accurate for any HeartSuite deployment built through the standard Setup Mode workflow, where the allowlist is populated from production service activity. Utilities not invoked during that workflow would not be added to the allowlist. Specifically, the following utilities should not be allowlisted on a production HeartSuite Root Lock deployment:
+Several Not-exploitable entries below justify their 0.0 Score on HeartSuite with phrasing of the form *"X not in allowlist."* These claims are accurate for any HeartSuite deployment built through the standard Setup Mode workflow, where the allowlist is populated from production service activity. Utilities not invoked during that workflow would not be added to the allowlist. Specifically, the following utilities should not be allowlisted on a production Root Lock by HeartSuite deployment:
 
 - `modprobe`, `insmod` / `kmod` — kernel module loading. On Debian 12, these resolve to `kmod`, which standard Setup Mode does allowlist; the protection is Lockdown's file-access enforcement denying `kmod` access to `/usr/lib/modprobe.d/`. Granting `kmod` that access reverts CVE-2024-36883 (and any other module-loading-dependent CVE) to **Affected**.
 - `tc` (iproute2 traffic control) — qdisc/filter manipulation. Allowlisting reverts CVE-2025-37914 / 37915 / 37923 / 22121 and other `NET_SCHED` CVEs to **Affected**.
@@ -313,7 +313,7 @@ Several Not-exploitable entries below justify their 0.0 Score on HeartSuite with
 - `ip xfrm`, `setkey`, strongSwan, libreswan, or any IKE daemon — XFRM management. Allowlisting any of these enables XFRM security association setup, making `esp_output` reachable and reverting CVE-2026-43284 to **Affected 8.8 HIGH**.
 - `e4defrag` or any extent-defragmentation tool — ext4 online defragmentation. Allowlisting reverts CVE-2024-26704 to **Affected 7.8 HIGH**.
 
-If you run a development, debug, or instrumentation-heavy deployment and legitimately need any of the above, treat the corresponding Not-exploitable entries in this document as **Affected** for your environment, and apply the standard Affected backstop logic (Lockdown's allowlist still refuses *unknown* programs, but the now-allowlisted utility is itself the trigger). The "Not exploitable" classifications below are correct for HeartSuite Root Lock deployments; they are not universal.
+If you run a development, debug, or instrumentation-heavy deployment and legitimately need any of the above, treat the corresponding Not-exploitable entries in this document as **Affected** for your environment, and apply the standard Affected backstop logic (Lockdown's allowlist still refuses *unknown* programs, but the now-allowlisted utility is itself the trigger). The "Not exploitable" classifications below are correct for Root Lock by HeartSuite deployments; they are not universal.
 
 ### CVE-2026-31431
 
@@ -324,9 +324,9 @@ If you run a development, debug, or instrumentation-heavy deployment and legitim
 
 This CVE describes a privilege escalation through the AF_ALG socket interface. An attacker who can open an AF_ALG socket reaches `algif_aead_copy_sgl()`, exploits a copy-on-write failure in the scatter-gather list handling, and gains root.
 
-`CONFIG_CRYPTO_USER_API_AEAD` is not compiled into the HeartSuite Root Lock kernel. The AF_ALG socket family is not available. An attempt to open an AF_ALG socket returns `EAFNOSUPPORT` — there is no `algif_aead` code present in the running kernel and therefore no reachable code path. The HeartSuite Root Lock kernel predates the upstream fix versions listed above, but the fix is not required: the fix removes a vulnerability in code that was never compiled in.
+`CONFIG_CRYPTO_USER_API_AEAD` is not compiled into the Root Lock by HeartSuite kernel. The AF_ALG socket family is not available. An attempt to open an AF_ALG socket returns `EAFNOSUPPORT` — there is no `algif_aead` code present in the running kernel and therefore no reachable code path. The Root Lock by HeartSuite kernel predates the upstream fix versions listed above, but the fix is not required: the fix removes a vulnerability in code that was never compiled in.
 
-Lockdown closes the remaining question. Even if the code path were present, Lockdown — `chattr +i` filesystem immutability combined with the HeartSuite Root Lock kernel refusing runtime changes to the allowlist — removes every useful action root can take after gaining privilege. The kernel refuses to clear immutable flags. Mount operations are blocked in Lockdown. Writes to the audit log are blocked. Root cannot modify the allowlist, add a backdoor, or persist across a reboot.
+Lockdown closes the remaining question. Even if the code path were present, Lockdown — `chattr +i` filesystem immutability combined with the Root Lock by HeartSuite kernel refusing runtime changes to the allowlist — removes every useful action root can take after gaining privilege. The kernel refuses to clear immutable flags. Mount operations are blocked in Lockdown. Writes to the audit log are blocked. Root cannot modify the allowlist, add a backdoor, or persist across a reboot.
 
 See [Deployment Scenarios → Production Servers](../introduction/deployment-scenarios/) for the architectural context of how Lockdown interacts with a privilege escalation reaching root.
 
@@ -335,16 +335,16 @@ See [Deployment Scenarios → Production Servers](../introduction/deployment-sce
 **Status**: Not exploitable  
 **Component**: XFRM framework and IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`)  
 **Base Score**: 8.8 HIGH — NVD full vector assessment pending  
-**Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a default HeartSuite Root Lock deployment  
+**Score on HeartSuite**: 0.0 — `esp_output` is unreachable; no XFRM security association can be established on a default Root Lock by HeartSuite deployment  
 **Upstream fix**: merged; backported to active stable series by 2026-05-09 (5.19 branch is EOL; no backport — not required for HS)
 
 This CVE describes a write-what-where condition in the `esp_output` page-write path. The vulnerable code is at `net/ipv6/esp6.c:524`: `tail = page_address(page) + pfrag->offset` followed by `esp_output_fill_trailer(tail, esp->tfclen, esp->plen, esp->proto)`. If `pfrag->offset` is corrupted or attacker-influenced, the trailer write reaches an arbitrary kernel page address. The identical pattern exists in `net/ipv4/esp4.c:489` (`CONFIG_INET_ESP`, not compiled), but the absence of IPv4 ESP is irrelevant — `esp6.c` carries the same code. The bug is one half of the "Dirty Frag" exploit chain; chaining it with CVE-2026-43500 produces a deterministic privilege escalation.
 
-`CONFIG_INET6_ESP=y` is compiled in and `esp6.c:524` is present in the running kernel. The `esp_output` function is called only when the kernel encrypts an outgoing packet that matches a configured XFRM security association. With no security association configured, `esp_output` is never reached — by any user, at any privilege level. Configuring a XFRM security association requires XFRM management tooling: `ip xfrm` (iproute2), `setkey`, strongSwan, libreswan, or an equivalent IKE daemon. None of these are in the HeartSuite Root Lock default allowlist. Under Lockdown, the allowlist is `chattr +i` immutable and `FS_IOC_SETFLAGS` returns `EPERM` for all callers — root cannot add management tools and therefore cannot establish a security association. The `esp_output` page-write path is unreachable for the lifetime of the boot.
+`CONFIG_INET6_ESP=y` is compiled in and `esp6.c:524` is present in the running kernel. The `esp_output` function is called only when the kernel encrypts an outgoing packet that matches a configured XFRM security association. With no security association configured, `esp_output` is never reached — by any user, at any privilege level. Configuring a XFRM security association requires XFRM management tooling: `ip xfrm` (iproute2), `setkey`, strongSwan, libreswan, or an equivalent IKE daemon. None of these are in the Root Lock by HeartSuite default allowlist. Under Lockdown, the allowlist is `chattr +i` immutable and `FS_IOC_SETFLAGS` returns `EPERM` for all callers — root cannot add management tools and therefore cannot establish a security association. The `esp_output` page-write path is unreachable for the lifetime of the boot.
 
 The Dirty Frag chain has no second link on this system regardless: `CONFIG_AF_RXRPC` is not compiled (see CVE-2026-43500).
 
-The trigger cannot be reached on any default HeartSuite Root Lock deployment.
+The trigger cannot be reached on any default Root Lock by HeartSuite deployment.
 
 If your deployment adds XFRM management tooling (`ip xfrm`, `setkey`, strongSwan, libreswan, or an equivalent IKE daemon) to the HS allowlist, a security association can be established and `esp_output` becomes reachable. In that configuration this CVE applies at its base score of 8.8 HIGH. Treat it as Affected and apply the standard backstop logic.
 
@@ -357,9 +357,9 @@ If your deployment adds XFRM management tooling (`ip xfrm`, `setkey`, strongSwan
 
 This CVE describes a local privilege escalation through an out-of-bounds write in the rxrpc transport protocol implementation. It is the second half of the "Dirty Frag" exploit chain (paired with CVE-2026-43284); chaining both produces a deterministic privilege escalation to root.
 
-`CONFIG_AF_RXRPC` is not compiled into the HeartSuite Root Lock kernel. The rxrpc address family is not available; an attempt to open an `AF_RXRPC` socket returns `EAFNOSUPPORT`. The vulnerable code in `net/rxrpc/` is entirely absent from the running kernel. The HeartSuite Root Lock kernel predates the upstream fix, but the fix is not required: there is no reachable code path for this bug on any HeartSuite Root Lock deployment. The Dirty Frag chain has no second link on this system.
+`CONFIG_AF_RXRPC` is not compiled into the Root Lock by HeartSuite kernel. The rxrpc address family is not available; an attempt to open an `AF_RXRPC` socket returns `EAFNOSUPPORT`. The vulnerable code in `net/rxrpc/` is entirely absent from the running kernel. The Root Lock by HeartSuite kernel predates the upstream fix, but the fix is not required: there is no reachable code path for this bug on any Root Lock by HeartSuite deployment. The Dirty Frag chain has no second link on this system.
 
-The trigger cannot be reached on any HeartSuite Root Lock deployment.
+The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 ### CVE-2024-47685
 
@@ -371,7 +371,7 @@ The trigger cannot be reached on any HeartSuite Root Lock deployment.
 
 This CVE describes an information disclosure in the IPv6 netfilter TCP reset path. When the kernel sends a TCP RST packet in response to a connection rejected by an ip6tables rule, `nf_reject_ip6_tcphdr_put()` allocates a TCP header via `skb_put()` without zeroing the buffer. The function then writes every field in the header explicitly except the four reserved bits (`th->res1`) in byte 12. Those bits retain whatever value was in the allocated kernel memory region. The RST packet is sent with that uninitialized content on the wire.
 
-`CONFIG_NF_REJECT_IPV6=y` and `CONFIG_IP6_NF_TARGET_REJECT=y` are compiled in. The code path exists in this kernel. The vulnerable function has five callers across the kernel source. In this configuration only `ip6t_REJECT.c` is compiled — the remaining four callers (`nft_reject_ipv6`, `nft_reject_inet`, `nft_reject_bridge`, `nft_reject_netdev`) are all gated by `CONFIG_NF_TABLES`, which is not set. Reaching the vulnerable code therefore requires an active ip6tables rule using `REJECT --reject-with tcp-reset` on IPv6 traffic. The HeartSuite Root Lock install scripts and service unit contain no ip6tables rules of any kind. If you manually add such a rule, this path becomes exposed.
+`CONFIG_NF_REJECT_IPV6=y` and `CONFIG_IP6_NF_TARGET_REJECT=y` are compiled in. The code path exists in this kernel. The vulnerable function has five callers across the kernel source. In this configuration only `ip6t_REJECT.c` is compiled — the remaining four callers (`nft_reject_ipv6`, `nft_reject_inet`, `nft_reject_bridge`, `nft_reject_netdev`) are all gated by `CONFIG_NF_TABLES`, which is not set. Reaching the vulnerable code therefore requires an active ip6tables rule using `REJECT --reject-with tcp-reset` on IPv6 traffic. The Root Lock by HeartSuite install scripts and service unit contain no ip6tables rules of any kind. If you manually add such a rule, this path becomes exposed.
 
 Lockdown does not patch the vulnerability mechanism — the kernel still places uninitialized bits into the packet header if the path is reached. However, the program allowlist and Lockdown together make the triggering condition unreachable in practice.
 
@@ -511,14 +511,14 @@ Lockdown's allowlist adds a further constraint on program execution: every execu
 
 This CVE describes a buffer overflow in the kernel software compression (`scomp`) interface in `crypto/scompress.c`. The `scomp_acomp_comp_decomp()` function uses a per-CPU scratch buffer of `SCOMP_SCRATCH_SIZE` bytes as working space. If the caller provides a `req->dst` scatter list smaller than `SCOMP_SCRATCH_SIZE`, the function still caps `req->dlen` to `SCOMP_SCRATCH_SIZE` and then copies the full output — up to that size — into `req->dst` via `scatterwalk_map_and_copy()`. No check verifies that `req->dst` can hold `req->dlen` bytes before the copy. A caller who controls `req->dst` and triggers a compression or decompression that fills the scratch buffer can write beyond the end of the destination scatter list.
 
-The `scomp` interface is the software-side of the kernel's `acomp` (asynchronous compression) API. It is not a general-purpose path used by dm-crypt, TLS, or cipher operations — it exists exclusively to service IPsec compression transforms (IPCOMP, RFC 3173). `scomp_acomp_comp_decomp()` is only reached when a compression algorithm is registered with the scomp backend and a caller submits a request to it. On HeartSuite Root Lock there are no such callers and no such registrations:
+The `scomp` interface is the software-side of the kernel's `acomp` (asynchronous compression) API. It is not a general-purpose path used by dm-crypt, TLS, or cipher operations — it exists exclusively to service IPsec compression transforms (IPCOMP, RFC 3173). `scomp_acomp_comp_decomp()` is only reached when a compression algorithm is registered with the scomp backend and a caller submits a request to it. On Root Lock by HeartSuite there are no such callers and no such registrations:
 
 - `# CONFIG_INET_IPCOMP is not set` — the IPv4/IPv6 IPsec compression module is not compiled; no IPCOMP transform can be configured
 - `# CONFIG_CRYPTO_DEFLATE is not set` — DEFLATE not compiled; not registered with scomp
 - `# CONFIG_CRYPTO_LZ4 is not set` — LZ4 not compiled; not registered with scomp
 - `# CONFIG_CRYPTO_ZSTD is not set` — ZSTD not compiled; not registered with scomp
 
-With no compression algorithm registered, the scomp backend has no handler to dispatch to. `CONFIG_CRYPTO=y` means the crypto framework is present, but framework presence is not trigger reachability. The trigger cannot be reached on any HeartSuite Root Lock deployment.
+With no compression algorithm registered, the scomp backend has no handler to dispatch to. `CONFIG_CRYPTO=y` means the crypto framework is present, but framework presence is not trigger reachability. The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 ### CVE-2024-26654
 
@@ -530,7 +530,7 @@ With no compression algorithm registered, the scomp backend has no handler to di
 
 This CVE describes a use-after-free caused by a circular scheduling race between `dreamcastcard->timer` and `spu_dma_work` in the AICA Yamaha sound chip driver (`sound/sh/aica.c`). The timer callback `aica_period_elapsed()` schedules `spu_dma_work` via `schedule_work()`; the work handler then re-arms the timer via `mod_timer()`. `spu_begin_dma()` independently schedules the work and arms the timer in the same call. These two execution paths can race against each other and against card teardown, producing a use-after-free on the `snd_card_aica` object while the timer or work item is still pending.
 
-`CONFIG_SND_AICA` is not set in the HeartSuite Root Lock kernel. `sound/sh/aica.c` is gated by `obj-$(CONFIG_SND_AICA)` in `sound/sh/Makefile` and is not compiled. There is no AICA driver code present in the running kernel — not merely absent hardware, but absent code. An attempt to reach this path has no code to execute. The HeartSuite Root Lock kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
+`CONFIG_SND_AICA` is not set in the Root Lock by HeartSuite kernel. `sound/sh/aica.c` is gated by `obj-$(CONFIG_SND_AICA)` in `sound/sh/Makefile` and is not compiled. There is no AICA driver code present in the running kernel — not merely absent hardware, but absent code. An attempt to reach this path has no code to execute. The Root Lock by HeartSuite kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
 
 ### CVE-2024-26704
 
@@ -557,7 +557,7 @@ If your deployment adds `e4defrag` or any other extent-defragmentation tool to t
 
 This CVE describes an out-of-bounds memory access in the UFS host controller driver's MCQ (Multi-Circular Queue) mode. When `task_tag >= 32` and `sizeof(unsigned int) == 4`, the expression `1U << task_tag` is undefined behaviour in C — shifting a 32-bit value by 32 or more positions. In practice this produces incorrect bitmask values in the per-queue task tracking, allowing the computed mask to index outside the valid task range and corrupt adjacent memory.
 
-`CONFIG_SCSI_UFSHCD` is not set in the HeartSuite Root Lock kernel. The UFS host controller driver is not compiled, and no UFS source files are present under `drivers/scsi/ufs/` in the kernel tree. The prior claim that "ufshcd is compiled in but never bound to hardware" was incorrect — the driver does not exist in the running kernel image at all. The HeartSuite Root Lock kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
+`CONFIG_SCSI_UFSHCD` is not set in the Root Lock by HeartSuite kernel. The UFS host controller driver is not compiled, and no UFS source files are present under `drivers/scsi/ufs/` in the kernel tree. The prior claim that "ufshcd is compiled in but never bound to hardware" was incorrect — the driver does not exist in the running kernel image at all. The Root Lock by HeartSuite kernel predates the upstream fix, but the fix is not required: it patches code that was never compiled in.
 
 ### CVE-2022-48662
 
@@ -589,7 +589,7 @@ Lockdown's allowlist adds a further constraint on program execution: every execu
 
 Among the attribute file callback routines in `drivers/usb/core/sysfs.c`, `interface_authorized_store()` is the only one that acquires a device lock on an ancestor device. It delegates immediately to `usb_deauthorize_interface()` (`drivers/usb/core/message.c`), which takes `device_lock(dev->parent)` first (line 1792) and then `device_lock(dev)` (line 1795). This lock ordering diverges from other USB subsystem paths, creating an ABBA deadlock when a concurrent bind or configuration operation holds the interface device lock and waits to acquire the parent lock while `usb_deauthorize_interface()` holds the parent lock and waits for the child. The deadlock stalls the USB subsystem and can produce a kernel hang. The HS 5.19.6 kernel carries the unpatched `interface_authorized_store()` at `drivers/usb/core/sysfs.c:1172` and the unchanged `usb_deauthorize_interface()` at `drivers/usb/core/message.c:1792`.
 
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Triggering the ABBA deadlock race requires writing to the `/sys/.../authorized` sysfs attribute of an enumerated USB interface device while a concurrent USB operation is in progress. HeartSuite Root Lock runs on headless server hardware with no external USB devices connected; no USB interface device is enumerated, so the sysfs path does not exist and the race condition is unreachable. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. Triggering the ABBA deadlock race requires writing to the `/sys/.../authorized` sysfs attribute of an enumerated USB interface device while a concurrent USB operation is in progress. Root Lock by HeartSuite runs on headless server hardware with no external USB devices connected; no USB interface device is enumerated, so the sysfs path does not exist and the race condition is unreachable. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-26939
 
@@ -717,7 +717,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1 failed to mmap with 12 (Cannot allocate memory)`. The perf AUX area mmap handler in `kernel/events/core.c:6269–6345` calculates memory accounting limits and calls `rb_alloc_aux()` to allocate the backing pages. For very large AUX areas (gigabytes), the accounting arithmetic at line 6285 (`user_locked += user_extra`) can underflow or produce incorrect values when `user_extra` is extremely large (e.g., 1M pages for 4GB). The mmap() still succeeds despite the accounting failure, allowing unprivileged users to bypass RLIMIT_MEMLOCK restrictions and exhaust kernel memory. The HS 5.19.6 kernel carries the unpatched AUX area accounting at `kernel/events/core.c:6269–6345`.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2023-52868
 
@@ -730,7 +730,7 @@ When perf-record with a large AUX area, e.g. 4GB, it fails with: `#perf record -
 
 The `dev->id` value comes from `ida_alloc()`, so it is a number between zero and INT_MAX. In `drivers/thermal/thermal_core.c`, this ID is formatted into fixed-size `THERMAL_NAME_LENGTH` (20-byte) buffers using `sprintf()`. At line 681, `sprintf(dev->attr_name, "cdev%d_trip_point", dev->id)` produces a string of the form `"cdev<N>_trip_point"`. For large IDs, the full string exceeds 20 bytes: `"cdev2147483647_trip_point"` is 25 characters plus a null terminator (26 bytes total), overflowing `attr_name` by 6 bytes. The same overflow applies at line 690 for `sprintf(dev->weight_attr_name, "cdev%d_weight", dev->id)`, which produces up to 22 bytes into a 20-byte buffer. Both overflows corrupt adjacent kernel heap memory and can be leveraged for privilege escalation.
 
-`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. Triggering the overflow requires registering a thermal cooling device with a sufficiently large ID — this path requires access to the thermal sysfs interface, which is not included in the HS allowlist. On a HeartSuite Root Lock system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the thermal registration interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_THERMAL=y` is compiled in and 5.19.6 falls within the affected range. Thermal management is present on all x86 servers for CPU temperature control. Triggering the overflow requires registering a thermal cooling device with a sufficiently large ID — this path requires access to the thermal sysfs interface, which is not included in the HS allowlist. On a Root Lock by HeartSuite system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the thermal registration interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-36916
 
@@ -743,7 +743,7 @@ The `dev->id` value comes from `ida_alloc()`, so it is a number between zero and
 
 UBSAN catches undefined behavior in blk-iocost, where sometimes `iocg->delay` is shifted right by a number that is too large, resulting in undefined behavior on some architectures. Two sites in `block/blk-iocost.c` are affected: line 1338 computes `iocg->delay >> div64_u64(tdelta, USEC_PER_SEC)`, where the divisor is elapsed time in seconds — if the delay has been active for 64 or more seconds, the shift amount reaches or exceeds 64, which is undefined behavior for a 64-bit type under the C standard. Line 2112 performs `iocg->delay >> nr_cycles`, where `nr_cycles` can similarly exceed 63. On x86 the shift wraps, but on other architectures the result is indeterminate. Incorrect delay values can bypass I/O throttling controls or cause the cgroup I/O cost model to make scheduling decisions based on garbage data.
 
-`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. The blk-iocost controller is active whenever cgroups are in use with I/O cost weighting enabled. Configuring iocost requires writing to cgroup control files under `/sys/fs/cgroup/` — no cgroup management tool that exposes iocost configuration appears in the HS allowlist. On a HeartSuite Root Lock system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the iocost configuration path. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_BLK_CGROUP_IOCOST=y` is compiled in and 5.19.6 falls within the affected range. The blk-iocost controller is active whenever cgroups are in use with I/O cost weighting enabled. Configuring iocost requires writing to cgroup control files under `/sys/fs/cgroup/` — no cgroup management tool that exposes iocost configuration appears in the HS allowlist. On a Root Lock by HeartSuite system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the iocost configuration path. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-38560
 
@@ -769,7 +769,7 @@ Currently, we allocate a `nbytes`-sized kernel buffer and copy `nbytes` from use
 
 In `kernel/trace/ftrace.c`, `ftrace_location()` at line 1577 calls `lookup_rec(ip, ip)` at line 1583 to obtain a `dyn_ftrace *rec` pointer without holding `ftrace_lock`. On a concurrent path, module unloading frees the pages that back ftrace records for module functions. If a module is removed between the `lookup_rec()` return and the `return rec->ip` dereference at line 1594, the pointer references freed memory. The race is reached through the kprobe registration path: `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()` — all called without the lock that serialises ftrace record lifetime.
 
-`CONFIG_KPROBES=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No HeartSuite Root Lock HeartSuite Root Lock deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_KPROBES=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` to register a kprobe — the attack path runs through `check_kprobe_address_safe()` → `check_ftrace_location()` → `ftrace_location()`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment permits any service to register kprobes. Without an allowlist entry covering the kprobes interface, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-40901
 
@@ -972,7 +972,7 @@ In `sound/soc/meson/axg-card.c`, `axg_card_add_loopback()` at line 107 saves `pa
 
 If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x does), `sd_read_block_characteristics()` proceeds past the guard at `drivers/scsi/sd.c:2921` (`vpd->len < 8`), then reads `vpd->data[8]` at line 2927. With `len == 8` the valid indices are 0–7; index 8 is one byte past the end of the buffer.
 
-`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The OOB read occurs during device enumeration when a SCSI disk returns VPD page 0xb1 with a length of exactly 8 bytes — behaviour documented in QEMU v2.x, not present on production SAS/SATA/NVMe drives. Standard enterprise storage conforms to the SCSI VPD specification and returns page 0xb1 with the correct length. On a HeartSuite Root Lock server deployment, no non-conformant storage device is present; the OOB read path in `sd_read_block_characteristics()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The OOB read occurs during device enumeration when a SCSI disk returns VPD page 0xb1 with a length of exactly 8 bytes — behaviour documented in QEMU v2.x, not present on production SAS/SATA/NVMe drives. Standard enterprise storage conforms to the SCSI VPD specification and returns page 0xb1 with the correct length. On a Root Lock by HeartSuite server deployment, no non-conformant storage device is present; the OOB read path in `sd_read_block_characteristics()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-47701
 
@@ -1111,7 +1111,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...)` runs at line 4995 and `INIT_WORK(&sbi->s_error_work, flush_stashed_error_work)` at line 4997. During the `failed_mount3:` error-unwind at line 5454, `flush_work(&sbi->s_error_work)` is called at line 5456 immediately before `del_timer_sync(&sbi->s_err_report)` at line 5457. The work callback `flush_stashed_error_work` can call `mod_timer` on `s_err_report`, arming the timer during the same unwind that is about to cancel it. When the code path passes through `failed_mount_wq:` (line 5439), `flush_work` runs a second time at line 5448 before falling through to `failed_mount3:`, doubling the exposure. Syzbot detected this as an ODEBUG (Object Debug) object-state inconsistency.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during a failed mount — for example when `ext4_es_register_shrinker()` or journal loading fails partway through `ext4_fill_super()`. On a HeartSuite Root Lock system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during a failed mount — for example when `ext4_es_register_shrinker()` or journal loading fails partway through `ext4_fill_super()`. On a Root Lock by HeartSuite system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-49983
 
@@ -1124,7 +1124,7 @@ In `ext4_fill_super()` (`fs/ext4/super.c`), `timer_setup(&sbi->s_err_report, ...
 
 In `ext4_ext_replay_update_ex()` at `fs/ext4/extents.c:5860`, line 5879 assigns `ppath = path`, making both local variables alias the same allocation. Line 5881 then calls `ext4_force_split_extent_at(NULL, inode, &ppath, start, 1)`, passing the address of `ppath`. Inside, `ext4_split_extent_at()` calls `ext4_ext_insert_extent()` which may invoke `ext4_ext_grow_indepth()` and reallocate `*ppath` via `kcalloc()`. When that happens, the outer `ppath` is updated to the new allocation and the original memory is freed — but `path` still holds the original (now stale) pointer. The `kfree(path)` call at line 5885 then frees already-freed memory, constituting a double-free/use-after-free. The bug is exercised during fast-commit journal replay.
 
-`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during fast-commit journal replay, triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled. On a HeartSuite Root Lock system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_EXT4_FS=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable path runs during fast-commit journal replay, triggered on mount after an unclean shutdown of a filesystem with the fast-commit feature enabled. On a Root Lock by HeartSuite system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-50007
 
@@ -1216,7 +1216,7 @@ When shrinking the fast (cache) device, dm-cache iterates the `dirty_bitset` to 
 
 In `fs/exfat/dir.c`, when iterating directory entries, the cluster-walk loop at line 105 calls `exfat_get_next_cluster(sb, &(clu.dir))` to follow the FAT chain. If a directory's size is at least one cluster (so `clu_offset > 0`) and `ei->start_clu` was set to `EXFAT_EOF_CLUSTER` (`0xFFFFFFFF`) due to filesystem corruption, `clu.dir` starts at `0xFFFFFFFF`. The call at line 106 then attempts a FAT table lookup at index `0xFFFFFFFF`, which is far outside the FAT table's `num_clusters` entries, causing an out-of-bounds read.
 
-`CONFIG_FAT_FS=y` is compiled in and HS 5.19.6 falls within the affected range. exFAT is compiled in and is used for the EFI system partition; the vulnerable path is triggered by traversing a corrupted exFAT directory. The adversary must be able to present a crafted exFAT image — mounting an external device or network share requires `mount()`, which Lockdown blocks unconditionally. The EFI system partition is already mounted at boot time and its contents are controlled by the administrator; an external attacker cannot inject a malformed exFAT directory into the in-use ESP. On a HeartSuite Root Lock system in Lockdown, the kernel additionally blocks any process without an allowlist entry from executing, closing the exploitation path before it can reach the vulnerable directory traversal code.
+`CONFIG_FAT_FS=y` is compiled in and HS 5.19.6 falls within the affected range. exFAT is compiled in and is used for the EFI system partition; the vulnerable path is triggered by traversing a corrupted exFAT directory. The adversary must be able to present a crafted exFAT image — mounting an external device or network share requires `mount()`, which Lockdown blocks unconditionally. The EFI system partition is already mounted at boot time and its contents are controlled by the administrator; an external attacker cannot inject a malformed exFAT directory into the in-use ESP. On a Root Lock by HeartSuite system in Lockdown, the kernel additionally blocks any process without an allowlist entry from executing, closing the exploitation path before it can reach the vulnerable directory traversal code.
 
 ### CVE-2024-53150
 
@@ -1255,7 +1255,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 `nfs_release_seqid()` at `fs/nfs/nfs4state.c:1088` removes a seqid from the sequence wait-list and wakes the next waiter (`rpc_wake_up_queued_task()` at line 1102). When two threads open the same file concurrently and both abort before receiving a reply, two separate code paths each call `nfs_release_seqid()` on the same `nfs_seqid`: the prepare callback at `fs/nfs/nfs4proc.c:2462` (when `nfs4_setup_sequence()` returns non-zero) and the done/release callback at line 2061. The second call finds `seqid->list` already empty and returns without action, but by this point `nfs_free_seqid()` may have freed the seqid object. The task woken by the first release can dereference `seqid->sequence` through the `nfs_seqid` pointer it holds — now pointing to freed memory — constituting a use-after-free.
 
-`CONFIG_NFS_V4=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable seqid use-after-free path is only reachable when an NFS v4 share is mounted. On a HeartSuite Root Lock system, Lockdown blocks `mount()` unconditionally — `do_mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`). No NFS v4 filesystem can be mounted by any process, so the vulnerable code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_NFS_V4=y` is compiled in and HS 5.19.6 falls within the affected range. The vulnerable seqid use-after-free path is only reachable when an NFS v4 share is mounted. On a Root Lock by HeartSuite system, Lockdown blocks `mount()` unconditionally — `do_mount()`, `fsmount()`, and `move_mount()` all return `EPERM` (`kernel/namespace.c:4218, 4300, 4453`). No NFS v4 filesystem can be mounted by any process, so the vulnerable code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-53214
 
@@ -1304,7 +1304,7 @@ In the Realtek rtw88 802.11ac/ax wireless driver (`drivers/net/wireless/realtek/
 
 In the SCSI generic device driver (`drivers/scsi/sg.c`), `sg_release()` at line 382 acquires `sdp->open_rel_lock` at line 391, then calls `kref_put(&sfp->f_ref, sg_remove_sfp)` at line 393. If that `kref_put` drops the last reference, `sg_remove_sfp` is invoked, which can free the `Sg_device` structure that `sdp` points to — including its embedded mutex. The subsequent `mutex_unlock(&sdp->open_rel_lock)` at line 404 then operates on freed memory, producing a KASAN `slab-use-after-free` in `lock_release`.
 
-`CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No HeartSuite Root Lock deployment includes raw SCSI access in the Lockdown allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_CHR_DEV_SG=y` is compiled in. Reaching `sg_release()` in the race window requires an active open of a `/dev/sg*` device node — SCSI generic pass-through that requires `CAP_SYS_RAWIO`. No Root Lock by HeartSuite deployment includes raw SCSI access in the Lockdown allowlist. Without an allowlist entry, the kernel refuses any process attempting to open `/dev/sg*`. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-56663
 
@@ -1417,7 +1417,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry whose `rec_len` equals the filesystem block size, the iteration offset at line 246 jumps to exactly `block_size` after the first entry. During directory removal, a subsequent traversal computes a `de` pointer one block past the buffer boundary, producing an out-of-bounds read.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the out-of-bounds read requires mounting an ext4 filesystem image containing a corrupted directory block. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 directory parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Root Lock deployment.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the out-of-bounds read requires mounting an ext4 filesystem image containing a corrupted directory block. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 directory parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 ### CVE-2025-40364
 
@@ -1453,7 +1453,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1143 iterates xattr entries with `for (entry = first; !IS_LAST_ENTRY(entry); entry = EXT4_XATTR_NEXT(entry))`. The loop has no upper-boundary parameter: it relies solely on the `IS_LAST_ENTRY()` zero-terminator sentinel. A corrupted xattr block without a valid terminating entry causes the loop to walk past the end of the allocated buffer, reading and dereferencing arbitrary memory.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the unbounded xattr loop requires mounting a filesystem with a corrupted xattr block that lacks the valid zero-terminator sentinel. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 xattr parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Root Lock deployment.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Triggering the unbounded xattr loop requires mounting a filesystem with a corrupted xattr block that lacks the valid zero-terminator sentinel. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any ext4 xattr parsing code is reached. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 ### CVE-2022-49789
 
@@ -1690,7 +1690,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 The perf mmap code is careful about mmap()'ing the user page with the ringbuffer and additionally the auxiliary buffer, when the event supports it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2025-38565
 
@@ -1701,7 +1701,7 @@ The perf mmap code is careful about mmap()'ing the user page with the ringbuffer
 
 When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped() callback of the related event.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2025-38572
 
@@ -1797,7 +1797,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 usb_parse_ss_endpoint_companion() checks descriptor type before length, enabling a potentially odd read outside of the buffer size.
 
-`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. The `usb_parse_ss_endpoint_companion()` descriptor parsing path is triggered during USB device enumeration when a device is connected. HeartSuite Root Lock runs on headless server hardware with no external USB devices; no USB device enumeration occurs, so the vulnerable descriptor parsing code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_USB=y` is compiled in and 5.19.6 falls within the affected range. The `usb_parse_ss_endpoint_companion()` descriptor parsing path is triggered during USB device enumeration when a device is connected. Root Lock by HeartSuite runs on headless server hardware with no external USB devices; no USB device enumeration occurs, so the vulnerable descriptor parsing code path is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2025-39788
 
@@ -1824,7 +1824,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 In `fs/ext4/fast_commit.c`, the fast commit replay scan loop reads the tag-length header (`struct ext4_fc_tl`, 4 bytes) before verifying that at least 4 bytes remain in the replay buffer. Mounting a filesystem whose fast commit area has been truncated or crafted to place fewer than 4 bytes at the tail causes an out-of-bounds read when parsing the next tag.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The vulnerable path runs during the fast commit replay scan triggered on mount of a filesystem whose fast commit area has a malformed tag-length header. On a HeartSuite Root Lock system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. The vulnerable path runs during the fast commit replay scan triggered on mount of a filesystem whose fast commit area has a malformed tag-length header. On a Root Lock by HeartSuite system, `sys_hs_lockdown_hs()` blocks all mount paths at `kernel/namespace.c:4218, 4300, 4453`; `do_mount()` returns EPERM before any filesystem setup begins. No approved process in the HS allowlist carries a `mount` allowlist entry, and unapproved programs are refused execution by the kernel's SPF gate regardless of file ownership or privilege. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2023-53257
 
@@ -1862,7 +1862,7 @@ In `drivers/scsi/lpfc/`, `lpfc_wr_object()` performs a use-after-free read durin
 
 ext4 validates `i_extra_isize` when an inode is first loaded into memory (`fs/ext4/inode.c:4794`), confirming that the extra space falls within the inode's allocated size. If an attacker writes directly to the block device while the filesystem is mounted, the raw on-disk inode can be modified so that `i_extra_isize` exceeds the previously verified bound. Subsequent access to in-inode extended attributes computes the xattr magic pointer as `EXT4_GOOD_OLD_INODE_SIZE + ei->i_extra_isize` without re-validating the updated value, allowing a read or write beyond the end of the inode body.
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Exploiting this bug requires writing directly to the block device while the filesystem is mounted — an operation that requires root or `CAP_SYS_RAWIO` and a tool that issues raw writes to the block device (e.g., `dd`, `badblocks`, or a custom exploit program). On a HeartSuite Root Lock system, no approved process in the HS allowlist writes raw block device data; the SPF allowlist blocks execution of any unapproved program at the kernel gate before the block device can be reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. Exploiting this bug requires writing directly to the block device while the filesystem is mounted — an operation that requires root or `CAP_SYS_RAWIO` and a tool that issues raw writes to the block device (e.g., `dd`, `badblocks`, or a custom exploit program). On a Root Lock by HeartSuite system, no approved process in the HS allowlist writes raw block device data; the SPF allowlist blocks execution of any unapproved program at the kernel gate before the block device can be reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2023-53320
 
@@ -2362,7 +2362,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-free during a race condition between a nonblocking atomic commit and a driver unload.
 
-`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The `drm_atomic` race condition requires a process to initiate GPU mode-setting operations — specifically a nonblocking atomic commit — concurrent with driver unload. HeartSuite Root Lock runs on headless server hardware with no display GPU; the DRM device nodes are absent, so no mode-setting operation can be initiated. No GPU or display tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_DRM=y` is compiled in and 5.19.6 falls within the affected range. The `drm_atomic` race condition requires a process to initiate GPU mode-setting operations — specifically a nonblocking atomic commit — concurrent with driver unload. Root Lock by HeartSuite runs on headless server hardware with no display GPU; the DRM device nodes are absent, so no mode-setting operation can be initiated. No GPU or display tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-0841
 
@@ -2375,7 +2375,7 @@ In the Linux kernel before 6.4.5, drivers/gpu/drm/drm_atomic.c has a use-after-f
 
 In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs superblock for a `mount(2)` call. Under certain error conditions during setup — for instance, when huge page pool allocation fails — the function dereferences a pointer that was not initialised, causing a null pointer dereference. The crash is reachable by any local user with `CAP_SYS_ADMIN` permission to mount hugetlbfs.
 
-`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Triggering `hugetlbfs_fill_super()` requires calling `mount(2)` with `hugetlbfs` as the filesystem type, which additionally requires `CAP_SYS_ADMIN` on Debian 11. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any hugetlbfs setup begins. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any HeartSuite Root Lock deployment.
+`CONFIG_HUGETLBFS=y` is compiled in and 5.19.6 falls within the affected range. Triggering `hugetlbfs_fill_super()` requires calling `mount(2)` with `hugetlbfs` as the filesystem type, which additionally requires `CAP_SYS_ADMIN` on Debian 11. `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, blocking all mount paths at `kernel/namespace.c:4218, 4300, 4453` with EPERM; `do_mount()` returns `EPERM` before any hugetlbfs setup begins. In Lockdown, no approved program in the HS allowlist carries a `mount` entry — the kernel SPF gate enforces this independently of Lockdown. The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 ### CVE-2024-26593
 
@@ -2386,7 +2386,7 @@ In `fs/hugetlbfs/inode.c`, `hugetlbfs_fill_super()` initialises the hugetlbfs su
 
 In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block process call transactions incorrectly. Intel datasheets specify that the block buffer index must be reset twice: once before writing the outgoing data to the buffer, and once before reading the incoming response. The driver resets the index only once, causing the response to be read from the wrong buffer position and potentially returning incorrect data to callers.
 
-`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers for BMC, temperature sensor, and management bus communication. Accessing it requires root or `i2c` group membership and an i2c-tools or lm-sensors program — no such tool appears in the HS allowlist. On a HeartSuite Root Lock system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the I2C device interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_I2C_I801=y` is compiled in and 5.19.6 falls within the affected range. The Intel I2C SMBus controller is present on Intel-based servers for BMC, temperature sensor, and management bus communication. Accessing it requires root or `i2c` group membership and an i2c-tools or lm-sensors program — no such tool appears in the HS allowlist. On a Root Lock by HeartSuite system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the I2C device interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-38586
 
@@ -2421,7 +2421,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 When the cpu5wdt module is removing, the origin code uses del_timer() to de-activate the timer.
 
-`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. The cpu5wdt driver targets a PC-era ISA watchdog timer; this hardware is absent on any modern HS server deployment. Even on configurations where the hardware exists, the trigger requires a process to open and interact with `/dev/watchdog` — no watchdog daemon appears in the HS allowlist. On a HeartSuite Root Lock system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the cpu5wdt interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_WATCHDOG=y` is compiled in and 5.19.6 falls within the affected range. The cpu5wdt driver targets a PC-era ISA watchdog timer; this hardware is absent on any modern HS server deployment. Even on configurations where the hardware exists, the trigger requires a process to open and interact with `/dev/watchdog` — no watchdog daemon appears in the HS allowlist. On a Root Lock by HeartSuite system in Lockdown, the kernel blocks any process without an allowlist entry from executing, so a standalone exploit tool cannot reach the cpu5wdt interface. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-34777
 
@@ -2443,7 +2443,7 @@ In `kernel/dma/map_benchmark.c`, `map_benchmark_ioctl()` passes the user-supplie
 
 In `fs/9p/`, a use-after-free occurs on a dentry's `d_fsdata` fid list when one thread looks up a fid through the dentry while another thread concurrently unlinks it. The unlinking thread frees the fid while the lookup thread still holds a reference, causing the lookup to dereference freed memory.
 
-`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Root Lock deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
+`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No Root Lock by HeartSuite deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
@@ -2497,7 +2497,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 In the ACPI subsystem, the `_STR` ACPI method must return a buffer object containing a Unicode description string. `description_show()`, exposed via sysfs at `/sys/bus/acpi/devices/*/description`, calls the `_STR` method and dereferences the result without validating that the returned object is in fact a buffer. A crafted or malformed ACPI table that returns an integer, package, or other non-buffer object from `_STR` causes `description_show()` to access invalid memory.
 
-`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI tables are loaded from OEM firmware at boot and are read-only thereafter — no userspace process can modify them without firmware-level access outside the HS adversary model. Standard OEM server firmware conforms to the ACPI specification and returns a Buffer object from `_STR`. On a HeartSuite Root Lock server deployment, no malformed `_STR` firmware is present; the invalid-memory path in `description_show()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_ACPI=y` is compiled in and 5.19.6 falls within the affected range. ACPI tables are loaded from OEM firmware at boot and are read-only thereafter — no userspace process can modify them without firmware-level access outside the HS adversary model. Standard OEM server firmware conforms to the ACPI specification and returns a Buffer object from `_STR`. On a Root Lock by HeartSuite server deployment, no malformed `_STR` firmware is present; the invalid-memory path in `description_show()` is never reached. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2022-49029
 
@@ -2521,7 +2521,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 In `net/sched/sch_taprio.c`, `taprio_change()` holds the `admin` schedule pointer while a concurrent `advance_sched()` call can switch or remove the schedule, making `admin` a dangling pointer. The critical section protected by `q->current_entry_lock` does not prevent this race, allowing access to freed schedule memory.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-50131
 
@@ -2532,7 +2532,7 @@ In `net/sched/sch_taprio.c`, `taprio_change()` holds the `admin` schedule pointe
 
 In the kernel tracing subsystem, `strlen()` returns the string length excluding the null terminator. If the string length equals the maximum buffer length, the buffer has no remaining space for the null byte, and the subsequent null terminator write goes one byte past the end of the buffer — a classic off-by-one overflow.
 
-`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Root Lock HeartSuite Root Lock deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-53057
 
@@ -2543,7 +2543,7 @@ In the kernel tracing subsystem, `strlen()` returns the string length excluding 
 
 In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be either root or ingress.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-56606
 
@@ -2554,7 +2554,7 @@ In qdisc_tree_reduce_backlog, Qdiscs with major handle ffff: are assumed to be e
 
 After sock_init_data() the allocated sk object is attached to the provided sock object.
 
-`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No HeartSuite Root Lock HeartSuite Root Lock deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET raw socket requires `CAP_NET_RAW`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2025-21692
 
@@ -2565,7 +2565,7 @@ After sock_init_data() the allocated sk object is attached to the provided sock 
 
 Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an Out-Of-Bound class in ets_class_from_arg() when passed clid of 0.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2022-49799
 
@@ -2576,7 +2576,7 @@ Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can index an 
 
 In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` and `unregister_trace_event()` on the error path when `set_synth_event_print_fmt()` fails. Calling both functions causes the trace event to be unregistered twice, resulting in a double-free of the trace event structure.
 
-`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Root Lock HeartSuite Root Lock deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2022-49892
 
@@ -2587,7 +2587,7 @@ In `kernel/trace/`, `register_synth_event()` calls `trace_remove_event_call()` a
 
 KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore that perf had registered two ops with the same content successively, both dynamic.
 
-`CONFIG_FTRACE=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No HeartSuite Root Lock HeartSuite Root Lock deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_FTRACE=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and write access to ftrace control files under `/sys/kernel/tracing/`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment permits any service to access these paths. Without an allowlist entry covering the ftrace interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2022-49921
 
@@ -2598,7 +2598,7 @@ KASAN reported a use-after-free with ftrace ops [1]. It was found from vmcore th
 
 We can't use "skb" again after passing it to qdisc_enqueue(). This is basically identical to commit 2f09707d0c97 ("sch_sfb: Also store skb len before calling child enqueue").
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2023-53111
 
@@ -2609,7 +2609,7 @@ We can't use "skb" again after passing it to qdisc_enqueue(). This is basically 
 
 do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronously when using asynchronous I/O unless memory allocation fails.
 
-`CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering the bug requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No HeartSuite Root Lock production workload uses loop devices — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_BLK_DEV_LOOP=y` is compiled in. Triggering the bug requires `ioctl` operations on `/dev/loop*` with `CAP_SYS_ADMIN`. No Root Lock by HeartSuite production workload uses loop devices — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2025-37879
 
@@ -2620,7 +2620,7 @@ do_req_filebacked() calls blk_mq_complete_request() synchronously or asynchronou
 
 In `net/9p/client.c`, `p9_client_write()` and `p9_client_read_once()` do not validate the count returned by the 9P server. If a misbehaving server replies with success but a negative byte count, the client treats the negative value as a large unsigned integer, potentially causing integer underflow or incorrect buffer offset calculations.
 
-`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No HeartSuite Root Lock deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
+`CONFIG_9P_FS=y` is compiled in. Triggering the bug requires mounting a 9P filesystem. Lockdown categorically blocks `mount()` — `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`, after which all mount paths return `EPERM`. No Root Lock by HeartSuite deployment has a 9P filesystem mounted before Lockdown engages at boot. The trigger cannot be reached.
 
 The vulnerable path never opens. The bug exists in the source — not on this system.
 
@@ -2633,7 +2633,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 
 As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2025-37915
 
@@ -2644,7 +2644,7 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 
 As described in Gerrard's report [1], there are use cases where a netem child qdisc will make the parent qdisc's enqueue callback reentrant.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2025-37923
 
@@ -2655,7 +2655,7 @@ As described in Gerrard's report [1], there are use cases where a netem child qd
 
 In `kernel/trace/trace.c`, `trace_seq_to_buffer()` at line 1830 performs a slab-out-of-bounds write. syzbot reproduced a KASAN report showing that a trace sequence buffer copy operation writes beyond the allocated slab boundary, reachable through the kernel tracing filesystem interface under `CAP_SYS_ADMIN`.
 
-`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No HeartSuite Root Lock HeartSuite Root Lock deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_TRACING=y` is compiled in. Triggering the bug requires `CAP_SYS_ADMIN` and active access to the kernel tracing filesystem at `/sys/kernel/tracing/`. No Root Lock by HeartSuite Root Lock by HeartSuite deployment permits any service to write to these paths. Without an allowlist entry covering the tracing interface, the kernel refuses access. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2025-38369
 
@@ -2754,7 +2754,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 Whenever an ife action replace changes the metalist, instead of replacing the old data on the metalist, the current ife code is appending the new metadata.
 
-`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No HeartSuite Root Lock HeartSuite Root Lock deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_SCHED=y` is compiled in. Triggering the bug requires the `tc` utility (`iproute2`) with `CAP_NET_ADMIN` to install or modify a qdisc or filter. No Root Lock by HeartSuite Root Lock by HeartSuite deployment includes `tc` in the Lockdown allowlist — the kernel refuses to execute it. An attacker who has already gained root cannot add it: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-36883
 
@@ -2767,7 +2767,7 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 
 In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — the size of the generic pointers array — to determine how much memory to allocate for a new network namespace. This read occurs without holding `pernet_ops_rwsem`. `register_pernet_operations()` can increment `max_gen_ptrs` concurrently while holding the write side of that lock. The race can cause `net_alloc_generic()` to allocate an undersized array, leading to out-of-bounds access when the new namespace is subsequently populated.
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines), so the race cannot be triggered post-Lockdown unless a new kernel module is loaded. New module loading is blocked by **Lockdown**, not by the Linux kernel's built-in lockdown LSM: on Debian 12, `modprobe` and `insmod` are symlinks to `/usr/bin/kmod`, which is added to the allowlist by standard Setup Mode via `systemd-modules-load.service`. HeartSuite does not refuse `execve` on `kmod`; the block operates at the file-access layer — Lockdown denies `kmod` access to `/usr/lib/modprobe.d/` by default, so module loading fails at the file-read stage before any module can be loaded. There is no `HS_locked_down()` check site in the `init_module` / `finit_module` syscall path — the block is at the file-access layer, enforced by Lockdown. (If you follow the [kmod hardening procedure](../maintenance/kmod-hardening/), kmod's module-path access records are explicitly scoped to permitted paths, hardening against configuration drift.) After Lockdown engages at boot, all statically-linked pernet operations have already registered and `max_gen_ptrs` is stable; no concurrent write is possible. Separately, creating a network namespace requires `CAP_NET_ADMIN` with user namespaces disabled on the HS kernel; no unprivileged process can initiate the namespace-creation side of the race. The race condition cannot be triggered on any HeartSuite Root Lock deployment where `kmod` does not have file-access permissions to `/usr/lib/modprobe.d/`.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines), so the race cannot be triggered post-Lockdown unless a new kernel module is loaded. New module loading is blocked by **Lockdown**, not by the Linux kernel's built-in lockdown LSM: on Debian 12, `modprobe` and `insmod` are symlinks to `/usr/bin/kmod`, which is added to the allowlist by standard Setup Mode via `systemd-modules-load.service`. HeartSuite does not refuse `execve` on `kmod`; the block operates at the file-access layer — Lockdown denies `kmod` access to `/usr/lib/modprobe.d/` by default, so module loading fails at the file-read stage before any module can be loaded. There is no `HS_locked_down()` check site in the `init_module` / `finit_module` syscall path — the block is at the file-access layer, enforced by Lockdown. (If you follow the [kmod hardening procedure](../maintenance/kmod-hardening/), kmod's module-path access records are explicitly scoped to permitted paths, hardening against configuration drift.) After Lockdown engages at boot, all statically-linked pernet operations have already registered and `max_gen_ptrs` is stable; no concurrent write is possible. Separately, creating a network namespace requires `CAP_NET_ADMIN` with user namespaces disabled on the HS kernel; no unprivileged process can initiate the namespace-creation side of the race. The race condition cannot be triggered on any Root Lock by HeartSuite deployment where `kmod` does not have file-access permissions to `/usr/lib/modprobe.d/`.
 
 ### CVE-2024-36971
 
@@ -2824,7 +2824,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 In the network namespace subsystem, a use-after-free occurs through a refcount underflow. syzkaller triggered a `refcount_t: addition on 0` warning at `lib/refcount.c:25`, indicating that a network namespace object's reference count reached zero while still being accessed, with a subsequent attempt to increment the freed object's refcount in `refcount_warn_saturate()`.
 
-`CONFIG_NET_NS=y` is compiled in. Creating a network namespace requires `CLONE_NEWNET` with `CAP_NET_ADMIN`. User namespaces (which would bypass the capability requirement) are disabled on the HS kernel. No HeartSuite Root Lock production service creates network namespaces — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+`CONFIG_NET_NS=y` is compiled in. Creating a network namespace requires `CLONE_NEWNET` with `CAP_NET_ADMIN`. User namespaces (which would bypass the capability requirement) are disabled on the HS kernel. No Root Lock by HeartSuite production service creates network namespaces — they are absent from the Lockdown allowlist. Without an allowlist entry, the kernel refuses access. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
 
 ### CVE-2024-41039
 
@@ -2848,7 +2848,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 Ole reported that event->mmap_mutex is strictly insufficient to serialize the AUX buffer, add a per RB mutex to fully serialize it.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-46852
 
@@ -2859,7 +2859,7 @@ Ole reported that event->mmap_mutex is strictly insufficient to serialize the AU
 
 Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't track CMA dma-buf pages under RssFile") it was possible to obtain a mapping larger than the buffer by calling `mremap()` on a DMA-BUF heap allocation. The DMA-BUF heap mmap handler did not set `VM_DONTEXPAND`, allowing the VMA to be extended beyond the original allocation size and enabling out-of-bounds access to adjacent memory.
 
-`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF buffer sharing requires access to a DRM or V4L2 device. HeartSuite Root Lock runs on headless server hardware with no GPU or video capture device; the DRM and V4L2 device nodes are absent, so the exploitation path — opening a DRM device and issuing `mmap()` on its DMA-BUF — is hardware-unreachable. No GPU or multimedia tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_DMA_SHARED_BUFFER=y` is compiled in and 5.19.6 falls within the affected range. DMA-BUF buffer sharing requires access to a DRM or V4L2 device. Root Lock by HeartSuite runs on headless server hardware with no GPU or video capture device; the DRM and V4L2 device nodes are absent, so the exploitation path — opening a DRM device and issuing `mmap()` on its DMA-BUF — is hardware-unreachable. No GPU or multimedia tool appears in the HS allowlist. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2022-48950
 
@@ -2870,7 +2870,7 @@ Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps: Don't tra
 
 In `kernel/events/core.c`, `perf_pending_task()` can execute after the associated `perf_event` object has been freed. When a task exits and its pending perf events are processed, a race allows the task-work callback to fire after the event is released, causing a use-after-free.
 
-`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_PERF_EVENTS=y` is compiled in and 5.19.6 falls within the affected range. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2022-49026
 
@@ -2926,7 +2926,7 @@ Linear Address Masking (LAM) is an x86_64 feature that allows software to store 
 
 On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied after `exc_nmi()` completes but before IRET restores register state. This ordering leaves a window in which speculative execution can observe uninitialised microarchitectural buffer contents from the interrupted context — a same-CPU information disclosure in the MDS (Microarchitectural Data Sampling) class.
 
-`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a HeartSuite Root Lock system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
+`CONFIG_X86_64=y` is compiled in and 5.19.6 falls within the affected range. Triggering NMIs from ring-3 requires `perf_event_open()` or hardware performance counters. On a Root Lock by HeartSuite system, `perf_event_paranoid=3` restricts `perf_event_open()` to processes with `CAP_SYS_ADMIN`; no profiling or performance analysis tool appears in the HS allowlist. The exploitation path — loading and executing a non-allowlisted program — is blocked at the kernel execution gate before any perf subsystem interaction is possible. After gaining root through any avenue, Lockdown's allowlist refuses new code and blocks allowlist modification — no persistence, no backdoors, no cross-reboot survival.
 
 ### CVE-2024-56600
 
@@ -2991,7 +2991,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ## Not Affected — Disabled Features {#not-affected-disabled-features}
 
-HeartSuite Root Lock is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
+Root Lock by HeartSuite is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
 
 Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](#cve-2026-31431) — `chattr +i` filesystem immutability combined with the kernel refusing runtime allowlist changes means an attacker who reaches root in Lockdown has no path to persistence or to modifying the allowlist.
 
@@ -3184,7 +3184,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 The BPF syscall interface is the kernel entry point through which user-space programs load and run BPF programs in kernel context. CVE-2021-20194 describes a heap overflow in the BPF verifier reachable by a local user who submits a crafted BPF program, gaining elevated privilege.
 
-`CONFIG_BPF_SYSCALL` is not compiled into the HeartSuite Root Lock kernel. The `bpf()` syscall is not available — any call to it returns `ENOSYS`. There is no verifier, no BPF program store, and no reachable code path for this CVE.
+`CONFIG_BPF_SYSCALL` is not compiled into the Root Lock by HeartSuite kernel. The `bpf()` syscall is not available — any call to it returns `ENOSYS`. There is no verifier, no BPF program store, and no reachable code path for this CVE.
 
 ### Netfilter nftables
 
@@ -3194,7 +3194,7 @@ The BPF syscall interface is the kernel entry point through which user-space pro
 
 nftables is the in-kernel packet classification and filtering framework. CVE-2023-32233 describes a use-after-free in anonymous set handling reachable via crafted netlink messages by a local user with `CAP_NET_ADMIN`. CVE-2023-0179 describes a stack-based buffer overflow in the nftables netlink implementation reachable from a user namespace.
 
-`CONFIG_NF_TABLES` is not compiled into the HeartSuite Root Lock kernel. The nftables subsystem is not present — there are no netlink handlers to reach and no set or rule objects in memory.
+`CONFIG_NF_TABLES` is not compiled into the Root Lock by HeartSuite kernel. The nftables subsystem is not present — there are no netlink handlers to reach and no set or rule objects in memory.
 
 ### Network Traffic Control Schedulers
 
@@ -3204,7 +3204,7 @@ nftables is the in-kernel packet classification and filtering framework. CVE-202
 
 These CVEs cover two traffic control components: the QFQ (Quick Fair Queueing) scheduler and the TCINDEX traffic control filter. CVE-2023-31436 describes an out-of-bounds write in the QFQ scheduler reachable via `tc qdisc add`. CVE-2023-1829 and CVE-2023-1281 both describe use-after-free conditions in the TCINDEX filter reachable by a local user with `CAP_NET_ADMIN`.
 
-Neither `CONFIG_NET_SCH_QFQ` nor the TCINDEX traffic control filter is compiled into the HeartSuite Root Lock kernel. The relevant scheduler and filter code does not exist and cannot be reached via `tc`.
+Neither `CONFIG_NET_SCH_QFQ` nor the TCINDEX traffic control filter is compiled into the Root Lock by HeartSuite kernel. The relevant scheduler and filter code does not exist and cannot be reached via `tc`.
 
 ### Bluetooth Stack
 
@@ -3214,7 +3214,7 @@ Neither `CONFIG_NET_SCH_QFQ` nor the TCINDEX traffic control filter is compiled 
 
 These CVEs cover the kernel Bluetooth stack across the L2CAP, HCI, and RFCOMM layers. They include type confusion, use-after-free, and memory corruption conditions reachable by an attacker in proximity to the target device over Bluetooth, or by a local user with socket access to the Bluetooth subsystem.
 
-`CONFIG_BT` is not compiled into the HeartSuite Root Lock kernel. The Bluetooth socket family, HCI layer, and all Bluetooth protocol drivers are not present — there is no reachable code path for any CVE in this group.
+`CONFIG_BT` is not compiled into the Root Lock by HeartSuite kernel. The Bluetooth socket family, HCI layer, and all Bluetooth protocol drivers are not present — there is no reachable code path for any CVE in this group.
 
 ### Protocol Families: TLS, RDS, ROSE, MCTP, and AF_RXRPC
 
@@ -3230,7 +3230,7 @@ These CVEs cover five distinct socket protocol families, each gated by its own c
 - **MCTP** (CVE-2022-3977) — a use-after-free in the Management Component Transport Protocol socket layer
 - **AF_RXRPC** (CVE-2023-2006) — a race condition in the RxRPC remote procedure call socket family
 
-None of these protocol families is compiled into the HeartSuite Root Lock kernel. Attempting to open a socket in any of them returns `EAFNOSUPPORT` — there is no reachable code path for any CVE in this group.
+None of these protocol families is compiled into the Root Lock by HeartSuite kernel. Attempting to open a socket in any of them returns `EAFNOSUPPORT` — there is no reachable code path for any CVE in this group.
 
 ### NFS Server
 
@@ -3240,7 +3240,7 @@ None of these protocol families is compiled into the HeartSuite Root Lock kernel
 
 The kernel NFS server (`nfsd`) allows a Linux host to export filesystems to NFS clients over the network. CVE-2022-43945 describes a buffer overflow in the NFSv4 XDR decoder reachable from the network. CVE-2022-4379 describes a use-after-free in the NFSv4.1 `setclientid_confirm` handler. CVE-2023-1652 describes a use-after-free in the NFSv4 lease handling.
 
-`CONFIG_NFSD` is not compiled into the HeartSuite Root Lock kernel. The kernel NFS server is not present — no NFS exports are possible and there is no reachable code path for any CVE in this group.
+`CONFIG_NFSD` is not compiled into the Root Lock by HeartSuite kernel. The kernel NFS server is not present — no NFS exports are possible and there is no reachable code path for any CVE in this group.
 
 ### Filesystem Drivers
 
@@ -3248,9 +3248,9 @@ The kernel NFS server (`nfsd`) allows a Linux host to export filesystems to NFS 
 **Config gate**: `CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_XFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set  
 **CVEs covered**: CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978
 
-These CVEs cover five filesystem drivers absent from the HeartSuite Root Lock kernel. The CVEs include out-of-bounds reads and writes and use-after-free conditions across the NTFS3 driver (`CONFIG_NTFS3_FS`), the legacy NTFS driver (`CONFIG_NTFS_FS`), XFS (`CONFIG_XFS_FS`), JFS (`CONFIG_JFS_FS`), and NILFS2 (`CONFIG_NILFS2_FS`). Several are triggerable by mounting a crafted filesystem image.
+These CVEs cover five filesystem drivers absent from the Root Lock by HeartSuite kernel. The CVEs include out-of-bounds reads and writes and use-after-free conditions across the NTFS3 driver (`CONFIG_NTFS3_FS`), the legacy NTFS driver (`CONFIG_NTFS_FS`), XFS (`CONFIG_XFS_FS`), JFS (`CONFIG_JFS_FS`), and NILFS2 (`CONFIG_NILFS2_FS`). Several are triggerable by mounting a crafted filesystem image.
 
-None of these filesystems is compiled into the HeartSuite Root Lock kernel. Mounting an image in any of these formats returns an error — the filesystem code does not exist in the running kernel and there is no reachable code path for any CVE in this group.
+None of these filesystems is compiled into the Root Lock by HeartSuite kernel. Mounting an image in any of these formats returns an error — the filesystem code does not exist in the running kernel and there is no reachable code path for any CVE in this group.
 
 ### Hardware-Specific and Virtualization Drivers
 
@@ -3258,14 +3258,14 @@ None of these filesystems is compiled into the HeartSuite Root Lock kernel. Moun
 **Config gate**: `CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set  
 **CVEs covered**: CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196
 
-These CVEs cover four hardware-specific drivers absent from the HeartSuite Root Lock kernel:
+These CVEs cover four hardware-specific drivers absent from the Root Lock by HeartSuite kernel:
 
 - **DVB Core** (CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919) — use-after-free conditions in the Digital Video Broadcast core driver, reachable by a local user with access to a DVB device
 - **SGI GRU** (CVE-2022-3424) — a use-after-free in the SGI UV coprocessor driver triggered via `ioctl` on the GRU device
 - **Intel FPGA** (CVE-2023-26242) — a memory safety issue in the Intel FPGA BMC secure update driver
 - **KVM Intel** (CVE-2022-2196) — a guest-to-host isolation bypass in nested VMX (nVMX) handling, reachable from inside a guest VM
 
-`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, the Intel FPGA driver, and `CONFIG_KVM_INTEL` are not compiled into the HeartSuite Root Lock kernel. HeartSuite Root Lock runs as a guest under other hypervisors — it does not host virtual machines. None of the hardware interfaces these drivers expose is available, and there is no reachable code path for any CVE in this group.
+`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, the Intel FPGA driver, and `CONFIG_KVM_INTEL` are not compiled into the Root Lock by HeartSuite kernel. Root Lock by HeartSuite runs as a guest under other hypervisors — it does not host virtual machines. None of the hardware interfaces these drivers expose is available, and there is no reachable code path for any CVE in this group.
 
 ### USB Network Adapter and SMB Server
 
@@ -3276,7 +3276,7 @@ These CVEs cover four hardware-specific drivers absent from the HeartSuite Root 
 - **USB RNDIS WLAN** (CVE-2023-23559) — an integer overflow in the RNDIS wireless USB adapter driver triggerable by a physically present attacker with a crafted USB device
 - **SMB Server / ksmbd** (CVE-2023-0210) — a heap out-of-bounds read in `ksmbd`, the in-kernel SMB server, reachable from the network without authentication via a crafted SMB2 `NEGOTIATE` request
 
-Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the HeartSuite Root Lock kernel. There is no RNDIS driver to probe and no `ksmbd` listener to reach — there is no reachable code path for either CVE in this group.
+Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the Root Lock by HeartSuite kernel. There is no RNDIS driver to probe and no `ksmbd` listener to reach — there is no reachable code path for either CVE in this group.
 
 ### Ntfs3 Fs {#config-ntfs3-fs}
 
@@ -3284,7 +3284,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NTFS3_FS` not set
 **CVEs covered**: CVE-2022-48502
 
-`CONFIG_NTFS3_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NTFS3_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Traffic Control: cls_flower {#tc-cls-flower}
 
@@ -3292,7 +3292,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NET_CLS_FLOWER` not set
 **CVEs covered**: CVE-2023-35788
 
-`CONFIG_NET_CLS_FLOWER` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_CLS_FLOWER` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### CAN Bus
 
@@ -3300,7 +3300,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_CAN` not set
 **CVEs covered**: CVE-2023-3090, CVE-2023-3389, CVE-2023-3609, CVE-2023-3611, CVE-2023-3776, CVE-2023-4206, CVE-2023-4207, CVE-2023-4208, CVE-2023-4622, CVE-2023-4921, CVE-2023-5717, CVE-2023-46813, CVE-2023-6931, CVE-2023-6932, CVE-2023-6546, CVE-2023-6270, CVE-2024-25744, CVE-2023-52438, CVE-2023-52439, CVE-2023-52474, CVE-2023-52501
 
-`CONFIG_CAN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CAN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Smb Server {#config-smb-server}
 
@@ -3308,7 +3308,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_SMB_SERVER` not set
 **CVEs covered**: CVE-2023-32250, CVE-2023-32254, CVE-2023-32247, CVE-2023-32248, CVE-2023-32252, CVE-2023-32257, CVE-2023-32258, CVE-2024-22705, CVE-2023-52441, CVE-2024-26592, CVE-2024-26594, CVE-2023-52480
 
-`CONFIG_SMB_SERVER` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SMB_SERVER` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### HFS Filesystem
 
@@ -3316,7 +3316,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_HFS_FS` not set
 **CVEs covered**: CVE-2023-4623
 
-`CONFIG_HFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ceph Filesystem
 
@@ -3324,7 +3324,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_CEPH_FS` not set
 **CVEs covered**: CVE-2023-44466
 
-`CONFIG_CEPH_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CEPH_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### NVMe Driver
 
@@ -3332,7 +3332,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NVME_CORE` not set
 **CVEs covered**: CVE-2023-5178, CVE-2023-6356, CVE-2023-6536
 
-`CONFIG_NVME_CORE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NVME_CORE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### CIFS/SMB Client {#cifs-smb-client}
 
@@ -3340,7 +3340,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_CIFS` not set
 **CVEs covered**: CVE-2023-1194, CVE-2023-52434, CVE-2023-52440
 
-`CONFIG_CIFS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CIFS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### ATM Protocol
 
@@ -3348,7 +3348,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_ATM` not set
 **CVEs covered**: CVE-2023-51780
 
-`CONFIG_ATM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ATM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Rose {#config-rose}
 
@@ -3356,7 +3356,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_ROSE` not set
 **CVEs covered**: CVE-2023-51782
 
-`CONFIG_ROSE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ROSE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Tls {#config-tls}
 
@@ -3364,7 +3364,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_TLS` not set
 **CVEs covered**: CVE-2024-0646
 
-`CONFIG_TLS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TLS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### DCCP Protocol
 
@@ -3372,7 +3372,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IP_DCCP` not set
 **CVEs covered**: CVE-2023-39197
 
-`CONFIG_IP_DCCP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IP_DCCP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### AMD GPU (amdgpu) {#amdgpu-driver}
 
@@ -3380,7 +3380,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DRM_AMDGPU` not set
 **CVEs covered**: CVE-2023-51042
 
-`CONFIG_DRM_AMDGPU` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_AMDGPU` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### F2FS Filesystem
 
@@ -3388,7 +3388,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_F2FS_FS` not set
 **CVEs covered**: CVE-2023-52436, CVE-2023-52444
 
-`CONFIG_F2FS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_F2FS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Atheros Wireless Driver {#ath-wireless-driver}
 
@@ -3396,7 +3396,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_ATH` not set
 **CVEs covered**: CVE-2023-52464
 
-`CONFIG_ATH` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ATH` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mctp {#config-mctp}
 
@@ -3404,7 +3404,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_MCTP` not set
 **CVEs covered**: CVE-2023-52483
 
-`CONFIG_MCTP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MCTP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### FUSE Filesystem
 
@@ -3412,7 +3412,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_FUSE_FS` not set
 **CVEs covered**: CVE-2023-52504
 
-`CONFIG_FUSE_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_FUSE_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### NFC
 
@@ -3420,7 +3420,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NFC` not set
 **CVEs covered**: CVE-2023-52507
 
-`CONFIG_NFC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NFC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Renesas Ethernet AVB Driver {#ravb-driver}
 
@@ -3428,7 +3428,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_RAVB` not set
 **CVEs covered**: CVE-2023-52509
 
-`CONFIG_RAVB` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RAVB` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### IEEE 802.15.4 (WPAN) {#ieee802154-wpan}
 
@@ -3436,7 +3436,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IEEE802154` not set
 **CVEs covered**: CVE-2023-52510
 
-`CONFIG_IEEE802154` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IEEE802154` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### InfiniBand / RDMA {#infiniband-rdma}
 
@@ -3444,7 +3444,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_INFINIBAND` not set
 **CVEs covered**: CVE-2023-52515, CVE-2024-26872
 
-`CONFIG_INFINIBAND` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_INFINIBAND` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Spi Sun6I {#config-spi-sun6i}
 
@@ -3452,7 +3452,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_SPI_SUN6I` not set
 **CVEs covered**: CVE-2023-52517
 
-`CONFIG_SPI_SUN6I` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SPI_SUN6I` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Intel WiFi (iwlwifi) {#iwlwifi-driver}
 
@@ -3460,7 +3460,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IWLWIFI` not set
 **CVEs covered**: CVE-2023-52531, CVE-2024-26610
 
-`CONFIG_IWLWIFI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IWLWIFI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Security Tomoyo {#config-security-tomoyo}
 
@@ -3468,7 +3468,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_SECURITY_TOMOYO` not set
 **CVEs covered**: CVE-2024-26622
 
-`CONFIG_SECURITY_TOMOYO` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SECURITY_TOMOYO` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Drm Msm {#config-drm-msm}
 
@@ -3476,7 +3476,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DRM_MSM` not set
 **CVEs covered**: CVE-2023-52586
 
-`CONFIG_DRM_MSM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_MSM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### S390 {#config-s390}
 
@@ -3484,7 +3484,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_S390` not set
 **CVEs covered**: CVE-2023-52598, CVE-2024-26957
 
-`CONFIG_S390` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_S390` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Jfs Fs {#config-jfs-fs}
 
@@ -3492,7 +3492,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_JFS_FS` not set
 **CVEs covered**: CVE-2023-52599, CVE-2023-52600, CVE-2023-52603, CVE-2023-52604
 
-`CONFIG_JFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_JFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Llc {#config-llc}
 
@@ -3500,7 +3500,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_LLC` not set
 **CVEs covered**: CVE-2024-26625
 
-`CONFIG_LLC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_LLC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mhi Bus {#config-mhi-bus}
 
@@ -3508,7 +3508,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_MHI_BUS` not set
 **CVEs covered**: CVE-2023-52494
 
-`CONFIG_MHI_BUS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MHI_BUS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ip Tunnel {#config-ip-tunnel}
 
@@ -3516,7 +3516,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IP_TUNNEL` not set
 **CVEs covered**: CVE-2024-26665
 
-`CONFIG_IP_TUNNEL` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IP_TUNNEL` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Afs Fs {#config-afs-fs}
 
@@ -3524,7 +3524,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_AFS_FS` not set
 **CVEs covered**: CVE-2024-26736
 
-`CONFIG_AFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_AFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Traffic Control: act_mirred {#tc-act-mirred}
 
@@ -3532,7 +3532,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NET_ACT_MIRRED` not set
 **CVEs covered**: CVE-2024-26739
 
-`CONFIG_NET_ACT_MIRRED` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_ACT_MIRRED` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Usb Cdns3 {#config-usb-cdns3}
 
@@ -3540,7 +3540,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_USB_CDNS3` not set
 **CVEs covered**: CVE-2024-26748, CVE-2024-26749
 
-`CONFIG_USB_CDNS3` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_CDNS3` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Crypto Dev Virtio {#config-crypto-dev-virtio}
 
@@ -3548,7 +3548,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_CRYPTO_DEV_VIRTIO` not set
 **CVEs covered**: CVE-2024-26753
 
-`CONFIG_CRYPTO_DEV_VIRTIO` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CRYPTO_DEV_VIRTIO` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Gtp {#config-gtp}
 
@@ -3556,7 +3556,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_GTP` not set
 **CVEs covered**: CVE-2024-26754, CVE-2024-26793
 
-`CONFIG_GTP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_GTP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Dm Crypt {#config-dm-crypt}
 
@@ -3564,7 +3564,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DM_CRYPT` not set
 **CVEs covered**: CVE-2024-26763
 
-`CONFIG_DM_CRYPT` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DM_CRYPT` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### MPTCP
 
@@ -3572,7 +3572,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_MPTCP` not set
 **CVEs covered**: CVE-2024-26782
 
-`CONFIG_MPTCP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MPTCP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Btrfs Filesystem
 
@@ -3580,7 +3580,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_BTRFS_FS` not set
 **CVEs covered**: CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300
 
-`CONFIG_BTRFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BTRFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Thinkpad Lmi {#config-thinkpad-lmi}
 
@@ -3588,7 +3588,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_THINKPAD_LMI` not set
 **CVEs covered**: CVE-2024-26836
 
-`CONFIG_THINKPAD_LMI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_THINKPAD_LMI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Sparx5 Switch {#config-sparx5-switch}
 
@@ -3596,7 +3596,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_SPARX5_SWITCH` not set
 **CVEs covered**: CVE-2024-26856
 
-`CONFIG_SPARX5_SWITCH` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SPARX5_SWITCH` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Rds {#config-rds}
 
@@ -3604,7 +3604,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_RDS` not set
 **CVEs covered**: CVE-2024-26865, CVE-2022-48637, CVE-2024-27024
 
-`CONFIG_RDS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RDS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### TUN/TAP Driver {#tun-tap-driver}
 
@@ -3612,7 +3612,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_TUN` not set
 **CVEs covered**: CVE-2024-26882
 
-`CONFIG_TUN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TUN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mlxbf I2C {#config-mlxbf-i2c}
 
@@ -3620,7 +3620,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_MLXBF_I2C` not set
 **CVEs covered**: CVE-2022-48632
 
-`CONFIG_MLXBF_I2C` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MLXBF_I2C` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### ARM64 Architecture {#arm64-arch}
 
@@ -3628,7 +3628,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_ARM64` not set
 **CVEs covered**: CVE-2022-48657, CVE-2024-26989
 
-`CONFIG_ARM64` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ARM64` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Nilfs2 Fs {#config-nilfs2-fs}
 
@@ -3636,7 +3636,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NILFS2_FS` not set
 **CVEs covered**: CVE-2024-26955, CVE-2024-26956, CVE-2024-26981
 
-`CONFIG_NILFS2_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NILFS2_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Common Clk Qcom {#config-common-clk-qcom}
 
@@ -3644,7 +3644,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_COMMON_CLK_QCOM` not set
 **CVEs covered**: CVE-2024-26965
 
-`CONFIG_COMMON_CLK_QCOM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_COMMON_CLK_QCOM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### USB Gadget
 
@@ -3652,7 +3652,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_USB_GADGET` not set
 **CVEs covered**: CVE-2024-26996
 
-`CONFIG_USB_GADGET` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_GADGET` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Nouveau (NVIDIA open-source) {#nouveau-driver}
 
@@ -3660,7 +3660,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DRM_NOUVEAU` not set
 **CVEs covered**: CVE-2024-27008
 
-`CONFIG_DRM_NOUVEAU` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_NOUVEAU` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Dvb Core {#config-dvb-core}
 
@@ -3668,7 +3668,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DVB_CORE` not set
 **CVEs covered**: CVE-2024-27075
 
-`CONFIG_DVB_CORE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DVB_CORE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Peci {#config-peci}
 
@@ -3676,7 +3676,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_PECI` not set
 **CVEs covered**: CVE-2022-48670
 
-`CONFIG_PECI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PECI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Of {#config-of}
 
@@ -3684,7 +3684,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_OF` not set
 **CVEs covered**: CVE-2022-48672
 
-`CONFIG_OF` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_OF` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### EROFS Filesystem
 
@@ -3692,7 +3692,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_EROFS_FS` not set
 **CVEs covered**: CVE-2022-48674
 
-`CONFIG_EROFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_EROFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Open vSwitch {#openvswitch}
 
@@ -3700,7 +3700,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_OPENVSWITCH` not set
 **CVEs covered**: CVE-2024-27395
 
-`CONFIG_OPENVSWITCH` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_OPENVSWITCH` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### FireWire
 
@@ -3708,7 +3708,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_FIREWIRE` not set
 **CVEs covered**: CVE-2024-27401
 
-`CONFIG_FIREWIRE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_FIREWIRE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Kvm {#config-kvm}
 
@@ -3716,7 +3716,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_KVM` not set
 **CVEs covered**: CVE-2024-35791
 
-`CONFIG_KVM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_KVM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Aquantia Atlantic Driver {#atlantic-driver}
 
@@ -3724,7 +3724,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_ATLANTIC` not set
 **CVEs covered**: CVE-2023-52664
 
-`CONFIG_ATLANTIC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ATLANTIC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mellanox mlx5 Driver {#mlx5-driver}
 
@@ -3732,7 +3732,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_MLX5_CORE` not set
 **CVEs covered**: CVE-2023-52667
 
-`CONFIG_MLX5_CORE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MLX5_CORE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### AX.25 / Ham Radio {#ax25-hamradio}
 
@@ -3740,7 +3740,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_AX25` not set
 **CVEs covered**: CVE-2024-35887
 
-`CONFIG_AX25` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_AX25` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Dma Direct Remap {#config-dma-direct-remap}
 
@@ -3748,7 +3748,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DMA_DIRECT_REMAP` not set
 **CVEs covered**: CVE-2024-35939
 
-`CONFIG_DMA_DIRECT_REMAP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DMA_DIRECT_REMAP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Fb {#config-fb}
 
@@ -3756,7 +3756,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_FB` not set
 **CVEs covered**: CVE-2023-52731
 
-`CONFIG_FB` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_FB` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### GFS2 Shared Filesystem {#gfs2-filesystem}
 
@@ -3764,7 +3764,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_GFS2_FS` not set
 **CVEs covered**: CVE-2023-52760
 
-`CONFIG_GFS2_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_GFS2_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### GSPCA USB Webcam Driver {#gspca-driver}
 
@@ -3772,7 +3772,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_USB_GSPCA_CORE` not set
 **CVEs covered**: CVE-2023-52764
 
-`CONFIG_USB_GSPCA_CORE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_GSPCA_CORE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### SMC (RDMA over Converged Ethernet) {#smc-driver}
 
@@ -3780,7 +3780,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_SMC` not set
 **CVEs covered**: CVE-2023-52775
 
-`CONFIG_SMC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SMC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### IPVLAN Driver {#ipvlan}
 
@@ -3788,7 +3788,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IPVLAN` not set
 **CVEs covered**: CVE-2023-52796
 
-`CONFIG_IPVLAN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IPVLAN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### HiSilicon HNS3 Driver {#hns3-driver}
 
@@ -3796,7 +3796,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_HNS3` not set
 **CVEs covered**: CVE-2023-52807
 
-`CONFIG_HNS3` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HNS3` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### KVM AMD
 
@@ -3804,7 +3804,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_KVM_AMD` not set
 **CVEs covered**: CVE-2023-52816
 
-`CONFIG_KVM_AMD` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_KVM_AMD` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Network Block Device (NBD) {#nbd-driver}
 
@@ -3812,7 +3812,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_BLK_DEV_NBD` not set
 **CVEs covered**: CVE-2023-52837
 
-`CONFIG_BLK_DEV_NBD` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BLK_DEV_NBD` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Synaptics RMI4 Driver {#rmi4-driver}
 
@@ -3820,7 +3820,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_RMI4_CORE` not set
 **CVEs covered**: CVE-2023-52840
 
-`CONFIG_RMI4_CORE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RMI4_CORE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Bt848 Video Capture Driver {#bttv-driver}
 
@@ -3828,7 +3828,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_VIDEO_BT848` not set
 **CVEs covered**: CVE-2023-52847
 
-`CONFIG_VIDEO_BT848` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_BT848` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Hw Perf Events Hisi {#config-hw-perf-events-hisi}
 
@@ -3836,7 +3836,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_HW_PERF_EVENTS_HISI` not set
 **CVEs covered**: CVE-2023-52859
 
-`CONFIG_HW_PERF_EVENTS_HISI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HW_PERF_EVENTS_HISI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### WMI Driver
 
@@ -3844,7 +3844,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_WMI` not set
 **CVEs covered**: CVE-2023-52864
 
-`CONFIG_WMI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_WMI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### AMD Radeon GPU {#radeon-driver}
 
@@ -3852,7 +3852,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DRM_RADEON` not set
 **CVEs covered**: CVE-2023-52867
 
-`CONFIG_DRM_RADEON` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_RADEON` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Parallel Port Device {#ppdev-driver}
 
@@ -3860,7 +3860,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_PPDEV` not set
 **CVEs covered**: CVE-2024-36015
 
-`CONFIG_PPDEV` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PPDEV` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### TIPC Protocol
 
@@ -3868,7 +3868,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_TIPC` not set
 **CVEs covered**: CVE-2024-36886
 
-`CONFIG_TIPC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TIPC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### GPIO Library {#gpiolib}
 
@@ -3876,7 +3876,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_GPIOLIB` not set
 **CVEs covered**: CVE-2024-36898, CVE-2024-36899
 
-`CONFIG_GPIOLIB` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_GPIOLIB` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Pin Controller Subsystem {#pinctrl}
 
@@ -3884,7 +3884,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_PINCTRL` not set
 **CVEs covered**: CVE-2024-36940
 
-`CONFIG_PINCTRL` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PINCTRL` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### VMware SVGA (vmwgfx) {#vmwgfx-driver}
 
@@ -3892,7 +3892,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_DRM_VMWGFX` not set
 **CVEs covered**: CVE-2024-36960
 
-`CONFIG_DRM_VMWGFX` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_VMWGFX` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Traffic Control: sch_multiq {#tc-multiq}
 
@@ -3900,7 +3900,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_NET_SCH_MULTIQ` not set
 **CVEs covered**: CVE-2024-36978
 
-`CONFIG_NET_SCH_MULTIQ` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_SCH_MULTIQ` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### IMA (Integrity Measurement Architecture) {#ima}
 
@@ -3908,9 +3908,9 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_IMA` not set
 **CVEs covered**: CVE-2024-38667
 
-`CONFIG_IMA` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IMA` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
-IMA's measurement and appraisal functions — runtime file integrity checking and boot-time measurement logs — are also absent as a result. Boot-path protection in HeartSuite Root Lock is provided structurally: the kernel image directory and `/boot` are sealed under Lockdown using `chattr +i` immutability, preventing modification while the HeartSuite kernel is running. `CONFIG_KEXEC_FILE` (the signed-image kexec variant) is also not set. Secure Boot is not enforced or verified by HeartSuite Root Lock; if Secure Boot is required, it must be configured at the firmware and bootloader level independently.
+IMA's measurement and appraisal functions — runtime file integrity checking and boot-time measurement logs — are also absent as a result. Boot-path protection in Root Lock by HeartSuite is provided structurally: the kernel image directory and `/boot` are sealed under Lockdown using `chattr +i` immutability, preventing modification while the HeartSuite kernel is running. `CONFIG_KEXEC_FILE` (the signed-image kexec variant) is also not set. Secure Boot is not enforced or verified by Root Lock by HeartSuite; if Secure Boot is required, it must be configured at the firmware and bootloader level independently.
 
 ### PowerPC Architecture {#powerpc-arch}
 
@@ -3918,7 +3918,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PPC` not set
 **CVEs covered**: CVE-2024-40974
 
-`CONFIG_PPC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PPC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Xfs Fs {#config-xfs-fs}
 
@@ -3926,7 +3926,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_XFS_FS` not set
 **CVEs covered**: CVE-2024-41013, CVE-2024-41014
 
-`CONFIG_XFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_XFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### HFS+ Filesystem {#hfsplus-filesystem}
 
@@ -3934,7 +3934,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_HFSPLUS_FS` not set
 **CVEs covered**: CVE-2024-41059
 
-`CONFIG_HFSPLUS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HFSPLUS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### ISDN
 
@@ -3942,7 +3942,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_ISDN` not set
 **CVEs covered**: CVE-2024-42280
 
-`CONFIG_ISDN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ISDN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Platform X86 {#config-platform-x86}
 
@@ -3950,7 +3950,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PLATFORM_X86` not set
 **CVEs covered**: CVE-2024-46859
 
-`CONFIG_PLATFORM_X86` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PLATFORM_X86` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### OCFS2 Filesystem
 
@@ -3958,7 +3958,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_OCFS2_FS` not set
 **CVEs covered**: CVE-2024-47670
 
-`CONFIG_OCFS2_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_OCFS2_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Xen Hypervisor
 
@@ -3966,7 +3966,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_XEN` not set
 **CVEs covered**: CVE-2024-49936
 
-`CONFIG_XEN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_XEN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### PPP
 
@@ -3974,7 +3974,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PPP` not set
 **CVEs covered**: CVE-2024-50033, CVE-2024-50035
 
-`CONFIG_PPP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PPP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### QCOM RmNet Driver {#rmnet-driver}
 
@@ -3982,7 +3982,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_RMNET` not set
 **CVEs covered**: CVE-2024-50128
 
-`CONFIG_RMNET` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RMNET` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### UDF Filesystem
 
@@ -3990,7 +3990,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_UDF_FS` not set
 **CVEs covered**: CVE-2024-50143
 
-`CONFIG_UDF_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_UDF_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### LoongArch Architecture {#loongarch-arch}
 
@@ -3998,7 +3998,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_LOONGARCH` not set
 **CVEs covered**: CVE-2024-56628
 
-`CONFIG_LOONGARCH` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_LOONGARCH` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Realtek WiFi Driver {#rtlwifi-driver}
 
@@ -4006,7 +4006,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_RTLWIFI` not set
 **CVEs covered**: CVE-2024-58072
 
-`CONFIG_RTLWIFI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RTLWIFI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Broadcom WiFi Driver {#brcmfmac-driver}
 
@@ -4014,7 +4014,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_BRCMFMAC` not set
 **CVEs covered**: CVE-2022-49740
 
-`CONFIG_BRCMFMAC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BRCMFMAC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### MemStick Driver {#memstick}
 
@@ -4022,7 +4022,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MEMSTICK` not set
 **CVEs covered**: CVE-2025-22020
 
-`CONFIG_MEMSTICK` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MEMSTICK` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### SCTP Protocol
 
@@ -4030,7 +4030,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_IP_SCTP` not set
 **CVEs covered**: CVE-2025-23142
 
-`CONFIG_IP_SCTP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IP_SCTP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ntfs Fs {#config-ntfs-fs}
 
@@ -4038,7 +4038,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NTFS_FS` not set
 **CVEs covered**: CVE-2022-49763
 
-`CONFIG_NTFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NTFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Net Sch Qfq {#config-net-sch-qfq}
 
@@ -4046,7 +4046,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NET_SCH_QFQ` not set
 **CVEs covered**: CVE-2025-37913
 
-`CONFIG_NET_SCH_QFQ` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_SCH_QFQ` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Af Rxrpc {#config-af-rxrpc}
 
@@ -4054,7 +4054,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_AF_RXRPC` not set
 **CVEs covered**: CVE-2023-53218
 
-`CONFIG_AF_RXRPC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_AF_RXRPC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Marvell WiFi Driver {#mwifiex-driver}
 
@@ -4062,7 +4062,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MWIFIEX` not set
 **CVEs covered**: CVE-2025-39891
 
-`CONFIG_MWIFIEX` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MWIFIEX` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Microchip WILC1000 WiFi Driver {#wilc1000-driver}
 
@@ -4070,7 +4070,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_WILC1000` not set
 **CVEs covered**: CVE-2025-39952
 
-`CONFIG_WILC1000` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_WILC1000` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Traffic Control: cls_u32 {#tc-cls-u32}
 
@@ -4078,7 +4078,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NET_CLS_U32` not set
 **CVEs covered**: CVE-2026-23204
 
-`CONFIG_NET_CLS_U32` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_CLS_U32` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### SAA7134 Media Driver {#saa7134-driver}
 
@@ -4086,7 +4086,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_SAA7134` not set
 **CVEs covered**: CVE-2023-35823
 
-`CONFIG_VIDEO_SAA7134` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_SAA7134` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### DM1105 DVB Driver {#dm1105-driver}
 
@@ -4094,7 +4094,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_DM1105` not set
 **CVEs covered**: CVE-2023-35824
 
-`CONFIG_VIDEO_DM1105` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_DM1105` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Allwinner Cedrus Video Codec {#cedrus-driver}
 
@@ -4102,7 +4102,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_SUNXI_CEDRUS` not set
 **CVEs covered**: CVE-2023-35826
 
-`CONFIG_VIDEO_SUNXI_CEDRUS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_SUNXI_CEDRUS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Renesas USB3 Driver {#renesas-usb3}
 
@@ -4110,7 +4110,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_USB_RENESAS_USBHS3` not set
 **CVEs covered**: CVE-2023-35828
 
-`CONFIG_USB_RENESAS_USBHS3` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_RENESAS_USBHS3` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Rockchip Video Decoder {#rkvdec-driver}
 
@@ -4118,7 +4118,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_RKVDEC` not set
 **CVEs covered**: CVE-2023-35829
 
-`CONFIG_VIDEO_RKVDEC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_RKVDEC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Intel IGB Ethernet Driver {#igb-driver}
 
@@ -4126,7 +4126,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_IGB` not set
 **CVEs covered**: CVE-2023-45871
 
-`CONFIG_IGB` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IGB` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### AppleTalk Protocol {#appletalk}
 
@@ -4134,7 +4134,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_ATALK` not set
 **CVEs covered**: CVE-2023-51781
 
-`CONFIG_ATALK` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ATALK` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Hauppauge pvrusb2 Driver {#pvrusb2-driver}
 
@@ -4142,7 +4142,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_PVRUSB2` not set
 **CVEs covered**: CVE-2023-52445
 
-`CONFIG_VIDEO_PVRUSB2` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_PVRUSB2` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### PWM Subsystem
 
@@ -4150,7 +4150,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PWM` not set
 **CVEs covered**: CVE-2024-26599
 
-`CONFIG_PWM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PWM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Griffin PowerMate Driver {#powermate-driver}
 
@@ -4158,7 +4158,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_INPUT_POWERMATE` not set
 **CVEs covered**: CVE-2023-52475
 
-`CONFIG_INPUT_POWERMATE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_INPUT_POWERMATE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### TEE Subsystem
 
@@ -4166,7 +4166,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_TEE` not set
 **CVEs covered**: CVE-2023-52503
 
-`CONFIG_TEE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TEE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Bonding {#config-bonding}
 
@@ -4174,7 +4174,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_BONDING` not set
 **CVEs covered**: CVE-2024-39487, CVE-2026-23099
 
-`CONFIG_BONDING` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BONDING` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Vmware Vmci {#config-vmware-vmci}
 
@@ -4182,7 +4182,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VMWARE_VMCI` not set
 **CVEs covered**: CVE-2024-39499, CVE-2024-46738, CVE-2025-38403
 
-`CONFIG_VMWARE_VMCI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VMWARE_VMCI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Wwan {#config-wwan}
 
@@ -4190,7 +4190,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_WWAN` not set
 **CVEs covered**: CVE-2024-40939
 
-`CONFIG_WWAN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_WWAN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Cachefiles {#config-cachefiles}
 
@@ -4198,7 +4198,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_CACHEFILES` not set
 **CVEs covered**: CVE-2024-41050, CVE-2024-41057, CVE-2024-41074
 
-`CONFIG_CACHEFILES` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CACHEFILES` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Snd Soc {#config-snd-soc}
 
@@ -4206,7 +4206,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SND_SOC` not set
 **CVEs covered**: CVE-2024-41069, CVE-2022-50325
 
-`CONFIG_SND_SOC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SND_SOC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Iio {#config-iio}
 
@@ -4214,7 +4214,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_IIO` not set
 **CVEs covered**: CVE-2024-42086, CVE-2024-57906, CVE-2024-57907, CVE-2024-57908, CVE-2024-57910, CVE-2024-57911, CVE-2024-57912, CVE-2022-49792, CVE-2025-38485
 
-`CONFIG_IIO` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IIO` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Vhost Vsock {#config-vhost-vsock}
 
@@ -4222,7 +4222,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VHOST_VSOCK` not set
 **CVEs covered**: CVE-2024-43873
 
-`CONFIG_VHOST_VSOCK` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VHOST_VSOCK` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Net Fou {#config-net-fou}
 
@@ -4230,7 +4230,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NET_FOU` not set
 **CVEs covered**: CVE-2024-44940, CVE-2026-23083
 
-`CONFIG_NET_FOU` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_FOU` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Parisc {#config-parisc}
 
@@ -4238,7 +4238,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PARISC` not set
 **CVEs covered**: CVE-2024-44949, CVE-2022-50518
 
-`CONFIG_PARISC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PARISC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Net Sch Netem {#config-net-sch-netem}
 
@@ -4246,7 +4246,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NET_SCH_NETEM` not set
 **CVEs covered**: CVE-2024-46800
 
-`CONFIG_NET_SCH_NETEM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_SCH_NETEM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Uml {#config-uml}
 
@@ -4254,7 +4254,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_UML` not set
 **CVEs covered**: CVE-2024-46844
 
-`CONFIG_UML` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_UML` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Spi Nxp Flexspi {#config-spi-nxp-flexspi}
 
@@ -4262,7 +4262,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SPI_NXP_FLEXSPI` not set
 **CVEs covered**: CVE-2024-46853
 
-`CONFIG_SPI_NXP_FLEXSPI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SPI_NXP_FLEXSPI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Vdpa {#config-vdpa}
 
@@ -4270,7 +4270,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VDPA` not set
 **CVEs covered**: CVE-2024-47748, CVE-2024-53126, CVE-2023-53082, CVE-2023-53543
 
-`CONFIG_VDPA` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VDPA` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Usb Serial {#config-usb-serial}
 
@@ -4278,7 +4278,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_USB_SERIAL` not set
 **CVEs covered**: CVE-2024-50267
 
-`CONFIG_USB_SERIAL` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_SERIAL` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Usb Musb Hdrc {#config-usb-musb-hdrc}
 
@@ -4286,7 +4286,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_USB_MUSB_HDRC` not set
 **CVEs covered**: CVE-2024-50269
 
-`CONFIG_USB_MUSB_HDRC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_MUSB_HDRC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Superh {#config-superh}
 
@@ -4294,7 +4294,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SUPERH` not set
 **CVEs covered**: CVE-2024-53165
 
-`CONFIG_SUPERH` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SUPERH` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Spi Mpc52Xx {#config-spi-mpc52xx}
 
@@ -4302,7 +4302,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SPI_MPC52xx` not set
 **CVEs covered**: CVE-2024-50051
 
-`CONFIG_SPI_MPC52xx` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SPI_MPC52xx` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Pktgen {#config-pktgen}
 
@@ -4310,7 +4310,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PKTGEN` not set
 **CVEs covered**: CVE-2025-21680
 
-`CONFIG_PKTGEN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PKTGEN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Orangefs Fs {#config-orangefs-fs}
 
@@ -4318,7 +4318,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_ORANGEFS_FS` not set
 **CVEs covered**: CVE-2025-21782
 
-`CONFIG_ORANGEFS_FS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ORANGEFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Geneve {#config-geneve}
 
@@ -4326,7 +4326,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_GENEVE` not set
 **CVEs covered**: CVE-2025-21858
 
-`CONFIG_GENEVE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_GENEVE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Slimbus {#config-slimbus}
 
@@ -4334,7 +4334,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SLIMBUS` not set
 **CVEs covered**: CVE-2025-21914
 
-`CONFIG_SLIMBUS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SLIMBUS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Udmabuf {#config-udmabuf}
 
@@ -4342,7 +4342,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_UDMABUF` not set
 **CVEs covered**: CVE-2025-37803
 
-`CONFIG_UDMABUF` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_UDMABUF` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mcb {#config-mcb}
 
@@ -4350,7 +4350,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MCB` not set
 **CVEs covered**: CVE-2025-37817
 
-`CONFIG_MCB` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MCB` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Staging {#config-staging}
 
@@ -4358,7 +4358,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_STAGING` not set
 **CVEs covered**: CVE-2022-49956, CVE-2023-53554
 
-`CONFIG_STAGING` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_STAGING` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Coresight {#config-coresight}
 
@@ -4366,7 +4366,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_CORESIGHT` not set
 **CVEs covered**: CVE-2025-38131
 
-`CONFIG_CORESIGHT` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CORESIGHT` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ipv6 Seg6 Lwtunnel {#config-ipv6-seg6-lwtunnel}
 
@@ -4374,7 +4374,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_IPV6_SEG6_LWTUNNEL` not set
 **CVEs covered**: CVE-2025-38476
 
-`CONFIG_IPV6_SEG6_LWTUNNEL` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IPV6_SEG6_LWTUNNEL` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Comedi {#config-comedi}
 
@@ -4382,7 +4382,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_COMEDI` not set
 **CVEs covered**: CVE-2025-38482, CVE-2025-38483, CVE-2025-38529, CVE-2025-38530, CVE-2025-39685, CVE-2025-39686
 
-`CONFIG_COMEDI` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_COMEDI` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Nubus {#config-nubus}
 
@@ -4390,7 +4390,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NUBUS` not set
 **CVEs covered**: CVE-2023-53217
 
-`CONFIG_NUBUS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NUBUS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Xdp Sockets {#config-xdp-sockets}
 
@@ -4398,7 +4398,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_XDP_SOCKETS` not set
 **CVEs covered**: CVE-2023-53426
 
-`CONFIG_XDP_SOCKETS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_XDP_SOCKETS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ptp 1588 Clock Ocp {#config-ptp-1588-clock-ocp}
 
@@ -4406,7 +4406,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PTP_1588_CLOCK_OCP` not set
 **CVEs covered**: CVE-2025-39859
 
-`CONFIG_PTP_1588_CLOCK_OCP` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PTP_1588_CLOCK_OCP` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Trace Buf {#config-trace-buf}
 
@@ -4414,7 +4414,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_TRACE_BUF` not set
 **CVEs covered**: CVE-2023-53587
 
-`CONFIG_TRACE_BUF` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TRACE_BUF` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Dlm {#config-dlm}
 
@@ -4422,7 +4422,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DLM` not set
 **CVEs covered**: CVE-2023-53629
 
-`CONFIG_DLM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DLM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Net Team {#config-net-team}
 
@@ -4430,7 +4430,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_NET_TEAM` not set
 **CVEs covered**: CVE-2025-71091
 
-`CONFIG_NET_TEAM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_NET_TEAM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Macvlan {#config-macvlan}
 
@@ -4438,7 +4438,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MACVLAN` not set
 **CVEs covered**: CVE-2026-23001
 
-`CONFIG_MACVLAN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MACVLAN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Security Apparmor {#config-security-apparmor}
 
@@ -4446,7 +4446,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SECURITY_APPARMOR` not set
 **CVEs covered**: CVE-2026-23408
 
-`CONFIG_SECURITY_APPARMOR` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SECURITY_APPARMOR` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Rcu Nocb Cpu {#config-rcu-nocb-cpu}
 
@@ -4454,7 +4454,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_RCU_NOCB_CPU` not set
 **CVEs covered**: CVE-2024-35929, CVE-2025-38704
 
-`CONFIG_RCU_NOCB_CPU` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_RCU_NOCB_CPU` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Debug Mutexes {#config-debug-mutexes}
 
@@ -4462,7 +4462,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DEBUG_MUTEXES` not set
 **CVEs covered**: CVE-2023-52836
 
-`CONFIG_DEBUG_MUTEXES` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DEBUG_MUTEXES` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Stm {#config-stm}
 
@@ -4470,7 +4470,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_STM` not set
 **CVEs covered**: CVE-2024-38627
 
-`CONFIG_STM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_STM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Greybus {#config-greybus}
 
@@ -4478,7 +4478,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_GREYBUS` not set
 **CVEs covered**: CVE-2024-39495
 
-`CONFIG_GREYBUS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_GREYBUS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Ionic {#config-ionic}
 
@@ -4486,7 +4486,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_IONIC` not set
 **CVEs covered**: CVE-2024-39502
 
-`CONFIG_IONIC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_IONIC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Crypto Dev Hisi Sec2 {#config-crypto-dev-hisi-sec2}
 
@@ -4494,7 +4494,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_CRYPTO_DEV_HISI_SEC2` not set
 **CVEs covered**: CVE-2024-42147, CVE-2024-47730
 
-`CONFIG_CRYPTO_DEV_HISI_SEC2` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_CRYPTO_DEV_HISI_SEC2` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Bna {#config-bna}
 
@@ -4502,7 +4502,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_BNA` not set
 **CVEs covered**: CVE-2024-43839
 
-`CONFIG_BNA` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BNA` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Drm Aspeed Gfx {#config-drm-aspeed-gfx}
 
@@ -4510,7 +4510,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DRM_ASPEED_GFX` not set
 **CVEs covered**: CVE-2023-52916
 
-`CONFIG_DRM_ASPEED_GFX` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_ASPEED_GFX` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Pci Kirin {#config-pci-kirin}
 
@@ -4518,7 +4518,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_PCI_KIRIN` not set
 **CVEs covered**: CVE-2024-47751
 
-`CONFIG_PCI_KIRIN` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_PCI_KIRIN` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Drm Stm {#config-drm-stm}
 
@@ -4526,7 +4526,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DRM_STM` not set
 **CVEs covered**: CVE-2024-49992
 
-`CONFIG_DRM_STM` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_STM` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Hi Gmac {#config-hi-gmac}
 
@@ -4534,7 +4534,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_HI_GMAC` not set
 **CVEs covered**: CVE-2022-48960, CVE-2022-48962
 
-`CONFIG_HI_GMAC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HI_GMAC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Hsr {#config-hsr}
 
@@ -4542,7 +4542,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_HSR` not set
 **CVEs covered**: CVE-2022-49015
 
-`CONFIG_HSR` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HSR` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Typec {#config-typec}
 
@@ -4550,7 +4550,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_TYPEC` not set
 **CVEs covered**: CVE-2024-50150
 
-`CONFIG_TYPEC` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_TYPEC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Mse102X {#config-mse102x}
 
@@ -4558,7 +4558,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MSE102X` not set
 **CVEs covered**: CVE-2024-50276
 
-`CONFIG_MSE102X` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MSE102X` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Video S5P Jpeg {#config-video-s5p-jpeg}
 
@@ -4566,7 +4566,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_S5P_JPEG` not set
 **CVEs covered**: CVE-2024-53061
 
-`CONFIG_VIDEO_S5P_JPEG` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_S5P_JPEG` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Arm Scmi Protocol {#config-arm-scmi-protocol}
 
@@ -4574,7 +4574,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_ARM_SCMI_PROTOCOL` not set
 **CVEs covered**: CVE-2024-53068
 
-`CONFIG_ARM_SCMI_PROTOCOL` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_ARM_SCMI_PROTOCOL` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Intel Xe GPU Driver {#drm-xe-driver}
 
@@ -4582,7 +4582,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DRM_XE` not set
 **CVEs covered**: CVE-2024-53098
 
-`CONFIG_DRM_XE` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_XE` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Hyperv Vsockets {#config-hyperv-vsockets}
 
@@ -4590,7 +4590,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_HYPERV_VSOCKETS` not set
 **CVEs covered**: CVE-2024-53103
 
-`CONFIG_HYPERV_VSOCKETS` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_HYPERV_VSOCKETS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Usb Lan78Xx {#config-usb-lan78xx}
 
@@ -4598,7 +4598,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_USB_LAN78XX` not set
 **CVEs covered**: CVE-2024-53213
 
-`CONFIG_USB_LAN78XX` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_LAN78XX` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Drm Xlnx {#config-drm-xlnx}
 
@@ -4606,7 +4606,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_DRM_XLNX` not set
 **CVEs covered**: CVE-2024-56538
 
-`CONFIG_DRM_XLNX` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_DRM_XLNX` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Usb Net Cdcether {#config-usb-net-cdcether}
 
@@ -4614,7 +4614,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_USB_NET_CDCETHER` not set
 **CVEs covered**: CVE-2025-38153
 
-`CONFIG_USB_NET_CDCETHER` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_USB_NET_CDCETHER` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Md Raid10 {#config-md-raid10}
 
@@ -4622,7 +4622,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_MD_RAID10` not set
 **CVEs covered**: CVE-2023-53357
 
-`CONFIG_MD_RAID10` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_MD_RAID10` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ### Video Adv748X {#config-video-adv748x}
 
@@ -4630,13 +4630,13 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_VIDEO_ADV748X` not set
 **CVEs covered**: CVE-2025-71136
 
-`CONFIG_VIDEO_ADV748X` is not compiled into the HeartSuite Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_VIDEO_ADV748X` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
 
 ## Scanner Guidance
 
-When a scanner flags HeartSuite Root Lock for a CVE listed as Not Affected on this page, the result is a version-string match: the scanner has identified a kernel version older than the upstream fix but has not evaluated whether the vulnerable code path is compiled in.
+When a scanner flags Root Lock by HeartSuite for a CVE listed as Not Affected on this page, the result is a version-string match: the scanner has identified a kernel version older than the upstream fix but has not evaluated whether the vulnerable code path is compiled in.
 
-Share this page with your auditor or scanner vendor as the reference for any disputed CVE entry. For compliance teams that require a configuration-level proof, the config gate for any entry on this page can be confirmed on the HeartSuite Root Lock host:
+Share this page with your auditor or scanner vendor as the reference for any disputed CVE entry. For compliance teams that require a configuration-level proof, the config gate for any entry on this page can be confirmed on the Root Lock by HeartSuite host:
 
 ```bash
 grep CONFIG_<GATE> /boot/config-$(uname -r)

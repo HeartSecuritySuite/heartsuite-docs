@@ -1,7 +1,7 @@
 # Contributing to HeartSuite Documentation
 **Author: Ron Hessing**
 
-Welcome! HeartSuite Root Lock is an enterprise-grade security suite built on a hardened Linux kernel. We greatly appreciate your help in improving our documentation. This guide explains how to contribute effectively to the HeartSuite docs.
+Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on a hardened Linux kernel. We greatly appreciate your help in improving our documentation. This guide explains how to contribute effectively to the HeartSuite docs.
 
 ## Ways to Contribute
 
@@ -15,7 +15,7 @@ Welcome! HeartSuite Root Lock is an enterprise-grade security suite built on a h
 
 ### Prerequisites
 - Basic knowledge of Markdown and static site generators.
-- Familiarity with HeartSuite Root Lock (see [core repo](https://github.com/HeartSecuritySuite/heartsuite-core-secure)).
+- Familiarity with Root Lock by HeartSuite (see [core repo](https://github.com/HeartSecuritySuite/heartsuite-core-secure)).
 - Git and GitHub account.
 
 ### Local Setup

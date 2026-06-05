@@ -1,14 +1,14 @@
 ---
 title: "Security Auditor Brief: Kernel Hardening Posture"
 weight: 20
-description: "Technical assessment of HeartSuite Root Lock kernel 5.19.6 hardening posture for security auditors and red teams — threat model, measured scores, residual risks, and self-reproduction instructions."
+description: "Technical assessment of Root Lock by HeartSuite kernel 5.19.6 hardening posture for security auditors and red teams — threat model, measured scores, residual risks, and self-reproduction instructions."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
 toc: true
 ---
 
-**Subject:** HeartSuite Root Lock, kernel 5.19.6  
+**Subject:** Root Lock by HeartSuite, kernel 5.19.6  
 **Config SHA-256:** `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`  
 **Measured:** 2026-05-19 using kernel-hardening-checker commit `b9b83a0`  
 **Full data:** `kernel-comparison-matrix-5.19.6.md`, `evidence-pack-5.19.6.txt`

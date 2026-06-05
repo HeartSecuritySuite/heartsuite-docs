@@ -29,7 +29,7 @@ When launchers are pending, the Dashboard shows:
 
 ![Script Launchers with 2 pending interpreters](test_docs_script_launchers_pending.svg)
 
-Press `[a]` to activate all pending launchers at once. HeartSuite Root Lock registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
+Press `[a]` to activate all pending launchers at once. Root Lock by HeartSuite registers each interpreter with its Secure Script Launcher — from this point forward, every call to that interpreter automatically routes through the launcher, applying per-script permissions.
 
 After activation, the Dashboard confirms which launchers were activated:
 
@@ -54,7 +54,7 @@ Phase 3 is not required if your system does not use script interpreters.
 
 ## Skipping launcher setup
 
-Press `[s]` to skip without activating. HeartSuite Root Lock notifies you:
+Press `[s]` to skip without activating. Root Lock by HeartSuite notifies you:
 
 ```text
 Script launcher activation skipped.

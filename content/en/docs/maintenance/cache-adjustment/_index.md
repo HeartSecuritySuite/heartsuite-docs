@@ -1,7 +1,7 @@
 ---
 title: "Adjusting the Cache Size"
 weight: 3
-description: "How HeartSuite Root Lock auto-tunes its allowlist cache, and when manual intervention is needed."
+description: "How Root Lock by HeartSuite auto-tunes its allowlist cache, and when manual intervention is needed."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "cache", "performance", "tuning"]
 type: docs
@@ -9,7 +9,7 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: HeartSuite Root Lock caches allowlist entries in kernel memory for performance — each cache slot holds one program. The Dashboard automatically expands the cache to match your allowlist size, so for most systems no tuning is needed. Manual adjustment is only relevant when the allowlist exceeds the kernel cache maximum of 255 entries.
+**Overview**: Root Lock by HeartSuite caches allowlist entries in kernel memory for performance — each cache slot holds one program. The Dashboard automatically expands the cache to match your allowlist size, so for most systems no tuning is needed. Manual adjustment is only relevant when the allowlist exceeds the kernel cache maximum of 255 entries.
 
 ## Automatic cache expansion
 

@@ -1,7 +1,7 @@
 ---
 title: "Compliance Quick Reference"
 weight: 111
-description: "One-page answers to the most common compliance questions about HeartSuite Root Lock — for auditors, sales conversations, and internal briefings."
+description: "One-page answers to the most common compliance questions about Root Lock by HeartSuite — for auditors, sales conversations, and internal briefings."
 categories: ["Reference"]
 tags: ["compliance", "NIST", "ISO 27001", "quick reference"]
 type: docs

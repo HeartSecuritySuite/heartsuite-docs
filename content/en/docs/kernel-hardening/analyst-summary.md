@@ -1,14 +1,14 @@
 ---
 title: "Analyst Summary: HeartSuite Kernel Hardening"
 weight: 60
-description: "Plain-language summary of HeartSuite Root Lock kernel hardening for journalists, analysts, and non-technical reviewers — with fact-checker citations."
+description: "Plain-language summary of Root Lock by HeartSuite kernel hardening for journalists, analysts, and non-technical reviewers — with fact-checker citations."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "overview"]
 type: docs
 toc: false
 ---
 
-*Kernel: HeartSuite Root Lock 5.19.6. Config hash: `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`. Measured: 2026-05-19.*
+*Kernel: Root Lock by HeartSuite 5.19.6. Config hash: `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`. Measured: 2026-05-19.*
 
 ---
 

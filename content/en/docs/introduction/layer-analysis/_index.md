@@ -34,7 +34,7 @@ The higher the layer, the more layers beneath it an attacker can leverage to dis
 
 | Mechanism | Products |
 |---|---|
-| Kernel-embedded allowlist / stripped kernel | **HeartSuite Root Lock**, custom hardened kernels, unikernels |
+| Kernel-embedded allowlist / stripped kernel | **Root Lock by HeartSuite**, custom hardened kernels, unikernels |
 | Hardware-virtualized micro-isolation | Firecracker, Kata Containers, Cloud Hypervisor |
 
 Enforcement is part of the kernel binary. Changing it requires a reboot into a different kernel. Remote root is not sufficient to disable it.
@@ -45,7 +45,7 @@ Enforcement is part of the kernel binary. Changing it requires a reboot into a d
 |---|---|
 | Userspace syscall-emulating kernel (intercepts container syscalls) | gVisor (sentry process) |
 
-gVisor intercepts container syscalls in a userspace process that acts as the container's kernel, reducing exposure to the host kernel. The sentry process runs in userspace and can be compromised; a bug in its syscall emulation can allow escape. HeartSuite Root Lock running as a guest kernel inside a gVisor-isolated container is a coherent composition — see [How It Compares → gVisor](../how-it-compares/#what-heartsuite-root-lock-replaces).
+gVisor intercepts container syscalls in a userspace process that acts as the container's kernel, reducing exposure to the host kernel. The sentry process runs in userspace and can be compromised; a bug in its syscall emulation can allow escape. Root Lock by HeartSuite running as a guest kernel inside a gVisor-isolated container is a coherent composition — see [How It Compares → gVisor](../how-it-compares/#what-root-lock-by-heartsuite-replaces).
 
 ### Layer 3 — LSM hooks (in-tree)
 
@@ -86,7 +86,7 @@ These tools set up confinement using kernel primitives (seccomp-bpf, Linux names
 |---|---|
 | Kernel module or eBPF agent: telemetry, detection, response | CrowdStrike Falcon, SentinelOne Singularity, Microsoft Defender for Endpoint, Elastic Defend, Wazuh |
 
-The agent provides detection and response capabilities that HeartSuite Root Lock does not replicate. Most modern breaches include "disable EDR" as an early step — root can kill the agent process, unload the kernel module, or exploit a BYOVD path. Treat these as complementary to Layer 2 enforcement, not substitutes.
+The agent provides detection and response capabilities that Root Lock by HeartSuite does not replicate. Most modern breaches include "disable EDR" as an early step — root can kill the agent process, unload the kernel module, or exploit a BYOVD path. Treat these as complementary to Layer 2 enforcement, not substitutes.
 
 ## Complementary controls (no enforcement overlap)
 
@@ -102,6 +102,6 @@ These products do not overlap with Layers 2–5 enforcement. They answer differe
 
 ## Takeaway
 
-HeartSuite Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement product sits at Layer 3 (LSM hooks, eBPF programs) or higher — meaning a sufficiently privileged attacker can disable it remotely without rebooting. The Layer 2 position is what makes physical presence the only bypass path.
+Root Lock by HeartSuite is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement product sits at Layer 3 (LSM hooks, eBPF programs) or higher — meaning a sufficiently privileged attacker can disable it remotely without rebooting. The Layer 2 position is what makes physical presence the only bypass path.
 
 For the product-by-product comparison with bypass analysis, see [How It Compares](../how-it-compares/).
