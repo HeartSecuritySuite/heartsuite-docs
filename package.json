@@ -56,7 +56,7 @@
     "markdownlint-cli2": "^0.21.0",
     "autoprefixer": "^10.4.24",
     "cross-env": "^10.1.0",
-    "hugo-extended": "0.155.3",
+    "hugo-extended": "0.163.0",
     "postcss-cli": "^11.0.1",
     "rtlcss": "^4.3.0"
   },
