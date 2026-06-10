@@ -9,7 +9,7 @@ type: docs
 
 **Purpose**: This document maps Root Lock by HeartSuite product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. It is written for use by HeartSuite customers preparing for SOC 2 Type I or Type II audits, and as a reference document to hand to auditors.
 
-Each criterion entry includes: the control requirement, how HeartSuite satisfies it, where it does not, and what evidence an auditor should request.
+Each criterion entry includes: the control requirement, how HeartSuite satisfies it, where it does not, and what evidence an auditor should request. The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described in the logging and change-management sections below and are the primary artifacts for reconstructing allowlist changes and enforcement decisions.
 
 ---
 
@@ -57,12 +57,12 @@ Access permissions are built during Setup Mode via the Dashboard's review queues
 
 Under Lockdown, the allowlist is sealed using filesystem immutability (`chattr +i`) and the running kernel refuses any modification to it — including from root. No program or user can extend access permissions at runtime.
 
-**Scope**: HeartSuite records a timestamp and TTY for every allowlist approval action. In environments where multiple administrators share root access, TTY-to-person attribution requires correlating this log against customer-side session records — terminal session logging (`auditd`) or a privileged access management tool provides this attribution. Dashboard access requires Linux root credentials; there is no additional authentication layer within HeartSuite.
+**Scope**: Every allowlist approval action (programs, file paths, network destinations) is recorded in a dedicated, persistent JSONL approval log with timestamp, uid, and tty. This provides direct session attribution for changes to the policy. In environments where multiple administrators share root access, uid/tty-to-person attribution still requires correlating against customer-side session records (terminal session logging via `auditd`, a privileged access management tool, or equivalent). Dashboard access requires Linux root credentials; there is no additional authentication layer within HeartSuite.
 
 **Evidence artifacts**:
 
 - Dashboard allowlist export (Programs, File Access, Internet Access queues)
-- Allowlist approval audit log showing timestamp, TTY, and entry details for each approval action
+- Dedicated JSONL approval log showing timestamp, uid, tty, and entry details for each approval action
 - Lockdown status screenshot showing "Applied"
 - `hs-manage-allowlist list` output showing per-program permissions
 - Demonstration that a non-allowlisted program cannot execute while Lockdown is active
@@ -211,7 +211,8 @@ This is the primary use case of Root Lock by HeartSuite. The implementation is s
 
 - Alert channel configuration (email, syslog, webhook)
 - Alert log showing state-change alerts
-- Syslog forwarding configuration to SIEM (rsyslog rule in `/etc/rsyslog.d/heartsuite.conf`)
+- Syslog forwarding configuration to SIEM (rsyslog rule capturing the `heartsuite` ident)
+- Dedicated JSONL approval log (for change attribution)
 - CVE status table showing HeartSuite's kernel vulnerability posture
 - Vulnerability scanner reports (separate tool — HeartSuite does not provide this)
 
@@ -236,12 +237,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 **Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
 
-**Syslog integration**: When syslog is enabled, all alerts are written to the system log via `/dev/log` using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. These can be forwarded to any SIEM via an rsyslog output rule:
-
-```
-# /etc/rsyslog.d/heartsuite.conf
-if $programname == 'heartsuite-alert' then @@siem-host:514
-```
+**Syslog integration**: Root Lock by HeartSuite emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME (a single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both). The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`; the structured data includes the decision type, program, and target. Lag is typically under one second. The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
 
 **Webhook integration**: Every alert is POSTed immediately as a JSON payload to the configured webhook endpoint. Example payload structure:
 
@@ -259,15 +255,17 @@ if $programname == 'heartsuite-alert' then @@siem-host:514
 
 This payload can drive PagerDuty, OpsGenie, Slack, or any incident management tool.
 
-**Log retention**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The UI audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB with no time-based retention. For SOC 2 Type II evidence spanning a 6- or 12-month audit period, syslog forwarding to a customer-operated SIEM is required — on-device logs alone do not support audit-period-length retention.
+**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown advisories are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
 
 **Evidence artifacts**:
 
-- Syslog forwarding rule in `/etc/rsyslog.d/heartsuite.conf`
+- Syslog forwarding rule in `/etc/rsyslog.d/heartsuite.conf` (or equivalent) capturing the `heartsuite` ident
+- Dedicated JSONL approval log with timestamp, uid, tty, and entry details for every allowlist change
+- Per-decision enforcement stream records in the customer SIEM (MSGIDs for program, file, and network decisions)
 - Sample alert payloads from webhook endpoint
 - `~/.cache/heartsuite/status.json` showing current system state
-- SIEM alert records covering the audit period (customer-operated SIEM required for Type II evidence)
-- Verification: `journalctl -t heartsuite-alert --since "1 hour ago"` showing alert activity
+- SIEM alert records and raw enforcement events covering the audit period (customer-operated SIEM required for Type II evidence spanning months)
+- Verification: `journalctl -t heartsuite --since "1 hour ago"` (or the equivalent facility) showing both enforcement and alert activity
 
 ---
 
@@ -418,7 +416,7 @@ The installer aborts if run on the active HeartSuite kernel, requiring the two-r
 
 **Allowlist as change record**:
 
-The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created by an administrator pressing `[a]` to approve a specific item. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
+The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created by an administrator through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
 
 **Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint. Each server manages its own allowlist independently; there is no centralized allowlist distribution or push mechanism. In fleet deployments, allowlist changes must be applied per server.
 
@@ -427,6 +425,7 @@ The allowlist is the authoritative record of every program, file access, and net
 - Maintenance window log showing dates of mode changes
 - Update installation log at `/var/log/heartsuite/install.log`
 - SHA-256 verification output from update procedure
+- Dedicated JSONL approval log with timestamp, uid, tty, and the specific program, file, or network entries approved in each change
 - Allowlist showing programs, file accesses, and network destinations approved for each maintenance cycle
 - Dashboard queue review records showing items approved during each maintenance window
 
@@ -490,8 +489,8 @@ The allowlist is the authoritative record of every program, file access, and net
 | CC6.6 Infrastructure access | Lockdown seals 5 categories (`chattr +i`); Non-HS kernel requires physical/serial presence | Sealed file inventory, Lockdown activation log |
 | CC6.7 Transmission protection | Per-program outbound allowlist in Lockdown; HTTPS-only webhook; no inbound controls | Network allowlist, webhook config |
 | CC6.8 Malware prevention | Default-deny execution in Lockdown; Secure Script Launchers; compiled-out rootkit features; per-write backup | Block alert log, CVE table, backup config |
-| CC7.1 Threat detection | Block alerts (new program, network burst, critical file); SIEM syslog integration | Alert configuration, syslog rule, alert log |
-| CC7.2 System monitoring | Protection state indicator; status.json; syslog/webhook push; on-device logs cleared on maintenance | SIEM records required for Type II audit period |
+| CC7.1 Threat detection | Block alerts (new program, network burst, critical file); SIEM syslog integration (per-decision enforcement stream + alert stream) | Alert configuration, syslog rule, dedicated JSONL approval log, SIEM records |
+| CC7.2 System monitoring | Protection state indicator; status.json; two syslog streams (enforcement decisions + alerts); webhook; dedicated JSONL approval log; rotating application audit log | SIEM records + JSONL approval log for Type II audit period |
 | CC7.3 Security event evaluation | Alert classification (immediate vs. threshold); Lockdown queue for investigation | Alert logs, denied-item queue, SIEM records |
 | CC7.4 Incident response | Structural containment; investigation queue; file restore; no customer IR runbook template | Maintenance log, restore records, customer IR policy |
 | CC7.5 Recovery | Per-write versioned backup under kernel protection; alerts on backup-disabled and coverage-reduced transitions; no encryption at HeartSuite layer | Backup config, version history, restore log |

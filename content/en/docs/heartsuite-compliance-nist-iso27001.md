@@ -93,7 +93,7 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 | **A.5.15** — Access control | Kernel-enforced per-programme access control, overriding user and root privilege. Supports enforcement of an access control policy. |
 | **A.5.22** — Monitoring, review and change management of supplier services | HeartSuite has conducted a rigorous internal security audit covering 42 formally evidenced properties across multiple scenario categories. No independent third-party engagement has been commissioned. HeartSuite is not submitted to NCSC CPA, NIAP, or Common Criteria evaluation. Several kernel hardening choices (`CONFIG_BPF_SYSCALL=n`, `CONFIG_KEXEC_FILE=n`, removal of eBPF verifier exposure, `chattr`-based immutability) align with the attack-surface-reduction objectives of Common Criteria Protection Profiles, but the certification process has not been initiated. |
 | **A.5.23** — ICT supply chain security | Partially. HeartSuite blocks new or modified binaries at the execution gate, preventing a trojanised update from running unless it replaces an already-allowlisted binary with identical path. |
-| **A.5.28** — Collection of evidence | Kernel logs and Dashboard queue data constitute evidence of denied activity. Export requires SIEM integration. |
+| **A.5.28** — Collection of evidence | Per-decision enforcement stream, dedicated JSONL approval log (with uid/tty attribution), rotating application audit log, and Dashboard records constitute attributable evidence of both policy changes and enforcement decisions. Export to SIEM is the path for long-term retention and fleet correlation. |
 | **A.5.29** — Information security during disruption | Not covered. No continuity or DR controls. |
 | **A.5.30** — ICT readiness for business continuity | Not covered. |
 
@@ -124,7 +124,7 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
 | **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
-| **A.8.15** — Logging | Kernel logs all programme execution, file access, and network connection attempts. Dashboard queues surface denied activity. On-device retention: `/.hs/sys/HS_log.txt` is cleared on each maintenance cycle; `/var/log/heartsuite/ui.log` is size-capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log; a customer-operated SIEM receiving the syslog alert feed is required for audit-period-length evidence. |
+| **A.8.15** — Logging | Kernel emits a per-decision enforcement stream (every execution, file access, and network decision) and a separate higher-level alert stream as structured RFC 5424 syslog under the `heartsuite` APP-NAME. Every allowlist approval is written to a dedicated, persistent JSONL log with timestamp, uid, and tty. An always-on rotating application audit log captures UI and core events. On-device activity buffers are cleared on maintenance; the syslog streams and dedicated JSONL approval log are the mechanisms for audit-period retention and reconstruction. Lockdown advisories are verdict-driven with provenance to the underlying records. |
 | **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no inbound API, no remote allowlist control, and no centralised view across hosts. No fleet-wide or behavioural monitoring. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
 | **A.8.18** — Use of privileged utility programmes | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
@@ -244,7 +244,7 @@ HeartSuite addresses a narrow but high-value control: **kernel-enforced, root-re
 | Outbound network control | Primary control | Firewall / NAC for inbound |
 | Configuration immutability | Primary control | — |
 | File backup & recovery | Primary control | Offsite / encrypted backup for DR |
-| Fleet-wide logging | None | SIEM (Splunk, Sentinel, Elastic) |
+| Fleet-wide logging | Per-decision enforcement stream + dedicated JSONL approval log + rotating audit log (on-host); direct RFC 5424 syslog export | SIEM (Splunk, Sentinel, Elastic, Datadog, QRadar) for retention, correlation, and cross-host views |
 | Behavioural detection | None | NDR / EDR |
 | Vulnerability management | None | Scanner (Nessus, Qualys, Wiz) |
 | Identity & access management | None | IAM / PAM platform |
