@@ -53,7 +53,13 @@ HeartSuite installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-
 
 **What are the logging retention limits?**
 
-`/.hs/sys/HS_log.txt` is cleared on each maintenance cycle. `/var/log/heartsuite/ui.log` is capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log — a SIEM receiving the syslog alert feed is required for audit-period-length evidence (SOC 2 Type II, ISO 27001 surveillance).
+`/.hs/sys/HS_log.txt` is cleared on each maintenance cycle. `/var/log/heartsuite/ui.log` is capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log — the syslog streams are the mechanism for audit-period-length evidence (SOC 2 Type II, ISO 27001 surveillance).
+
+---
+
+**What audit logging and SIEM integration does HeartSuite provide?**
+
+Root Lock by HeartSuite includes SOC 2-aligned audit logging and SIEM integration so security teams and auditors have a complete, attributable record of what happened. Every allowlist approval (programs, file paths, network destinations) is written to a dedicated, persistent JSONL audit log with timestamp, uid, and tty. All kernel enforcement decisions are streamed in real time as structured RFC 5424 syslog for direct ingestion into Splunk, Elastic, Datadog, QRadar, and similar platforms — separate from higher-level alerts. An always-on rotating application audit log captures UI and core events. Lockdown advisories are verdict-driven and provenance-gated for high-signal auditability.
 
 ---
 

@@ -80,9 +80,11 @@ Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Laun
 
 These files are written automatically by Root Lock by HeartSuite. They are not tools and require no user invocation.
 
-- **`/.hs/sys/HS_log.txt`** — the on-device activity log. Records program executions, file accesses, and network connection attempts observed during Setup Mode. The Dashboard auto-clears this log when all review queues are empty; `hs-clear-logs` clears it manually. Not retained across maintenance cycles — forward alerts to a SIEM via syslog for audit-period-length retention.
+- **`/.hs/sys/HS_log.txt`** — the on-device activity log. Records program executions, file accesses, and network connection attempts observed during Setup Mode. The Dashboard auto-clears this log when all review queues are empty; `hs-clear-logs` clears it manually. Not retained across maintenance cycles.
 - **`/var/log/heartsuite/install.log`** — written by the installer during updates. Records the steps and outcome of each update bundle application.
-- **`/var/log/heartsuite/ui.log`** — the Dashboard UI event log. Records Dashboard interactions and internal state transitions. Size-capped at approximately 8 MB with automatic rotation; no time-based retention policy. For compliance evidence spanning an audit period, rely on the syslog alert feed rather than this file.
+- **Dedicated JSONL approval log** — persistent record of every allowlist approval action (programs, file paths, network destinations). Each entry includes timestamp, uid, and tty for attribution. This is the primary machine-readable change log for compliance and audit reconstruction.
+- **`/var/log/heartsuite/ui.log`** — the rotating application audit log. Captures UI interactions, core events, and errors. Size-capped at approximately 8 MB with automatic rotation; no time-based retention policy.
+- **Syslog streams (RFC 5424)** — two real-time streams under the `heartsuite` APP-NAME: a per-decision enforcement stream (one record per kernel allow/deny decision for execution, file access, and network) and a higher-level alert stream (aggregated events such as `new_program_blocked`). Both are delivered to `/dev/log` and are the recommended path for SIEM ingestion (Splunk, Elastic, Datadog, QRadar, etc.). A single rsyslog rule can forward the `heartsuite` ident.
 - **`~/.cache/heartsuite/status.json`** — system status snapshot updated every 60 seconds. Read-only; used by Ansible, Nagios, Zabbix, and similar tools for automated health checks. Not a log — does not accumulate history.
 
   | Field | Type | Notes |
