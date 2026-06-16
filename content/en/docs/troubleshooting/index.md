@@ -30,7 +30,7 @@ Root Lock by HeartSuite captures all activity and presents it through the Dashbo
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
-For compliance, SIEM integration, or long-term retention, Root Lock by HeartSuite also emits a per-decision enforcement stream and a separate alert stream over RFC 5424 syslog, plus a dedicated persistent JSONL log of all allowlist approvals. These are described in the SOC 2 and compliance reference documents.
+For compliance, SIEM integration, or long-term retention, Root Lock by HeartSuite also emits a per-decision enforcement stream and a separate alert stream over RFC 5424 syslog (plus a persistent JSONL approval log). See the dedicated [SIEM and Fleet Integration](../alerts/siem-integration/) page for configuration examples. Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
 
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 

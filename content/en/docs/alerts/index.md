@@ -83,6 +83,8 @@ To receive this payload, create an integration in your incident management tool 
 > [!TIP]
 > At fleet scale, syslog is the primary integration path: enable syslog on all nodes, forward via rsyslog to your SIEM, and alert centrally from the SIEM's own rule engine. Webhook covers incident management tools (PagerDuty, OpsGenie). Status JSON covers Ansible health checks. Email is for single-machine deployments or as a supplementary channel.
 
+For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the "scale path for larger teams" guidance, see the dedicated [SIEM and Fleet Integration](siem-integration/) page.
+
 When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
 
 ## What triggers an alert

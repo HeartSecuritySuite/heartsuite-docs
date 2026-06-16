@@ -43,6 +43,7 @@ The pages below are the individual steps, linked from Quick Start:
 - [Network and Remote Access](network/) — Configure network permissions.
 - [Script Launchers](script-launchers/) — Secure interpreted script execution.
 - [Alert Settings](alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Lockdown).
+- [SIEM and Fleet Integration](alerts/siem-integration/) — Connect to Splunk, Elastic, PagerDuty, and other tools at fleet scale (syslog, webhook, status JSON). The recommended path for teams that do not want per-host TUI toil for routine monitoring.
 - [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
 ## Troubleshoot and reference
