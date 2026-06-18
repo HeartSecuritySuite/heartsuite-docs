@@ -100,6 +100,30 @@ Tools that can consume it directly:
 
 No configuration is required on the HeartSuite side.
 
+## Policy and posture data in Elastic and Kibana
+
+In addition to the enforcement and alert streams, HeartSuite can emit structured policy and posture data. This includes snapshots of the current allowlist together with periodic reports of the host's protection posture. When ingested into Elasticsearch, this data supports views of the allowlist across your fleet.
+
+You can use it for:
+
+- Tables of approved programs along with their exact file and network grants.
+- Summaries such as counts of programs, broad-write risks while locked down, and reporting hosts.
+- Detecting drift by comparing the stable `record_hash` across snapshots.
+- Filtering for higher-risk entries using fields such as `risk_level`, `has_broad_write`, `has_network_grant`, and `lockdown_active_at_capture`.
+
+The data works with visualization tools in Kibana and similar platforms:
+
+- Key fields for each program and its grants are directly available for tables and metrics.
+- Grant details remain accessible for further exploration.
+
+This view complements the host Dashboard and TUI: use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture and the allowlist at fleet scale.
+
+The bridge + exported data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via batch/hs-manage-allowlist (or limited_tools helpers), and use the Kibana tables/KPIs/record_hash for fleet visibility and drift detection.
+
+To send this data from hosts to a central system, enable the corresponding export option in the Fleet tab of Alert Settings. The normal enforcement events continue to flow over syslog or Filebeat as usual.
+
+See [Central Policy Management and External Control](central-policy-management/) for more on using this data centrally.
+
 ## Verification commands (run on the HeartSuite host)
 
 ```bash
@@ -116,6 +140,8 @@ cat ~/.cache/heartsuite/status.json | jq .
 All channels are configured in the single Alert Settings screen (`[e]`). The "Fleet" tab is the central place for SIEM/webhook/syslog + status. Email remains available as a supplementary or low-volume channel.
 
 At fleet scale the recommendation is clear: syslog for the SIEM, webhook for incident response platforms, and Status JSON for infrastructure-as-code health checks. The Dashboard remains the place for initial setup, exception review, and maintenance — not for ongoing fleet monitoring.
+
+Policy management is the inbound complement: your central systems curate and apply allowlists via the shipped CLI tools, pre-seeding, and automation patterns. See [Central Policy Management and External Control](central-policy-management/).
 
 Once at least one push channel is configured, Phase 6 (Alert Configuration) is complete and you can proceed to Lockdown.
 
