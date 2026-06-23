@@ -41,7 +41,58 @@ Examples for the primary integration patterns follow.
 
 ### 1. Ansible — playbooks for seeding and applying policy
 
-Use Ansible to distribute seed files and invoke the batch or management tools with become: true. A typical pattern:
+HeartSuite ships an official declarative Ansible role at `ansible/roles/heartsecurity.root_lock/` in the product installation. Use it as the preferred path for fleet policy application and Secure Mode transitions. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
+
+#### Official Ansible role: `heartsecurity.root_lock`
+
+**Overview**: The role provides variable-driven, idempotent management of allowlist programs and mode transitions. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns to HeartSuite.
+
+**Requirements**:
+
+- HeartSuite already installed on managed hosts (the role does not install the product).
+- `become: true` — all operations are privileged.
+- Ansible >= 2.9.
+- The role invokes the production Python API in `/opt/heartsuite` (`limited_tools` via `/opt/heartsuite/venv/bin/python3` and `/opt/heartsuite/src`).
+
+**Key variables** (all prefixed `hs_` to avoid collision with SELinux role variables):
+
+| Variable | Purpose |
+|----------|---------|
+| `hs_state` | Mode transition: `secure` or `lockdown` (synonyms). `setup` is informational only (no-op). Unset leaves mode unchanged. Calls `switch_to_secure()` with the same precondition gates as the Dashboard. |
+| `hs_programs` | List of absolute program paths to approve (uses `apply_allowlist_seed()` internally). |
+| `hs_seeds` | List of seed file paths, or literal inline paths when the entry is not an existing file. Seed files are plain text, one path per line; `#` comments and blank lines are ignored. Combine freely with `hs_programs`. |
+
+Additional variables include `hs_gather_status` (default `true`, exposes `hs_status` fact), `hs_purge` / `hs_purge_allowlist` (currently emit a warning only — the scriptable surface is additive by design), and `hs_python` / `hs_src_path` overrides for non-standard install layouts.
+
+**Idempotency**: All allowlist operations return `CommandResult` with `kind == "noop"` when an entry is already present. The role uses this for correct `changed_when` reporting, so repeated plays do not show spurious changes.
+
+Minimal example playbook:
+
+```yaml
+# heartsuite-root-lock.yml
+- name: Configure HeartSuite allowlist and engage Secure Mode
+  hosts: heartsuite_fleet
+  become: true
+  vars:
+    hs_state: secure
+    hs_programs:
+      - /usr/sbin/sshd
+      - /usr/bin/python3
+    hs_seeds:
+      - /var/lib/ansible/heartsuite/seed.txt
+  roles:
+    - heartsecurity.root_lock
+```
+
+After switching to `secure` or `lockdown`, a reboot is typically required for full seal; the role does not reboot automatically. Register facts (`hs_status`, `hs_apply_result`, `hs_switch_result`) are available for assertions or subsequent tasks.
+
+**Python API alternative**: For custom Ansible modules or non-Ansible automation, the same primitives are exposed directly via `limited_tools`: `approve_program_path`, `apply_allowlist_seed`, `get_status`, `get_allowlist_programs`, and `switch_to_secure`. These reuse the same gates and `CommandResult` semantics. The `heartsecurity.root_lock` role is the preferred declarative path; use the Python API when you need bespoke orchestration beyond the role variables.
+
+Register playbooks as the mechanism that executes change records approved in your central system.
+
+#### Shell + register alternative
+
+Use Ansible to distribute seed files and invoke the batch or management tools with `become: true`:
 
 ```yaml
 # heartsuite-policy-apply.yml
@@ -72,7 +123,7 @@ Use Ansible to distribute seed files and invoke the batch or management tools wi
       # Then copy or commit the harvest back to your policy repo
 ```
 
-Register the playbooks as the mechanism that executes change records approved in your central system.
+This pattern does not use `CommandResult.kind == "noop"` for `changed_when`; implement your own idempotency checks (for example `creates`, or `register` + conditional tasks).
 
 ### 2. Splunk / Elastic (and similar SIEMs) — ingesting for central dashboards and policy triggers
 
