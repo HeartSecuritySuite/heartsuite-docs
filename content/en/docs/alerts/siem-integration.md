@@ -188,6 +188,6 @@ At fleet scale the recommendation is clear: syslog for the SIEM, webhook for inc
 
 Policy management is the inbound complement: your central systems curate and apply allowlists via the shipped CLI tools, pre-seeding, and automation patterns. See [Central Policy Management and External Control](central-policy-management/).
 
-Once at least one push channel is configured, Phase 6 (Alert Configuration) is complete and you can proceed to Lockdown.
+Once at least one push channel is configured, Phase 6 (Alert Settings) is complete and you can proceed to Lockdown.
 
 For the UI configuration steps in detail, see the parent [Alert Settings](.) page.

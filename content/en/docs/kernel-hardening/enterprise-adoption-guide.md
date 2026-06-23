@@ -68,6 +68,7 @@ The bypass-prevention properties (physical presence required for any recovery pa
 Root Lock by HeartSuite is designed to coexist with the majority of enterprise infrastructure components that do not themselves depend on the disabled kernel features.
 
 **Works with (standard configurations)**:
+
 - Local and cloud block storage (ext4, xfs, and provider volumes) for the root and data filesystems.
 - Standard networking stacks and cloud provider vNICs / security groups (Root Lock by HeartSuite controls only outbound per-program destinations; inbound remains the responsibility of the OS firewall or cloud controls).
 - SIEM / SOAR ingestion via the two syslog streams and webhook (see [Alert Settings](../../alerts/)).
@@ -77,6 +78,7 @@ Root Lock by HeartSuite is designed to coexist with the majority of enterprise i
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
 **Requires the Non-HS kernel or a separate host** (or alternative controls):
+
 - Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is deliberately absent.
 - Dynamic Kubernetes environments with frequent pod creation, HPA scale-out, or rescheduling after Lockdown (mount operations required for new containers are refused).
 - KVM hypervisor hosts (KVM host-mode features are compiled out).
