@@ -9,11 +9,11 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers (`[l]`) shows detected interpreters and activates launchers in one step.
+**Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers (`[s]`) shows detected interpreters and activates launchers in one step.
 
 ## Activating launchers
 
-From the Dashboard, select Launchers (`[l]`). The Dashboard shows two sections:
+From the Dashboard, select Launchers (`[s]`). The Dashboard shows two sections:
 
 - **Script Launcher Status** — how many interpreters were detected and how many launchers are pending activation
 - **Detected Interpreters** — the list of interpreter paths found in the activity log, with their current launcher status
@@ -61,7 +61,7 @@ Script launcher activation skipped.
 Interpreters will remain blocked in Lockdown until approved.
 ```
 
-You can return to the Launchers (`[l]`) at any time to activate launchers before activating Lockdown.
+You can return to the Launchers (`[s]`) at any time to activate launchers before activating Lockdown.
 
 ## Testing a launcher directly
 

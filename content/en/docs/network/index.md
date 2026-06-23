@@ -9,28 +9,28 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: Programs make outbound connections you never approved — telemetry, update beacons, C2 callbacks. Root Lock by HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
+**Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
 
 ## Per-program, per-destination enforcement
 
 In Setup Mode, Root Lock by HeartSuite logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
-Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address — each program must have its own approved destinations. Root Lock by HeartSuite approves specific IPv4 and IPv6 addresses — not CIDR ranges, hostnames, or wildcards.
+Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address; each program must have its own approved destinations. Root Lock by HeartSuite approves specific IPv4 and IPv6 addresses, not CIDR ranges, hostnames, or wildcards.
 
 ## Using the Internet Access queue
 
 Select the Internet Access queue from the Dashboard (`[i]`). Each connection shows:
 
-- **Program** — the full path and package metadata (name, version, description, maintainer)
-- **Destination** — the IP address with reverse DNS hostname (e.g., `93.184.216.34 — example.com (Edgecast, US)`)
-- **Attempts** — how many times this connection was attempted
+- **Program**: the full path and package metadata (name, version, description, maintainer)
+- **Destination**: the IP address with reverse DNS hostname (e.g., `93.184.216.34 (example.com, Edgecast, US)`)
+- **Attempts**: how many times this connection was attempted
 
 Example review prompt:
 
 ```text
 /usr/bin/curl attempted an outbound connection:
-Destination: 93.184.216.34 — example.com (Edgecast, US)
-Program:     curl 7.88.1-10 — command line tool for transferring data with URL syntax
+Destination: 93.184.216.34 (example.com, Edgecast, US)
+Program:     curl 7.88.1-10 (command line tool for transferring data with URL syntax)
 Attempts:    7
 
 This destination has not been allowlisted for this program.
@@ -51,11 +51,11 @@ Suppose `wget` is on the program allowlist but no network destinations have been
 # wget https://example.com/agreement.html
 ```
 
-Root Lock by HeartSuite intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 — example.com`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
+Root Lock by HeartSuite intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 (example.com)`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
 
 ## Reviewing existing network permissions
 
-To browse or edit network destinations that have already been approved, select Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category — Programs, File Access, and Internet Access — so you can quickly find and modify network permissions.
+To browse or edit network destinations that have already been approved, select Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category (Programs, File Access, and Internet Access) so you can quickly find and modify network permissions.
 
 ## CLI access for scripting and automation
 
@@ -82,4 +82,4 @@ When the Internet Access queue is empty, the Dashboard marks Phase 5 complete an
 
 ## Inbound connections
 
-Root Lock by HeartSuite manages outbound connections only. Inbound connection filtering — restricting which ports are reachable, blocking port scans, rate-limiting login attempts — is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.
+Root Lock by HeartSuite manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.

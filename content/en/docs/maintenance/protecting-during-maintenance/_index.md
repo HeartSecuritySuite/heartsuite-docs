@@ -8,13 +8,13 @@ type: docs
 toc: true
 ---
 
-**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. The Dashboard's Maintenance (`[t]`) guides you through the entire process, from safety preparation to re-engaging Lockdown. The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. The Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown. The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
 Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock by HeartSuite kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the Non-HS kernel) is only needed when the immutable seal is active, which is the less common path.
 
 ## Starting maintenance
 
-From the Dashboard in Lockdown, select Maintenance (`[t]`). The Dashboard automatically detects whether the immutable seal is active and presents the correct path — you do not need to determine this yourself.
+From the Dashboard in Lockdown, select Maintenance (`[m]`). The Dashboard automatically detects whether the immutable seal is active and presents the correct path — you do not need to determine this yourself.
 
 ### Safety checklist
 
@@ -58,11 +58,11 @@ When Lockdown is active, the Maintenance does not offer the Setup Mode switch. I
 
 ### Step 1 of 3: boot Non-HS Kernel and remove immutable flags
 
-After the safety checklist and typing `YES` to confirm, the Dashboard prepares you for the GRUB boot menu — the one moment where it cannot provide guidance. It shows the exact Non-HS kernel name to select and warns you not to select the Root Lock by HeartSuite kernel. Press `[r]` to reboot.
+After the safety checklist and typing `YES` to confirm, the Dashboard prepares you for the GRUB boot menu — the one moment where it cannot provide guidance. It shows the exact entry to select (Maintenance or vanilla Non-HS; do not select the branded HS / Root Lock by HeartSuite kernel). Press `[r]` to reboot.
 
 The Dashboard saves your maintenance session state before rebooting. This state persists across reboots and kernel changes — the step counter ("Step X of 3") follows you throughout the process.
 
-After selecting the Non-HS kernel from GRUB, the Dashboard resumes automatically on login. It detects the absence of the Root Lock by HeartSuite kernel module and adjusts its interface — actions that require the Root Lock by HeartSuite kernel are hidden entirely, not greyed out. The Dashboard shows:
+After selecting the appropriate Non-HS / Maintenance entry from GRUB, the Dashboard resumes automatically on login. It detects the absence of the Root Lock by HeartSuite kernel module and adjusts its interface — actions that require the Root Lock by HeartSuite kernel are hidden entirely, not greyed out. The Dashboard shows:
 
 - "Non-HS kernel active. Root Lock by HeartSuite is not loaded."
 - "No blocking. No logging. No backups."
@@ -89,7 +89,7 @@ Make your changes — install software, update packages, modify configuration fi
 
 ### Step 3 of 3: boot Root Lock by HeartSuite kernel and review
 
-Select the Root Lock by HeartSuite kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
+Select the branded Root Lock by HeartSuite (HS) kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
 
 > [!WARNING]
 > The Non-HS kernel provides no Root Lock by HeartSuite protection whatsoever. The safety checklist is critical for this path.

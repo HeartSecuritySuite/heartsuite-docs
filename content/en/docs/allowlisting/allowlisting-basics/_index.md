@@ -211,7 +211,7 @@ Allow several days to a week of observation in Setup Mode to capture activity fr
 
 In Lockdown the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Lockdown. The queues show **denied** items (actions Root Lock by HeartSuite blocked), not pending items awaiting approval.
 
-Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance (`[t]`) — this switches to Setup Mode where the review queues become interactive again.
+Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance (`[m]`) — this switches to Setup Mode where the review queues become interactive again.
 
 > [!NOTE]
 > Denied items in Lockdown are a normal part of operation, not failures. A denied item means Root Lock by HeartSuite blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.

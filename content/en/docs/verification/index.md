@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Phase 1 (System Verification) confirms that Root Lock by HeartSuite is active and the system is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
+**Overview**: Phase 1 (System Verification) confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
 
 ## Cloud Path and Local Path
 
@@ -24,9 +24,9 @@ After completing the local installation process (download, GRUB preparation, ker
 
 When Phase 1 is complete, the Dashboard confirms:
 
-- **Protection state** (indicator at the top): Shows **SETUP MODE** — Root Lock by HeartSuite is active, logging only, nothing blocked
+- **Protection state** (indicator at the top): Shows **SETUP MODE**: Root Lock by HeartSuite is active, logging only, nothing blocked
 - **Phase Progress**: Shows Phase 1 as **Complete**
-- **Status line at the bottom**: Shows kernel type (`HS`), current mode, time in mode, and lockdown status
+- **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode, time in mode, and lockdown status
 - **Suggested Next Step**: Directs you to begin Phase 2: Program Allowlisting
 
 No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
@@ -37,28 +37,28 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 
 | State | Indicator |
 |-------|-----------|
-| Setup Mode | SETUP MODE — logging only, nothing is blocked |
-| Lockdown (no immutable seal) | LOCKDOWN — immutable seal not applied |
+| Setup Mode | SETUP MODE: logging only, nothing is blocked |
+| Lockdown (no immutable seal) | LOCKDOWN: immutable seal not applied |
 | Lockdown + sealed | No indicator (silence means safety) |
-| Non-HS kernel | NON-HS KERNEL — Root Lock by HeartSuite is not active. No blocking. No logging. No backups. |
+| maintenance kernel | maintenance kernel: Root Lock not active. No blocking. No logging. No backups. |
 
 ## Status line at the bottom
 
 Below the protection state indicator, a status line shows:
 
 ```text
-Kernel: HS    Mode: Setup — active for 3d 7h    Lockdown: —
+Root Lock    Setup Mode active for 3d 7h: logging only, nothing is blocked
 ```
 
-- **Kernel**: `HS` (Root Lock by HeartSuite kernel) or `Non-HS` (standard kernel)
-- **Mode**: Setup or Secure, with time in current mode
+- **Kernel indicator**: "Root Lock" (when the Root Lock by HeartSuite kernel is active) or "maintenance kernel" (when booted to the recovery kernel with no Root Lock by HeartSuite loaded)
+- **Mode**: Setup Mode or Lockdown, with time in current mode
 - **Lockdown**: `—` (Setup Mode), `Not applied` (Lockdown without immutable seal), or `Applied` (Lockdown with immutable seal)
 
 ## What to do if verification fails
 
-If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "NON-HS KERNEL" when you intended to boot Root Lock by HeartSuite):
+If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "maintenance kernel" when you intended to boot Root Lock by HeartSuite):
 
-1. Check the status line at the bottom of the Dashboard — it shows the kernel type (`HS` or `Non-HS`). If it shows `Non-HS`, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu.
+1. Check the status line at the bottom of the Dashboard. It shows the kernel indicator ("Root Lock" or "maintenance kernel"). If it shows the maintenance kernel, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu.
 2. Check that the Root Lock by HeartSuite systemd service is running:
 
    ```bash
@@ -66,7 +66,7 @@ If Phase 1 does not complete, or the indicator at the top shows a state you did 
    ```
 
 3. For local installations, verify that the System Setup completed — it shows **Setup Complete** in green when all startup and shutdown programs have been allowlisted. If not, return to the System Setup and press `[a]` to run another step.
-4. If the Dashboard shows "UNKNOWN STATE — protection status cannot be determined", follow the Suggested Next Step displayed on the Dashboard.
+4. If the Dashboard shows "UNKNOWN STATE: protection status cannot be determined", follow the Suggested Next Step displayed on the Dashboard.
 5. If the issue persists, contact support at support@heartsecsuite.com.
 
 > [!NOTE]

@@ -1,16 +1,20 @@
 ---
 title: "Procurement Brief: Kernel Hardening at a Glance"
-weight: 30
-description: "Plain-language comparison of Root Lock by HeartSuite kernel hardening against industry alternatives — for buyers and security decision-makers."
+weight: 5
+description: "Plain-language comparison of Root Lock by HeartSuite HS kernel hardening against industry alternatives — 6.18.9 primary commercial baseline; measured tables reference the published 5.19.6 legacy stream until 6.18.9 evidence ships."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "procurement", "comparison"]
 type: docs
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite, kernel 5.19.6  
-**Measured:** 2026-05-19 using kernel-hardening-checker, an independent open-source tool  
-**Full technical data:** `kernel-comparison-matrix-5.19.6.md`
+**Overview**: Side-by-side comparison of HeartSuite's kernel hardening choices against community hardened kernels and industry benchmarks — start here if you are evaluating the HS kernel for procurement.
+
+**Subject:** Root Lock by HeartSuite HS kernel — **6.18.9 primary** (commercial baseline, HeartSuite v1.6.4), **5.19.6 legacy**  
+**Evidence status:** Measured scores on this page reference the **published 5.19.6** stream (2026-05-19, [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker)). New deployments use **6.18.9**; config hash and checker parity for that stream are in progress — see [Evidence Status](evidence-status/) and [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/).  
+**Legacy technical data (measured):** [kernel-comparison-matrix-5.19.6.md](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
+
+For enterprise buyers and CISOs evaluating the custom kernel in regulated environments — including deployment patterns, Secure Boot status, fleet management, risk transfer, supply chain artifacts, recovery paths, compatibility, and alternatives for strict "no custom kernel" policies — see the [Enterprise Adoption Guide](enterprise-adoption-guide/). Kernel support policy, distribution compatibility, and scanner hygiene: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
 ---
 
@@ -18,7 +22,7 @@ toc: true
 
 Every Linux kernel ships with hundreds of configuration choices that determine how easy it is to exploit vulnerabilities or escape security controls. This document compares HeartSuite's kernel choices to a directly comparable community-hardened kernel and the KSPP industry benchmark.
 
-All numbers on this page are outputs of the same measurement tool applied identically to each kernel configuration. No estimates. The Arch linux-hardened comparison uses the 5.19.11 release — the same kernel generation as HeartSuite 5.19.6, making scores directly comparable.
+All numbers in the tables below are outputs of the same measurement tool applied identically to each **5.19.6-era** kernel configuration. No estimates. The Arch linux-hardened comparison uses the 5.19.11 release — the same kernel generation as HeartSuite 5.19.6, making scores directly comparable. **Do not** apply these figures to **6.18.9** deployments; request pre-release 6.18.9 evidence via support or watch [Evidence Status](evidence-status/) for publication.
 
 ---
 

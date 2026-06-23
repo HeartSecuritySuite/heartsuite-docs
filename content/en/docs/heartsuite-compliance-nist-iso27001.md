@@ -39,7 +39,7 @@ File Backup & Versioning takes an automatic snapshot on every write to designate
 
 HeartSuite contributes to asset visibility through its **programme allowlisting workflow**. During Setup Mode, all programme execution attempts are logged and surfaced in the Dashboard review queues with package metadata (name, version, install date, maintainer). This forms a working inventory of executable software on the host.
 
-**What is not covered:** HeartSuite does not produce a hardware asset inventory, does not integrate with a configuration management database (CMDB), and does not aggregate inventory across a fleet. The inventory it produces is per-host and lives in the Dashboard; there is no export to asset management tooling without a SIEM integration.
+**What is not covered:** HeartSuite does not produce a hardware asset inventory, does not integrate with a configuration management database (CMDB) via an inbound API, and does not aggregate inventory across a fleet on its own. The inventory it produces is per-host and lives in the Dashboard; export to asset management tooling and fleet aggregation is achieved via the syslog streams, status.json, dedicated JSONL approval log, and harvest of allowlist state into your SIEM or central systems (see [Central Policy Management and External Control](alerts/central-policy-management/)).
 
 Relevant CSF categories: ID.AM-1, ID.AM-2 (partially)
 
@@ -85,7 +85,7 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 
 ## ISO 27001:2022 Annex A Coverage
 
-### A.5 — Organisational Controls
+### A.5: Organisational Controls
 
 | Control | HeartSuite contribution |
 |---|---|
@@ -119,13 +119,13 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 | **A.8.5** — Secure authentication | Immutable seal protects `/etc/passwd`, `/etc/shadow`, and SSH configuration from runtime modification. HeartSuite does not provide authentication mechanisms itself. |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
 | **A.8.8** — Management of technical vulnerabilities | Not covered. HeartSuite constrains the impact of unpatched vulnerabilities via allowlist boundaries but does not scan for, report on, or remediate them. |
-| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. The allowlist is managed per-host only; there is no remote management interface or centralised distribution mechanism. Revoking a compromised allowlist entry requires a maintenance window — no emergency revocation path exists while Lockdown is active. Boot-path integrity: `CONFIG_IMA` is not set (Integrity Measurement Architecture disabled) and `CONFIG_KEXEC_FILE` is not set (signed-image kexec variant compiled out). The kernel image directory is sealed under Lockdown via `chattr +i`, but there is no Secure Boot enforcement, no shim, and no IMA measurement log. |
+| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. The allowlist is managed per-host; there is no built-in inbound remote management interface or multi-host push mechanism from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform + GitOps, ServiceNow, custom CM, etc.) with rich exports (status.json, dedicated JSONL approval log with uid/tty attribution, structured syslog, webhook) for central consumption and drift detection. See [Central Policy Management and External Control](alerts/central-policy-management/). Revoking a compromised allowlist entry requires a maintenance window — no emergency revocation path exists while Lockdown is active. Boot-path integrity: `CONFIG_IMA` is not set (Integrity Measurement Architecture disabled) and `CONFIG_KEXEC_FILE` is not set (signed-image kexec variant compiled out). The kernel image directory is sealed under Lockdown via `chattr +i`, but there is no Secure Boot enforcement, no shim, and no IMA measurement log. |
 | **A.8.10** — Information deletion | Not covered. HeartSuite's restricted `rm` under Lockdown limits accidental deletion but has no secure-deletion or data-retention controls. |
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
 | **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
 | **A.8.15** — Logging | Kernel emits a per-decision enforcement stream (every execution, file access, and network decision) and a separate higher-level alert stream as structured RFC 5424 syslog under the `heartsuite` APP-NAME. Every allowlist approval is written to a dedicated, persistent JSONL log with timestamp, uid, and tty. An always-on rotating application audit log captures UI and core events. On-device activity buffers are cleared on maintenance; the syslog streams and dedicated JSONL approval log are the mechanisms for audit-period retention and reconstruction. Lockdown advisories are verdict-driven with provenance to the underlying records. |
-| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no inbound API, no remote allowlist control, and no centralised view across hosts. No fleet-wide or behavioural monitoring. |
+| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no built-in inbound API or remote allowlist control from HeartSuite itself. Central policy application and fleet-wide views are achieved by driving the per-host CLI tools (hs-manage-allowlist, batch tools) from your automation and consuming the syslog streams, JSONL approval log, status.json, and webhook into your SIEM / CMDB / orchestration layer. See [Central Policy Management and External Control](alerts/central-policy-management/). No fleet-wide or behavioural monitoring inside HeartSuite. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
 | **A.8.18** — Use of privileged utility programmes | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
 | **A.8.19** — Installation of software on operational systems | Per-programme execution allowlist enforces "approved programmes only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
@@ -182,9 +182,9 @@ The following 11 questions remain without a complete public answer. Status annot
 
 ### Vulnerability & Patch Management
 
-1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Partially answerable.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. However, no patch SLA (e.g., "within 30 days of NVD publication") and no customer notification process are publicly documented.
+1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Mostly answerable in public docs.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets by severity, notification channels, and version-string semantics are in the [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner and audit workflows are in [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). Binding SLAs remain in the subscription agreement; OVAL/OSV feeds and GPG-signed bundles are not yet generally available.
 
-1. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* A detailed internal component inventory exists. The gaps to a publishable SBOM are format (SPDX or CycloneDX), upstream dependency tracking against NVD, and a publication decision — not a research problem. Update bundles are currently authenticated by SHA-256 only; there is no GPG or PGP signature against a HeartSuite-controlled key.
+1. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* SPDX/CycloneDX SBOM and GPG/cosign bundle signing are on the public roadmap; today bundles use SHA-256 only. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/) and [Evidence Status](../kernel-hardening/evidence-status/).
 
 1. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 
@@ -244,7 +244,7 @@ HeartSuite addresses a narrow but high-value control: **kernel-enforced, root-re
 | Outbound network control | Primary control | Firewall / NAC for inbound |
 | Configuration immutability | Primary control | — |
 | File backup & recovery | Primary control | Offsite / encrypted backup for DR |
-| Fleet-wide logging | Per-decision enforcement stream + dedicated JSONL approval log + rotating audit log (on-host); direct RFC 5424 syslog export | SIEM (Splunk, Sentinel, Elastic, Datadog, QRadar) for retention, correlation, and cross-host views |
+| Fleet-wide logging | Per-decision enforcement stream + dedicated JSONL approval log + rotating audit log (on-host); direct RFC 5424 syslog export; status.json and allowlist harvest for policy state | SIEM (Splunk, Sentinel, Elastic, Datadog, QRadar) plus your central automation / GitOps / ITSM for retention, correlation, cross-host views, and policy reconciliation |
 | Behavioural detection | None | NDR / EDR |
 | Vulnerability management | None | Scanner (Nessus, Qualys, Wiz) |
 | Identity & access management | None | IAM / PAM platform |

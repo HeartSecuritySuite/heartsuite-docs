@@ -1,0 +1,191 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:742a3e6d-a9f0-424d-bcba-93e286f36548",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-05-10T05:40:16+00:00",
+    "tools": [
+      {
+        "vendor": "Heart Security Suite, LLC",
+        "name": "heartsuite-generate-cyclonedx-sbom",
+        "version": "0.1.0"
+      }
+    ],
+    "component": {
+      "type": "application",
+      "bom-ref": "heartsuite-coordinated-bundle",
+      "name": "Root Lock by HeartSuite coordinated bundle",
+      "version": "1.6.4",
+      "description": "Coordinated HeartSuite release: userspace v1.6.4 with HS kernel 6.18.9-HeartSuite-1.0. Checksum-verified installer bundle; see supply-chain docs.",
+      "supplier": {
+        "name": "Heart Security Suite, LLC"
+      },
+      "externalReferences": [
+        {
+          "type": "documentation",
+          "url": "https://docs.heartsecsuite.com/docs/security/",
+          "comment": "Kernel Security Transparency \u2014 per-CVE status and Score on HeartSuite"
+        },
+        {
+          "type": "documentation",
+          "url": "https://docs.heartsecsuite.com/docs/kernel-hardening/kernel-support-policy/",
+          "comment": "HS kernel support policy \u2014 streams, patch targets, bundle delivery"
+        }
+      ],
+      "properties": [
+        {
+          "name": "hs:sbom-tier",
+          "value": "v0.1"
+        },
+        {
+          "name": "hs:sbom-honesty",
+          "value": "manual-component-list; not syft-generated"
+        },
+        {
+          "name": "hs:excluded-scopes",
+          "value": "full-kernel-source-tree-deps,transitive-python-closure,pyproject-optional-dev-dependencies,core-secure-kmod-binaries,distro-base-os-packages,gpg-cosign-attestations"
+        },
+        {
+          "name": "hs:pyproject-optional-dev-not-shipped",
+          "value": "pytest,pytest-asyncio,pytest-subprocess,ruff,import-linter"
+        },
+        {
+          "name": "hs:kernel-stream",
+          "value": "6.18"
+        },
+        {
+          "name": "hs:coordinated-bundle-version",
+          "value": "1.6.4"
+        },
+        {
+          "name": "hs:kernel-version",
+          "value": "6.18.9-HeartSuite-1.0"
+        },
+        {
+          "name": "hs:bundle-built",
+          "value": "2026-05-10T05:40:16Z"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "2cfdeb21f6f342eb5a0434c14689cf5f44945867"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "type": "operating-system",
+      "bom-ref": "hs-kernel",
+      "name": "hs-kernel",
+      "version": "6.18.9-HeartSuite-1.0",
+      "description": "HeartSuite custom Linux kernel (HS kernel). v0.1 SBOM lists the released stream identity only \u2014 not the full upstream source dependency graph.",
+      "supplier": {
+        "name": "Heart Security Suite, LLC"
+      },
+      "properties": [
+        {
+          "name": "hs:stream",
+          "value": "6.18"
+        },
+        {
+          "name": "hs:kernel-release",
+          "value": "6.18.9-HeartSuite-1.0"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "documentation",
+          "url": "https://docs.heartsecsuite.com/docs/security/",
+          "comment": "Kernel Security Transparency \u2014 per-CVE status and Score on HeartSuite"
+        },
+        {
+          "type": "documentation",
+          "url": "https://docs.heartsecsuite.com/docs/kernel-hardening/kernel-support-policy/",
+          "comment": "HS kernel support policy \u2014 streams, patch targets, bundle delivery"
+        }
+      ]
+    },
+    {
+      "type": "application",
+      "bom-ref": "heartsuite-userspace",
+      "name": "heartsuite-userspace",
+      "version": "1.6.4",
+      "description": "Root Lock by HeartSuite userspace stack (Dashboard, daemon, tools, installer payload).",
+      "supplier": {
+        "name": "Heart Security Suite, LLC"
+      },
+      "licenses": [
+        {
+          "license": {
+            "id": "BUSL-1.1"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "hs:built",
+          "value": "2026-05-10T05:40:16Z"
+        },
+        {
+          "name": "hs:manifest-public-sha",
+          "value": "2cfdeb2"
+        },
+        {
+          "name": "hs:manifest-private-sha",
+          "value": "4ccc194"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-1",
+          "content": "2cfdeb21f6f342eb5a0434c14689cf5f44945867"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "python-dep-textual",
+      "name": "textual",
+      "description": "Python runtime dependency from heartsuite/requirements.txt",
+      "properties": [
+        {
+          "name": "hs:scope",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "python-runtime",
+      "name": "python",
+      "version": ">=3.11",
+      "description": "Minimum Python runtime per heartsuite/pyproject.toml requires-python",
+      "properties": [
+        {
+          "name": "hs:scope",
+          "value": "runtime"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "heartsuite-coordinated-bundle",
+      "dependsOn": [
+        "hs-kernel",
+        "heartsuite-userspace",
+        "python-runtime"
+      ]
+    },
+    {
+      "ref": "heartsuite-userspace",
+      "dependsOn": [
+        "python-dep-textual",
+        "python-runtime"
+      ]
+    }
+  ]
+}

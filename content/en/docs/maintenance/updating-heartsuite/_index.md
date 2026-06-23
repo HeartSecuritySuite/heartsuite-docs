@@ -31,7 +31,7 @@ Root Lock by HeartSuite is not active while the Non-HS kernel is running. Schedu
 
 ## Before you begin
 
-- **Disengage Lockdown if it is active.** Lockdown uses `chattr +i` filesystem immutability on HeartSuite configuration files; the installer cannot replace them while Lockdown is engaged. From the Dashboard, open Maintenance (`[t]`) and follow the guided path to disengage.
+- **Disengage Lockdown if it is active.** Lockdown uses `chattr +i` filesystem immutability on HeartSuite configuration files; the installer cannot replace them while Lockdown is engaged. From the Dashboard, open Maintenance (`[m]`) and follow the guided path to disengage.
 - **Verify the bundle.** Compare the SHA-256 of `heartsuite-install.sh` against the published checksum before running it.
 
 ## Update procedure

@@ -12,7 +12,7 @@ menu:
     weight: 20
 ---
 
-**Overview**: Root Lock by HeartSuite installation follows one of two paths depending on your deployment method. Both paths end at the Dashboard, where Phase 1 (System Verification) confirms that the system is ready for allowlisting.
+**Overview**: Root Lock by HeartSuite installation follows one of two paths depending on your deployment method. Both paths end at the Dashboard, where Phase 1 (System Verification) confirms that the machine is ready for allowlisting.
 
 ## Cloud Path
 

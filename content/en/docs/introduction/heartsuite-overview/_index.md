@@ -80,7 +80,7 @@ Activating Lockdown requires all review queues to be empty, alerts to be configu
 
 Lockdown protects the integrity of allowlist entries by making them immutable. Once applied, no changes can be made to the allowlist while the server is running — preventing attackers from modifying the security configuration, even with root access.
 
-After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot; no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance (`[t]`) guides you through the correct maintenance path — including a guided 3-step process that boots the Non-HS kernel.
+After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot; no program or user, including root, can reverse it at runtime. To make changes, the Dashboard's Maintenance (`[m]`) guides you through the correct maintenance path — including a guided 3-step process that boots the Non-HS kernel.
 
 Because access permissions are enforced inside the Root Lock by HeartSuite kernel itself, Root Lock by HeartSuite cannot be circumvented by any program or user, including root, while the Root Lock by HeartSuite kernel is running.
 
@@ -104,7 +104,7 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## How Root Lock by HeartSuite stands alone
 
-No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make Root Lock by HeartSuite the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running. The backup files are protected by the Root Lock by HeartSuite kernel itself, not by filesystem permissions.
+No other product combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other products. Together, they make Root Lock by HeartSuite the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the machine is running. The backup files are protected by the Root Lock by HeartSuite kernel itself, not by filesystem permissions.
 
 ## Is Root Lock by HeartSuite right for you?
 

@@ -14,8 +14,8 @@ type: docs
 
 The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
-- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", or "NON-HS KERNEL", you immediately know what protection level is active. No indicator means Lockdown with immutable seal — full protection.
-- **Status line at the bottom**: Shows kernel type (`HS` or `Non-HS`), current mode with uptime, and lockdown status.
+- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", or "maintenance kernel", you immediately know what protection level is active. No indicator means Lockdown with immutable seal — full protection.
+- **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode with uptime, and lockdown status.
 - **Pending/Denied counts**: In Setup Mode, these are pending items awaiting approval. In Lockdown, these are denied actions that may need allowlisting.
 - **Suggested Next Step**: Provides a single, actionable recommendation based on the current system state.
 
@@ -26,7 +26,7 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ## Log management
 
-Root Lock by HeartSuite captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[t]`) provides guided workflows for common maintenance tasks.
+Root Lock by HeartSuite captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
@@ -44,7 +44,7 @@ The kernel log is useful for advanced troubleshooting in three situations: a pro
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the Root Lock by HeartSuite kernel and the Non-HS kernel — on the Non-HS kernel, the indicator at the top shows "NON-HS KERNEL" and blocking is inactive.
+The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the Root Lock by HeartSuite kernel and the maintenance kernel — on the maintenance kernel, the indicator at the top shows "maintenance kernel — Root Lock not active" and blocking is inactive.
 
 ## Reporting issues
 

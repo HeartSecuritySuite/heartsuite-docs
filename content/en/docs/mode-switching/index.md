@@ -13,20 +13,20 @@ menu:
     weight: 30
 ---
 
-**Overview**: When you lock down from Setup Mode, the kernel blocks every program not on the allowlist — including any you forgot to approve. The Dashboard guides the activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.
+**Overview**: When you lock down from Setup Mode, the kernel blocks every program not on the allowlist (including any you forgot to approve). The Dashboard guides the activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.
 
 ## System states
 
-Root Lock by HeartSuite has two modes: Setup Mode and Lockdown. Both run on the Root Lock by HeartSuite kernel. Lockdown seals the configuration with filesystem immutability. Both running Lockdown without the immutable seal and running Lockdown with the seal are valid configurations depending on your security requirements. Booting the original Non-HS kernel is not a Root Lock by HeartSuite mode at all; it is the system running without Root Lock by HeartSuite.
+Root Lock by HeartSuite has two modes: Setup Mode and Lockdown. Both run on the Root Lock by HeartSuite kernel. Lockdown seals the configuration with filesystem immutability. Both running Lockdown without the immutable seal and running Lockdown with the seal are valid configurations depending on your security requirements. Booting the original Non-HS kernel is not a Root Lock by HeartSuite mode at all; it is the machine running without Root Lock by HeartSuite.
 
 | | Root Lock by HeartSuite kernel loaded | Blocking | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
-| **Setup Mode** | Yes | No — logs only | Yes | Yes | Dashboard and all features available |
-| **Lockdown** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available |
-| **Lockdown + sealed** | Yes | Yes — blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
-| **Non-HS kernel** *(not a Root Lock by HeartSuite mode)* | No — Root Lock by HeartSuite absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
+| **Setup Mode** | Yes | No: logs only | Yes | Yes | Dashboard and all features available |
+| **Lockdown** | Yes | Yes: blocks | Yes | Yes | Dashboard and all features available |
+| **Lockdown + sealed** | Yes | Yes: blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
+| **maintenance kernel** *(not a Root Lock by HeartSuite mode)* | No: Root Lock by HeartSuite absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup Mode and Lockdown, the HS kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the Non-HS kernel means Root Lock by HeartSuite is completely absent — the HS kernel is not loaded, no blocking or logging takes place, and backups do not run.
+In Setup Mode and Lockdown, the Root Lock by HeartSuite kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the maintenance kernel means Root Lock by HeartSuite is completely absent (no blocking or logging takes place, and backups do not run).
 
 The indicator at the top of the Dashboard shows the current protection state, and the Suggested Next Step tells you what to do next.
 
@@ -40,17 +40,17 @@ The indicator at the top of the Dashboard reflects the current protection state:
 
 | State | Indicator text |
 |---|---|
-| Setup Mode | **SETUP MODE** — logging only, nothing is blocked |
-| Lockdown (no immutable seal) | **LOCKDOWN** — immutable seal not applied |
+| Setup Mode | **SETUP MODE**: logging only, nothing is blocked |
+| Lockdown (no immutable seal) | **LOCKDOWN**: immutable seal not applied |
 | Lockdown + sealed | Silent (blank) |
-| Non-HS kernel | **NON-HS KERNEL** — Root Lock by HeartSuite is not active. No blocking. No logging. No backups. |
+| maintenance kernel | **maintenance kernel**: Root Lock not active. No blocking. No logging. No backups. |
 
 ## Setup Mode and Lockdown
 
 At some point, you need to lock down to prevent malicious programs from starting, or to restrict the files and network destinations those programs can reach. Lockdown activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Lockdown activation is available as the Suggested Next Step.
 
 > [!NOTE]
-> The Dashboard prevents Lockdown activation until all preconditions are met — including completion of all setup phases and the System Setup steps. If any precondition is not satisfied, the Lockdown button (`[m]`) displays "Lockdown is not available yet" and lists what remains.
+> The Dashboard prevents Lockdown activation until all preconditions are met — including completion of all setup phases and the System Setup steps. If any precondition is not satisfied, the Lockdown button (`[l]`) displays "Lockdown is not available yet" and lists what remains.
 
 If you have not added the necessary access permissions or network address permissions to allowlist entries, Root Lock by HeartSuite will block programs from accessing those files and network addresses when you activate Lockdown.
 
@@ -65,8 +65,8 @@ graph TD
     C --> D["[r] Reboot — Lockdown active on next boot"];
     D --> E["Lockdown active"];
     E --> G{Maintenance needed?};
-    G --> |"Yes — immutable seal active"| I["Maintenance [t] → guided 3-step process\nStep 1: Boot Non-HS kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot HS kernel, review new activity"];
-    G --> |"Yes — no immutable seal\n(most installs and patches)"| O["Maintenance [t] → switch to Setup Mode\nOne reboot, HS kernel stays active"];
+    G --> |"Yes — immutable seal active"| I["Maintenance [m] → guided 3-step process\nStep 1: Boot maintenance kernel, [u] remove flags\nStep 2: Make changes\nStep 3: Boot Root Lock kernel, review new activity"];
+    G --> |"Yes — no immutable seal\n(most installs and patches)"| O["Maintenance [m] → switch to Setup Mode\nOne reboot, Root Lock by HeartSuite kernel stays active"];
     I --> J["Make changes, update allowlist from Dashboard"];
     O --> J;
     J --> N["Return to Lockdown from Dashboard"];
@@ -87,7 +87,7 @@ When preconditions are satisfied, the Dashboard presents the activation option.
 
 ### Activating Lockdown
 
-From the Dashboard, select the Lockdown button (`[m]`). Lockdown displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
+From the Dashboard, select the Lockdown button (`[l]`). Lockdown displays a precondition checklist, an observation period summary, and a review of your allowlist. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
 
 ![Lockdown with all preconditions met](test_docs_mode_switch_all_clear.svg)
 
@@ -95,11 +95,11 @@ After confirming, the Dashboard offers one reboot option:
 
 - `[r]` **Reboot** — Lockdown active on next boot
 
-Lockdown is applied on the next reboot and persists — to make changes, use the Dashboard's Maintenance (`[t]`), which guides you through booting the Non-HS kernel and removing the seal.
+Lockdown is applied on the next reboot and persists — to make changes, use the Dashboard's Maintenance (`[m]`), which guides you through booting the Non-HS kernel and removing the seal.
 
 ### Returning to Setup Mode
 
-From the Dashboard, use the Lockdown button (`[m]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Lockdown would block.
+From the Dashboard, use the Lockdown button (`[l]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Lockdown would block.
 
 ### Switching mode from a Non-HS Kernel
 
@@ -113,7 +113,7 @@ When booted into a Non-HS kernel, set the mode before rebooting to the Root Lock
 
 Lockdown seals Root Lock by HeartSuite's configuration with filesystem immutability, so a compromised root account cannot tamper with the allowlist while the system runs. The seal is system-wide: configuration, system files, accounts, scheduled tasks, and the maintenance tools themselves — all sealed in one step. The Dashboard displays the current Lockdown status and provides the Suggested Next Step for managing it.
 
-Lockdown is applied automatically as part of activating Lockdown from the Dashboard. Once engaged, it persists until you exit through the Dashboard's Maintenance (`[t]`), which guides you through booting the Non-HS kernel to remove the seal. The table below shows what changes between Lockdown without the immutable seal and Lockdown with the seal.
+Lockdown is applied automatically as part of activating Lockdown from the Dashboard. Once engaged, it persists until you exit through the Dashboard's Maintenance (`[m]`), which guides you through booting the Non-HS kernel to remove the seal. The table below shows what changes between Lockdown without the immutable seal and Lockdown with the seal.
 
 | | Lockdown | Lockdown + sealed |
 |---|---|---|
@@ -126,7 +126,7 @@ Lockdown is applied automatically as part of activating Lockdown from the Dashbo
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
 | Can the immutable seal be engaged in Setup Mode? | N/A | No — Lockdown is required first |
 | How long does the seal last? | N/A | Until immutable flags are removed through the maintenance journey — the seal persists across reboots and re-engages automatically on every HeartSuite kernel boot |
-| How do you exit the seal? | N/A | Use the Dashboard's Maintenance (`[t]`) — it sets the GRUB default to the non-HS kernel automatically before rebooting, guides you through removing the seal on the non-HS kernel, then returns to the HeartSuite kernel. Console access (keyboard and monitor, serial port, or cloud serial console) is required only if automatic GRUB configuration does not apply. |
+| How do you exit the seal? | N/A | Use the Dashboard's Maintenance (`[m]`) — it sets the GRUB default to the Maintenance entry (maintenance kernel / Setup Mode destination) automatically before rebooting, guides you through removing the seal on the maintenance kernel, then returns to the Root Lock by HeartSuite kernel. Console access (keyboard and monitor, serial port, or cloud serial console) is required only if automatic GRUB configuration does not apply. |
 
 ### What Lockdown does
 
@@ -165,17 +165,17 @@ During Maintenance Step 1, the Dashboard presents a guided choice: `[d]` Disable
 
 ### Restoring mutability after Lockdown
 
-You can make files and directories mutable again once Lockdown is no longer active. The Dashboard's Maintenance (`[t]`) handles this automatically during the guided maintenance process — Step 1 of 3 offers `[u]` Remove immutable flags. For recovery outside the Dashboard, run `HS_unlock.sh`.
+You can make files and directories mutable again once Lockdown is no longer active. The Dashboard's Maintenance (`[m]`) handles this automatically during the guided maintenance process — Step 1 of 3 offers `[u]` Remove immutable flags. For recovery outside the Dashboard, run `HS_unlock.sh`.
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-Before rebooting, the Maintenance (`[t]`) sets the GRUB default to the non-HS kernel automatically — no GRUB menu interaction is required. If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually, which requires console access: a keyboard and monitor, a serial port, or your cloud provider's serial console. Returning to the HeartSuite kernel after maintenance is also automatic: the Dashboard restores the HS kernel as the GRUB default before rebooting back, so no GRUB interaction is needed on the return trip either.
+Before rebooting, the Maintenance (`[m]`) sets the GRUB default to the Maintenance entry (Non-HS / Setup Mode destination) automatically — no GRUB menu interaction is required. If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually, which requires console access: a keyboard and monitor, a serial port, or your cloud provider's serial console. Returning to the Root Lock by HeartSuite kernel after maintenance is also automatic: the Dashboard restores the Root Lock by HeartSuite kernel as the GRUB default before rebooting back, so no GRUB interaction is needed on the return trip either.
 
 ### Lockdown commands
 
-These are the actual scripts Lockdown uses. Most users never invoke them directly — the Dashboard's `[m]` Lockdown button and `[t]` Maintenances run them for you.
+These are the actual scripts Lockdown uses. Most users never invoke them directly — the Dashboard's `[l]` Lockdown button and `[m]` Maintenances run them for you.
 
-- **`HS_lockdown.sh`** — runs when you apply Lockdown from the Dashboard, and automatically on every HeartSuite kernel boot when auto-engagement is enabled. It seals Root Lock by HeartSuite's configuration with `chattr +i`, disables file editors, replaces `rm`/`cp`/`mv` with restricted copies, then engages Lockdown via the kernel.
+- **`HS_lockdown.sh`** — runs when you apply Lockdown from the Dashboard, and automatically on every Root Lock by HeartSuite kernel boot when auto-engagement is enabled. It seals Root Lock by HeartSuite's configuration with `chattr +i`, disables file editors, replaces `rm`/`cp`/`mv` with restricted copies, then engages Lockdown via the kernel.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh`. The Maintenance runs this for you when you press `[u]` as Step 1 of the Lockdown maintenance flow. Run it yourself only for recovery outside the Dashboard.
 - **`hs-unlock-progs`** — internal helper called by `HS_unlock.sh`. Not invoked directly in normal use.
 

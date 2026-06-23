@@ -12,17 +12,17 @@ menu:
     identifier: "system-requirements"
 ---
 
-**Overview**: Root Lock by HeartSuite requires an x86 Linux system running a supported distribution — Debian/Ubuntu-derived or Alpine. RPM-based distributions (RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE) are coming soon. It ships with two Root Lock by HeartSuite kernels (5.19 and 6.18) and a set of tools that enforce allowlist-based security at the kernel level.
+**Overview**: Root Lock by HeartSuite requires an x86 Linux system running a supported distribution. Debian, Ubuntu-derived, Alpine, and several RPM-based distributions are supported or validated; see the [Distro Compatibility Matrix](../kernel-hardening/distro-compatibility-matrix/) for tiers and versions. It ships with two Root Lock by HeartSuite kernels (5.19 legacy and 6.18 primary) and a set of tools that enforce allowlist-based security at the kernel level.
 
 ## Supported platforms
 
 | Component | Supported |
 |-----------|-----------|
 | Architecture | x86 (64-bit) |
-| Distributions | Debian 11, 12, 13; Ubuntu-derived; Alpine Linux; RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE *(coming soon)* |
-| Kernels | Root Lock by HeartSuite kernel 5.19, Root Lock by HeartSuite kernel 6.18 |
+| Distributions | See [Distro Compatibility Matrix](../kernel-hardening/distro-compatibility-matrix/) — validated: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21; supported: Debian 11, Ubuntu-derived, Alpine 3.x; RPM enterprise (RHEL, AlmaLinux, SLES): customer validation |
+| Kernels | Root Lock by HeartSuite kernel 5.19 (legacy), Root Lock by HeartSuite kernel 6.18 (primary) |
 
-Root Lock by HeartSuite supports Debian/Ubuntu-derived and Alpine distributions on x86. RPM-based distributions (RHEL, Fedora, CentOS, Rocky Linux, AlmaLinux, SUSE, openSUSE) are coming soon.
+Root Lock by HeartSuite supports Debian/Ubuntu-derived and Alpine distributions on x86, plus RPM-based distributions validated in the v1.6.4 release gate (Rocky 9.7, Fedora 41, CentOS Stream 9). Branded RHEL and AlmaLinux are RHEL-compatible — validate on your gold image before fleet Lockdown. Full tiers and notes: [Distro Compatibility Matrix](../kernel-hardening/distro-compatibility-matrix/).
 
 ## Kernel
 

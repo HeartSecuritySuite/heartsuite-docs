@@ -74,7 +74,7 @@ Across every reachable CVE in this document, the answer is the same — and shor
 - **Service disruption.** Root can panic the kernel via syscall primitives or `kill -9` allowlisted services. Availability hardening is a separate control; HS does not prevent denial-of-service.
 - **Lateral movement.** Attackers can pivot through whatever the allowlisted process tree permits, but cannot extend that tree. New processes outside the allowlist do not run.
 
-Under Lockdown, the kernel controls three things per program — whether it can execute, which files it can read or write, and which network destinations it can reach — and holds those controls regardless of user privilege, including root. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the system is running.
+Under Lockdown, the kernel controls three things per program — whether it can execute, which files it can read or write, and which network destinations it can reach — and holds those controls regardless of user privilege, including root. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the machine is running.
 
 ### Out of scope
 
@@ -371,7 +371,7 @@ The trigger cannot be reached on any Root Lock by HeartSuite deployment.
 
 This CVE describes an information disclosure in the IPv6 netfilter TCP reset path. When the kernel sends a TCP RST packet in response to a connection rejected by an ip6tables rule, `nf_reject_ip6_tcphdr_put()` allocates a TCP header via `skb_put()` without zeroing the buffer. The function then writes every field in the header explicitly except the four reserved bits (`th->res1`) in byte 12. Those bits retain whatever value was in the allocated kernel memory region. The RST packet is sent with that uninitialized content on the wire.
 
-`CONFIG_NF_REJECT_IPV6=y` and `CONFIG_IP6_NF_TARGET_REJECT=y` are compiled in. The code path exists in this kernel. The vulnerable function has five callers across the kernel source. In this configuration only `ip6t_REJECT.c` is compiled — the remaining four callers (`nft_reject_ipv6`, `nft_reject_inet`, `nft_reject_bridge`, `nft_reject_netdev`) are all gated by `CONFIG_NF_TABLES`, which is not set. Reaching the vulnerable code therefore requires an active ip6tables rule using `REJECT --reject-with tcp-reset` on IPv6 traffic. The Root Lock by HeartSuite install scripts and service unit contain no ip6tables rules of any kind. If you manually add such a rule, this path becomes exposed.
+`CONFIG_NF_REJECT_IPV6=y` and `CONFIG_IP6_NF_TARGET_REJECT=y` are compiled in. The code path exists in this kernel. The vulnerable function has five callers across the kernel source. In this configuration only `ip6t_REJECT.c` is compiled — the remaining four callers (`nft_reject_ipv6`, `nft_reject_inet`, `nft_reject_bridge`, `nft_reject_netdev`) are all gated by `CONFIG_NF_TABLES`, which is built as module (`m`) and not loaded at boot. Reaching the vulnerable code therefore requires an active ip6tables rule using `REJECT --reject-with tcp-reset` on IPv6 traffic. The Root Lock by HeartSuite install scripts and service unit contain no ip6tables rules of any kind. If you manually add such a rule, this path becomes exposed.
 
 Lockdown does not patch the vulnerability mechanism — the kernel still places uninitialized bits into the packet header if the path is reached. However, the program allowlist and Lockdown together make the triggering condition unreachable in practice.
 
@@ -2998,12 +2998,12 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|
 | [`CONFIG_BPF_SYSCALL` not set](#bpf-syscall-interface) | CVE-2021-20194, CVE-2023-2163, CVE-2023-39191, CVE-2023-52452, CVE-2024-26589, CVE-2023-52621, CVE-2023-52642, CVE-2024-26883, CVE-2024-26884, CVE-2024-26885, CVE-2024-38538, CVE-2024-40954, CVE-2024-41045, CVE-2024-49861, CVE-2022-49030, CVE-2024-50063, CVE-2024-50067, CVE-2024-50164, CVE-2024-50262, CVE-2024-53099, CVE-2024-56614, CVE-2024-56615, CVE-2024-56633, CVE-2024-56664, CVE-2023-53024, CVE-2022-49840, CVE-2025-37822, CVE-2022-49961, CVE-2022-49970, CVE-2022-49975, CVE-2025-38280, CVE-2025-38502, CVE-2025-38538, CVE-2025-39744, CVE-2023-53192, CVE-2023-53338, CVE-2025-39913, CVE-2022-50490, CVE-2022-50536, CVE-2026-23343, CVE-2026-23359  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_NF_TABLES` not set](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_NF_TABLES` module (`m`)](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NET_SCH_QFQ`, `CONFIG_NET_CLS_TCINDEX` not set](#network-traffic-control-schedulers) | CVE-2023-31436, CVE-2023-1829, CVE-2023-1281 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_BT` not set](#bluetooth-stack) | CVE-2022-42896, CVE-2022-45934, CVE-2022-3564, CVE-2022-3640, CVE-2023-1989, and 3 additional, CVE-2023-40283, CVE-2024-21803, CVE-2024-27000, CVE-2024-27398, CVE-2024-35963, CVE-2024-35965, CVE-2024-35966, CVE-2024-35967, CVE-2023-52766, CVE-2024-36012, CVE-2024-36032, CVE-2024-36880, CVE-2024-40927, CVE-2024-41087, CVE-2022-48871, CVE-2022-48878, CVE-2024-43883, CVE-2024-49950, CVE-2024-50125, CVE-2024-50234, CVE-2024-53208, CVE-2024-56604, CVE-2024-56605, CVE-2025-21969, CVE-2025-22022, CVE-2022-49826, CVE-2022-49910, CVE-2023-53057, CVE-2025-37882, CVE-2023-53145, CVE-2025-38117, CVE-2025-38118, CVE-2025-38250, CVE-2025-38593, CVE-2022-50315, CVE-2023-53252, CVE-2023-53305, CVE-2022-50386, CVE-2023-53386, CVE-2022-50419, CVE-2022-50470, CVE-2023-53673, CVE-2025-71082, CVE-2026-23395, CVE-2026-31500  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_TLS`, `CONFIG_RDS`, `CONFIG_ROSE`, `CONFIG_MCTP`, `CONFIG_AF_RXRPC` not set](#protocol-families-tls-rds-rose-mctp-and-af_rxrpc) | CVE-2023-28466, CVE-2023-1078, CVE-2022-2961, CVE-2022-3977, CVE-2023-2006 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NFSD` not set](#nfs-server) | CVE-2022-43945, CVE-2022-4379, CVE-2023-1652, CVE-2024-26907, CVE-2023-52885, CVE-2024-50106, CVE-2024-50121, CVE-2024-53168, CVE-2025-38724, CVE-2022-50235, CVE-2022-50241, CVE-2022-50401, CVE-2022-50410, CVE-2023-53680, CVE-2026-22980  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_XFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set](#filesystem-drivers) | CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978 | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set](#filesystem-drivers) | CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set](#hardware-specific-and-virtualization-drivers) | CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_USB_NET_RNDIS_WLAN`, `CONFIG_SMB_SERVER` not set](#usb-network-adapter-and-smb-server) | CVE-2023-23559, CVE-2023-0210 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_VIDEO_ADV748X` not set](#config-video-adv748x) | CVE-2025-71136 | <span class="badge badge-erased">Not Affected</span> |
@@ -3094,7 +3094,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_PLATFORM_X86` not set](#config-platform-x86) | CVE-2024-46859, CVE-2024-49986, CVE-2025-38077  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_ISDN` not set](#isdn) | CVE-2024-42280 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_HFSPLUS_FS` not set](#hfsplus-filesystem) | CVE-2024-41059, CVE-2024-56548, CVE-2025-38713, CVE-2025-38714  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_XFS_FS` not set](#config-xfs-fs) | CVE-2024-41013, CVE-2024-41014, CVE-2025-39835, CVE-2022-50406  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_XFS_FS` module (`m`)](#config-xfs-fs) | CVE-2024-41013, CVE-2024-41014, CVE-2025-39835, CVE-2022-50406  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_PPC` not set](#powerpc-arch) | CVE-2024-40974, CVE-2024-46774, CVE-2022-48998, CVE-2024-56765, CVE-2025-38088, CVE-2025-39776, CVE-2023-53487, CVE-2025-71078, CVE-2023-52451  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_IMA` not set](#ima) | CVE-2024-38667, CVE-2024-53106, CVE-2024-57798, CVE-2025-39730  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NET_SCH_MULTIQ` not set](#tc-multiq) | CVE-2024-36978 | <span class="badge badge-erased">Not Affected</span> |
@@ -3137,7 +3137,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_RDS` not set](#config-rds) | CVE-2024-26865, CVE-2022-48637, CVE-2024-27024, CVE-2024-42138, CVE-2024-42148, CVE-2024-46782, CVE-2024-46786, CVE-2024-57900, CVE-2025-23156, CVE-2025-23158, CVE-2023-53075, CVE-2025-37921, CVE-2025-39710, CVE-2022-50412, CVE-2023-53541, CVE-2025-39967, CVE-2026-31578  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_SPARX5_SWITCH` not set](#config-sparx5-switch) | CVE-2024-26856 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_THINKPAD_LMI` not set](#config-thinkpad-lmi) | CVE-2024-26836 | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_BTRFS_FS` not set](#btrfs-filesystem) | CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_BTRFS_FS` module (`m`)](#btrfs-filesystem) | CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_MPTCP` not set](#mptcp) | CVE-2024-26782, CVE-2024-44974, CVE-2024-46858, CVE-2024-50083, CVE-2023-53072, CVE-2023-53088, CVE-2025-38552  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_DM_CRYPT` not set](#config-dm-crypt) | CVE-2024-26763 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_GTP` not set](#config-gtp) | CVE-2024-26754, CVE-2024-26793, CVE-2024-27396, CVE-2024-44999  | <span class="badge badge-erased">Not Affected</span> |
@@ -3147,7 +3147,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_AFS_FS` not set](#config-afs-fs) | CVE-2024-26736 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_IP_TUNNEL` not set](#config-ip-tunnel) | CVE-2024-26665, CVE-2023-53600  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_MHI_BUS` not set](#config-mhi-bus) | CVE-2023-52494, CVE-2025-39790  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_LLC` not set](#config-llc) | CVE-2024-26625 | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_LLC` module (`m`)](#config-llc) | CVE-2024-26625 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_JFS_FS` not set](#config-jfs-fs) | CVE-2023-52599, CVE-2023-52600, CVE-2023-52603, CVE-2023-52604, CVE-2023-52799, CVE-2023-52804, CVE-2023-52805, CVE-2024-40902, CVE-2024-43858, CVE-2024-47723, CVE-2024-49900, CVE-2024-49903, CVE-2024-56595, CVE-2024-56596, CVE-2024-56597, CVE-2024-56598, CVE-2025-38204, CVE-2025-38230, CVE-2025-38697, CVE-2025-39743, CVE-2022-50333, CVE-2023-53222, CVE-2023-53485, CVE-2023-53616  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_S390` not set](#config-s390) | CVE-2023-52598, CVE-2024-26957, CVE-2023-52669, CVE-2024-36931, CVE-2024-45026, CVE-2022-48954, CVE-2024-57838, CVE-2024-57849, CVE-2022-49804, CVE-2023-53123, CVE-2025-38257, CVE-2025-38320, CVE-2022-50307, CVE-2023-53205, CVE-2026-31568  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_DRM_MSM` not set](#config-drm-msm) | CVE-2023-52586, CVE-2023-53316, CVE-2022-50368, CVE-2022-50437, CVE-2022-50492, CVE-2022-50526  | <span class="badge badge-erased">Not Affected</span> |
@@ -3189,12 +3189,12 @@ The BPF syscall interface is the kernel entry point through which user-space pro
 ### Netfilter nftables
 
 **Status**: Not Affected  
-**Config gate**: `CONFIG_NF_TABLES` not set  
+**Component**: `CONFIG_NF_TABLES` built as kernel module (`m`) per HS-DEV-004 Docker capability stack  
 **CVEs covered**: CVE-2023-32233, CVE-2023-0179
 
 nftables is the in-kernel packet classification and filtering framework. CVE-2023-32233 describes a use-after-free in anonymous set handling reachable via crafted netlink messages by a local user with `CAP_NET_ADMIN`. CVE-2023-0179 describes a stack-based buffer overflow in the nftables netlink implementation reachable from a user namespace.
 
-`CONFIG_NF_TABLES` is not compiled into the Root Lock by HeartSuite kernel. The nftables subsystem is not present — there are no netlink handlers to reach and no set or rule objects in memory.
+`CONFIG_NF_TABLES` is built as a loadable module for container networking (HS-DEV-004). It is not loaded at boot on a default Root Lock install — nftables netlink handlers and rule objects are absent until the module is explicitly loaded (for example when Docker or container networking is enabled). Root Lock install scripts ship no nftables rules. If you load the module and configure nftables rules, the relevant code paths become reachable.
 
 ### Network Traffic Control Schedulers
 
@@ -3245,12 +3245,12 @@ The kernel NFS server (`nfsd`) allows a Linux host to export filesystems to NFS 
 ### Filesystem Drivers
 
 **Status**: Not Affected  
-**Config gate**: `CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_XFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set  
+**Config gate**: `CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set  
 **CVEs covered**: CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978
 
-These CVEs cover five filesystem drivers absent from the Root Lock by HeartSuite kernel. The CVEs include out-of-bounds reads and writes and use-after-free conditions across the NTFS3 driver (`CONFIG_NTFS3_FS`), the legacy NTFS driver (`CONFIG_NTFS_FS`), XFS (`CONFIG_XFS_FS`), JFS (`CONFIG_JFS_FS`), and NILFS2 (`CONFIG_NILFS2_FS`). Several are triggerable by mounting a crafted filesystem image.
+These CVEs cover four filesystem drivers absent from the Root Lock by HeartSuite kernel. The CVEs include out-of-bounds reads and writes and use-after-free conditions across the NTFS3 driver (`CONFIG_NTFS3_FS`), the legacy NTFS driver (`CONFIG_NTFS_FS`), JFS (`CONFIG_JFS_FS`), and NILFS2 (`CONFIG_NILFS2_FS`). Several are triggerable by mounting a crafted filesystem image. (`CONFIG_XFS_FS` is documented separately — it is built as module `m` on the 6.18.x kernel.)
 
-None of these filesystems is compiled into the Root Lock by HeartSuite kernel. Mounting an image in any of these formats returns an error — the filesystem code does not exist in the running kernel and there is no reachable code path for any CVE in this group.
+None of these four filesystems is compiled into the Root Lock by HeartSuite kernel. Mounting an image in any of these formats returns an error — the filesystem code does not exist in the running kernel and there is no reachable code path for any CVE in this group.
 
 ### Hardware-Specific and Virtualization Drivers
 
@@ -3497,10 +3497,10 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 ### Llc {#config-llc}
 
 **Status**: Not Affected
-**Config gate**: `CONFIG_LLC` not set
+**Component**: `CONFIG_LLC` built as kernel module (`m`); not auto-loaded at boot
 **CVEs covered**: CVE-2024-26625
 
-`CONFIG_LLC` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_LLC` is built as a loadable module on the 6.18.x Root Lock kernel but is not loaded at boot on a default install. The LLC protocol stack is absent from the running kernel until the module is explicitly loaded. There is no reachable code path for any CVE in this group on a default Root Lock deployment.
 
 ### Mhi Bus {#config-mhi-bus}
 
@@ -3577,10 +3577,10 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 ### Btrfs Filesystem
 
 **Status**: Not Affected
-**Config gate**: `CONFIG_BTRFS_FS` not set
+**Component**: `CONFIG_BTRFS_FS` built as kernel module (`m`); not auto-loaded at boot
 **CVEs covered**: CVE-2024-26791, CVE-2024-26944, CVE-2024-35849, CVE-2024-35949, CVE-2024-39496, CVE-2024-42314, CVE-2024-50217, CVE-2024-56581, CVE-2024-56582, CVE-2024-56759, CVE-2024-57896, CVE-2025-39738, CVE-2025-39759, CVE-2022-50300
 
-`CONFIG_BTRFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_BTRFS_FS` is built as a loadable module on the 6.18.x Root Lock kernel but is not loaded at boot on a default install. Mounting a Btrfs volume requires explicitly loading the module. There is no reachable code path for any CVE in this group unless you load the module and mount Btrfs.
 
 ### Thinkpad Lmi {#config-thinkpad-lmi}
 
@@ -3923,10 +3923,10 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 ### Xfs Fs {#config-xfs-fs}
 
 **Status**: Not Affected
-**Config gate**: `CONFIG_XFS_FS` not set
+**Component**: `CONFIG_XFS_FS` built as kernel module (`m`); not auto-loaded at boot
 **CVEs covered**: CVE-2024-41013, CVE-2024-41014
 
-`CONFIG_XFS_FS` is not compiled into the Root Lock by HeartSuite kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_XFS_FS` is built as a loadable module on the 6.18.x Root Lock kernel but is not loaded at boot on a default install. Mounting an XFS volume requires explicitly loading the module. There is no reachable code path for any CVE in this group unless you load the module and mount XFS.
 
 ### HFS+ Filesystem {#hfsplus-filesystem}
 
@@ -4635,6 +4635,8 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 ## Scanner Guidance
 
 When a scanner flags Root Lock by HeartSuite for a CVE listed as Not Affected on this page, the result is a version-string match: the scanner has identified a kernel version older than the upstream fix but has not evaluated whether the vulnerable code path is compiled in.
+
+For the full verification workflow (maintenance-kernel exceptions, scanner configuration, audit evidence, and published OSV feeds), see [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
 
 Share this page with your auditor or scanner vendor as the reference for any disputed CVE entry. For compliance teams that require a configuration-level proof, the config gate for any entry on this page can be confirmed on the Root Lock by HeartSuite host:
 

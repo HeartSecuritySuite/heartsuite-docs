@@ -1,6 +1,6 @@
 baseURL: https://docs.heartsecsuite.com
 title: Root Lock by HeartSuite
-description: 'Root Lock by HeartSuite | Zero Day Secure-by-design'
+description: 'Root Lock by HeartSuite | Humans in Command'
 
 # cSpell:ignore goldmark github hugo readingtime docsy subdir lastmod pygments linenos catmullrom norsk gu slugorcontentbasename
 
@@ -153,7 +153,7 @@ params:
 
   copyright:
     authors: >-
-      Heart Security Suite, LLC | Zero Day Secure-by-design |
+      Heart Security Suite, LLC | Humans in Command |
     from_year: 2022
     to_year: 2026
 

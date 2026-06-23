@@ -1,6 +1,6 @@
 ---
 title: "Kernel Hardening Comparison Matrix"
-weight: 10
+weight: 20
 description: "Objective comparison of Root Lock by HeartSuite 5.19.6 kernel configuration against industry hardened kernels and standard references, using kernel-hardening-checker (commit b9b83a0)."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison"]
