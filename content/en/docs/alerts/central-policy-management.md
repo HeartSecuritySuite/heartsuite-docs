@@ -41,7 +41,7 @@ Examples for the primary integration patterns follow.
 
 ### 1. Ansible — playbooks for seeding and applying policy
 
-HeartSuite ships an official declarative Ansible role at `ansible/roles/heartsecurity.root_lock/` in the product installation. Use it as the preferred path for fleet policy application and Secure Mode transitions. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
+HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lock`) for fleet policy application and Secure Mode transitions. It is modelled on `linux-system-roles.selinux` and ships with coordinated release materials; email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if you need the role package. On every installed host, the `limited_tools` Python API under `/opt/heartsuite` is the runtime integration surface the role uses. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
 
 #### Official Ansible role: `heartsecurity.root_lock`
 

@@ -101,7 +101,7 @@ A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heart
 
 {{< details summary="How do I report a bug or security issue?" >}}
 
-A: For bugs, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your Root Lock by HeartSuite version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, do not use a public issue — email support@heartsecsuite.com for responsible disclosure.
+A: For product bugs, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock by HeartSuite version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation corrections, open an issue on [heartsuite-docs](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com for responsible disclosure — do not use public issue trackers.
 
 {{< /details >}}
 

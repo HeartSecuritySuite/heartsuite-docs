@@ -45,6 +45,7 @@ For patch targets, notification channels, and support boundaries, see the [Kerne
 | **OVAL (HS kernel)** | **Not published** | Planned OpenSCAP definitions; use OSV/CONFIG SBOM and [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) until OVAL ships |
 | **SBOM (CycloneDX)** | Published at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json) for `hs-v1.6.4-kernel-6.18.9` | SPDX dual-format at GA if offered |
 | **RHSA-style errata IDs** | **Not offered** | Not planned — advisories remain bundle- and transparency-page-centric |
+| **HS kernel source (GPL)** | On written request via [support@heartsecsuite.com](mailto:support@heartsecsuite.com) | Public kernel source repository not offered at this time |
 
 HeartSuite does **not** commit to delivery dates for roadmap items on this page. When an artefact reaches general availability, this page and the [Kernel Support Policy](kernel-support-policy/) will be updated and customers will be notified through subscription email and release notes.
 
@@ -93,7 +94,21 @@ Machine-readable mirrors:
 | **OSV** | [`/advisories/osv.json`](/advisories/osv.json) | OSV — 279 entries for `hs-v1.6.4-kernel-6.18.9` (alias of `osv/all.json`) |
 | **CycloneDX SBOM** | [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json) | CycloneDX-1.5 coordinated bundle SBOM |
 
-Feeds are copied to `static/advisories/` by the Core Secure **Publish advisory feeds** workflow on annotated `hs-v*` tags and deployed with this documentation site. See [`static/advisories/README.md`](https://github.com/HeartSecuritySuite/heartsuite-docs/blob/main/static/advisories/README.md) for pipeline detail.
+Feeds are published on this documentation site when HeartSuite cuts an annotated `hs-v*` kernel release. Publication is automated from HeartSuite's internal release pipeline; customers do not need access to private build repositories to consume the feeds.
+
+### HS kernel source code (GPL)
+
+HeartSuite distributes the HS kernel as binaries in the coordinated `heartsuite-install.sh` bundle. Portions of the HS kernel are subject to the GNU General Public License.
+
+HeartSuite does **not** maintain a public kernel source repository at this time. **Corresponding source code** for the HS kernel build you are running is available on **written request** under GPL obligations.
+
+Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
+
+- Output of `uname -r` (for example, `6.18.9-HeartSuite-1.0`)
+- HeartSuite product version (for example, v1.6.4)
+- Release tag or `heartsuite-install.sh.sha256` reference if known
+
+HeartSuite will provide source matching that build. Independent verification of kernel configuration does **not** require source access — use the published `.config` SHA-256 and reproduction steps in the [Auditor Brief](auditor-brief/).
 
 ### Subscription notification
 
