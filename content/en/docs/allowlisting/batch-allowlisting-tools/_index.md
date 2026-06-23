@@ -15,7 +15,7 @@ author: Ron Hessing
 
 **Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.
 
-These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns and examples. Pre-seeding via these tools accelerates fleet onboarding for standard configurations.
+These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns and examples; for Ansible fleets, the official `heartsecurity.root_lock` role documented there is the preferred declarative path over direct CLI invocation. Pre-seeding via these tools accelerates fleet onboarding for standard configurations.
 
 ## batch_record_add.py
 

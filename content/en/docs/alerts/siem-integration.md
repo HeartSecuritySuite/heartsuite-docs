@@ -119,11 +119,55 @@ The data works with visualization tools in Kibana and similar platforms:
 
 This view complements the host Dashboard and TUI: use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture and the allowlist at fleet scale.
 
-The bridge + exported data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via batch/hs-manage-allowlist (or limited_tools helpers), and use the Kibana tables/KPIs/record_hash for fleet visibility and drift detection.
+### Production path on real hosts
 
-To send this data from hosts to a central system, enable the corresponding export option in the Fleet tab of Alert Settings. The normal enforcement events continue to flow over syslog or Filebeat as usual.
+On production hosts, enable the policy and posture export option in the Fleet tab of Alert Settings. Ship enforcement and alert streams via syslog or Filebeat as described above. Ingest into your existing Elasticsearch cluster and build Kibana dashboards with your standard security, retention, and access controls. No separate HeartSuite download is required for this path.
 
-See [Central Policy Management and External Control](central-policy-management/) for more on using this data centrally.
+### `tools/kibana-bridge` (optional evaluation stack)
+
+For lab, evaluation, and customer demos, the HeartSuite product source tree includes `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns HeartSuite telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views. It ships alongside the installer in the source repository; it is not a separate product download.
+
+The bridge is a read-only insight plane that complements syslog enforcement streams. It does not replace them and is not required for production. Typical views include:
+
+- A living allowlist table (one row per `program_path` with grant counts, `risk_level`, `has_broad_write`, `has_network_grant`, and related fields).
+- KPI-style posture metrics (policy counts, broad-write risk while locked down, high-grant surface, recent blocks).
+- Drift detection by comparing stable `record_hash` values across snapshots.
+- Enforcement correlation for drill-down alongside policy rows.
+
+The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes).
+
+**Versus `tools/siem-test/`:** These are sibling fixtures in the source tree with different purposes:
+
+| Fixture | Purpose |
+|---|---|
+| `tools/siem-test/` | Alert channel validation (syslog, email, webhook). Optional Kibana is for eyeballing raw text events. |
+| `tools/kibana-bridge/` | Policy-surface visibility in Kibana (tables, KPIs, risk filters, `record_hash` drift). Uses richer telemetry payloads. |
+
+They can run side by side on the same machine (different ports). Neither fixture is installed to `/.hs/sys` on hosts.
+
+**Quickstart (evaluation):**
+
+```sh
+cd tools/kibana-bridge
+docker compose up -d
+docker compose run --rm setup
+# Open http://localhost:5601 (or http://127.0.0.1:5601)
+```
+
+After setup, Kibana includes preconfigured data views:
+
+- **HeartSuite Policies** — primary view for the living allowlist table (Lens tables, drift filters).
+- **HeartSuite Events** — raw telemetry and event drill-down in Discover.
+
+An optional imported dashboard, **HeartSuite - Policy Overview**, may also be present when saved objects are bundled with your checkout.
+
+To feed live data during lab work, enable Fleet tab export on a host and forward telemetry to the bridge ingest receiver, or ingest exported policy data into your production Elasticsearch using the same field model. Details are in `tools/kibana-bridge/README.md` in the source tree.
+
+### Pairing with Ansible central policy
+
+The exported policy data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection. The bridge (or your production Elasticsearch deployment) is the read and visibility side; your control plane remains the write path.
+
+See [Central Policy Management and External Control](central-policy-management/) for Ansible role variables, seed application, and harvest patterns.
 
 ## Verification commands (run on the HeartSuite host)
 
