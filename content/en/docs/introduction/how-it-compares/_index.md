@@ -204,7 +204,7 @@ Some software depends on kernel features the Root Lock by HeartSuite kernel does
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
-For CISO and procurement evaluation of the HS kernel itself in enterprise fleets (including operational models, Secure Boot roadmap, and alternatives), see the [Kernel Hardening → Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/).
+For CISO and procurement evaluation of the HS kernel itself in enterprise fleets (including operational models, Secure Boot roadmap, and alternatives), see the [Kernel Hardening → Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/).
 
 ## Circumvention and recovery
 
