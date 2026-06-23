@@ -125,7 +125,7 @@ On production hosts, enable the policy and posture export option in the Fleet ta
 
 ### `tools/kibana-bridge` (optional evaluation stack)
 
-For lab, evaluation, and customer demos, the HeartSuite product source tree includes `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns HeartSuite telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views. It ships alongside the installer in the source repository; it is not a separate product download.
+For lab, evaluation, and customer demos, HeartSuite offers `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns HeartSuite telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views. It is **not** installed by `heartsuite-install.sh`; request an evaluation kit from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or use the materials included with your coordinated release delivery.
 
 The bridge is a read-only insight plane that complements syslog enforcement streams. It does not replace them and is not required for production. Typical views include:
 
@@ -136,7 +136,7 @@ The bridge is a read-only insight plane that complements syslog enforcement stre
 
 The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes).
 
-**Versus `tools/siem-test/`:** These are sibling fixtures in the source tree with different purposes:
+**Versus `tools/siem-test/`:** These are sibling evaluation fixtures with different purposes (both available on request, not on production hosts):
 
 | Fixture | Purpose |
 |---|---|
@@ -161,7 +161,7 @@ After setup, Kibana includes preconfigured data views:
 
 An optional imported dashboard, **HeartSuite - Policy Overview**, may also be present when saved objects are bundled with your checkout.
 
-To feed live data during lab work, enable Fleet tab export on a host and forward telemetry to the bridge ingest receiver, or ingest exported policy data into your production Elasticsearch using the same field model. Details are in `tools/kibana-bridge/README.md` in the source tree.
+To feed live data during lab work, enable Fleet tab export on a host and forward telemetry to the bridge ingest receiver, or ingest exported policy data into your production Elasticsearch using the same field model. Setup detail is included in the evaluation kit README shipped with `tools/kibana-bridge/`.
 
 ### Pairing with Ansible central policy
 

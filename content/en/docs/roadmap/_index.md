@@ -277,8 +277,8 @@ gantt
 > Following the 6.12 compatibility analysis, 6.18 was selected as the porting target: it is a long-term support kernel with a stable maintenance window that matches HeartSuite's release cadence.
 
 > [!NOTE]
-> **Public Open-Source Release — v1.6.2** (March 5–11, 2026)  
-> Root Lock by HeartSuite published under AGPL-3.0. Includes kernel source, tools, porting guides, internal security checklists, and CONTRIBUTING documentation.
+> **Documentation and advisory transparency — v1.6.2 onward** (March 2026)  
+> Public documentation site and machine-readable advisory feeds at `/advisories/`. HS kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
 
 > [!NOTE]
 > **TUI Overlay Prototype** (March 18–26, 2026)  

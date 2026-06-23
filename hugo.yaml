@@ -132,8 +132,10 @@ params:
   # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
   github_repo: https://github.com/HeartSecuritySuite/heartsuite-docs
 
-  # An optional link to a related project repo. For example, the sibling repository where your product code lives.
-  github_project_repo: https://github.com/HeartSecuritySuite/heartsuite-core-secure
+  # Product code is not in a public repository. Omit github_project_repo so Docsy does not
+  # add "Create project issue" links to a private kernel build repo. Use support@heartsecsuite.com
+  # for product bugs; heartsuite-docs issues for documentation corrections only.
+  # github_project_repo:
 
   # Specify a value here if your content directory is not in your repo's root directory
   # github_subdir: ""

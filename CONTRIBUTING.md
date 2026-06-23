@@ -15,7 +15,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 
 ### Prerequisites
 - Basic knowledge of Markdown and static site generators.
-- Familiarity with Root Lock by HeartSuite (see [core repo](https://github.com/HeartSecuritySuite/heartsuite-core-secure)).
+- Familiarity with Root Lock by HeartSuite (product documentation at [docs.heartsecsuite.com](https://docs.heartsecsuite.com); product support at support@heartsecsuite.com).
 - Git and GitHub account.
 
 ### Local Setup
@@ -101,7 +101,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 
 ## Resources
 
-- **Core Repo**: [heartsuite-core-secure](https://github.com/HeartSecuritySuite/heartsuite-core-secure)
+- **Product support**: support@heartsecsuite.com (kernel source on GPL request — see [Supply Chain and Advisory Feeds](https://docs.heartsecsuite.com/docs/kernel-hardening/supply-chain-and-advisories/#hs-kernel-source-code-gpl))
 - **Live Docs**: [docs.heartsecsuite.com](https://HeartSecuritySuite.github.io/heartsuite-docs/)
 - **Hugo Docs**: [Hugo docs](https://gohugo.io/documentation/)
 - **Docsy Guide**: [Docsy user guide](https://www.docsy.dev/docs/)

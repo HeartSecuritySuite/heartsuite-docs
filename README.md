@@ -50,8 +50,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## Deployment
 - **Automated**: Pushes to `main` trigger GitHub Actions to build and deploy to GitHub Pages.
-- **Source**: [heartsuite-core-secure](https://github.com/HeartSecuritySuite/heartsuite-core-secure) (kernel & tools repo).
-- **Issues**: [heartsuite-docs issues](https://github.com/HeartSecuritySuite/heartsuite-docs/issues).
+- **Advisory feeds**: Published under `static/advisories/` from HeartSuite's internal release pipeline (maintainer notes in that directory).
+- **Product support**: support@heartsecsuite.com. **Documentation issues**: [heartsuite-docs issues](https://github.com/HeartSecuritySuite/heartsuite-docs/issues).
 
 ## License
 Apache License 2.0 — see [LICENSE](LICENSE).

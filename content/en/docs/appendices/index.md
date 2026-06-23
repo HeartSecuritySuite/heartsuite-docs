@@ -107,12 +107,12 @@ These files are written automatically by Root Lock by HeartSuite. They are not t
 
   For monitoring integrations, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that together confirm a healthy Lockdown state.
 
-## Integration tooling (evaluation)
+## Integration tooling (evaluation and fleet automation)
 
-These aids ship in the HeartSuite product source tree alongside the installer. They are not installed to `/.hs/sys` on hosts and are not part of the normal production deployment path.
+Production hosts use the installed bundle: CLI tools under `/.hs/sys`, the `limited_tools` Python API under `/opt/heartsuite`, syslog, and `status.json`. The items below are **not** installed by `heartsuite-install.sh`; they are available with coordinated release materials or on request for evaluation and fleet automation work.
 
-- **`tools/kibana-bridge/`** — optional disposable Docker stack for policy-centric Kibana views during evaluation (living allowlist table, KPIs, risk signals, `record_hash` drift). Complements syslog enforcement streams; not required for production. See [SIEM and Fleet Integration](../alerts/siem-integration/#toolskibana-bridge-optional-evaluation-stack).
-- **`ansible/roles/heartsecurity.root_lock/`** — declarative Ansible role for fleet policy application and Secure Mode transitions. See [Central Policy Management and External Control](../alerts/central-policy-management/#official-ansible-role-heartsecurityroot_lock).
+- **`heartsecurity.root_lock` Ansible role** — declarative fleet policy application and Secure Mode transitions (modelled on `linux-system-roles.selinux`). See [Central Policy Management and External Control](../alerts/central-policy-management/#official-ansible-role-heartsecurityroot_lock). Request the role package from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if it is not already in your delivery.
+- **`tools/kibana-bridge/`** — optional disposable Docker stack for policy-centric Kibana views during lab evaluation (living allowlist table, KPIs, risk signals, `record_hash` drift). Complements syslog enforcement streams; not required for production. See [SIEM and Fleet Integration](../alerts/siem-integration/#toolskibana-bridge-optional-evaluation-stack). Available on request for evaluation kits.
 
 ## Kernel CVE coverage
 

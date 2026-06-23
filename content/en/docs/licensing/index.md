@@ -37,4 +37,8 @@ The Dashboard shows subscription status when it requires attention — an expire
 
 With your subscription active and phases 2-6 complete, proceed to [Mode Switching and Lockdown](../mode-switching/) to activate Lockdown.
 
+## HS kernel source code (GPL)
+
+The HS kernel ships as binaries in your coordinated install bundle. Corresponding kernel source is available on written GPL request — not via a public repository. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with `uname -r`, your HeartSuite product version, and bundle checksum reference if known. Full process and verification alternatives: [Supply Chain and Advisory Feeds → HS kernel source code (GPL)](../kernel-hardening/supply-chain-and-advisories/#hs-kernel-source-code-gpl).
+
 For procurement and CISO details on how the subscription covers the kernel (risk transfer, SLAs, verification artifacts) in the context of enterprise adoption, see [Kernel Hardening → Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/).

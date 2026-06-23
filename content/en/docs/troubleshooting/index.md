@@ -48,4 +48,4 @@ The Dashboard presents the same information with metadata enrichment and groupin
 
 ## Reporting issues
 
-If you encounter a bug, open an issue on GitHub using the [Bug Report template](https://github.com/HeartSecuritySuite/heartsuite-core-secure/issues/new?template=bug-report.md). Include your Root Lock by HeartSuite version, kernel version, the protection state shown at the top of your Dashboard, and steps to reproduce. For security vulnerabilities, email support@heartsecsuite.com.
+If you encounter a product bug, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock by HeartSuite version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation issues, use [heartsuite-docs issues](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com — do not use public issue trackers.
