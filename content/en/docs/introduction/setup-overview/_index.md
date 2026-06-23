@@ -31,11 +31,11 @@ Root Lock by HeartSuite organizes the setup journey into seven phases. The Dashb
 |-------|------|-------------|
 | 1 | System Verification | Confirms the Root Lock by HeartSuite kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
 | 2 | Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
-| 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers (`[l]`), if applicable. |
+| 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers (`[s]`), if applicable. |
 | 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
 | 5 | Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
 | 6 | Alert Settings | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings (`[e]`). |
-| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[m]`). |
+| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[l]`). |
 
 ## Cloud vs. Local Path
 
@@ -92,6 +92,6 @@ After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot 
 
 ## Maintenance in Lockdown
 
-To perform system maintenance after activating Lockdown, select Maintenance (`[t]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the Non-HS kernel, making changes, then returning to the Root Lock by HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
+To perform system maintenance after activating Lockdown, select Maintenance (`[m]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the Non-HS kernel, making changes, then returning to the Root Lock by HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
 
 For full details, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).

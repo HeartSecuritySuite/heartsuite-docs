@@ -41,6 +41,6 @@ Secure Script Launchers create a wrapper that applies the individual script's al
 
 ## Using launchers
 
-Root Lock by HeartSuite provides Secure Script Launchers for each supported interpreter (e.g., `hs-python-launcher`). Once activated via the Dashboard's Launchers (`[l]`), every call to that interpreter automatically routes through the launcher — applying per-script permissions without any change to how you run scripts.
+Root Lock by HeartSuite provides Secure Script Launchers for each supported interpreter (e.g., `hs-python-launcher`). Once activated via the Dashboard's Launchers (`[s]`), every call to that interpreter automatically routes through the launcher — applying per-script permissions without any change to how you run scripts.
 
 See [Configuring Script Launchers](../configuring-launchers/) for the activation steps.

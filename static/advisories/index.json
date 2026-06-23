@@ -1,0 +1,38 @@
+{
+  "schema": "hs-advisory-catalog/v1",
+  "release_tag": "hs-v1.6.4-kernel-6.18.9",
+  "heartsuite_version": "1.6.4",
+  "kernel_version": "6.18.9-HeartSuite-1.0",
+  "kernel_base": "6.18.9",
+  "published_at": "2026-06-23T01:27:34Z",
+  "gate_status": "PASS",
+  "site": "https://docs.heartsecsuite.com",
+  "feeds": [
+    {
+      "id": "hs-cve-config-sbom",
+      "format": "hs-cve-config-sbom/v1",
+      "path": "/advisories/hs-cve-config-sbom.json",
+      "url": "https://docs.heartsecsuite.com/advisories/hs-cve-config-sbom.json",
+      "description": "Not-Affected CONFIG gate manifest validated against tools/hs_config_parity.py",
+      "published": true
+    },
+    {
+      "id": "osv-bundle",
+      "format": "OSV",
+      "path": "/advisories/osv/all.json",
+      "url": "https://docs.heartsecsuite.com/advisories/osv/all.json",
+      "description": "OSV bundle for HS kernel Not-Affected CONFIG-gated CVEs (custom HeartSuite ecosystem)",
+      "published": true,
+      "entry_count": 279,
+      "alias_path": "/advisories/osv.json"
+    },
+    {
+      "id": "cyclonedx-sbom",
+      "format": "CycloneDX-1.5",
+      "path": "/advisories/sbom.cyclonedx.json",
+      "url": "https://docs.heartsecsuite.com/advisories/sbom.cyclonedx.json",
+      "description": "Coordinated bundle SBOM (kernel + userspace enforcement stack, v0.1 scope)",
+      "published": true
+    }
+  ]
+}

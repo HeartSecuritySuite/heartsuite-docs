@@ -204,6 +204,8 @@ Some software depends on kernel features the Root Lock by HeartSuite kernel does
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
+For CISO and procurement evaluation of the HS kernel itself in enterprise fleets (including operational models, Secure Boot roadmap, and alternatives), see the [Kernel Hardening → Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/).
+
 ## Circumvention and recovery
 
 Every security system has a known way to be taken out of the picture. Being explicit about it is how customers evaluate fit.
@@ -211,7 +213,7 @@ Every security system has a known way to be taken out of the picture. Being expl
 Root Lock by HeartSuite's allowlist can be changed through one path only:
 
 1. **Maintenance window** — you switch to Setup Mode, make changes, and re-engage Lockdown. Logged and intentional.
-2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the Root Lock by HeartSuite kernel. Recovery requires booting the Non-HS kernel, using the Dashboard's Maintenance (`[t]`) to remove the seal, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
+2. **Lockdown recovery** — when Lockdown is active, the allowlist cannot be edited even by root on the Root Lock by HeartSuite kernel. Recovery requires booting the Non-HS kernel, using the Dashboard's Maintenance (`[m]`) to remove the seal, and rebooting back. Booting the Non-HS kernel requires **physical presence** — a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without physical presence cannot take this path.
 
 What this means for security:
 

@@ -1,6 +1,7 @@
 ---
 title: "SIEM and Fleet Integration"
-weight: 75
+linkTitle: "SIEM Integration"
+weight: 1
 description: "Connect Root Lock by HeartSuite to your existing SIEM, observability platforms, and incident management tools. The recommended scale path for teams managing many servers without per-host TUI toil."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "siem", "fleet", "syslog", "webhook", "monitoring", "alerts", "security"]

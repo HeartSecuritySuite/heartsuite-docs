@@ -36,3 +36,5 @@ If activation is successful, the program creates an activation key and displays 
 The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning on the Dashboard with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing. Phase 7 (Lockdown) unlocks when phases 2-6 are complete.
 
 With your subscription active and phases 2-6 complete, proceed to [Mode Switching and Lockdown](../mode-switching/) to activate Lockdown.
+
+For procurement and CISO details on how the subscription covers the kernel (risk transfer, SLAs, verification artifacts) in the context of enterprise adoption, see [Kernel Hardening → Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/).

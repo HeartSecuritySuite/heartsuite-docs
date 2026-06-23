@@ -28,7 +28,7 @@ When kmod's startup activity appears in the **File Access queue (`[f]`)** during
 
 If kmod already has directory-level file access permissions, use `hs-manage-allowlist` to remove the broad entries and re-add specific paths. See `hs-manage-allowlist --help` for usage.
 
-After narrowing kmod's file access permissions, reboot and confirm the system starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[m]`). If kmod still has directory-level access at that point, the Lockdown confirmation surfaces an advisory before the YES prompt — you have one more opportunity to act before the configuration is sealed.
+After narrowing kmod's file access permissions, reboot and confirm the system starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[l]`). If kmod still has directory-level access at that point, the Lockdown confirmation surfaces an advisory before the YES prompt — you have one more opportunity to act before the configuration is sealed.
 
 ## Per-user shell profile coverage
 

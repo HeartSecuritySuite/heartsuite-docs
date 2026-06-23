@@ -8,7 +8,14 @@ toc: true
 type: docs
 ---
 
-**Overview**: In Lockdown, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you may receive none at all. An alert means something genuinely unexpected happened.
+**Overview**: In Lockdown, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you receive none at all. An alert means something genuinely unexpected happened.
+
+## For fleet and enterprise scale
+
+Single-host setup is on this page (Dashboard → Alert Settings, Phase 6). For production fleets and compliance programmes, use the dedicated guides:
+
+- [SIEM and Fleet Integration](siem-integration/) — Syslog, webhook, and status JSON for Splunk, Elastic, PagerDuty, and similar tools. The recommended path when you manage many servers without per-host TUI toil.
+- [Central Policy Management and External Control](central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation; consume syslog, JSONL approval logs, status.json, and webhooks for central visibility.
 
 ![Alert Settings configured with SMTP and syslog](test_docs_alert_settings_configured.svg)
 
@@ -83,7 +90,9 @@ To receive this payload, create an integration in your incident management tool 
 > [!TIP]
 > At fleet scale, syslog is the primary integration path: enable syslog on all nodes, forward via rsyslog to your SIEM, and alert centrally from the SIEM's own rule engine. Webhook covers incident management tools (PagerDuty, OpsGenie). Status JSON covers Ansible health checks. Email is for single-machine deployments or as a supplementary channel.
 
-For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the "scale path for larger teams" guidance, see the dedicated [SIEM and Fleet Integration](siem-integration/) page.
+For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the "scale path for larger teams" guidance, see the dedicated [SIEM and Fleet Integration](siem-integration/) page. That page also covers using policy and posture data for tables of the current allowlist, risk signals, and posture views in Kibana/Elastic.
+
+For using your existing central tooling (Ansible, Terraform, GitOps, ServiceNow, custom scripts) to own and apply allowlist policy at scale — with pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). HeartSuite is designed to be driven by your control planes; the Dashboard is the single-host operator surface.
 
 When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
 

@@ -233,7 +233,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 | Setup Mode | SETUP MODE — logging only, nothing is blocked |
 | Lockdown (no immutable seal) | LOCKDOWN — immutable seal not applied |
 | Lockdown + sealed | Blank (silence means safety) |
-| Non-HS kernel | NON-HS KERNEL — no blocking, logging, or backups |
+| maintenance kernel | maintenance kernel — no blocking, logging, or backups |
 
 **Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
 
@@ -418,7 +418,7 @@ The installer aborts if run on the active HeartSuite kernel, requiring the two-r
 
 The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created by an administrator through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
 
-**Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint. Each server manages its own allowlist independently; there is no centralized allowlist distribution or push mechanism. In fleet deployments, allowlist changes must be applied per server.
+**Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint. There is no built-in multi-host push from a HeartSuite server; policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns. In fleet deployments, allowlist changes are applied per server by the customer's control plane. Lockdown entitlement still requires per-host subscription activation.
 
 **Evidence artifacts**:
 
@@ -494,7 +494,7 @@ The allowlist is the authoritative record of every program, file access, and net
 | CC7.3 Security event evaluation | Alert classification (immediate vs. threshold); Lockdown queue for investigation | Alert logs, denied-item queue, SIEM records |
 | CC7.4 Incident response | Structural containment; investigation queue; file restore; no customer IR runbook template | Maintenance log, restore records, customer IR policy |
 | CC7.5 Recovery | Per-write versioned backup under kernel protection; alerts on backup-disabled and coverage-reduced transitions; no encryption at HeartSuite layer | Backup config, version history, restore log |
-| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); per-server allowlist only | Maintenance log, install log, allowlist |
+| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); per-host allowlist applied by customer automation with rich export (status.json, JSONL approval log, syslog, webhook) for central consumption; no built-in multi-host push from HeartSuite | Maintenance log, install log, allowlist, central automation records, SIEM/JSONL evidence |
 | A1.2 Availability protection | Ransomware blocking in Lockdown + per-write recovery; malware persistence prevention | Backup config, alert log, maintenance checklist |
 | C1.1 Confidentiality | File access scoping; outbound exfiltration prevention; no backup encryption at HeartSuite layer | File/network allowlist, disk encryption config |
 

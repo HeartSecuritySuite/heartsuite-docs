@@ -1,17 +1,19 @@
 ---
 title: "Security Auditor Brief: Kernel Hardening Posture"
-weight: 20
-description: "Technical assessment of Root Lock by HeartSuite kernel 5.19.6 hardening posture for security auditors and red teams — threat model, measured scores, residual risks, and self-reproduction instructions."
+weight: 22
+description: "Technical assessment of Root Lock by HeartSuite HS kernel hardening posture for security auditors and red teams — 6.18.9 primary commercial baseline; measured scores and reproduction commands reference the published 5.19.6 legacy stream until 6.18.9 evidence ships."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite, kernel 5.19.6  
-**Config SHA-256:** `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc`  
-**Measured:** 2026-05-19 using kernel-hardening-checker commit `b9b83a0`  
-**Full data:** `kernel-comparison-matrix-5.19.6.md`, `evidence-pack-5.19.6.txt`
+**Subject:** Root Lock by HeartSuite HS kernel — **6.18.9 primary** (commercial baseline, HeartSuite v1.6.4), **5.19.6 legacy**  
+**Evidence status:** Published config SHA-256, checker output, and runtime verification exist for the **5.19.6** stream only. The **6.18.9** stream is the current commercial baseline (`6.18.9-HeartSuite-1.0`); measured evidence is in progress — see [Evidence Status](evidence-status/).  
+**Primary stream (6.18.9):** [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — structure published; scores pending  
+**Legacy stream (5.19.6):** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, kernel-hardening-checker commit `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
+
+The threat model and measured sections below describe the **published 5.19.6** dataset until `evidence-pack-6.18.9.txt` replaces them. Design intent for 6.18.9 includes disabling `CONFIG_IO_URING` and `CONFIG_KEXEC` (both enabled in 5.19.6).
 
 ---
 

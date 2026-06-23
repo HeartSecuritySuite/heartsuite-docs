@@ -1,0 +1,19 @@
+{
+  "feed_version": "1",
+  "schema": "heartsuite-advisory-feed/v1",
+  "ecosystem": "HeartSuite",
+  "package": "hs-kernel",
+  "kernel_version": "6.18.9-HeartSuite-1.0",
+  "release_tag": "hs-v1.6.4-kernel-6.18.9",
+  "generated_at": "2026-06-23T01:27:34Z",
+  "gate_status": "PASS",
+  "source_sbom_schema": "hs-cve-config-sbom/v1",
+  "entry_count": 279,
+  "urls": {
+    "osv_bundle": "https://docs.heartsecsuite.com/advisories/osv/all.json",
+    "osv_per_cve_pattern": "https://docs.heartsecsuite.com/advisories/osv/{cve_id}.json",
+    "manifest": "https://docs.heartsecsuite.com/advisories/manifest.json",
+    "security_page": "https://docs.heartsecsuite.com/docs/security/"
+  },
+  "scanner_note": "This is a custom OSV ecosystem. Configure your scanner or vulnerability platform to ingest the osv/all.json URL; native OSV.dev / distro feeds do not include HeartSuite automatically."
+}

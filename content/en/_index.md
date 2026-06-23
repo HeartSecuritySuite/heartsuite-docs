@@ -7,7 +7,7 @@ description: "Complete guide for installing and configuring Root Lock by HeartSu
 
 ---
 
-*Root Lock by HeartSuite | Zero Day Secure-by-design*
+*Root Lock by HeartSuite | Humans in Command*
 
 ---
 
@@ -35,6 +35,8 @@ Root Lock by HeartSuite supports two paths: **Cloud** (pre-installed on AWS, Goo
 - [Network and Remote Access](docs/network/) — Configure network permissions.
 - [Script Launchers](docs/script-launchers/) — Secure interpreted script execution.
 - [Alert Settings](docs/alerts/) — Set up push notifications for blocks and state changes (Phase 6, required for Lockdown).
+- [SIEM and Fleet Integration](docs/alerts/siem-integration/) — Connect to Splunk, Elastic, and other central tools at fleet scale via syslog, webhook, and status JSON.
+- [Central Policy Management and External Control](docs/alerts/central-policy-management/) — Drive policy from Ansible, Terraform, ServiceNow, GitOps repositories, and custom automation. HeartSuite is designed to be driven by your existing control planes.
 - [Maintenance](docs/maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
 
 ## Troubleshoot and Reference

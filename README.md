@@ -3,7 +3,7 @@
 
 Welcome to the official documentation for **Root Lock by HeartSuite** — the enterprise-grade security suite built on a hardened Linux kernel.
 
-*Root Lock by HeartSuite | Zero Day Secure-by-design*
+*Root Lock by HeartSuite | Humans in Command*
 
 Built with [Hugo](https://gohugo.io/) and the [Docsy](https://www.docsy.dev/) theme.
 

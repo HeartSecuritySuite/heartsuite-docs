@@ -48,7 +48,7 @@ If repeated reconnects still show the status line rather than the Dashboard:
    ```
 
    Expected output ends in `HeartSuite` (for example, `6.18.9-HeartSuite-1.0`).
-3. If the wrong kernel booted, reboot and select the HeartSuite kernel from the GRUB menu manually.
+3. If the wrong kernel booted, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu manually.
 
 ## If setup stops with an error
 

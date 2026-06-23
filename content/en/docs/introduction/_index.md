@@ -14,7 +14,7 @@ menu:
 
 ---
 
-*Root Lock by HeartSuite | Zero Day Secure-by-design*
+*Root Lock by HeartSuite | Humans in Command*
 
 ---
 
