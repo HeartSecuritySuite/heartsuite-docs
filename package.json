@@ -53,7 +53,7 @@
     "update": "npm run update:packages && npm run update:docsy:mod"
   },
   "devDependencies": {
-    "markdownlint-cli2": "^0.21.0",
+    "markdownlint-cli2": "^0.23.0",
     "autoprefixer": "^10.4.24",
     "cross-env": "^10.1.0",
     "hugo-extended": "0.155.3",
