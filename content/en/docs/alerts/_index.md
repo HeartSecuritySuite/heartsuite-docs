@@ -148,4 +148,4 @@ Syslog and webhook emit every alert immediately, without grouping or windowing. 
 > [!NOTE]
 > Alerts begin flowing only after Lockdown is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.
 
-With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/).
+With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/) (prep with per-panel actions/opt-outs before `YES`).

@@ -213,7 +213,7 @@ On a host running Root Lock by HeartSuite:
 
 Root Lock by HeartSuite **replaces the enforcement kernel** for protected operation; it does **not** remove the distribution kernel or cancel distribution maintenance obligations on the Non-HS path. During maintenance on the Non-HS kernel, the host behaves as a standard distribution system without Lockdown enforcement.
 
-Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the Non-HS maintenance path and to userspace packages. Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the HS kernel must run on the Non-HS kernel or on a separate host — see the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section.
+Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the Non-HS maintenance path and to userspace packages. Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the HS kernel must run on the Non-HS kernel or on a separate host. (The HS kernel omits these by design to eliminate bypass primitives and attack surface; see the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).)
 
 ---
 

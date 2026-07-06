@@ -8,7 +8,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. The Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown. The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. Grants can be narrowed at Lockdown activation time via per-panel actions/opt-outs on the prep shown before confirmation; the Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown (including restoring or re-approving as needed). The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
 Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock by HeartSuite kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the Non-HS kernel) is only needed when the immutable seal is active, which is the less common path.
 
@@ -94,6 +94,6 @@ Select the branded Root Lock by HeartSuite (HS) kernel from GRUB. The Dashboard 
 > [!WARNING]
 > The Non-HS kernel provides no Root Lock by HeartSuite protection whatsoever. The safety checklist is critical for this path.
 
-## Manual recovery outside the Maintenance screen
+## Manual recovery outside the Maintenance
 
 When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the Non-HS kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.

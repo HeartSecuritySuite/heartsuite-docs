@@ -13,7 +13,7 @@ author: Ron Hessing
 
 ## Subscription
 
-A subscription is required before you can activate Lockdown. Phase 7 (Lockdown) is locked until phases 2-6 are complete and a valid subscription is activated.
+A subscription is required before you can activate Lockdown. Phase 7 (Lockdown) is locked until phases 2-6 are complete and a valid subscription is activated. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow with per-panel actions/opt-outs and read-only inventory.
 
 The subscription is a simple text file. One subscription can cover up to 9999 servers — at the time of purchase, you specify how many servers the subscription covers. You can purchase additional subscriptions if needed.
 

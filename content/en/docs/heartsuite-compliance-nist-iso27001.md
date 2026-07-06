@@ -132,7 +132,7 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 | **A.8.20** — Networks security | Per-programme network allowlist controls outbound connections using literal IPv4/IPv6 addresses only; CIDR notation and DNS-based rules are not supported. Inbound connection monitoring is not provided; inbound filtering is a customer-side responsibility via OS firewall (`iptables`, `nftables`) or cloud security groups. VLAN segregation and firewall policy are out of scope. |
 | **A.8.22** — Segregation of networks | Network allowlist controls which programmes reach which destinations. This is host-level segregation, not network-layer segregation. |
 | **A.8.23** — Web filtering | Not covered. HeartSuite filters by destination IP, not URL or content category. |
-| **A.8.24** — Use of cryptography | No native encryption. HeartSuite configuration files (allowlist, mode state) are sealed by filesystem immutability flags but are not encrypted; they can be read from disk on a non-HS kernel boot. Backup snapshots are also unencrypted at the HeartSuite layer. OS-level disk encryption (dm-crypt/LUKS) is the required complementary control for data-at-rest compliance. |
+| **A.8.24** — Use of cryptography | No native encryption. HeartSuite configuration files (allowlist, mode state) are sealed by filesystem immutability flags but are not encrypted; they can be read from disk on a maintenance kernel boot. Backup snapshots are also unencrypted at the HeartSuite layer. OS-level disk encryption (dm-crypt/LUKS) is the required complementary control for data-at-rest compliance. |
 | **A.8.28** — Secure coding | Not covered. HeartSuite does not inspect code or enforce secure development practices. |
 | **A.8.29** — Security testing in development and production | Not covered. |
 | **A.8.30** — Outsourced development | Not covered. |
@@ -229,7 +229,7 @@ When Root Lock by HeartSuite runs as a guest VM on a cloud platform, responsibil
 | Vulnerability scanning | — | — | Customer operates |
 | Incident response programme | — | — | Customer defines |
 
-The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. HeartSuite installs `agetty` autologin on `/dev/ttyS0`, meaning anyone who can reach the cloud provider's out-of-band serial console can boot to the non-HS kernel without further authentication from HeartSuite. Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
+The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. HeartSuite installs `agetty` autologin on `/dev/ttyS0`, meaning anyone who can reach the cloud provider's out-of-band serial console can boot to the maintenance kernel without further authentication from HeartSuite. Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
 
 ---
 

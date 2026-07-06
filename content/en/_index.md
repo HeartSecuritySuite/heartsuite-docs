@@ -48,6 +48,6 @@ Root Lock by HeartSuite supports two paths: **Cloud** (pre-installed on AWS, Goo
 
 ## Also in This Documentation
 
-- [HeartSuite Joint File System (HJFS)](hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard kernels where the HS kernel is not available.
+- [HeartSuite Joint File System (HJFS)](hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard unmodified kernels (for environments where the full HeartSuite kernel with its deliberate primitive removals is not the right fit). When the HeartSuite kernel can be used, it adds kernel-level execution and network controls that survive root compromise.
 
 For support email support@heartsecsuite.com.

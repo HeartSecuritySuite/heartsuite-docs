@@ -15,11 +15,11 @@ type: docs
 
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. The immutable seal refuses any change to the allowlist while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](mode-switching/) for the activation prep (per-panel actions/opt-outs including `[g]` tool restriction, read-only inventory) and mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
 
 Root Lock by HeartSuite supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after Phase 1 (System Verification).
 
-Root Lock by HeartSuite is a strong fit for production servers, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts. Hosts where eBPF-based tooling must run locally require a maintenance kernel (no Root Lock by HeartSuite loaded).
+Root Lock by HeartSuite is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Hosts that run a shared-kernel container runtime (Docker, containerd, Podman) or eBPF-based tooling locally require the maintenance kernel: the HeartSuite kernel is deliberately built without overlay filesystems, user namespaces, and the BPF syscall because those are the privilege-escalation primitives that supply the attack surface, path to root, and bypass vectors the design removes.
 
 ## Introduction and concepts
 
@@ -68,7 +68,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 ## Also in this documentation
 
-- [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard kernels where the Root Lock by HeartSuite kernel is not available.
+- [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard unmodified kernels (ideal when the HeartSuite kernel's deliberate removals of bypass primitives are not suitable). The HeartSuite kernel provides the stronger execution + network layer on supported systems.
 
 ---
 

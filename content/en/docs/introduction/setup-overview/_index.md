@@ -35,7 +35,7 @@ Root Lock by HeartSuite organizes the setup journey into seven phases. The Dashb
 | 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
 | 5 | Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
 | 6 | Alert Settings | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings (`[e]`). |
-| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[l]`). |
+| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[l]`): prep shows checklist + per-panel actions/opt-outs (e.g. [u] undo, [p]/[g]/[x]), inventory read-only, then type `YES` (case-sensitive). |
 
 ## Cloud vs. Local Path
 
@@ -86,7 +86,7 @@ graph TD
 >
 > Complete all allowlisting phases in Setup Mode before activating Lockdown. If boot and shutdown programs have not been approved, the system will fail to start or shut down correctly.
 
-When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and pre-condition checklist before proceeding.
+When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and precondition checklist before proceeding. Before confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo grants, `[p]` patch, `[g]` restrict tools from observed usage, `[x]` exclude — see [Mode Switching and Lockdown](../mode-switching/) for details). The inventory is read-only.
 
 After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot.
 

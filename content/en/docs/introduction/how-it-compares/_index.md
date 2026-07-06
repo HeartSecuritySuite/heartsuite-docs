@@ -20,7 +20,7 @@ menu:
 | Standard Linux | Root Lock by HeartSuite |
 |---|---|
 | Wide kernel + security agent watching it | Minimal kernel — features removed at build time |
-| BPF programs enforce blocking policy | BPF syscall is not compiled in — nothing to unload |
+| BPF programs enforce blocking policy | BPF syscall deliberately omitted — nothing to unload; closes the verifier attack surface |
 | Kernel module driver provides telemetry | No agent module — no module to kill |
 | OverlayFS and FUSE enabled for containers | Compiled out — the CVE class disappears with them |
 | Config file: 12,000+ lines, audited by tooling | Config file: 5,050 lines, readable by a person |
@@ -80,7 +80,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each product above retains strengths Root Lock by HeartSuite does not replicate.
 
-*eBPF observers* — Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace — ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters where Root Lock by HeartSuite does not fit — those tools remain the right answer, and they can observe a Root Lock by HeartSuite host from adjacent infrastructure via network taps or log forwarding.
+*eBPF observers* — Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace — ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters where the HS kernel's deliberate omission of the BPF syscall makes on-host eBPF tooling a non-fit — those tools remain the right answer, and they can observe a Root Lock by HeartSuite host from adjacent infrastructure via network taps or log forwarding.
 
 *Userspace LSM frameworks* — AppArmor, SELinux, SMACK, Landlock — offer policy capabilities Root Lock by HeartSuite does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. Root Lock by HeartSuite's value is the sealed boundary — `chattr +i` immutability plus a running kernel that refuses runtime changes — not richer policy syntax. Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compiled out of the HS kernel and existing profiles cease to apply at the first HS kernel boot.
 
@@ -195,12 +195,12 @@ Root Lock by HeartSuite makes a class of attacks impossible rather than merely v
 
 ## Where a separate kernel is required
 
-Some software depends on kernel features the Root Lock by HeartSuite kernel does not include. Those workloads run on the Non-HS kernel or a separate system:
+Root Lock by HeartSuite deliberately omits certain kernel features — overlay, user namespaces, BPF — because they are the attack surface, path to root, and bypass primitives the design removes. Workloads that need them run on the Non-HS kernel or a separate system:
 
-- **Kubernetes nodes where new containers start or pods reschedule after Lockdown engages** — running many instances of the same binary across pods is explicitly supported: one allowlist entry covers all instances, with no per-pod overhead. Root Lock by HeartSuite installs on Kubernetes nodes (EKS, GKE, AKS) without modification. The limitation is container lifecycle events after Lockdown: HPA scale-out, pod rescheduling after node failure, and new container starts each require mount operations that Lockdown refuses. If the pod set is fixed before Lockdown engages and doesn't change between maintenance windows, the Container-host install supports that; see [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts)
-- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools** — the BPF syscall is not compiled in; removing it is what prevents an attacker from unloading these tools. They can still observe the HS host from adjacent infrastructure via network taps or log forwarding
-- **Hypervisor hosts running virtual machines via KVM** — KVM host mode is not a supported configuration; the kernel features KVM requires have been compiled out to reduce the features attackers can reach. Root Lock by HeartSuite runs as a VM guest on KVM and other hypervisors — it does not host them.
-- **Systems that require rootless containers (unprivileged user namespaces)** — unprivileged user namespaces are not compiled in; they are a path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
+- **Kubernetes nodes with dynamic container scheduling after Lockdown** — many instances of the same binary are supported, but new mounts for HPA scale-out or rescheduling are refused. Fixed pod sets before Lockdown work via the Container-host install; see [Deployment Scenarios](../deployment-scenarios/#container-hosts).
+- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools** — the BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead.
+- **Hypervisor hosts running VMs via KVM** — KVM host features are compiled out to reduce attacker reach. Root Lock by HeartSuite runs as a guest, not a host.
+- **Systems that require rootless containers** — unprivileged user namespaces are omitted; they are a path to privilege escalation without credentials. Use a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
