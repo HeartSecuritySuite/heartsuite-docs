@@ -92,6 +92,6 @@ After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot 
 
 ## Maintenance in Lockdown
 
-To perform system maintenance after activating Lockdown, select Maintenance (`[m]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the Non-HS kernel, making changes, then returning to the Root Lock by HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
+To perform system maintenance after activating Lockdown, select Maintenance (`[m]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the maintenance kernel, making changes, then returning to the Root Lock by HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
 
 For full details, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).

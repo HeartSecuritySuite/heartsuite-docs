@@ -19,7 +19,7 @@ toc: true
 
 ## What this policy covers
 
-This policy describes how HeartSuite supports the **HS kernel** — the custom-built Linux kernel that Root Lock by HeartSuite requires for Lockdown enforcement — under a commercial **subscription**.
+This policy describes how HeartSuite supports the **HeartSuite kernel** — the custom-built Linux kernel that Root Lock by HeartSuite requires for Lockdown enforcement — under a commercial **subscription**.
 
 It applies to:
 
@@ -58,7 +58,7 @@ Enterprise Linux distributions such as RHEL follow a **frozen-base, backport-wit
 
 HeartSuite follows a **different model**, aligned with how Root Lock by HeartSuite is built and validated:
 
-| Aspect | Typical frozen-base distribution (RHEL-style) | HeartSuite HS kernel |
+| Aspect | Typical frozen-base distribution (RHEL-style) | HeartSuite kernel |
 |---|---|---|
 | Version identity | Long-lived vendor branch (for example, 5.14 on RHEL 9) with backported patches | Rebuild on an **LTS upstream tag** with a **HeartSuite-specific configuration** |
 | CVE remediation | Backport upstream fix patches onto frozen base; errata per advisory | **Rebuild** on updated LTS within the stream; **structural neutralization** where vulnerable code is compiled out; **Lockdown bounds** where paths remain reachable |
