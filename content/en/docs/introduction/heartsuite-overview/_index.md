@@ -74,7 +74,7 @@ Root Lock by HeartSuite operates in two modes:
 - **Setup Mode**: The kernel logs all program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist by reviewing queues and approving programs and their access patterns. The Dashboard guides this process.
 - **Lockdown**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
 
-Activating Lockdown requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist. Before the final confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo auto-narrowed grants, `[p]` patch, `[g]` restrict rm/cp/mv, `[x]` exclude write conflicts). The inventory and summaries are read-only. It requires typing `YES` (case-sensitive) to confirm. See [Mode Switching and Lockdown](mode-switching/) for full keys and flow.
+Activating Lockdown requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist. Before the final confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo auto-narrowed grants, `[p]` patch, `[g]` restrict rm/cp/mv, `[x]` exclude write conflicts). The inventory and summaries are read-only. It requires typing `YES` (case-sensitive) to confirm. See [Mode Switching and Lockdown](../../mode-switching/) for full keys and flow.
 
 ### 3. Lockdown
 
