@@ -66,7 +66,7 @@ HeartSuite follows a **different model**, aligned with how Root Lock by HeartSui
 | Third-party kernel modules | kABI / stable module interface across minor updates | **Not a design goal** on the HS kernel — enforcement architecture intentionally diverges from general-purpose distro kernels |
 | Delivery unit | Distribution package manager and errata channels | **Coordinated `heartsuite-install.sh` bundle** with userspace stack |
 
-HeartSuite is honest about the trade-off: the HS kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown. The distribution **Non-HS kernel** remains on the system for maintenance and recovery; distribution errata still apply to packages and to the Non-HS kernel path.
+HeartSuite is honest about the trade-off: the HeartSuite kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown. The distribution **maintenance kernel** remains on the system for maintenance and recovery; distribution errata still apply to packages and to the maintenance kernel path.
 
 For deployment implications, coexistence with distribution maintenance, and fleet patterns, see the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
