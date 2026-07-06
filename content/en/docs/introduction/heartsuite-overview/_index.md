@@ -41,7 +41,7 @@ Most malware escalates privilege by reaching for the same handful of kernel feat
 
 The Root Lock by HeartSuite kernel is deliberately compiled without them. These primitives are the attack surface, path to root, and bypass vectors the allowlist model exists to close.
 
-A stock Ubuntu kernel ships with over 6,600 loadable modules and a configuration file of more than 12,000 lines. The Root Lock by HeartSuite kernel ships with 13 modules and 5,050 lines — one file you can read in an afternoon.
+A stock Ubuntu kernel ships with over 6,600 loadable modules. The HeartSuite kernel ships with 13 — one config file you can read in an afternoon.
 
 Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. Root Lock by HeartSuite takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker. For a visual comparison of enforcement layers, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
@@ -108,7 +108,7 @@ No other product combines all three: enforcement that survives root compromise, 
 
 ## Is Root Lock by HeartSuite right for you?
 
-Root Lock by HeartSuite is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host; running a shared-kernel container runtime directly on the HS host is not a fit by design — the kernel omits the overlay and user-namespace primitives that would reintroduce the attack surface the allowlist model exists to close. Hosts where eBPF-based tooling must run locally require a non-HS kernel for the same reason: the BPF syscall and verifier are deliberately absent. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+Root Lock by HeartSuite is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host; running a shared-kernel container runtime directly on a host running the HeartSuite kernel is not a fit by design — the kernel omits the overlay and user-namespace primitives that would reintroduce the attack surface the allowlist model exists to close. Hosts where eBPF-based tooling must run locally require the maintenance kernel for the same reason: the BPF syscall and verifier are deliberately absent. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
 If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How Root Lock by HeartSuite Compares](../how-it-compares/) to understand which tools Root Lock by HeartSuite replaces, which it runs alongside, how it can be circumvented, and [how the operational cost compares to SELinux, EDR, and tools like Zafran — including what changes for patching urgency and alert volume](../security-as-economics/).
 

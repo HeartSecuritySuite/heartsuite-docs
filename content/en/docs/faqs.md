@@ -151,7 +151,7 @@ A: The HeartSuite kernel is installed alongside your existing kernel via GRUB �
 
 Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the system logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. You see what is affected before anything is blocked.
 
-All feature removals are intentional and documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification. The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are kernel features attackers use to escalate privilege or escape security restrictions; most production server workloads do not depend on them.
+All feature removals are intentional design decisions and documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification. The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are the privilege-escalation primitives that give attackers the attack surface, path to root, and bypass of enforcement; most production server workloads do not depend on them. The HeartSuite kernel is built without them by design.
 
 {{< /details >}}
 

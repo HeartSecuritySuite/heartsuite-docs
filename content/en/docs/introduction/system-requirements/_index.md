@@ -30,11 +30,11 @@ Root Lock by HeartSuite is distributed with two Root Lock by HeartSuite kernels 
 
 ## Software compatibility notes
 
-The HS kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). These are the attack surface the design removes. Software that needs them runs on the Non-HS kernel or a separate system.
+The HeartSuite kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). These are the attack surface the design removes. Software that needs them runs on the maintenance kernel or a separate system.
 
-The HS kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
+The HeartSuite kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
 
-| Not available on HS kernel | Affects |
+| Not available on the HeartSuite kernel | Affects |
 |-----------|---------|
 | eBPF program loading (`CONFIG_BPF_SYSCALL`) | Cilium, Falco, Tetragon, Pixie, bpftrace, bcc, Tracee, and other eBPF-based observability and runtime-detection tools |
 | FUSE (`CONFIG_FUSE_FS`) | sshfs, s3fs, rclone mounts, NTFS-3G, AppImage, gocryptfs |
