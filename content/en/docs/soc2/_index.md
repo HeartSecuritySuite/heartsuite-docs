@@ -159,13 +159,9 @@ This is the primary use case of Root Lock by HeartSuite. The implementation is s
 
 **Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not — in Lockdown, it is blocked before the interpreter processes it.
 
-**Reduced kernel features attackers can reach**: Features commonly exploited by rootkits and malware to escalate privilege or hide activity are not compiled into the HeartSuite kernel:
+**Reduced kernel features attackers can reach**: The HeartSuite kernel deliberately omits primitives that are common privilege-escalation and bypass paths (eBPF, FUSE, overlay, user namespaces, competing LSMs). This removes the attack surface by design.
 
-- eBPF (`CONFIG_BPF_SYSCALL` not present — no BPF-based process hiding)
-- FUSE (`CONFIG_FUSE_FS` not present — no FUSE-based filesystem redirection)
-- Overlay filesystem (not present — no overlay-based directory shadowing)
-- Unprivileged user namespaces (disabled — primary path for privilege escalation without credentials)
-- AppArmor/SMACK/Landlock (not present — no LSM pivot path)
+See [System Requirements](../introduction/system-requirements/#software-compatibility-notes) and [Deployment Scenarios](../introduction/deployment-scenarios/) for details.
 
 **Module loading restriction**: In Lockdown, `kmod`, `modprobe`, and `insmod` have no allowlist entries by default and cannot execute. Module-based rootkits cannot be installed because the module loaders cannot run. Where kmod is required for hardware drivers, its file access permissions can be restricted to specific `.ko` paths, preventing it from loading unauthorized modules.
 
@@ -255,7 +251,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 This payload can drive PagerDuty, OpsGenie, Slack, or any incident management tool.
 
-**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown advisories are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
+**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions and per-panel grant opt-outs are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
 
 **Evidence artifacts**:
 
@@ -328,7 +324,7 @@ HeartSuite provides technical controls for the detection and containment phases 
 
 **Allowlist update during active incident**:
 
-- If a compromised program must be removed from the allowlist, a maintenance window is required (Option 1: switch to Setup Mode, or Option 2: boot Non-HS kernel for Lockdown recovery)
+- If a compromised program must be removed from the allowlist, a maintenance window is required (Option 1: switch to Setup Mode, or Option 2: boot maintenance kernel for Lockdown recovery)
 - Maintenance presents a safety checklist (network isolation, daemon shutdown, SSH restriction) before allowing mode changes
 
 **Recovery**:
@@ -370,7 +366,7 @@ Under Lockdown, backup files are protected by the kernel itself — no program, 
 
 **System recovery after HeartSuite kernel failure**:
 
-If the HeartSuite kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The system is then without HeartSuite protection and without network access. Recovery requires booting to the Non-HS kernel from physical or serial-console access.
+If the HeartSuite kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The system is then without HeartSuite protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access.
 
 **Scope**: Backup files are versioned filesystem copies — there is no encryption at the HeartSuite layer. If backup confidentiality at rest is required, disk-level encryption (dm-crypt/LUKS) must be configured at the OS level by the customer. An alert fires when backup transitions from enabled to disabled, and when any previously-covered directory is removed from coverage.
 
@@ -486,7 +482,7 @@ The allowlist is the authoritative record of every program, file access, and net
 |-----------------|---------------------|---------------|
 | CC6.1 Logical access | Program/file/network allowlist; kernel-level blocking in Lockdown | Allowlist export, Dashboard screenshot |
 | CC6.3 Role separation | Not implemented — flat root access; organizational control required | Customer `sudoers` policy, PAM records |
-| CC6.6 Infrastructure access | Lockdown seals 5 categories (`chattr +i`); Non-HS kernel requires physical/serial presence | Sealed file inventory, Lockdown activation log |
+| CC6.6 Infrastructure access | Lockdown seals 5 categories (`chattr +i`); maintenance kernel requires physical/serial presence | Sealed file inventory, Lockdown activation log |
 | CC6.7 Transmission protection | Per-program outbound allowlist in Lockdown; HTTPS-only webhook; no inbound controls | Network allowlist, webhook config |
 | CC6.8 Malware prevention | Default-deny execution in Lockdown; Secure Script Launchers; compiled-out rootkit features; per-write backup | Block alert log, CVE table, backup config |
 | CC7.1 Threat detection | Block alerts (new program, network burst, critical file); SIEM syslog integration (per-decision enforcement stream + alert stream) | Alert configuration, syslog rule, dedicated JSONL approval log, SIEM records |

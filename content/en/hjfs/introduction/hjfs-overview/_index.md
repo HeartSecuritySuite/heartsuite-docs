@@ -137,7 +137,7 @@ Root Lock by HeartSuite and HJFS are not currently compatible and cannot be depl
 | | Root Lock by HeartSuite | HJFS |
 |---|---|---|
 | Enforcement layer | Kernel | Filesystem (`open()` call) |
-| Kernel requirement | Modified HS kernel | Standard kernel |
+| Kernel requirement | Modified HeartSuite kernel | Standard kernel |
 | Program execution control | Yes | No |
 | Filesystem path control | Yes | Yes |
 | Network access control | Yes | Not in v1.0 scope |

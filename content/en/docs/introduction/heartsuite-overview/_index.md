@@ -43,7 +43,7 @@ The Root Lock by HeartSuite kernel is deliberately compiled without them. These 
 
 A stock Ubuntu kernel ships with over 6,600 loadable modules. The HeartSuite kernel ships with 13 — one config file you can read in an afternoon.
 
-Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. Root Lock by HeartSuite takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker. For a visual comparison of enforcement layers, see [Kernel architecture](../how-it-compares/#kernel-architecture).
+Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features. Root Lock by HeartSuite removes them instead. Nothing to watch. Nothing to bypass. No agent to kill. No race against the attacker. For the layer comparison, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 Workloads needing the omitted primitives (on-host containers, local eBPF, rootless) are not a fit by design. See [Deployment Scenarios](../deployment-scenarios/) for alternatives.
 
