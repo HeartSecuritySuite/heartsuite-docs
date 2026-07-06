@@ -8,9 +8,9 @@ type: docs
 toc: true
 ---
 
-**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. Grants can be narrowed at Lockdown activation time via per-panel actions/opt-outs on the prep shown before confirmation; the Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown (including restoring or re-approving as needed). The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the Non-HS kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. Grants can be narrowed at Lockdown activation time via per-panel actions/opt-outs on the prep shown before confirmation; the Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown (including restoring or re-approving as needed). The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the maintenance kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
 
-Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock by HeartSuite kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the Non-HS kernel) is only needed when the immutable seal is active, which is the less common path.
+Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock by HeartSuite kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the maintenance kernel) is only needed when the immutable seal is active, which is the less common path.
 
 ## Starting maintenance
 
@@ -64,7 +64,7 @@ The Dashboard saves your maintenance session state before rebooting. This state 
 
 After selecting the appropriate Non-HS / Maintenance entry from GRUB, the Dashboard resumes automatically on login. It detects the absence of the Root Lock by HeartSuite kernel module and adjusts its interface — actions that require the Root Lock by HeartSuite kernel are hidden entirely, not greyed out. The Dashboard shows:
 
-- "Non-HS kernel active. Root Lock by HeartSuite is not loaded."
+- "maintenance kernel active. Root Lock by HeartSuite is not loaded."
 - "No blocking. No logging. No backups."
 - "Maintenance step 1 of 3: Remove immutable flags."
 
@@ -76,14 +76,14 @@ Press `[u]` to remove the immutable flags set by Lockdown. After the flags are r
 Both options carry equal weight — neither is recommended over the other. The choice depends on your operational needs.
 
 > [!NOTE]
-> If you accidentally select the wrong kernel at GRUB (the Root Lock by HeartSuite kernel instead of the Non-HS kernel), the Dashboard detects this and guides you to reboot and select the correct kernel.
+> If you accidentally select the wrong kernel at GRUB (the Root Lock by HeartSuite kernel instead of the maintenance kernel), the Dashboard detects this and guides you to reboot and select the correct kernel.
 
 ### Step 2 of 3: make your changes
 
 The Dashboard transitions to the maintenance workspace:
 
 - "Maintenance step 2 of 3: Make your changes."
-- "You are on the Non-HS kernel. Root Lock by HeartSuite is not active. Changes made now will not be logged."
+- "You are on the maintenance kernel. Root Lock by HeartSuite is not active. Changes made now will not be logged."
 
 Make your changes — install software, update packages, modify configuration files. When finished, press `[f]` to prepare the return to the Root Lock by HeartSuite kernel. The Dashboard pre-configures Setup Mode for the next boot.
 
@@ -92,8 +92,8 @@ Make your changes — install software, update packages, modify configuration fi
 Select the branded Root Lock by HeartSuite (HS) kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
 
 > [!WARNING]
-> The Non-HS kernel provides no Root Lock by HeartSuite protection whatsoever. The safety checklist is critical for this path.
+> The maintenance kernel provides no Root Lock by HeartSuite protection whatsoever. The safety checklist is critical for this path.
 
 ## Manual recovery outside the Maintenance
 
-When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the Non-HS kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.
+When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the maintenance kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.

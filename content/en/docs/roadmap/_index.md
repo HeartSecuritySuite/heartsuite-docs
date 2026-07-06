@@ -89,7 +89,7 @@ gantt
     Phase 1 unattended install service                :done, 2026-05-12, 2026-05-14
 
     section In Progress
-    Docker / container support                        :active, 2026-05-14, 2026-07-31
+    Container isolation via microVM — evaluation      :active, 2026-05-14, 2026-09-30
 
     section Planned
     Java shim launcher                               :2026-07-01, 2026-08-31
@@ -170,11 +170,11 @@ gantt
 
 > [!NOTE]
 > **eBPF Intentionally Disabled** (2022)  
-> BPF system calls are disabled at build time. This is a deliberate security decision: BPF verifier vulnerabilities have historically bypassed the exact kernel hooks HeartSuite relies on for enforcement. Disabling eBPF closes that attack surface permanently. The operational trade-off is that standard eBPF-based forensics tools cannot run on the HS host kernel. The supported architecture for eBPF-class observability is an adjacent monitoring host running a standard kernel, receiving HS kernel logs via syslog. For full forensic depth, operators boot a non-HS kernel, perform analysis, and boot back—consistent with HS's physical-access trust model.
+> BPF system calls are disabled at build time. This is a deliberate security decision: BPF verifier vulnerabilities have historically bypassed the exact kernel hooks HeartSuite relies on for enforcement. Disabling eBPF closes that attack surface permanently. The operational trade-off is that standard eBPF-based forensics tools cannot run on the host running the HeartSuite kernel. The supported architecture for eBPF-class observability is an adjacent monitoring host running a standard kernel, receiving HeartSuite kernel logs via syslog. For full forensic depth, operators boot the maintenance kernel, perform analysis, and boot back—consistent with the physical-access trust model.
 
 > [!NOTE]
-> **FUSE and OverlayFS Disabled by Default** (2022)  
-> Both filesystem types are disabled at build time as they are potential sandbox bypass paths. OverlayFS is under review for container deployments.
+> **FUSE and OverlayFS Intentionally Disabled** (2022)  
+> Both filesystem types are disabled at build time because they are well-known sandbox bypass and path-confusion primitives that attackers use to shadow protected directories or escape controls. This is a deliberate design choice to remove the attack surface rather than layer policy on top of it. Container support is provided by building and running images off-host (or isolating untrusted workloads in per-task microVMs with Root Lock by HeartSuite as the guest kernel), rather than enabling these primitives on the HS host.
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  
@@ -278,7 +278,7 @@ gantt
 
 > [!NOTE]
 > **Documentation and advisory transparency — v1.6.2 onward** (March 2026)  
-> Public documentation site and machine-readable advisory feeds at `/advisories/`. HS kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
+> Public documentation site and machine-readable advisory feeds at `/advisories/`. HeartSuite kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
 
 > [!NOTE]
 > **TUI Overlay Prototype** (March 18–26, 2026)  
@@ -306,7 +306,7 @@ gantt
 
 > [!NOTE]
 > **Textual TUI Dashboard** (April 28, 2026)  
-> Root-only, SSH-compatible, keyboard-first management console. No graphical environment required. All six setup phases trackable from a single screen.
+> Root-only, SSH-compatible, keyboard-first management console. No graphical environment required. All six setup phases trackable from the Dashboard.
 
 > [!NOTE]
 > **Three Review Queues — Programs, File Access, Internet Access**  
@@ -344,16 +344,16 @@ gantt
 {{% tab header="In Progress" %}}
 
 > [!WARNING]
-> **Docker / Container Support**  
-> OverlayFS support is being added as a loadable module for container hosts. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
+> **Container Support**  
+> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the HeartSuite kernel) is not part of the design — it would require re-introducing OverlayFS and user namespaces, the same privilege-escalation primitives the HeartSuite kernel intentionally omits. The supported path is OCI images built and run off-host; one direction under evaluation is running untrusted workloads in per-task microVMs (Kata Containers, Firecracker) where Root Lock by HeartSuite is the guest kernel. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
 
 > [!WARNING]
 > **File-Access Consequence Text**  
-> The file review screen currently understates the scope of a file-access permission — naming the file rather than the parent directory that the allowlist entry actually covers. Fix specified; not yet applied.
+> The file review currently understates the scope of a file-access permission — naming the file rather than the parent directory that the allowlist entry actually covers. Fix specified; not yet applied.
 
 > [!WARNING]
-> **Lockdown Screen — Final UX Form**  
-> Now that Lockdown is automatic, the inventory screen has no decision left to confirm. Open question: standalone viewing surface, or fold into the Lockdown button ceremony?
+> **Lockdown — final form**  
+> Lockdown activation is automatic on boot. The inventory during activation is read-only (no decision to confirm there). Before the `YES` confirmation, the prep shown during Lockdown activation offers per-panel actions/opt-outs (e.g. `[u]` undo grants, `[p]` patch, `[g]` restrict tools using observed usage, `[x]` exclude). The Lockdown button integrates the checklist and prep. The inventory during activation is read-only.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}

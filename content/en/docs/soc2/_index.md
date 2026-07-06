@@ -93,7 +93,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 **How HeartSuite satisfies this**:
 
-HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. The Dashboard presents a per-category inventory before Lockdown is confirmed, and the Lockdown activation log records what was sealed.
+HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory (read-only, with pointers to the prep for any grant adjustments using the per-panel actions such as `[u]` undos). The Lockdown activation log records what was sealed.
 
 The five sealed categories:
 
@@ -105,11 +105,11 @@ The five sealed categories:
 | Scheduled tasks and login scripts | Cron and anacron configuration, environment defaults, root shell profiles |
 | Maintenance tools | File editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies |
 
-While Lockdown is active, the kernel itself disables `chattr` — no user or program, including root, can remove the immutable flags. Modifying any of these resources requires booting the Non-HS kernel, which requires physical presence (keyboard and monitor, serial port, or cloud provider serial console).
+While Lockdown is active, the kernel itself disables `chattr` — no user or program, including root, can remove the immutable flags. Modifying any of these resources requires booting the maintenance kernel, which requires physical presence (keyboard and monitor, serial port, or cloud provider serial console).
 
 This means an attacker who reaches root via SSH cannot modify the SSH server configuration, create new user accounts, change passwords, install malicious cron jobs, or plant login-script backdoors.
 
-**Scope**: HeartSuite installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the Non-HS kernel without further authentication from HeartSuite. Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
+**Scope**: HeartSuite installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from HeartSuite. Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 
 **Evidence artifacts**:
 
