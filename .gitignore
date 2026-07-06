@@ -7,3 +7,8 @@ node_modules/
 .doc-style-anchor.md
 .change-manifest.md
 AGENTS.md
+
+# Temporary build, verification and cache directories
+# (Hugo output copies, htmltest link checker, manual verify builds)
+/tmp/
+/tmp-*/
