@@ -21,7 +21,7 @@ Three gates: execution (default-deny binary allowlist), file access (per-program
 
 Authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, cron/anacron, `/usr/lib/`, and HeartSuite's own configuration and kernel image directory — plus file backup snapshots (no programme, including root, can access them at runtime).
 
-These are the paths sealed by default. During maintenance on the Non-HS kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Mode Switching and Lockdown](../mode-switching/) for the full list and behaviour.
+These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Mode Switching and Lockdown](../mode-switching/) for the full list and behaviour.
 
 ---
 

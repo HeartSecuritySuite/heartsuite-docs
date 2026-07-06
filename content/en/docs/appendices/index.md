@@ -12,27 +12,27 @@ toc: true
 
 With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The Root Lock by HeartSuite installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to Root Lock by HeartSuite databases must be run as root.
 
-## Day-to-day: Dashboard screens
+## Day-to-day
 
-This is what you use in normal operation. The Dashboard guides you through every phase, and these screens cover the full setup and maintenance workflow.
+The Dashboard guides you through every phase. These are the main views you use in normal operation.
 
-- **Dashboard** — where you manage Root Lock by HeartSuite. Displays phase progress, pending/denied counts, protection state indicator, status line at the bottom, and Suggested Next Step. Appears automatically on login. Launch manually with `heartsuite`.
-- **Programs queue** (`[p]`) — Dashboard screen to review and approve pending program executions (Phase 2). Presents items with full metadata, grouped intelligently.
-- **File Access queue** (`[f]`) — Dashboard screen to review and approve pending file accesses (Phase 4). Handles read access and write access approvals separately.
-- **Internet Access queue** (`[i]`) — Dashboard screen to review and approve pending internet connections (Phase 5). Allows allowlisting specific IPs per program.
-- **Allowed** (`[a]`) — Dashboard screen to browse and edit existing allowlist entries.
-- **Browser View** (`[w]`) — Dashboard screen to enable or disable browser-based access to Root Lock by HeartSuite via SSH tunnel.
-- **Launchers** (`[s]`) — Dashboard screen to configure Secure Script Launchers (Phase 3).
-- **Alert Settings** (`[e]`) — Dashboard screen to configure alert channels (email, syslog, or webhook). At least one channel must be configured before Lockdown activation. See [Alert Settings](../alerts/).
-- **Lockdown** (`[l]`) — Dashboard screen for Lockdown activation. Shows precondition checklist, observation period, and review summary. After activation, offers `[r]` Reboot.
-- **Maintenance** (`[m]`) — Dashboard screen for guided maintenance workflows. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Lockdown, Lockdown+sealed, and Non-HS kernel states — hidden in Setup Mode by design.
-- **Backup** (`[b]`) — Dashboard screen to manage file backup and versioning. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
+- **Dashboard** — manages Root Lock by HeartSuite. Displays phase progress, pending and denied counts, the protection state indicator, the status line at the bottom, and the Suggested Next Step. Appears automatically on login. Launch it manually with `heartsuite`.
+- **Programs queue** (`[p]`) — review and approve pending program executions (Phase 2) from the Dashboard. Presents items with full metadata, grouped intelligently.
+- **File Access queue** (`[f]`) — review and approve pending file accesses (Phase 4) from the Dashboard. Handles read access and write access approvals separately.
+- **Internet Access queue** (`[i]`) — review and approve pending internet connections (Phase 5) from the Dashboard. Allows allowlisting specific IPs per program.
+- **Allowed** (`[a]`) — browse and edit existing allowlist entries from the Dashboard.
+- **Browser View** (`[w]`) — enable or disable browser-based access to Root Lock by HeartSuite via SSH tunnel from the Dashboard.
+- **Launchers** (`[s]`) — configure Secure Script Launchers (Phase 3) from the Dashboard.
+- **Alert Settings** (`[e]`) — configure alert channels (email, syslog, or webhook) from the Dashboard. At least one channel must be configured before Lockdown activation. See [Alert Settings](../alerts/).
+- **Lockdown** (`[l]`) — activate Lockdown from the Dashboard. Shows the precondition checklist, observation period summary, and allowlist review. Before typing `YES` (case-sensitive), the prep shown during Lockdown activation offers per-panel actions: `[u]` undo auto-narrowed grants (install/kmod/broad), `[p]` patch install seal paths, `[g]` restrict rm/cp/mv using observed usage (mitigates file-write tool risks), `[x]` exclude conflicts, plus SSH/permit controls. The inventory and commitment summaries are read-only and point to the prep for changes. After activation, offers `[r]` Reboot.
+- **Maintenance** (`[m]`) — guided maintenance workflows from the Dashboard. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Lockdown, Lockdown+sealed, and maintenance kernel states — hidden in Setup Mode by design.
+- **Backup** (`[b]`) — manage file backup and versioning from the Dashboard. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 
 ## Lockdown scripts
 
 These run automatically when you engage or unlock Lockdown via the Dashboard. You do not need to invoke or edit them yourself.
 
-- **`HS_lockdown.sh`** — runs when you press `[l]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals Root Lock by HeartSuite's configuration so it can't be changed while the HS kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
+- **`HS_lockdown.sh`** — runs when you press `[l]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals Root Lock by HeartSuite's configuration so it can't be changed while the HeartSuite kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
 - **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock by HeartSuite's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & scripting CLI

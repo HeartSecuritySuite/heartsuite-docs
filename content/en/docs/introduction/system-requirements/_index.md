@@ -30,7 +30,7 @@ Root Lock by HeartSuite is distributed with two Root Lock by HeartSuite kernels 
 
 ## Software compatibility notes
 
-The Root Lock by HeartSuite kernel is compiled without several features that attackers use to gain elevated access or escape security restrictions — keeping them in would undermine kernel-level allowlisting. Software that relies on those features will not run on the Root Lock by HeartSuite kernel — use the Non-HS kernel or a separate system for those workloads.
+The HS kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). These are the attack surface the design removes. Software that needs them runs on the Non-HS kernel or a separate system.
 
 The HS kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
 
@@ -45,4 +45,4 @@ The HS kernel is installed alongside your existing kernel via GRUB — it does n
 
 The Root Lock by HeartSuite kernel itself can run as a guest inside KVM, VMware, or other hypervisors — only running virtual machines from within the Root Lock by HeartSuite kernel is unavailable.
 
-These are intentional design decisions. Root Lock by HeartSuite's kernel-level allowlisting replaces the runtime observability and confinement layers these tools provide — see [Root Lock by HeartSuite Overview → Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) for the rationale, and [Deployment Scenarios](../deployment-scenarios/) for environments where Root Lock by HeartSuite fits well versus workloads that are better left on the Non-HS kernel.
+These omissions are deliberate. Root Lock by HeartSuite replaces the runtime tools these primitives enable. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).

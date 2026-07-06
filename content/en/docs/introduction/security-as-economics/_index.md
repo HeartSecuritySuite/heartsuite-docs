@@ -35,7 +35,7 @@ No security control is unconditionally unbreakable. The right question is not "c
 
 **Cost to buy.** Root Lock by HeartSuite replaces the preventive-enforcement layer of several overlapping tools, leaving detection and response capabilities intact. What that means in practice for each category:
 
-- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — Root Lock by HeartSuite removes the BPF syscall; these cannot run on the HS kernel, and their enforcement is covered by the allowlist. These are budget lines that can be removed.
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — Root Lock by HeartSuite removes the BPF syscall by design. These tools cannot run on the HS kernel (and their role is covered by the allowlist). Budget line removed; stronger prevention gained.
 - **gVisor** — if you are running it solely to protect workloads from root-level compromise inside a container or VM, Root Lock by HeartSuite is a direct replacement as the guest kernel. No second userspace kernel layer.
 - **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE) — prevention is replaced; telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing for telemetry-only deployments.
 - **AppArmor and SELinux** — no licensing cost, but the policy-authoring overhead is real; see the SELinux comparison above.

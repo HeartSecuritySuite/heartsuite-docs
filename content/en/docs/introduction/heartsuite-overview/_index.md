@@ -35,17 +35,17 @@ The **Dashboard** is the central interface. It tracks your progress through a 7-
 
 ## Reduced kernel footprint
 
-The security industry patches vulnerabilities one at a time. Root Lock by HeartSuite removes the features attackers rely on instead.
+The security industry patches vulnerabilities one at a time. Root Lock by HeartSuite removes the features attackers rely on — by design.
 
-Most malware escalates privilege by reaching for the same handful of kernel features. eBPF to hide processes. FUSE to redirect reads. Overlay filesystems to shadow protected directories. Userspace security frameworks — AppArmor, SMACK, Landlock — to pivot through. Unprivileged user namespaces to become root without credentials.
+Most malware escalates privilege by reaching for the same handful of kernel features: eBPF to hide processes, FUSE to redirect reads, overlay filesystems to shadow directories, userspace LSM frameworks (AppArmor, SMACK, Landlock) to pivot through, and unprivileged user namespaces to gain root without credentials.
 
-The Root Lock by HeartSuite kernel is compiled without any of them.
+The Root Lock by HeartSuite kernel is deliberately compiled without them. These primitives are the attack surface, path to root, and bypass vectors the allowlist model exists to close.
 
 A stock Ubuntu kernel ships with over 6,600 loadable modules and a configuration file of more than 12,000 lines. The Root Lock by HeartSuite kernel ships with 13 modules and 5,050 lines — one file you can read in an afternoon.
 
 Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features and raise alerts when something looks suspicious. Root Lock by HeartSuite takes a different path. It removes them. Nothing to watch. Nothing to bypass. No agent to keep alive. No race against the attacker. For a visual comparison of enforcement layers, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
-For the practical implications of these compile-time choices, see [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes).
+Workloads needing the omitted primitives (on-host containers, local eBPF, rootless) are not a fit by design. See [Deployment Scenarios](../deployment-scenarios/) for alternatives.
 
 ## Features
 
@@ -74,7 +74,7 @@ Root Lock by HeartSuite operates in two modes:
 - **Setup Mode**: The kernel logs all program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist by reviewing queues and approving programs and their access patterns. The Dashboard guides this process.
 - **Lockdown**: The kernel enforces the allowlist. Programs without an allowlist entry are blocked. Programs that exceed their permissions are blocked.
 
-Activating Lockdown requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist and requires typing `YES` (case-sensitive) to confirm.
+Activating Lockdown requires all review queues to be empty, alerts to be configured, and an active subscription. The Dashboard presents a precondition checklist. Before the final confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo auto-narrowed grants, `[p]` patch, `[g]` restrict rm/cp/mv, `[x]` exclude write conflicts). The inventory and summaries are read-only. It requires typing `YES` (case-sensitive) to confirm. See [Mode Switching and Lockdown](mode-switching/) for full keys and flow.
 
 ### 3. Lockdown
 
@@ -108,7 +108,7 @@ No other product combines all three: enforcement that survives root compromise, 
 
 ## Is Root Lock by HeartSuite right for you?
 
-Root Lock by HeartSuite is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, AI agent sandboxes, and container hosts — the installer includes a Container host option that enables overlay filesystem support and Setup Mode recording adapted for container runtimes. Hosts where eBPF-based tooling must run locally require a non-HS kernel. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
+Root Lock by HeartSuite is a strong fit for production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host; running a shared-kernel container runtime directly on the HS host is not a fit by design — the kernel omits the overlay and user-namespace primitives that would reintroduce the attack surface the allowlist model exists to close. Hosts where eBPF-based tooling must run locally require a non-HS kernel for the same reason: the BPF syscall and verifier are deliberately absent. See [Deployment Scenarios](../deployment-scenarios/) for a full breakdown.
 
 If you already run Falco, AppArmor, gVisor, or a Linux EDR agent — or a SIEM, NDR platform, or vulnerability scanner — see [How Root Lock by HeartSuite Compares](../how-it-compares/) to understand which tools Root Lock by HeartSuite replaces, which it runs alongside, how it can be circumvented, and [how the operational cost compares to SELinux, EDR, and tools like Zafran — including what changes for patching urgency and alert volume](../security-as-economics/).
 
