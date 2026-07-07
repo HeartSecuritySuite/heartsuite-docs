@@ -41,7 +41,7 @@ Root Lock by HeartSuite organizes the setup journey into seven phases. The Dashb
 
 ### Cloud Path
 
-Users who launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms Phase 1 is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required.
+Users who launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms setup is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required. Installer logs from the cloud image build are accessible via the provider's serial console.
 
 ### Local Path
 
@@ -50,11 +50,11 @@ Users who install Root Lock by HeartSuite on bare-metal or custom VMs follow a l
 1. Download and extract the installation package.
 2. Prepare GRUB and install the Root Lock by HeartSuite kernel.
 3. Root Lock by HeartSuite reads the startup and shutdown logs automatically, rebooting between passes until all startup and shutdown programs are in the allowlist.
-4. After Phase 1 is complete, the Dashboard appears and the journey merges with the Cloud path.
+4. After setup is complete, the Dashboard appears and the journey merges with the Cloud path.
 
-Both paths converge at the Dashboard after Phase 1. From that point forward, the workflow is identical.
+Both paths converge at the Dashboard after setup. From that point forward, the workflow is identical.
 
-![Dashboard after Phase 1: Phase 2 Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
+![Dashboard after initial setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
 
 ## From installation to Lockdown
 
@@ -63,7 +63,7 @@ The following diagram shows the path from installation to Lockdown, including th
 ```mermaid
 graph TD
     A[Install Root Lock by HeartSuite] --> B{Cloud or Local?}
-    B -- Cloud --> C[Boot instance — Dashboard confirms Phase 1 complete]
+    B -- Cloud --> C[Boot instance — Dashboard confirms setup complete]
     B -- Local --> D["Boot setup runs automatically — reboots between passes"]
     D --> C
     C --> E[Dashboard appears — Suggested Next Step]

@@ -98,7 +98,7 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## Two setup paths
 
-**Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms Phase 1 is complete. Proceed directly to the review queues.
+**Cloud Path**: Launch a pre-installed cloud instance. The Dashboard appears immediately and confirms setup is complete. Proceed directly to the review queues. Build-time install logs are in /var/log/heartsuite/ and accessible over the provider's serial console (AWS EC2, Linode LISH, Hetzner, etc.).
 
 **Local Path**: Download from heartsecsuite.com, extract, install, and boot the Root Lock by HeartSuite kernel. The System Setup guides you through multiple setup steps with a step counter. Once the Dashboard confirms Phase 1 is complete, both paths merge.
 
