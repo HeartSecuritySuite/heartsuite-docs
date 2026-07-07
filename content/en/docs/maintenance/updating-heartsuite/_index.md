@@ -45,7 +45,7 @@ Root Lock by HeartSuite is not active while the maintenance kernel is running. S
 
    Expected output: `heartsuite-install.sh: OK`
 3. Reboot and select the maintenance kernel at the GRUB menu.
-4. Log in as root over SSH or the serial console.
+4. Log in as root over SSH or the serial console (AWS EC2 Serial Console, Linode LISH, Hetzner, etc.). On failure, inspect `/var/log/heartsuite/install.log` via serial.
 5. Run the installer:
 
    ```bash

@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Lockdown, immutable seal active, or the maintenance kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log is available for advanced diagnostics when needed.
+**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Lockdown, immutable seal active, or the maintenance kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log (`journalctl -k` or dmesg) and operational logs (`/var/log/heartsuite/install.log`, `ui.log`, initial setup logs) can be viewed and downloaded directly from cloud provider web dashboards without SSH or interactive serial console (see Appendices > Log files for AWS CloudWatch/SSM steps, GCP Cloud Logging, Azure Log Analytics, etc.). Serial console remains the universal recovery path.
 
 ## Where to start
 
