@@ -47,13 +47,13 @@ A.8 (Technological Controls) — particularly A.8.2, A.8.3, A.8.7, A.8.9, A.8.13
 
 **What is the cloud serial-console bypass risk?**
 
-HeartSuite installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) give the same bypass path as physical keyboard access. Restricting serial console access is a customer-side cloud IAM responsibility.
+HeartSuite installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same bypass path as physical keyboard access. From the serial console you can `cat /var/log/heartsuite/install.log` (installer), `cat /var/log/heartsuite/initial-setup-latest.log`, `journalctl -t heartsuite`, etc. Restricting serial console access is a customer-side cloud IAM responsibility.
 
 ---
 
 **What are the logging retention limits?**
 
-`/.hs/sys/HS_log.txt` is cleared on each maintenance cycle. `/var/log/heartsuite/ui.log` is capped at approximately 8 MB with no time-based retention policy. There is no tamper-evident off-host log — the syslog streams are the mechanism for audit-period-length evidence (SOC 2 Type II, ISO 27001 surveillance).
+`/.hs/sys/HS_log.txt` (kernel activity) is cleared on each maintenance cycle. Operational logs are in `/var/log/heartsuite/` (install.log, ui.log, initial setup logs). These are visible on cloud serial consoles (AWS, Linode LISH, Hetzner, etc.). `/var/log/heartsuite/ui.log` is capped at ~8 MB. The syslog/journald streams (heartsuite tag) are the mechanism for long-term SIEM/audit evidence. Protected enforcement state lives in `/.hs/sys/` (not standard logs).
 
 ---
 

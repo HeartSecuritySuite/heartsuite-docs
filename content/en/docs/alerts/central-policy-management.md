@@ -21,7 +21,7 @@ A central system (CMDB, Git repository as source of truth, ITSM workflow, or cus
 
 - Generate or maintain policy as simple text lists (one absolute program path per line) or structured data that your automation can parse.
 - Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
-- For homogeneous fleets or golden images, pre-seed a known-good baseline allowlist at install or first boot. This accelerates onboarding compared to pure observation on every host.
+- For homogeneous fleets or pre-configured images, pre-seed a known-good baseline allowlist at install or first boot. This accelerates onboarding compared to pure observation on every host.
 - For varied or custom workloads, allow an initial observation window in Setup Mode on a representative host, harvest the resulting allowlist entries, review them centrally, and then push the approved set to the rest of the fleet.
 
 Pre-seeding reduces per-host Dashboard toil for standard stacks while still requiring explicit approval of any deviation before Lockdown.
@@ -46,6 +46,10 @@ HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lo
 #### Official Ansible role: `heartsecurity.root_lock`
 
 **Overview**: The role provides variable-driven, idempotent management of allowlist programs and mode transitions. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns to HeartSuite.
+
+The role is intentionally narrow in scope: it assumes HeartSuite is already installed on the target and focuses on allowlist management plus mode transitions (Secure Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
+
+A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full HeartSuite deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: start with a minimal bootstrap allowlist (via seed file), run the real workload (e.g. SFTP transfers), harvest observed programs from Setup Mode on the live machine, maintain them in a seed file, and re-apply via the role. (The example uses a placeholder like "Contabo" for the sftp_provider.)
 
 **Requirements**:
 
@@ -86,7 +90,9 @@ Minimal example playbook:
 
 After switching to `secure` or `lockdown`, a reboot is typically required for full seal; the role does not reboot automatically. Register facts (`hs_status`, `hs_apply_result`, `hs_switch_result`) are available for assertions or subsequent tasks.
 
-**Python API alternative**: For custom Ansible modules or non-Ansible automation, the same primitives are exposed directly via `limited_tools`: `approve_program_path`, `apply_allowlist_seed`, `get_status`, `get_allowlist_programs`, and `switch_to_secure`. These reuse the same gates and `CommandResult` semantics. The `heartsecurity.root_lock` role is the preferred declarative path; use the Python API when you need bespoke orchestration beyond the role variables.
+**Python API alternative**: For custom Ansible modules or non-Ansible automation, the same primitives are exposed directly via `limited_tools`: `approve_program_path`, `apply_allowlist_seed`, `get_status`, `get_allowlist_programs`, and `switch_to_secure`. These reuse the same gates and `CommandResult` semantics. The `heartsecurity.root_lock` role is the preferred declarative path for the narrow post-install concerns; use the Python API (or thin custom tasks) when composing larger provisioning playbooks that also handle OS setup, hardening, or host-specific services before or after invoking the role.
+
+See the reference provisioning starter in the code repository (`ansible/examples/hs-debian12-provision/`) for a concrete example of composition: it delegates SSH/SFTP hardening to the dev-sec collection, performs bundle-based installation, registers backup directories and alert configuration, starts with a minimal allowlist bootstrap (via seed file), and shows how to harvest from real workload observation into a maintainable seed file before using the root_lock role for allowlist and mode.
 
 Register playbooks as the mechanism that executes change records approved in your central system.
 

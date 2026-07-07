@@ -28,7 +28,7 @@ Install Root Lock by HeartSuite on bare-metal or a custom VM:
 
 1. **[Obtaining Root Lock by HeartSuite](../installation/obtaining-heartsuite/)** — download the installer from heartsecsuite.com.
 2. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the Root Lock by HeartSuite kernel.
-3. **[Installation Part 2](../installation/installation-part2/)** — complete the System Setup through multiple reboot cycles until the Dashboard confirms Phase 1 is complete.
-4. **[Verifying Installation](../verification/)** — confirm Phase 1 is complete in the Dashboard.
+3. **[Installation Part 2](../installation/installation-part2/)** — complete initial setup through multiple reboot cycles until the Dashboard confirms it is complete.
+4. **[Verifying Installation](../verification/)** — confirm initial setup is complete in the Dashboard. On cloud, use serial console to inspect `/var/log/heartsuite/install.log` if needed.
 
 Once Phase 1 is complete, both paths merge — the Dashboard shows your current phase and the Suggested Next Step directs you to begin allowlisting.

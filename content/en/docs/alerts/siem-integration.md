@@ -165,9 +165,9 @@ To feed live data during lab work, enable Fleet tab export on a host and forward
 
 ### Pairing with Ansible central policy
 
-The exported policy data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection. The bridge (or your production Elasticsearch deployment) is the read and visibility side; your control plane remains the write path.
+The exported policy data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role (or compose it inside larger provisioning orchestrators), `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection. The bridge (or your production Elasticsearch deployment) is the read and visibility side; your control plane remains the write path.
 
-See [Central Policy Management and External Control](central-policy-management/) for Ansible role variables, seed application, and harvest patterns.
+See [Central Policy Management and External Control](central-policy-management/) for Ansible role variables, seed application, harvest patterns, and composition with full server deployment playbooks.
 
 ## Verification commands (run on the HeartSuite host)
 
