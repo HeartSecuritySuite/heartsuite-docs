@@ -8,13 +8,13 @@ toc: true
 type: docs
 ---
 
-**Overview**: Phase 1 (System Verification) confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. On the Cloud Path, the Dashboard confirms Phase 1 is complete on first boot. On the Local Path, the Dashboard confirms Phase 1 is complete once the installation process is done.
+**Overview**: setup (System Verification) confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. On the Cloud Path, the Dashboard confirms setup is complete on first boot. On the Local Path, the Dashboard confirms initial setup is complete once the installation process is done. Installer and initial setup logs are in /var/log/heartsuite/ and accessible via provider serial console (AWS, Linode, Hetzner, etc.).
 
 ## Cloud Path and Local Path
 
 ### Cloud Path
 
-When you launch a pre-installed Root Lock by HeartSuite cloud instance, the Dashboard confirms Phase 1 is complete on first boot and suggests the next step.
+When you launch a pre-installed Root Lock by HeartSuite cloud instance, the Dashboard confirms setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if troubleshooting the build-time phase.
 
 ### Local Path
 

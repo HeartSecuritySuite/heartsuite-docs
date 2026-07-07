@@ -419,7 +419,7 @@ The allowlist is the authoritative record of every program, file access, and net
 **Evidence artifacts**:
 
 - Maintenance window log showing dates of mode changes
-- Update installation log at `/var/log/heartsuite/install.log`
+- Update installation log at `/var/log/heartsuite/install.log` (visible on cloud serial consoles such as AWS EC2 Serial Console or Get system log)
 - SHA-256 verification output from update procedure
 - Dedicated JSONL approval log with timestamp, uid, tty, and the specific program, file, or network entries approved in each change
 - Allowlist showing programs, file accesses, and network destinations approved for each maintenance cycle

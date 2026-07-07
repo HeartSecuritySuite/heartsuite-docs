@@ -48,10 +48,10 @@ Root Lock by HeartSuite treats the kernel as an integrated part of the delivered
 Enterprise teams do not want operators making daily kernel choices. The product and recommended deployment patterns are built to keep the kernel choice at image-build or initial-provision time.
 
 - **Cloud Path**: Pre-configured instances on major providers (AWS, Google Cloud, Azure, DigitalOcean, Linode, and others) arrive with the HeartSuite kernel already installed and set as default. The Dashboard appears on first login with Phase 1 complete. Serial console access from the provider remains available for recovery.
-- **Golden image recipes and automated install**: Use your existing Packer, Terraform, Ansible, or cloud-init pipelines to produce base images that include the Root Lock by HeartSuite install bundle. The installer sets the HeartSuite kernel as the GRUB default, performs the initial boot, and surfaces the Dashboard. Baseline allowlists can be pre-seeded for homogeneous fleets (see [Alert Settings](../../alerts/) — fleet syslog, webhook, and central policy patterns).
+- **Pre-configured image recipes and automated install**: Use your existing Packer, Terraform, Ansible, or cloud-init pipelines to produce base images that include the Root Lock by HeartSuite install bundle. The installer sets the HeartSuite kernel as the GRUB default, performs the initial boot, and surfaces the Dashboard. Baseline allowlists can be pre-seeded for homogeneous fleets (see [Alert Settings](../../alerts/) — fleet syslog, webhook, and central policy patterns).
 - **Hiding details from operators**: After initial provisioning, day-to-day interaction is through the Dashboard or central automation. Kernel selection appears only in the documented Maintenance flow (when changes are required) and in the System Info Strip when running on the maintenance kernel. GRUB entries for the original distribution kernel are retained (split into Maintenance and vanilla entries, with Maintenance labelled as the Setup Mode destination) for the recovery path.
 
-Official pre-built images in the major cloud Marketplaces are in active development and will further reduce the need for customers to assemble images. Until those listings are available, the golden-image + automated-install pattern delivers equivalent repeatability and auditability using the same tooling you already apply to other base OS images.
+Official pre-built images in the major cloud Marketplaces are in active development and will further reduce the need for customers to assemble images. Until those listings are available, the pre-configured-image + automated-install pattern delivers equivalent repeatability and auditability using the same tooling you already apply to other base OS images.
 
 ## Secure Boot, firmware compatibility, and roadmap
 
@@ -100,10 +100,10 @@ Full compatibility notes and known non-fits live in [How Root Lock by HeartSuite
 
 The HeartSuite kernel is managed the same way you manage base OS images and policies — through the control planes you already own.
 
-- **Image lifecycle**: Treat the HeartSuite kernel + baseline allowlist as part of your golden image. Packer templates call the official install bundle, pre-seed policy via the batch tools, and produce an image that boots directly to the protected state. Reprovision or patch images on the same cadence as your other distributions.
+- **Image lifecycle**: Treat the HeartSuite kernel + baseline allowlist as part of your pre-configured image. Packer templates call the official install bundle, pre-seed policy via the batch tools, and produce an image that boots directly to the protected state. Reprovision or patch images on the same cadence as your other distributions.
 - **Provisioning**: Terraform, cloud-init, or your IaC tool launches the image (or runs the installer non-interactively). No special kernel module or agent is required after boot.
 - **Policy at scale**: Allowlist content (programs, file paths, network destinations) is curated centrally and applied via Ansible, Terraform + GitOps, ServiceNow, or custom automation exactly as described in [Alert Settings](../../alerts/) (fleet export surfaces and central policy patterns). Pre-seeding accelerates homogeneous fleets; observation + central review handles varied workloads.
-- **Kernel updates**: Delivered as versioned bundles. Apply during planned maintenance windows using the standard maintenance kernel path (or by reprovisioning from an updated golden image). The Dashboard and automation surfaces make the required steps repeatable.
+- **Kernel updates**: Delivered as versioned bundles. Apply during planned maintenance windows using the standard maintenance kernel path (or by reprovisioning from an updated pre-configured image). The Dashboard and automation surfaces make the required steps repeatable.
 - **Observability and drift**: `status.json`, the JSONL approval log, and the two syslog streams feed your existing fleet dashboards and SIEM. Drift detection (policy or mode) is performed by harvesting from central jobs and comparing against the Git/CMDB source of truth.
 - **No new kernel-specific fleet tooling**: The same rsyslog rule, SSH/Ansible access, and image pipeline you use today handle the kernel boundary.
 
@@ -168,7 +168,7 @@ Root Lock by HeartSuite positions the HeartSuite kernel for the subset of worklo
 
 1. Read the [Procurement Brief](../procurement-brief/) decision guide and run the published measurements on a test deployment.
 2. Review the [Auditor Brief](../auditor-brief/) and the full CVE transparency page.
-3. Pilot using a cloud pre-configured instance or a Packer-built golden image on a non-production workload.
+3. Pilot using a cloud pre-configured instance or a Packer-built pre-configured image on a non-production workload.
 4. Map your compatibility requirements against the decision tree and the "where a separate kernel is required" section of [How Root Lock by HeartSuite Compares](../../introduction/how-it-compares/).
 5. For platforms with Secure Boot or Marketplace requirements, request current runbook and timeline status from support.
 6. For strict no-custom-kernel policies, evaluate HJFS in parallel.

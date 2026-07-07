@@ -130,9 +130,9 @@ Root Lock by HeartSuite is **not** active on the Non-HS kernel. Schedule updates
 
 Full step-by-step procedures, failure recovery, and Lockdown considerations are in [Updating HeartSuite](../../maintenance/updating-heartsuite/).
 
-### Golden image alternative
+### Pre-configured image alternative
 
-Teams that provision from images may **reprovision from an updated golden image** instead of in-place bundle application. This is equivalent from a support perspective when the image contains a bundle version HeartSuite has published for that stream. Image pipelines should pin bundle version, checksum, and HS kernel string in build metadata for audit traceability.
+Teams that provision from images may **reprovision from an updated pre-configured image** instead of in-place bundle application. This is equivalent from a support perspective when the image contains a bundle version HeartSuite has published for that stream. Image pipelines should pin bundle version, checksum, and HS kernel string in build metadata for audit traceability.
 
 ---
 
@@ -176,7 +176,7 @@ Machine-readable advisory feeds are **published** as JSON under [`/advisories/`]
 
 ## 5.19 stream deprecation
 
-The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends 5.19 for new deployments or new golden images.
+The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends 5.19 for new deployments or new pre-configured images.
 
 **Support window for existing deployments**
 
@@ -185,7 +185,7 @@ The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends
 
 **Migration path**
 
-1. Schedule maintenance using the [Updating HeartSuite](../../maintenance/updating-heartsuite/) two-reboot path (or reprovision from a 6.18 golden image).
+1. Schedule maintenance using the [Updating HeartSuite](../../maintenance/updating-heartsuite/) two-reboot path (or reprovision from a 6.18 pre-configured image).
 2. Apply the published **5.19 → 6.18 migration bundle** for your distribution and HeartSuite version.
 3. Reboot into the 6.18 HS kernel, review Dashboard queues for any new program activity, and re-engage Lockdown if required.
 4. Update vulnerability-management and configuration baselines to reference the new version string and published 6.18 config hash.
