@@ -45,4 +45,6 @@ The HeartSuite kernel is installed alongside your existing kernel via GRUB — i
 
 The Root Lock by HeartSuite kernel itself can run as a guest inside KVM, VMware, or other hypervisors — only running virtual machines from within the Root Lock by HeartSuite kernel is unavailable.
 
+Execution environment requirement: the host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives HeartSuite its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are refused by design. See the guard in the proposed installer and the framing in [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint).
+
 These omissions are deliberate. Root Lock by HeartSuite replaces the runtime tools these primitives enable. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).

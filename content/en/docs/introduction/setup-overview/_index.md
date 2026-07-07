@@ -54,7 +54,7 @@ Users who install Root Lock by HeartSuite on bare-metal or custom VMs follow a l
 
 Both paths converge at the Dashboard after setup. From that point forward, the workflow is identical.
 
-![Dashboard after initial setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
+![Dashboard after setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
 
 ## From installation to Lockdown
 
