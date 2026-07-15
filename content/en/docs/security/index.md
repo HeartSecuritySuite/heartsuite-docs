@@ -202,6 +202,7 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2024-50131](#cve-2024-50131) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2024-53057](#cve-2024-53057) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-56606](#cve-2024-56606) | AF_PACKET sockets (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `CAP_NET_RAW` not in allowlist; Lockdown prevents modification |
+| [CVE-2026-53341](#cve-2026-53341) | file handles / fhandle (`CONFIG_FHANDLE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `CAP_DAC_READ_SEARCH` required; unprivileged path denied; Lockdown prevents allowlist modification |
 | [CVE-2025-21692](#cve-2025-21692) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49892](#cve-2022-49892) | ftrace / function tracer (`CONFIG_FTRACE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2022-49921](#cve-2022-49921) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `tc` not in allowlist; Lockdown prevents modification |
@@ -227,6 +228,7 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
 | [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | DisplayPort MST display hardware absent |
+| [CVE-2026-53223](#cve-2026-53223) | AF_PACKET timestamp cmsgs (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `CAP_NET_RAW` not granted to services; packet tools absent from allowlist; Lockdown prevents modification |
 | [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_USB_AUDIO` not set |
 | [CVE-2024-36916](#cve-2024-36916) | block I/O cost controller (`CONFIG_BLK_CGROUP_IOCOST`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — iocost cgroup paths not in allowlist; Lockdown prevents modification |
 | [CVE-2024-38560](#cve-2024-38560) | Brocade bfa SCSI driver (`CONFIG_SCSI_BFA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA` not set |
@@ -2988,6 +2990,36 @@ Fix the MST sideband message body length check, which must be at least 1 byte ac
 `CONFIG_DRM=y` is compiled in. DisplayPort Multi-Stream Transport (DP MST) is used for daisy-chaining multiple monitors via DisplayPort. A headless server has no display output hardware; the DP MST sideband message path is never reached.
 
 The attack vector has no path to execution on a standard Debian 11 server deployment. Lockdown provides a backstop regardless: root cannot modify the allowlist, install persistent backdoors, or survive a reboot.
+
+### CVE-2026-53341
+
+**Status**: Not exploitable  
+**Component**: file handles / fhandle (`CONFIG_FHANDLE`)  
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — NVD base pending; UAF class aligned with peer kernel entries  
+**Score on HeartSuite**: 0.0 — `CAP_DAC_READ_SEARCH` required to pass `may_decode_fh`; unprivileged callers receive `-EPERM`; Lockdown blocks allowlist modification  
+**Affected range**: Linux 6.11 through 6.18.y prior to 6.18.36; production **6.18.9-hs** still lacks the upstream fix until a newer 6.18.y base  
+**Upstream fix**: 6.18.36+ (`32138633e51e` — fhandle / `may_decode_fh`)
+
+`may_decode_fh()` in the file-handle open path reads `mount::mnt_ns` without holding a lock. A concurrent unmount can free the mount namespace after an RCU grace period, so a racing `open_by_handle_at` can use the pointer after free. Upstream notes the race requires `CONFIG_PREEMPTION` or `CONFIG_RCU_STRICT_GRACE_PERIOD` and rates practical impact as limited (integer-comparison leak, hang, or crash) rather than a polished privilege-escalation chain.
+
+`CONFIG_FHANDLE=y` is compiled in on 6.18.9-hs. Entering the vulnerable helper requires `open_by_handle_at` and `CAP_DAC_READ_SEARCH` (or the admin + DAC branch in that helper). Without those capabilities, `may_decode_fh` returns `-EPERM` before the unlocked `mnt_ns` read matters for an unprivileged attacker. No Root Lock by HeartSuite deployment places a dedicated file-handle exploit tool in the allowlist. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. Same product model as other capability-gated local paths (for example AF_PACKET / `CAP_NET_RAW`).
+
+The trigger cannot be reached on any default Root Lock by HeartSuite deployment.
+
+### CVE-2026-53223
+
+**Status**: Not exploitable  
+**Component**: AF_PACKET timestamp cmsgs (`CONFIG_PACKET`)  
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)  
+**Score on HeartSuite**: 0.0 — `CAP_NET_RAW` not granted to services; packet-capture tools absent from HS allowlist; Lockdown blocks the exploitation trigger  
+**Affected range**: kernels prior to the AF_PACKET timestamp cmsg guard; production **6.18.9-hs** lacks the upstream fix until base ≥ 6.18.36-class  
+**Upstream fix**: `3dde4fb941fa` (guard timestamp cmsgs to real error-queue skbs)
+
+`skb_is_err_queue()` treated `PACKET_OUTGOING` as proof that an skb came from the socket error queue. AF_PACKET also delivers legitimate outgoing taps with that `pkt_type` while `skb->cb` holds packet control state, not `sock_exterr_skb`. With socket timestamping enabled, the generic timestamp cmsg path can emit `SCM_TIMESTAMPING_OPT_STATS` from the wrong buffer and disclose heap contents or trip hardened usercopy.
+
+`CONFIG_PACKET=y` is compiled in. Creating an AF_PACKET socket requires `CAP_NET_RAW`. No Root Lock by HeartSuite deployment grants `CAP_NET_RAW` to any service — packet capture tools such as `tcpdump` have no allowlist entry. Without an allowlist entry, the kernel refuses to execute them. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. HeartSuite network hooks cover `connect` and destination `sendto` only; they do not cover `socket` / `setsockopt` / `recvmsg` on this path — reachability is closed by capability and allowlist composition, not by the net hook.
+
+The trigger cannot be reached on any default Root Lock by HeartSuite deployment.
 
 ## Not Affected — Disabled Features {#not-affected-disabled-features}
 

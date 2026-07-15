@@ -66,6 +66,22 @@ SELinux initializes at boot but does not enforce. HeartSuite is the sole enforci
 
 *Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown. This is an operator-procedure-dependent mitigation, not a config-enforced one.
 
+**4. Lockdown seal and control-plane mediation completeness**  
+Lockdown is designed so root has no intended path to lift the allowlist seal or disable enforcement the way agents, LSM frameworks, or eBPF programs can be killed, unloaded, or set permissive. Seal and control integrity are kernel-enforced product contracts. On a large kernel, complete mediation of every security-relevant path remains an ongoing engineering property: residual risk includes incomplete mediation of seal mutators and HeartSuite control interfaces (including sibling attribute or syscall entry points that must stay gated under Lockdown).
+
+*Auditor action:* verify live gates on the **deployed ship pin** with the operator's regression suite or release checklist when available — do not assume completeness from architecture diagrams alone.
+
+**5. Allowlist breadth after learning**  
+Setup Mode records observed behaviour; operators ratify grants into the allowlist. Residual risk after Lockdown is not only whether enforcement can be disabled, but whether the ratified allowlist is wider than the intended least-privilege slice (NIST-style residual on configuration scope). Over-broad program, file, or network grants increase blast radius inside an otherwise sealed host.
+
+*Auditor action:* sample allowlist entries against workload role; treat Setup Mode duration and review hygiene as part of control effectiveness, not only kernel config scores.
+
+**6. Intentional maintenance and console recovery path**  
+Supported recovery of a sealed allowlist requires booting the maintenance (Non-HS) kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical presence — keyboard and monitor, serial port, or cloud provider serial console. This is intentional and documented; it is not a remote disable of the stoppable-agent class. Residual risk includes any operational process that weakens console or boot-path controls (shared hypervisor console credentials, unattended serial access, unrestricted out-of-band management).
+
+**7. Confused deputy among allowlisted programs**  
+Enforcement is per program identity. A process that is correctly allowlisted for a powerful role (package manager, backup helper, orchestration agent) can still be abused within its grants if an attacker controls its inputs or configuration. Residual risk is lateral or deputy misuse inside approved scope, not absence of a kernel gate.
+
 ---
 
 ## How to reproduce these measurements
