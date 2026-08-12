@@ -21,31 +21,37 @@ A central system (CMDB, Git repository as source of truth, ITSM workflow, or cus
 
 - Generate or maintain policy as simple text lists (one absolute program path per line) or structured data that your automation can parse.
 - Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
-- For varied or custom workloads, finish Phase 1 (System Verification) on a representative host, run the real stack in Setup Mode, harvest reviewed program paths, and push **extras or fleet-wide** lists with automation.
-- For homogeneous fleets that must come up faster than pure observation, use an **install-time baseline pre-seed** when your package or image supports it (vendor installer option such as `--apo-seed` / packaged baseline). That path is separate from the post-install text lists below.
+- **Dense fleets (recommended):** harvest an install-time APO baseline from one dense reference host, package Root Lock **with that seed**, then install via Ansible using the seeded package so Phase 1 is short (not multi-hour learn-from-cold on every node).
+- **Post-install text lists** (`hs_seeds`, `batch_record_add.py`) are for extras and program-path fleet reuse **after** install — they do not replace install-time APO pre-seed.
 
 ### Two seed mechanisms (do not conflate)
 
 | | Install-time baseline pre-seed | Post-install text program list |
 |---|--------------------------------|--------------------------------|
-| **Purpose** | Optional baseline so Phase 1 starts from a known stack (shorter learn on dense or homogeneous hosts when packaging supports it) | Additive program approvals for extras, stack tools, and fleet reuse |
-| **When** | During install / image bake | After HeartSuite is installed; **not** while Phase 1 is still pending |
-| **Shape** | Vendor packaging / installer options (baseline APO material) | Plain text: one absolute **program** path per line (`#` comments OK) |
-| **Apply with** | Installer or image pipeline | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
+| **Purpose** | Seed **first**, then install: Phase 1 starts from a known dense baseline | Additive program approvals for extras after HeartSuite is up |
+| **When** | **Before/at** install (package or image includes baseline) | After HeartSuite is installed; **not** while Phase 1 is still pending |
+| **Shape** | Vendor packaging / installer options such as `--apo-seed` (baseline APO material) | Plain text: one absolute **program** path per line (`#` comments OK) |
+| **Apply with** | Seeded installer / image; Ansible by **running that installer** | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
 
-**Not required:** re-apply a full harvested baseline program list via `hs_seeds` or `batch_record_add.py` immediately after Phase 1 on the same class of host. Phase 1 already learned those programs; a re-apply is mostly redundant and confuses operators into treating text seed as a second Phase 1.
+**Not required:** re-apply a full harvested baseline via **text** `hs_seeds` or `batch_record_add.py` after Phase 1 on the same host class. That does not skip multi-hour learning; use install-time APO pre-seed for that.
 
 **Useful text seeds:** role-scoped bootstrap lists (for example SSH and app entrypoints), stack extras after residual queue review, and hosts that never observed those paths.
 
-### Recommended order (any workload)
+### Recommended order (dense / fleet — seed first)
 
-1. Clean OS (or golden image).
-2. Install Root Lock by HeartSuite. Optional: install-time baseline pre-seed when your package supports it.
-3. Finish Phase 1 (System Verification). Setup Mode still means observation, not enforcement.
-4. Deploy application and hardening automation.
-5. Review residual pending in the Dashboard for this workload.
-6. Optional: harvest a reviewed text list from a reference host for other hosts or extras (`hs-manage-allowlist list`).
-7. Activate Lockdown only when subscription, alerts, and queue gates are ready.
+1. **Reference host:** one machine of this class finishes Phase 1, runs the real dense workload, residual queues reviewed (pay multi-hour learning **once** if the host was seed-off).
+2. **Harvest installer APO baseline** from that host with vendor harvest / packaging tooling (file and grant material for install-time pre-seed — not a program-path text list alone). Ansible may orchestrate collection over SSH; the artifact is still **installer baseline**, not `hs_seeds`.
+3. **Review** and promote the baseline into your package pipeline.
+4. **Build or obtain** a Root Lock install package **with baseline pre-seed enabled** (for example installer option `--apo-seed` / packaged baseline). Default customer packages may be seed-off until you enable this.
+5. **Clean OS** on each fleet node.
+6. **Ansible installs Root Lock using that seeded package** (point the playbook’s install bundle at the pre-seeded installer). Phase 1 uses the seed and finishes quickly.
+7. Deploy application / hardening automation; residual Dashboard allow for deltas only.
+8. Optional: post-install text program lists for extras (`hs-manage-allowlist list` → review → `hs_seeds` / `batch_record_add.py`).
+9. Activate Lockdown only when subscription, alerts, and queue gates are ready.
+
+### Cold path (first reference only)
+
+Clean OS → install **without** baseline pre-seed → long Phase 1 on a dense host → residual review → harvest baseline (step 2 above) → all later hosts use the dense / fleet order.
 
 Pending queue items are not grants until approved. Do not treat tester or one-shot pollution paths as production fleet seed.
 
