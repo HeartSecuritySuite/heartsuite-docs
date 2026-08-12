@@ -15,11 +15,13 @@ author: Ron Hessing
 
 **Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.
 
-These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples. The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for HeartSuite-specific concerns; it is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services. Pre-seeding via the CLI tools accelerates fleet onboarding for standard configurations.
+These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples. The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for HeartSuite-specific concerns; it is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
+
+**When to use these tools:** after HeartSuite is installed and Phase 1 (System Verification) is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time baseline pre-seed path (vendor installer packaging such as `--apo-seed`). Applying a full text dump of programs a host just learned in Phase 1 is not required on that same host class — prefer reviewed extras and hosts that never observed those paths. Recommended fleet order is in [Central Policy Management](../../alerts/central-policy-management/).
 
 ## batch_record_add.py
 
-`batch_record_add.py` creates allowlist entries in bulk from a plain text file of program paths — one path per line. For each path, it adds the program with `/usr/lib` and `/etc` as default allowed directories. This tool is located in `/.hs/sys/` and requires root:
+`batch_record_add.py` creates allowlist entries in bulk from a plain text file of program paths — one absolute path per line. For each path, it adds the program with `/usr/lib` and `/etc` as default allowed directories. This tool is located in `/.hs/sys/` and requires root:
 
 ```bash
 # /.hs/sys/batch_record_add.py <file>
@@ -34,11 +36,11 @@ Where `<file>` contains one absolute program path per line, for example:
 ```
 
 > [!WARNING]
-> `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context.
+> `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context. Do not use this tool as a substitute for install-time baseline packaging, and do not run bulk seeds while Phase 1 is still pending unless you have a deliberate exception.
 
 ## hs-manage-allowlist
 
-`hs-manage-allowlist` provides a browser and editor for existing allowlist entries. It is not a review tool — it operates on entries that have already been created. Use it to inspect, modify, or remove existing entries:
+`hs-manage-allowlist` provides a browser and editor for existing allowlist entries. It is not a review tool — it operates on entries that have already been created. Use it to inspect, modify, or remove existing entries. `hs-manage-allowlist list` is the usual harvest command when a reference host’s reviewed programs should feed a central text seed for other hosts:
 
 ```bash
 # hs-manage-allowlist --help
