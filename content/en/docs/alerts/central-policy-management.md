@@ -21,19 +21,42 @@ A central system (CMDB, Git repository as source of truth, ITSM workflow, or cus
 
 - Generate or maintain policy as simple text lists (one absolute program path per line) or structured data that your automation can parse.
 - Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
-- For homogeneous fleets or pre-configured images, pre-seed a known-good baseline allowlist at install or first boot. This accelerates onboarding compared to pure observation on every host.
-- For varied or custom workloads, allow an initial observation window in Setup Mode on a representative host, harvest the resulting allowlist entries, review them centrally, and then push the approved set to the rest of the fleet.
+- For varied or custom workloads, finish Phase 1 (System Verification) on a representative host, run the real stack in Setup Mode, harvest reviewed program paths, and push **extras or fleet-wide** lists with automation.
+- For homogeneous fleets that must come up faster than pure observation, use an **install-time baseline pre-seed** when your package or image supports it (vendor installer option such as `--apo-seed` / packaged baseline). That path is separate from the post-install text lists below.
 
-Pre-seeding reduces per-host Dashboard toil for standard stacks while still requiring explicit approval of any deviation before Lockdown.
+### Two seed mechanisms (do not conflate)
+
+| | Install-time baseline pre-seed | Post-install text program list |
+|---|--------------------------------|--------------------------------|
+| **Purpose** | Optional baseline so Phase 1 starts from a known stack (shorter learn on dense or homogeneous hosts when packaging supports it) | Additive program approvals for extras, stack tools, and fleet reuse |
+| **When** | During install / image bake | After HeartSuite is installed; **not** while Phase 1 is still pending |
+| **Shape** | Vendor packaging / installer options (baseline APO material) | Plain text: one absolute **program** path per line (`#` comments OK) |
+| **Apply with** | Installer or image pipeline | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
+
+**Not required:** re-apply a full harvested baseline program list via `hs_seeds` or `batch_record_add.py` immediately after Phase 1 on the same class of host. Phase 1 already learned those programs; a re-apply is mostly redundant and confuses operators into treating text seed as a second Phase 1.
+
+**Useful text seeds:** role-scoped bootstrap lists (for example SSH and app entrypoints), stack extras after residual queue review, and hosts that never observed those paths.
+
+### Recommended order (any workload)
+
+1. Clean OS (or golden image).
+2. Install Root Lock by HeartSuite. Optional: install-time baseline pre-seed when your package supports it.
+3. Finish Phase 1 (System Verification). Setup Mode still means observation, not enforcement.
+4. Deploy application and hardening automation.
+5. Review residual pending in the Dashboard for this workload.
+6. Optional: harvest a reviewed text list from a reference host for other hosts or extras (`hs-manage-allowlist list`).
+7. Activate Lockdown only when subscription, alerts, and queue gates are ready.
+
+Pending queue items are not grants until approved. Do not treat tester or one-shot pollution paths as production fleet seed.
 
 ## Applying policy from automation
 
-Use the CLI tools shipped with every installation (documented in the [Appendices](../appendices/) and [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/)) to apply policy from your control plane:
+Use the CLI tools shipped with every installation (documented in the [Appendices](../appendices/) and [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/)) to apply **post-install** policy from your control plane. These tools do not replace install-time baseline pre-seed packaging:
 
 - `hs-manage-allowlist` — inspect current state, add or remove specific entries for programs, file paths, and network destinations.
 - `batch_record_add.py` — bulk-seed programs from a plain-text list of paths (adds each with standard library and configuration directories).
 
-Run these tools over SSH, via config-management agents, or as part of provisioning scripts. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
+Run these tools over SSH, via config-management agents, or as part of provisioning scripts **after** HeartSuite is installed and Phase 1 is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
 
 Subscription activation (`hs-activate-subscription`) is still required on each host before Lockdown can be engaged — this is the entitlement step and remains local.
 
@@ -49,22 +72,25 @@ HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lo
 
 The role is intentionally narrow in scope: it assumes HeartSuite is already installed on the target and focuses on allowlist management plus mode transitions (Secure Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
 
-A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full HeartSuite deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: start with a minimal bootstrap allowlist (via seed file), run the real workload (e.g. SFTP transfers), harvest observed programs from Setup Mode on the live machine, maintain them in a seed file, and re-apply via the role.
+A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full HeartSuite deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: install HeartSuite (the example does not replace Phase 1 with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload (e.g. SFTP transfers), harvest observed **extras** from Setup Mode on the live machine after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
 
 **Requirements**:
 
 - HeartSuite already installed on managed hosts (the role does not install the product).
+- Prefer Phase 1 finished before applying workload `hs_seeds` / stack playbooks that assume a learned baseline.
 - `become: true` — all operations are privileged.
 - Ansible >= 2.9.
 - The role invokes the production Python API in `/opt/heartsuite` (`limited_tools` via `/opt/heartsuite/venv/bin/python3` and `/opt/heartsuite/src`).
+
+`hs_seeds` / `hs_programs` are **post-install text program lists**. They are not install-time APO baseline packaging and not a binary policy file drop-in. Leave `hs_state` unset until subscription, alerts, and queue gates are ready for Lockdown.
 
 **Key variables** (all prefixed `hs_` to avoid collision with SELinux role variables):
 
 | Variable | Purpose |
 |----------|---------|
-| `hs_state` | Mode transition: `secure` or `lockdown` (synonyms). `setup` is informational only (no-op). Unset leaves mode unchanged. Calls `switch_to_secure()` with the same precondition gates as the Dashboard. |
+| `hs_state` | Mode transition: `secure` or `lockdown` (synonyms). `setup` is informational only (no-op). Unset leaves mode unchanged. Calls `switch_to_secure()` with the same precondition gates as the Dashboard. Prefer unset until gates pass. |
 | `hs_programs` | List of absolute program paths to approve (uses `apply_allowlist_seed()` internally). |
-| `hs_seeds` | List of seed file paths, or literal inline paths when the entry is not an existing file. Seed files are plain text, one path per line; `#` comments and blank lines are ignored. Combine freely with `hs_programs`. |
+| `hs_seeds` | List of seed file paths, or literal inline paths when the entry is not an existing file. Seed files are plain text, one program path per line; `#` comments and blank lines are ignored. Combine freely with `hs_programs`. Post-install extras/fleet — not installer baseline pre-seed. |
 
 Additional variables include `hs_gather_status` (default `true`, exposes `hs_status` fact), `hs_purge` / `hs_purge_allowlist` (currently emit a warning only — the scriptable surface is additive by design), and `hs_python` / `hs_src_path` overrides for non-standard install layouts.
 
