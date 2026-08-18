@@ -158,7 +158,7 @@ In those cases the supported path is:
 
 - HeartSuite Joint File System (HJFS) — a filesystem-based enforcement layer that provides per-program, per-version file isolation and automatic backup/rollback on a completely standard kernel. No kernel replacement is required. HJFS is deployable on cloud instances where the kernel is provider-managed and on systems under strict kernel certification rules. See the full [HJFS documentation](../../hjfs/) (overview, deployment scenarios, limits, and how it complements execution/network controls).
 - Layered controls on the standard kernel (SELinux or AppArmor in enforcing mode, seccomp filters, eBPF-based detection where needed, network egress filtering, EDR, vulnerability management, and HIDS). Root Lock's execution and network gating concepts are not applicable without the Root Lock kernel.
-- Where both file isolation and execution/network gating are required under a no-custom-kernel constraint, HJFS plus existing or companion execution/network tooling (including HeartSuite Exec Lock in some configurations) is the evaluated combination.
+- Where both file isolation and execution/network gating are required under a no-custom-kernel constraint, HJFS plus existing host tooling is the evaluated combination. HeartSuite Exec is the HJFS program UI; it does not add those gates.
 
 The [HJFS how-it-compares](../../hjfs/how-it-compares/) and limits pages, together with the bypass and circumvention sections of [How Root Lock Compares](../../introduction/how-it-compares/), give procurement teams the material needed to map requirements to the appropriate product or combination.
 

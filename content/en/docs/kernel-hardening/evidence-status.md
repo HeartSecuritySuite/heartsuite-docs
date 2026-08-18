@@ -1,7 +1,8 @@
 ---
-title: "Kernel Evidence Status"
+title: "Which kernel evidence is published today"
+linkTitle: "Evidence Status"
 weight: 16
-description: "Publication status of HS kernel hardening evidence — 5.19.6 legacy stream (published) and 6.18.9 primary commercial baseline (in progress)."
+description: "5.19.6 evidence is published. 6.18.9 is the commercial baseline; measured scores and config hashes are still in progress."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "evidence", "procurement"]
 type: docs
