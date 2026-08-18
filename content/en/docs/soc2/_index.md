@@ -137,7 +137,7 @@ Specific transmission controls:
 - **C2 callback prevention**: In Lockdown, any program attempting to connect to a destination not in its network allowlist is blocked. This includes malware attempting to reach command-and-control infrastructure. The Log4Shell attack (CVE-2021-44228), which works by causing a vulnerable application to reach outbound to attacker infrastructure, is blocked at the network gate.
 - **Exfiltration prevention**: Even if an attacker compromises an approved program, that program can only connect to destinations already in its network allowlist — destinations reviewed and approved by an administrator during Setup Mode.
 
-**Scope**: Root Lock enforces no inbound connection controls. Inbound network filtering (port restrictions, protocol controls) is a customer-side responsibility via the OS (`iptables`, `nftables`, `ufw`) or cloud security groups.
+**Scope**: Root Lock enforces no inbound connection controls. Inbound network filtering (port restrictions, protocol controls) is a customer-side responsibility via an OS packet filter or cloud security groups.
 
 **Evidence artifacts**:
 

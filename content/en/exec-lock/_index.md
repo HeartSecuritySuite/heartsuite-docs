@@ -36,4 +36,3 @@ This product is a proposal. No engineering work has begun and no release timelin
 - [HJFS Overview](../hjfs/introduction/hjfs-overview/)
 - [HJFS architecture](../hjfs/architecture/)
 - [Root Lock overview](../docs/introduction/heartsuite-overview/)
-- [How Root Lock compares](../docs/introduction/how-it-compares/)

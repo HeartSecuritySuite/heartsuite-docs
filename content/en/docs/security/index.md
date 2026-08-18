@@ -103,6 +103,7 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 | [CVE-2026-46242](#cve-2026-46242) | epoll (`CONFIG_EPOLL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6 (introduced in 6.4); Not exploitable on 6.18.9-hs — linked-epoll close race not constructible from the allowlist |
 | [CVE-2026-46300](#cve-2026-46300) | skbuff coalescing and ESP-in-TCP (`CONFIG_NET`, `CONFIG_INET_ESPINTCP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
 | [CVE-2026-45920](#cve-2026-45920) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
+| [CVE-2026-46094](#cve-2026-46094) | ext4 xattr bounds (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable on 6.18.9-hs — Lockdown blocks mount of a crafted image |
 | [CVE-2026-46020](#cve-2026-46020) | DAMON core — `damos_quota_goal->nid` for `node_mem_{used,free}_bp` (`CONFIG_DAMON`, `CO… | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
 | [CVE-2026-46121](#cve-2026-46121) | DAMON sysfs schemes (`CONFIG_DAMON`, `CONFIG_DAMON_SYSFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
 | [CVE-2026-46279](#cve-2026-46279) | mm/alloc_tag (`CONFIG_MEM_ALLOC_PROFILING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
@@ -488,7 +489,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 
 ### CVE-2023-2236, CVE-2022-3910
 
-**Status**: Affected  
+**Status**: Affected on 5.19.6; Not Affected on derived 6.18  
 **Component**: io_uring — asynchronous I/O subsystem (`CONFIG_IO_URING`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Score on HeartSuite**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
@@ -1374,7 +1375,7 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 
 ### CVE-2025-21863
 
-**Status**: Affected
+**Status**: Affected on 5.19.6; Not Affected on derived 6.18
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1469,7 +1470,7 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 
 ### CVE-2025-40364
 
-**Status**: Affected
+**Status**: Affected on 5.19.6; Not Affected on derived 6.18
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -3101,6 +3102,23 @@ This CVE describes a double decrement of the ext4 dirty-clusters counter on the 
 
 The trigger cannot be reached on any Root Lock deployment.
 
+### CVE-2026-46094
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range; on 6.18.9-hs Lockdown returns `-EPERM` from `mount()` / `fsmount()` / `move_mount()`, so a crafted xattr image cannot be attached
+**Affected range**: 6.3 through 6.6.139; 6.7 through 6.12.85; 6.13 through 6.18.26; 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.27
+**Upstream fix**: 6.6.140, 6.12.86, 6.18.27, 7.0.4; mainline `eceafc31ea7b`
+
+This CVE describes an out-of-bounds read in `fs/ext4/xattr.c`. `check_xattrs()` walks on-disk xattr entries and tests `(void *)next >= end`. That test lets `next` land inside the last four bytes of the xattr region. The next loop iteration calls `IS_LAST_ENTRY()`, which reads a `u32` and overruns the valid region (CWE-125). Integrity impact is None.
+
+`CONFIG_EXT4_FS=y` on 5.19.6 and `CONFIG_EXT4_FS=m` on 6.18.9-hs. The `check_xattrs()` helper was introduced in 6.3; 5.19.6 predates it and is outside the NVD window. 6.18.9 sits inside 6.13–6.18.26. The v6.18.9 `check_xattrs()` still uses the unfixed `(void *)next >= end` test. The function is `static` (absent from System.map) and is compiled into `ext4.ko`.
+
+The overrun requires a corrupted xattr block on a mounted ext4 image. Kernel-formed `setxattr` on the already-mounted root does not produce that layout. Attaching a crafted image requires `mount()`, `fsmount()`, or `move_mount()`. `mount` is in the shipped command list. Under Lockdown those three syscalls return `-EPERM` in `kernel/namespace.c`. `losetup`, `setfattr`, `getfattr`, and `mkfs.ext4` are not in the allowlist; that is not the binding stop.
+
+The trigger cannot be reached on any Root Lock deployment.
+
 ### CVE-2026-46020
 
 **Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs  
@@ -3393,9 +3411,6 @@ The network hook at connect() and sendto() does not apply to inbound ASCONF proc
 The trigger cannot be reached on any default Root Lock deployment.
 
 If a 6.18.9-hs deployment loads `sctp.ko` and runs an allowlisted SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
-
-## Not accepted (needs re-review)
-- CVE-2026-46094
 
 ## Not Affected — Disabled Features {#not-affected-disabled-features}
 

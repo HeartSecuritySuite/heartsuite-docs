@@ -69,6 +69,7 @@ The pages below are the individual steps, linked from Quick Start:
 ## Also in this documentation
 
 - [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard unmodified kernels (ideal when the Root Lock kernel's deliberate removals of bypass primitives are not suitable). The Root Lock kernel provides the stronger execution + network layer on supported systems.
+- [Root Lock Firewall](../firewall/) — Prototype. Inbound and host-path filter for a closed HeartSuite appliance. Complements Root Lock; inbound on a Root Lock server stays an OS or cloud control unless you move the workload onto that image.
 
 ---
 
