@@ -2,7 +2,7 @@
 title: "When Root Isn't Enough"
 linkTitle: "When Root Isn't Enough"
 weight: 8
-description: "How Root Lock by HeartSuite's three enforcement mechanisms hold against real attacks — one example per mechanism, including what it does not cover."
+description: "Three real attacks, all as root: a new binary cannot run, files stay out of reach, outbound destinations stay closed. And what this does not cover."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "attacks", "exfiltration", "cve", "binary", "ransomware", "in-practice"]
 type: docs
@@ -77,6 +77,6 @@ Root Lock enforces three things per program. An attacker who stays entirely with
 
 **Attacks within a program's approved scope.** A compromised web server that reads only files it is already approved to read, and connects only to destinations already in its network allowlist, operates within its allowlist. Every file outside that scope is still blocked. Every connection to an unapproved destination is still refused. Tight allowlisting limits the blast radius — and under Lockdown, the kernel blocks any program (including root) from reaching backup files, so previous versions remain intact and restorable from the Dashboard's Backup.
 
-Under Lockdown, the kernel controls three things per program — whether it can execute, which files it can read or write, and which network destinations it can reach — and holds those controls regardless of user privilege, including root. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the machine is running. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Nothing the attacker ran survives a reboot.
+Under Lockdown the kernel gates execute, files, and outbound network per program. Root does not override those gates. Root cannot change the allowlist while the machine is running. The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Nothing the attacker ran survives a reboot.
 
 For detection and response when an attack stays within approved boundaries, see [How Root Lock Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../security-as-economics/).

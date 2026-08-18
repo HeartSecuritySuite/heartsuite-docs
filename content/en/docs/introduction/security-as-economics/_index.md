@@ -2,7 +2,7 @@
 title: "Security as Economics"
 linkTitle: "Security as Economics"
 weight: 6
-description: "Attacker cost, defender operational cost, and ROI comparison — how Root Lock by HeartSuite changes the economics of every attack that reaches the host."
+description: "No scan, no score, no guess: the allowlist entry exists or it does not. What that does to attacker cost, patching urgency, and alert volume."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "economics", "roi", "edr", "selinux", "zafran", "ctem", "patching", "alerts"]
 type: docs
