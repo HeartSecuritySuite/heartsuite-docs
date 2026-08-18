@@ -241,7 +241,7 @@ The Dashboard displays a full-width, high-contrast protection state indicator sh
 |-------|-----------|
 | Setup Mode | SETUP MODE — logging only, nothing is blocked |
 | Lockdown (no immutable seal) | LOCKDOWN — immutable seal not applied |
-| Lockdown + sealed | Blank (silence means safety) |
+| Lockdown + sealed | Lockdown applied |
 | maintenance kernel | maintenance kernel — no blocking, logging, or backups |
 
 **Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.

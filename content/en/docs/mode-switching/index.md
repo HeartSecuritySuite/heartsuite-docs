@@ -53,7 +53,7 @@ The indicator at the top of the Dashboard reflects the current protection state:
 |---|---|
 | Setup Mode | **SETUP MODE**: logging only, nothing is blocked |
 | Lockdown (no immutable seal) | **LOCKDOWN**: immutable seal not applied |
-| Lockdown + sealed | Silent (blank) |
+| Lockdown + sealed | **Lockdown applied** |
 | maintenance kernel | **maintenance kernel**: Root Lock not active. No blocking. No logging. No backups. |
 
 ## Setup Mode and Lockdown
