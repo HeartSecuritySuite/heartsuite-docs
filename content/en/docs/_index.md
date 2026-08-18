@@ -17,9 +17,7 @@ type: docs
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-Root Lock supports two paths: 
-
-**Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after initial setup (System Verification). Logs from the process are visible via the provider serial console.
+In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Mode Switching and Lockdown](mode-switching/) covers activation.
 
 Root Lock supports two setup paths. Both arrive at the Dashboard after initial setup.
 
@@ -32,7 +30,7 @@ Manual installation with a guided setup across several reboots.
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Hosts that run Docker, containerd, Podman, or local eBPF tooling need the maintenance kernel. See [Deployment Scenarios](introduction/deployment-scenarios/).
+Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design: the kernel omits overlay filesystems, user namespaces, and the BPF syscall because those are the features attackers use to hide, shadow directories, and reach root. See [Deployment Scenarios](introduction/deployment-scenarios/).
 
 ## Introduction and concepts
 
