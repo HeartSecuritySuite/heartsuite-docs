@@ -75,6 +75,22 @@ graph TD
     M -- Yes --> N["Maintenance guides through steps"]
     N --> K
     M -- No --> O[System secured]
+
+    style A fill:#eee,stroke:#888
+    style B fill:#eee,stroke:#888
+    style C fill:#eee,stroke:#888
+    style D fill:#eee,stroke:#888
+    style E fill:#eee,stroke:#888
+    style F fill:#eee,stroke:#888
+    style G fill:#eee,stroke:#888
+    style H fill:#eee,stroke:#888
+    style I fill:#eee,stroke:#888
+    style J fill:#eee,stroke:#888
+    style M fill:#eee,stroke:#888
+    style N fill:#eee,stroke:#888
+    style K fill:#d4f4dd,stroke:#2a7a40
+    style L fill:#d4f4dd,stroke:#2a7a40
+    style O fill:#d4f4dd,stroke:#2a7a40
 ```
 
 ## Activating Lockdown
