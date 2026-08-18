@@ -1,7 +1,8 @@
 ---
-title: "Kernel Hardening"
+title: "A smaller kernel, not a thicker agent"
+linkTitle: "Kernel Hardening"
 weight: 108
-description: "Objective, measurement-backed analysis of Root Lock by HeartSuite's kernel hardening posture — design rationale, comparison against industry references, and reproducible evidence."
+description: "Root Lock compiles out the subsystems attackers use to bypass controls. Buyer briefs, scanner hygiene, distro fit, and measured evidence."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison"]
 type: docs
@@ -31,5 +32,6 @@ Every measured number derives from the open-source `kernel-hardening-checker` to
 - [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Primary stream structure; measured scores pending publication.
 - [Comparison Matrix (5.19.6)](kernel-comparison-matrix-5.19.6/) — Legacy stream, fully measured: HeartSuite vs vanilla defconfig, Arch hardened, and KSPP target.
 - [Auditor Brief](auditor-brief/) — Threat model, measured strengths and gaps, residual risks, and self-reproduction commands for security auditors and red teams.
+- [Portable open flags and product policy](portable-open-flags-and-product-policy/) — POSIX/Linux open-flag corner, default live-with UAPI policy, and residual risk under read-class file grants (draft for team review).
 - [LSM Comparison](lsm-comparison/) — HeartSuite vs SELinux, AppArmor, and TOMOYO: enforcement model, bypass-primitive resistance, and co-existence.
 - [Analyst Summary](analyst-summary/) — Non-technical summary for journalists and analysts, with fact-checker citations.
