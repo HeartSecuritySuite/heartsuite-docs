@@ -1,0 +1,10 @@
+<div class="col-md-6 d-flex">
+  <div class="card h-100 w-100 hs-choice-card">
+    {{ with .Get "header" -}}
+    <div class="card-header">{{ . | $.Page.RenderString }}</div>
+    {{ end -}}
+    <div class="card-body">
+      {{ .Inner | $.Page.RenderString }}
+    </div>
+  </div>
+</div>
