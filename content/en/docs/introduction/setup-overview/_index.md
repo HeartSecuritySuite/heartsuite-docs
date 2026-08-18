@@ -1,8 +1,8 @@
 ---
-title: "The Setup Journey"
+title: "Seven phases from install to Lockdown"
 linkTitle: "The Setup Journey"
 weight: 2
-description: "How Root Lock by HeartSuite guides you from installation to Lockdown through seven phases."
+description: "The Dashboard walks you from system verification to Lockdown. What each phase asks you to approve, and why later phases stay locked."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "setup", "modes", "secure", "allowlist", "overview"]
 type: docs

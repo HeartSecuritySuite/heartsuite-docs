@@ -1,7 +1,8 @@
 ---
-title: "System Requirements"
+title: "What this kernel needs — and what it omits"
+linkTitle: "System Requirements"
 weight: 3
-description: "Hardware and software prerequisites for Root Lock by HeartSuite compatibility."
+description: "CPU, disk, and supported distributions, plus the kernel features Root Lock deliberately does not ship. Confirm these before you install."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "requirements", "specs", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "x86"]
 type: docs
