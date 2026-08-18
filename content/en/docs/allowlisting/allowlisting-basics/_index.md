@@ -14,19 +14,23 @@ menu:
     identifier: "allowlisting-basics"
 ---
 
-**Overview**: A program running without restrictions on a server can read any file, write anywhere, and connect to any destination. Root Lock by HeartSuite requires every program to be explicitly approved to execute, to access files, and to make network connections — each independently. Even a legitimate tool already on your allowlist — curl, python, a system utility — can only reach the files and network destinations its specific allowlist entry approves. The Dashboard and its review queues walk you through each approval, with full metadata and intelligent grouping to manage volume.
+**Overview**: A program running without restrictions on a server can read any file, write anywhere, and connect to any destination. Root Lock by HeartSuite requires every program to be approved to execute, to access files, and to make network connections — each independently.
+
+Even a legitimate tool already on your allowlist — curl, python, a system utility — can only reach the files and network destinations its allowlist entry approves. The Dashboard review queues walk you through each approval.
 
 ## The three review queues
 
-In Setup Mode, Root Lock logs every program execution, file access attempt, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
+In Setup Mode, Root Lock logs every program execution, file access, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
 
-- **Programs queue** (`[p]`) — programs that attempted to execute
-- **File Access queue** (`[f]`) — programs that attempted to read or write files
-- **Internet Access queue** (`[i]`) — programs that attempted outbound connections
+- **Programs queue** (`[p]`) — programs attempting to execute
+- **File Access queue** (`[f]`) — programs attempting to read or write files
+- **Internet Access queue** (`[i]`) — programs attempting outbound connections
 
 The Dashboard shows pending counts for each queue and provides a Suggested Next Step directing you to the queue that needs attention first.
 
-**The queues build on each other.** File access and network violations are only recorded for programs that have already been approved in the Programs queue. A program making live network connections will not appear in the Internet Access queue until you have approved it in the Programs queue first. If Internet Access or File Access appears empty while you know the system is active, check whether the Programs queue still has pending items.
+**The queues build on each other.** File access and network activity are only recorded for programs already approved in the Programs queue.
+
+A program making live network connections will not appear in the Internet Access queue until you have approved it in the Programs queue first. If Internet Access or File Access appears empty while the machine is active, check whether the Programs queue still has pending items.
 
 ## Working through a queue
 
@@ -171,7 +175,7 @@ From the Dashboard, select the File Access queue (`[f]`).
 
 ## Internet Access queue (Phase 5)
 
-Programs that attempt outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.
+Programs that make outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.
 
 Example review prompt:
 
@@ -206,7 +210,7 @@ All program events resolved.
 Returning to Dashboard…
 ```
 
-Allow several days to a week of observation in Setup Mode to capture activity from systemd timers, cron jobs, and infrequent services before activating Lockdown.
+Allow several days to a week of observation in Setup Mode so systemd timers, cron jobs, and infrequent services appear in the queues before you activate Lockdown.
 
 ## Review queues in Lockdown
 
