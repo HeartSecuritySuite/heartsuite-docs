@@ -1,6 +1,6 @@
 ---
 title: "When ransomware cannot reach another program's files"
-linkTitle: "Attack Examples"
+linkTitle: "Attack examples"
 weight: 30
 description: "How HJFS is designed to contain WannaCry, Log4Shell, and a tainted update: damage stops at the compromised program's storage area."
 categories: ["Essentials"]
@@ -11,7 +11,9 @@ toc: true
 
 > **Prototype**: The protections described on this page reflect HJFS design intent. HJFS is under active development.
 
-HJFS gives every program its own isolated storage area. No program can read or write files belonging to another. The examples below show what that means for real attacks: damage that would normally cascade across a system stops at the boundary of the program that was compromised.
+HJFS gives every program its own isolated storage area. No program can read or write files belonging to another.
+
+The examples below show what that means for real attacks. Damage that would normally cascade across a system stops at the boundary of the program that was compromised.
 
 Where an attack also involves network exfiltration or unauthorized program spawning — beyond HJFS v1.0's file access scope — those dimensions are addressed by [Root Lock by HeartSuite](../../docs/) when deployed alongside HJFS.
 
@@ -19,7 +21,7 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 ## WannaCry ransomware (CVE-2017-0144)
 
-**Attack**: An SMB vulnerability let malware spread across networks and encrypt files on every system it reached. Over 200,000 systems across 150 countries were affected, with damages estimated at $4 billion including healthcare disruptions and lost productivity.
+**Attack**: An SMB vulnerability let malware spread across networks and encrypt files on every system it reached. Over 200,000 systems across 150 countries were affected.
 
 **HJFS containment**: WannaCry is confined to its own storage area. It cannot read or write files belonging to other programs, so encryption stops at that boundary. Files created by legitimate programs stay intact and out of reach throughout the attack.
 
@@ -45,7 +47,9 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 **Attack**: Compromised credentials gave attackers the access they needed to deploy ransomware that encrypted operational data and forced a six-day shutdown of the largest fuel pipeline in the United States. The company paid a $4.4 million ransom, with total economic losses exceeding $90 million.
 
-**HJFS containment**: Ransomware is confined to its own storage area. It cannot reach or encrypt files belonging to other programs. Operational files stay readable throughout the attack. Recovery does not require paying a ransom or restoring from backup — the files were never accessible to the ransomware.
+**HJFS containment**: Ransomware is confined to its own storage area. It cannot reach or encrypt files belonging to other programs. Operational files stay readable throughout the attack.
+
+Recovery does not require paying a ransom or restoring from backup — the files were never accessible to the ransomware.
 
 ---
 
@@ -59,9 +63,15 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 ## XZ Utils supply chain attack (CVE-2024-3094)
 
-**Attack**: A patient attacker spent approximately two years as a trusted contributor to the XZ Utils open-source compression library, gradually building commit access before inserting a backdoor in versions 5.6.0 and 5.6.1. The backdoor was designed to allow unauthorized SSH authentication on affected systems. It was discovered in March 2024 weeks before reaching stable Linux distributions, narrowly preventing deployment at scale.
+**Attack**: A patient attacker spent approximately two years as a trusted contributor to the XZ Utils open-source compression library, gradually building commit access before inserting a backdoor in versions 5.6.0 and 5.6.1.
 
-**HJFS containment**: The backdoored library version carries a different cryptographic hash than the prior legitimate release, so HJFS installs it into its own separate storage area. Data files created under the legitimate version stay in the legitimate version's storage area — the backdoored version cannot reach them. When the backdoor is discovered, the affected company rolls back to the prior verified version with a single utility command, with no data loss. This is precisely the malicious sleeper attack pattern HJFS automatic data file backup is designed to defeat: even if the backdoored version had been dormant for months before activation, every data file written during that period remains recoverable from the protected backup area — which no program, including the backdoored version, can access or destroy.
+The backdoor was designed to allow unauthorized SSH authentication on affected systems. It was discovered in March 2024 weeks before reaching stable Linux distributions.
+
+**HJFS containment**: The backdoored library version carries a different cryptographic hash than the prior legitimate release, so HJFS installs it into its own separate storage area. Data files created under the legitimate version stay in the legitimate version's storage area — the backdoored version cannot reach them.
+
+When the backdoor is discovered, the affected company rolls back to the prior verified version with a single utility command, with no data loss.
+
+This is the malicious sleeper pattern HJFS automatic data file backup is designed to defeat. Even if the backdoored version had been dormant for months before activation, every data file written during that period remains recoverable from the protected backup area. No program, including the backdoored version, can access or destroy that area.
 
 Where the attack involves network-level exfiltration or unauthorized program execution, those dimensions are addressed by [Root Lock](../../docs/) when deployed alongside HJFS.
 
@@ -69,6 +79,12 @@ Where the attack involves network-level exfiltration or unauthorized program exe
 
 ## Change Healthcare ransomware (2024)
 
-**Attack**: The ALPHV/BlackCat ransomware group breached Change Healthcare, a clearinghouse processing a large share of US patient healthcare claims. The February 2024 attack disrupted healthcare billing and payment processing across the United States for weeks. UnitedHealth Group disclosed that approximately 190 million individuals had data affected — the largest healthcare data breach in US history. The company paid a reported $22 million ransom.
+**Attack**: The ALPHV/BlackCat ransomware group breached Change Healthcare, a clearinghouse processing a large share of US patient healthcare claims. The February 2024 attack disrupted healthcare billing and payment processing across the United States for weeks.
 
-**HJFS containment**: Ransomware is confined to its own storage area. Patient records, billing files, and payment data belonging to other programs sit in structurally separate storage areas that the ransomware cannot enumerate or encrypt. The attack cannot cascade across healthcare systems. Billing and payment infrastructure owned by other programs stays intact throughout the attack. Recovery does not require paying a ransom — the files were never accessible to the ransomware.
+UnitedHealth Group disclosed that approximately 190 million individuals had data affected. The company paid a reported $22 million ransom.
+
+**HJFS containment**: Ransomware is confined to its own storage area. Patient records, billing files, and payment data belonging to other programs sit in structurally separate storage areas that the ransomware cannot enumerate or encrypt.
+
+The attack cannot cascade across healthcare systems. Billing and payment infrastructure owned by other programs stays intact throughout the attack.
+
+Recovery does not require paying a ransom — the files were never accessible to the ransomware.

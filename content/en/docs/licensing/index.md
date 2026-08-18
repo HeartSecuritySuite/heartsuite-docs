@@ -10,13 +10,13 @@ type: docs
 author: Ron Hessing
 ---
 
-**Overview**: A subscription is required to activate Lockdown. The Dashboard shows your current subscription status alongside phase progress and alerts.
+**Overview**: A subscription is required to activate Lockdown on Root Lock by HeartSuite. The Dashboard shows subscription status alongside checklist progress and alerts.
 
 ## Subscription
 
-A subscription is required before you can activate Lockdown. The Dashboard also keeps Lockdown locked until phases 2 through 6 are complete. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow.
+A subscription is required before you can activate Lockdown. The Dashboard also keeps Lockdown locked until the prior checklist items are complete. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow.
 
-The subscription is a simple text file. One subscription can cover up to 9999 servers — at the time of purchase, you specify how many servers the subscription covers. You can purchase additional subscriptions if needed.
+The subscription is a text file. One subscription can cover up to 9999 servers — at purchase, you specify how many servers it covers. You can purchase additional subscriptions if needed.
 
 After downloading the subscription file, copy it to each server it covers. Regardless of the original filename, it must be copied as `HS_license.txt` in the `/.hs/sys` directory. For example:
 
@@ -24,7 +24,7 @@ After downloading the subscription file, copy it to each server it covers. Regar
 # sudo cp MyCompany_HS_license.txt /.hs/sys/HS_license.txt
 ```
 
-After copying the subscription file, register it using `register_HS_license`. The command requires the IP address of the Root Lock by HeartSuite Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from your activation email:
+After copying the subscription file, register it using `register_HS_license`. The command requires the IP address of the Root Lock Activation Server and the port number (6121). Run the following command, replacing `<ip>` with the address from your activation email:
 
 ```bash
 # sudo /.hs/sys/register_HS_license <ip> 6121
@@ -36,7 +36,7 @@ If activation is successful, the program creates an activation key and displays 
 
 The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning on the Dashboard with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing.
 
-With your subscription active and phases 2 through 6 complete, proceed to [Mode Switching and Lockdown](../mode-switching/) to activate Lockdown.
+With your subscription active and the prior checklist items complete, proceed to [Mode Switching and Lockdown](../mode-switching/) to activate Lockdown.
 
 ## Root Lock kernel source code (GPL)
 

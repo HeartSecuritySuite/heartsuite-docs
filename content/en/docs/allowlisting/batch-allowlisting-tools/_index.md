@@ -16,9 +16,15 @@ author: Ron Hessing
 
 **Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.
 
-These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples. The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for HeartSuite-specific concerns; it is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
+These CLI tools are the integration points for external control. Central automation — Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts — prepares policy data and invokes the tools on each host to apply or harvest allowlists.
 
-**When to use these tools:** after Root Lock is installed and initial setup is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time APO baseline path. For dense fleets, **seed the installer first** (harvest APO from a reference host, package with pre-seed such as `--apo-seed`, then Ansible installs that package) — see [Central Policy Management](../../alerts/central-policy-management/). Do not use a full text dump here to skip multi-hour initial setup; that requires install-time pre-seed, not `batch_record_add.py`.
+See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples.
+
+The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for Root Lock-specific concerns. It is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
+
+**When to use these tools:** after Root Lock is installed and initial setup is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time allowlist baseline path.
+
+For dense fleets, **seed the installer first** (harvest the allowlist from a reference host, package with pre-seed such as `--apo-seed`, then Ansible installs that package) — see [Central Policy Management](../../alerts/central-policy-management/). Do not use a full text dump here to skip multi-hour initial setup; that requires install-time pre-seed, not `batch_record_add.py`.
 
 ## batch_record_add.py
 

@@ -10,11 +10,13 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program.
+**Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite requires an allowlist entry for every outbound destination — per program, at the kernel.
+
+In Lockdown, no program can connect to any destination unless you have approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program.
 
 ## Per-program, per-destination enforcement
 
-In Setup Mode, Root Lock logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
+In Setup Mode, Root Lock logs every outbound connection without blocking it. Those connections appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
 Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address; each program must have its own approved destinations. Root Lock approves specific IPv4 and IPv6 addresses, not CIDR ranges, hostnames, or wildcards.
 

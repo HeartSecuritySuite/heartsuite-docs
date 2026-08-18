@@ -11,7 +11,11 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: A listening service on a Linux host accepts inbound packets unless a filter refuses them. Root Lock Firewall is that host-path filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist for this box, seal it. The question it answers is not "which application catalog matches this flow?" but "did a human approve this socket on this box, and is that set sealed?" Application identification, TLS interception, and fleet NGFW management are outside its scope. Root Lock by HeartSuite handles execution, files, and per-program outbound destinations on the same image. This page describes what Root Lock Firewall controls, what it leaves open, how it can be defeated, and how to think about complementary controls.
+**Overview**: A listening service on a Linux host accepts inbound packets unless a filter refuses them. Root Lock Firewall is that host-path filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist for this box, seal it.
+
+The question it answers is not "which application catalog matches this flow?" It is "did a human approve this socket on this box, and is that set sealed?"
+
+Application identification, TLS interception, and fleet NGFW management are outside its scope. [Root Lock by HeartSuite](../../docs/) handles execution, files, and per-program outbound destinations on the same image.
 
 ---
 
@@ -38,7 +42,9 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 **Root Lock** is the shipped product for execution, files, and outbound destinations. Inbound on that deployment remains an OS packet filter or a cloud security group, as the [Network](../../docs/network/) page states.
 
-**Root Lock Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets. Do not use it as a silent rename of Root Lock Lockdown.
+**Root Lock Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets.
+
+Do not use it as a silent rename of Root Lock Lockdown.
 
 ---
 
@@ -73,9 +79,18 @@ Named incidents (vendor advisories, not HeartSuite testing):
 | 2026 | Persistence in the FXOS base OS **survived upgrade** to the September 2025 fixed releases. Cisco's recommended removal is a reimage. A reboot CLI command is not enough. | [cisco-sa-asaftd-persist-CISAED25-03](https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-persist-CISAED25-03) |
 | 2026 | FortiOS and related tools: **FortiCloud SSO** let an attacker with a FortiCloud account and a registered device log into *other* customers' devices when that SSO toggle was on. Fortinet documents that registering the device in the GUI enables the toggle unless you turn it off. Operators then downloaded configuration and created local admin accounts. Exploited in the wild. | [CVE-2026-24858](https://www.fortiguard.com/psirt/FG-IR-26-060) |
 
-Root Lock Firewall is designed without those surfaces: no VPN web server as identity, no cloud SSO into the filter, no vendor-static administrative accounts, console or serial as the administrative path, HeartSuite as the update authority, seal plus a custom kernel under the filter.
+Root Lock Firewall is designed without those surfaces:
 
-That is a smaller remote attack surface. It is not a claim that this prototype has no bugs, and it is not a claim that it replaces a FortiGate or a Cisco Secure Firewall in a campus or inline role. See [Recent firewall campaigns](../examples/) for the honest residual on each incident.
+- no VPN web server as identity
+- no cloud SSO into the filter
+- no vendor-static administrative accounts
+- console or serial as the administrative path
+- HeartSuite as the update authority
+- seal plus a custom kernel under the filter
+
+That is a smaller remote attack surface. It is not a claim that this prototype has no bugs. It is not a claim that it replaces a FortiGate or a Cisco Secure Firewall in a campus or inline role.
+
+See [Recent firewall campaigns](../examples/) for the honest residual on each incident.
 
 ---
 
@@ -119,6 +134,10 @@ Root Lock Firewall and Root Lock address complementary OS-level defaults. Root L
 | UFW-on-Ubuntu replacement | No | Image, not a package |
 | SIEM / NDR / EDR | Complements | Forward events; do not replace the SOC |
 
-**How Root Lock Firewall can be circumvented.** Under Firewall Lockdown paired with Root Lock Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Changing it takes Maintenance on the console or serial console. SSH is not enough. The question is no longer whether they can turn the filter off. It is whether you approved too wide a rule, whether an allowed port is still a hole in the application, whether the filter program can be killed, and whether someone who holds the hypervisor owns the disk. Physical presence, cloud serial, or hypervisor control returns the box to whoever holds it. That is how customers evaluate fit, not a footnote.
+**How Root Lock Firewall can be circumvented.** Under Firewall Lockdown paired with Root Lock Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Changing it takes Maintenance on the console or serial console. SSH is not enough.
+
+The question is no longer whether they can turn the filter off. It is whether you approved too wide a rule, whether an allowed port is still a hole in the application, whether the filter program can be killed, and whether someone who holds the hypervisor owns the disk.
+
+Physical presence, cloud serial, or hypervisor control returns the box to whoever holds it.
 
 Every security system has a known way to be taken out of the picture. Being explicit about it is how customers evaluate fit.

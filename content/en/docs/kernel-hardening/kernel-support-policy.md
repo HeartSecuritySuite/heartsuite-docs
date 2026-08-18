@@ -54,7 +54,7 @@ When HeartSuite advances the LTS base (for example, a future move within the 6.1
 
 ## How HeartSuite differs from the distribution-vendor model
 
-Enterprise Linux distributions such as RHEL follow a **frozen-base, backport-within-base** model: the upstream kernel version number visible in `uname` stays on a vendor branch for years, while individual CVE fixes are cherry-picked onto that branch. Vendor errata, advisory identifiers, and scanner feeds are built around that model.
+Enterprise Linux distributions such as RHEL follow a **frozen-base, backport-within-base** model. The upstream kernel version number visible in `uname` stays on a vendor branch for years, while individual CVE fixes are cherry-picked onto that branch. Vendor errata, advisory identifiers, and scanner feeds are built around that model.
 
 HeartSuite follows a **different model**, aligned with how Root Lock is built and validated:
 
@@ -66,7 +66,9 @@ HeartSuite follows a **different model**, aligned with how Root Lock is built an
 | Third-party kernel modules | kABI / stable module interface across minor updates | **Not a design goal** on the HS kernel — enforcement architecture intentionally diverges from general-purpose distro kernels |
 | Delivery unit | Distribution package manager and errata channels | **Coordinated `heartsuite-install.sh` bundle** with userspace stack |
 
-HeartSuite is honest about the trade-off: the Root Lock kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown. The distribution **maintenance kernel** remains on the system for maintenance and recovery; distribution errata still apply to packages and to the maintenance kernel path.
+HeartSuite is honest about the trade-off: the Root Lock kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown.
+
+The distribution **maintenance kernel** remains on the system for maintenance and recovery. Distribution errata still apply to packages and to the maintenance kernel path.
 
 For deployment implications, coexistence with distribution maintenance, and fleet patterns, see the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
@@ -132,7 +134,9 @@ Full step-by-step procedures, failure recovery, and Lockdown considerations are 
 
 ### Pre-configured image alternative
 
-Teams that provision from images may **reprovision from an updated pre-configured image** instead of in-place bundle application. This is equivalent from a support perspective when the image contains a bundle version HeartSuite has published for that stream. Image pipelines should pin bundle version, checksum, and HS kernel string in build metadata for audit traceability.
+Teams that provision from images may **reprovision from an updated pre-configured image** instead of in-place bundle application. This is equivalent from a support perspective when the image contains a bundle version HeartSuite has published for that stream.
+
+Image pipelines should pin bundle version, checksum, and HS kernel string in build metadata for audit traceability.
 
 ---
 
@@ -170,7 +174,11 @@ HeartSuite notifies subscription customers through the following channels:
 
 **Major stream deprecation**: HeartSuite provides **at least 30 days' advance notice** before ending support for an HS kernel stream (for example, end of 5.19 support). Notice includes migration bundle availability and recommended maintenance windows.
 
-Machine-readable advisory feeds are **published** as JSON under [`/advisories/`](/advisories/index.json) on each annotated `hs-v*` release tag. For the current release (`hs-v1.6.4-kernel-6.18.9`, `gate_status: PASS`): CONFIG-gate Not-Affected SBOM at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json), OSV at [`/advisories/osv.json`](/advisories/osv.json) (279 entries), and CycloneDX SBOM at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json). **OVAL XML** for OpenSCAP is not yet published — use the JSON feeds, CVE transparency page, bundle manifests, and email advisories as authoritative sources. Feed URLs and schemas: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/#published-advisory-feeds-hs-kernel).
+Machine-readable advisory feeds are **published** as JSON under [`/advisories/`](/advisories/index.json) on each annotated `hs-v*` release tag.
+
+For the current release (`hs-v1.6.4-kernel-6.18.9`, `gate_status: PASS`): CONFIG-gate Not-Affected SBOM at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json), OSV at [`/advisories/osv.json`](/advisories/osv.json) (279 entries), and CycloneDX SBOM at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json).
+
+**OVAL XML** for OpenSCAP is not yet published. Use the JSON feeds, CVE transparency page, bundle manifests, and email advisories as authoritative sources. Feed URLs and schemas: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/#published-advisory-feeds-hs-kernel).
 
 ---
 
@@ -213,7 +221,11 @@ On a host running Root Lock:
 
 Root Lock **replaces the enforcement kernel** for protected operation; it does **not** remove the distribution kernel or cancel distribution maintenance obligations on the Non-HS path. During maintenance on the Non-HS kernel, the host behaves as a standard distribution system without Lockdown enforcement.
 
-Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the Non-HS maintenance path and to userspace packages. Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the HS kernel must run on the Non-HS kernel or on a separate host. (The HS kernel omits these by design to eliminate bypass primitives and attack surface; see the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).)
+Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the Non-HS maintenance path and to userspace packages.
+
+Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the HS kernel should run on a kernel that still exposes those interfaces, or on a separate host.
+
+The HS kernel omits these by design to eliminate bypass primitives and attack surface. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
 
 ---
 

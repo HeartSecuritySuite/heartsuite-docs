@@ -9,13 +9,23 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: Allowlisting controls what programs can run, but an approved program that malware takes over can still write files — ransomware running inside an approved process can encrypt whatever that process can reach. Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted. Root Lock by HeartSuite automatically creates a versioned backup every time a file in a protected directory is written, and under Lockdown the kernel itself prevents any program from reaching those backups. No other program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
+**Overview**: Allowlisting controls what programs can execute, but an approved program that malware takes over can still write files. Ransomware running inside an approved process can encrypt whatever that process can reach.
+
+Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted.
+
+Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Under Lockdown, the kernel itself prevents any program from reaching those backups.
+
+Root Lock's backups are not permission-protected: no program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
 ## Automatic versioning
 
-Root Lock monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
+Root Lock monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — versioning begins from first boot, before you have reviewed a single item.
 
-Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock backs up on every write. There is no window. Other security tools that offer rollback on Linux — including endpoint tools with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
+Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from.
+
+Root Lock backs up on every write. There is no window.
+
+Other security tools that offer rollback on Linux — including endpoint tools with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
 CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup tool itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
 

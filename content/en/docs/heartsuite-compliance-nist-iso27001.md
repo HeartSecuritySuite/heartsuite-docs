@@ -7,9 +7,9 @@ tags: ["compliance", "NIST", "ISO 27001"]
 type: docs
 ---
 
-This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. It is intended for compliance officers, auditors, and security staff evaluating where Root Lock contributes to an organisation's compliance posture and where complementary controls are required.
+This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. Use it to see where Root Lock contributes to a compliance posture and where complementary controls are required.
 
-Root Lock is a **preventive enforcement layer**, not a comprehensive compliance platform. It addresses a specific, high-value problem: enforcing a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise. This document clarifies what that means for your compliance programme and what questions remain open.
+Root Lock is a **preventive enforcement layer**, not a comprehensive compliance platform. It enforces a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise.
 
 For SOC 2 Trust Services Criteria mapping, see the [SOC 2 Control Mapping](../soc2/) document.
 
@@ -17,19 +17,19 @@ For SOC 2 Trust Services Criteria mapping, see the [SOC 2 Control Mapping](../so
 
 ## What Root Lock enforces
 
-Root Lock operates through three enforcement gates, applied per programme, not per user or per privilege level.
+Root Lock operates through three enforcement gates, applied per program, not per user or per privilege level.
 
 | Gate | What it controls |
 |---|---|
-| **Execution** | A programme must be explicitly allowlisted to execute. Unapproved binaries are blocked even for root. |
-| **File access** | Each approved programme can only read or write paths explicitly permitted in its allowlist entry. |
-| **Network access** | Each approved programme can only connect to specific IPv4/IPv6 addresses. All other outbound connections are blocked. |
+| **Execution** | A program must be explicitly allowlisted to execute. Unapproved binaries are blocked even for root. |
+| **File access** | Each approved program can only read or write paths explicitly permitted in its allowlist entry. |
+| **Network access** | Each approved program can only connect to specific IPv4/IPv6 addresses. All other outbound connections are blocked. |
 
-Two modes govern behaviour: **Setup Mode** (log and review, no blocking) and **Lockdown** (enforcement active, configuration sealed with filesystem immutability flags that root cannot clear at runtime).
+Two modes govern behaviour: **Setup Mode** (log and review, no blocking) and **Lockdown** (blocking active, configuration sealed with filesystem immutability flags that root cannot clear at runtime).
 
-Under Lockdown, kernel-level immutability also protects: authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, scheduled tasks (cron/anacron), system libraries (`/usr/lib/`), and HeartSuite's own configuration and kernel image directory.
+Under Lockdown, kernel-level immutability also protects authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, scheduled tasks (cron/anacron), system libraries (`/usr/lib/`), and Root Lock's own configuration and kernel image directory.
 
-File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel prevents any programme, including root, from accessing those backups.
+File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel prevents any program, including root, from accessing those backups.
 
 ---
 
@@ -37,41 +37,43 @@ File Backup & Versioning takes an automatic snapshot on every write to designate
 
 ### Function: Identify
 
-HeartSuite contributes to asset visibility through its **programme allowlisting workflow**. During Setup Mode, all programme execution attempts are logged and surfaced in the Dashboard review queues with package metadata (name, version, install date, maintainer). This forms a working inventory of executable software on the host.
+Root Lock contributes to asset visibility through the **program allowlisting workflow**. During Setup Mode, program executions are logged and surfaced in the Dashboard review queues with package metadata (name, version, install date, maintainer). That forms a working inventory of executable software on the host.
 
-**What is not covered:** HeartSuite does not produce a hardware asset inventory, does not integrate with a configuration management database (CMDB) via an inbound API, and does not aggregate inventory across a fleet on its own. The inventory it produces is per-host and lives in the Dashboard; export to asset management tooling and fleet aggregation is achieved via the syslog streams, status.json, dedicated JSONL approval log, and harvest of allowlist state into your SIEM or central systems (see [Central Policy Management and External Control](alerts/central-policy-management/)).
+**What is not covered:** Root Lock does not produce a hardware asset inventory, does not integrate with a CMDB via an inbound API, and does not aggregate inventory across a fleet on its own.
+
+The inventory is per-host and lives in the Dashboard. Export to asset management tooling and fleet aggregation uses the syslog streams, status.json, dedicated JSONL approval log, and harvest of allowlist state into your SIEM or central systems (see [Central Policy Management and External Control](alerts/central-policy-management/)).
 
 Relevant CSF categories: ID.AM-1, ID.AM-2 (partially)
 
 ### Function: Protect
 
-This is HeartSuite's primary contribution.
+This is Root Lock's primary contribution.
 
 | CSF Category | HeartSuite mechanism |
 |---|---|
-| **PR.AC-1** — Identity and credential management | Immutable seal protects `/etc/passwd`, `/etc/shadow`, `/etc/group`; no programme can modify authentication state at runtime under Lockdown. |
-| **PR.AC-3** — Remote access management | Network allowlist controls outbound connection destinations per programme; inbound access is not managed. |
-| **PR.AC-4** — Access control, least privilege | Per-programme execution and file-access allowlists enforce least-privilege at the enforcement layer, overriding user and root privilege. |
-| **PR.AC-5** — Network integrity | Network allowlist restricts each programme to approved destinations; unapproved outbound connections are blocked at the kernel socket layer. |
-| **PR.DS-1** — Data-at-rest protection | File versioning backups are sealed by the kernel under Lockdown; no programme (including root) can delete or alter backup copies at runtime. |
-| **PR.DS-5** — Protection against data leaks | Outbound network allowlist limits exfiltration paths; programmes cannot reach unapproved destinations. |
+| **PR.AC-1** — Identity and credential management | Immutable seal protects `/etc/passwd`, `/etc/shadow`, `/etc/group`; no program can modify authentication state at runtime under Lockdown. |
+| **PR.AC-3** — Remote access management | Network allowlist controls outbound connection destinations per program; inbound access is not managed. |
+| **PR.AC-4** — Access control, least privilege | Per-program execution and file-access allowlists enforce least-privilege at the enforcement layer, overriding user and root privilege. |
+| **PR.AC-5** — Network integrity | Network allowlist restricts each program to approved destinations; unapproved outbound connections are blocked at the kernel socket layer. |
+| **PR.DS-1** — Data-at-rest protection | File versioning backups are sealed by the kernel under Lockdown; no program (including root) can delete or alter backup copies at runtime. |
+| **PR.DS-5** — Protection against data leaks | Outbound network allowlist limits exfiltration paths; programs cannot reach unapproved destinations. |
 | **PR.IP-1** — Baseline configuration | Allowlist and immutability together constitute an enforced configuration baseline. No configuration change is possible at runtime without a maintenance window that requires rebooting to a maintenance kernel. |
-| **PR.IP-12** — Vulnerability management | HeartSuite reduces the exploitable blast radius: approved programme CVEs with network or file-access exploitation paths are constrained by allowlist boundaries. |
+| **PR.IP-12** — Vulnerability management | HeartSuite reduces the exploitable blast radius: approved program CVEs with network or file-access exploitation paths are constrained by allowlist boundaries. |
 | **PR.MA-2** — Remote maintenance | Maintenance windows are structured: requires kernel reboot, checklist-guided steps, and Dashboard review of all new activity before re-engaging Lockdown. |
 | **PR.PT-1** — Audit log protection | Under Lockdown, immutability flags protect log files; the kernel prevents attribute changes that would allow log deletion. |
 | **PR.PT-3** — Principle of least functionality | Lockdown disables editors, restricts `rm`/`cp`/`mv`, and seals scheduled-task files, enforcing a minimal-function runtime posture. |
 
 ### Function: Detect
 
-HeartSuite generates alerts for denial events: new programme blocked, network burst to unapproved destination, critical file modification outside a maintenance window, mode switches, and Lockdown state changes. Alerts are delivered via email, syslog, webhook, and a passive status JSON endpoint.
+Root Lock generates alerts for denial events: new program blocked, network burst to unapproved destination, critical file modification outside a maintenance window, mode switches, and Lockdown state changes. Alerts are delivered via email, syslog, webhook, and a passive status JSON endpoint.
 
-This is **reactive logging on policy violations**, not behavioural detection. HeartSuite does not perform anomaly detection, baseline comparison, heuristic analysis, or threat-intelligence enrichment.
+This is **reactive logging on policy violations**, not behavioural detection. Root Lock does not perform anomaly detection, baseline comparison, heuristic analysis, or threat-intelligence enrichment.
 
 Relevant CSF categories: DE.CM-1, DE.CM-7 (partially). DE.AE (anomaly and event analysis) is not addressed.
 
 ### Function: Respond
 
-HeartSuite does not automate incident response. The Dashboard provides a Maintenance section that guides recovery steps, and File Backup & Versioning enables file-level recovery. Beyond this, response is manual.
+Root Lock does not automate incident response. Maintenance guides recovery steps, and File Backup & Versioning enables file-level recovery. Beyond this, response is manual.
 
 Relevant CSF categories: RS.CO, RS.AN, RS.MI — not meaningfully covered.
 
@@ -79,7 +81,7 @@ Relevant CSF categories: RS.CO, RS.AN, RS.MI — not meaningfully covered.
 
 File Backup & Versioning provides per-write timestamped, hash-deduplicated snapshots sealed from runtime interference. This supports recovery from ransomware-style overwrites and accidental deletion within the backup scope.
 
-Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-to-offsite, and recovery-time objectives are not defined by HeartSuite.
+Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-to-offsite, and recovery-time objectives are not defined by Root Lock.
 
 ---
 
@@ -90,31 +92,33 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 | Control | HeartSuite contribution |
 |---|---|
 | **A.5.7** — Threat intelligence | Not covered. HeartSuite has no threat feed integration. |
-| **A.5.15** — Access control | Kernel-enforced per-programme access control, overriding user and root privilege. Supports enforcement of an access control policy. |
+| **A.5.15** — Access control | Kernel-enforced per-program access control, overriding user and root privilege. Supports enforcement of an access control policy. |
 | **A.5.22** — Monitoring, review and change management of supplier services | HeartSuite has conducted a rigorous internal security audit covering 42 formally evidenced properties across multiple scenario categories. No independent third-party engagement has been commissioned. HeartSuite is not submitted to NCSC CPA, NIAP, or Common Criteria evaluation. Several kernel hardening choices (`CONFIG_BPF_SYSCALL=n`, `CONFIG_KEXEC_FILE=n`, removal of eBPF verifier exposure, `chattr`-based immutability) align with the attack-surface-reduction objectives of Common Criteria Protection Profiles, but the certification process has not been initiated. |
-| **A.5.23** — ICT supply chain security | Partially. HeartSuite blocks new or modified binaries at the execution gate, preventing a trojanised update from running unless it replaces an already-allowlisted binary with identical path. |
+| **A.5.23** — ICT supply chain security | Partially. Root Lock blocks new or modified binaries at the execution gate, preventing a trojanised update from running unless it replaces an already-allowlisted binary with identical path. |
 | **A.5.28** — Collection of evidence | Per-decision enforcement stream, dedicated JSONL approval log (with uid/tty attribution), rotating application audit log, and Dashboard records constitute attributable evidence of both policy changes and enforcement decisions. Export to SIEM is the path for long-term retention and fleet correlation. |
 | **A.5.29** — Information security during disruption | Not covered. No continuity or DR controls. |
 | **A.5.30** — ICT readiness for business continuity | Not covered. |
 
 ### A.6 — People Controls
 
-Not covered. HeartSuite has no personnel management, background check, training, or separation-of-duties features. Separation of duties at the access-control layer is partially supported (per-programme file access limits what any individual programme can reach), but organisational duty separation is out of scope.
+Not covered. Root Lock has no personnel management, background check, training, or separation-of-duties features. Separation of duties at the access-control layer is partially supported (per-program file access limits what any individual program can reach), but organisational duty separation is out of scope.
 
-HeartSuite does not implement role-based access control within the Dashboard. Every user with Linux root access has identical, unrestricted access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and maintenance mode. There is no operator/administrator distinction, no per-function permission check, and no audit trail that distinguishes one root user's actions from another. Restricting which personnel can reach root — and attributing their actions to individuals — requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
+Root Lock does not implement role-based access control within the Dashboard. Every user with Linux root access has identical access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and Maintenance.
+
+There is no operator/administrator distinction, no per-function permission check, and no audit trail that distinguishes one root user's actions from another. Restricting which personnel can reach root — and attributing their actions to individuals — requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
 
 ### A.7 — Physical Controls
 
-Not covered. Root Lock's Lockdown state requires **physical access to bypass** (reboot to a maintenance kernel to clear immutability flags). This means physical security of the host is a dependency, not a capability Root Lock provides.
+Not covered. Lockdown requires **physical or serial-console access to bypass** (reboot to a maintenance kernel to clear immutability flags). Physical security of the host is a dependency, not a capability Root Lock provides.
 
-In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) provides the same bypass path as physical keyboard access. HeartSuite installs `agetty` autologin on `/dev/ttyS0`; restricting serial console access in the cloud provider's IAM is therefore a customer-side dependency that must be addressed to maintain the integrity of Lockdown's protection model.
+In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) is the same bypass path as a keyboard. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Restricting serial console access in the cloud provider's IAM is a customer-side dependency that preserves Lockdown's protection model.
 
 ### A.8 — Technological Controls
 
 | Control | HeartSuite contribution |
 |---|---|
-| **A.8.2** — Privileged access rights | Immutable seal and per-programme enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with a timestamp and TTY in `/var/log/heartsuite/ui.log`; attributing TTY sessions to named personnel requires customer-side session logging (auditd or a PAM tool). |
-| **A.8.3** — Information access restriction | Per-programme file-access allowlist restricts which paths each programme can read or write. |
+| **A.8.2** — Privileged access rights | Immutable seal and per-program enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with a timestamp and TTY in `/var/log/heartsuite/ui.log`; attributing TTY sessions to named personnel requires customer-side session logging (auditd or a PAM tool). |
+| **A.8.3** — Information access restriction | Per-program file-access allowlist restricts which paths each program can read or write. |
 | **A.8.4** — Access to source code | Not covered natively; HeartSuite does not distinguish source code files. File-access allowlists can be configured to restrict access to specific paths. |
 | **A.8.5** — Secure authentication | Immutable seal protects `/etc/passwd`, `/etc/shadow`, and SSH configuration from runtime modification. HeartSuite does not provide authentication mechanisms itself. |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
@@ -127,16 +131,16 @@ In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 S
 | **A.8.15** — Logging | Kernel emits a per-decision enforcement stream (every execution, file access, and network decision) and a separate higher-level alert stream as structured RFC 5424 syslog under the `heartsuite` APP-NAME. Every allowlist approval is written to a dedicated, persistent JSONL log with timestamp, uid, and tty. An always-on rotating application audit log captures UI and core events. On-device activity buffers are cleared on maintenance; the syslog streams and dedicated JSONL approval log are the mechanisms for audit-period retention and reconstruction. Lockdown advisories are verdict-driven with provenance to the underlying records. |
 | **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no built-in inbound API or remote allowlist control from HeartSuite itself. Central policy application and fleet-wide views are achieved by driving the per-host CLI tools (hs-manage-allowlist, batch tools) from your automation and consuming the syslog streams, JSONL approval log, status.json, and webhook into your SIEM / CMDB / orchestration layer. See [Central Policy Management and External Control](alerts/central-policy-management/). No fleet-wide or behavioural monitoring inside HeartSuite. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
-| **A.8.18** — Use of privileged utility programmes | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
-| **A.8.19** — Installation of software on operational systems | Per-programme execution allowlist enforces "approved programmes only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
-| **A.8.20** — Networks security | Per-programme network allowlist controls outbound connections using literal IPv4/IPv6 addresses only; CIDR notation and DNS-based rules are not supported. Inbound connection monitoring is not provided; inbound filtering is a customer-side responsibility via an OS packet filter or cloud security groups. VLAN segregation and firewall policy are out of scope. |
-| **A.8.22** — Segregation of networks | Network allowlist controls which programmes reach which destinations. This is host-level segregation, not network-layer segregation. |
+| **A.8.18** — Use of privileged utility programs | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
+| **A.8.19** — Installation of software on operational systems | Per-program execution allowlist enforces "approved programs only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
+| **A.8.20** — Networks security | Per-program network allowlist controls outbound connections using literal IPv4/IPv6 addresses only; CIDR notation and DNS-based rules are not supported. Inbound connection monitoring is not provided; inbound filtering is a customer-side responsibility via an OS packet filter or cloud security groups. VLAN segregation and firewall policy are out of scope. |
+| **A.8.22** — Segregation of networks | Network allowlist controls which programs reach which destinations. This is host-level segregation, not network-layer segregation. |
 | **A.8.23** — Web filtering | Not covered. HeartSuite filters by destination IP, not URL or content category. |
 | **A.8.24** — Use of cryptography | No native encryption. HeartSuite configuration files (allowlist, mode state) are sealed by filesystem immutability flags but are not encrypted; they can be read from disk on a maintenance kernel boot. Backup snapshots are also unencrypted at the HeartSuite layer. OS-level disk encryption (dm-crypt/LUKS) is the required complementary control for data-at-rest compliance. |
 | **A.8.28** — Secure coding | Not covered. HeartSuite does not inspect code or enforce secure development practices. |
 | **A.8.29** — Security testing in development and production | Not covered. |
 | **A.8.30** — Outsourced development | Not covered. |
-| **A.8.32** — Change management | Maintenance window workflow provides a structured, logged change process. All newly executed programmes and file-access paths appear in Dashboard review queues before Lockdown can be re-engaged. |
+| **A.8.32** — Change management | Maintenance window workflow provides a structured, logged change process. All newly executed programs and file-access paths appear in Dashboard review queues before Lockdown can be re-engaged. |
 | **A.8.33** — Test information | Not covered. |
 | **A.8.34** — Protection of information systems during audit testing | Not directly covered. Immutable Lockdown state protects system integrity during audit activities. |
 
@@ -186,7 +190,7 @@ The following 11 questions remain without a complete public answer. Status annot
 
 1. **Is there a published SBOM for the Root Lock kernel and Dashboard components?** *(Partially answerable.)* SPDX/CycloneDX SBOM and GPG/cosign bundle signing are on the public roadmap; today bundles use SHA-256 only. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/) and [Evidence Status](../kernel-hardening/evidence-status/).
 
-1. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
+1. **What is HeartSuite's vulnerability disclosure and response program?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 
 ### Incident Response & Recovery
 
@@ -213,7 +217,7 @@ When Root Lock runs as a guest VM on a cloud platform, responsibility for contro
 | Control layer | HeartSuite | Cloud provider | Customer |
 |---|---|---|---|
 | Kernel-level execution enforcement | Primary | — | — |
-| Per-programme file access control | Primary | — | — |
+| Per-program file access control | Primary | — | — |
 | Outbound network allowlist | Primary | — | — |
 | Configuration immutability (Lockdown) | Primary | — | — |
 | File backup & versioning | Primary | — | Offsite / encrypted copy for DR |
@@ -227,15 +231,17 @@ When Root Lock runs as a guest VM on a cloud platform, responsibility for contro
 | OS-level audit logging (login, sudo) | — | — | Customer configures (auditd, CloudTrail) |
 | SIEM / log retention beyond device | — | — | Customer operates |
 | Vulnerability scanning | — | — | Customer operates |
-| Incident response programme | — | — | Customer defines |
+| Incident response program | — | — | Customer defines |
 
-The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. HeartSuite installs `agetty` autologin on `/dev/ttyS0`, meaning anyone who can reach the cloud provider's out-of-band serial console can boot to the maintenance kernel without further authentication from HeartSuite. Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
+The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Anyone who can reach the cloud provider's out-of-band serial console can boot to the maintenance kernel without further authentication from Root Lock.
+
+Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
 
 ---
 
-## How HeartSuite Fits Into a Compliance Programme
+## How Root Lock fits into a compliance program
 
-HeartSuite addresses a narrow but high-value control: **kernel-enforced, root-resistant mandatory access control**. It does not replace the controls listed below, and a compliance programme relying on HeartSuite alone will have significant gaps.
+Root Lock addresses a narrow but high-value control: **kernel-enforced, root-resistant mandatory access control**. It does not replace the controls listed below. A compliance program relying on Root Lock alone will have significant gaps.
 
 | Layer | HeartSuite role | Complementary tool required |
 |---|---|---|
@@ -252,4 +258,4 @@ HeartSuite addresses a narrow but high-value control: **kernel-enforced, root-re
 | Personnel & training controls | None | HRMS / LMS / GRC platform |
 | Supplier management | None | GRC / vendor risk management |
 
-For a NIST CSF or ISO 27001 programme, HeartSuite contributes most directly to the **Protect** function and **ISO 27001 A.8** (Technological Controls), with meaningful but partial contributions to logging, monitoring, and recovery.
+For a NIST CSF or ISO 27001 program, Root Lock contributes most directly to the **Protect** function and **ISO 27001 A.8** (Technological Controls), with meaningful but partial contributions to logging, monitoring, and recovery.

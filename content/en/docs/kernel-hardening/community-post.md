@@ -16,7 +16,13 @@ toc: false
 
 Most hardened kernels go heavy on KSPP-style mitigations — `INIT_ON_ALLOC`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `KSTACK_ERASE`. HeartSuite 5.19.6 does none of that. Its self-protection score is 31/109 (28.4%), essentially at the vanilla upstream baseline.
 
-For a fair comparison you need era-matched configs (same kernel generation). Arch `linux-hardened` at the 5.19.11 release — same kernel generation as HeartSuite — scores 69/109 (63.3%) on exploit-resistance using the same tool. The bundled configs in kernel-hardening-checker are 6.12–6.15 vintage and score 88–90/109, but comparing those to a 5.19.x kernel is not apples-to-apples. Worth knowing: NixOS `linux_hardened` was removed from nixpkgs in 2025 due to lack of maintenance — the bundled 6.12.50 config in the checker is a historical snapshot of a no-longer-maintained project.
+For a fair comparison you need era-matched configs (same kernel generation).
+
+Arch `linux-hardened` at the 5.19.11 release — same kernel generation as Root Lock 5.19.6 — scores 69/109 (63.3%) on exploit-resistance using the same tool.
+
+The bundled configs in kernel-hardening-checker are 6.12–6.15 vintage and score 88–90/109. Comparing those to a 5.19.x kernel is not apples-to-apples.
+
+NixOS `linux_hardened` was removed from nixpkgs in 2025 due to lack of maintenance. The bundled 6.12.50 config in the checker is a historical snapshot of a no-longer-maintained project.
 
 So what does HeartSuite do instead? It removes subsystems.
 
@@ -24,19 +30,25 @@ So what does HeartSuite do instead? It removes subsystems.
 
 ## The Design Choice
 
-The kernel ships with `CONFIG_BPF_SYSCALL=n`, `CONFIG_FUSE_FS=n`, `CONFIG_OVERLAY_FS=n`, `CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`, `CONFIG_USER_NS=n`, and about 25 more disabled network, crypto, and debug subsystems. The result is an attack-surface score of 91/132 (68.9%) — higher than era-matched Arch linux-hardened 5.19.11 at 77/132 (58.3%).
+The kernel ships with `CONFIG_BPF_SYSCALL=n`, `CONFIG_FUSE_FS=n`, `CONFIG_OVERLAY_FS=n`, `CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`, `CONFIG_USER_NS=n`, and about 25 more disabled network, crypto, and debug subsystems.
 
-At first glance this seems surprising. Hardened kernels score *lower* on attack-surface reduction than HeartSuite? Yes — because they keep BPF enabled (needed by systemd, containers, observability tooling), keep user namespaces enabled (needed by rootless Docker), and keep various crypto and network APIs available. HeartSuite is a single-purpose appliance and can remove all of these.
+The result is an attack-surface score of 91/132 (68.9%) — higher than era-matched Arch linux-hardened 5.19.11 at 77/132 (58.3%).
 
-The interesting nuance: vanilla x86_64 defconfig 5.17 also scores 90/132 on attack surface — nearly identical to HS. The checker doesn't distinguish "not enabled by default" from "intentionally hardened off." Both have BPF and AppArmor absent. The difference is that the vanilla defconfig is a starting point; on a production system it will accumulate features. HeartSuite's build procedure enforces the disables on every port via a documented deviation registry and a checklist enforced mechanically.
+At first glance this seems surprising. Hardened kernels score *lower* on attack-surface reduction than Root Lock?
+
+Yes. They keep BPF enabled (needed by systemd, containers, observability tooling), keep user namespaces enabled (needed by rootless Docker), and keep various crypto and network APIs available. Root Lock is a single-purpose appliance and can remove all of these.
+
+The interesting nuance: vanilla x86_64 defconfig 5.17 also scores 90/132 on attack surface — nearly identical to Root Lock. The checker does not distinguish "not enabled by default" from "intentionally hardened off." Both have BPF and AppArmor absent.
+
+The vanilla defconfig is a starting point. On a production system it will accumulate features. The Root Lock build procedure enforces the disables on every port via a documented deviation registry and a checklist enforced mechanically.
 
 ---
 
 ## The Trade-off Is Real
 
-HeartSuite optimizes for one threat: a compromised process attempting to bypass its custom kernel MAC enforcement via a kernel subsystem (BPF, FUSE, io_uring, overlay mounts, competing LSMs). It doesn't claim to harden against kernel exploitation in general.
+Root Lock optimizes for one threat: a compromised process attempting to bypass its custom kernel MAC enforcement via a kernel subsystem (BPF, FUSE, io_uring, overlay mounts, competing LSMs). It does not claim to harden against kernel exploitation in general.
 
-If the attacker gets a reliable kernel heap primitive — use-after-free, type confusion — HeartSuite gives them vanilla KASLR and `STACKPROTECTOR_STRONG`. That's the same protection a defconfig kernel offers. Arch and NixOS hardened give them `SLAB_FREELIST_RANDOM`, `KFENCE`, `RANDSTRUCT`, `PAGE_TABLE_CHECK`, and more.
+If the attacker gets a reliable kernel heap primitive — use-after-free, type confusion — Root Lock gives them vanilla KASLR and `STACKPROTECTOR_STRONG`. That is the same protection a defconfig kernel offers. Arch and NixOS hardened give them `SLAB_FREELIST_RANDOM`, `KFENCE`, `RANDSTRUCT`, `PAGE_TABLE_CHECK`, and more.
 
 ---
 

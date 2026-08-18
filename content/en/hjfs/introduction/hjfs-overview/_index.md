@@ -1,6 +1,6 @@
 ---
 title: "Each program gets its own storage area"
-linkTitle: "HJFS Overview"
+linkTitle: "HJFS overview"
 weight: 2
 description: "HJFS confines programs to their own files. The OS default — every program inherits your documents — is the hole this closes."
 categories: ["Essentials"]
@@ -11,11 +11,17 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: On a standard Linux system, any program can open any file the current user can reach — including programs running as root. That is the root cause of most malware damage. HJFS addresses it directly by binding data files to the program that created them. The modified `open()` call enforces that binding at every file access: no other program can read or write those files, regardless of privilege. Access control is enforced per program and per program version. Execution control and network connection control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/) for the underlying OS design flaw this corrects.
+**Overview**: On a standard Linux system, any program can open any file the current user can reach — including programs running as root. That is the root cause of most malware damage.
+
+HJFS addresses it by binding data files to the program that created them. The modified `open()` call enforces that binding at every file access: no other program can read or write those files, regardless of privilege. Access control is enforced per program and per program version.
+
+Execution control and network connection control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/) for the underlying OS design this corrects.
 
 ## File isolation in practice
 
-HJFS binds data files to the program that created them. A program can only reach files in its own storage area. That boundary holds even for programs running as root. Malware present on the system cannot read, modify, or encrypt files that belong to another program — the `open()` call blocks the attempt before it reaches the data.
+HJFS binds data files to the program that created them. A program can only reach files in its own storage area. That boundary holds even for programs running as root.
+
+Malware present on the system cannot read, modify, or encrypt files that belong to another program. The `open()` call blocks the attempt before it reaches the data.
 
 ### Technical implementation
 
@@ -39,9 +45,13 @@ The restructured filesystem separates system files, executables, and per-program
 
 ### Per-version storage
 
-HJFS enforces isolation at the version level, not just the program level. Each installed version of a program receives its own dedicated storage area. HJFS trusts a program only with the storage area that version created. Storage areas belonging to other programs — or to other versions of the same program — are outside that trust boundary, even when the program runs as root.
+HJFS enforces isolation at the version level, not just the program level. Each installed version of a program receives its own dedicated storage area.
 
-A program version is uniquely identified by the concatenation of SHA256 cryptographic hashes of the program executable and all its dynamically linked libraries, combined with the last modification date of those files. Two versions are treated as distinct even if only a single library changed. User-facing utilities display each version with a human-readable install-time identifier (for example, `260208_123022P`). The cryptographic hash is the identity HJFS uses internally to enforce isolation.
+HJFS trusts a program only with the storage area that version created. Storage areas belonging to other programs — or to other versions of the same program — are outside that trust boundary, even when the program runs as root.
+
+A program version is uniquely identified by the concatenation of SHA256 cryptographic hashes of the program executable and all its dynamically linked libraries, combined with the last modification date of those files. Two versions are treated as distinct even if only a single library changed.
+
+User-facing utilities display each version with a human-readable install-time identifier (for example, `260208_123022P`). The cryptographic hash is the identity HJFS uses internally to enforce isolation.
 
 When a program opens a versioned file, the `open()` call resolves both the program name and the version hash before locating the file:
 
@@ -55,7 +65,7 @@ This means:
 
 ### Secure file transfer between programs
 
-Because each program is confined to its own storage area, moving data between programs requires explicit user action through one of two mechanisms:
+Because each program is confined to its own storage area, moving data between programs requires explicit user action:
 
 - **Copy utility**: Copies a file from one program's storage area directly to another's. Every transfer is an explicit, auditable operation.
 - **Transfer area**: A neutral staging location where a file can be deposited once and made available for other programs to read and copy to their own areas. Programs can read from the transfer area but cannot write to other programs' areas directly.
@@ -84,7 +94,9 @@ HJFS includes two utilities:
 
 Because each version has its own storage area, rolling back is non-destructive. Setting the active version to a prior release makes the original files immediately accessible — no restore process, no backup retrieval. Prior executables, libraries, and data files remain untouched in their own subareas.
 
-If the user created data files under the version being rolled back from — for example, a malicious update installed since the last legitimate version — those files exist only in that version's storage area. The file transfer utility can copy them to the target version's storage area before or after the rollback, preserving any legitimate work done under the compromised version.
+If the user created data files under the version being rolled back from — for example, a malicious update installed since the last legitimate version — those files exist only in that version's storage area.
+
+The file transfer utility can copy them to the target version's storage area before or after the rollback, preserving any legitimate work done under the compromised version.
 
 The example below shows a program called SimpleEdit after an update on November 12. The May 6 version is preserved in its own subarea; the installer stores the prior executables before overwriting the current ones:
 
@@ -100,13 +112,17 @@ HJFS automatic backup differs from Root Lock by HeartSuite's backup mechanism in
 
 #### The malicious sleeper attack
 
-Program version isolation alone does not close every window of exposure. Consider a patient form of attack: a malicious update that behaves exactly as expected for months before activating. During those months the user continues working. New data files accumulate inside the malicious version's storage area. By the time the attack activates — encrypting files for ransom — the user has legitimate data that exists only in that version's area. Rolling back the program version does not help, because the affected files were created under the malicious version and were never written to the prior version's area.
+Program version isolation alone does not close every window of exposure. Consider a patient form of attack: a malicious update that behaves exactly as expected for months before activating.
 
-This is the attack that automatic data file backup is specifically designed to defeat.
+During those months the user continues working. New data files accumulate inside the malicious version's storage area. By the time the attack activates — encrypting files for ransom — the user has legitimate data that exists only in that version's area.
+
+Rolling back the program version does not help. The affected files were created under the malicious version and were never written to the prior version's area.
 
 #### How the backup defeats it
 
-HJFS backs up every write to every data file continuously. Ransomware targets backup systems first because intact backups eliminate the leverage of encryption. HJFS removes that option. The backup area is unreachable to any running program — not through a permission rule that can be changed, but through the same `open()` enforcement that governs all other isolation boundaries.
+HJFS backs up every write to every data file continuously. Ransomware targets backup systems first because intact backups eliminate the leverage of encryption. HJFS removes that option.
+
+The backup area is unreachable to any running program — not through a permission rule that can be changed, but through the same `open()` enforcement that governs all other isolation boundaries.
 
 When the attack activates, the user can:
 
@@ -119,7 +135,9 @@ Every file created before the attack is recoverable. The window of loss is limit
 
 ## Security guarantees
 
-HJFS trusts each program only with the storage area that program version created. It does not trust privilege level: root access does not expand what a program can open. The trust boundary is enforced at the filesystem layer, below all running software. The only path around it is physical: removing the HJFS drive bypasses the enforcement entirely.
+HJFS trusts each program only with the storage area that program version created. It does not trust privilege level: root access does not expand what a program can open.
+
+The trust boundary is enforced at the filesystem layer, below all running software. The only path around it is physical: removing the HJFS drive bypasses the enforcement entirely.
 
 ## Patents
 
@@ -144,7 +162,9 @@ Root Lock and HJFS are not currently compatible and cannot be deployed together.
 | Per-program-version file isolation | No | Yes |
 | Audited cross-program file transfer | No | Yes |
 
-Each product covers dimensions the other does not, but they cannot currently be deployed together. Program execution control and network access control remain outside HJFS scope; organizations requiring those controls should use a dedicated allowlisting tool alongside HJFS.
+Each product covers dimensions the other does not. They cannot currently be deployed together.
+
+Program execution control and network access control remain outside HJFS scope. Organizations requiring those controls should use a dedicated allowlisting tool alongside HJFS.
 
 ## Status
 

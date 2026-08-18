@@ -78,19 +78,19 @@ On every installed host, the `limited_tools` Python API under `/opt/heartsuite` 
 
 **Overview**: The role provides variable-driven management of allowlist programs and mode transitions. Re-running a play does not create duplicate entries. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns.
 
-The role is intentionally narrow in scope: it assumes Root Lock is already installed on the target and focuses on allowlist management plus mode transitions (Setup Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
+The role assumes Root Lock is already installed. It focuses on allowlist management plus mode transitions (Setup Mode / Lockdown). Full server provisioning — base OS preparation, hardening (for example the dev-sec collection), SFTP receiver setup, bundle-based installation, and post-install configuration — belongs in thin orchestrator playbooks that compose `heartsecurity.root_lock` with upstream collections and host-specific tasks.
 
-A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full Root Lock deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: install Root Lock (the example does not replace initial setup with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload (e.g. SFTP transfers), harvest observed **extras** from Setup Mode on the live machine after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
+A reference provisioning example for a Debian 12 server is in the code repository under `ansible/examples/hs-debian12-provision/`. The pattern: install Root Lock (the example does not replace initial setup with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload, harvest observed **extras** from Setup Mode after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
 
 **Requirements**:
 
 - Root Lock already installed on managed hosts (the role does not install the product).
-- Prefer initial setup finished before applying workload `hs_seeds` / stack playbooks that assume a learned baseline.
+- Prefer initial setup finished before applying workload `hs_seeds` / stack playbooks that assume a reviewed baseline.
 - `become: true` — all operations are privileged.
 - Ansible >= 2.9.
 - The role invokes the production Python API in `/opt/heartsuite` (`limited_tools` via `/opt/heartsuite/venv/bin/python3` and `/opt/heartsuite/src`).
 
-`hs_seeds` / `hs_programs` are **post-install text program lists**. They are not install-time APO baseline packaging and not a binary policy file drop-in. Leave `hs_state` unset until subscription, alerts, and queue gates are ready for Lockdown.
+`hs_seeds` / `hs_programs` are **post-install text program lists**. They are not install-time allowlist baseline packaging and not a binary policy file drop-in. Leave `hs_state` unset until subscription, alerts, and queue gates are ready for Lockdown.
 
 **Key variables** (all prefixed `hs_` to avoid collision with SELinux role variables):
 
@@ -102,7 +102,7 @@ A reference provisioning example for a realistic Debian 12 server (kernel 6, del
 
 Additional variables include `hs_gather_status` (default `true`, exposes `hs_status` fact), `hs_purge` / `hs_purge_allowlist` (currently emit a warning only — the scriptable surface is additive by design), and `hs_python` / `hs_src_path` overrides for non-standard install layouts.
 
-**Idempotency**: All allowlist operations return `CommandResult` with `kind == "noop"` when an entry is already present. The role uses this for correct `changed_when` reporting, so repeated plays do not show spurious changes.
+**Re-run behaviour**: All allowlist operations return `CommandResult` with `kind == "noop"` when an entry is already present. The role uses this for correct `changed_when` reporting, so repeated plays do not show spurious changes.
 
 Minimal example playbook:
 
@@ -124,9 +124,11 @@ Minimal example playbook:
 
 After switching to `secure` or `lockdown`, a reboot is typically required for full seal; the role does not reboot automatically. Register facts (`hs_status`, `hs_apply_result`, `hs_switch_result`) are available for assertions or subsequent tasks.
 
-**Python API alternative**: For custom Ansible modules or non-Ansible automation, the same primitives are exposed directly via `limited_tools`: `approve_program_path`, `apply_allowlist_seed`, `get_status`, `get_allowlist_programs`, and `switch_to_secure`. These reuse the same gates and `CommandResult` semantics. The `heartsecurity.root_lock` role is the preferred declarative path for the narrow post-install concerns; use the Python API (or thin custom tasks) when composing larger provisioning playbooks that also handle OS setup, hardening, or host-specific services before or after invoking the role.
+**Python API alternative**: For custom Ansible modules or non-Ansible automation, the same functions are exposed via `limited_tools`: `approve_program_path`, `apply_allowlist_seed`, `get_status`, `get_allowlist_programs`, and `switch_to_secure`. These reuse the same gates and `CommandResult` semantics.
 
-See the reference provisioning starter in the code repository (`ansible/examples/hs-debian12-provision/`) for a concrete example of composition: it delegates SSH/SFTP hardening to the dev-sec collection, performs bundle-based installation, registers backup directories and alert configuration, starts with a minimal allowlist bootstrap (via seed file), and shows how to harvest from real workload observation into a maintainable seed file before using the root_lock role for allowlist and mode.
+The `heartsecurity.root_lock` role is the preferred declarative path for post-install allowlist and mode work. Use the Python API (or thin custom tasks) when composing larger provisioning playbooks that also handle OS setup, hardening, or host-specific services.
+
+See the reference provisioning starter in the code repository (`ansible/examples/hs-debian12-provision/`) for composition: it delegates SSH/SFTP hardening to the dev-sec collection, performs bundle-based installation, registers backup directories and alert configuration, starts with a minimal allowlist bootstrap, and shows how to harvest from real workload observation into a seed file before using the role for allowlist and mode.
 
 Register playbooks as the mechanism that executes change records approved in your central system.
 
@@ -163,7 +165,7 @@ Use Ansible to distribute seed files and invoke the batch or management tools wi
       # Then copy or commit the harvest back to your policy repo
 ```
 
-This pattern does not use `CommandResult.kind == "noop"` for `changed_when`; implement your own idempotency checks (for example `creates`, or `register` + conditional tasks).
+This pattern does not use `CommandResult.kind == "noop"` for `changed_when`. Implement your own re-run checks (for example `creates`, or `register` + conditional tasks).
 
 ### 2. Splunk / Elastic (and similar SIEMs) — ingesting for central dashboards and policy triggers
 

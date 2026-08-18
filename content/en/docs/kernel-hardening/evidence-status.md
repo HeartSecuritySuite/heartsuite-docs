@@ -22,7 +22,9 @@ toc: true
 | **6.18.9** | Primary LTS / new deployments | **Pending publication** | **In progress** | [Structure published](kernel-comparison-matrix-6.18.9/) | **Pending publication** | **Pending publication** |
 | **5.19.6** | Legacy / existing fleets | [Published](../evidence-pack-5.19.6.txt) | [Published](../evidence-pack-5.19.6.txt) | [Published](kernel-comparison-matrix-5.19.6/) | 2026-05-19 (`b9b83a0`) | 2026-05-19 (Debian 12 VM) |
 
-HeartSuite ships two HS kernel lines with the same Root Lock enforcement contract. **New subscriptions and fleet images should standardize on 6.18.** Public hardening evidence for that stream is being brought to parity with the 5.19.6 publication; until then, procurement and audit teams should treat 5.19.6 measurements as **illustrative of design philosophy**, not as a score-for-score substitute for 6.18.9.
+HeartSuite ships two HS kernel lines with the same Root Lock enforcement contract. **New subscriptions and fleet images should standardize on 6.18.**
+
+Public hardening evidence for that stream is being brought to parity with the 5.19.6 publication. Until then, procurement and audit teams should treat 5.19.6 measurements as **illustrative of design philosophy**, not as a score-for-score substitute for 6.18.9.
 
 ---
 

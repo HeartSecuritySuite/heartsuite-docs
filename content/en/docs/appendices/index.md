@@ -9,9 +9,9 @@ type: docs
 toc: true
 ---
 
-**Overview**: Root Lock by HeartSuite includes a set of tools for system management, allowlisting, and security enforcement. The Dashboard is where you work day-to-day. Most CLI entries below are run automatically by the system or by the Dashboard, or kept for scripting, recovery, and advanced setup. A normal user does not invoke them directly.
+**Overview**: Root Lock by HeartSuite includes a set of tools for system management, allowlisting, and security. The Dashboard is where you work day-to-day. Most CLI entries below are run automatically by the Dashboard, or kept for scripting, recovery, and advanced setup.
 
-With exception of the Secure Script Launchers, all tools are located in the `/.hs/sys` directory. The Root Lock installation routine does NOT add this directory to the PATH environment variable. The Secure Script Launchers are located in `/usr/bin` because it is in the default PATH. Programs and scripts that write data to Root Lock databases must be run as root.
+Except for the Secure Script Launchers, all tools are located in `/.hs/sys`. The installer does not add this directory to `PATH`. The Secure Script Launchers are in `/usr/bin` because it is in the default `PATH`. Programs and scripts that write data to Root Lock databases must be run as root.
 
 ## Day-to-day
 
@@ -81,21 +81,15 @@ Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Laun
 
 These files are written automatically by Root Lock. They are not tools and require no user invocation.
 
-On cloud instances, logs are accessible from the provider's web console. The serial console (ttyS0) has root autologin enabled, so connecting shows a shell where the commands below can be used. Some providers also expose recent console output (including early installer messages) directly in the browser.
+On cloud instances, logs are accessible from the provider's web console. The serial console (ttyS0) has root autologin enabled, so connecting shows a shell. Some providers also expose recent console output (including early installer messages) directly in the browser.
+
+To have logs appear in the provider console (for example CloudWatch Logs on AWS), configure the platform's logging agent to collect files under `/var/log/heartsuite/`. Protected files in `/.hs/sys/` are readable over serial for recovery but are not standard operational logs.
 
 - **`/.hs/sys/HS_log.txt`** — the on-device activity/enforcement log. Records program executions, file accesses, and network connection attempts. Cleared on maintenance and when queues drain in Setup Mode. Forwarded to journald/syslog as `heartsuite`.
 - **`/var/log/heartsuite/install.log`** — written by the installer bundle. Records steps and outcome. Copied here on errors for persistence and serial console access. On AWS, recent output is also available via **Actions > Monitor and troubleshoot > Get system log** in the EC2 console.
 - **Dedicated JSONL approval log** (`/root/.local/share/heartsuite/allowlist-audit.log` or equivalent) — persistent record of every allowlist approval action.
 - **`/var/log/heartsuite/ui.log`** — the rotating application audit log. Captures UI interactions, core events, and errors. Size-capped ~8 MB.
-- **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some legacy `phase1-step-N.log` names may remain on disk for historical reasons).
-
-To have logs appear directly in the provider console (for example in CloudWatch Logs on AWS), install and configure the platform's logging agent to collect files under `/var/log/heartsuite/`. Protected files in `/.hs/sys/` are readable over serial for recovery but are not standard operational logs.
-
-- **`/.hs/sys/HS_log.txt`** — the on-device activity/enforcement log. Records program executions, file accesses, and network connection attempts. Cleared on maintenance and when queues drain in Setup Mode. Forwarded to journald/syslog as `heartsuite`.
-- **`/var/log/heartsuite/install.log`** — written by the installer bundle. Records steps and outcome. Copied here on errors for persistence and serial console access.
-- **Dedicated JSONL approval log** (`/root/.local/share/heartsuite/allowlist-audit.log` or equivalent) — persistent record of every allowlist approval action.
-- **`/var/log/heartsuite/ui.log`** — the rotating application audit log. Captures UI interactions, core events, and errors. Size-capped ~8 MB.
-- **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some legacy `phase1-step-N.log` names may remain on disk for historical reasons).
+- **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some legacy `phase1-step-N.log` names may remain on disk).
 - **Syslog streams (RFC 5424)** — real-time enforcement and alert streams under the `heartsuite` APP-NAME to `/dev/log`. Recommended for SIEM (see [SIEM and Fleet Integration](../alerts/siem-integration/)).
 - **`~/.cache/heartsuite/status.json`** — system status snapshot (not a log).
 
@@ -106,7 +100,7 @@ To have logs appear directly in the provider console (for example in CloudWatch 
   | `is_hs_kernel` | bool | Whether the running kernel is the Root Lock kernel |
   | `lockdown` | bool | Whether Lockdown is currently active |
   | `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
-  | `pending_programs` | int | Programmes awaiting review |
+  | `pending_programs` | int | Programs awaiting review |
   | `pending_files` | int | Sum of pending read + pending write entries |
   | `pending_network` | int | Network destinations awaiting review |
   | `last_alert_at` | string | ISO 8601 UTC timestamp of last alert, or empty string |
@@ -121,10 +115,10 @@ To have logs appear directly in the provider console (for example in CloudWatch 
 
 ## Integration tooling (evaluation and fleet automation)
 
-Production hosts use the installed bundle: CLI tools under `/.hs/sys`, the `limited_tools` Python API under `/opt/heartsuite`, syslog, and `status.json`. The items below are **not** installed by `heartsuite-install.sh`; they are available with coordinated release materials or on request for evaluation and fleet automation work.
+Production hosts use the installed bundle: CLI tools under `/.hs/sys`, the `limited_tools` Python API under `/opt/heartsuite`, syslog, and `status.json`. The items below are **not** installed by `heartsuite-install.sh`; they are available with coordinated release materials or on request.
 
-- **`heartsecurity.root_lock` Ansible role** — declarative post-install management of allowlist programs and mode/Lockdown transitions (modelled on `linux-system-roles.selinux`). The role assumes Root Lock is already installed. Full server provisioning and deployment (including hardening using established standards such as dev-sec, bundle-based installation, and host-specific services) are handled by thin orchestrator playbooks that compose this role. The reference starter also illustrates harvesting observed programs from a live workload into a seed file. See [Central Policy Management and External Control](../alerts/central-policy-management/#official-ansible-role-heartsecurityroot_lock) and `ansible/examples/hs-debian12-provision/`. Request the role package from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if it is not already in your delivery.
-- **`tools/kibana-bridge/`** — optional disposable Docker stack for policy-centric Kibana views during lab evaluation (living allowlist table, KPIs, risk signals, `record_hash` drift). Complements syslog enforcement streams; not required for production. Security-disabled and intended for localhost or a tightly perimeter-controlled lab only — see [SIEM and Fleet Integration](../alerts/siem-integration/#toolskibana-bridge-optional-evaluation-stack). Available on request for evaluation kits.
+- **`heartsecurity.root_lock` Ansible role** — declarative post-install management of allowlist programs and mode/Lockdown transitions (modelled on `linux-system-roles.selinux`). The role assumes Root Lock is already installed. Full server provisioning is handled by thin orchestrator playbooks that compose this role. See [Central Policy Management and External Control](../alerts/central-policy-management/#official-ansible-role-heartsecurityroot_lock) and `ansible/examples/hs-debian12-provision/`. Request the role package from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if it is not already in your delivery.
+- **`tools/kibana-bridge/`** — optional disposable Docker stack for policy-centric Kibana views during lab evaluation (living allowlist table, KPIs, risk signals, `record_hash` drift). Complements syslog enforcement streams; not required for production. Security-disabled and intended for localhost or a tightly perimeter-controlled lab only — see [SIEM and Fleet Integration](../alerts/siem-integration/#toolskibana-bridge-optional-evaluation-stack).
 
 ## Kernel CVE coverage
 

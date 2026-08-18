@@ -65,7 +65,9 @@ sha256sum -c heartsuite-install.sh.sha256
 
 Expected output: `heartsuite-install.sh: OK`
 
-This is the **only generally available cryptographic integrity check** for bundles today. It confirms the file you received matches the checksum HeartSuite published for that release. It does **not** by itself prove publisher identity — that is why GPG and cosign are on the roadmap (see below).
+This is the **only generally available cryptographic integrity check** for bundles today. It confirms the file you received matches the checksum HeartSuite published for that release.
+
+It does **not** by itself prove publisher identity. That is why GPG and cosign are on the roadmap (see below).
 
 Full install procedure and maintenance-window context: [Updating HeartSuite](../../maintenance/updating-heartsuite/).
 
@@ -267,7 +269,7 @@ To set expectations for RFPs and vendor-risk assessments:
 | RHSA-equivalent advisory numbering | Not planned |
 | kpatch/live-patch provenance | Not applicable — live patching not offered on HS kernel |
 
-If a control framework **requires** GA OVAL feeds or GPG/cosign signing before production approval, plan for the interim artefacts in this document and document compensating controls (published JSON feeds, manual CVE hygiene, config-hash verification, bundle manifest retention) until roadmap items ship.
+If a control framework **requires** GA OVAL feeds or GPG/cosign signing before production approval, plan for the interim artefacts in this document. Document compensating controls (published JSON feeds, manual CVE hygiene, config-hash verification, bundle manifest retention) until roadmap items ship.
 
 ---
 

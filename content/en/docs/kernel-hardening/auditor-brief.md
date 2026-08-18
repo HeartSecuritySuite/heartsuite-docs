@@ -31,9 +31,11 @@ HeartSuite's kernel hardening targets one specific threat: **a process on the pr
 Automated score: **91/132 (68.9%)**  
 Reference points (era-matched, same 5.19.x kernel generation): Arch linux-hardened 5.19.11: 77/132 (58.3%). Vanilla upstream defconfig 5.17: 90/132 (68.2%). KSPP target (6.17, version-agnostic intent): 131/132 (99.2%).
 
-HS outperforms production distros and common hardened-distro kernels on this axis. The reason: HS disables `BPF_SYSCALL`, `USER_NS`, `FUSE_FS`, `OVERLAY_FS`, `APPARMOR`, `TOMOYO`, and ~25 additional network/crypto/debug subsystems that Arch and NixOS keep enabled for their general-purpose user bases. These are the subsystems with the most relevant LSM-bypass CVE history.
+The Root Lock kernel outperforms production distros and common hardened-distro kernels on this axis. It disables `BPF_SYSCALL`, `USER_NS`, `FUSE_FS`, `OVERLAY_FS`, `APPARMOR`, `TOMOYO`, and ~25 additional network/crypto/debug subsystems that Arch and NixOS keep enabled for their general-purpose user bases. Those are the subsystems with the most relevant LSM-bypass CVE history.
 
-**Caveat:** the automated checker scores vanilla 5.17 defconfig at 90/132, nearly identical to HS. This is because the checker does not distinguish *intentionally hardened to* a value from *never configured to begin with.* The vanilla defconfig also doesn't enable BPF or AppArmor by default. The operational difference is enforcement: a production system built on a vanilla defconfig will have these features added over time; HS's build procedure enforces the disables regardless.
+**Caveat:** the automated checker scores vanilla 5.17 defconfig at 90/132, nearly identical to Root Lock. The checker does not distinguish *intentionally hardened to* a value from *never configured to begin with.* The vanilla defconfig also does not enable BPF or AppArmor by default.
+
+The operational difference is enforcement. A production system built on a vanilla defconfig will have these features added over time. The Root Lock build procedure enforces the disables regardless.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
@@ -47,7 +49,7 @@ HS's exploit-resistance posture is at the vanilla upstream baseline. It does not
 ## Residual risks
 
 **1. Kernel memory corruption / exploitation**  
-HS provides no additional protection beyond vanilla upstream defaults for heap-based exploits (use-after-free, double-free, type confusion). An attacker who can reach a vulnerable in-kernel code path with sufficient primitive quality has no extra mitigations to contend with beyond `STACKPROTECTOR_STRONG`, `KASLR`, `RANDOMIZE_MEMORY`, and `STRICT_KERNEL_RWX` — all of which are vanilla defaults.
+The Root Lock kernel provides no additional protection beyond vanilla upstream defaults for heap-based exploits (use-after-free, double-free, type confusion). An attacker who can reach a vulnerable in-kernel code path with sufficient primitive quality has no extra mitigations beyond `STACKPROTECTOR_STRONG`, `KASLR`, `RANDOMIZE_MEMORY`, and `STRICT_KERNEL_RWX`. All of those are vanilla defaults.
 
 *Attack path:* Any reachable kernel vulnerability with reliable heap-layout control.
 
@@ -73,12 +75,14 @@ Root cannot lift the allowlist seal or turn enforcement off. There is no agent t
 *Auditor action:* verify live gates on the **deployed ship pin** with the operator's regression suite or release checklist when available — do not assume completeness from architecture diagrams alone.
 
 **5. Allowlist breadth after learning**  
-Setup Mode records observed behaviour; operators ratify grants into the allowlist. Residual risk after Lockdown is not only whether enforcement can be disabled, but whether the ratified allowlist is wider than the intended least-privilege slice (NIST-style residual on configuration scope). Over-broad program, file, or network grants increase blast radius inside an otherwise sealed host.
+Setup Mode records observed behaviour. You ratify grants into the allowlist. Residual risk after Lockdown is not only whether enforcement can be disabled, but whether the ratified allowlist is wider than the intended least-privilege slice (NIST-style residual on configuration scope). Over-broad program, file, or network grants increase blast radius inside an otherwise sealed host.
 
 *Auditor action:* sample allowlist entries against workload role; treat Setup Mode duration and review hygiene as part of control effectiveness, not only kernel config scores.
 
 **6. Intentional maintenance and console recovery path**  
-Supported recovery of a sealed allowlist requires booting the maintenance (Non-HS) kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical presence — keyboard and monitor, serial port, or cloud provider serial console. This is intentional and documented; it is not a remote disable of the stoppable-agent class. Residual risk includes any operational process that weakens console or boot-path controls (shared hypervisor console credentials, unattended serial access, unrestricted out-of-band management).
+Supported recovery of a sealed allowlist requires booting the maintenance (Non-HS) kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical or serial-console access — keyboard and monitor, serial port, or cloud provider serial console. This is intentional and documented. It is not a remote disable of the stoppable-agent class.
+
+Residual risk includes any operational process that weakens console or boot-path controls (shared hypervisor console credentials, unattended serial access, unrestricted out-of-band management).
 
 **7. Confused deputy among allowlisted programs**  
 Enforcement is per program identity. A process that is correctly allowlisted for a powerful role (package manager, backup helper, orchestration agent) can still be abused within its grants if an attacker controls its inputs or configuration. Residual risk is lateral or deputy misuse inside approved scope, not absence of a kernel gate.
@@ -86,7 +90,9 @@ Enforcement is per program identity. A process that is correctly allowlisted for
 **8. Portable open flags and size mutation under a read grant**  
 POSIX leaves combining `O_TRUNC` with a read-only open **undefined**; truncation is guaranteed only with write open modes. Many Linux systems still truncate on `O_RDONLY|O_TRUNC` when DAC write allows; man-page NOTES document this fielded behaviour. By default Root Lock does **not** redefine that UAPI corner.
 
-What can still happen: a program with a **read** file grant (write not granted on that leaf) can still change the file's size — typically emptying it — if it opens the path with `O_RDONLY|O_TRUNC` (or equivalent) and ordinary Unix write permission allows the truncate. This is a scoped residual under allowlist enforcement.
+What can still happen: a program with a **read** file grant (write not granted on that leaf) can still change the file's size — typically emptying it — if it opens the path with `O_RDONLY|O_TRUNC` (or equivalent) and ordinary Unix write permission allows the truncate.
+
+This is a scoped residual under allowlist enforcement.
 
 Who is affected: operators and auditors reviewing **read-only** grants on leaves where size or integrity matters (logs, flags, small config files). Programs that already have a write grant on that leaf are outside this residual.
 

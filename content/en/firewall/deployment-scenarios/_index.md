@@ -15,15 +15,21 @@ toc: true
 
 ### A single-purpose workload on a closed image
 
-A backup receiver, an internal service, a regulated workload that should run one job: the workload lives *on* the appliance. You observe what actually arrives, approve the sockets that job needs, and seal. Root Lock by HeartSuite is already the operating system, so a new binary and a new outbound destination still go through the kernel allowlist.
+A backup receiver, an internal service, a regulated workload that should run one job: the workload lives *on* the appliance. You observe what actually arrives, approve the sockets that job needs, and seal.
+
+Root Lock by HeartSuite is already the operating system, so a new binary and a new outbound destination still go through the kernel allowlist.
 
 ### Virtual appliance on a hypervisor you administer
 
-QCOW2 or OVA on KVM, or the equivalent import on a commercial hypervisor. Console or serial is how you reach the Dashboard. Restrict who can open that console. The hypervisor is part of the trust boundary. See [The virtual appliance residual](../architecture/#the-virtual-appliance-residual).
+QCOW2 or OVA on KVM, or the equivalent import on a commercial hypervisor. Console or serial is how you reach the Dashboard. Restrict who can open that console.
+
+The hypervisor is part of the trust boundary. See [The virtual appliance residual](../architecture/#the-virtual-appliance-residual).
 
 ### Next to cloud security groups, not instead of a provider DDoS tool
 
-Security groups and the provider's volumetric controls stay useful in front of any VM. Root Lock Firewall is the host allowlist *on* the image after that outer layer. It does not replace a cloud firewall service, and it does not become one by booting on AWS, Google Cloud, Azure, DigitalOcean, or Linode.
+Security groups and the provider's volumetric controls stay useful in front of any VM. Root Lock Firewall is the host allowlist *on* the image after that outer layer.
+
+It does not replace a cloud firewall service, and it does not become one by booting on AWS, Google Cloud, Azure, DigitalOcean, or Linode.
 
 ### Teams who already review Root Lock queues
 
@@ -33,15 +39,21 @@ If the team already reviews Programs, File Access, and Internet Access, Firewall
 
 ### In front of other machines
 
-v1 has no FORWARD or NAT product surface. Do not put this appliance in front of a backup server, a subnet, or a pair of application hosts and expect it to publish them. Keep the existing edge firewall for that job, or wait for an edge SKU that changes placement.
+v1 has no FORWARD or NAT product surface. Do not put this appliance in front of a backup server, a subnet, or a pair of application hosts and expect it to publish them.
+
+Keep the existing edge firewall for that job, or wait for an edge SKU that changes placement.
 
 ### Campus, branch, or "NGFW refresh"
 
-Root Lock Firewall does not ship App-ID, TLS interception, URL clouds, SD-WAN, SSL-VPN as identity, or a central management empire. Buyers who need those keep the specialist tool. Using this image as a FortiGate or Cisco Secure Firewall replacement is a misfit, not a configuration problem.
+Root Lock Firewall does not ship App-ID, TLS interception, URL clouds, SD-WAN, SSL-VPN as identity, or a central management empire. Buyers who need those keep the specialist tool.
+
+Using this image as a FortiGate or Cisco Secure Firewall replacement is a misfit, not a configuration problem.
 
 ### Install-on-my-Ubuntu
 
-You cannot add this product to a general-purpose server the way you add UFW. The customer model is the image. Root Lock on a server you already own remains the kernel product; inbound on that server stays the OS or cloud control you already run, unless you move the workload onto this appliance.
+You cannot add this product to a general-purpose server the way you add UFW. The customer model is the image.
+
+Root Lock on a server you already own remains the kernel product. Inbound on that server stays the OS or cloud control you already run, unless you move the workload onto this appliance.
 
 ### Dedicated hardware
 
@@ -64,6 +76,8 @@ On the appliance image the two layers are designed to run together.
 | Inbound and this-host path | Root Lock Firewall |
 | Programs, files, outbound IPs | Root Lock |
 
-Root Lock without this image is still a complete kernel product. Missing Root Lock Firewall there is missing an optional SKU, not a hole in Root Lock. Adding a second packet-filter manager next to Root Lock Firewall on the appliance *is* a hole in the composition.
+Root Lock without this image is still a complete kernel product. Missing Root Lock Firewall there is missing an optional SKU, not a hole in Root Lock.
+
+Adding a second packet-filter manager next to Root Lock Firewall on the appliance *is* a hole in the composition.
 
 For residuals inside an approved port, see [What Root Lock Firewall does and does not cover](../introduction/limits/).

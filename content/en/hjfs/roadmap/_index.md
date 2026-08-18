@@ -13,8 +13,6 @@ toc: true
 
 ## Current capabilities
 
-HJFS currently includes the following capabilities:
-
 | Capability | Notes |
 |---|---|
 | Per-program file isolation | `open()` interception — programs are confined to their own storage area |
@@ -42,4 +40,4 @@ HJFS implements core file organization with the host file system code left uncha
 |---|---|
 | Network access control | New outbound connections are mediated by the OS. Desktop deployments prompt the user for confirmation; server deployments apply policy rules |
 | Python script compartmentalization | Confines individual Python scripts to separate file spaces. Scripts no longer share the interpreter's storage area. Requires a small amount of kernel cooperation |
-| Advanced protection | Separates internal and user files and introduces OS-mediated file dialogs. Requires application updates. See [Advanced Protection](../advanced-protection/) for design details |
+| Advanced protection | Separates internal and user files and introduces OS-mediated file dialogs. Requires application updates. See [Advanced protection](../advanced-protection/) for design details |

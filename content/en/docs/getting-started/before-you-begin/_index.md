@@ -13,7 +13,7 @@ type: docs
 ## System requirements
 
 - **Operating System**: x86 (64-bit) Linux — Debian 11–13, Ubuntu-derived, Alpine, or RPM-based (Rocky 9.7 validated; Fedora 41, CentOS Stream 9 validated; RHEL/AlmaLinux/SLES: customer validation). See [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/).
-- **Execution environment**: bare metal or a full virtual machine (KVM, cloud hypervisors, etc.). Shared-kernel containers (OpenVZ, LXC, Docker/Podman guests sharing the provider kernel) are refused early for security reasons. By Design.
+- **Execution environment**: bare metal or a full virtual machine (KVM, cloud hypervisors, etc.). Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests sharing the provider kernel) are not a fit by design: the kernel omits overlay filesystems, user namespaces, and the BPF syscall because those are the features attackers use to hide, shadow directories, and reach root. See [Deployment Scenarios](../../introduction/deployment-scenarios/).
 - **Access Level**: Root access (sudo privileges).
 - **Skills**: Basic familiarity with the Linux command line.
 

@@ -9,7 +9,9 @@ type: docs
 toc: true
 ---
 
-**Overview**: Root Lock by HeartSuite does not add `kmod`, `modprobe`, or `insmod` to the allowlist during installation — in Lockdown, none of them can execute, and no additional configuration is needed for module loading on a standard deployment. If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. In that case, restrict kmod's file access permissions to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the system.
+**Overview**: Root Lock by HeartSuite does not add `kmod`, `modprobe`, or `insmod` to the allowlist during installation. In Lockdown, none of them can execute, and a standard deployment needs no extra module-loading configuration.
+
+If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. Restrict that entry's file access to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the machine.
 
 ## Default deployments: no action required
 
@@ -29,7 +31,9 @@ When kmod's startup activity appears in the **File Access queue (`[f]`)** during
 
 If kmod already has directory-level file access permissions, use `hs-manage-allowlist` to remove the broad entries and re-add specific paths. See `hs-manage-allowlist --help` for usage.
 
-After narrowing kmod's file access permissions, reboot and confirm the system starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[l]`). If kmod still has directory-level access at that point, the Dashboard shows it in the review before confirmation. Adjust it before typing `YES` (case-sensitive). See [Mode Switching and Lockdown](../../mode-switching/).
+After narrowing kmod's file access permissions, reboot and confirm the machine starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[l]`).
+
+If kmod still has directory-level access at that point, the Dashboard shows it in the review before confirmation. Adjust it before typing `YES` (case-sensitive). See [Mode Switching and Lockdown](../../mode-switching/).
 
 ## Per-user shell profile coverage
 

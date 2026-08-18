@@ -13,7 +13,9 @@ toc: true
 
 ## Current capabilities
 
-Root Lock Firewall currently includes the following as the **prototype contract** on the appliance image. The observe → approve → seal path exists in the current TUI (Dashboard, Firewall Rules, Firewall Lockdown, Maintenance). Treat the rows as that contract, not as a GA feature list. This documentation stays Preview until the proud KVM roundtrip exists.
+Root Lock Firewall currently includes the following as the **prototype contract** on the appliance image.
+
+The intended observe → approve → seal path is Dashboard, Firewall Rules, Firewall Lockdown, and Maintenance. Treat the rows as that contract, not as a GA feature list. This documentation stays Preview until the proud KVM roundtrip exists.
 
 | Capability | Notes |
 |---|---|
@@ -22,7 +24,7 @@ Root Lock Firewall currently includes the following as the **prototype contract*
 | Observation → approve → seal | Dashboard Firewall Rules queue. Typed `YES`. Firewall Lockdown is a paired commitment with Root Lock Lockdown; the Dashboard does not run both. |
 | Read-only inventory after seal | Mutate keys absent. Maintenance is the change path. |
 | HeartSuite as update authority | No public CDN or reputation fetch under seal. |
-| Root Lock underneath | Execution, files, and per-program outbound IPs remain the kernel product. |
+| Root Lock underneath | Execution, files, and per-program outbound IPs remain [Root Lock by HeartSuite](../../docs/) — the kernel product. |
 
 See [Architecture and compatibility](../architecture/) for the nft-path constraint and the virtual-appliance residual.
 

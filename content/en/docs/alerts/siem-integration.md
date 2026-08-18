@@ -99,25 +99,20 @@ Tools that can consume it directly:
 - Nagios / Icinga / Zabbix (SSH or file checks)
 - Any script that `cat`s or `jq`s the file on a schedule
 
-No configuration is required on the HeartSuite side.
+No configuration is required on the Root Lock side.
 
 ## Policy and posture data in Elastic and Kibana
 
-In addition to the enforcement and alert streams, HeartSuite can emit structured policy and posture data. This includes snapshots of the current allowlist together with periodic reports of the host's protection posture. When ingested into Elasticsearch, this data supports views of the allowlist across your fleet.
+In addition to the enforcement and alert streams, Root Lock can emit structured policy and posture data — snapshots of the current allowlist and periodic reports of the host's protection posture. When ingested into Elasticsearch, that data supports views of the allowlist across your fleet.
 
-You can use it for:
+Use it for:
 
-- Tables of approved programs along with their exact file and network grants.
-- Summaries such as counts of programs, broad-write risks while locked down, and reporting hosts.
-- Detecting drift by comparing the stable `record_hash` across snapshots.
-- Filtering for higher-risk entries using fields such as `risk_level`, `has_broad_write`, `has_network_grant`, and `lockdown_active_at_capture`.
+- Tables of approved programs with their exact file and network grants
+- Counts of programs, broad-write risks while locked down, and reporting hosts
+- Drift detection by comparing the stable `record_hash` across snapshots
+- Filtering for higher-risk entries using `risk_level`, `has_broad_write`, `has_network_grant`, and `lockdown_active_at_capture`
 
-The data works with visualization tools in Kibana and similar platforms:
-
-- Key fields for each program and its grants are directly available for tables and metrics.
-- Grant details remain accessible for further exploration.
-
-This view complements the host Dashboard and TUI: use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture and the allowlist at fleet scale.
+Use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture at fleet scale.
 
 ### Production path on real hosts
 
@@ -125,7 +120,9 @@ On production hosts, enable the policy and posture export option in the Fleet ta
 
 ### `tools/kibana-bridge` (optional evaluation stack)
 
-For lab, evaluation, and customer demos, HeartSuite offers `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns HeartSuite telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views. It is **not** installed by `heartsuite-install.sh`; request an evaluation kit from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or use the materials included with your coordinated release delivery.
+For lab, evaluation, and customer demos, HeartSuite offers `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns Root Lock telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views.
+
+It is **not** installed by `heartsuite-install.sh`. Request an evaluation kit from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or use the materials included with your coordinated release delivery.
 
 The bridge is a read-only insight plane that complements syslog enforcement streams. It does not replace them and is not required for production. Typical views include:
 
@@ -134,7 +131,9 @@ The bridge is a read-only insight plane that complements syslog enforcement stre
 - Drift detection by comparing stable `record_hash` values across snapshots.
 - Enforcement correlation for drill-down alongside policy rows.
 
-The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes). Do not publish Kibana, Elasticsearch, or the ingest receiver on a public IP without a network perimeter (for example a cloud firewall allowlist of known lab addresses, or an SSH tunnel so the browser reaches only `localhost`). Use the production path above for real access control, TLS, and retention.
+The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes). Do not publish Kibana, Elasticsearch, or the ingest receiver on a public IP without a network perimeter — for example a cloud firewall allowlist of known lab addresses, or an SSH tunnel so the browser reaches only `localhost`.
+
+Use the production path above for real access control, TLS, and retention.
 
 **Versus `tools/siem-test/`:** These are sibling evaluation fixtures with different purposes (both available on request, not on production hosts):
 
@@ -165,7 +164,9 @@ To feed live data during lab work, enable Fleet tab export on a host and forward
 
 ### Pairing with Ansible central policy
 
-The exported policy data model pairs naturally with Ansible (or Terraform/GitOps) central policy management: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role (or compose it inside larger provisioning orchestrators), `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection. The bridge (or your production Elasticsearch deployment) is the read and visibility side; your control plane remains the write path.
+The exported policy data model pairs with Ansible (or Terraform/GitOps) central policy: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection.
+
+The bridge (or your production Elasticsearch deployment) is the read side. Your control plane remains the write path.
 
 See [Central Policy Management and External Control](central-policy-management/) for Ansible role variables, seed application, harvest patterns, and composition with full server deployment playbooks.
 
@@ -182,9 +183,9 @@ cat ~/.cache/heartsuite/status.json | jq .
 
 ## Relationship to the Dashboard
 
-All channels are configured in the single Alert Settings screen (`[e]`). The "Fleet" tab is the central place for SIEM/webhook/syslog + status. Email remains available as a supplementary or low-volume channel.
+All channels are configured in Alert Settings (`[e]`). The Fleet tab is the place for SIEM, webhook, syslog, and status. Email remains available as a supplementary or low-volume channel.
 
-At fleet scale the recommendation is clear: syslog for the SIEM, webhook for incident response platforms, and Status JSON for infrastructure-as-code health checks. The Dashboard remains the place for initial setup, exception review, and maintenance — not for ongoing fleet monitoring.
+At fleet scale: syslog for the SIEM, webhook for incident response platforms, and Status JSON for infrastructure-as-code health checks. The Dashboard remains the place for initial setup, exception review, and maintenance — not for ongoing fleet monitoring.
 
 Policy management is the inbound complement: your central systems curate and apply allowlists via the shipped CLI tools, pre-seeding, and automation patterns. See [Central Policy Management and External Control](central-policy-management/).
 

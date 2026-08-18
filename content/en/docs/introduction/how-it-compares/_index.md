@@ -73,7 +73,9 @@ Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArm
 
 An attacker who already has remote root can turn those tools off. They kill the program, unload the module, or set the LSM policy permissive. Sitting at Layer 2 leaves nothing to turn off.
 
-Changing the sealed allowlist takes physical presence or the cloud serial console. SSH is not enough, even as root. What remains is whether Setup Mode approved too much, and whether someone at the console can unseal it. See [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
+Changing the sealed allowlist takes physical presence or the cloud serial console. SSH is not enough, even as root. What remains is whether Setup Mode approved too much, and whether someone at the console can unseal it.
+
+See [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
 
 ## Security as economics
 
@@ -81,7 +83,7 @@ For an analysis of attacker cost, defender operational cost, and ROI comparison 
 
 ## What Root Lock replaces
 
-The comparison below is scoped to preventive enforcement; telemetry, behavioural analytics, and incident response are addressed separately in [What Root Lock Complements](#what-root-lock-complements). These tools provide runtime confinement. Each has a known bypass path. The Root Lock row is included in the same format for direct comparison. See [Circumvention and Recovery](#circumvention-and-recovery) below for detail.
+The comparison below is scoped to preventive enforcement. Telemetry, behavioural analytics, and incident response are in [What Root Lock complements](#what-root-lock-complements). Each tool has a known bypass path. See [Circumvention and recovery](#circumvention-and-recovery) for detail.
 
 | Tool | What it does | How it can be disabled | How Root Lock compares |
 |---|---|---|---|
@@ -91,7 +93,9 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | Root Lock *is* the kernel: one layer instead of two, with nothing to unload. Used as a guest kernel inside a microVM, it provides kernel-level enforcement for the workload. |
 | **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the module, or tamper with the driver. Many breaches include "disable EDR" as an early step | Root Lock has no agent and no module to unload. It is the kernel. EDR still provides telemetry and response Root Lock does not; treat Root Lock as a replacement for the preventive-enforcement dimension only. See [What Root Lock complements](#what-root-lock-complements). |
 
-**The common pattern.** Every tool in this table can be disabled by an attacker who already has remote root. They can kill the security agent, unload the BPF program, or set the LSM permissive. Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
+**The common pattern.** Every tool in this table can be disabled by an attacker who already has remote root. They can kill the security agent, unload the BPF program, or set the LSM permissive.
+
+Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. See [Circumvention and recovery](#circumvention-and-recovery).
 
 **Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine.
 
@@ -101,9 +105,13 @@ Root Lock is designed so it has no agent process, no BPF program, and no unloada
 
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each tool above retains strengths Root Lock does not replicate.
 
-*eBPF observers* (Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace) ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes, particularly autoscaled clusters where the Root Lock kernel omits the BPF syscall and on-host eBPF tooling is a non-fit, those tools remain the right answer. They can observe a Root Lock host from adjacent infrastructure via network taps or log forwarding.
+*eBPF observers* (Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace) ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters, where on-host eBPF tooling is not a fit by design — those tools remain the right answer.
 
-*Userspace LSM frameworks* (AppArmor, SELinux, SMACK, Landlock) offer policy capabilities Root Lock does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. Root Lock's value is the sealed boundary (`chattr +i` immutability plus a running kernel that refuses runtime changes), not richer policy syntax.
+They can observe a Root Lock host from adjacent infrastructure via network taps or log forwarding.
+
+*Userspace LSM frameworks* (AppArmor, SELinux, SMACK, Landlock) offer policy capabilities Root Lock does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive.
+
+Root Lock's value is the sealed boundary (`chattr +i` immutability plus a running kernel that refuses runtime changes), not richer policy syntax.
 
 Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compiled out of the Root Lock kernel and existing profiles cease to apply at the first Root Lock kernel boot.
 
@@ -111,7 +119,9 @@ Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compi
 
 *gVisor* addresses a different threat model: host protected from untrusted guest, via a userspace syscall-emulating kernel. Root Lock addresses workloads protected from compromised root inside the kernel they run on. The two compose: Root Lock as the guest kernel inside a gVisor-isolated container is a coherent stack.
 
-*Linux EDR* (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. Root Lock provides none of those. The honest position is *prevention versus detection*; most regulated environments run both.
+*Linux EDR* (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. Root Lock provides none of those.
+
+The honest position is *prevention versus detection*; most regulated environments run both.
 
 When attackers use legitimate tools rather than new malware (the pattern in most modern breaches), EDR detects the suspicious behavior. Root Lock constrains it differently: even a legitimate tool can only reach the files and network destinations its allowlist entry approves.
 
@@ -123,27 +133,39 @@ Both syslog streams (per-decision enforcement events and aggregated alerts) reac
 
 *Capsicum* (FreeBSD) operationalizes the same core thesis as Root Lock: ordinary programs should not have unrestricted default access to the global OS namespace. It is the most architecturally principled approach to that problem outside of Root Lock, and the comparison is worth being direct about.
 
-**How Capsicum works.** After `cap_enter()`, any syscall that traverses a global namespace (`open()` with an absolute path, `kill()` with a PID) returns `ECAPMODE` immediately. Default access paths through the OS are severed at the syscall boundary. Per-FD rights masks then control what operations each open file descriptor permits. The design enforces this directly: no path through the global namespace means no access.
+**How Capsicum works.** After `cap_enter()`, any syscall that traverses a global namespace (`open()` with an absolute path, `kill()` with a PID) returns `ECAPMODE` immediately. Default access paths through the OS are severed at the syscall boundary.
 
-**What structural elimination costs.** Every sandboxed application, or a wrapper around it, must be rewritten. The application calls `cap_enter()`, pre-opens every file descriptor it will ever need before that call, and uses `openat(fd, …)` relative to those FDs thereafter. Sandboxing OpenSSH under Capsicum required explicit modifications to `sandbox-capsicum.c`. Libcasper exists specifically to handle operations that cannot be pre-opened (DNS lookups, `/etc/passwd` reads) via a dedicated delegation channel.
+Per-FD rights masks then control what operations each open file descriptor permits. The design enforces this directly: no path through the global namespace means no access.
+
+**What structural elimination costs.** Every sandboxed application, or a wrapper around it, must be rewritten. The application calls `cap_enter()`, pre-opens every file descriptor it will ever need before that call, and uses `openat(fd, …)` relative to those FDs thereafter.
+
+Sandboxing OpenSSH under Capsicum required explicit modifications to `sandbox-capsicum.c`. Libcasper exists specifically to handle operations that cannot be pre-opened (DNS lookups, `/etc/passwd` reads) via a dedicated delegation channel.
 
 For software you write yourself, the model is clean. For a fleet of existing Linux binaries you did not write, it means modifying every program you want to protect, or not protecting it.
 
-**How Root Lock reaches the same goal without application changes.** VFS hook points in `namei.c`, `open.c`, `exec.c`, and `exit.c` intercept path traversal and check the calling process's allowlist entry against the path. Network hooks in `socket.c` check outbound routable connections (both `connect()` calls and `sendto()` calls with an explicit destination address) against the program's IP allowlist; local IPC over UNIX domain sockets and NETLINK is exempt by design.
+**How Root Lock reaches the same goal without application changes.** VFS hook points in `namei.c`, `open.c`, `exec.c`, and `exit.c` intercept path traversal and check the calling process's allowlist entry against the path.
+
+Network hooks in `socket.c` check outbound routable connections (both `connect()` calls and `sendto()` calls with an explicit destination address) against the program's IP allowlist. Local IPC over UNIX domain sockets and NETLINK is exempt by design.
 
 Default access paths are filtered rather than severed. Existing Linux binaries run without modification; Root Lock observes what they do and enforces the allowlist against it. Root Lock makes this choice (hook-at-VFS rather than cap_enter-before-first-access) precisely to enable application transparency: no binary needs to be rewritten to be protected.
 
-**The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow. For any environment running software it did not write, which is most production infrastructure, HS's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
+**The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow.
 
-**The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root. Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
+For any environment running software it did not write, which is most production infrastructure, Root Lock's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
 
-**Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. HS targets Linux 5.19.6 and 6.18 natively.
+**The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root.
+
+Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
+
+**Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. Root Lock targets Linux 5.19.6 and 6.18 natively.
 
 The two designs make opposite choices: modify the application, or maintain a policy database. For a Linux fleet running software you did not write, Root Lock's approach (maintain the database, get transparency and the full Setup → Lockdown lifecycle) is the one that covers the workload.
 
 ## Formally verified microkernels
 
-*seL4* is the benchmark for machine-checked security guarantees in an OS kernel. Its proofs establish that every syscall behaves exactly as specified, that no information can pass between components without an explicit connection, and that these properties hold in the compiled binary on select platforms. Root Lock and seL4 share the same goal (prevent programs from reaching resources they were not explicitly granted access to) and diverge on almost everything else.
+*seL4* is the benchmark for machine-checked security guarantees in an OS kernel. Its proofs establish that every syscall behaves exactly as specified, that no information can pass between components without an explicit connection, and that these properties hold in the compiled binary on select platforms.
+
+Root Lock and seL4 share the same goal — prevent programs from reaching resources they were not explicitly granted — and diverge on almost everything else.
 
 **How seL4 works.** seL4 is a microkernel of roughly 10,000 lines of C backed by machine-checked proofs. Every kernel object (memory region, communication channel, thread control block) is named and accessed through an unforgeable token. A process starts with exactly the tokens its creator delegates, nothing more.
 
@@ -161,7 +183,9 @@ Root Lock observes what each binary does during Setup Mode; you build the allowl
 
 Root Lock's Setup Mode is the practical answer for standard infrastructure: run the system, record every access in the Dashboard queues, review and approve, then engage Lockdown. For any environment running standard Linux software, Root Lock's Setup Mode provides the observe-and-build path that seL4 cannot offer.
 
-**The policy-integrity gap.** seL4 has no policy file. Authority is the token set. There is nothing to edit after the system is built. Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
+**The policy-integrity gap.** seL4 has no policy file. Authority is the token set. There is nothing to edit after the system is built.
+
+Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
 
 **Platform.** seL4 is not a Linux kernel; standard Linux software requires a full porting effort to run on it. Root Lock targets Linux 5.19.6 and 6.18 and is installed by replacing the kernel on an existing host.
 
@@ -169,9 +193,13 @@ The two approaches make opposite foundational choices: build the OS from a proof
 
 ## Object-capability operating systems
 
-*Fuchsia* (Google) is a production operating system built on Zircon, a microkernel where every resource is accessed through an unforgeable handle. Like seL4, its security model is structural: no handle means no access, at the kernel boundary, before any policy database is consulted. Fuchsia adds two architectural properties that seL4 does not emphasize: per-component private namespaces and cryptographic verification of every executable.
+*Fuchsia* (Google) is a production operating system built on Zircon, a microkernel where every resource is accessed through an unforgeable handle. Like seL4, its security model is structural: no handle means no access, at the kernel boundary, before any policy database is consulted.
 
-**Private namespaces.** In Fuchsia, each component receives an explicitly assembled filesystem view: its `/svc/`, `/data/`, and `/pkg/` entries are handle-routed by the Component Framework. There is no global root filesystem visible to all components. A compromised component cannot traverse upward to discover paths it was not given handles to; those paths do not exist in the component's view.
+Fuchsia adds two architectural properties that seL4 does not emphasize: per-component private namespaces and cryptographic verification of every executable.
+
+**Private namespaces.** In Fuchsia, each component receives an explicitly assembled filesystem view: its `/svc/`, `/data/`, and `/pkg/` entries are handle-routed by the Component Framework. There is no global root filesystem visible to all components.
+
+A compromised component cannot traverse upward to discover paths it was not given handles to; those paths do not exist in the component's view.
 
 Root Lock enforces on a global Linux filesystem. Root Lock controls whether a program can access a given path, but the path still exists and an access attempt returns an error rather than silence. Root Lock's global filesystem is what makes existing Linux software run unchanged. That is the same choice that allows deployment on any existing Linux server.
 
@@ -206,6 +234,20 @@ graph LR
     I --> L
     J --> L
     K --> M["Protection intact ✓"]
+
+    style A fill:#fdd,stroke:#c44
+    style B fill:#fdd,stroke:#c44
+    style C fill:#fdd,stroke:#c44
+    style D fill:#fdd,stroke:#c44
+    style E fill:#fdd,stroke:#c44
+    style G fill:#fdd,stroke:#c44
+    style H fill:#fdd,stroke:#c44
+    style I fill:#fdd,stroke:#c44
+    style J fill:#fdd,stroke:#c44
+    style L fill:#fdd,stroke:#c44
+    style F fill:#d4f4dd,stroke:#2a7a40
+    style K fill:#d4f4dd,stroke:#2a7a40
+    style M fill:#d4f4dd,stroke:#2a7a40
 ```
 
 The table below answers each question in full for the main enforcement mechanisms alongside Root Lock.
@@ -221,9 +263,13 @@ The table below answers each question in full for the main enforcement mechanism
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes: one container, one labelled domain, one process tree, one observed program. Root Lock narrows it to *every* program via a system-wide allowlist, root included.
 
-Every competitor above can be turned off by an attacker who already has remote root: kill the agent, unload the module, or set the policy permissive. Root Lock has nothing equivalent to turn off. Changing the sealed allowlist takes physical presence or the cloud serial console. See [Circumvention and recovery](#circumvention-and-recovery). Those two shifts are the substance of the Root Lock position.
+Every competitor above can be turned off by an attacker who already has remote root: kill the agent, unload the module, or set the policy permissive. Root Lock has nothing equivalent to turn off.
 
-The May 2026 TanStack npm attack illustrated the trust-boundary distinction from the supply chain direction. The attacker operated inside a legitimate build pipeline using valid credentials. SLSA provenance, OIDC, and 2FA all functioned as designed. No credential check or trust-chain verification registered anything to block.
+Changing the sealed allowlist takes physical presence or the cloud serial console. See [Circumvention and recovery](#circumvention-and-recovery).
+
+The May 2026 TanStack npm attack illustrated the trust-boundary distinction from the supply chain direction. The attacker operated inside a legitimate build pipeline using valid credentials.
+
+SLSA provenance, OIDC, and 2FA all functioned as designed. No credential check or trust-chain verification registered anything to block.
 
 Root Lock's per-program network allowlist bounds what pipeline processes can reach from the host regardless of credential validity; connections to unapproved destinations are refused at the kernel.
 
@@ -264,10 +310,10 @@ Agent-based scanners (Tenable Nessus Agent, Qualys Cloud Agent) run as allowlist
 
 ## Where a separate kernel is required
 
-Root Lock deliberately omits certain kernel features (overlay, user namespaces, BPF) because they are the attack surface, path to root, and bypass primitives the design removes. Workloads that need them run on the maintenance kernel or a separate system:
+Root Lock deliberately omits overlay filesystems, user namespaces, and the BPF syscall because they are the features attackers use to hide, shadow directories, and reach root. Those workloads are not a fit by design. Run them on a separate system, or use the shipped paths below:
 
 - **Kubernetes nodes with dynamic container scheduling after Lockdown.** Many instances of the same binary are supported, but new mounts for HPA scale-out or rescheduling are refused. Fixed pod sets before Lockdown work via the Container-host install; see [Deployment Scenarios](../deployment-scenarios/#container-hosts).
-- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead.
+- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
 - **Hypervisor hosts running VMs via KVM.** KVM host features are compiled out to reduce attacker reach. Root Lock runs as a guest, not a host.
 - **Systems that require rootless containers.** Unprivileged user namespaces are omitted; they are a path to privilege escalation without credentials. Use a separate host.
 
@@ -282,14 +328,14 @@ Every security system has a known way to be taken out of the picture. Being expl
 Root Lock's sealed allowlist is intended to change through these operator paths:
 
 1. **Maintenance window.** You switch to Setup Mode, make changes, and re-engage Lockdown. Logged and intentional.
-2. **Lockdown recovery.** When Lockdown is active, the allowlist is sealed. Remote root cannot edit it. Recovery requires booting the maintenance kernel, using the Dashboard's Maintenance (`[m]`) to remove the seal, and rebooting back. Booting the maintenance kernel requires **physical presence**: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without that console path cannot take this route.
+2. **Lockdown recovery.** When Lockdown is active, the allowlist is sealed. Remote root cannot edit it. Recovery requires booting the maintenance kernel, using the Dashboard's Maintenance (`[m]`) to remove the seal, and rebooting back. Booting the maintenance kernel requires **physical or serial-console access**: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without that console path cannot take this route.
 
 What this means for security:
 
 - Under Lockdown, an attacker who already has remote root cannot defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access.
-- Supported recovery requires physical presence: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the recovery path.
-- Physical presence always returns control to you. No software applied to the system can prevent console recovery.
-- **What can still go wrong (beyond physical access).** On a large kernel, whether every path is actually gated is still an engineering job. That includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
+- Supported recovery requires physical or serial-console access: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the recovery path.
+- Physical or serial-console access always returns control to you. No software applied to the host can prevent console recovery.
+- **What can still go wrong (beyond physical or serial-console access).** On a large kernel, whether every path is actually gated is still an engineering job. That includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
 - Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. This is a different question than whether an agent is still running.
 
 Compare this to the tools in the first table: in most of them, root can turn enforcement off. They kill the agent, unload the module, or set the policy permissive. Root Lock is deliberately not in that category.
@@ -300,8 +346,8 @@ To see the three enforcement mechanisms tested against real attacks, including w
 
 **The compliance answer.** SOC 2, PCI DSS, and ISO 27001 each include a privileged-access control question: can an administrator, or an attacker who has compromised one, remotely disable security controls?
 
-Under Lockdown, root cannot modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Changing the seal takes physical presence or the cloud serial console, to boot the maintenance kernel, as described above.
+Under Lockdown, root cannot modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Changing the seal takes physical or serial-console access, to boot the maintenance kernel, as described above.
 
-Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the change they describe to auditors. It is the same for every HeartSuite-protected server they manage in financial services, healthcare, and defence.
+Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the change they describe to auditors. It is the same for every Root Lock-protected server they manage in financial services, healthcare, and defence.
 
 Auditors who need kernel-config notes and whether every path is gated should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).

@@ -9,7 +9,11 @@ toc: true
 type: docs
 ---
 
-**Overview**: When something stops working on a locked-down system, the cause is usually one of three things: a missing allowlist entry, the system being in a different mode or on a different kernel than expected (Setup vs Lockdown, immutable seal active, or the maintenance kernel), or a kernel issue. The Dashboard tells you which one — the indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do. The kernel log (`journalctl -k` or dmesg) and operational logs (`/var/log/heartsuite/install.log`, `ui.log`, initial setup logs) can be viewed and downloaded directly from cloud provider web dashboards without SSH or interactive serial console (see Appendices > Log files for AWS CloudWatch/SSM steps, GCP Cloud Logging, Azure Log Analytics, etc.). Serial console remains the universal recovery path.
+**Overview**: When something stops working under Lockdown, the cause is usually a missing allowlist entry, a different mode or kernel than expected (Setup Mode vs Lockdown, immutable seal, or the maintenance kernel), or a kernel issue.
+
+Root Lock by HeartSuite shows which one on the Dashboard. The indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do.
+
+Kernel and operational logs (`journalctl -k` or dmesg; `/var/log/heartsuite/install.log`, `ui.log`, initial setup logs) can be viewed and downloaded from cloud provider web dashboards without SSH or an interactive serial console. See Appendices > Log files for AWS CloudWatch/SSM, GCP Cloud Logging, and Azure Log Analytics. Serial console remains the universal recovery path.
 
 ## Where to start
 
@@ -27,7 +31,7 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ## Log management
 
-Root Lock by HeartSuite captures all activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
+Root Lock logs activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 

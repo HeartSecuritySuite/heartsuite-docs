@@ -9,7 +9,7 @@ type: docs
 toc: true
 ---
 
-**Overview**: A HeartSuite update is delivered as a single self-extracting bundle (`heartsuite-install.sh`) that replaces the Root Lock by HeartSuite kernel and its userspace tools in one operation.
+**Overview**: A Root Lock by HeartSuite update is delivered as a single self-extracting bundle (`heartsuite-install.sh`) that replaces the kernel and its userspace tools in one operation.
 
 ## What an update changes
 
@@ -18,7 +18,7 @@ toc: true
 - The Dashboard files under `/opt/heartsuite/`
 - GRUB configuration, so the new kernel becomes the default boot target
 
-It does not modify user data, the existing allowlist entries, or backup files. Root Lock may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
+It does not modify user data, the existing allowlist entries, or backup files. Initial setup may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
 
 ## Why two reboots are required
 
@@ -59,4 +59,6 @@ Root Lock is not active while the maintenance kernel is running. Schedule update
 
 ## If the update fails
 
-If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.
+If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step.
+
+Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.

@@ -13,17 +13,20 @@ toc: true
 no_list: true
 ---
 
-Traditional endpoint security detects threats after they execute. HeartSuite takes the opposite approach: it prevents malware from executing in the first place—at the kernel level, where not even root can override the controls. Even if malware is downloaded to a HeartSuite server, the architecture prevents it from running its harmful commands. That stops zero-day attacks before any signature, rule, or heuristic could catch them.
+Traditional endpoint security detects threats after they execute. Root Lock by HeartSuite takes the opposite approach: it prevents malware from executing in the first place — at the kernel level, where not even root can override the controls.
 
-The five core features that make this possible—program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers—were designed together as a single coherent architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
+Even if malware is downloaded to a Root Lock server, the architecture prevents it from running its harmful commands. That stops zero-day attacks before any signature, rule, or heuristic could catch them.
 
-The architecture's foundations reach back to 2016, when Karen Heart first identified that security had become an incoherent patchwork of disconnected tools with no unified design. Years of academic research followed—seven peer-reviewed papers on database security, forensics, and cryptographic erasure—culminating in *Zero Day Secure*, the book that articulates the problem HeartSuite is built to solve.
+The five core features that make this possible — program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers — were designed together as a single architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
+
+The foundations reach back to 2016: security had become an incoherent patchwork of disconnected tools with no unified design. Years of academic research followed — seven peer-reviewed papers on database security, forensics, and cryptographic erasure — culminating in *Zero Day Secure*, the book that articulates the problem Root Lock is built to solve.
 
 ## Development timeline (2016–2026)
 
 ```mermaid
+%%{init: {'theme':'base', 'themeVariables': {'doneTaskBkgColor':'#d4f4dd','doneTaskBorderColor':'#2a7a40','sectionBkgColor':'#eee','sectionBkgColor2':'#eee','taskBkgColor':'#eee','taskBorderColor':'#888','gridColor':'#888'}}}%%
 gantt
-    title Root Lock by HeartSuite — Development Timeline
+    title Root Lock — Development Timeline
     dateFormat YYYY-MM-DD
     axisFormat %m/%Y
 
@@ -106,7 +109,7 @@ gantt
 
 > [!NOTE]
 > **Problem Identified — Fragmented Security Landscape** (2016)  
-> Karen Heart identified that security had become an incoherent patchwork of disconnected tools, each addressing a narrow concern with no unified design. This diagnosis—and the conviction that a single principled architecture could replace the patchwork—became the founding motivation behind HeartSuite. The idea was developed together with Alexander Rasin. No code yet: only the problem statement and the conviction that a coherent solution was possible.
+> Security had become an incoherent patchwork of disconnected tools, each addressing a narrow concern with no unified design. That diagnosis — and the conviction that a single principled architecture could replace the patchwork — became the founding motivation behind Root Lock. No code yet: only the problem statement and the conviction that a coherent solution was possible.
 
 > [!NOTE]
 > **Database Forensic Analysis with DBCarver** (January 4, 2017)  
@@ -170,11 +173,13 @@ gantt
 
 > [!NOTE]
 > **eBPF Intentionally Disabled** (2022)  
-> BPF system calls are disabled at build time. This is a deliberate security decision: BPF verifier vulnerabilities have historically bypassed the exact kernel hooks HeartSuite relies on for enforcement. Disabling eBPF closes that attack surface permanently. The operational trade-off is that standard eBPF-based forensics tools cannot run on the host running the Root Lock kernel. The supported architecture for eBPF-class observability is an adjacent monitoring host running a standard kernel, receiving Root Lock kernel logs via syslog. For full forensic depth, operators boot the maintenance kernel, perform analysis, and boot back—consistent with the physical-access trust model.
+> BPF system calls are disabled at build time. BPF verifier vulnerabilities have historically bypassed the exact kernel hooks Root Lock relies on for enforcement. Disabling eBPF closes that path permanently.
+>
+> Local eBPF tooling is not a fit by design: the BPF syscall is how attackers hide, reach root, and bypass host controls. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
 
 > [!NOTE]
 > **FUSE and OverlayFS Intentionally Disabled** (2022)  
-> Both filesystem types are disabled at build time because they are well-known sandbox bypass and path-confusion primitives that attackers use to shadow protected directories or escape controls. This is a deliberate design choice to remove the attack surface rather than layer policy on top of it. Container support is provided by building and running images off-host (or isolating untrusted workloads in per-task microVMs with Root Lock as the guest kernel), rather than enabling these primitives on the HS host.
+> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel.
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  
@@ -190,7 +195,7 @@ gantt
 
 > [!NOTE]
 > **kmod and kexec Attack Paths Closed by Default** (2022)  
-> Kernel module loaders are absent from the shipped allowlist seed, so they cannot execute under Lockdown by default. If a binary has no allowlist entry, it cannot run—no explicit policy needed. The boot partition is made recursively immutable under Lockdown. Revoking Lockdown requires physical or serial console access to select an alternate kernel; attackers cannot trigger it remotely.
+> Kernel module loaders are absent from the shipped allowlist seed, so they cannot execute under Lockdown by default. If a binary has no allowlist entry, it cannot run — no explicit policy needed. The boot partition is made recursively immutable under Lockdown. Revoking Lockdown requires physical or serial-console access to select an alternate kernel; attackers cannot trigger it remotely.
 
 ---
 

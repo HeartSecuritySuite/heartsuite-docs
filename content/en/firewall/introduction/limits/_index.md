@@ -11,7 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Root Lock Firewall enforces one thing: inbound and this-host path traffic that is not on the sealed allowlist is refused — including traffic aimed at services running as root. An attacker who uses a port you approved is constrained by that rule, not stopped at the application. This page states exactly where the boundary is, and what handles the rest.
+**Overview**: Root Lock Firewall enforces one thing: inbound and this-host path traffic that is not on the sealed allowlist is refused — including traffic aimed at services running as root.
+
+An attacker who uses a port you approved is constrained by that rule, not stopped at the application.
 
 ---
 
@@ -21,7 +23,9 @@ toc: true
 
 **What Root Lock Firewall enforces.** Packets to ports that are not on the allowlist still fail. Scanners probing closed ports still fail. A listener on a port that is not already in the sealed allowlist is not an approved path.
 
-**What Root Lock Firewall does not cover.** Content on an allowed port is outside a stateful packet filter. A listener that binds a port the image already left open (including baseline ports open to any source) is still that approved path. A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (what that process may execute, read, write, and call outbound) address the blast radius inside the approved service. This is a deliberate division of layers, not a gap.
+**What Root Lock Firewall does not cover.** Content on an allowed port is outside a stateful packet filter. A listener that binds a port the image already left open (including baseline ports open to any source) is still that approved path.
+
+A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (what that process may execute, read, write, and call outbound) address the blast radius inside the approved service. This is a deliberate division of layers, not a gap.
 
 ---
 
@@ -61,7 +65,9 @@ toc: true
 
 **What Root Lock Firewall enforces.** Under Firewall Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Change goes through Maintenance on the console.
 
-**What Root Lock Firewall does not cover.** Physical presence, a cloud serial console, or control of the hypervisor under a virtual appliance returns the box to whoever holds that path. Restrict console access in the hypervisor or cloud IAM. A later hardware appliance removes the hypervisor residual; it does not remove physical presence. See [Architecture and compatibility](../../architecture/#the-virtual-appliance-residual).
+**What Root Lock Firewall does not cover.** Physical presence, a cloud serial console, or control of the hypervisor under a virtual appliance returns the box to whoever holds that path. Restrict console access in the hypervisor or cloud IAM.
+
+A later hardware appliance removes the hypervisor residual; it does not remove physical presence. See [Architecture and compatibility](../../architecture/#the-virtual-appliance-residual).
 
 ---
 
@@ -71,7 +77,9 @@ toc: true
 
 **What Root Lock Firewall enforces.** The sealed set, including the wide rule and any baseline ports that were never a discovery product. Critical rules use IP addresses, not hostnames. DNS is not the enforcement mechanism.
 
-**What Root Lock Firewall does not cover.** Seal makes a chosen ruleset immutable. It does not prove the ruleset is minimal. Inventory advisories can flag breadth. They cannot unsay an approval. Re-enter Maintenance, reduce, and seal again.
+**What Root Lock Firewall does not cover.** Seal makes a chosen ruleset immutable. It does not prove the ruleset is minimal.
+
+Inventory advisories can flag breadth. They cannot unsay an approval. Re-enter Maintenance, reduce, and seal again.
 
 ---
 
