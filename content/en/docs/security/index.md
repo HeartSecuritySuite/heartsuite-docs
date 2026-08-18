@@ -504,7 +504,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **Why HeartSuite does not reduce this to 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in. The `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6. The public 6.18 pin does not compile `CONFIG_IO_URING` (`io_uring_setup` returns `ENOSYS`); those two CVEs are Not Affected on derived 6.18. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1387,7 +1387,7 @@ In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and
 
 **Why HeartSuite does not reduce this to 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6, which falls within the affected range. Derived 6.18 does not compile `CONFIG_IO_URING`; this CVE is Not Affected on that pin. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1482,7 +1482,7 @@ In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchr
 
 **Why HeartSuite does not reduce this to 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in and 5.19.6 falls within the affected range. Reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6, which falls within the affected range. Derived 6.18 does not compile `CONFIG_IO_URING`; this CVE is Not Affected on that pin. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -3067,6 +3067,336 @@ The trigger cannot be reached on any default Root Lock deployment.
 
 The trigger cannot be reached on any default Root Lock deployment.
 
+### CVE-2026-46300
+
+**Status**: Not exploitable
+**Component**: skbuff coalescing and ESP-in-TCP (`CONFIG_NET`, `CONFIG_INET_ESPINTCP`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org)
+**Score on HeartSuite**: 0.0 — ESP-in-TCP is not compiled; the TCP-coalesce-then-ESP write path does not exist
+**Affected range**: Linux 3.9 through 6.18.32 (and listed LTS windows). 5.19.6 and production 6.18.9-hs are in range.
+**Upstream fix**: 6.18.33 (6.18 stable); 5.19 branch is EOL
+
+This CVE describes a local privilege escalation (Fragnesia) in which `skb_try_coalesce()` attaches paged fragments from one socket buffer to another and drops the shared-fragment marker. ESP input then treats the coalesced buffer as privately owned, skips copy-on-write, and decrypts in place over page-cache-backed fragments. The published local-root path splices a privileged file into a TCP stream and switches that socket into ESP-in-TCP.
+
+`CONFIG_NET=y` is compiled on both fielded kernels, so `skb_try_coalesce()` is present. The write that turns the lost marker into a page-cache overwrite is ESP input after TCP receive coalescing. That composition is ESP-in-TCP (`CONFIG_INET_ESPINTCP` / `CONFIG_INET6_ESPINTCP`). Both options are not set on 5.19.6-HeartSuite-2.0 and on 6.18.9-hs. IPv4 ESP is also not compiled on 5.19.6. 6.18.9-hs builds IPv4/IPv6 ESP as modules and still leaves both ESP-in-TCP options unset. The running System.map on both kernels exports `skb_try_coalesce` and contains no `espintcp` symbol.
+
+A second independent stop matches CVE-2026-43284. Establishing any XFRM security association requires XFRM management tooling (`ip xfrm`, `setkey`, strongSwan, libreswan, or an equivalent IKE daemon). None of those programs are in the Root Lock default allowlist. Under Lockdown the allowlist is `chattr +i` immutable and `FS_IOC_SETFLAGS` returns `EPERM` for all callers.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If a custom kernel is built with `CONFIG_INET_ESPINTCP=y` or `CONFIG_INET6_ESPINTCP=y` and XFRM management tooling is added to the allowlist, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-45920
+
+**Status**: Not exploitable
+**Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — filesystem-shutdown injection (`EXT4_IOC_SHUTDOWN`) is not reachable from the allowlist
+**Affected range**: 2.6.29–5.10.252; 5.11–5.15.202; 5.16–6.1.166 (includes 5.19.6); 6.2–6.6.129; 6.7–6.12.74; 6.13–6.18.13 (includes 6.18.9); 6.19–6.19.3
+**Upstream fix**: 5.10.253, 5.15.203, 6.1.167, 6.6.130, 6.12.75, 6.18.14, 6.19.4 (5.19 branch is EOL; no backport)
+
+This CVE describes a double decrement of the ext4 dirty-clusters counter on the multi-block allocator error path. After the filesystem is placed in forced-shutdown state, `ext4_mb_mark_diskspace_used()` decrements `s_dirtyclusters_counter` and then `ext4_handle_dirty_metadata()` returns an error; the caller `ext4_mb_new_blocks()` decrements the same counter again in the failed-allocation cleanup path. The counter reaches −1 and `ext4_put_super()` emits a kernel WARNING. The documented reproduction is fstests generic/388 (allocator stress plus filesystem-shutdown injection).
+
+`CONFIG_EXT4_FS=y` on 5.19.6 and `CONFIG_EXT4_FS=m` on 6.18.9-hs; both kernels fall inside the NVD range. Ordinary reads and writes on the mounted ext4 volume do not take this error path. The path requires `EXT4_FLAGS_SHUTDOWN` first. On 5.19.6 that bit is set only by `ext4_shutdown()`, reached solely through `EXT4_IOC_SHUTDOWN`, which returns `-EPERM` unless the caller has `CAP_SYS_ADMIN`. The userspace programs that inject that ioctl (`xfs_io`) and that drive the concurrent allocator stress (`fsstress`) are not in the HeartSuite allowlist. The kernel refuses to execute any program without an allowlist record. Lockdown also returns `-EPERM` on `mount()`, `fsmount()`, and `move_mount()`, so a test image cannot be mounted to host the same sequence.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-46020
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs  
+**Component**: DAMON core — `damos_quota_goal->nid` for `node_mem_{used,free}_bp` (`CONFIG_DAMON`, `CONFIG_DAMON_SYSFS`)  
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)  
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and DAMON is not compiled; on 6.18.9-hs the DAMON sysfs trigger is not reachable from the allowlist  
+**Affected range**: Linux 6.16 through 6.18.26; 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.27  
+**Upstream fix**: `40250b2dded0604a112be605f3828700d80ad7c2` (mainline 7.1-rc1); stable 6.18.27, 7.0.4
+
+This CVE describes an out-of-bounds read in DAMON core. Users can set `damos_quota_goal->nid` to an arbitrary node id for the `node_mem_{used,free}_bp` quota-goal metrics. DAMON then calls `si_meminfo_node()` without validating that id. An invalid nid produces a kernel NULL-pointer dereference and an out-of-bounds read of node data. The kernel interface is DAMON_SYSFS. The documented trigger is the `damo` userspace tool.
+
+`# CONFIG_DAMON is not set` on 5.19.6-HeartSuite-2.0. The introducing commit is 6.16. 5.19.6 predates the feature. The 5.19.6 System.map has no `damos_get_node_mem_bp` symbol.
+
+On 6.18.9-hs, `CONFIG_DAMON=y` and `CONFIG_DAMON_SYSFS=y`. `damos_get_node_mem_bp` is present in the 6.18.9-hs System.map. That is not enough. Reaching the path requires writing DAMON sysfs quota-goal attributes under `/sys/kernel/mm/damon/`. `damo` is not in the shipped allowlist. Secure Mode refuses to execute it. The allowlisted writers that exist (`echo`, `tee`, `printf`, `bash`) receive write grants only for `/usr/lib` and `/etc` from the default record seed. Opening `/sys/kernel/mm/damon/` for write returns `EACCES`. Under Lockdown the allowlist is immutable: `FS_IOC_SETFLAGS` returns `EPERM`, so root cannot add `damo` or a DAMON sysfs write grant.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If your 6.18.9-hs deployment adds `damo` or grants write access to `/sys/kernel/mm/damon/` to an allowlisted program, treat this CVE as Affected at 7.1 HIGH and apply the I:N infoleak backstop.
+
+### CVE-2026-46121
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: DAMON sysfs schemes (`CONFIG_DAMON`, `CONFIG_DAMON_SYSFS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and does not compile DAMON; on 6.18.9-hs the memcg_path race is not reachable from the allowlist
+**Affected range**: 6.6.96–6.6.139; 6.12.36–6.12.87; 6.15.5–6.15.x; 6.16; 6.16.1 through 6.18.29; 6.19 through 7.0.6. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.30
+**Upstream fix**: 6.18.30; 6.12.88; 6.6.140; 7.0.7
+
+This CVE describes a use-after-free in `mm/damon/sysfs-schemes.c`. Direct reads of the DAMON sysfs `memcg_path` and `path` files race with writes that free the backing buffer. The commit path that copies those strings into DAMON is already under `damon_sysfs_lock`; the user-facing show/store path was not. Two open files on the same attribute can therefore read a buffer after it has been freed.
+
+On 5.19.6, `# CONFIG_DAMON is not set`. The 5.19.6 DAMON tree has `sysfs.c` and `dbgfs.c` only — no `sysfs-schemes.c` and no `memcg_path` attribute. The vulnerable code is not present.
+
+On 6.18.9-hs, `CONFIG_DAMON=y` and `CONFIG_DAMON_SYSFS=y`. `memcg_path_show`, `memcg_path_store`, and `damon_sysfs_scheme_filter_memcg_path_attr` are in the running `System.map`. That is not enough to reach the race. The `memcg_path` and `path` files exist only after userspace creates the scheme-filter hierarchy under `/sys/kernel/mm/damon/admin`. The kernel documents that directory as a privileged admin interface and names `damo` as the userspace tool. `damo` is not in the HeartSuite allowlist. Default allowlist records grant `/usr/lib` and `/etc` only; writes to `/sys/kernel/mm/damon/` are denied. `CONFIG_DAMON_RECLAIM` and `CONFIG_DAMON_LRU_SORT` run in-kernel and do not create those scheme-filter files. Under Lockdown, `FS_IOC_SETFLAGS` returns `-EPERM`, so root cannot add `damo` or that sysfs path.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If a 6.18.9-hs deployment adds `damo` or write access to `/sys/kernel/mm/damon/admin` to the allowlist, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-46279
+
+**Status:** Not exploitable — feature not compiled
+**Component:** mm/alloc_tag (CONFIG_MEM_ALLOC_PROFILING)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 0.0 — CONFIG_MEM_ALLOC_PROFILING is not compiled; alloc_tag/codetag is not in the kernel.
+
+The bug is an uninitialized alloc_tag/codetag on pages allocated before page_ext is ready during boot. That path is compiled only when CONFIG_MEM_ALLOC_PROFILING is enabled. The published warning requires CONFIG_MEM_ALLOC_PROFILING_DEBUG. HeartSuite 6.18.9-hs is in the NVD range (6.10 through 6.18.26) and has `# CONFIG_MEM_ALLOC_PROFILING is not set`. HeartSuite 5.19.6 is outside the NVD range (starts at 6.10) and the option is not present in that kernel.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-46281
+
+**Status**: Not Affected on 5.19.6; Affected on 6.18.9-hs — Secure Mode + Lockdown limit post-exploitation
+**Component**: vmalloc — virtually contiguous allocator (`CONFIG_MMU`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 on 5.19.6 (outside the affected range). 7.1–7.3 HIGH on 6.18.9-hs — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band
+**Affected range**: 6.18 through 6.18.26; also 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.27
+**Upstream fix**: `e9b057a44def` (mainline); stable 6.18.27+
+
+This CVE describes an out-of-bounds write in `vrealloc_node_align()`. When the helper forces a new allocation while shrinking the object, it allocates `size` bytes and copies `old_size` bytes into that buffer.
+
+`CONFIG_MMU=y` compiles `mm/vmalloc.c` on both fielded kernels. That is not enough for 5.19.6: the helper was added in 6.18. The 5.19.6 kernel has `kvrealloc` only. The 5.19.6 `vrealloc_node_align` path does not exist.
+
+On 6.18.9-hs the helper is in the running kernel. `vrealloc_node_align_noprof` is present and `kvrealloc_node_align_noprof` is exported. The overflow is a kernel memory-corruption bug in a core allocator. Secure Mode does not remove that code path from an already-running process.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+These constraints are why the Score on HeartSuite on 6.18.9-hs reflects a reduced MI (High→Low): root cannot modify the allowlist, cannot install persistent backdoors, and cannot survive a reboot. Confidentiality and Availability remain High. Residual risks are in-memory data exfiltration and availability impact. The Score on HeartSuite does not reach 0.0 on 6.18.9-hs because the helper is compiled in.
+
+### CVE-2026-52968
+
+**Status**: Not exploitable
+**Component**: KVM s390 PCI (`CONFIG_KVM_S390`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — `CONFIG_KVM_S390` not compiled; s390 PCI GAIT path absent from the x86_64 image
+**Affected range**: Linux 6.0–6.1.174, 6.2–6.6.140, 6.7–6.12.90, 6.13–6.18.32, 6.19–7.0.9, and 7.1-rc1–rc3
+**Upstream fix**: 6.1.175, 6.6.141, 6.12.91, 6.18.33, 7.0.10, 7.1-rc4
+
+In `arch/s390/kvm/pci.c` and `arch/s390/kvm/interrupt.c`, `kvm_s390_pci_aif_enable()`, `kvm_s390_pci_aif_disable()`, and `aen_host_forward()` index the GAIT by multiplying the AISB index by `sizeof(struct zpci_gaite)` on a pointer that is already typed as `struct zpci_gaite *`. The offset is double-scaled and the access lands at element `aisb*16` instead of `aisb`, which is out of bounds when `aisb >= 32` (`ZPCI_NR_DEVICES=512`).
+
+5.19.6 is outside the affected range (the code landed in 6.0) and `# CONFIG_KVM is not set`. 6.18.9-hs is inside 6.13–6.18.32 and builds x86 KVM (`CONFIG_KVM=m`, `CONFIG_KVM_X86=m`). Both kernels are `CONFIG_X86_64=y`. `CONFIG_S390` and `CONFIG_KVM_S390` do not appear in either production config. The 6.18.9-hs System.map contains none of `kvm_s390_pci_aif_enable`, `kvm_s390_pci_aif_disable`, `aen_host_forward`, or `zpci_gaite`. The compiled KVM module is Intel/AMD x86; it does not contain the s390 PCI GAIT indexer.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-52969
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: KVM dirty ring (`CONFIG_KVM`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile host KVM; on 6.18.9-hs the dirty-ring reset path is reached only by a KVM userspace program, and none is in the allowlist
+**Affected range**: 5.11–5.15.208; 5.16–6.1.174; 6.2–6.6.140; 6.7–6.12.90; 6.13–6.18.32; 6.19–7.0.9; 7.1-rc1–rc3. Both 5.19.6 and 6.18.9-hs are in range. Fixed in 6.18.33+ and 7.0.10+
+**Upstream fix**: `577a8d3bae05` (mainline); stable 6.18.33+
+
+This CVE describes a wrapped `u64` offset in `kvm_reset_dirty_gfn()`. The bounds check adds `offset` to `__fls(mask)` without first rejecting a wrap. A process that holds `/dev/kvm` and uses the dirty ring can rewrite slot and offset fields so the check passes. The wrapped offset then indexes a near-`U64_MAX` gfn and performs an out-of-bounds load.
+
+On 5.19.6, `CONFIG_KVM` is not set. Host KVM is not in the running kernel.
+
+On 6.18.9-hs, `CONFIG_KVM=m`. The trigger requires a loaded `kvm` module and a userspace program that opens `/dev/kvm`, enables the dirty ring, and issues `KVM_RESET_DIRTY_RINGS`. No KVM userspace program is in the HS allowlist. `modprobe` is not in the allowlist, so the `kvm` module cannot be loaded at runtime. Under Lockdown, the allowlist cannot be modified. The dirty-ring reset path is never reached.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If your deployment adds a KVM userspace program (qemu, libvirt, firecracker, or equivalent) to the HS allowlist and loads the `kvm` module, this CVE applies at its base score of 7.8 HIGH. Treat it as Affected and apply the standard backstop logic.
+
+### CVE-2026-53004
+
+**Status**: Not exploitable
+**Component**: SCTP (`CONFIG_IP_SCTP`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile SCTP; 6.18.9 builds SCTP as a module that cannot be loaded because `modprobe`/`insmod`/`kmod` are not on the allowlist
+**Affected range**: Linux through 7.0.9 (Ubuntu 5.15–7.0 and Debian bullseye 5.10 needed the fix)
+**Upstream fix**: 7.1-rc1 / 7.0.10
+
+`sctp_getsockopt_peer_auth_chunks()` checks `if (len < num_chunks)` and then writes `num_chunks` bytes to `p->gauth_chunks`, which sits eight bytes inside the caller's `optval`. The check omits the `sctp_authchunks` header. When the caller passes `len == num_chunks`, `copy_to_user()` writes eight bytes past the declared buffer. Those bytes land in the caller's own userspace; this is not kernel memory corruption.
+
+On 5.19.6, `# CONFIG_IP_SCTP is not set`. The function is absent from the vmlinux System.map. On 6.18.9-hs, `CONFIG_IP_SCTP=m`. Reaching the function requires the SCTP module to be loaded, an SCTP association with AUTH enabled, and `getsockopt(SCTP_PEER_AUTH_CHUNKS)`. The shipped allowlist has no `modprobe`, `insmod`, `kmod`, or SCTP tools. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added. The SCTP stack is not loaded.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-53264
+
+**Status**: Not exploitable  
+**Component**: net/sched action API (`CONFIG_NET_SCHED`, `CONFIG_NET_CLS_ACT`)  
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org)  
+**Score on HeartSuite**: 0.0 — no tc action can be instantiated; `tc` and module-loading tools are absent from the allowlist  
+**Affected range**: 4.14 through unfixed stables including 6.18 before 6.18.36; **5.19.6 and 6.18.9-hs are in range**  
+**Upstream fix**: stable 6.18.36+ (5.19 branch is EOL; no backport)
+
+This CVE describes a use-after-free in the traffic-control action lifecycle. Concurrent NEWTFILTER and DELFILTER netlink operations race on a `tc_action`: the delete path frees the object immediately while a lookup still holds the pointer, so the increment of the action refcount touches freed memory.
+
+`CONFIG_NET_SCHED=y` and `CONFIG_NET_CLS_ACT=y` are compiled in on both fielded kernels. The race requires an instantiated tc action attached to a filter.
+
+On 5.19.6 every `CONFIG_NET_ACT_*` option is not set. No action kind is registered in the running image, so a NEWTFILTER that names an action cannot create one.
+
+On 6.18.9-hs every `CONFIG_NET_ACT_*` option is a module and those kinds are not in vmlinux. Loading them requires `kmod`/`modprobe`/`insmod`, which are not on the allowlist. The `tc` program that issues NEWTFILTER and DELFILTER is also not on the allowlist. Under Lockdown the allowlist cannot be extended.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If your deployment adds `tc` to the allowlist (and on 6.18.9-hs also allowlists loading of `act_*` modules), treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-53359
+
+**Status**: Not exploitable
+**Component**: KVM x86 shadow MMU (`CONFIG_KVM`)
+**Base Score**: 8.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H) — CNA (kernel.org); NVD assessment pending
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile `CONFIG_KVM`; 6.18.9 compiles `CONFIG_KVM=m` but no QEMU or libvirt program is in the allowlist
+**Affected range**: Linux 2.6.36 through 6.1.176; 6.2 through 6.6.143; 6.7 through 6.12.94; 6.13 through 6.18.37; 6.19 through 7.1.2
+**Upstream fix**: 6.1.177, 6.6.144, 6.12.95, 6.18.38, 7.1.3, 7.2
+
+This CVE is a use-after-free in the KVM x86 shadow MMU. The host reuses a cached shadow page when the guest frame number matches even though the page role does not. A later reverse-map walk then dereferences a freed shadow page.
+
+On 5.19.6, `# CONFIG_KVM is not set`. Host KVM is not compiled. `CONFIG_KVM_GUEST=y` only enables paravirtual guest support; it does not compile the host shadow MMU.
+
+On 6.18.9, `CONFIG_KVM=m` with `CONFIG_KVM_INTEL=m` and `CONFIG_KVM_AMD=m`. Reaching the bug requires a running KVM guest: a userspace hypervisor (QEMU, libvirt, or equivalent) must create a VM and drive the shadow MMU. No such program is in the HeartSuite allowlist. The kernel refuses to execute it. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-63794
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: KVM AMD SVM — SEV debug crypt (`CONFIG_KVM`, `CONFIG_KVM_AMD`, `CONFIG_KVM_AMD_SEV`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile host KVM; on 6.18.9-hs the SEV debug-encrypt ioctl is not reachable from the allowlist
+**Affected range**: Linux 4.16 through 6.18.37 (plus the other listed stable windows). 5.19.6 is in the 5.16–<6.1.177 window but host KVM is not compiled. Production 6.18.9-hs remains in range until base ≥ 6.18.38
+**Upstream fix**: 6.18.38, 6.12.95, 6.6.144, 6.1.177, 5.15.211, 5.10.260
+
+This CVE describes a page overflow in `sev_dbg_crypt()` on the ENCRYPT path in `arch/x86/kvm/svm/sev.c`. The per-iteration copy length is clipped to the source page remainder (`PAGE_SIZE - s_off`) but not the destination page remainder (`PAGE_SIZE - d_off`). When `d_off > s_off`, `__sev_dbg_encrypt_user` issues a PSP command and a memcpy into a single-page bounce buffer that overflows. The entry is `kvm_vm_ioctl` → `sev_mem_enc_ioctl` → `sev_dbg_crypt` (KVM SEV debug encrypt).
+
+On 5.19.6, `# CONFIG_KVM is not set`. `CONFIG_KVM_GUEST=y` is guest-side paravirt only. There is no `CONFIG_KVM_AMD` / `CONFIG_KVM_AMD_SEV`, and `sev_dbg_crypt` is not in the 5.19.6 image.
+
+On 6.18.9-hs, `CONFIG_KVM=m`, `CONFIG_KVM_AMD=m`, and `CONFIG_KVM_AMD_SEV=y`. Reaching the overflow requires a loaded `kvm_amd` module, an SEV guest, and the SEV debug-encrypt ioctl. No qemu, libvirt, virsh, or KVM/SEV userspace appears in the HS allowlist, and `modprobe` / `insmod` / `kmod` are likewise absent, so the module is not loadable from userspace. The kernel refuses to run a dropped program with no allowlist entry. After gaining root through any other avenue, Lockdown still blocks allowlist modification, so those tools cannot be added for the life of the boot.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If a 6.18.9-hs deployment adds qemu-system, libvirt, or any other program that issues KVM SEV debug-encrypt ioctls to the allowlist, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-63804
+
+**Status**: Not exploitable
+**Component**: GFS2 clustered filesystem (`CONFIG_GFS2_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — GFS2 cluster tools are not on the allowlist; the unmount path never runs
+**Affected range**: Linux 6.6 through 6.6.143, 6.7 through 6.12.94, 6.13 through 6.18.37, and 6.19 through 7.1.2. HeartSuite 5.19.6 is outside this range. HeartSuite 6.18.9 is inside it.
+**Upstream fix**: `rcu_barrier()` before `free_sbd()` in `gfs2_put_super()`; stable backports through 6.18.38
+
+During GFS2 unmount, `gfs2_qd_dealloc()` runs as an RCU callback and touches the superblock after that superblock is already freed. The bug is a use-after-free in the quota-object teardown path.
+
+HeartSuite 5.19.6 does not compile GFS2 (`CONFIG_GFS2_FS` is not set) and sits below the NVD floor of 6.6.
+
+HeartSuite 6.18.9 compiles GFS2 as a module (`CONFIG_GFS2_FS=m`, `CONFIG_GFS2_FS_LOCKING_DLM=y`, `CONFIG_DLM=m`). The trigger is unmount of an already-mounted GFS2 volume. That state requires the GFS2 and DLM modules plus the cluster userspace (`mount.gfs2` and the DLM/corosync stack). Those programs are not on the HeartSuite allowlist, so they cannot execute. No Root Lock deployment mounts GFS2 as a live filesystem.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64121
+
+**Status**: Not exploitable
+**Component**: IFB intermediate functional block (`CONFIG_IFB`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H) — NVD
+**Score on HeartSuite**: 0.0 — `CONFIG_IFB` is not compiled on 5.19.6; on 6.18.9-hs the trigger requires `ip`, `ethtool`, and `modprobe`, none of which are in the HS allowlist
+**Affected range**: 5.17 through 6.1.174; 6.2 through 6.6.141; 6.7 through 6.12.91; 6.13 through 6.18.33; 6.19 through 7.0.10; plus 7.1-rc1–rc4. Both production kernels (5.19.6 and 6.18.9-hs) sit in range.
+**Upstream fix**: ethtool stats walk `dev->num_tx_queues`; stable 6.18.34+
+
+This CVE describes a slab out-of-bounds read in the IFB ethtool stats path. `ifb_dev_init()` allocates `dp->tx_private` with `dev->num_tx_queues` entries. `ifb_get_ethtool_stats()` instead walks `dev->real_num_rx_queues`. On an IFB device created with more RX queues than TX queues, the walk indexes past the allocation and copies adjacent slab data out through `ETHTOOL_GSTATS`. Integrity impact is none. The bug does not grant root.
+
+On 5.19.6, `CONFIG_IFB` is not compiled. The Kconfig depends on `NET_ACT_MIRRED || NFT_FWD_NETDEV`. Both parents are unset (`# CONFIG_NET_ACT_MIRRED is not set`, `# CONFIG_NF_TABLES is not set`), so the `CONFIG_IFB` symbol is not offered. The 5.19.6 System.map has no `ifb_get_ethtool_stats` symbol. The callbacks in `drivers/net/ifb.c` are not in the running image.
+
+On 6.18.9-hs, `CONFIG_IFB=m`. The module is built, not builtin. Reaching the bug requires loading `ifb`, creating an asymmetric IFB device, and querying ethtool stats. `ip`, `ethtool`, and `modprobe` are absent from the HS allowlist. Under Lockdown the allowlist cannot be changed: `FS_IOC_SETFLAGS` returns `-EPERM`, and `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`. Root cannot add those programs.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If a 6.18.9-hs deployment adds `ip`, `ethtool`, and a way to load `ifb` to the allowlist, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
+
+### CVE-2026-64600
+
+**Status**: Affected — Secure Mode + Lockdown limit post-exploitation
+**Component**: XFS reflink / copy-on-write (`CONFIG_XFS_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High
+**Affected ranges**: NVD: 4.11 through 5.15.211; 5.16 through 6.1.177; 6.2 through 6.6.144; 6.7 through 6.12.95; 6.13 through 6.18.38; 6.19 through 7.1.3. HeartSuite 5.19.6 is in range with XFS not compiled. HeartSuite 6.18.9-hs is in range with `CONFIG_XFS_FS=m`.
+**Upstream fix**: 5.15.212, 6.1.178, 6.6.145, 6.12.96, 6.18.39, 7.1.4
+
+The bug is a race in the XFS reflink copy-on-write path. After `xfs_reflink_fill_cow_hole` and `xfs_reflink_fill_delalloc` drop and re-take ILOCK to start a transaction, they refresh the CoW fork mapping and leave the data-fork mapping stale. A concurrent aligned `O_DIRECT` writer can finish a CoW cycle in that window. The first writer then operates on the wrong physical block, including a block that now solely backs the reflink source. That is a local privilege-escalation primitive.
+
+On 5.19.6 HeartSuite, `# CONFIG_XFS_FS is not set`. The helpers are not compiled. That kernel is Not Affected.
+
+On 6.18.9-hs, `CONFIG_XFS_FS=m` and `CONFIG_MODULES=y`. The unfixed fill helpers are in the 6.18.9 XFS tree. The installer unpacks the full module tarball into `/lib/modules` and, on Amazon Linux, forces `xfs` into the initrd. Amazon Linux 2023, Rocky 9, and RHEL 9 use XFS as the root filesystem. `cp`, `dd`, and `python3` are allowlisted. Creating a new XFS image requires `mkfs.xfs`, which is not in the allowlist, and Lockdown returns `-EPERM` from `mount()`, `fsmount()`, and `move_mount()`. That closes a late mount of an attacker-supplied XFS volume. It does not close the path when XFS is already mounted: aligned `O_DIRECT` writes and reflink clones are ordinary file I/O.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-64239
+
+Status: Not exploitable — feature not compiled
+Component: mm/damon/sysfs-schemes (CONFIG_DAMON_SYSFS=y on 6.18.9-hs; # CONFIG_DAMON is not set on 5.19.6; # CONFIG_DEBUG_KOBJECT is not set and # CONFIG_DEBUG_OBJECTS is not set on both)
+Base Score: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+Score on HeartSuite: 0.0 — the use-after-free is produced only when kobject release is delayed; that delay is CONFIG_DEBUG_KOBJECT_RELEASE, which HeartSuite does not compile.
+
+Writing update_schemes_tried_regions to /sys/kernel/mm/damon/admin/kdamonds/<N>/state (mode 0600) clears DAMOS tried-region directories with damon_sysfs_scheme_regions_rm_dirs(), which puts each region kobject and leaves list_del to the release callback. If that callback is delayed, damos_sysfs_populate_region_dir() walks a list that still holds objects about to be freed.
+
+On 5.19.6 DAMON is not compiled and the kernel predates the NVD window (affected from 6.2). On 6.18.9-hs the sysfs scheme code is present, but CONFIG_DEBUG_OBJECTS and CONFIG_DEBUG_KOBJECT are not set, so CONFIG_DEBUG_KOBJECT_RELEASE is not built.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64283
+
+**Status:** Not exploitable — tool not in APO
+**Component:** KVM guest_memfd (`CONFIG_KVM=m`, `CONFIG_KVM_GUEST_MEMFD=y` on 6.18.9-hs; `CONFIG_KVM` is not set on 5.19.6)
+**Base Score:** 7.0 HIGH (CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 0.0
+
+The bug is a signed overflow in guest_memfd memslot binding. KVM stored the binding offset and size as signed values. A large offset plus a legal size wraps to a negative sum, so the check against the guest_memfd file size accepts an offset that is outside the file.
+
+guest_memfd exists from Linux 6.8. HeartSuite 5.19.6 predates the feature and does not compile host KVM. HeartSuite 6.18.9-hs compiles the feature into kvm.ko. Reaching the path requires a program that opens /dev/kvm, creates a VM, creates a guest_memfd, and binds a memslot with a wrapping offset. QEMU and other KVM front-ends are not on the allowlist. Lockdown refuses FS_IOC_SETFLAGS, so the allowlist cannot be extended to add them.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64531
+
+**Status**: 5.19.6 Not Affected; 6.18.9-hs Not exploitable — tool not in APO
+**Component**: Open vSwitch datapath (`CONFIG_OPENVSWITCH`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and does not compile Open vSwitch; 6.18.9-hs compiles the datapath as a module, and HeartSuite APO does not include the programs that load that module
+
+Open vSwitch stores generated flow actions as Netlink attributes with a 16-bit length field. After the old 32 KiB action-stream cap was removed, a nested CLONE or conntrack action can be generated larger than 65,535 bytes. The stored length wraps, and a later dump or teardown walks attacker-controlled bytes as independent actions. On a kernel that has the datapath loaded and lets an unprivileged user hold `CAP_NET_ADMIN` in a network namespace, that is a local path to root.
+
+5.19.6 predates the unbounded nested-action path and is built with `CONFIG_OPENVSWITCH` not set.
+
+6.18.9-hs is in the NVD range (6.14 through 6.18.39) and builds `CONFIG_OPENVSWITCH=m` with conntrack and unprivileged user namespaces enabled. Reaching the bug still requires the `openvswitch` module to be loaded. HeartSuite APO does not include `modprobe`, `insmod`, `ovs-vswitchd`, or `ovs-vsctl`. Module autoload also runs `modprobe` and is refused. The datapath is not loaded on a standard Root Lock deployment, and it cannot be loaded after the allowlist is in force.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64564
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: SCTP ASCONF DEL-IP (`CONFIG_IP_SCTP`)
+**Base Score**: 9.8 CRITICAL (AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org); NVD assessment pending
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile SCTP; 6.18.9-hs ships sctp.ko as an unloaded module and no allowlisted program creates an SCTP endpoint
+**Affected range**: Linux 2.6.25 through 6.18.41 (6.18 stable fixed in 6.18.42). Both HeartSuite production kernels sit in that window until the config and load gates apply.
+**Upstream fix**: 9b2854f86f0b (mainline); stable 6.18.42+
+
+This CVE describes a use-after-free in `sctp_process_asconf()`. A single ASCONF chunk can delete the transport the chunk is being processed against and then reuse that freed pointer as the association's primary and active path.
+
+On 5.19.6, `# CONFIG_IP_SCTP is not set`. The SCTP protocol is absent from the running kernel. `sctp_process_asconf` is not in System.map and is not among the shipped modules.
+
+On 6.18.9-hs, `CONFIG_IP_SCTP=m`. The drop ships `sctp.ko` (and `sctp_diag.ko`). The protocol is not built in. The installer extracts modules and runs depmod; it does not load SCTP. Startup does not load SCTP. No SCTP client or server is in the allowlist, and `modprobe`/`kmod`/`insmod` are not in the allowlist, so the module is not loaded. An inbound ASCONF never reaches `sctp_process_asconf` because the protocol is not registered.
+
+The network hook at connect() and sendto() does not apply to inbound ASCONF processing. That does not change the result: the SCTP stack is not up.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If a 6.18.9-hs deployment loads `sctp.ko` and runs an allowlisted SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
+
+## Not accepted (needs re-review)
+- CVE-2026-46094
+
 ## Not Affected — Disabled Features {#not-affected-disabled-features}
 
 Root Lock is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
@@ -3262,7 +3592,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 The BPF syscall interface is the kernel entry point through which user-space programs load and run BPF programs in kernel context. CVE-2021-20194 describes a heap overflow in the BPF verifier reachable by a local user who submits a crafted BPF program, gaining elevated privilege.
 
-`CONFIG_BPF_SYSCALL` is not compiled into the Root Lock kernel. The `bpf()` syscall is not available — any call to it returns `ENOSYS`. There is no verifier, no BPF program store, and no reachable code path for this CVE.
+`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the public derived 6.18 pin (`bpf()` returns `ENOSYS`). The raw 6.18.9-hs seed still has `CONFIG_BPF_SYSCALL=y`; that seed is not the public claim. There is no verifier, no BPF program store, and no reachable code path for this CVE on either released pin.
 
 ### Netfilter nftables
 
