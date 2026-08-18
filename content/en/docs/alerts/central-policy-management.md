@@ -226,7 +226,7 @@ See [Alert Settings](.) for configuration of syslog and webhook (Fleet tab) and 
 
 The Dashboard remains the right surface for one-off investigation, initial setup on a new host, and guided maintenance windows. At fleet scale, routine policy application and observation move to your central tooling.
 
-Lockdown itself is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for "new allowlist file pushed while Lockdown is active" fire on all configured channels, giving your central systems immediate visibility into any out-of-band modification.
+Lockdown is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for "new allowlist file pushed while Lockdown is active" fire on all configured channels.
 
 ## Next steps and related documentation
 
