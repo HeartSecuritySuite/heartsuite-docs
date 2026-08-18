@@ -15,7 +15,7 @@ menu:
 **Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into allowlisting.
 
 > [!NOTE]
-> Cloud users skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Logs from that build-time process are in `/var/log/heartsuite/` and accessible via the provider's serial console.
+> Cloud users skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Installer and initial setup logs from the image build are in `/var/log/heartsuite/` and accessible via the provider's serial console.
 
 ## What happens after the first boot
 
@@ -30,7 +30,7 @@ Root Lock reads the startup and shutdown logs, adds the programs it finds to the
   The system reboots automatically. Reconnect in a few minutes.
   ```
 
-- **On the serial console** (virsh console, AWS EC2 Serial Console or Get system log, Linode LISH, Azure Serial Console, GCP serial, Hetzner console, etc.): attach and press Enter — the console autologs in as root and shows the current step or banner. No action needed. To inspect logs: `cat /var/log/heartsuite/install.log` (bundle phase) or `cat /var/log/heartsuite/initial-setup-latest.log`.
+- **On the serial console** (virsh console, AWS EC2 Serial Console or Get system log, Linode LISH, Azure Serial Console, GCP serial, Hetzner console, etc.): attach and press Enter — the console autologs in as root and shows the current step or banner. No action needed. To inspect logs: `cat /var/log/heartsuite/install.log` (installer) or `cat /var/log/heartsuite/initial-setup-latest.log`.
 
 The first time you connect and the Dashboard appears, initial setup is complete. The Dashboard shows the reboot history.
 
@@ -44,7 +44,7 @@ If repeated reconnects still show the status line rather than the Dashboard:
 
    ```bash
    journalctl -t heartsuite
-   cat /var/log/heartsuite/install.log          # bundle installer phase
+   cat /var/log/heartsuite/install.log          # installer log
    cat /var/log/heartsuite/initial-setup-latest.log   # or ls /var/log/heartsuite/ for step logs
    ```
 
@@ -57,6 +57,8 @@ If repeated reconnects still show the status line rather than the Dashboard:
    Expected output ends in `HeartSuite`.
 3. If the wrong kernel booted, reboot and select the Root Lock kernel from the GRUB menu manually (requires serial console access on cloud).
 
+If the issue persists, contact HeartSuite support at [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include `/var/log/heartsuite/install.log` and `/var/log/heartsuite/initial-setup-latest.log` — we're happy to help.
+
 ## If setup stops with an error
 
 If something goes wrong during setup, the next login (SSH or serial console) shows an error with the reason and log location.
@@ -68,5 +70,7 @@ Two options are available:
 
 > [!WARNING]
 > Setup must complete before you activate Lockdown. If the initial allowlist is incomplete, the system may hang on boot or shutdown after activating Lockdown.
+
+If retry does not clear the error, contact HeartSuite support at [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include the log path shown on the error screen — we're happy to help.
 
 When the Dashboard appears and initial setup is complete, continue to [Verifying Installation](../../verification/).

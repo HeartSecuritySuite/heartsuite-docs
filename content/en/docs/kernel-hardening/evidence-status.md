@@ -71,7 +71,7 @@ The [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.
 
 - Use [Distro Compatibility Matrix](distro-compatibility-matrix/) and [Kernel Support Policy](kernel-support-policy/) for support boundaries, version strings, and patch targets.
 - Use [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) for vulnerability-management workflows — do not infer HS reachability from upstream `6.18.9` alone.
-- For hardening scores comparable to the 5.19.6 publication, request **pre-release evidence** through your HeartSuite support channel. Reference HeartSuite v1.6.4 / tag `hs-v1.6.4-kernel-6.18.9` and the expected version string `6.18.9-HeartSuite-1.0`.
+- For hardening scores comparable to the 5.19.6 publication, request **pre-release evidence** from [support@heartsecsuite.com](mailto:support@heartsecsuite.com). Reference HeartSuite v1.6.4 / tag `hs-v1.6.4-kernel-6.18.9` and the expected version string `6.18.9-HeartSuite-1.0`.
 
 **Evaluating a 5.19.6 legacy fleet**
 

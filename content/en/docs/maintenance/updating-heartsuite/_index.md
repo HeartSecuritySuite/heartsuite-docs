@@ -61,4 +61,4 @@ Root Lock is not active while the maintenance kernel is running. Schedule update
 
 If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step.
 
-Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.
+Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support at [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.

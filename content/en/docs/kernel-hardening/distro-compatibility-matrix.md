@@ -57,7 +57,7 @@ A **cross-distro release gate** runs after every kernel update. The April 2026 v
 | **Alpine Linux** | 3.21 | **Validated** | 5.19, 6.18 | extlinux (GRUB where present) | April 2026 gate. OpenRC service units ship alongside systemd variants. Installer falls back to **console instructions** when extlinux automation cannot set the default entry. |
 | **Alpine Linux** | Other 3.x | **Supported** | 5.19, 6.18 | extlinux | Same OpenRC and extlinux behaviour as 3.21; staging validation recommended. |
 | **openSUSE** | Tumbleweed | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. **Development and CI only** — rolling release; not a procurement baseline for regulated production. |
-| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 5.19, 6.18 | GRUB | Enterprise SUSE images vary by subscription and SP level. Contact support before committing a SLES gold image. |
+| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 5.19, 6.18 | GRUB | Enterprise SUSE images vary by subscription and SP level. Contact support@heartsecsuite.com before committing a SLES gold image. |
 | **Other Linux** | — | **Not supported** | — | — | Contact support@heartsecsuite.com for roadmap or HJFS alternatives. |
 | **Non-x86** | ARM, RISC-V, etc. | **Not supported** | — | — | x86_64 only. |
 
