@@ -346,7 +346,7 @@ gantt
 > [!WARNING]
 > **Container Support**  
 > Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the Root Lock kernel) is not part of the strict design — it would require OverlayFS and user namespaces, the privilege-escalation primitives the Root Lock kernel intentionally omits on the strict baseline. The supported path is OCI images built and run off-host.  
->  
+>
 > **MicroVM evaluation (host-as-VMM only):** Root Lock as the **guest** kernel inside a per-task VM/microVM (Kata, Firecracker, or plain KVM) is shipped — see [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes) and [Containers & microVMs](../introduction/containers-and-microvms/). **Host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests.
 
 > [!WARNING]

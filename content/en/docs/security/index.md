@@ -53,11 +53,9 @@ The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a
 
 CVEs are rated by severity (e.g., HIGH means a score of 7+). A "0.0" score here means HeartSuite fully neutralizes the vulnerability—it's not reachable. A "non-zero" score means the flaw can still be exploited in HS, but its impact is limited, often to temporary effects that a reboot clears. This helps you see real risks clearly.
 
-
 ### Which kernel these scores apply to
 
 Scores are written for two fielded lines: **5.19.6-HeartSuite** and **6.18** after the pre-release derivation. The public 6.18 pin turns off `CONFIG_IO_URING`, `CONFIG_KEXEC`, and `CONFIG_BPF_SYSCALL` (the raw 6.18.9-hs seed still has those `=y`; that seed is not the public claim). Other 6.18.9-hs module flags (`CONFIG_KVM`, `CONFIG_IP_SCTP`, `CONFIG_XFS_FS`, `CONFIG_NF_TABLES`) stay as in the current drop until they are derived separately. Where the two kernels differ, the entry states both.
-
 
 ## What malware can and cannot do on this system
 

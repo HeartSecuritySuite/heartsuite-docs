@@ -47,6 +47,7 @@ If repeated reconnects still show the status line rather than the Dashboard:
    cat /var/log/heartsuite/install.log          # bundle installer phase
    cat /var/log/heartsuite/initial-setup-latest.log   # or ls /var/log/heartsuite/ for step logs
    ```
+
 2. Verify the Root Lock kernel is loaded:
 
    ```bash
