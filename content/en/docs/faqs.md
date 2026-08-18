@@ -13,13 +13,13 @@ type: docs
 
 {{< details summary="How is Root Lock by HeartSuite different from other anti-malware solutions?" >}}
 
-A: Every attack does three things: run a program, access files, make a network connection. Root Lock controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, Root Lock requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Lockdown, anything not approved is blocked. Enforcement is compiled into the kernel itself — there is no agent to kill and no module to unload. Under Lockdown, by design, remote root has no intended path to disable enforcement or rewrite the sealed allowlist the way agents, LSM frameworks, or eBPF tools can be killed, unloaded, or set permissive. Seal and control integrity are kernel-enforced product contracts. Recovery remains the maintenance kernel with physical presence or cloud serial console — see [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
+A: Every attack does three things: run a program, access files, make a network connection. Root Lock controls all three per program, not per user. Unlike anti-malware tools that look for signatures or suspicious behavior, Root Lock requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Lockdown, anything not approved is blocked. There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Changing it takes physical presence or the cloud serial console. SSH is not enough. See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 
 {{< /details >}}
 
 {{< details summary="Who is Root Lock for?" >}}
 
-A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a host running the Root Lock kernel is not a fit by design. The overlay filesystem and user namespaces are the privilege-escalation primitives the Root Lock kernel deliberately omits — they are the attack surface, path to root, and vulnerability the design removes.
+A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a host running the Root Lock kernel is not a fit by design. The Root Lock kernel omits overlay filesystems and user namespaces. Those are how attackers escalate to root. That is why they are gone.
 
 It is also not a fit for hosts that run eBPF-based tools like Falco, Cilium, or Tetragon; the BPF syscall is omitted for the same reason. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
@@ -33,7 +33,7 @@ A: Yes. Each host runs the Root Lock kernel with the same allowlist installed lo
 
 {{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: Root Lock replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. Root Lock has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how Root Lock can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only). For a detailed SELinux comparison, see "How does Root Lock compare to SELinux specifically?" below.
+A: Root Lock replaces these tools on the preventive-enforcement dimension. An attacker who already has root kills the Falco agent, unloads the BPF program, or sets SELinux permissive. Root Lock has nothing to turn off. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table, including how Root Lock itself is recovered (physical presence: keyboard and monitor, serial port, or cloud serial console). For a detailed SELinux comparison, see "How does Root Lock compare to SELinux specifically?" below.
 
 {{< /details >}}
 
@@ -43,7 +43,7 @@ A: SELinux is a strong MAC framework — it confines processes using labels, enf
 
 The limitation is the trust boundary. Root with the right capability can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly. If the system is compromised before SELinux policy is fully hardened, the attacker has the same access as any root process and can dismantle the policy from there.
 
-Root Lock's distinction is where enforcement is anchored. Under Lockdown, the allowlist is sealed at the filesystem level (`chattr +i`) and the Root Lock kernel refuses to lift that seal at runtime — by any process, including root. There is no remote path to disable enforcement; modifying the allowlist requires booting the maintenance kernel, which requires physical presence — a keyboard and monitor, serial port, or your cloud provider's serial console.
+Root Lock's distinction is where enforcement is anchored. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Changing the allowlist takes booting the maintenance kernel from a keyboard and monitor, a serial port, or your cloud provider's serial console. SSH is not enough.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side.
 
@@ -80,7 +80,7 @@ A: Many security tools — including Falco, Cilium Tetragon, and CrowdStrike Fal
 
 {{< details summary="How is Root Lock itself protected from attacks? How do I know that Root Lock won't be targeted or compromised?" >}}
 
-A: Lockdown makes all allowlist entries and configuration files immutable at the filesystem level, then disables the ability to change immutability flags at the kernel level. This means not even root can modify, delete, or add allowlist entries while Lockdown is active — the kernel itself prevents it. To make changes, the Dashboard's Maintenance (`[m]`) guides you through a 3-step process that includes booting the maintenance kernel to remove the immutable flags. The Dashboard confirms Lockdown status after every reboot.
+A: Lockdown makes all allowlist entries and configuration files immutable at the filesystem level, then disables the ability to change immutability flags at the kernel level. Under Lockdown, root cannot add, delete, or change allowlist entries. The kernel refuses the write. To make changes, the Dashboard's Maintenance (`[m]`) guides you through a 3-step process that includes booting the maintenance kernel to remove the immutable flags. The Dashboard confirms Lockdown status after every reboot.
 
 {{< /details >}}
 
@@ -216,7 +216,7 @@ A: After the Dashboard shows all review phases complete. Take your time in Setup
 
 {{< details summary="What is Lockdown, and when to use it?" >}}
 
-A: Lockdown makes all allowlist entries and configuration files immutable (`chattr +i`), then disables the ability to change immutability flags at the kernel level. No user or program — including root — can modify, delete, or add allowlist entries while Lockdown is active. Use it in production after confirming all programs work correctly in Lockdown.
+A: Lockdown makes all allowlist entries and configuration files immutable (`chattr +i`), then disables the ability to change immutability flags at the kernel level. Under Lockdown, root cannot add, delete, or change allowlist entries. Use it in production after confirming all programs work correctly in Lockdown.
 
 {{< /details >}}
 

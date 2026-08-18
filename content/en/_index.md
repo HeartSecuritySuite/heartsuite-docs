@@ -1,7 +1,7 @@
 ---
 title: "HeartSuite product documentation"
 linkTitle: "Home"
-description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network — even as root."
+description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network. Root cannot override it."
 ---
 
 *Root Lock by HeartSuite | Humans in Command*
