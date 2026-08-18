@@ -17,14 +17,14 @@ menu:
 
 Standard operating systems grant these rights to users. Ken Thompson built Unix that way in 1969 on an unused PDP-7 at Bell Labs, designed for a small group of trusted researchers, not for networked infrastructure or a world with malware. Every operating system since inherited the decision unchanged. Until now.
 
-{{< cardpane >}}
-{{< card header="**What it replaces**" >}}
+{{< choice-pane >}}
+{{< choice-card header="What it replaces" >}}
 Runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker who already has remote root.
-{{< /card >}}
-{{< card header="**What it does not**" >}}
+{{< /choice-card >}}
+{{< choice-card header="What it does not" >}}
 Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer different questions and should be run alongside.
-{{< /card >}}
-{{< /cardpane >}}
+{{< /choice-card >}}
+{{< /choice-pane >}}
 
 ## Kernel architecture
 

@@ -62,7 +62,7 @@ When installing new software, you must return to Setup Mode. For example, the De
 ```mermaid
 graph TD
     A["Dashboard: Phase Progress complete"] --> B["Review queues empty — ready for Lockdown"];
-    B --> C["Dashboard Lockdown button (`[l]`) — prep with per-panel actions/opt-outs (e.g. [u] undo grants, [p] patch, [g] restrict tools, [x] exclude) before YES"];
+    B --> C["Dashboard Lockdown button (`[l]`) — review, then type YES"];
     C --> D["[r] Reboot — Lockdown active on next boot"];
     D --> E["Lockdown active"];
     E --> G{Maintenance needed?};
@@ -88,19 +88,19 @@ When preconditions are satisfied, the Dashboard presents the activation option.
 
 ### Activating Lockdown
 
-From the Dashboard, select the Lockdown button (`[l]`). The Dashboard shows a precondition checklist, an observation period summary, and a review of your allowlist. Before the final confirmation, the prep shown during Lockdown activation (on the Lockdown screen) offers per-panel actions and opt-outs:
+From the Dashboard, select the Lockdown button (`[l]`). The Dashboard shows a precondition checklist, an observation period summary, and a review of your allowlist. Before you type `YES`, you can still change specific grants:
 
-- `[u]` undo auto-narrowed install write grants (also surfaces for kmod directory and broad write grants by priority)
-- `[p]` patch HeartSuite install paths into the Lockdown seal configuration
-- `[g]` restrict `rm`/`cp`/`mv` to their observed directories (captures usage from Setup; mitigates GTFOBins-style abuse of maintenance tools)
+- `[u]` undo auto-narrowed install write grants, including kmod and other broad write grants
+- `[p]` add HeartSuite install paths to the Lockdown seal
+- `[g]` restrict `rm`, `cp`, and `mv` to the directories they used during Setup
 - `[x]` exclude specific write-conflict paths from the seal
 - plus SSH hardening (`[h]`, `[r]`/`[j]`) and inbound permit selection (`[o]`/`[a]`)
 
-The commitment summaries and the separate Lockdown Inventory view (`[l]`) are read-only. Adjustments happen via the prep actions on the activation screen, not via the inventory. When all preconditions are met, type `YES` (case-sensitive) to confirm activation.
+The commitment summaries and the Lockdown Inventory view (`[l]`) are read-only. Change grants on the activation view, not on the inventory. When all preconditions are met, type `YES` (case-sensitive) to confirm.
 
 ![Lockdown with all preconditions met](test_docs_mode_switch_all_clear.svg)
 
-(The diagram shows the checklist and review state; the actual activation flow uses the prep actions listed above rather than interactive views on the inventory. The inventory and commitment panels are read-only.)
+(The screenshot shows the checklist and review. Grant changes use the keys listed above. The inventory is read-only.)
 
 After confirming, the Dashboard offers one reboot option:
 
