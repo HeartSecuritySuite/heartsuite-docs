@@ -124,4 +124,44 @@ if [[ -n "$excess" ]]; then
   found=1
 fi
 
+# R30: mermaid diagrams must carry the Kernel architecture palette.
+# Flowchart/graph: per-node `style … fill:#…`. Gantt: same hex via themeVariables.
+mermaid_palette=$(python3 - <<'PY'
+import re
+import sys
+from pathlib import Path
+
+fence = re.compile(r"```mermaid\s*\n(.*?)```", re.S)
+fail = False
+for path in sorted(Path("content").rglob("*.md")):
+    text = path.read_text(encoding="utf-8")
+    for i, block in enumerate(fence.findall(text), 1):
+        kind = next(
+            (
+                ln.strip()
+                for ln in block.splitlines()
+                if ln.strip() and not ln.strip().startswith("%%")
+            ),
+            "",
+        )
+        if kind.startswith("gantt"):
+            if "themeVariables" not in block:
+                print(f"{path}: mermaid #{i} (gantt) missing themeVariables palette")
+                fail = True
+        elif kind.startswith(("graph", "flowchart")):
+            if "fill:#" not in block:
+                print(f"{path}: mermaid #{i} ({kind.split()[0]}) missing style fill palette")
+                fail = True
+        elif "fill:#" not in block and "themeVariables" not in block:
+            print(f"{path}: mermaid #{i} ({kind.split()[0] if kind else 'unknown'}) missing palette")
+            fail = True
+sys.exit(1 if fail else 0)
+PY
+)
+if [[ $? -ne 0 ]]; then
+  echo "STYLE: mermaid missing Kernel architecture palette (R30 — style fill:#fdd/#eee/#d4f4dd or gantt themeVariables)"
+  echo "$mermaid_palette"
+  found=1
+fi
+
 exit $found
