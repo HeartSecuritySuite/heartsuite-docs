@@ -3132,7 +3132,7 @@ This CVE describes an out-of-bounds read in DAMON core. Users can set `damos_quo
 
 `# CONFIG_DAMON is not set` on 5.19.6-HeartSuite-2.0. The introducing commit is 6.16. 5.19.6 predates the feature. The 5.19.6 System.map has no `damos_get_node_mem_bp` symbol.
 
-On 6.18.9-hs, `CONFIG_DAMON=y` and `CONFIG_DAMON_SYSFS=y`. `damos_get_node_mem_bp` is present in the 6.18.9-hs System.map. That is not enough. Reaching the path requires writing DAMON sysfs quota-goal attributes under `/sys/kernel/mm/damon/`. `damo` is not in the shipped allowlist. Secure Mode refuses to execute it. The allowlisted writers that exist (`echo`, `tee`, `printf`, `bash`) receive write grants only for `/usr/lib` and `/etc` from the default record seed. Opening `/sys/kernel/mm/damon/` for write returns `EACCES`. Under Lockdown the allowlist is immutable: `FS_IOC_SETFLAGS` returns `EPERM`, so root cannot add `damo` or a DAMON sysfs write grant.
+On 6.18.9-hs, `CONFIG_DAMON=y` and `CONFIG_DAMON_SYSFS=y`. `damos_get_node_mem_bp` is present in the 6.18.9-hs System.map. That is not enough. Reaching the path requires writing DAMON sysfs quota-goal attributes under `/sys/kernel/mm/damon/`. `damo` is not in the shipped allowlist. Lockdown refuses to execute it. The allowlisted writers that exist (`echo`, `tee`, `printf`, `bash`) receive write grants only for `/usr/lib` and `/etc` from the default record seed. Opening `/sys/kernel/mm/damon/` for write returns `EACCES`. Under Lockdown the allowlist is immutable: `FS_IOC_SETFLAGS` returns `EPERM`, so root cannot add `damo` or a DAMON sysfs write grant.
 
 The trigger cannot be reached on any default Root Lock deployment.
 
@@ -3170,7 +3170,7 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-46281
 
-**Status**: Not Affected on 5.19.6; Affected on 6.18.9-hs — Secure Mode + Lockdown limit post-exploitation
+**Status**: Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation
 **Component**: vmalloc — virtually contiguous allocator (`CONFIG_MMU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 0.0 on 5.19.6 (outside the affected range). 7.1–7.3 HIGH on 6.18.9-hs — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band
@@ -3181,9 +3181,9 @@ This CVE describes an out-of-bounds write in `vrealloc_node_align()`. When the h
 
 `CONFIG_MMU=y` compiles `mm/vmalloc.c` on both fielded kernels. That is not enough for 5.19.6: the helper was added in 6.18. The 5.19.6 kernel has `kvrealloc` only. The 5.19.6 `vrealloc_node_align` path does not exist.
 
-On 6.18.9-hs the helper is in the running kernel. `vrealloc_node_align_noprof` is present and `kvrealloc_node_align_noprof` is exported. The overflow is a kernel memory-corruption bug in a core allocator. Secure Mode does not remove that code path from an already-running process.
+On 6.18.9-hs the helper is in the running kernel. `vrealloc_node_align_noprof` is present and `kvrealloc_node_align_noprof` is exported. The overflow is a kernel memory-corruption bug in a core allocator. Lockdown does not remove that code path from an already-running process.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3333,7 +3333,7 @@ If a 6.18.9-hs deployment adds `ip`, `ethtool`, and a way to load `ifb` to the a
 
 ### CVE-2026-64600
 
-**Status**: Affected — Secure Mode + Lockdown limit post-exploitation
+**Status**: Affected — Lockdown limits post-exploitation
 **Component**: XFS reflink / copy-on-write (`CONFIG_XFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on HeartSuite**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High
@@ -3346,7 +3346,7 @@ On 5.19.6 HeartSuite, `# CONFIG_XFS_FS is not set`. The helpers are not compiled
 
 On 6.18.9-hs, `CONFIG_XFS_FS=m` and `CONFIG_MODULES=y`. The unfixed fill helpers are in the 6.18.9 XFS tree. The installer unpacks the full module tarball into `/lib/modules` and, on Amazon Linux, forces `xfs` into the initrd. Amazon Linux 2023, Rocky 9, and RHEL 9 use XFS as the root filesystem. `cp`, `dd`, and `python3` are allowlisted. Creating a new XFS image requires `mkfs.xfs`, which is not in the allowlist, and Lockdown returns `-EPERM` from `mount()`, `fsmount()`, and `move_mount()`. That closes a late mount of an attacker-supplied XFS volume. It does not close the path when XFS is already mounted: aligned `O_DIRECT` writes and reflink clones are ordinary file I/O.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
