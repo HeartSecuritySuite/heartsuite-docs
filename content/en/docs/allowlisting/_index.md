@@ -1,7 +1,8 @@
 ---
-title: "Allowlisting Programs"
+title: "Approve what each program may do"
+linkTitle: "Allowlisting Programs"
 weight: 40
-description: "Adding programs to the allowlist for secure execution."
+description: "Linux lets any program run, read any file, and connect anywhere. Root Lock requires an allowlist entry for all three — per program, not per user."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 toc: true
@@ -14,7 +15,7 @@ menu:
 
 **Overview**: By default, any program on a Linux server can execute, access any file, and connect to any destination. Root Lock by HeartSuite controls all three per program — not per user, per program. Two different programs running under the same user get separate allowlist entries with separate permissions. The Dashboard guides you through each approval phase and tracks your progress.
 
-Allowlisting spans three phases of the Root Lock by HeartSuite setup process:
+Allowlisting spans three phases of the Root Lock setup process:
 
 - **Phase 2 — Program Allowlisting** (`[p]`): Approve which programs are permitted to execute.
 - **Phase 4 — File Access Allowlisting** (`[f]`): Approve which files and directories each program can read or write.

@@ -1,7 +1,8 @@
 ---
-title: "Alert Settings"
+title: "Alerts when Lockdown blocks something"
+linkTitle: "Alert Settings"
 weight: 70
-description: "Configuring push alert channels for blocks and state changes in Lockdown."
+description: "In Lockdown a blocked program fails silently unless you set alerts. Email, syslog, and webhook for denied execution, files, and network."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "alerts", "email", "syslog", "webhook", "security", "notifications"]
 toc: true
@@ -52,7 +53,7 @@ Once configured, the tab shows current settings with the password displayed as `
 
 Configure syslog and webhook delivery for fleet and SIEM integrations. All channels are independent — enable any combination.
 
-**Syslog** — A toggle (Enabled/Disabled). When enabled, Root Lock by HeartSuite writes all alerts to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the Root Lock by HeartSuite node. After enabling, the Alert Settings provides an rsyslog forwarding rule example for your SIEM.
+**Syslog** — A toggle (Enabled/Disabled). When enabled, Root Lock writes all alerts to the system log via `/dev/log`, using the `heartsuite-alert` ident, `LOG_AUTH` facility, and `LOG_WARNING` severity. No additional configuration is needed on the Root Lock node. After enabling, the Alert Settings provides an rsyslog forwarding rule example for your SIEM.
 
 Verify syslog delivery with:
 
@@ -65,7 +66,7 @@ To forward to a SIEM, configure an rsyslog output rule in `/etc/rsyslog.d/hearts
 - [Splunk — Get data from TCP and UDP ports](https://docs.splunk.com/Documentation/Splunk/latest/Data/Monitornetworkports)
 - [Elastic — Filebeat syslog input](https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-syslog.html)
 
-**Webhook** — Enter an HTTPS URL. Root Lock by HeartSuite POSTs a JSON payload to this URL on every alert. HTTP (non-TLS) URLs are rejected. Example payload:
+**Webhook** — Enter an HTTPS URL. Root Lock POSTs a JSON payload to this URL on every alert. HTTP (non-TLS) URLs are rejected. Example payload:
 
 ```json
 {
@@ -92,7 +93,7 @@ To receive this payload, create an integration in your incident management tool 
 
 For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the "scale path for larger teams" guidance, see the dedicated [SIEM and Fleet Integration](siem-integration/) page. That page also covers using policy and posture data for tables of the current allowlist, risk signals, and posture views in Kibana/Elastic.
 
-For using your existing central tooling (Ansible, Terraform, GitOps, ServiceNow, custom scripts) to own and apply allowlist policy at scale — with pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). HeartSuite is designed to be driven by your control planes; the Dashboard is the single-host operator surface.
+For using your existing central tooling (Ansible, Terraform, GitOps, ServiceNow, custom scripts) to own and apply allowlist policy at scale — with pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). Root Lock is designed to be driven by your control planes; the Dashboard is the single-host operator surface.
 
 When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
 
@@ -137,7 +138,7 @@ Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 se
 - At window close, one email is dispatched covering all accumulated blocks
 - Blocks of different types accumulate independently — a network burst does not delay a file modification alert
 
-**Digest mode:** If more than 3 block alerts are dispatched within a single hour, Root Lock by HeartSuite switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — Lockdown activations and state changes are always delivered immediately.
+**Digest mode:** If more than 3 block alerts are dispatched within a single hour, Root Lock switches to digest mode for the remainder of that hour. All further blocks are queued and delivered as one digest email at the hour's end. Administrative state changes are never held — Lockdown activations and state changes are always delivered immediately.
 
 The 5-minute window and hourly cap are fixed, not user-configurable.
 

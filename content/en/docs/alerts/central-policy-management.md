@@ -2,14 +2,14 @@
 title: "Central Policy Management and External Control"
 linkTitle: "Central Policy"
 weight: 2
-description: "Drive allowlist policy from your existing enterprise control planes (Ansible, Terraform, ServiceNow, and custom automation) and consume rich export data for central visibility and auditing at fleet scale. The recommended path for teams that own policy in their own tooling."
+description: "Keep policy in Ansible, Terraform, ServiceNow, or custom automation. Export and apply Root Lock allowlists at fleet scale — not one TUI per host."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "policy", "fleet", "ansible", "terraform", "servicenow", "automation", "central", "alerts", "siem", "security"]
 toc: true
 type: docs
 ---
 
-**Overview**: HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the operator experience for a single host; enterprises use their control planes to manage policy and observe at scale.
+**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the operator experience for a single host; enterprises use their control planes to manage policy and observe at scale.
 
 There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with rich export surfaces for central consumption and attribution. This model lets you keep ownership of policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration).
 
@@ -28,8 +28,8 @@ A central system (CMDB, Git repository as source of truth, ITSM workflow, or cus
 
 | | Install-time baseline pre-seed | Post-install text program list |
 |---|--------------------------------|--------------------------------|
-| **Purpose** | Seed **first**, then install: Phase 1 starts from a known dense baseline | Additive program approvals for extras after HeartSuite is up |
-| **When** | **Before/at** install (package or image includes baseline) | After HeartSuite is installed; **not** while Phase 1 is still pending |
+| **Purpose** | Seed **first**, then install: Phase 1 starts from a known dense baseline | Additive program approvals for extras after Root Lock is up |
+| **When** | **Before/at** install (package or image includes baseline) | After Root Lock is installed; **not** while Phase 1 is still pending |
 | **Shape** | Vendor packaging / installer options such as `--apo-seed` (baseline APO material) | Plain text: one absolute **program** path per line (`#` comments OK) |
 | **Apply with** | Seeded installer / image; Ansible by **running that installer** | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
 
@@ -62,7 +62,7 @@ Use the CLI tools shipped with every installation (documented in the [Appendices
 - `hs-manage-allowlist` — inspect current state, add or remove specific entries for programs, file paths, and network destinations.
 - `batch_record_add.py` — bulk-seed programs from a plain-text list of paths (adds each with standard library and configuration directories).
 
-Run these tools over SSH, via config-management agents, or as part of provisioning scripts **after** HeartSuite is installed and Phase 1 is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
+Run these tools over SSH, via config-management agents, or as part of provisioning scripts **after** Root Lock is installed and Phase 1 is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
 
 Subscription activation (`hs-activate-subscription`) is still required on each host before Lockdown can be engaged — this is the entitlement step and remains local.
 
@@ -76,13 +76,13 @@ HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lo
 
 **Overview**: The role provides variable-driven, idempotent management of allowlist programs and mode transitions. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns to HeartSuite.
 
-The role is intentionally narrow in scope: it assumes HeartSuite is already installed on the target and focuses on allowlist management plus mode transitions (Secure Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
+The role is intentionally narrow in scope: it assumes Root Lock is already installed on the target and focuses on allowlist management plus mode transitions (Secure Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
 
-A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full HeartSuite deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: install HeartSuite (the example does not replace Phase 1 with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload (e.g. SFTP transfers), harvest observed **extras** from Setup Mode on the live machine after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
+A reference provisioning example for a realistic Debian 12 server (kernel 6, delegated hardening via dev-sec, SFTP receiver for backups, full Root Lock deployment, and integration with backup/alert surfaces) is available in the code repository under `ansible/examples/hs-debian12-provision/`. It demonstrates a practical pattern: install Root Lock (the example does not replace Phase 1 with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload (e.g. SFTP transfers), harvest observed **extras** from Setup Mode on the live machine after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
 
 **Requirements**:
 
-- HeartSuite already installed on managed hosts (the role does not install the product).
+- Root Lock already installed on managed hosts (the role does not install the product).
 - Prefer Phase 1 finished before applying workload `hs_seeds` / stack playbooks that assume a learned baseline.
 - `become: true` — all operations are privileged.
 - Ansible >= 2.9.
