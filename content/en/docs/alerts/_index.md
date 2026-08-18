@@ -9,7 +9,9 @@ toc: true
 type: docs
 ---
 
-**Overview**: In Lockdown, the kernel blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently. Alerts notify you of these blocks and of state changes the moment they happen. On a stable system with a complete allowlist, alerts are rare — most weeks you receive none at all. An alert means something genuinely unexpected happened.
+**Overview**: In Lockdown, Root Lock by HeartSuite blocks any execution, file access, or network connection not on the allowlist — whether or not anyone is connected to the Dashboard. Without alerts, a blocked program fails silently.
+
+Alerts notify you of these blocks and of state changes the moment they happen. On a stable host with a complete allowlist, alerts are rare — most weeks you receive none at all. An alert means something unexpected happened.
 
 ## For fleet and enterprise scale
 
@@ -22,9 +24,9 @@ Single-host setup is on this page (Dashboard → Alert Settings). For production
 
 ## When alerts fire
 
-Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a secondary log stream and not a replacement for the Dashboard.
+Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a replacement for the Dashboard.
 
-Alerts are suppressed entirely in Setup Mode. Setup Mode is a high-volume observation phase — logging everything without blocking. Alerting during this phase would produce constant noise before the allowlist is complete. Alerts become active only when Lockdown is active.
+Alerts are suppressed entirely in Setup Mode. Setup Mode logs everything without blocking; alerting then would be constant noise. Alerts become active only when Lockdown is active.
 
 ## Configuring alerts
 
@@ -93,7 +95,7 @@ To receive this payload, create an integration in your incident management tool 
 
 For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the "scale path for larger teams" guidance, see the dedicated [SIEM and Fleet Integration](siem-integration/) page. That page also covers using policy and posture data for tables of the current allowlist, risk signals, and posture views in Kibana/Elastic.
 
-For using your existing central tooling (Ansible, Terraform, GitOps, ServiceNow, custom scripts) to own and apply allowlist policy at scale — with pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). Root Lock is designed to be driven by your control planes; the Dashboard is the single-host operator surface.
+To own and apply allowlist policy from Ansible, Terraform, GitOps, ServiceNow, or custom scripts — including pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). The Dashboard is the single-host operator surface.
 
 When at least one push channel is configured, the Dashboard unlocks Lockdown.
 
