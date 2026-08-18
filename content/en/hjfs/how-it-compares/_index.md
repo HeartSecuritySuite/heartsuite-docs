@@ -1,5 +1,5 @@
 ---
-title: "How HJFS Compares"
+title: "HJFS vs permissions, containers, and Root Lock"
 linkTitle: "How It Compares"
 weight: 35
 description: "What HJFS is, what it is not, what it complements, and when to run it alone versus beside Root Lock by HeartSuite."

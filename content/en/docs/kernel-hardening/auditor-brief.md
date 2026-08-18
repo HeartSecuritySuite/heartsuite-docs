@@ -68,7 +68,7 @@ SELinux initializes at boot but does not enforce. Root Lock is the sole enforcin
 *Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown. This is an operator-procedure-dependent mitigation, not a config-enforced one.
 
 **4. Can root unseal the allowlist or turn enforcement off?**  
-Root cannot lift the allowlist seal or turn enforcement off. There is no agent to kill, no module to unload, and no LSM to set permissive. Seal and control integrity are kernel-enforced product contracts. The leftover risk is whether some other kernel path can still write the seal or a HeartSuite control. Check sibling attributes and extra syscalls on the pin you deploy. Do not treat the architecture diagram as the gate list.
+Root cannot lift the allowlist seal or turn enforcement off. There is no agent to kill, no module to unload, and no LSM to set permissive. Seal and control integrity are kernel-enforced product contracts. What can still go wrong is whether some other kernel path can still write the seal or a HeartSuite control. Check sibling attributes and extra syscalls on the pin you deploy. Do not treat the architecture diagram as the gate list.
 
 *Auditor action:* verify live gates on the **deployed ship pin** with the operator's regression suite or release checklist when available — do not assume completeness from architecture diagrams alone.
 
@@ -82,6 +82,11 @@ Supported recovery of a sealed allowlist requires booting the maintenance (Non-H
 
 **7. Confused deputy among allowlisted programs**  
 Enforcement is per program identity. A process that is correctly allowlisted for a powerful role (package manager, backup helper, orchestration agent) can still be abused within its grants if an attacker controls its inputs or configuration. Residual risk is lateral or deputy misuse inside approved scope, not absence of a kernel gate.
+
+**8. Portable open flags and size mutation under a read grant**  
+POSIX leaves combining `O_TRUNC` with a read-only open **undefined**; truncation is guaranteed only with write open modes. Many Linux systems still truncate on `O_RDONLY|O_TRUNC` when DAC write allows; man-page NOTES document this fielded behaviour. By default Root Lock does **not** redefine that UAPI corner: residual risk includes size mutation via that open combination under a **read** file grant when **write** is not granted on the leaf. This is a scoped residual class under allowlist enforcement — not “enforcement is off,” not a Linux CVE to file, and not a claim that root can always wipe everything. Optional future product policy could elevate write-class checks or refuse the combination; that would be an explicit compatibility-owning choice, not the default live-with contract. See [Portable open flags and product policy](portable-open-flags-and-product-policy/).
+
+*Auditor action:* document residual risk acceptance for this corner; sample sensitive leaves that hold read grants only; do not treat kernel.org bug filing as the primary control response.
 
 ---
 

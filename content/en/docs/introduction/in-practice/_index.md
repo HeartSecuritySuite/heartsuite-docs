@@ -39,7 +39,7 @@ The traditional defense — run Apache as `www-data` with limited permissions �
 
 The question is not whether the system user can read `/etc/passwd`. The question is whether this specific program — Apache — is approved to read it. It is not.
 
-The same mechanism applies to binary replacement. If an attacker with root tries to overwrite `/usr/bin/whoami` with a malicious script, the write is blocked — because the program issuing the write does not have `/usr/bin/whoami` in its file write allowlist. Root privilege does not override this check.
+The same mechanism applies to binary replacement. If an attacker who already has root tries to overwrite `/usr/bin/whoami` with a malicious script, the write is blocked — because the program issuing the write does not have `/usr/bin/whoami` in its file write allowlist. Root privilege does not override this check.
 
 **What it does not cover.** If the attacker targets only files the compromised program is already approved to read, this gate does not apply. The other gates still do: writes outside the approved paths are still blocked, every outbound connection is still gated by the network allowlist, and any new program the attacker tries to run is blocked at the program gate. See [When Attackers Stay Within Approved Boundaries](#when-attackers-stay-within-approved-boundaries) for the full picture.
 

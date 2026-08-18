@@ -12,11 +12,7 @@ toc: true
 
 **Overview**: HeartSuite Exec is the filesystem UI for programs, next to HeartSuite Joint File System (HJFS). Root Lock by HeartSuite is the kernel product. HeartSuite Exec is not Root Lock, and it is not a kernel slice.
 
-| Control | Layer | How it works |
-|---------|-------|--------------|
-| Program execution | Kernel | Only programs on the allowlist may run. Any binary without an entry is blocked before it starts. |
-| Outbound network connections | Kernel | Only approved IP destinations are permitted. All other connection attempts are blocked at the kernel. |
-| File access | — | Not provided. Use HJFS for file isolation, version rollback, and automatic backup. |
+## What the product is
 
 HJFS isolates each program's files on a stock kernel. It operates entirely within the filesystem layer. Executables live in a separate area. The official tools for that area today are `HJFS_update_program` (install a new program version) and `HJFS_version_manager` (list, check, and set the active version).
 

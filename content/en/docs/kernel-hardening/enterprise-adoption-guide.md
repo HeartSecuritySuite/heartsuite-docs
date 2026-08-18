@@ -1,8 +1,8 @@
 ---
-title: "Enterprise Adoption Guide: The Root Lock by HeartSuite Kernel in Regulated Environments"
+title: "A custom kernel in a regulated fleet"
 linkTitle: "Enterprise Adoption Guide"
 weight: 6
-description: "Practical guidance for CISOs, procurement teams, and security architects evaluating the custom-built kernel used by Root Lock by HeartSuite — why it exists, how vendor risk is owned, deployment and fleet operations, Secure Boot status, compatibility, supply chain, recovery paths, evidence for auditors, and honest limitations including alternatives for strict no-custom-kernel policies."
+description: "Why the custom kernel exists, who owns vendor risk, Secure Boot status, recovery, and when a no-custom-kernel policy should say no."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "enterprise", "procurement", "ciso", "adoption", "secure-boot", "compliance", "fleet", "supply-chain"]
 type: docs
@@ -19,7 +19,7 @@ toc: true
 
 ## Why a custom kernel
 
-Root Lock uses a custom-built Linux kernel (based on mainline LTS releases such as 5.19.6 and 6.18) so that enforcement cannot be bypassed by an attacker who has already reached root.
+Root Lock uses a custom-built Linux kernel (based on mainline LTS releases such as 5.19.6 and 6.18) so that enforcement cannot be bypassed by an attacker who already has remote root.
 
 The design removes at build time the kernel features most commonly used as bypass vectors for security controls:
 

@@ -27,7 +27,7 @@ Root Lock supports Debian/Ubuntu-derived and Alpine distributions on x86, plus R
 
 ## Kernel
 
-Root Lock is distributed with two Root Lock kernels based on mainline Linux: 5.19 and 6.18. One of these kernels must be booted for Root Lock to function. The Dashboard verifies kernel activation as part of Phase 1 (System Verification) and provides orientation on every boot.
+Root Lock is distributed with two kernels based on mainline Linux: 5.19 and 6.18. One of these kernels must be booted for Root Lock to function. The Dashboard verifies kernel activation as part of initial setup (System Verification) and provides orientation on every boot.
 
 ## Software compatibility notes
 

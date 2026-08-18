@@ -1,8 +1,9 @@
 ---
-title: "Kernel Hardening: HeartSuite's Unusual Design Choice"
+title: "Why this kernel deletes features on purpose"
+linkTitle: "Community Post"
 weight: 50
 draft: true
-description: "A discussion-style post on Root Lock by HeartSuite's kernel hardening philosophy — written for the kernel hardening and Linux security community."
+description: "A note for the kernel-hardening community: remove the bypass primitive instead of adding another LSM. Design choice, trade-offs, and evidence."
 categories: ["Community"]
 tags: ["kernel", "hardening", "security", "BPF", "LSM", "design"]
 type: docs
