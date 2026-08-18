@@ -49,3 +49,5 @@ The Root Lock kernel is installed alongside your existing kernel via GRUB — it
 The Root Lock kernel itself can run as a guest inside KVM, VMware, or other hypervisors — only running virtual machines from within the Root Lock kernel is unavailable.
 
 The host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives Root Lock its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are not a fit by design. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).
+
+When the host matches these requirements, continue to [Getting Started](../../getting-started/).

@@ -122,3 +122,5 @@ A few workloads are incompatible with the Root Lock kernel as shipped — **not 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
 Kubernetes-native runtime security, cross-platform endpoint protection across Windows and macOS, developer per-application sandboxing, and enterprise backup at fleet scale each have dedicated tools built for them. Root Lock is built for one thing: Linux systems where the security policy must survive a compromised root account.
+
+If the host is a fit, continue to [Getting Started](../../getting-started/).

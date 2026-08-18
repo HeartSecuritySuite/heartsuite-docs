@@ -32,3 +32,5 @@ Run a single install command, then reboot multiple times to build the initial al
 After the final reboot cycle, the Dashboard appears and displays the Suggested Next Step to guide you into allowlisting. On failure or for forensics, use the serial console to `cat /var/log/heartsuite/install.log`.
 {{< /choice-card >}}
 {{< /choice-pane >}}
+
+When initial setup is complete, continue to [Verifying Installation](../verification/).

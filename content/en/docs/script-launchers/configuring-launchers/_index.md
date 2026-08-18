@@ -74,4 +74,4 @@ Before or after Dashboard activation, you can run a script through a specific la
 
 This applies the script's allowlist entry rather than the interpreter's. Running the same script with `python3` directly uses the interpreter's broader permissions. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.
 
-After activating launchers, return to the Dashboard — the Suggested Next Step directs you to Phase 4: File Access Allowlisting via the File Access queue (`[f]`).
+After activating launchers, return to the Dashboard. The Suggested Next Step directs you to [file access allowlisting](../../allowlisting/allowlisting-basics/) via the File Access queue (`[f]`).
