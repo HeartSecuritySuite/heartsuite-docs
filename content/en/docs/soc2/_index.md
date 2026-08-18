@@ -94,7 +94,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 **How Root Lock satisfies this**:
 
-HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory (read-only, with pointers to the prep for any grant adjustments using the per-panel actions such as `[u]` undos). The Lockdown activation log records what was sealed.
+HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory. The Lockdown activation log records what was sealed.
 
 The five sealed categories:
 
@@ -252,7 +252,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 This payload can drive PagerDuty, OpsGenie, Slack, or any incident management tool.
 
-**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions and per-panel grant opt-outs are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
+**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
 
 **Evidence artifacts**:
 

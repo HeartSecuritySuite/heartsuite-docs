@@ -10,7 +10,7 @@ toc: true
 author: Ron Hessing
 ---
 
-**Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program as part of Phase 5.
+**Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite blocks all outbound network connections by default. No program can connect to any destination unless you have explicitly approved it. The Dashboard's Internet Access queue (`[i]`) guides you through reviewing and approving destinations for each program.
 
 ## Per-program, per-destination enforcement
 

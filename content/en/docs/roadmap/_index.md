@@ -86,7 +86,7 @@ gantt
     Alert system — SMTP, PagerDuty, OpsGenie          :done, 2026-04-28, 2026-05-07
     Allowlist management + backup & restore           :done, 2026-05-04, 2026-05-10
     Lockdown auto-engages on every boot               :done, 2026-05-07, 2026-05-12
-    Phase 1 unattended install service                :done, 2026-05-12, 2026-05-14
+    Initial setup unattended install service          :done, 2026-05-12, 2026-05-14
 
     section In Progress
     Container isolation via microVM — evaluation      :active, 2026-05-14, 2026-09-30
@@ -321,8 +321,8 @@ gantt
 > From the moment HeartSuite activates, Lockdown is always on. Five path categories are sealed unconditionally—there is no configuration switch to skip it. The only way to lift Lockdown is to reboot into a maintenance kernel; no runtime command can clear it.
 
 > [!NOTE]
-> **Phase 1 Unattended Install Service** (May 2026)  
-> A systemd oneshot service (with OpenRC shim) chains the allowlist approval loop across reboots without requiring an active operator session. Setup Mode completes automatically: the service pre-seeds allowlist entries, tracks phase state, and signals readiness—no console session required between reboots.
+> **Initial Setup Unattended Install Service** (May 2026)  
+> A systemd oneshot service (with OpenRC shim) chains the allowlist approval loop across reboots without requiring an active operator session. Setup Mode completes automatically: the service pre-seeds allowlist entries, tracks setup state, and signals readiness—no console session required between reboots.
 
 > [!NOTE]
 > **Allowlist Management, Backup & Restore, Maintenance Wizard**  
@@ -355,7 +355,7 @@ gantt
 
 > [!WARNING]
 > **Lockdown — final form**  
-> Lockdown activation is automatic on boot. The inventory during activation is read-only (no decision to confirm there). Before the `YES` confirmation, the prep shown during Lockdown activation offers per-panel actions/opt-outs (e.g. `[u]` undo grants, `[p]` patch, `[g]` restrict tools using observed usage, `[x]` exclude). The Lockdown button integrates the checklist and prep. The inventory during activation is read-only.
+> Lockdown activation is automatic on boot. The inventory during activation is read-only. The Lockdown button integrates the checklist. Type `YES` to confirm.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}

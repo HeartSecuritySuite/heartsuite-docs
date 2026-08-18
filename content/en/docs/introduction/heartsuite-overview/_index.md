@@ -23,15 +23,16 @@ The **Dashboard** is the central interface. After unattended initial setup, it t
 
 ### After initial setup
 
-| Phase | Name | Purpose |
-|-------|------|---------|
-| 1 | System Verification | Confirm kernel and Dashboard are active |
-| 2 | Program Allowlisting | Review and approve programs that need to run |
-| 3 | Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
-| 4 | File Access Allowlisting | Review and approve file read/write access for programs |
-| 5 | Internet Access Allowlisting | Review and approve outbound internet connections |
-| 6 | Alert Settings | Set up notification channels (email, syslog, webhook) |
-| 7 | Lockdown | Activate Lockdown — locked until phases 2–6 are complete |
+Initial setup runs unattended on first boot of the Root Lock kernel (and again after a kernel update if new startup programs appear). The Dashboard appears when that chain is complete.
+
+| Checklist | Purpose |
+|-----------|---------|
+| Program Allowlisting | Review and approve programs that need to run |
+| Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
+| File Access Allowlisting | Review and approve file read/write access for programs |
+| Internet Access Allowlisting | Review and approve outbound internet connections |
+| Alert Settings | Set up notification channels (email, syslog, webhook) |
+| Lockdown | Activate Lockdown — locked until the earlier checklist items are complete |
 
 ## Reduced kernel footprint
 

@@ -9,26 +9,27 @@ toc: true
 type: docs
 ---
 
-**Overview**: setup (System Verification) confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. On the Cloud Path, the Dashboard confirms setup is complete on first boot. On the Local Path, the Dashboard confirms initial setup is complete once the installation process is done. Installer and initial setup logs are in /var/log/heartsuite/ and accessible via provider serial console (AWS, Linode, Hetzner, etc.).
+**Overview**: Initial setup confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. Installer and initial setup logs are in `/var/log/heartsuite/` and accessible via provider serial console (AWS, Linode, Hetzner, and others).
 
-## Cloud Path and Local Path
+## What complete looks like
 
-### Cloud Path
-
+{{< choice-pane >}}
+{{< choice-card header="Cloud Path" >}}
 When you launch a pre-installed Root Lock cloud instance, the Dashboard confirms setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if troubleshooting the build-time phase.
-
-### Local Path
-
-After completing the local installation process (download, GRUB preparation, kernel install, and the System Setup's multiple steps), the Dashboard appears once Phase 1 is complete. From here, both paths proceed identically.
+{{< /choice-card >}}
+{{< choice-card header="Local Path" >}}
+After completing the local installation process (download, GRUB preparation, kernel install, and unattended initial setup), the Dashboard appears. From here, both paths proceed identically.
+{{< /choice-card >}}
+{{< /choice-pane >}}
 
 ## What the Dashboard shows
 
-When Phase 1 is complete, the Dashboard confirms:
+When initial setup is complete, the Dashboard confirms:
 
 - **Protection state** (indicator at the top): Shows **SETUP MODE**: Root Lock is active, logging only, nothing blocked
-- **Phase Progress**: Shows Phase 1 as **Complete**
+- **Checklist**: Starts at Program Allowlisting (initial setup is already done; it is not a Dashboard row)
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode, time in mode, and lockdown status
-- **Suggested Next Step**: Directs you to begin Phase 2: Program Allowlisting
+- **Suggested Next Step**: Directs you to begin program allowlisting
 
 No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
 
@@ -57,7 +58,7 @@ Root Lock    Setup Mode active for 3d 7h: logging only, nothing is blocked
 
 ## What to do if verification fails
 
-If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "maintenance kernel" when you intended to boot Root Lock):
+If initial setup does not complete, or the indicator at the top shows a state you did not expect (for example, "maintenance kernel" when you intended to boot Root Lock):
 
 1. Check the status line at the bottom of the Dashboard. It shows the kernel indicator ("Root Lock" or "maintenance kernel"). If it shows the maintenance kernel, reboot and select the Root Lock kernel from the GRUB menu.
 2. Check that the Root Lock systemd service is running:
@@ -79,4 +80,4 @@ If Phase 1 does not complete, or the indicator at the top shows a state you did 
 >
 > The Dashboard provides this same information in the protection state indicator and the status line at the bottom.
 
-With Phase 1 confirmed, follow the Dashboard's Suggested Next Step to begin [Phase 2: Program Allowlisting](../allowlisting/).
+With initial setup confirmed, follow the Dashboard's Suggested Next Step to begin [program allowlisting](../allowlisting/).

@@ -9,7 +9,7 @@ type: docs
 toc: true
 ---
 
-> **Prototype**: Keys, strip text, and ceremony steps shown here match the current TUI and may change.
+> **Prototype**: Keys, strip text, and ceremony steps shown here are the intended appliance path and may change. The screenshots are docs mock-ups of that path, not a capture of the shipping Root Lock TUI (`[f]` is still File Access there).
 
 This walkthrough is the intended console path on the appliance image. There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
 
@@ -18,6 +18,8 @@ This walkthrough is the intended console path on the appliance image. There is n
 The merged system strip reports traffic observation: logging only, rules not fully enforced. That is the honest state: the box is teaching you what is listening and what is arriving.
 
 The Suggested Next Step points at pending firewall events, not at a catalog of blades.
+
+![Dashboard at first-boot observation: strip reports logging only, Suggested Next Step points at 14 pending firewall events, pending counts are listeners and inbound attempts](test_docs_firewall_dashboard_observation.svg)
 
 ## 2. Open Firewall Rules
 
@@ -28,6 +30,8 @@ Each pending event is something that already happened on this box during observa
 `[a]` Approve creates an allowlist entry for that traffic. `[s]` Skip leaves it for later. `[s]` is Skip, not Seal. There is no blind "allow all pending."
 
 An approval is a decision you make. The Dashboard does not confirm a suggestion it already chose.
+
+![Firewall Rules grouped review: inbound HTTPS from six clients, sample sources visible, footer keys Approve, Skip, and View samples](test_docs_firewall_rules_grouped.svg)
 
 ## 3. Empty the queue before you seal
 
@@ -40,6 +44,8 @@ The image already leaves a small set of ports open to any source (workload ports
 ## 4. Type YES, then reboot the host
 
 The confirmation word is `YES` — uppercase, case-sensitive. After you confirm, reboot from the console or hypervisor so Firewall Lockdown is applied with Root Lock Lockdown. The Dashboard does not reboot the host. `[r]` shows reboot instructions after the seal is accepted.
+
+![Firewall Lockdown with preconditions met, approved rule counts and samples, logging present, SIEM not configured, and the YES prompt in frame](test_docs_firewall_lockdown_yes.svg)
 
 After reboot the strip is quiet when both seals are in place. Mutate keys are absent from Firewall Rules and from inventory. Absence is the signal that the set is sealed.
 
