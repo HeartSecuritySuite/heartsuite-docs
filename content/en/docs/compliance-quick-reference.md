@@ -72,7 +72,7 @@ No RBAC. Every Linux root user has identical, unrestricted access to all Dashboa
 
 **What is the network allowlist limitation?**
 
-Literal IPv4/IPv6 addresses only — no CIDR notation, no DNS-based rules. Inbound connection filtering is out of scope; customer-side OS firewall (`iptables`, `nftables`) or cloud security groups are the required complementary control.
+Literal IPv4/IPv6 addresses only — no CIDR notation, no DNS-based rules. Inbound connection filtering is out of scope; a customer-side OS packet filter or cloud security groups are the required complementary control.
 
 ---
 

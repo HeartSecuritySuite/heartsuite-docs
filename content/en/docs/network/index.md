@@ -83,4 +83,4 @@ When the Internet Access queue is empty, the Dashboard marks Phase 5 complete an
 
 ## Inbound connections
 
-Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when the workload lives on a HeartSuite appliance and you want that inbound layer observed and sealed.
+Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when you move the workload onto that Firewall appliance image and want inbound and this-host path observed and sealed.
