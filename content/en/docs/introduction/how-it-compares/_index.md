@@ -73,7 +73,7 @@ Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArm
 
 An attacker who already has remote root can turn those tools off. They kill the program, unload the module, or set the LSM policy permissive. Sitting at Layer 2 leaves nothing to turn off.
 
-Changing the sealed allowlist takes physical presence or the cloud serial console. SSH is not enough, even as root. Whether every path is actually gated is under [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
+Changing the sealed allowlist takes physical presence or the cloud serial console. SSH is not enough, even as root. What remains is whether Setup Mode approved too much, and whether someone at the console can unseal it. See [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
 
 ## Security as economics
 
@@ -93,27 +93,37 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 **The common pattern.** Every tool in this table can be disabled by an attacker with root. They can kill the security agent, unload the BPF program, or set the LSM permissive. Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
 
-**Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine. Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
+**Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine.
 
-**Related designs.** Pieces of policy-integrity-under-root appear elsewhere — for example Android SELinux with verified boot, and FreeBSD `securelevel` with `schg` immutability. Root Lock productizes host-wide per-program allowlisting, observe-and-ratify Setup Mode, and a custom reduced Linux kernel for servers.
+Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
+
+**Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
 
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each tool above retains strengths Root Lock does not replicate.
 
-*eBPF observers* — Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace — ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters where the Root Lock kernel's deliberate omission of the BPF syscall makes on-host eBPF tooling a non-fit — those tools remain the right answer, and they can observe a Root Lock host from adjacent infrastructure via network taps or log forwarding.
+*eBPF observers* (Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace) ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes, particularly autoscaled clusters where the Root Lock kernel omits the BPF syscall and on-host eBPF tooling is a non-fit, those tools remain the right answer. They can observe a Root Lock host from adjacent infrastructure via network taps or log forwarding.
 
-*Userspace LSM frameworks* — AppArmor, SELinux, SMACK, Landlock — offer policy capabilities Root Lock does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. Root Lock's value is the sealed boundary — `chattr +i` immutability plus a running kernel that refuses runtime changes — not richer policy syntax. Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compiled out of the Root Lock kernel and existing profiles cease to apply at the first Root Lock kernel boot.
+*Userspace LSM frameworks* (AppArmor, SELinux, SMACK, Landlock) offer policy capabilities Root Lock does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. Root Lock's value is the sealed boundary (`chattr +i` immutability plus a running kernel that refuses runtime changes), not richer policy syntax.
+
+Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compiled out of the Root Lock kernel and existing profiles cease to apply at the first Root Lock kernel boot.
 
 *seccomp-bpf sandboxes* in systemd services, browser sandboxes, bubblewrap, and firejail sit closer to the syscall surface than Root Lock can. A Chromium renderer's own seccomp filter is genuine defence-in-depth from inside the program; Root Lock does not replace it, and both layers are worth keeping.
 
-*gVisor* addresses a different threat model — host protected from untrusted guest, via a userspace syscall-emulating kernel. Root Lock addresses workloads protected from compromised root inside the kernel they run on. The two compose: Root Lock as the guest kernel inside a gVisor-isolated container is a coherent stack.
+*gVisor* addresses a different threat model: host protected from untrusted guest, via a userspace syscall-emulating kernel. Root Lock addresses workloads protected from compromised root inside the kernel they run on. The two compose: Root Lock as the guest kernel inside a gVisor-isolated container is a coherent stack.
 
-*Linux EDR* — CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR — provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. Root Lock provides none of those. The honest position is *prevention versus detection*; most regulated environments run both, with HS block events forwarded to the EDR ingestion pipeline via the syslog channel rather than an on-host sensor.
+*Linux EDR* (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) provides telemetry, behavioural analytics, fleet-wide correlation through a SOC console, threat intelligence, and incident response. Root Lock provides none of those. The honest position is *prevention versus detection*; most regulated environments run both.
+
+When attackers use legitimate tools rather than new malware (the pattern in most modern breaches), EDR detects the suspicious behavior. Root Lock constrains it differently: even a legitimate tool can only reach the files and network destinations its allowlist entry approves.
+
+EDR agents that deploy via eBPF cannot attach on-host. The BPF syscall is not present on the Root Lock kernel. Under Lockdown, agents that install as kernel modules are blocked without an allowlist entry. That is the same gate that applies to every other program.
+
+Both syslog streams (per-decision enforcement events and aggregated alerts) reach the EDR ingestion pipeline via a single rsyslog forwarding rule, with no external tooling required. Detection and response coverage continues through the log pipeline without an on-host sensor.
 
 ## Capability-based confinement
 
 *Capsicum* (FreeBSD) operationalizes the same core thesis as Root Lock: ordinary programs should not have unrestricted default access to the global OS namespace. It is the most architecturally principled approach to that problem outside of Root Lock, and the comparison is worth being direct about.
 
-**How Capsicum works.** After `cap_enter()`, any syscall that traverses a global namespace — `open()` with an absolute path, `kill()` with a PID — returns `ECAPMODE` immediately. Default access paths through the OS are severed at the syscall boundary. Per-FD rights masks then control what operations each open file descriptor permits. The design enforces this directly: no path through the global namespace means no access.
+**How Capsicum works.** After `cap_enter()`, any syscall that traverses a global namespace (`open()` with an absolute path, `kill()` with a PID) returns `ECAPMODE` immediately. Default access paths through the OS are severed at the syscall boundary. Per-FD rights masks then control what operations each open file descriptor permits. The design enforces this directly: no path through the global namespace means no access.
 
 **What structural elimination costs.** Every sandboxed application — or a wrapper around it — must be rewritten. The application calls `cap_enter()`, pre-opens every file descriptor it will ever need before that call, and uses `openat(fd, …)` relative to those FDs thereafter. Sandboxing OpenSSH under Capsicum required explicit modifications to `sandbox-capsicum.c`. Libcasper exists specifically to handle operations that cannot be pre-opened — DNS lookups, `/etc/passwd` reads — via a dedicated delegation channel. For software you write yourself, the model is clean. For a fleet of existing Linux binaries you did not write, it means modifying every program you want to protect — or not protecting it.
 
