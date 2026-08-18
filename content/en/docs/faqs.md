@@ -1,9 +1,10 @@
 ---
-title: "FAQs"
+title: "Does this replace EDR? And other FAQs"
+linkTitle: "FAQs"
 weight: 105
-description: "Common questions and answers for Root Lock by HeartSuite."
+description: "How Root Lock differs from anti-malware, who it is for, AI agents, containers, and what happens when something is blocked."
 categories: ["Support"]
-tags: ["heartsuite", "linux", "questions", "help", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky"]
+tags: ["heartsuite", "linux", "questions", "help", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "openclaw", "nemoclaw", "claude-code", "codex"]
 toc: true
 type: docs
 ---
@@ -12,13 +13,13 @@ type: docs
 
 {{< details summary="How is Root Lock by HeartSuite different from other anti-malware solutions?" >}}
 
-A: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, Root Lock by HeartSuite requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Lockdown, anything not approved is blocked. Because enforcement happens inside the kernel itself, it cannot be circumvented by any program or user, including root.
+A: Every attack does three things: run a program, access files, make a network connection. Root Lock controls all three per program — not per user, per program. Unlike anti-malware tools that look for signatures or suspicious behavior, Root Lock requires every execution, file access, and network connection to be explicitly approved through the Dashboard's review queues; in Lockdown, anything not approved is blocked. Enforcement is compiled into the kernel itself — there is no agent to kill and no module to unload. Under Lockdown, by design, remote root has no intended path to disable enforcement or rewrite the sealed allowlist the way agents, LSM frameworks, or eBPF tools can be killed, unloaded, or set permissive. Seal and control integrity are kernel-enforced product contracts. Recovery remains the maintenance kernel with physical presence or cloud serial console — see [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 
 {{< /details >}}
 
-{{< details summary="Who is Root Lock by HeartSuite for?" >}}
+{{< details summary="Who is Root Lock for?" >}}
 
-A: Root Lock by HeartSuite fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Containers fit as OCI images built and run on a separate host, with Root Lock by HeartSuite protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a host running the HeartSuite kernel is not a fit by design. The overlay filesystem and user namespaces are the privilege-escalation primitives the HeartSuite kernel deliberately omits — they are the attack surface, path to root, and vulnerability the design removes.
+A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a host running the Root Lock kernel is not a fit by design. The overlay filesystem and user namespaces are the privilege-escalation primitives the Root Lock kernel deliberately omits — they are the attack surface, path to root, and vulnerability the design removes.
 
 It is also not a fit for hosts that run eBPF-based tools like Falco, Cilium, or Tetragon; the BPF syscall is omitted for the same reason. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
