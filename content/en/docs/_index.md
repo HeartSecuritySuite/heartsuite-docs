@@ -69,7 +69,7 @@ The pages below are the individual steps, linked from Quick Start:
 ## Subscription and support
 
 - [Subscription](licensing/) — Activate your subscription for Lockdown.
-- For updates or help, visit [heartsecsuite.com](https://heartsecsuite.com).
+- For updates or help, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or visit [heartsecsuite.com](https://heartsecsuite.com).
 
 ## Ready to get started?
 

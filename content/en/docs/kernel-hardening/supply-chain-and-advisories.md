@@ -166,7 +166,7 @@ Existing SHA-256 verification remains valid for customers who have not yet adopt
 - No requirement that customers use signing before install — SHA-256 verification remains the baseline until signing is generally available.
 - Signing addresses **publisher authenticity** and **pipeline integration**; it does not change the HS kernel's CVE reachability model or Lockdown semantics.
 
-Teams with mandatory code-signing policies should treat SHA-256 + config-hash verification as the current interim control and engage HeartSuite support for questionnaire language until GPG/cosign GA.
+Teams with mandatory code-signing policies should treat SHA-256 + config-hash verification as the current interim control and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for questionnaire language until GPG/cosign GA.
 
 ---
 

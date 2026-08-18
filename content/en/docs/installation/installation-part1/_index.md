@@ -38,4 +38,4 @@ If the machine boots to the wrong kernel or hangs:
 1. Verify the installer completed without errors before the reboot fired.
 2. Reboot and select the Root Lock kernel from the GRUB menu manually.
 
-If the issue persists, contact HeartSuite support — we're happy to help.
+If the issue persists, contact HeartSuite support at [support@heartsecsuite.com](mailto:support@heartsecsuite.com) — we're happy to help.

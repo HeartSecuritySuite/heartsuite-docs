@@ -189,7 +189,7 @@ The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends
 **Support window for existing deployments**
 
 - HeartSuite continues to ship **5.19 migration and security bundles** for deployments already on the 5.19 HS stream **through end of calendar year 2026**, subject to subscription status.
-- After that date, 5.19 HS kernel support ends unless extended terms are agreed in writing. Engage HeartSuite support before the cutoff to plan fleet migration.
+- After that date, 5.19 HS kernel support ends unless extended terms are agreed in writing. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before the cutoff to plan fleet migration.
 
 **Migration path**
 
