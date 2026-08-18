@@ -9,9 +9,9 @@ toc: true
 type: docs
 ---
 
-**Overview**: Root Lock by HeartSuite integrates with your existing SIEM, EDR, and observability stack via syslog (journald/rsyslog) and webhook. This is the scale path for larger teams: configure once (in the Dashboard under Alert Settings → Fleet tab) and let your central tooling handle monitoring, correlation, and alerting. There is no requirement to run the TUI on every host for day-to-day fleet visibility.
+**Overview**: Root Lock by HeartSuite integrates with your existing SIEM, EDR, and observability stack via syslog (journald/rsyslog) and webhook. Configure once in Alert Settings → Fleet, and let your central tooling handle monitoring, correlation, and alerting. There is no requirement to run the Dashboard on every host for day-to-day fleet visibility.
 
-The raw enforcement decisions and higher-level alerts are emitted in real time. SIEM platforms receive the full picture; incident tools receive actionable events.
+Raw enforcement decisions and higher-level alerts are emitted in real time. SIEM platforms receive the full picture; incident tools receive actionable events.
 
 ## Syslog (recommended for SIEM ingestion)
 
@@ -58,7 +58,7 @@ journalctl -t heartsuite --since "1 minute ago"
 
 ## Webhook (for PagerDuty, OpsGenie, Slack, etc.)
 
-Enter a valid HTTPS URL in the Fleet tab. HeartSuite posts a compact JSON payload on every alert (immediate delivery, no batching on our side — let your receiver deduplicate).
+Enter a valid HTTPS URL in the Fleet tab. Root Lock posts a compact JSON payload on every alert (immediate delivery, no batching — let your receiver deduplicate).
 
 Example payload:
 
