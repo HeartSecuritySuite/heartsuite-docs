@@ -30,6 +30,17 @@ graph LR
         SA2 --> PA2["network ✓"]
         SB2 --> PB2["no network ✗"]
     end
+
+    style P fill:#fdd,stroke:#c44
+    style SA fill:#fdd,stroke:#c44
+    style SB fill:#fdd,stroke:#c44
+    style PA fill:#fdd,stroke:#c44
+    style PB fill:#fdd,stroke:#c44
+    style L fill:#d4f4dd,stroke:#2a7a40
+    style SA2 fill:#d4f4dd,stroke:#2a7a40
+    style SB2 fill:#d4f4dd,stroke:#2a7a40
+    style PA2 fill:#d4f4dd,stroke:#2a7a40
+    style PB2 fill:#d4f4dd,stroke:#2a7a40
 ```
 
 ## Per-script allowlist entries
