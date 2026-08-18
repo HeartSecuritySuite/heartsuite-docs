@@ -25,13 +25,13 @@ If your setup differs, check the [Introduction](../../introduction/) for compati
 {{< choice-card header="Cloud Path" >}}
 Launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image). No download or kernel installation required — you boot directly into Setup Mode and the Dashboard appears on first login.
 
-**Ready?** Launch your instance. The Dashboard appears on first login and confirms initial setup is complete.
+**Ready?** Launch your instance, then continue to [Verifying Installation](../../verification/).
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
 Download the installation package from [heartsecsuite.com](https://heartsecsuite.com), extract, install the Root Lock kernel, and complete the Installation setup through multiple reboot cycles before reaching the Dashboard.
 
-**Ready?** Proceed to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
+**Ready?** Continue to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Both paths merge at the Dashboard after initial setup is complete.
+Both paths merge at the Dashboard after initial setup is complete. Cloud users continue to [Verifying Installation](../../verification/). Local users continue to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
