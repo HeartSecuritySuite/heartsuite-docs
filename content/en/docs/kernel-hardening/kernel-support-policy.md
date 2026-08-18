@@ -2,7 +2,7 @@
 title: "Kernel Support Policy"
 linkTitle: "Kernel Support Policy"
 weight: 10
-description: "HeartSuite kernel support policy for HS kernel streams, LTS strategy, patch targets, update delivery, version-string semantics, 5.19 deprecation, and boundaries versus distribution-vendor maintenance models."
+description: "Root Lock kernel support policy for HS kernel streams, LTS strategy, patch targets, update delivery, version-string semantics, 5.19 deprecation, and boundaries versus distribution-vendor maintenance models."
 categories: ["Reference"]
 tags: ["kernel", "support", "patching", "lifecycle", "enterprise", "rhel"]
 type: docs
@@ -19,7 +19,7 @@ toc: true
 
 ## What this policy covers
 
-This policy describes how HeartSuite supports the **HeartSuite kernel** — the custom-built Linux kernel that Root Lock by HeartSuite requires for Lockdown enforcement — under a commercial **subscription**.
+This policy describes how HeartSuite supports the **Root Lock kernel** — the custom-built Linux kernel that Root Lock requires for Lockdown enforcement — under a commercial **subscription**.
 
 It applies to:
 
@@ -41,7 +41,7 @@ HeartSuite commits to **mainline LTS kernel bases only** — not arbitrary upstr
 
 - LTS branches receive upstream security and stability maintenance for a defined period, which gives HeartSuite a predictable rebuild base.
 - HeartSuite's security model depends on a **fixed, published kernel configuration** (compiled-out subsystems, enforcement hooks, and Lockdown integration). Rebuilding on a known LTS tag preserves that contract while absorbing upstream fixes that apply to the compiled-in code paths.
-- Chasing every upstream minor release would multiply validation cost without improving the enforcement properties buyers adopt Root Lock by HeartSuite for.
+- Chasing every upstream minor release would multiply validation cost without improving the enforcement properties buyers adopt Root Lock for.
 
 **Commercial baseline**
 
@@ -56,17 +56,17 @@ When HeartSuite advances the LTS base (for example, a future move within the 6.1
 
 Enterprise Linux distributions such as RHEL follow a **frozen-base, backport-within-base** model: the upstream kernel version number visible in `uname` stays on a vendor branch for years, while individual CVE fixes are cherry-picked onto that branch. Vendor errata, advisory identifiers, and scanner feeds are built around that model.
 
-HeartSuite follows a **different model**, aligned with how Root Lock by HeartSuite is built and validated:
+HeartSuite follows a **different model**, aligned with how Root Lock is built and validated:
 
-| Aspect | Typical frozen-base distribution (RHEL-style) | HeartSuite kernel |
+| Aspect | Typical frozen-base distribution (RHEL-style) | Root Lock kernel |
 |---|---|---|
 | Version identity | Long-lived vendor branch (for example, 5.14 on RHEL 9) with backported patches | Rebuild on an **LTS upstream tag** with a **HeartSuite-specific configuration** |
 | CVE remediation | Backport upstream fix patches onto frozen base; errata per advisory | **Rebuild** on updated LTS within the stream; **structural neutralization** where vulnerable code is compiled out; **Lockdown bounds** where paths remain reachable |
-| Live patching | kpatch or equivalent may be offered for subset of CVEs | **Not offered** — see [What HeartSuite does not provide](#what-heartsuite-does-not-provide) |
+| Live patching | kpatch or equivalent may be offered for subset of CVEs | **Not offered** — see [What Root Lock does not provide](#what-root-lock-does-not-provide) |
 | Third-party kernel modules | kABI / stable module interface across minor updates | **Not a design goal** on the HS kernel — enforcement architecture intentionally diverges from general-purpose distro kernels |
 | Delivery unit | Distribution package manager and errata channels | **Coordinated `heartsuite-install.sh` bundle** with userspace stack |
 
-HeartSuite is honest about the trade-off: the HeartSuite kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown. The distribution **maintenance kernel** remains on the system for maintenance and recovery; distribution errata still apply to packages and to the maintenance kernel path.
+HeartSuite is honest about the trade-off: the Root Lock kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown. The distribution **maintenance kernel** remains on the system for maintenance and recovery; distribution errata still apply to packages and to the maintenance kernel path.
 
 For deployment implications, coexistence with distribution maintenance, and fleet patterns, see the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
@@ -126,7 +126,7 @@ The running HS kernel cannot replace itself. Updates use the documented **two-re
 2. Run `bash heartsuite-install.sh` on the Non-HS kernel.
 3. Reboot into the new HS kernel and complete any post-install review the Dashboard indicates.
 
-Root Lock by HeartSuite is **not** active on the Non-HS kernel. Schedule updates in a planned maintenance window. If Lockdown is engaged, disengage through the Dashboard's Maintenance (`[m]`) before updating.
+Root Lock is **not** active on the Non-HS kernel. Schedule updates in a planned maintenance window. If Lockdown is engaged, disengage through the Dashboard's Maintenance (`[m]`) before updating.
 
 Full step-by-step procedures, failure recovery, and Lockdown considerations are in [Updating HeartSuite](../../maintenance/updating-heartsuite/).
 
@@ -198,28 +198,28 @@ Functional differences between streams (configuration, module footprint, CVE tab
 
 ### Subscription scope
 
-- The HS kernel is **included in the Root Lock by HeartSuite subscription**. There is **no separate kernel-only support contract**.
+- The HS kernel is **included in the Root Lock subscription**. There is **no separate kernel-only support contract**.
 - Incidents, rebuild requests, deployment guidance, and coordinated updates for kernel behaviour are handled under the same subscription that enables Lockdown.
 - Verification artifacts (config SHA-256, evidence packs, CVE transparency data, bundle checksums) are provided as part of the product documentation and subscription deliverables.
 
 ### Coexistence with distribution subscriptions
 
-On a host running Root Lock by HeartSuite:
+On a host running Root Lock:
 
 | Kernel | Role | Patching |
 |---|---|---|
 | **HS kernel** | Enforcement kernel for Setup Mode and Lockdown | **HeartSuite coordinated bundles only** |
 | **Non-HS kernel** | Maintenance, recovery, and distribution-compatible work | **Distribution errata and package updates** apply as usual |
 
-Root Lock by HeartSuite **replaces the enforcement kernel** for protected operation; it does **not** remove the distribution kernel or cancel distribution maintenance obligations on the Non-HS path. During maintenance on the Non-HS kernel, the host behaves as a standard distribution system without Lockdown enforcement.
+Root Lock **replaces the enforcement kernel** for protected operation; it does **not** remove the distribution kernel or cancel distribution maintenance obligations on the Non-HS path. During maintenance on the Non-HS kernel, the host behaves as a standard distribution system without Lockdown enforcement.
 
 Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the Non-HS maintenance path and to userspace packages. Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the HS kernel must run on the Non-HS kernel or on a separate host. (The HS kernel omits these by design to eliminate bypass primitives and attack surface; see the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).)
 
 ---
 
-## What HeartSuite does not provide
+## What Root Lock does not provide
 
-HeartSuite does **not** offer the following on the HS kernel path:
+Root Lock does **not** offer the following on the HS kernel path:
 
 | Capability | HeartSuite position |
 |---|---|

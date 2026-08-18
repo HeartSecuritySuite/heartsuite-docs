@@ -13,9 +13,9 @@ author: Ron Hessing
 
 ## Per-program, per-destination enforcement
 
-In Setup Mode, Root Lock by HeartSuite logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
+In Setup Mode, Root Lock logs every outbound connection attempt without blocking it. These connection attempts appear in the Dashboard's Internet Access queue. In Lockdown, any connection to a destination not on the allowlist is blocked and an alert is generated.
 
-Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address; each program must have its own approved destinations. Root Lock by HeartSuite approves specific IPv4 and IPv6 addresses, not CIDR ranges, hostnames, or wildcards.
+Network permissions are per-program and per-destination. Approving `93.184.216.34` for `curl` does not allow `wget` to connect to the same address; each program must have its own approved destinations. Root Lock approves specific IPv4 and IPv6 addresses, not CIDR ranges, hostnames, or wildcards.
 
 ## Using the Internet Access queue
 
@@ -51,7 +51,7 @@ Suppose `wget` is on the program allowlist but no network destinations have been
 # wget https://example.com/agreement.html
 ```
 
-Root Lock by HeartSuite intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 (example.com)`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
+Root Lock intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 (example.com)`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
 
 ## Reviewing existing network permissions
 
@@ -82,4 +82,4 @@ When the Internet Access queue is empty, the Dashboard marks Phase 5 complete an
 
 ## Inbound connections
 
-Root Lock by HeartSuite manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.
+Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.

@@ -42,18 +42,18 @@ All numbers in the tables below are outputs of the same measurement tool applied
 
 ---
 
-## What HeartSuite is optimized for
+## What Root Lock is optimized for
 
-HeartSuite removes or disables the kernel features that are most commonly used to *bypass* security controls — not necessarily those used to *exploit* vulnerabilities.
+Root Lock removes or disables the kernel features that are most commonly used to *bypass* security controls — not necessarily those used to *exploit* vulnerabilities.
 
 This means:
 
 - **Attacker cannot use BPF** to override security decisions at runtime. (Arch linux-hardened keeps BPF enabled; it's widely used by system tools and container runtimes.)
 - **Attacker cannot use user namespaces** (`CONFIG_USER_NS=n`) to create a fake root environment. (Arch linux-hardened 5.19.11 keeps user namespaces enabled for container use.)
 - **Attacker cannot use FUSE or overlay filesystems** to confuse path-based enforcement.
-- **No competing security policies** (AppArmor, SELinux at runtime, YAMA, Landlock, IMA, EVM) that could interfere with or be manipulated to weaken HeartSuite's decisions.
+- **No competing security policies** (AppArmor, SELinux at runtime, YAMA, Landlock, IMA, EVM) that could interfere with or be manipulated to weaken Root Lock's decisions.
 
-What HeartSuite does *not* add — and dedicated hardened kernels do:
+What Root Lock does *not* add — and dedicated hardened kernels do:
 
 - Memory initialization on allocation/free (`INIT_ON_ALLOC_DEFAULT_ON`, `INIT_ON_FREE_DEFAULT_ON`)
 - Bounds-checking on kernel-to-user copies (`HARDENED_USERCOPY`)
@@ -61,7 +61,7 @@ What HeartSuite does *not* add — and dedicated hardened kernels do:
 - Allocator randomization (`SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`)
 - Kernel stack erasure on syscall return (`KSTACK_ERASE`)
 
-These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs HS's 31/109 (28.4%). HeartSuite 5.19.6 sits at the vanilla upstream baseline for exploit-resistance. For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — HeartSuite covers the relevant threat at the right operating point; the Decision guide below covers when adding exploit-resistance hardening alongside HeartSuite makes sense.
+These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs HS's 31/109 (28.4%). Root Lock 5.19.6 sits at the vanilla upstream baseline for exploit-resistance. For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — Root Lock covers the relevant threat at the right operating point; the Decision guide below covers when adding exploit-resistance hardening alongside Root Lock makes sense.
 
 ---
 
@@ -69,7 +69,7 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 
 | Product | Bypass Prevention | Exploit Resistance | Module Footprint | Availability |
 |---|---|---|---|---|
-| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled | Low — vanilla upstream baseline | **~9 modules** | Commercial |
+| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled | Low — vanilla upstream baseline | **~9 modules** | Commercial |
 | Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY_SOURCE, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source |
 | grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription |
 | CLIP OS (ANSSI) | High — minimal modules, BPF disabled | High — KSPP-style mitigations | ~400 | Public (archived) |
@@ -83,7 +83,7 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 
 ## Decision guide
 
-**Choose HeartSuite if your primary concern is:**
+**Choose Root Lock if your primary concern is:**
 
 - Preventing a compromised application from escaping its security boundary
 - Ensuring no in-kernel feature (BPF, FUSE, namespaces) can be used to bypass your security policy
@@ -96,7 +96,7 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 - Compliance requirements that enumerate specific KSPP mitigations
 - Environments where root access cannot be fully constrained
 
-**HeartSuite is not a replacement for:** network firewalls, application-layer WAFs, SIEM, endpoint detection/response — it operates at the kernel enforcement layer, not at the network or application layer.
+**Root Lock is not a replacement for:** network firewalls, application-layer WAFs, SIEM, endpoint detection/response — it operates at the kernel enforcement layer, not at the network or application layer.
 
 ---
 

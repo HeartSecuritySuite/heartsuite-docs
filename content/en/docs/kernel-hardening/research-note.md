@@ -109,7 +109,7 @@ Matrix shows HS at 31/109 (28.4%) on Axis B vs KSPP target at 93/109 (85.3%). Th
 Both score ~91/132 on a clean config. After typical production deployment (systemd services, Docker runtime, eBPF tracing tools), a vanilla-seeded system will have BPF, user namespaces, and FUSE enabled. HS's documented build enforcement prevents this. Measuring Axis A on a production-deployed vanilla kernel vs a production HeartSuite deployment would show the true divergence.
 
 **Q3: LSM-stack ordering at runtime on a HS 5.19.6 deployment — resolved.**  
-Runtime verification confirms: SELinux is compiled-in but runs permissive with no policy loaded; HeartSuite is the sole enforcing MAC LSM. Full trace in `evidence-pack-5.19.6.txt` §5.
+Runtime verification confirms: SELinux is compiled-in but runs permissive with no policy loaded; Root Lock is the sole enforcing MAC LSM. Full trace in `evidence-pack-5.19.6.txt` §5.
 
 **Q4: Does removing competing LSMs (`YAMA=n`, `LANDLOCK=n`, `IMA=n`) reduce defense-in-depth in meaningful attack scenarios?**  
 HS disables all competing MAC layers to ensure HeartSuite is the sole enforcement authority. This eliminates potential conflicts and redundant attack surfaces. It also removes defense-in-depth for attack classes HeartSuite does not cover (e.g. YAMA's `ptrace_scope`). Characterizing which attack classes lose coverage is open.
@@ -122,7 +122,7 @@ Projects plotted qualitatively on both axes (source: each project's public docum
 
 | Project | Axis A (Bypass Prevention) | Axis B (Exploit Resistance) | Primary Constraint |
 |---|---|---|---|
-| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/USER_NS disabled | Low — vanilla upstream baseline | Single-purpose appliance; bypass prevention is the design goal |
+| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/USER_NS disabled | Low — vanilla upstream baseline | Single-purpose appliance; bypass prevention is the design goal |
 | Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY_SOURCE, INIT_ON_ALLOC, SLAB_FREELIST | General-purpose; features required by desktop/server users |
 | CLIP OS (ANSSI, archived) | High — minimal modules, BPF disabled | High — KSPP-style mitigations | Government platform; production is not publicly maintained |
 | grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack | Paid; config not publicly available for automated analysis |

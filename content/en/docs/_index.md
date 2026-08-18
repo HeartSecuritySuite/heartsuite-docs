@@ -68,7 +68,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 ## Also in this documentation
 
-- [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard unmodified kernels (ideal when the HeartSuite kernel's deliberate removals of bypass primitives are not suitable). The HeartSuite kernel provides the stronger execution + network layer on supported systems.
+- [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype filesystem-based security layer. Enforces path-level access control on standard unmodified kernels (ideal when the Root Lock kernel's deliberate removals of bypass primitives are not suitable). The Root Lock kernel provides the stronger execution + network layer on supported systems.
 
 ---
 

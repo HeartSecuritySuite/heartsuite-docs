@@ -12,11 +12,11 @@ author: Ron Hessing
 
 ## Automatic versioning
 
-Root Lock by HeartSuite monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock by HeartSuite silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
+Root Lock monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
 
-Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock by HeartSuite backs up on every write. There is no window. Other security products that offer rollback on Linux — including endpoint products with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
+Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock backs up on every write. There is no window. Other security products that offer rollback on Linux — including endpoint products with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
-CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup product itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock by HeartSuite's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
+CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup product itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
 
 By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup.
 
@@ -53,7 +53,7 @@ When Lockdown is active, the backup configuration file is sealed — no user or 
 
 ## Backup encryption
 
-Root Lock by HeartSuite backup files are versioned filesystem copies. They are not encrypted at the HeartSuite layer. If your environment requires data-at-rest encryption — for example, to meet GDPR, HIPAA, or PCI DSS requirements — configure full-disk encryption (dm-crypt/LUKS) at the OS level. LUKS encryption covers the backup files automatically, since they reside on the same filesystem as the rest of the host.
+Root Lock backup files are versioned filesystem copies. They are not encrypted at the HeartSuite layer. If your environment requires data-at-rest encryption — for example, to meet GDPR, HIPAA, or PCI DSS requirements — configure full-disk encryption (dm-crypt/LUKS) at the OS level. LUKS encryption covers the backup files automatically, since they reside on the same filesystem as the rest of the host.
 
 ## CLI access for scripting and automation
 

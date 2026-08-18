@@ -12,22 +12,22 @@ toc: true
 
 ## What an update changes
 
-- The Root Lock by HeartSuite kernel (`vmlinuz-<version>-HeartSuite-<patch>`)
+- The Root Lock kernel (`vmlinuz-<version>-HeartSuite-<patch>`)
 - HeartSuite userspace tools (`activate_HS`, `lockdown_HS`, Secure Script Launchers, setup scripts)
 - The Dashboard files under `/opt/heartsuite/`
 - GRUB configuration, so the new kernel becomes the default boot target
 
-It does not modify user data, the existing allowlist entries, or backup files. Root Lock by HeartSuite may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
+It does not modify user data, the existing allowlist entries, or backup files. Root Lock may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
 
 ## Why two reboots are required
 
-The running Root Lock by HeartSuite kernel cannot replace itself. The installer verifies this and aborts if it detects it is running on the Root Lock by HeartSuite kernel. An update therefore requires:
+The running Root Lock kernel cannot replace itself. The installer verifies this and aborts if it detects it is running on the Root Lock kernel. An update therefore requires:
 
-1. A reboot from the Root Lock by HeartSuite kernel to the maintenance kernel.
+1. A reboot from the Root Lock kernel to the maintenance kernel.
 2. Running the installer on the maintenance kernel.
-3. A reboot back into the new Root Lock by HeartSuite kernel.
+3. A reboot back into the new Root Lock kernel.
 
-Root Lock by HeartSuite is not active while the maintenance kernel is running. Schedule updates during a planned maintenance window.
+Root Lock is not active while the maintenance kernel is running. Schedule updates during a planned maintenance window.
 
 ## Before you begin
 
@@ -52,10 +52,10 @@ Root Lock by HeartSuite is not active while the maintenance kernel is running. S
    bash heartsuite-install.sh
    ```
 
-6. The installer applies the update and reboots automatically into the new Root Lock by HeartSuite kernel.
-7. If new programs are encountered, Root Lock by HeartSuite reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
+6. The installer applies the update and reboots automatically into the new Root Lock kernel.
+7. If new programs are encountered, Root Lock reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
 8. Re-engage Lockdown from the Dashboard if it was active before the update.
 
 ## If the update fails
 
-If the new Root Lock by HeartSuite kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Both the previous Root Lock by HeartSuite kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.
+If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.

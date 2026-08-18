@@ -15,30 +15,30 @@ toc: true
 
 ---
 
-## Root Lock by HeartSuite and HJFS: two approaches
+## Root Lock and HJFS: two approaches
 
 Three OS-level controls are unrestricted by default on Linux: file access, network communication, and program execution. Every program can open any user file, connect to any network destination, and launch any binary it can reach — and so can any malware running under the same user.
 
-Root Lock by HeartSuite and HJFS share the same goal: closing all three of those controls. They do it in different ways.
+Root Lock and HJFS share the same goal: closing all three of those controls. They do it in different ways.
 
-**Root Lock by HeartSuite** is production-ready today. It works with the existing Linux OS: you configure allowlist entries, tighten them down, and enable Lockdown. With Lockdown enabled, only explicitly permitted programs, files, and network destinations are allowed. Everything else is blocked.
+**Root Lock** is production-ready today. It works with the existing Linux OS: you configure allowlist entries, tighten them down, and enable Lockdown. With Lockdown enabled, only explicitly permitted programs, files, and network destinations are allowed. Everything else is blocked.
 
 **HJFS** redesigns the file access layer from the ground up. Every program is confined to its own private storage area at the filesystem level. Prior versions of programs are preserved automatically before any update overwrites them. Cross-program file access is architecturally impossible, not policy-dependent. Network access mediation and OS-mediated user-file access are planned for subsequent releases.
 
-| Aspect | Root Lock by HeartSuite | HJFS | What This Means in Practice |
+| Aspect | Root Lock | HJFS | What This Means in Practice |
 |---|---|---|---|
-| File isolation | Global filesystem; the admin adds allowlist entries for directories and paths (commonly `/usr/lib`, `/etc`, `/home`) | Per-program isolated storage area; the filesystem blocks any overlap | Core Secure can allow accidental cross-program access if allowlist entries are not kept tight. HJFS makes overlap impossible by design. |
-| Handling malicious updates | No automatic program versioning. Data backup applies only to admin-configured directories (default: `/home`) | Per-version isolation: prior executable and libraries are preserved automatically before any update overwrites them | HJFS stops a supply-chain attack from destroying the clean version of a program (for example, a tainted `sshd`). Core Secure requires the admin to detect the problem and manually restore the prior binary if it was backed up. |
-| Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: user approval on desktops, policy rules on servers (not in v1.0 scope) | Core Secure handles network and user-file access today via static allowlist entries. HJFS will prevent programs from silently connecting anywhere or touching user files without explicit permission once that capability ships. |
-| Executables and updates | Standard Linux paths; updates often require switching to Setup Mode | Separate read-only area for executables; only the official HJFS installer can write to it | Core Secure depends on admin discipline for update discipline. HJFS enforces the separation automatically. |
-| Data sharing and deletion | Any program can read, write, or delete anything its allowlist entry permits | Cross-program transfers require an explicit copy utility; programs can only move files to trash, not permanently delete them | Core Secure is more convenient to administer but places more risk on correct allowlist configuration. HJFS forces deliberate, auditable data movement. |
-| Lockdown | Enabled via `HS_lockdown.sh`; immutable flags seal key files | Enforced by the filesystem structure — no separate Lockdown step required | Core Secure provides strong immediate Lockdown. HJFS provides stronger long-term structural guarantees. |
+| File isolation | Global filesystem; the admin adds allowlist entries for directories and paths (commonly `/usr/lib`, `/etc`, `/home`) | Per-program isolated storage area; the filesystem blocks any overlap | Root Lock can allow accidental cross-program access if allowlist entries are not kept tight. HJFS makes overlap impossible by design. |
+| Handling malicious updates | No automatic program versioning. Data backup applies only to admin-configured directories (default: `/home`) | Per-version isolation: prior executable and libraries are preserved automatically before any update overwrites them | HJFS stops a supply-chain attack from destroying the clean version of a program (for example, a tainted `sshd`). Root Lock requires the admin to detect the problem and manually restore the prior binary if it was backed up. |
+| Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: user approval on desktops, policy rules on servers (not in v1.0 scope) | Root Lock handles network and user-file access today via static allowlist entries. HJFS will prevent programs from silently connecting anywhere or touching user files without explicit permission once that capability ships. |
+| Executables and updates | Standard Linux paths; updates often require switching to Setup Mode | Separate read-only area for executables; only the official HJFS installer can write to it | Root Lock depends on admin discipline for update discipline. HJFS enforces the separation automatically. |
+| Data sharing and deletion | Any program can read, write, or delete anything its allowlist entry permits | Cross-program transfers require an explicit copy utility; programs can only move files to trash, not permanently delete them | Root Lock is more convenient to administer but places more risk on correct allowlist configuration. HJFS forces deliberate, auditable data movement. |
+| Lockdown | Enabled via `HS_lockdown.sh`; immutable flags seal key files | Enforced by the filesystem structure — no separate Lockdown step required | Root Lock provides strong immediate Lockdown. HJFS provides stronger long-term structural guarantees. |
 
 ### For production deployments today
 
-**Root Lock by HeartSuite** is production-ready for Linux servers. Tight allowlist configuration, Lockdown enabled, and restricted backup directories provide strong real-world protection with existing software.
+**Root Lock** is production-ready for Linux servers. Tight allowlist configuration, Lockdown enabled, and restricted backup directories provide strong real-world protection with existing software.
 
-**HJFS** eliminates entire risk classes — cross-program file leakage, malicious updates reaching prior-version data, programs permanently deleting files — by design, without depending on correct admin configuration. It runs on a standard unmodified kernel. Network access mediation and execution control are planned for subsequent releases; for those controls today, use Root Lock by HeartSuite.
+**HJFS** eliminates entire risk classes — cross-program file leakage, malicious updates reaching prior-version data, programs permanently deleting files — by design, without depending on correct admin configuration. It runs on a standard unmodified kernel. Network access mediation and execution control are planned for subsequent releases; for those controls today, use Root Lock.
 
 The two products are not currently compatible and cannot be deployed together.
 
@@ -64,22 +64,22 @@ The two products are not currently compatible and cannot be deployed together.
 
 | Gap HJFS leaves open | Complementary control |
 |---|---|
-| Network connections — which destinations a program can reach | Dedicated network allowlisting tools; Root Lock by HeartSuite handles this but is not currently compatible with HJFS |
-| Program execution — which binaries are permitted to run | Dedicated execution allowlisting tools; Root Lock by HeartSuite handles this but is not currently compatible with HJFS |
+| Network connections — which destinations a program can reach | Dedicated network allowlisting tools; Root Lock handles this but is not currently compatible with HJFS |
+| Program execution — which binaries are permitted to run | Dedicated execution allowlisting tools; Root Lock handles this but is not currently compatible with HJFS |
 | Detection and alerting on suspicious behaviour | SIEM, NDR, endpoint detection tools |
 | Secrets isolation within a single program's own storage area | Secrets management tools; [Advanced Protection](../advanced-protection/) for user files |
 | Encryption of data at rest | Standard disk or volume encryption |
 | Off-site backup and disaster recovery | Dedicated backup infrastructure |
 
-HJFS and Root Lock by HeartSuite address complementary OS-level controls. HJFS covers file read and write access at the filesystem layer, with per-program and per-version isolation. Core Secure covers network communication and program execution at the kernel layer. The two products are not currently compatible and cannot be deployed together.
+HJFS and Root Lock address complementary OS-level controls. HJFS covers file read and write access at the filesystem layer, with per-program and per-version isolation. Root Lock covers network communication and program execution at the kernel layer. The two products are not currently compatible and cannot be deployed together.
 
 ---
 
-## HJFS alone vs. HJFS with Root Lock by HeartSuite
+## HJFS alone vs. HJFS with Root Lock
 
 **HJFS alone** fits deployments where the primary risk is lateral file access across programs, data destruction by ransomware, or supply chain updates that taint data created by prior versions. It runs on a standard kernel, which makes it the right choice for cloud instances where the kernel is provider-managed, systems under kernel certification requirements, or organisations with strict change-control policies. Network and execution control are left to other means — network-layer egress filtering, separate allowlisting tools, or existing controls already in place.
 
-**Root Lock by HeartSuite** covers network connection and program execution control at the kernel level. It is not currently compatible with HJFS and cannot be deployed alongside it. Organisations that need file isolation together with execution and network control should use HJFS with a compatible dedicated allowlisting tool for network and execution coverage.
+**Root Lock** covers network connection and program execution control at the kernel level. It is not currently compatible with HJFS and cannot be deployed alongside it. Organisations that need file isolation together with execution and network control should use HJFS with a compatible dedicated allowlisting tool for network and execution coverage.
 
 ---
 

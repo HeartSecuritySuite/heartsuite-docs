@@ -37,6 +37,12 @@ BANNED=(
   # Stale version claims
   "coming in v2"            # container host support has shipped
   "Coming in v2"            # container host support has shipped
+
+  # Product naming — §5.1 (house brand HeartSuite; product Root Lock)
+  "Root Lock by HeartSuite security suite"  # stacked endorsed name + category
+  "HeartSuite security suite"               # HeartSuite is the house, not a suite product
+  "Core Secure"             # retired product name → Root Lock
+  "non-HeartSuite kernel"   # → maintenance kernel
 )
 found=0
 for term in "${BANNED[@]}"; do
@@ -66,6 +72,55 @@ title_case=$(grep -rEn --include="*.md" \
 if [[ -n "$title_case" ]]; then
   echo "STYLE: Title Case function word mid-heading (§6 — use sentence case; only capitalise the first word and proper nouns)"
   echo "$title_case"
+  found=1
+fi
+
+# §5.1: "HeartSuite kernel" is retired, but the substring appears inside the
+# allowed first-mention form "Root Lock by HeartSuite kernel".
+hs_kernel=$(python3 - <<'PY'
+from pathlib import Path
+needle = "HeartSuite kernel"
+ok_prefix = "Root Lock by "
+for path in sorted(Path("content").rglob("*.md")):
+    for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        start = 0
+        while True:
+            idx = line.find(needle, start)
+            if idx == -1:
+                break
+            if not line[:idx].endswith(ok_prefix):
+                print(f"{path}:{i}:{line}")
+            start = idx + len(needle)
+PY
+)
+if [[ -n "$hs_kernel" ]]; then
+  echo "BANNED TERM: \"HeartSuite kernel\" (use Root Lock kernel; first-mention \"Root Lock by HeartSuite kernel\" is allowed)"
+  echo "$hs_kernel"
+  found=1
+fi
+
+# §5.1: at most one "Root Lock by HeartSuite" in the body (front matter and
+# the site tagline are chrome / SEO and may repeat the full name).
+excess=$(python3 - <<'PY'
+from pathlib import Path
+full = "Root Lock by HeartSuite"
+tagline = "Root Lock by HeartSuite | Humans in Command"
+root = Path("content")
+for path in sorted(root.rglob("*.md")):
+    text = path.read_text(encoding="utf-8")
+    if text.startswith("---\n"):
+        end = text.find("\n---\n", 4)
+        if end != -1:
+            text = text[end + 5:]
+    body = text.replace(tagline, "")
+    count = body.count(full)
+    if count > 1:
+        print(f"{path}: {count} full-name mentions in body")
+PY
+)
+if [[ -n "$excess" ]]; then
+  echo "STYLE: more than one \"Root Lock by HeartSuite\" in page body (§5.1 — full name once, then Root Lock)"
+  echo "$excess"
   found=1
 fi
 

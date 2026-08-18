@@ -54,7 +54,7 @@ Phase 3 is not required if your system does not use script interpreters.
 
 ## Skipping launcher setup
 
-Press `[s]` to skip without activating. Root Lock by HeartSuite notifies you:
+Press `[s]` to skip without activating. Root Lock notifies you:
 
 ```text
 Script launcher activation skipped.

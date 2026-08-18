@@ -21,7 +21,7 @@ Start here if you are evaluating the HS kernel for a regulated or enterprise fle
 - [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — How enterprise Linux security teams verify CVE status without upstream version false positives.
 - [Supply Chain and Advisory Feeds](supply-chain-and-advisories/) — SHA-256 today; published JSON feeds at `/advisories/` (CONFIG-gate SBOM, OSV with 279 entries, CycloneDX SBOM for `hs-v1.6.4-kernel-6.18.9`); roadmap for GPG/cosign signing and OVAL.
 
-**Reading guide**: Several pages name Red Hat Enterprise Linux (RHEL), RHSA advisories, and OVAL feeds as **familiar anchors** for procurement and vulnerability-management teams — the same errata-first discipline applies on Rocky, AlmaLinux, Ubuntu LTS, Debian, and SUSE. HeartSuite is not a RHEL-only product; the [Distro Compatibility Matrix](distro-compatibility-matrix/) lists validated bases across RPM and Debian families.
+**Reading guide**: Several pages name Red Hat Enterprise Linux (RHEL), RHSA advisories, and OVAL feeds as **familiar anchors** for procurement and vulnerability-management teams — the same errata-first discipline applies on Rocky, AlmaLinux, Ubuntu LTS, Debian, and SUSE. Root Lock is not a RHEL-only product; the [Distro Compatibility Matrix](distro-compatibility-matrix/) lists validated bases across RPM and Debian families.
 
 ## Evidence and technical reference
 

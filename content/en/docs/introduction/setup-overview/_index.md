@@ -17,19 +17,19 @@ menu:
 
 ## Why Setup Mode is necessary
 
-Root Lock by HeartSuite enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system activated Lockdown at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
+Root Lock enforces a default-deny policy: every program must be explicitly approved to execute, to access files, and to make network connections — including programs running as root. Immediately after installation, the allowlist is empty. If the system activated Lockdown at this point, it would block the programs required for boot and shutdown, rendering the system inoperable.
 
-Setup Mode solves this problem. In Setup Mode, Root Lock by HeartSuite logs all activity without blocking anything. You review activity through the Dashboard queues, approve programs and their access, and build an allowlist that reflects the system's actual workload. Once the allowlist is complete, you activate Lockdown.
+Setup Mode solves this problem. In Setup Mode, Root Lock logs all activity without blocking anything. You review activity through the Dashboard queues, approve programs and their access, and build an allowlist that reflects the system's actual workload. Once the allowlist is complete, you activate Lockdown.
 
-Setup Mode is the default after installation. Root Lock by HeartSuite's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Lockdown is active.
+Setup Mode is the default after installation. Root Lock's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Lockdown is active.
 
 ## The 7 phases
 
-Root Lock by HeartSuite organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
+Root Lock organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
 
 | Phase | Name | Description |
 |-------|------|-------------|
-| 1 | System Verification | Confirms the Root Lock by HeartSuite kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
+| 1 | System Verification | Confirms the Root Lock kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
 | 2 | Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
 | 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers (`[s]`), if applicable. |
 | 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
@@ -41,15 +41,15 @@ Root Lock by HeartSuite organizes the setup journey into seven phases. The Dashb
 
 ### Cloud Path
 
-Users who launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms setup is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required. Installer logs from the cloud image build are accessible via the provider's serial console.
+Users who launch a pre-installed Root Lock cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms setup is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required. Installer logs from the cloud image build are accessible via the provider's serial console.
 
 ### Local Path
 
-Users who install Root Lock by HeartSuite on bare-metal or custom VMs follow a longer path:
+Users who install Root Lock on bare-metal or custom VMs follow a longer path:
 
 1. Download and extract the installation package.
-2. Prepare GRUB and install the Root Lock by HeartSuite kernel.
-3. Root Lock by HeartSuite reads the startup and shutdown logs automatically, rebooting between passes until all startup and shutdown programs are in the allowlist.
+2. Prepare GRUB and install the Root Lock kernel.
+3. Root Lock reads the startup and shutdown logs automatically, rebooting between passes until all startup and shutdown programs are in the allowlist.
 4. After setup is complete, the Dashboard appears and the journey merges with the Cloud path.
 
 Both paths converge at the Dashboard after setup. From that point forward, the workflow is identical.
@@ -62,7 +62,7 @@ The following diagram shows the path from installation to Lockdown, including th
 
 ```mermaid
 graph TD
-    A[Install Root Lock by HeartSuite] --> B{Cloud or Local?}
+    A[Install Root Lock] --> B{Cloud or Local?}
     B -- Cloud --> C[Boot instance — Dashboard confirms setup complete]
     B -- Local --> D["Boot setup runs automatically — reboots between passes"]
     D --> C
@@ -88,10 +88,10 @@ graph TD
 
 When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and precondition checklist before proceeding. Before confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo grants, `[p]` patch, `[g]` restrict tools from observed usage, `[x]` exclude — see [Mode Switching and Lockdown](../../mode-switching/) for details). The inventory is read-only.
 
-After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every HeartSuite kernel boot.
+After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every Root Lock kernel boot.
 
 ## Maintenance in Lockdown
 
-To perform system maintenance after activating Lockdown, select Maintenance (`[m]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the maintenance kernel, making changes, then returning to the Root Lock by HeartSuite kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
+To perform system maintenance after activating Lockdown, select Maintenance (`[m]`) from the Dashboard. The immutable seal is active by default — the Maintenance guides you through a 3-step process across two reboots: removing immutable flags on the maintenance kernel, making changes, then returning to the Root Lock kernel to review new activity. The Dashboard resumes at the correct step after each reboot.
 
 For full details, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
