@@ -9,11 +9,11 @@ toc: true
 type: docs
 ---
 
-**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the operator experience for a single host; enterprises use their control planes to manage policy and observe at scale.
+**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the operator experience for a single host. Enterprises use their control planes to manage policy and observe at scale.
 
-There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with rich export surfaces for central consumption and attribution. This model lets you keep ownership of policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration).
+There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with export surfaces for central consumption and attribution.
 
-The subscription activation step that enables Lockdown remains a per-host entitlement check. The content of the policy itself can be fully external.
+Keep policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration). The subscription activation step that enables Lockdown remains a per-host entitlement check. The content of the policy itself can be fully external.
 
 ## Policy curation in your central systems
 
