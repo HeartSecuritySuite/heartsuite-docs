@@ -1,8 +1,8 @@
 ---
-title: "Linux Security Layer Analysis"
+title: "Where Linux security tools actually sit"
 linkTitle: "Layer Analysis"
 weight: 7
-description: "A taxonomy of Linux host security tools by enforcement layer — where each mechanism sits in the stack and what that means for bypass surface."
+description: "EDR, LSM, eBPF, gVisor, and a compiled-in kernel are not the same layer. This taxonomy shows the bypass surface of each."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "comparison", "edr", "ebpf", "selinux", "apparmor", "gvisor", "layers", "taxonomy"]
 type: docs
@@ -102,6 +102,6 @@ These tools do not overlap with Layers 2–5 enforcement. They answer different 
 
 ## Takeaway
 
-Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 (LSM hooks, eBPF programs) or higher — meaning a sufficiently privileged attacker can disable it remotely without rebooting. The Layer 2 position is what makes physical presence the only bypass path.
+Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 or higher. Root can turn those off remotely without a reboot. The Layer 2 position is what makes physical presence the only bypass path.
 
 For the tool-by-tool comparison with bypass analysis, see [How It Compares](../how-it-compares/).
