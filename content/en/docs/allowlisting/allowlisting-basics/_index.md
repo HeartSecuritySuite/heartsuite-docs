@@ -1,7 +1,8 @@
 ---
-title: "Allowlisting Basics"
+title: "Review queues: programs, files, network"
+linkTitle: "Allowlisting Basics"
 weight: 1
-description: "Overview and basic procedures for allowlisting programs in Root Lock by HeartSuite."
+description: "The Dashboard shows what each program tried to run, read, write, or reach. Approve the intent; remove the rest before you turn on Lockdown."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 type: docs
@@ -17,7 +18,7 @@ menu:
 
 ## The three review queues
 
-In Setup Mode, Root Lock by HeartSuite logs every program execution, file access attempt, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
+In Setup Mode, Root Lock logs every program execution, file access attempt, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
 
 - **Programs queue** (`[p]`) — programs that attempted to execute
 - **File Access queue** (`[f]`) — programs that attempted to read or write files
@@ -64,7 +65,7 @@ Every review item displays metadata directly in the primary prompt — you do no
 | Homepage | Package homepage URL |
 | Installed | Date the package was installed or last updated |
 
-When a program has no entry in any package database, Root Lock by HeartSuite displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden — the absence of information is itself a signal.
+When a program has no entry in any package database, Root Lock displays the raw file path with "(no package)" in the metadata fields. Missing metadata is never hidden — the absence of information is itself a signal.
 
 ## Individual and grouped review
 
@@ -89,18 +90,18 @@ This program has not been allowlisted.
 
 ### Grouped review
 
-Related items are grouped together (e.g., "847 file reads from /usr/lib/python3/"). Root Lock by HeartSuite shows a sample of the grouped items so you can confirm the grouping makes sense before approving.
+Related items are grouped together (e.g., "847 file reads from /usr/lib/python3/"). Root Lock shows a sample of the grouped items so you can confirm the grouping makes sense before approving.
 
 ### Queue summary
 
-When the volume of remaining items is large, Root Lock by HeartSuite presents a summary of what is ahead — total counts and a breakdown by program — before you begin reviewing. This is an orientation view, not an approval surface. Press `[a]` or `[Enter]` to proceed into individual review.
+When the volume of remaining items is large, Root Lock presents a summary of what is ahead — total counts and a breakdown by program — before you begin reviewing. This is an orientation view, not an approval surface. Press `[a]` or `[Enter]` to proceed into individual review.
 
 > [!NOTE]
 > Review grouping and sort order are independent dimensions. A program in any group may appear in any grouping presentation. For example, a program with no package entry that generated 200 file reads would appear in the "Unknown origin" group (sorted first) but could be presented as a grouped review (because the items are groupable by directory).
 
 ## Programs queue (Phase 2)
 
-When a program executes without an allowlist entry, Root Lock by HeartSuite logs it. The Programs queue presents it for review.
+When a program executes without an allowlist entry, Root Lock logs it. The Programs queue presents it for review.
 
 ### What the groups mean
 
@@ -111,7 +112,7 @@ Programs are grouped into sections in the program list on the left. These groups
 | Unknown origin | Program has no entry in any known package database. No metadata beyond the file path. |
 | Installed after OS | Program belongs to a package installed after the OS provisioning date. |
 | Installed with OS | Program belongs to a package whose install date matches the inferred OS provisioning date. |
-| Root Lock by HeartSuite | File path falls under `/.hs/`. Origin is known; no investigation needed. Sorted last. |
+| Root Lock | File path falls under `/.hs/`. Origin is known; no investigation needed. Sorted last. |
 
 The sort order is a workflow convenience that determines which programs appear first. It is not a trust ranking and does not affect the approval mechanism. Every program receives the same approve and skip options.
 
@@ -121,7 +122,7 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 ## File Access queue (Phase 4)
 
-Once you approve a program's execution, Root Lock by HeartSuite begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
+Once you approve a program's execution, Root Lock begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
 
 - **Read access** — the default first approval level when approving a file read.
 - **Write access** — always includes read access. Granted when approving a file write.
@@ -163,7 +164,7 @@ From the Dashboard, select the File Access queue (`[f]`).
 ![File access queue — python3 grouped reads with sample files](test_docs_file_access_grouped.svg)
 
 > [!TIP]
-> Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). Root Lock by HeartSuite groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
+> Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). Root Lock groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
 
 > [!NOTE]
 > Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 exist, 34 no longer exist."

@@ -134,7 +134,7 @@ The bridge is a read-only insight plane that complements syslog enforcement stre
 - Drift detection by comparing stable `record_hash` values across snapshots.
 - Enforcement correlation for drill-down alongside policy rows.
 
-The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes).
+The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes). Do not publish Kibana, Elasticsearch, or the ingest receiver on a public IP without a network perimeter (for example a cloud firewall allowlist of known lab addresses, or an SSH tunnel so the browser reaches only `localhost`). Use the production path above for real access control, TLS, and retention.
 
 **Versus `tools/siem-test/`:** These are sibling evaluation fixtures with different purposes (both available on request, not on production hosts):
 

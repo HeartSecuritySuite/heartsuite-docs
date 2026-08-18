@@ -15,7 +15,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 
 ### Prerequisites
 - Basic knowledge of Markdown and static site generators.
-- Familiarity with Root Lock by HeartSuite (product documentation at [docs.heartsecsuite.com](https://docs.heartsecsuite.com); product support at support@heartsecsuite.com).
+- Familiarity with Root Lock (product documentation at [docs.heartsecsuite.com](https://docs.heartsecsuite.com); product support at support@heartsecsuite.com).
 - Git and GitHub account.
 
 ### Local Setup
@@ -52,6 +52,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 - Organize by topic: installation, allowlisting, maintenance, etc.
 - Use index.md for section overviews.
 - Follow existing naming: kebab-case, e.g., `vm-preparation.md`.
+- Product name: **Root Lock by HeartSuite** on first mention, in titles, and in legal/procurement copy; **Root Lock** after that. HeartSuite is the company or product family, not this kernel product.
 
 ## Submission Process
 

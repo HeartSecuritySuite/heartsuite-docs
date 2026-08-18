@@ -1,15 +1,12 @@
 ---
-title: "Root Lock by HeartSuite"
-linkTitle: "Documentation"
-weight: 10
-description: "Complete guide for installing and configuring Root Lock by HeartSuite."
----
-
+title: "HeartSuite documentation"
+linkTitle: "Home"
+description: "Documentation for Root Lock by HeartSuite and related HeartSuite products."
 ---
 
 *Root Lock by HeartSuite | Humans in Command*
 
----
+This site is the documentation for HeartSuite products. Each product has its own section.
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel level — per program, not per user. In Lockdown, anything not on the allowlist — including malware running as root — is blocked before it can act. Lockdown seals the allowlist — the kernel refuses any change to it while running, including by root. Undoing Lockdown requires a reboot with physical access. See [Mode Switching and Lockdown](docs/mode-switching/) for the mechanism. The Dashboard guides you through a 7-phase setup journey, from system verification to Lockdown activation.
 
