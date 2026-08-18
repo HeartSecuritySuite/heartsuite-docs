@@ -84,9 +84,13 @@ Supported recovery of a sealed allowlist requires booting the maintenance (Non-H
 Enforcement is per program identity. A process that is correctly allowlisted for a powerful role (package manager, backup helper, orchestration agent) can still be abused within its grants if an attacker controls its inputs or configuration. Residual risk is lateral or deputy misuse inside approved scope, not absence of a kernel gate.
 
 **8. Portable open flags and size mutation under a read grant**  
-POSIX leaves combining `O_TRUNC` with a read-only open **undefined**; truncation is guaranteed only with write open modes. Many Linux systems still truncate on `O_RDONLY|O_TRUNC` when DAC write allows; man-page NOTES document this fielded behaviour. By default Root Lock does **not** redefine that UAPI corner: residual risk includes size mutation via that open combination under a **read** file grant when **write** is not granted on the leaf. This is a scoped residual class under allowlist enforcement — not “enforcement is off,” not a Linux CVE to file, and not a claim that root can always wipe everything. Optional future product policy could elevate write-class checks or refuse the combination; that would be an explicit compatibility-owning choice, not the default live-with contract. See [Portable open flags and product policy](portable-open-flags-and-product-policy/).
+POSIX leaves combining `O_TRUNC` with a read-only open **undefined**; truncation is guaranteed only with write open modes. Many Linux systems still truncate on `O_RDONLY|O_TRUNC` when DAC write allows; man-page NOTES document this fielded behaviour. By default Root Lock does **not** redefine that UAPI corner.
 
-*Auditor action:* document residual risk acceptance for this corner; sample sensitive leaves that hold read grants only; do not treat kernel.org bug filing as the primary control response.
+What can still happen: a program with a **read** file grant (write not granted on that leaf) can still change the file's size — typically emptying it — if it opens the path with `O_RDONLY|O_TRUNC` (or equivalent) and ordinary Unix write permission allows the truncate. This is a scoped residual under allowlist enforcement.
+
+Who is affected: operators and auditors reviewing **read-only** grants on leaves where size or integrity matters (logs, flags, small config files). Programs that already have a write grant on that leaf are outside this residual.
+
+*Auditor action:* document residual-risk acceptance for this corner; sample sensitive leaves that hold read grants only; do not treat kernel.org bug filing as the primary control response.
 
 ---
 
