@@ -2,14 +2,14 @@
 title: "Which script launchers ship in the box"
 linkTitle: "Included Script Launchers"
 weight: 3
-description: "Secure Script Launchers included with Root Lock. The Dashboard offers them in Phase 3 when it finds the matching interpreter."
+description: "Secure Script Launchers included with Root Lock. The Dashboard offers them when it finds the matching interpreter."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "launchers"]
 type: docs
 toc: true
 ---
 
-**Overview**: Root Lock by HeartSuite ships with Secure Script Launchers for common interpreters. The Dashboard presents these during Phase 3 (if applicable) when the corresponding interpreters are detected on the system.
+**Overview**: Root Lock by HeartSuite ships with Secure Script Launchers for common interpreters. The Dashboard presents these when the corresponding interpreters are detected on the system.
 
 ## Available launchers
 
