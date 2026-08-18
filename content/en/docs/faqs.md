@@ -51,7 +51,7 @@ The two are not mutually exclusive. SELinux's domain transitions and distributio
 
 {{< details summary="What software can I remove or stop paying for if I run Root Lock?" >}}
 
-A: Root Lock replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a product entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
+A: Root Lock replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a tool entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
 
 **Can remove or reduce:**
 
