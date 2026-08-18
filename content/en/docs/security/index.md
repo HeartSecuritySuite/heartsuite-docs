@@ -82,7 +82,7 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 - **Hardware-level and pre-boot threats.** Firmware compromise, baseboard management exploits, and physical attacks on the boot chain are outside the HS attack surface.
 - **Misconfigured allowlists.** If you allowlist tools you should not — `modprobe`, `bpftool`, networked exfiltration utilities — outcomes move from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-scores-on-heartsuite-and-deployment-tuning).
 
-> **The reason the answer is the same for every reachable CVE in this document is that HeartSuite's enforcement is structural, not state-based.** Most kernel hardening products gate enforcement on a state variable that an attacker with arbitrary kernel write can clear in a single instruction. Lockdown's allowlist is consulted on every `execve` regardless of any state variable. There is no kill-switch.
+> **The reason the answer is the same for every reachable CVE in this document is that HeartSuite's enforcement is structural, not state-based.** Most kernel hardening tools gate enforcement on a state variable that an attacker with arbitrary kernel write can clear in a single instruction. Lockdown's allowlist is consulted on every `execve` regardless of any state variable. There is no kill-switch.
 
 | CVE | Component | Base Score | Score on HeartSuite | Status |
 |-----|-----------|-----------|-----------------|--------|
@@ -291,7 +291,7 @@ Per-CVE entries below name the bug, then state which of these two layers limits 
 
 ##### Why this is unusual
 
-Most kernel hardening products gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. Root Lock does not work that way. **Lockdown's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined anywhere in this document, the system continues to refuse new code execution. That is the property that makes the per-CVE backstops below short, calm, and identical: the answer is the same for every CVE, because the answer is structural.
+Most kernel hardening tools gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. Root Lock does not work that way. **Lockdown's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined anywhere in this document, the system continues to refuse new code execution. That is the property that makes the per-CVE backstops below short, calm, and identical: the answer is the same for every CVE, because the answer is structural.
 
 ##### Note on Scores on HeartSuite and deployment tuning
 
