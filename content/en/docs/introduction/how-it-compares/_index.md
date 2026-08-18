@@ -58,7 +58,7 @@ Standard Linux security tools are runtime layers an attacker with root can reach
 
 Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features Root Lock has compiled out, the answer is always no — without patching, without policy, without an agent checking.
 
-Most runtime security products sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). Root Lock sits at Layer 2: enforcement is compiled into the kernel binary itself, not applied to it from outside. That placement is why every bypass in the table below requires physical presence rather than a remote privilege escalation. For the full taxonomy with all products mapped by layer, see [Layer Analysis](../layer-analysis/).
+Most runtime security products sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). Root Lock sits at Layer 2: enforcement is compiled into the kernel binary itself, not a program installed in userspace. An attacker who already has remote root can turn those products off. They will kill the agent, unload the security module, or set the LSM policy permissive. Sitting at Layer 2 leaves nothing to turn off, disable or remove. Supported recovery of the sealed allowlist still requires physical presence or cloud serial console; residual risk around complete mediation is discussed under [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all products mapped by layer, see [Layer Analysis](../layer-analysis/).
 
 ## Security as economics
 
