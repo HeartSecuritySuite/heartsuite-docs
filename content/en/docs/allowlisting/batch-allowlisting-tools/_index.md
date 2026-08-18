@@ -18,7 +18,7 @@ author: Ron Hessing
 
 These CLI tools are the integration points for external control: your central automation (Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts) prepares policy data and invokes the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples. The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for HeartSuite-specific concerns; it is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
 
-**When to use these tools:** after Root Lock is installed and Phase 1 (System Verification) is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time APO baseline path. For dense fleets, **seed the installer first** (harvest APO from a reference host, package with pre-seed such as `--apo-seed`, then Ansible installs that package) — see [Central Policy Management](../../alerts/central-policy-management/). Do not use a full text dump here to skip multi-hour Phase 1; that requires install-time pre-seed, not `batch_record_add.py`.
+**When to use these tools:** after Root Lock is installed and initial setup is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time APO baseline path. For dense fleets, **seed the installer first** (harvest APO from a reference host, package with pre-seed such as `--apo-seed`, then Ansible installs that package) — see [Central Policy Management](../../alerts/central-policy-management/). Do not use a full text dump here to skip multi-hour initial setup; that requires install-time pre-seed, not `batch_record_add.py`.
 
 ## batch_record_add.py
 
@@ -37,7 +37,7 @@ Where `<file>` contains one absolute program path per line, for example:
 ```
 
 > [!WARNING]
-> `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context. Do not use this tool as a substitute for install-time baseline packaging, and do not run bulk seeds while Phase 1 is still pending unless you have a deliberate exception.
+> `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context. Do not use this tool as a substitute for install-time baseline packaging, and do not run bulk seeds while initial setup is still running unless you have a deliberate exception.
 
 ## hs-manage-allowlist
 

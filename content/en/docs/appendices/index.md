@@ -18,14 +18,14 @@ With exception of the Secure Script Launchers, all tools are located in the `/.h
 The Dashboard guides you through every phase. These are the main views you use in normal operation.
 
 - **Dashboard** — manages Root Lock. Displays phase progress, pending and denied counts, the protection state indicator, the status line at the bottom, and the Suggested Next Step. Appears automatically on login. Launch it manually with `heartsuite`.
-- **Programs queue** (`[p]`) — review and approve pending program executions (Phase 2) from the Dashboard. Presents items with full metadata, grouped intelligently.
-- **File Access queue** (`[f]`) — review and approve pending file accesses (Phase 4) from the Dashboard. Handles read access and write access approvals separately.
-- **Internet Access queue** (`[i]`) — review and approve pending internet connections (Phase 5) from the Dashboard. Allows allowlisting specific IPs per program.
+- **Programs queue** (`[p]`) — review and approve pending program executions from the Dashboard. Presents items with full metadata, grouped intelligently.
+- **File Access queue** (`[f]`) — review and approve pending file accesses from the Dashboard. Handles read access and write access approvals separately.
+- **Internet Access queue** (`[i]`) — review and approve pending internet connections from the Dashboard. Allows allowlisting specific IPs per program.
 - **Allowed** (`[a]`) — browse and edit existing allowlist entries from the Dashboard.
 - **Browser View** (`[w]`) — enable or disable browser-based access to Root Lock via SSH tunnel from the Dashboard.
-- **Launchers** (`[s]`) — configure Secure Script Launchers (Phase 3) from the Dashboard.
+- **Launchers** (`[s]`) — configure Secure Script Launchers from the Dashboard.
 - **Alert Settings** (`[e]`) — configure alert channels (email, syslog, or webhook) from the Dashboard. At least one channel must be configured before Lockdown activation. See [Alert Settings](../alerts/).
-- **Lockdown** (`[l]`) — activate Lockdown from the Dashboard. Shows the precondition checklist, observation period summary, and allowlist review. Before typing `YES` (case-sensitive), the prep shown during Lockdown activation offers per-panel actions: `[u]` undo auto-narrowed grants (install/kmod/broad), `[p]` patch install seal paths, `[g]` restrict rm/cp/mv using observed usage (mitigates file-write tool risks), `[x]` exclude conflicts, plus SSH/permit controls. The inventory and commitment summaries are read-only and point to the prep for changes. After activation, offers `[r]` Reboot.
+- **Lockdown** (`[l]`) — activate Lockdown from the Dashboard. Shows the precondition checklist, observation period summary, and allowlist review. Type `YES` (case-sensitive) to confirm. After activation, offers `[r]` Reboot. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow.
 - **Maintenance** (`[m]`) — guided maintenance workflows from the Dashboard. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Lockdown, Lockdown+sealed, and maintenance kernel states — hidden in Setup Mode by design.
 - **Backup** (`[b]`) — manage file backup and versioning from the Dashboard. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
 
@@ -68,7 +68,7 @@ Off the user path. Prefer the Dashboard review tools for any standard workflow.
 - **`batch_record_add_read_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with read access to all files. Use with caution. Prefer the Dashboard review tools.
 - **`batch_record_add_write_all.py`** — (legacy/advanced) adds programs listed in a file to allowlist entries with write access to all files. Use with extreme caution. Prefer the Dashboard review tools.
 
-## Secure Script Launchers (Phase 3)
+## Secure Script Launchers
 
 Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Launchers (`[s]`).
 

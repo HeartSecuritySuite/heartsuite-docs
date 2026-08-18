@@ -13,7 +13,7 @@ type: docs
 
 ## For fleet and enterprise scale
 
-Single-host setup is on this page (Dashboard → Alert Settings, Phase 6). For production fleets and compliance programmes, use the dedicated guides:
+Single-host setup is on this page (Dashboard → Alert Settings). For production fleets and compliance programmes, use the dedicated guides:
 
 - [SIEM and Fleet Integration](siem-integration/) — Syslog, webhook, and status JSON for Splunk, Elastic, PagerDuty, and similar tools. The recommended path when you manage many servers without per-host TUI toil.
 - [Central Policy Management and External Control](central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation; consume syslog, JSONL approval logs, status.json, and webhooks for central visibility.
@@ -95,7 +95,7 @@ For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, 
 
 For using your existing central tooling (Ansible, Terraform, GitOps, ServiceNow, custom scripts) to own and apply allowlist policy at scale — with pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). Root Lock is designed to be driven by your control planes; the Dashboard is the single-host operator surface.
 
-When Phase 6 is complete — at least one push channel configured — the Dashboard marks Phase 6 as complete and unlocks Phase 7 (Lockdown).
+When at least one push channel is configured, the Dashboard unlocks Lockdown.
 
 ## What triggers an alert
 
@@ -149,4 +149,4 @@ Syslog and webhook emit every alert immediately, without grouping or windowing. 
 > [!NOTE]
 > Alerts begin flowing only after Lockdown is activated. If a configured channel appears silent during Setup Mode, that is expected — not a misconfiguration.
 
-With at least one push channel configured, Phase 6 is complete and the Dashboard unlocks Phase 7. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/) (prep with per-panel actions/opt-outs before `YES`).
+With at least one push channel configured, the Dashboard unlocks Lockdown. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/).
