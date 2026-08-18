@@ -1,7 +1,8 @@
 ---
-title: "Security Auditor Brief: Kernel Hardening Posture"
+title: "What a red team should test on this kernel"
+linkTitle: "Auditor Brief"
 weight: 22
-description: "Technical assessment of Root Lock by HeartSuite HS kernel hardening posture for security auditors and red teams — 6.18.9 primary commercial baseline; measured scores and reproduction commands reference the published 5.19.6 legacy stream until 6.18.9 evidence ships."
+description: "Hardening posture for auditors and red teams. 6.18.9 is the commercial baseline; measured scores still cite the published 5.19.6 stream."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
@@ -66,8 +67,8 @@ SELinux initializes at boot but does not enforce. Root Lock is the sole enforcin
 
 *Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown. This is an operator-procedure-dependent mitigation, not a config-enforced one.
 
-**4. Lockdown seal and control-plane mediation completeness**  
-Lockdown is designed so root has no intended path to lift the allowlist seal or disable enforcement the way agents, LSM frameworks, or eBPF programs can be killed, unloaded, or set permissive. Seal and control integrity are kernel-enforced product contracts. On a large kernel, complete mediation of every security-relevant path remains an ongoing engineering property: residual risk includes incomplete mediation of seal mutators and HeartSuite control interfaces (including sibling attribute or syscall entry points that must stay gated under Lockdown).
+**4. Can root unseal the allowlist or turn enforcement off?**  
+Root cannot lift the allowlist seal or turn enforcement off. There is no agent to kill, no module to unload, and no LSM to set permissive. Seal and control integrity are kernel-enforced product contracts. The leftover risk is whether some other kernel path can still write the seal or a HeartSuite control. Check sibling attributes and extra syscalls on the pin you deploy. Do not treat the architecture diagram as the gate list.
 
 *Auditor action:* verify live gates on the **deployed ship pin** with the operator's regression suite or release checklist when available — do not assume completeness from architecture diagrams alone.
 

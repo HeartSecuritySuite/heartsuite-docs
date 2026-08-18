@@ -1,7 +1,8 @@
 ---
-title: "Analyst Summary: HeartSuite Kernel Hardening"
+title: "Kernel hardening in plain language"
+linkTitle: "Analyst Summary"
 weight: 60
-description: "Plain-language summary of Root Lock by HeartSuite kernel hardening for journalists, analysts, and non-technical reviewers — with fact-checker citations."
+description: "What Root Lock removes from the kernel, why, and how to fact-check the claims — for journalists, analysts, and non-specialists."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "overview"]
 type: docs
