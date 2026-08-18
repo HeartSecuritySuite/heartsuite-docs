@@ -15,7 +15,7 @@ menu:
 **Overview**: After running the install command, the machine reboots into the Root Lock by HeartSuite kernel.
 
 > [!NOTE]
-> Cloud users skip this step entirely. The Root Lock kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. The Dashboard appears automatically on first boot.
+> Cloud users skip this step entirely. The Root Lock kernel is pre-installed and on first boot the Dashboard confirms initial setup is complete. The Dashboard appears automatically on first boot.
 
 ## Reboot into the Root Lock kernel
 

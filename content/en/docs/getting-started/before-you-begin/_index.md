@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Two setup paths: Cloud (boot a pre-installed instance) or Local (install the kernel yourself). Confirm the requirements below match your system, then follow your path.
+**Overview**: Confirm the requirements below match your system, then follow Cloud Path or Local Path.
 
 ## System requirements
 
@@ -21,12 +21,17 @@ If your setup differs, check the [Introduction](../../introduction/) for compati
 
 ## Choosing your setup path
 
-- **Cloud Path**: Launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image). No download or kernel installation required — you boot directly into Setup Mode and the Dashboard appears on first login.
-- **Local Path**: Download the installation package from [heartsecsuite.com](https://heartsecsuite.com), extract, install the Root Lock kernel, and complete the Installation setup through multiple reboot cycles before reaching the Dashboard.
+{{< choice-pane >}}
+{{< choice-card header="Cloud Path" >}}
+Launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image). No download or kernel installation required — you boot directly into Setup Mode and the Dashboard appears on first login.
 
-Both paths merge at the Dashboard after Phase 1 (System Verification) is complete.
+**Ready?** Launch your instance. The Dashboard appears on first login and confirms initial setup is complete.
+{{< /choice-card >}}
+{{< choice-card header="Local Path" >}}
+Download the installation package from [heartsecsuite.com](https://heartsecsuite.com), extract, install the Root Lock kernel, and complete the Installation setup through multiple reboot cycles before reaching the Dashboard.
 
-**Ready to install?**
+**Ready?** Proceed to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
+{{< /choice-card >}}
+{{< /choice-pane >}}
 
-- **Local Path**: proceed to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
-- **Cloud Path**: launch your instance — the Dashboard appears on first login and confirms Phase 1 is complete.
+Both paths merge at the Dashboard after initial setup is complete.

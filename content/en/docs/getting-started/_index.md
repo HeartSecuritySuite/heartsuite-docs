@@ -12,23 +12,26 @@ menu:
     weight: 18
 ---
 
-**Overview**: Root Lock by HeartSuite runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after Phase 1.
+**Overview**: Root Lock by HeartSuite runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after initial setup.
 
 ## Before you begin
 
 Check [Before You Begin](before-you-begin/) for system requirements and prerequisites, then follow your path below.
 
-## Cloud Path
+## Choose your path
 
+{{< choice-pane >}}
+{{< choice-card header="Cloud Path" >}}
 Launch a pre-installed Root Lock cloud instance (AWS AMI, GCP image). No download or kernel installation required — boot directly into Setup Mode and the Dashboard appears on first login. Follow the Suggested Next Step to begin Phase 2.
-
-## Local Path
-
+{{< /choice-card >}}
+{{< choice-card header="Local Path" >}}
 Install Root Lock on bare-metal or a custom VM:
 
 1. **[Obtaining Root Lock](../installation/obtaining-heartsuite/)** — download the installer from heartsecsuite.com.
 2. **[Installation Part 1](../installation/installation-part1/)** — verify the download, run the installer, and reboot into the Root Lock kernel.
 3. **[Installation Part 2](../installation/installation-part2/)** — complete initial setup through multiple reboot cycles until the Dashboard confirms it is complete.
 4. **[Verifying Installation](../verification/)** — confirm initial setup is complete in the Dashboard. On cloud, use serial console to inspect `/var/log/heartsuite/install.log` if needed.
+{{< /choice-card >}}
+{{< /choice-pane >}}
 
-Once Phase 1 is complete, both paths merge — the Dashboard shows your current phase and the Suggested Next Step directs you to begin allowlisting.
+Once initial setup is complete, both paths merge — the Dashboard shows the setup checklist and the Suggested Next Step directs you to begin allowlisting.
