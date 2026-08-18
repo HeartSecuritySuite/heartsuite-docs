@@ -104,7 +104,7 @@ Allowlist entries can be created for interpreted code such as Python, PHP, and P
 
 ## How Root Lock stands alone
 
-No other tool combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other tools. Together, they make Root Lock the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the machine is running. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions.
+No other tool combines all three: enforcement that survives root compromise, standalone operation with no background process or vendor console, and a backup on every file write — not on a schedule, on every write. Each exists separately in other tools. Together, they make Root Lock the right choice for deployments where the security layer itself must be protected from the attacker who is already inside. Root cannot change the allowlist while the machine is running. The files are immutable. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions.
 
 ## Is Root Lock right for you?
 
