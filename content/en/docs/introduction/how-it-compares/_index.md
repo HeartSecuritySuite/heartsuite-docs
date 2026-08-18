@@ -2,7 +2,7 @@
 title: "What Root Lock replaces — and what it does not"
 linkTitle: "How It Compares"
 weight: 5
-description: "It replaces tools an attacker with root can unload. It does not replace your SIEM, NDR, or scanner. Includes how it can be circumvented."
+description: "It replaces tools an attacker who already has remote root can unload. It does not replace your SIEM, NDR, or scanner. Includes how it can be circumvented."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "comparison", "siem", "edr", "ebpf", "falco", "selinux", "apparmor", "gvisor", "openclaw", "nemoclaw", "openshell", "claude-code"]
 type: docs

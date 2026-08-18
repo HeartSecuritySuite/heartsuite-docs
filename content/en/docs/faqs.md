@@ -33,7 +33,7 @@ A: Yes. Each host runs the Root Lock kernel with the same allowlist installed lo
 
 {{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: Root Lock replaces these tools on the preventive-enforcement dimension. An attacker who already has root kills the Falco agent, unloads the BPF program, or sets SELinux permissive. Root Lock has nothing to turn off. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table, including how Root Lock itself is recovered (physical presence: keyboard and monitor, serial port, or cloud serial console). For a detailed SELinux comparison, see "How does Root Lock compare to SELinux specifically?" below.
+A: Root Lock replaces these tools on the preventive-enforcement dimension. An attacker who already has remote root kills the Falco agent, unloads the BPF program, or sets SELinux permissive. Root Lock has nothing to turn off. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table, including how Root Lock itself is recovered (physical presence: keyboard and monitor, serial port, or cloud serial console). For a detailed SELinux comparison, see "How does Root Lock compare to SELinux specifically?" below.
 
 {{< /details >}}
 
