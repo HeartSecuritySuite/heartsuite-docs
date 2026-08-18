@@ -142,6 +142,20 @@ Alpine's musl-based userspace is fully within scope when the distribution versio
 
 ---
 
+## Cloud platforms (AWS EC2 Nitro and KVM guests)
+
+Root Lock runs as a **guest** on AWS EC2 (including Nitro), KVM, VMware, and other cloud hypervisors. Use a distribution from this matrix and the same installer as on local hardware.
+
+Before you install on a cloud instance:
+
+- Keep the provider serial console enabled. SSH drops during the first Root Lock reboot; the console is how you recover if the instance does not come back.
+- Run the install once on your target instance type in staging before fleet rollout.
+- If the installer stops before reboot, read `/var/log/heartsuite/install.log` and contact support@heartsecsuite.com and attach the log file for review and assistance.
+
+Root Lock as a **hypervisor host** (running VMs from this kernel) is not supported. See [Workload fit](#workload-fit-not-distro-specific) and [System Requirements](../../introduction/system-requirements/).
+
+---
+
 ## Workload fit (not distro-specific)
 
 Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether the **workload** belongs on the HS kernel is a separate decision — the same across every row in the matrix.
@@ -171,7 +185,7 @@ Organizations with a strict **no custom or modified kernel** policy — certific
 | Scenario | Path |
 |----------|------|
 | File isolation without custom kernel | [HJFS documentation](../../hjfs/) |
-| Execution and network controls without HS kernel | [HeartSuite Exec Lock](../../../exec-lock/) alongside HJFS where applicable |
+| Program install, update, and version UI without a custom kernel | [HeartSuite Exec](../../../exec-lock/) — filesystem UI next to HJFS |
 | Full three-layer coverage when HS kernel is acceptable | Root Lock (HS kernel) + HJFS on the same host |
 
 HJFS limits, deployment scenarios, and comparison to kernel-level enforcement: [HJFS how-it-compares](../../hjfs/how-it-compares/) and [HJFS limits](../../hjfs/introduction/limits/). Procurement mapping: [Enterprise Adoption Guide → Honest limitations](enterprise-adoption-guide/#honest-limitations).

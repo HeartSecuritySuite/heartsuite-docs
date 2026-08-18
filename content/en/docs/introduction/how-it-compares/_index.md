@@ -19,7 +19,7 @@ Standard operating systems grant these rights to users. Ken Thompson built Unix 
 
 {{< cardpane >}}
 {{< card header="**What it replaces**" >}}
-Runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root.
+Runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker who already has remote root.
 {{< /card >}}
 {{< card header="**What it does not**" >}}
 Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer different questions and should be run alongside.
@@ -65,7 +65,7 @@ graph TB
     style HSK fill:#d4f4dd,stroke:#2a7a40
 ```
 
-Standard Linux security tools are runtime layers an attacker with root can reach and disable. Root Lock compiles enforcement into the kernel binary itself. The BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
+Standard Linux security tools are runtime layers an attacker who already has remote root can disable. Root Lock compiles enforcement into the kernel binary itself. The BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
 
 Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features Root Lock has compiled out, the answer is always no, without patching, without policy, without an agent checking.
 
@@ -85,13 +85,13 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 | Tool | What it does | How it can be disabled | How Root Lock compares |
 |---|---|---|---|
-| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker with root can unload the BPF program, kill the agent, or disable the BPF syscall | Root Lock removes the BPF syscall entirely from the kernel. There is no agent to kill and no hook to unload. Enforcement is compiled in. |
+| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker who already has remote root can unload the BPF program, kill the agent, or disable the BPF syscall | Root Lock removes the BPF syscall entirely from the kernel. There is no agent to kill and no hook to unload. Enforcement is compiled in. |
 | **AppArmor, SELinux, SMACK, Landlock** (userspace LSM frameworks) | Per-process MAC profiles limiting filesystem and capability access | Root can set SELinux to permissive, unload an AppArmor profile, or edit the policy file | Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. The files are immutable, and the kernel refuses the write. |
 | **seccomp-bpf sandboxes** (systemd services, browser sandboxes, bubblewrap, firejail) | Per-process syscall filters set by the process itself or its parent | A parent with equivalent privilege can spawn the same binary without the filter. Filters are scoped to a process tree, not to the program identity | Root Lock gates by program identity, not process lineage. A program's allowlist applies every time it runs, regardless of who spawned it. |
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | Root Lock *is* the kernel: one layer instead of two, with nothing to unload. Used as a guest kernel inside a microVM, it provides kernel-level enforcement for the workload. |
 | **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the module, or tamper with the driver. Many breaches include "disable EDR" as an early step | Root Lock has no agent and no module to unload. It is the kernel. EDR still provides telemetry and response Root Lock does not; treat Root Lock as a replacement for the preventive-enforcement dimension only. See [What Root Lock complements](#what-root-lock-complements). |
 
-**The common pattern.** Every tool in this table can be disabled by an attacker with root. They can kill the security agent, unload the BPF program, or set the LSM permissive. Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
+**The common pattern.** Every tool in this table can be disabled by an attacker who already has remote root. They can kill the security agent, unload the BPF program, or set the LSM permissive. Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
 
 **Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine.
 
@@ -135,7 +135,7 @@ Default access paths are filtered rather than severed. Existing Linux binaries r
 
 **The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow. For any environment running software it did not write, which is most production infrastructure, HS's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
 
-**The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root. Root Lock's policy is an allowlist file. An attacker with root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
+**The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root. Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
 
 **Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. HS targets Linux 5.19.6 and 6.18 natively.
 
@@ -161,7 +161,7 @@ Root Lock observes what each binary does during Setup Mode; you build the allowl
 
 Root Lock's Setup Mode is the practical answer for standard infrastructure: run the system, record every access in the Dashboard queues, review and approve, then engage Lockdown. For any environment running standard Linux software, Root Lock's Setup Mode provides the observe-and-build path that seL4 cannot offer.
 
-**The policy-integrity gap.** seL4 has no policy file. Authority is the token set. There is nothing to edit after the system is built. Root Lock's policy is an allowlist file. An attacker with root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
+**The policy-integrity gap.** seL4 has no policy file. Authority is the token set. There is nothing to edit after the system is built. Root Lock's policy is an allowlist file. An attacker who already has root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
 
 **Platform.** seL4 is not a Linux kernel; standard Linux software requires a full porting effort to run on it. Root Lock targets Linux 5.19.6 and 6.18 and is installed by replacing the kernel on an existing host.
 
@@ -221,7 +221,7 @@ The table below answers each question in full for the main enforcement mechanism
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes: one container, one labelled domain, one process tree, one observed program. Root Lock narrows it to *every* program via a system-wide allowlist, root included.
 
-Every competitor above can be turned off remotely once the attacker has root: kill the agent, unload the module, or set the policy permissive. Root Lock has nothing equivalent to turn off. Changing the sealed allowlist takes physical presence or the cloud serial console. See [Circumvention and recovery](#circumvention-and-recovery). Those two shifts are the substance of the Root Lock position.
+Every competitor above can be turned off by an attacker who already has remote root: kill the agent, unload the module, or set the policy permissive. Root Lock has nothing equivalent to turn off. Changing the sealed allowlist takes physical presence or the cloud serial console. See [Circumvention and recovery](#circumvention-and-recovery). Those two shifts are the substance of the Root Lock position.
 
 The May 2026 TanStack npm attack illustrated the trust-boundary distinction from the supply chain direction. The attacker operated inside a legitimate build pipeline using valid credentials. SLSA provenance, OIDC, and 2FA all functioned as designed. No credential check or trust-chain verification registered anything to block.
 
@@ -285,11 +285,11 @@ Root Lock's sealed allowlist is intended to change through these operator paths:
 
 What this means for security:
 
-- Under Lockdown, remote root is not sufficient to defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access.
+- Under Lockdown, an attacker who already has remote root cannot defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access.
 - Supported recovery requires physical presence: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the recovery path.
 - Physical presence always returns control to you. No software applied to the system can prevent console recovery.
-- **Leftover risk (beyond physical access).** On a large kernel, whether every path is actually gated is still an engineering job. That leftover includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
-- Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. This is a different leftover than whether an agent is still running.
+- **What can still go wrong (beyond physical access).** On a large kernel, whether every path is actually gated is still an engineering job. That includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
+- Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. This is a different question than whether an agent is still running.
 
 Compare this to the tools in the first table: in most of them, root can turn enforcement off. They kill the agent, unload the module, or set the policy permissive. Root Lock is deliberately not in that category.
 
@@ -301,6 +301,6 @@ To see the three enforcement mechanisms tested against real attacks, including w
 
 Under Lockdown, root cannot modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Changing the seal takes physical presence or the cloud serial console, to boot the maintenance kernel, as described above.
 
-Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the leftover-risk change they describe to auditors. It is the same for every HeartSuite-protected server they manage in financial services, healthcare, and defence.
+Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the change they describe to auditors. It is the same for every HeartSuite-protected server they manage in financial services, healthcare, and defence.
 
-Auditors who need kernel-config leftovers and notes on whether every path is gated should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).
+Auditors who need kernel-config notes and whether every path is gated should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).

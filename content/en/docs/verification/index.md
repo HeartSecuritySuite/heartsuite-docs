@@ -2,7 +2,7 @@
 title: "Confirm the Root Lock kernel is actually running"
 linkTitle: "Verification"
 weight: 30
-description: "Checking Root Lock by HeartSuite activation and initial configuration."
+description: "Initial setup checks that you booted the Root Lock kernel and the Dashboard is ready. What complete looks like on cloud and on local."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "verification", "testing", "setup"]
 toc: true
