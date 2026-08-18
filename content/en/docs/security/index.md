@@ -19,7 +19,13 @@ markup:
 
 Every kernel CVE relevant to Root Lock — what it can do, what it cannot, and why.
 
-The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a Root Lock deployment — the actual risk on your system, not the theoretical worst case. Where the attack surface is absent — hardware not present, trigger not installed — the Score on HeartSuite is 0.0 regardless of Base Score. Where the code path is reachable, MI is reduced from High to Low: Lockdown's allowlist refuses new code execution and blocks allowlist modification. Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
+The **Score on HeartSuite** column shows the CVSS v3.1 Environmental Score for a Root Lock deployment — the actual risk on your system, not the theoretical worst case.
+
+Where the attack surface is absent — hardware not present, trigger not installed — the Score on HeartSuite is 0.0 regardless of Base Score.
+
+Where the code path is reachable, MI is reduced from High to Low: Lockdown's allowlist refuses new code execution and blocks allowlist modification.
+
+Scores are computed using CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ## CVE Status
 

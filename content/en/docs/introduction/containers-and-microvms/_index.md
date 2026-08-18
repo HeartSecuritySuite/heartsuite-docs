@@ -13,7 +13,9 @@ menu:
     identifier: "containers-and-microvms"
 ---
 
-**Overview**: Root Lock by HeartSuite seals what a host may run. The default install is a sealed appliance — a backup receiver, a fixed server, a closed device — not a general container host. Overlay filesystems and user namespaces stay off on that baseline because they are the sandbox-bypass and privilege-escalation class the design removes. When you do need containers, two shipped paths cover them: the **Container-host** install for a long-lived, steady set of images, and Root Lock as the **guest** kernel inside a Firecracker microVM, a Kata Container, or a plain KVM or cloud VM for untrusted or disposable work.
+**Overview**: Shared-kernel Docker is not the default on a sealed host. Root Lock by HeartSuite omits overlay filesystems and user namespaces on the Standard-host install because those are the features attackers use to shadow directories and reach root.
+
+The default install is a sealed appliance — a backup receiver, a fixed server, a closed device. When you need containers, two shipped paths cover them: the **Container-host** install for a long-lived, steady set of images, and Root Lock as the **guest** kernel inside a Firecracker microVM, a Kata Container, or a plain KVM or cloud VM for untrusted or disposable work.
 
 ## Why Docker is not the default
 
@@ -35,7 +37,9 @@ Industry pattern: platforms that run untrusted or multi-tenant code put Firecrac
 
 ### Container host — a long-lived set on this kernel
 
-The installer detects Docker, containerd, Kubernetes, or CRI-O and offers a **Container host** or **Standard host** install. Container-host installs enable overlay filesystem support and adapt Setup Mode for container runtimes. You review the runtime, overlay mounts, and each image in the Dashboard queues, then engage Lockdown. Containers running at that moment continue. New containers, image pulls, and restarts after exit each need a maintenance window.
+The installer detects Docker, containerd, Kubernetes, or CRI-O and offers a **Container host** or **Standard host** install. Container-host installs enable overlay filesystem support and adapt Setup Mode for container runtimes.
+
+You review the runtime, overlay mounts, and each image in the Dashboard queues, then engage Lockdown. Containers running at that moment continue. New containers, image pulls, and restarts after exit each need a maintenance window.
 
 This is the path for long-lived service containers, Kubernetes nodes with a stable pod set, and batch jobs that finish before Lockdown. Continuous scheduling, autoscaling, and pod rescheduling after node loss are not a fit — Lockdown refuses the new mounts those moves need.
 
@@ -55,7 +59,9 @@ See [Deployment Scenarios → Container hosts](../deployment-scenarios/#containe
   (known / trusted workload only)
 ```
 
-Run Root Lock as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. Build the allowlist once: run a representative task in Setup Mode, review and approve the tools through the Dashboard queues, then bake that allowlist into the VM image. Each task VM boots from that image into Lockdown. The allowlist holds for the life of the task. Then the VM is gone.
+Run Root Lock as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. Build the allowlist once: run a representative task in Setup Mode, review and approve the tools through the Dashboard queues, then bake that allowlist into the VM image.
+
+Each task VM boots from that image into Lockdown. The allowlist holds for the life of the task. Then the VM is gone.
 
 An attacker who already has root inside the guest cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 

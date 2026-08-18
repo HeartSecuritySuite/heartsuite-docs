@@ -8,9 +8,11 @@ tags: ["compliance", "SOC 2", "AICPA"]
 type: docs
 ---
 
-**Purpose**: This document maps Root Lock by HeartSuite product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. It is written for use by HeartSuite customers preparing for SOC 2 Type I or Type II audits, and as a reference document to hand to auditors.
+**Purpose**: This document maps Root Lock by HeartSuite product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. Hand it to auditors, or use it while preparing a Type I or Type II engagement.
 
-Each criterion entry includes: the control requirement, how HeartSuite satisfies it, where it does not, and what evidence an auditor should request. The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described in the logging and change-management sections below and are the primary artifacts for reconstructing allowlist changes and enforcement decisions.
+Each criterion entry includes the control requirement, how Root Lock satisfies it, where it does not, and what evidence an auditor should request.
+
+The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described in the logging and change-management sections below. They are the primary artifacts for reconstructing allowlist changes and enforcement decisions.
 
 ---
 
@@ -30,9 +32,9 @@ Each criterion entry includes: the control requirement, how HeartSuite satisfies
 
 Root Lock is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
 
-- HeartSuite satisfies specific sub-criteria as a **technical control** in your control environment.
+- Root Lock satisfies specific sub-criteria as a **technical control** in your control environment.
 - You still need **organizational controls** (policies, procedures, access reviews, training) alongside it.
-- Evidence artifacts listed here are those your auditor can observe, request logs of, or inspect directly on the system.
+- Evidence artifacts listed here are those your auditor can observe, request logs of, or inspect directly on the host.
 
 ---
 
@@ -44,7 +46,9 @@ Root Lock is deployed on Linux servers to enforce a default-deny security policy
 
 **How Root Lock satisfies this**:
 
-Root Lock controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root. In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
+Root Lock controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root.
+
+In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
 
 The three dimensions of per-program access control:
 
@@ -54,11 +58,13 @@ The three dimensions of per-program access control:
 | File access | Per-program read and write permissions; read and write approved separately |
 | Network access | Per-program, per-destination IPv4/IPv6 allowlist; no CIDR ranges, hostnames, or wildcards |
 
-Access permissions are built during Setup Mode via the Dashboard's review queues, where each program's execution, file access, and network access is presented for explicit human approval before Lockdown is activated.
+Access permissions are built during Setup Mode via the Dashboard review queues. Each program's execution, file access, and network access is presented for explicit human approval before Lockdown is activated.
 
 Under Lockdown, root cannot change the allowlist. The files are immutable (`chattr +i`). The kernel refuses the write. No program can extend access at runtime.
 
-**Scope**: Every allowlist approval action (programs, file paths, network destinations) is recorded in a dedicated, persistent JSONL approval log with timestamp, uid, and tty. This provides direct session attribution for changes to the policy. In environments where multiple administrators share root access, uid/tty-to-person attribution still requires correlating against customer-side session records (terminal session logging via `auditd`, a privileged access management tool, or equivalent). Dashboard access requires Linux root credentials; there is no additional authentication layer within HeartSuite.
+**Scope**: Every allowlist approval action (programs, file paths, network destinations) is recorded in a dedicated, persistent JSONL approval log with timestamp, uid, and tty. That log provides direct session attribution for changes to the policy.
+
+In environments where multiple administrators share root access, uid/tty-to-person attribution still requires correlating against customer-side session records (terminal session logging via `auditd`, a privileged access management tool, or equivalent). Dashboard access requires Linux root credentials; there is no additional authentication layer within Root Lock.
 
 **Evidence artifacts**:
 
@@ -76,7 +82,9 @@ Under Lockdown, root cannot change the allowlist. The files are immutable (`chat
 
 **How Root Lock addresses this**:
 
-HeartSuite does not implement role-based access control within the Dashboard. Every user with Linux root access has identical, unrestricted access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and maintenance mode. There is no operator/administrator distinction, no per-function permission check, and no audit trail distinguishing one root user's actions from another.
+Root Lock does not implement role-based access control within the Dashboard. Every user with Linux root access has identical access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and Maintenance.
+
+There is no operator/administrator distinction, no per-function permission check, and no audit trail distinguishing one root user's actions from another.
 
 CC6.3 is an organizational control for this product. Restricting which personnel can reach root — and attributing their actions — requires customer-side controls: `sudoers` policy, a privileged access management tool, bastion host session recording, or equivalent.
 
@@ -94,7 +102,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 **How Root Lock satisfies this**:
 
-HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory. The Lockdown activation log records what was sealed.
+Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory. The Lockdown activation log records what was sealed.
 
 The five sealed categories:
 
@@ -106,11 +114,13 @@ The five sealed categories:
 | Scheduled tasks and login scripts | Cron and anacron configuration, environment defaults, root shell profiles |
 | Maintenance tools | File editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies |
 
-While Lockdown is active, root cannot remove the immutable flags. The kernel disables `chattr`. Modifying any of these resources requires booting the maintenance kernel, which requires physical presence (keyboard and monitor, serial port, or cloud provider serial console).
+While Lockdown is active, root cannot remove the immutable flags. The kernel disables `chattr`. Modifying any of these resources requires booting the maintenance kernel, which requires physical or serial-console access (keyboard and monitor, serial port, or cloud provider serial console).
 
 An attacker who already has root over SSH cannot edit the SSH config, create accounts, change passwords, install cron jobs, or plant login-script backdoors.
 
-**Scope**: HeartSuite installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from HeartSuite. Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
+**Scope**: Root Lock installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from Root Lock.
+
+Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 
 **Evidence artifacts**:
 
@@ -154,19 +164,19 @@ Specific transmission controls:
 
 **How Root Lock satisfies this**:
 
-This is the primary use case of Root Lock. The implementation is structural, not signature-based:
+This is the primary use case of Root Lock. The implementation is structural, not signature-based.
 
-**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether the file was detected by any scanner.
+**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether any scanner detected the file.
 
-**Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not — in Lockdown, it is blocked before the interpreter processes it.
+**Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not. In Lockdown, it is blocked before the interpreter processes it.
 
-**Reduced kernel features attackers can reach**: The Root Lock kernel deliberately omits primitives that are common privilege-escalation and bypass paths (eBPF, FUSE, overlay, user namespaces, competing LSMs). This removes the attack surface by design.
+**Reduced kernel features attackers can reach**: The Root Lock kernel omits eBPF, FUSE, overlay filesystems, user namespaces, and competing LSMs. Those are how attackers hide, shadow directories, and reach root.
 
 See [System Requirements](../introduction/system-requirements/#software-compatibility-notes) and [Deployment Scenarios](../introduction/deployment-scenarios/) for details.
 
-**Module loading restriction**: In Lockdown, `kmod`, `modprobe`, and `insmod` have no allowlist entries by default and cannot execute. Module-based rootkits cannot be installed because the module loaders cannot run. Where kmod is required for hardware drivers, its file access permissions can be restricted to specific `.ko` paths, preventing it from loading unauthorized modules.
+**Module loading restriction**: In Lockdown, `kmod`, `modprobe`, and `insmod` have no allowlist entries by default and cannot execute. Module-based rootkits cannot be installed because the module loaders cannot run. Where kmod is required for hardware drivers, its file access permissions can be restricted to specific `.ko` paths.
 
-**Post-compromise file recovery**: When an approved program is compromised and encrypts or corrupts files (e.g., ransomware running inside an approved process), HeartSuite's per-write backup preserves every version. Recovery starts from the moment before the damage began, not the last scheduled backup window. Under Lockdown, the kernel blocks all programs from accessing the backup directory — backups cannot be destroyed even by an attacker running as root.
+**Post-compromise file recovery**: When an approved program is compromised and encrypts or corrupts files (for example ransomware inside an approved process), per-write backup preserves every version. Recovery starts from the moment before the damage began, not the last scheduled backup window. Under Lockdown, the kernel blocks all programs from accessing the backup directory — including an attacker running as root.
 
 **Alert on new blocked programs**: In Lockdown, any program path that appears in the denial log and has never appeared in any prior log session triggers an alert to all configured channels immediately.
 
@@ -188,9 +198,11 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **How Root Lock satisfies this**:
 
-**Vulnerability surface reduction**: HeartSuite reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after HeartSuite's structural mitigations. CVEs affecting kernel features not compiled into HeartSuite receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present in the Root Lock kernel by design.
+**Vulnerability surface reduction**: Root Lock reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after those structural mitigations. CVEs affecting kernel features not compiled in receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present by design.
 
-**Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, HeartSuite configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel level and can be detected via the "Critical file version created outside maintenance window" alert, which fires when a new backup version is created for files under `/etc/`, `/bin/`, `/usr/bin/`, `/sbin/`, `/lib/`, or `/usr/lib/` while Lockdown is active.
+**Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, Root Lock configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel.
+
+The "Critical file version created outside maintenance window" alert fires when a new backup version is created for files under `/etc/`, `/bin/`, `/usr/bin/`, `/sbin/`, `/lib/`, or `/usr/lib/` while Lockdown is active.
 
 **Threat detection in operation**:
 
@@ -223,7 +235,7 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **Continuous protection state monitoring**:
 
-The HeartSuite Dashboard displays a full-width, high-contrast protection state indicator showing the current system state at all times:
+The Dashboard displays a full-width, high-contrast protection state indicator showing the current state at all times:
 
 | State | Indicator |
 |-------|-----------|
@@ -234,7 +246,11 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 **Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
 
-**Syslog integration**: Root Lock emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME (a single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both). The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`; the structured data includes the decision type, program, and target. Lag is typically under one second. The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
+**Syslog integration**: Root Lock emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME. A single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both.
+
+The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`. Structured data includes the decision type, program, and target. Lag is typically under one second.
+
+The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
 
 **Webhook integration**: Every alert is POSTed immediately as a JSON payload to the configured webhook endpoint. Example payload structure:
 
@@ -252,7 +268,9 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 This payload can drive PagerDuty, OpsGenie, Slack, or any incident management tool.
 
-**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, the syslog streams are the appropriate mechanism. In addition, every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
+**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, use the syslog streams.
+
+Every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
 
 **Evidence artifacts**:
 
@@ -272,7 +290,7 @@ This payload can drive PagerDuty, OpsGenie, Slack, or any incident management to
 
 **How Root Lock satisfies this**:
 
-HeartSuite classifies security events into two tiers:
+Root Lock classifies security events into two tiers:
 
 **Immediate alerts (administrative state changes)** — these fire on all channels with no delay:
 
@@ -292,7 +310,7 @@ HeartSuite classifies security events into two tiers:
 - Repeated blocks of a program-destination pair already seen in the current session
 - File version activity under `/tmp/`, `/var/tmp/`, or `/dev/shm/`
 
-In Lockdown, the Dashboard's review queues shift from approval mode to read-only investigation mode. Denied items appear in the queues. Use `[n]` to navigate denied items. Each denied item shows the program, path, and attempt count — the same metadata used during approval.
+In Lockdown, the Dashboard review queues shift from approval to read-only investigation. Denied items appear in the queues. Use `[n]` to navigate them. Each denied item shows the program, path, and attempt count — the same metadata used during approval.
 
 **Evidence artifacts**:
 
@@ -309,7 +327,7 @@ In Lockdown, the Dashboard's review queues shift from approval mode to read-only
 
 **How Root Lock satisfies this**:
 
-Root Lock provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control. Root Lock's role in incident response:
+Root Lock provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control.
 
 **Containment (structural)**:
 
@@ -333,7 +351,7 @@ Root Lock provides technical controls for the detection and containment phases o
 - File Backup allows restoring any file to any prior version, including versions from before a compromise began
 - Timeline view allows batch restore of all files modified on a given date — the appropriate tool for ransomware recovery
 
-**Scope**: HeartSuite does not provide a customer-facing incident response policy template. An IR policy covering escalation contacts, communication plan, SLAs, and regulatory notification is an organizational control that must be supplied by the customer. HeartSuite's technical containment and investigation capabilities serve as the evidence base for that policy.
+**Scope**: Root Lock does not provide a customer-facing incident response policy template. An IR policy covering escalation contacts, communication plan, SLAs, and regulatory notification is an organizational control the customer must supply. Root Lock's technical containment and investigation capabilities serve as the evidence base for that policy.
 
 **Evidence artifacts**:
 
@@ -352,7 +370,9 @@ Root Lock provides technical controls for the detection and containment phases o
 
 **Per-write versioned backups**:
 
-HeartSuite creates a backup version of every file write in protected directories. Unlike scheduled snapshot tools, there is no backup window — if a file is encrypted or corrupted at 3:47 AM, the version from 3:46 AM exists. This is the gap that ransomware exploits in schedule-based backup tools (and the gap CVE-2024-40711 for Veeam Backup & Replication exploited by targeting the backup agent itself).
+Root Lock creates a backup version of every file write in protected directories. Unlike scheduled snapshot tools, there is no backup window — if a file is encrypted or corrupted at 3:47 AM, the version from 3:46 AM exists.
+
+That is the gap ransomware exploits in schedule-based backup tools, and the gap CVE-2024-40711 for Veeam Backup & Replication exploited by targeting the backup agent itself.
 
 Under Lockdown, root cannot read or overwrite the backups. The kernel blocks every program. There is no backup agent to kill.
 
@@ -367,9 +387,9 @@ Under Lockdown, root cannot read or overwrite the backups. The kernel blocks eve
 
 **System recovery after Root Lock kernel failure**:
 
-If the Root Lock kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The system is then without Root Lock protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access.
+If the Root Lock kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The host is then without Root Lock protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access.
 
-**Scope**: Backup files are versioned filesystem copies — there is no encryption at the HeartSuite layer. If backup confidentiality at rest is required, disk-level encryption (dm-crypt/LUKS) must be configured at the OS level by the customer. An alert fires when backup transitions from enabled to disabled, and when any previously-covered directory is removed from coverage.
+**Scope**: Backup files are versioned filesystem copies — there is no encryption at the Root Lock layer. If backup confidentiality at rest is required, disk-level encryption (dm-crypt/LUKS) must be configured at the OS level by the customer. An alert fires when backup transitions from enabled to disabled, and when any previously-covered directory is removed from coverage.
 
 **Evidence artifacts**:
 
@@ -403,7 +423,7 @@ The required change management flow:
 
 **Update integrity verification**:
 
-HeartSuite updates are delivered as a single self-extracting bundle (`heartsuite-install.sh`). Before running the installer, the SHA-256 checksum must be verified against the published value:
+Updates are delivered as a single self-extracting bundle (`heartsuite-install.sh`). Before running the installer, the SHA-256 checksum must be verified against the published value:
 
 ```bash
 sha256sum -c heartsuite-install.sh.sha256
@@ -413,9 +433,13 @@ The installer aborts if run on the active Root Lock kernel, requiring the two-re
 
 **Allowlist as change record**:
 
-The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created by an administrator through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
+The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
 
-**Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint. There is no built-in multi-host push from a HeartSuite server; policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns. In fleet deployments, allowlist changes are applied per server by the customer's control plane. Lockdown entitlement still requires per-host subscription activation.
+**Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint.
+
+There is no built-in multi-host push from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns.
+
+In fleet deployments, allowlist changes are applied per server by the customer's control plane. Lockdown entitlement still requires per-host subscription activation.
 
 **Evidence artifacts**:
 
@@ -436,7 +460,7 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **How Root Lock satisfies this**:
 
-**Ransomware resilience**: The primary availability threat to production servers is ransomware. HeartSuite addresses this at two layers:
+**Ransomware resilience**: The primary availability threat to production servers is ransomware. Root Lock addresses this at two layers:
 
 1. **Prevention layer**: In Lockdown, programs not on the allowlist cannot execute — a ransomware binary dropped on the server cannot run.
 2. **Recovery layer**: If ransomware runs inside an approved process (e.g., malware that hijacks a legitimate application), per-write backups preserve all file versions. Under Lockdown, the kernel protects backup files from the compromised process.
@@ -445,7 +469,9 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Maintenance safety checklist**: Before any mode change, the Dashboard presents a checklist that flags network exposure, active daemons, and SSH configuration. This reduces the risk of an attacker exploiting the maintenance window (the period when blocking is temporarily suspended).
 
-**Scope**: HeartSuite does not prevent denial-of-service (DoS) at the application or network layer. Root can `kill -9` approved services or panic the kernel. Availability hardening against DoS requires a separate control. An alert fires when backup is disabled or a covered directory is removed from coverage. HeartSuite's ransomware prevention and per-write recovery remain in place regardless.
+**Scope**: Root Lock does not prevent denial-of-service (DoS) at the application or network layer. Root can `kill -9` approved services or panic the kernel. Availability hardening against DoS requires a separate control.
+
+An alert fires when backup is disabled or a covered directory is removed from coverage. Ransomware prevention and per-write recovery remain in place regardless.
 
 **Evidence artifacts**:
 
@@ -467,7 +493,9 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Exfiltration prevention**: Even if a program can read confidential data within its file access allowlist, it cannot send that data to an unapproved destination. The network allowlist restricts each program to specific IPs. A program with no approved outbound destinations has no exfiltration path at all.
 
-**Scope**: An attacker who already has root can read disk content with direct kernel-level access. Confidentiality *during* a live breach session is the role of disk encryption (dm-crypt/LUKS), not HeartSuite Lockdown. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; disk-level encryption covers backup files if applied at the OS level. HeartSuite limits what data can be *exfiltrated*, not what data can be *read* from a running kernel session.
+**Scope**: An attacker who already has root can read disk content with direct kernel-level access. Confidentiality *during* a live breach session is the role of disk encryption (dm-crypt/LUKS), not Lockdown.
+
+Backup files are versioned filesystem copies with no encryption at the Root Lock layer; disk-level encryption covers backup files if applied at the OS level. Root Lock limits what data can be *exfiltrated*, not what data can be *read* from a running kernel session.
 
 **Evidence artifacts**:
 
@@ -497,4 +525,4 @@ The allowlist is the authoritative record of every program, file access, and net
 
 ---
 
-Last Updated: 2026-05-28
+Last Updated: 2026-08-18

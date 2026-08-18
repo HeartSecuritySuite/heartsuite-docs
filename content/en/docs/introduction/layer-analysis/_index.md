@@ -13,7 +13,9 @@ menu:
     identifier: "layer-analysis"
 ---
 
-**Purpose**: Security audits and competitive evaluations often group tools by vendor category — EDR, SIEM, NDR — without capturing where in the kernel stack enforcement actually happens. This page maps Linux host security tools to the enforcement layer they occupy. Layer placement determines bypass surface: a tool enforcing at Layer 2 cannot be disabled by a mechanism that only reaches Layer 3 or above.
+**Overview**: Security audits often group tools by vendor category — EDR, SIEM, NDR — without saying where in the kernel stack enforcement actually happens. Layer placement determines bypass surface: a tool enforcing at Layer 2 cannot be disabled by a mechanism that only reaches Layer 3 or above.
+
+This page maps Linux host security tools to the enforcement layer they occupy.
 
 ## Layer definitions
 
@@ -26,7 +28,9 @@ menu:
 | **5** | Userspace telemetry / response | Kernel-module or eBPF agents primarily providing detection, alerting, and response |
 | **Adj.** | Complementary controls | Tools that answer different questions — no enforcement overlap with Layers 2–5 |
 
-The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root. A Layer 2 kernel configuration cannot be changed without rebooting into a different kernel. For a visual representation of this by tool, see [Kernel architecture](../how-it-compares/#kernel-architecture).
+The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root.
+
+A Layer 2 kernel configuration cannot be changed without rebooting into a different kernel. For a visual representation of this by tool, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 ## Tool map
 
@@ -45,7 +49,9 @@ Enforcement is part of the kernel binary. Changing it requires a reboot into a d
 |---|---|
 | Userspace syscall-emulating kernel (intercepts container syscalls) | gVisor (sentry process) |
 
-gVisor intercepts container syscalls in a userspace process that acts as the container's kernel, reducing exposure to the host kernel. The sentry process runs in userspace and can be compromised; a bug in its syscall emulation can allow escape. Root Lock running as a guest kernel inside a gVisor-isolated container is a coherent composition — see [How It Compares → gVisor](../how-it-compares/#what-root-lock-replaces).
+gVisor intercepts container syscalls in a userspace process that acts as the container's kernel, reducing exposure to the host kernel. The sentry process runs in userspace and can be compromised; a bug in its syscall emulation can allow escape.
+
+Root Lock running as a guest kernel inside a gVisor-isolated container is a coherent composition — see [How It Compares → gVisor](../how-it-compares/#what-root-lock-replaces).
 
 ### Layer 3 — LSM hooks (in-tree)
 
@@ -102,6 +108,8 @@ These tools do not overlap with Layers 2–5 enforcement. They answer different 
 
 ## Takeaway
 
-Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 or higher. Root can turn those off remotely without a reboot. The Layer 2 position is what makes physical presence the only bypass path.
+Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 or higher. Root can turn those off remotely without a reboot.
+
+The Layer 2 position is what makes physical or serial-console access the bypass path.
 
 For the tool-by-tool comparison with bypass analysis, see [How It Compares](../how-it-compares/).

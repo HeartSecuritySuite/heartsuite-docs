@@ -14,11 +14,15 @@ menu:
     weight: 30
 ---
 
-**Overview**: When you lock down from Setup Mode, the kernel blocks every program not on the allowlist (including any you forgot to approve). The Dashboard guides the activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.
+**Overview**: When you lock down from Setup Mode, Root Lock by HeartSuite blocks every program not on the allowlist, including any you forgot to approve.
+
+The Dashboard guides activation through a precondition checklist and a deliberate confirmation. Lockdown seals the allowlist: no program or user, including root, can modify it while the server is running.
 
 ## System states
 
-Root Lock by HeartSuite has two modes: Setup Mode and Lockdown. Both run on the Root Lock kernel. Lockdown seals the configuration with filesystem immutability. Both running Lockdown without the immutable seal and running Lockdown with the seal are valid configurations depending on your security requirements. Booting the original maintenance kernel is not a Root Lock mode at all; it is the machine running without Root Lock.
+Root Lock has two modes: Setup Mode and Lockdown. Both run on the Root Lock kernel. Lockdown seals the configuration with filesystem immutability.
+
+Lockdown without the immutable seal and Lockdown with the seal are both valid, depending on your security requirements. Booting the original maintenance kernel is not a Root Lock mode at all; it is the machine running without Root Lock.
 
 | | Root Lock kernel loaded | Blocking | Logging | Backups | Dashboard and features |
 |---|---|---|---|---|---|
@@ -27,13 +31,19 @@ Root Lock by HeartSuite has two modes: Setup Mode and Lockdown. Both run on the 
 | **Lockdown + sealed** | Yes | Yes: blocks | Yes | Yes | Dashboard and all features available; configuration sealed with filesystem immutability |
 | **maintenance kernel** *(not a Root Lock mode)* | No: Root Lock absent | No | No | No | File-only tools only (see [Protecting During Maintenance](../maintenance/protecting-during-maintenance/)) |
 
-In Setup Mode and Lockdown, the Root Lock kernel is loaded. Backups, logging, and the Dashboard all function normally in both. Booting the maintenance kernel means Root Lock is completely absent (no blocking or logging takes place, and backups do not run).
-
 The indicator at the top of the Dashboard shows the current protection state, and the Suggested Next Step tells you what to do next.
 
 ### Trust graduation across modes
 
-Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Lockdown, trust is withdrawn from running programs regardless of which user runs them; any program, including one running as root, must be on the allowlist. With the immutable seal applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window on purpose. Booting the maintenance kernel takes a keyboard and monitor, a serial port, or the cloud serial console. SSH is not enough.
+Each mode defines a different trust boundary.
+
+In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked.
+
+In Lockdown, trust is withdrawn from running programs regardless of which user runs them. Any program, including one running as root, must be on the allowlist.
+
+With the immutable seal applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window on purpose.
+
+Booting the maintenance kernel takes a keyboard and monitor, a serial port, or the cloud serial console. SSH is not enough.
 
 ### Protection state
 
@@ -48,16 +58,18 @@ The indicator at the top of the Dashboard reflects the current protection state:
 
 ## Setup Mode and Lockdown
 
-At some point, you need to lock down to prevent malicious programs from starting, or to restrict the files and network destinations those programs can reach. Lockdown activation (Phase 7) is locked until all prior phases (2 through 6) are finished. The Dashboard tracks your progress through these phases and will indicate when Lockdown activation is available as the Suggested Next Step.
+Lockdown activation is locked until the earlier checklist items are complete. The Dashboard tracks progress and shows Lockdown as the Suggested Next Step when it is available.
 
 > [!NOTE]
 > The Dashboard prevents Lockdown activation until all preconditions are met — including completion of all setup phases and the System Setup steps. If any precondition is not satisfied, the Lockdown button (`[l]`) displays "Lockdown is not available yet" and lists what remains.
 
 If you have not added the necessary access permissions or network address permissions to allowlist entries, Root Lock will block programs from accessing those files and network addresses when you activate Lockdown.
 
-Once Root Lock is set up, consider continuing in Setup Mode for several days. During that time, the review queues will capture additional file and network access activity — giving you a more complete allowlist before activating Lockdown.
+Once setup is complete, stay in Setup Mode for several days. File and network activity continues to appear in the review queues, so you can approve a more complete allowlist before Lockdown.
 
-When installing new software, you must return to Setup Mode. For example, the Debian package manager `dpkg` creates temporary directories during installation. In Lockdown, this generates a permission error and the installation halts. The temporary directory is removed before it can be added to an allowlist entry. Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then re-engage Lockdown.
+When installing new software, return to Setup Mode first. The Debian package manager `dpkg` creates temporary directories during installation. In Lockdown, that write fails and the installation halts. The temporary directory is gone before it can be added to an allowlist entry.
+
+Switch to Setup Mode before using `dpkg`, add any additional access permissions needed, then re-engage Lockdown.
 
 ```mermaid
 graph TD
@@ -72,6 +84,17 @@ graph TD
     O --> J;
     J --> N["Return to Lockdown from Dashboard"];
     N --> E;
+
+    style A fill:#eee,stroke:#888
+    style B fill:#eee,stroke:#888
+    style C fill:#eee,stroke:#888
+    style G fill:#eee,stroke:#888
+    style I fill:#eee,stroke:#888
+    style O fill:#eee,stroke:#888
+    style J fill:#eee,stroke:#888
+    style D fill:#d4f4dd,stroke:#2a7a40
+    style E fill:#d4f4dd,stroke:#2a7a40
+    style N fill:#d4f4dd,stroke:#2a7a40
 ```
 
 ## Switching between modes
@@ -82,9 +105,7 @@ The Dashboard is where you activate Lockdown. When all preconditions are met, th
 
 - All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
 - Boot configuration is complete (System Setup)
-- Phase 7 is unlocked (phases 2 through 6 complete)
-
-When preconditions are satisfied, the Dashboard presents the activation option.
+- Earlier checklist items are complete (Program Allowlisting through Alert Settings)
 
 ### Activating Lockdown
 
@@ -115,7 +136,7 @@ Lockdown is applied on the next reboot and persists — to make changes, use the
 
 From the Dashboard, use the Lockdown button (`[l]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Lockdown would block.
 
-### Switching mode from a Non-HS Kernel
+### Switching mode from the maintenance kernel
 
 When booted into the maintenance kernel, set the mode before rebooting to the Root Lock kernel:
 
@@ -125,9 +146,13 @@ When booted into the maintenance kernel, set the mode before rebooting to the Ro
 
 ## Lockdown: sealing the system
 
-Lockdown seals Root Lock's configuration with filesystem immutability, so a compromised root account cannot tamper with the allowlist while the system runs. The seal is system-wide: configuration, system files, accounts, scheduled tasks, and the maintenance tools themselves — all sealed in one step. The Dashboard displays the current Lockdown status and provides the Suggested Next Step for managing it.
+Lockdown seals Root Lock's configuration with filesystem immutability, so a compromised root account cannot tamper with the allowlist while the machine runs. The seal is system-wide: configuration, system files, accounts, scheduled tasks, and the maintenance tools themselves — all sealed in one step.
 
-Lockdown is applied automatically as part of activating Lockdown from the Dashboard. Once engaged, it persists until you exit through the Dashboard's Maintenance (`[m]`), which guides you through booting the maintenance kernel to remove the seal. The table below shows what changes between Lockdown without the immutable seal and Lockdown with the seal.
+The Dashboard displays the current Lockdown status and provides the Suggested Next Step for managing it.
+
+Lockdown is applied automatically as part of activating Lockdown from the Dashboard. Once engaged, it persists until you exit through the Dashboard's Maintenance (`[m]`), which guides you through booting the maintenance kernel to remove the seal.
+
+The table below shows what changes between Lockdown without the immutable seal and Lockdown with the seal.
 
 | | Lockdown | Lockdown + sealed |
 |---|---|---|
@@ -144,7 +169,9 @@ Lockdown is applied automatically as part of activating Lockdown from the Dashbo
 
 ### What Lockdown does
 
-Once Lockdown is engaged, Root Lock seals five things at once, all using `chattr +i`. Before you confirm, the Dashboard shows the paths that will be sealed, grouped by category with counts. The list is shown for review only. The Maintenance restores mutability for the necessary tools automatically.
+Once Lockdown is engaged, Root Lock seals five things at once, all using `chattr +i`. Before you confirm, the Dashboard shows the paths that will be sealed, grouped by category with counts. The list is for review only.
+
+The Maintenance restores mutability for the necessary tools automatically.
 
 The five categories Lockdown seals:
 
@@ -161,19 +188,29 @@ If the Root Lock kernel fails to load, the startup script isolates the primary n
 
 Once Lockdown is on, root cannot change the immutability flags. The kernel disables `chattr`. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
-Lockdown persists across reboots — the HeartSuite startup script re-engages it automatically each time the Root Lock kernel starts. The only way to remove it is to boot the maintenance kernel and follow the maintenance journey. Lockdown cannot be engaged in Setup Mode; if you try, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. This means that immutable flags set during Lockdown persist across reboots, including reboots into the maintenance kernel. If you boot the maintenance kernel for maintenance after Lockdown was active, the Dashboard's Maintenance wizard runs `HS_unlock.sh` for you via `[u]` Remove Flags. For recovery outside the Dashboard, run `HS_unlock.sh` before attempting to modify any files that were made immutable.
+Lockdown persists across reboots — the startup script re-engages it automatically each time the Root Lock kernel starts. The only way to remove it is to boot the maintenance kernel and follow the maintenance journey.
+
+Lockdown cannot be engaged in Setup Mode; if you try, an error message is written to the kernel log.
+
+The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. Immutable flags therefore persist across reboots, including reboots into the maintenance kernel.
+
+If you boot the maintenance kernel after Lockdown was active, the Dashboard's Maintenance runs `HS_unlock.sh` for you via `[u]` Remove Flags. For recovery outside the Dashboard, run `HS_unlock.sh` before modifying any files that were made immutable.
 
 ### What this closes off
 
 Two of the five seals close attacks that are easy to miss.
 
-**Compromised programs cannot borrow another program's tools.** When an approved web server runs `rm`, the deletion uses `rm`'s permissions, not the web server's. `rm` legitimately needs broad access during maintenance — so its allowlist is broad. A compromised approved program could otherwise borrow that breadth. Lockdown replaces `rm` with `limited_rm`, whose own write paths cover only what the system was observed using `rm` for during Setup Mode. Same for `cp` and `mv`.
+**Compromised programs cannot borrow another program's tools.** When an approved web server runs `rm`, the deletion uses `rm`'s permissions, not the web server's. `rm` legitimately needs broad access during maintenance — so its allowlist is broad.
 
-**Nothing planted before the reboot survives it.** Lockdown engages after boot — there's a brief gap between the system coming up and the seal taking hold. Without sealing cron, anacron, environment defaults, and root's shell profiles, an attacker who already had root before a reboot could plant a script to run in that gap. With those files sealed during the prior Lockdown, the script never reaches them — and on the next boot, nothing has changed.
+A compromised approved program could otherwise borrow that breadth. Lockdown replaces `rm` with `limited_rm`, whose own write paths cover only what was observed using `rm` during Setup Mode. Same for `cp` and `mv`.
+
+**Nothing planted before the reboot survives it.** Lockdown engages after boot — there's a brief gap between the machine coming up and the seal taking hold.
+
+Without sealing cron, anacron, environment defaults, and root's shell profiles, an attacker who already had root before a reboot could plant a script to run in that gap. With those files sealed during the prior Lockdown, the script never reaches them — and on the next boot, nothing has changed.
 
 ### Automatic Lockdown on boot
 
-By default, the HeartSuite startup script re-engages Lockdown automatically on every Root Lock kernel boot. Once active, rebooting will always engage Lockdown before you can prevent it.
+By default, the startup script re-engages Lockdown automatically on every Root Lock kernel boot. Once active, rebooting will always engage Lockdown before you can prevent it.
 
 During Maintenance Step 1, the Dashboard presents a guided choice: `[d]` Disable automatic Lockdown re-engagement or `[k]` Keep it. You do not need to edit any scripts manually. To disengage Lockdown when automatic re-engagement is active, boot to the maintenance kernel; this procedure is discussed in [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
 
@@ -183,7 +220,11 @@ You can make files and directories mutable again once Lockdown is no longer acti
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-Before rebooting, the Maintenance (`[m]`) sets the GRUB default to the Maintenance entry (Non-HS / Setup Mode destination) automatically — no GRUB menu interaction is required. If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually, which requires console access: a keyboard and monitor, a serial port, or your cloud provider's serial console. Returning to the Root Lock kernel after maintenance is also automatic: the Dashboard restores the Root Lock kernel as the GRUB default before rebooting back, so no GRUB interaction is needed on the return trip either.
+Before rebooting, Maintenance (`[m]`) sets the GRUB default to the Maintenance entry (Non-HS / Setup Mode destination) automatically — no GRUB menu interaction is required.
+
+If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually. That selection requires console access: a keyboard and monitor, a serial port, or your cloud provider's serial console.
+
+Returning to the Root Lock kernel after maintenance is also automatic: the Dashboard restores the Root Lock kernel as the GRUB default before rebooting back.
 
 ### Lockdown commands
 

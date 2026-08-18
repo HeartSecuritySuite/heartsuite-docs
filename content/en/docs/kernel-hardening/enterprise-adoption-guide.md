@@ -28,9 +28,11 @@ The design removes at build time the kernel features most commonly used as bypas
 - FUSE and OverlayFS — path-confusion and mount-based bypasses against VFS-level enforcement are unavailable.
 - Competing LSM frameworks (AppArmor, TOMOYO, and runtime SELinux enforcement) and related policy engines — no parallel policy that can be set permissive or edited to weaken decisions.
 
-Enforcement logic for program execution, file access, and outbound network connections is compiled into the kernel binary itself. Blocking decisions are consulted on every relevant operation; there is no runtime configuration file or agent that root can unload, kill, or reconfigure to disable protection.
+Enforcement logic for program execution, file access, and outbound network connections is compiled into the kernel binary itself. Blocking decisions are consulted on every relevant operation. There is no runtime configuration file or agent that root can unload, kill, or reconfigure to disable protection.
 
-This is distinct from "hardening mitigations" (stack canaries, allocator hardening, etc.). Those raise the cost of exploiting a memory bug. Root Lock removes the primitives that let a compromised process escape its intended boundary in the first place. See the side-by-side scores and rationale in the [Procurement Brief](../procurement-brief/) and the bypass table in [How Root Lock Compares](../../introduction/how-it-compares/).
+This is distinct from "hardening mitigations" (stack canaries, allocator hardening, etc.). Those raise the cost of exploiting a memory bug. Root Lock removes the primitives that let a compromised process escape its intended boundary in the first place.
+
+See the side-by-side scores and rationale in the [Procurement Brief](../procurement-brief/) and the bypass table in [How Root Lock Compares](../../introduction/how-it-compares/).
 
 The result is a deliberately smaller kernel (approximately 9 loadable modules versus thousands in a general-purpose distribution) whose configuration is published with a SHA-256 hash for independent verification.
 
@@ -38,8 +40,12 @@ The result is a deliberately smaller kernel (approximately 9 loadable modules ve
 
 Root Lock treats the kernel as an integrated part of the delivered product, not a third-party dependency the customer manages in isolation.
 
-- **Update cadence and patching**: Kernels are released as coordinated versioned bundles with the userspace components (daemon, Dashboard, tools, and installer). Updates follow the same maintenance window model as policy changes: boot the maintenance kernel, apply the bundle, return to the Root Lock kernel, and review. Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
-- **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries (the vulnerable code path is absent by design; no patch or policy change is required). For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked. Scores on HeartSuite are computed and published (many high/critical CVEs drop to 0.0 environmental score on HS deployments). Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+- **Update cadence and patching**: Kernels are released as coordinated versioned bundles with the userspace components (daemon, Dashboard, tools, and installer). Updates follow the same maintenance window model as policy changes: boot the maintenance kernel, apply the bundle, return to the Root Lock kernel, and review.
+
+  Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
+- **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries — the vulnerable code path is absent by design; no patch or policy change is required. For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked.
+
+  Scores on HeartSuite are computed and published (many high/critical CVEs drop to 0.0 environmental score on HS deployments). Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 - **Stack pairing and testing**: The kernel is built, tested, and supported together with the matching userspace. The full enforcement contract (VFS hooks + Lockdown seal + allowlist) is validated across supported distributions.
 - **Support SLAs**: Commercial subscription terms cover the integrated stack, including kernel-related incidents, coordinated updates, and guidance on deployment and recovery. Activation and support details appear in the [Subscription](../../licensing/) section and your subscription agreement.
 
@@ -49,19 +55,25 @@ Enterprise teams do not want operators making daily kernel choices. The product 
 
 - **Cloud Path**: Pre-configured instances on major providers (AWS, Google Cloud, Azure, DigitalOcean, Linode, and others) arrive with the Root Lock kernel already installed and set as default. The Dashboard appears on first login with initial setup complete. Serial console access from the provider remains available for recovery.
 - **Pre-configured image recipes and automated install**: Use your existing Packer, Terraform, Ansible, or cloud-init pipelines to produce base images that include the Root Lock install bundle. The installer sets the Root Lock kernel as the GRUB default, performs the initial boot, and surfaces the Dashboard. Baseline allowlists can be pre-seeded for homogeneous fleets (see [Alert Settings](../../alerts/) — fleet syslog, webhook, and central policy patterns).
-- **Hiding details from operators**: After initial provisioning, day-to-day interaction is through the Dashboard or central automation. Kernel selection appears only in the documented Maintenance flow (when changes are required) and in the System Info Strip when running on the maintenance kernel. GRUB entries for the original distribution kernel are retained (split into Maintenance and vanilla entries, with Maintenance labelled as the Setup Mode destination) for the recovery path.
+- **Hiding details from operators**: After initial provisioning, day-to-day interaction is through the Dashboard or central automation. Kernel selection appears only in the documented Maintenance flow (when changes are required) and in the System Info Strip when running on the maintenance kernel.
 
-Official pre-built images in the major cloud Marketplaces are in active development and will further reduce the need for customers to assemble images. Until those listings are available, the pre-configured-image + automated-install pattern delivers equivalent repeatability and auditability using the same tooling you already apply to other base OS images.
+  GRUB entries for the original distribution kernel are retained for the recovery path, split into Maintenance and vanilla entries, with Maintenance labelled as the Setup Mode destination.
+
+Official pre-built images in the major cloud Marketplaces are in active development and will further reduce the need for customers to assemble images. Until those listings are available, the pre-configured-image + automated-install pattern delivers equivalent repeatability and auditability. Use the same tooling you already apply to other base OS images.
 
 ## Secure Boot, firmware compatibility, and roadmap
 
-**Current status**: Root Lock kernel support for UEFI Secure Boot (including MOK enrollment on local hardware and provider-specific flows such as Azure Trusted Launch and GCP Shielded VMs) is incomplete. Deployments that require Secure Boot enabled for the Root Lock kernel entry may need to enroll via MOK during installation or temporarily boot with Secure Boot disabled for the Root Lock kernel while using the provider console or local management for the maintenance kernel.
+**Current status**: Root Lock kernel support for UEFI Secure Boot (including MOK enrollment on local hardware and provider-specific flows such as Azure Trusted Launch and GCP Shielded VMs) is incomplete.
+
+Deployments that require Secure Boot enabled for the Root Lock kernel entry may need to enroll via MOK during installation. Alternatively, temporarily boot with Secure Boot disabled for the Root Lock kernel while using the provider console or local management for the maintenance kernel.
 
 The original distribution kernel (Non-HS) retains its signing status and can be used for recovery and maintenance regardless of Secure Boot policy.
 
-**Roadmap**: Signed kernel images, streamlined MOK tooling, and cloud-provider-specific runbooks (Azure, GCP, AWS) are prioritized work. Expanded test coverage for UEFI Secure Boot paths is tracked alongside the existing partial e2e validation. Customers evaluating platforms with mandatory Secure Boot should engage support for the current test status and any interim runbooks applicable to their cloud account or hardware.
+**Roadmap**: Signed kernel images, streamlined MOK tooling, and cloud-provider-specific runbooks (Azure, GCP, AWS) are prioritized work. Expanded test coverage for UEFI Secure Boot paths is tracked alongside the existing partial e2e validation.
 
-The bypass-prevention properties (physical presence required for any recovery path) hold on both the Root Lock kernel and maintenance kernel; Secure Boot is an orthogonal boot-integrity control.
+Customers evaluating platforms with mandatory Secure Boot should engage support for the current test status and any interim runbooks applicable to their cloud account or hardware.
+
+The bypass-prevention properties (physical or serial-console access required for any recovery path) hold on both the Root Lock kernel and the maintenance kernel. Secure Boot is an orthogonal boot-integrity control.
 
 ## Compatibility and certification
 
@@ -77,7 +89,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 - EDR and observability via log forwarding (no on-host eBPF attachment or kernel-module agents are possible or required; enforcement events flow through the existing syslog channel).
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
-**Requires the maintenance kernel or a separate host** (or alternative controls):
+**Does not run on the HS kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
 - Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is deliberately absent.
 - Dynamic Kubernetes environments with frequent pod creation, HPA scale-out, or rescheduling after Lockdown (mount operations required for new containers are refused).
@@ -90,7 +102,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 | Requirement | Recommended path |
 |---|---|
 | Need kernel-level per-program execution + file + network control that survives compromised root, and can accommodate the Root Lock kernel | Root Lock with Root Lock kernel |
-| Must run eBPF tooling locally or require full dynamic container orchestration after policy is sealed | maintenance kernel (or adjacent standard host) + other controls; consider HJFS for file isolation layer |
+| Must run eBPF tooling locally or require full dynamic container orchestration after policy is sealed | A host whose kernel still has those features, or an adjacent standard host, plus other controls; consider HJFS for file isolation |
 | Strict "no custom or modified kernel" policy (certification, vendor support contract, or internal mandate) | HJFS (standard kernel) for file isolation, with [HeartSuite Exec](../../../exec-lock/) as the HJFS program UI. Kernel execution and network default-deny remain Root Lock and require the Root Lock kernel; on a stock kernel use existing host tooling. See [HJFS documentation](../../hjfs/) |
 | Want both layers | Root Lock (execution/network) + HJFS (file isolation and versioning) on the same host where the Root Lock kernel is acceptable |
 
@@ -118,13 +130,17 @@ A commercial subscription for Root Lock covers the full delivered stack, includi
 - Access to the verification artifacts published on this site (config hashes, evidence packs, CVE transparency data) that support customer and auditor due diligence.
 - Coordinated release process so that kernel changes, userspace changes, and documentation remain in sync.
 
-The kernel does not carry a separate support contract or separate risk posture; it is part of the integrated product under the same subscription that enables Lockdown. Details of indemnity scope, SLA commitments, and verification deliverables are in your specific subscription agreement. See the [Subscription](../../licensing/) page for activation mechanics.
+The kernel does not carry a separate support contract or separate risk posture. It is part of the integrated product under the same subscription that enables Lockdown.
+
+Details of indemnity scope, SLA commitments, and verification deliverables are in your specific subscription agreement. See the [Subscription](../../licensing/) page for activation mechanics.
 
 ## Supply chain transparency and integrity
 
-- **Reproducible posture verification**: Every released Root Lock kernel includes a published SHA-256 of its exact `.config` file. Any team can obtain the config from the kernel package and re-run the open-source `kernel-hardening-checker` to reproduce the exact attack-surface and exploit-resistance scores shown in the [Procurement Brief](../procurement-brief/) and [Auditor Brief](../auditor-brief/). See `evidence-pack-*.txt` files for raw output.
+- **Reproducible posture verification**: Every released Root Lock kernel includes a published SHA-256 of its exact `.config` file. Any team can obtain the config from the kernel package and re-run the open-source `kernel-hardening-checker` to reproduce the exact attack-surface and exploit-resistance scores shown in the [Procurement Brief](../procurement-brief/) and [Auditor Brief](../auditor-brief/).
+
+  See `evidence-pack-*.txt` files for raw output.
 - **Installer and bundle integrity**: Distributed bundles include SHA-256 manifests (`.sha256` files) for verification before execution.
-- **SBOM and provenance**: A full software bill of materials covering the kernel and userspace components, plus expanded reproducible-build artifacts and signing for kernel binaries, is in active development. Current customers receive the available verification material (config hash + evidence packs + bundle hashes) under their subscription; additional supply-chain artifacts are provided on request or as they become available. Public roadmap and interim controls: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/). Per-stream evidence publication: [Evidence Status](evidence-status/).
+- **SBOM and provenance**: A full software bill of materials covering the kernel and userspace components, plus expanded reproducible-build artifacts and signing for kernel binaries, is in active development. Current customers receive the available verification material (config hash + evidence packs + bundle hashes) under their subscription. Additional supply-chain artifacts are provided on request or as they become available. Public roadmap and interim controls: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/). Per-stream evidence publication: [Evidence Status](evidence-status/).
 - **No reliance on opaque vendor claims for the measured hardening posture**: The numbers are tool outputs against public hashes.
 
 ## Recovery and fallback: the maintenance kernel as supported escape hatch
@@ -132,7 +148,7 @@ The kernel does not carry a separate support contract or separate risk posture; 
 Every installation retains a first-class recovery path:
 
 - The original distribution kernel is always present in GRUB (split into Maintenance and vanilla entries during install, with Maintenance labelled as the Setup Mode destination).
-- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides the operator through the exact sequence: reboot to maintenance kernel, remove the immutable seal, make changes, reboot back to the Root Lock kernel, review new activity, and re-engage Lockdown.
+- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence: reboot to maintenance kernel, remove the immutable seal, make changes, reboot back to the Root Lock kernel, review new activity, and re-engage Lockdown.
 - The Dashboard's Maintenance (`[m]`) handles the common case of quick Non-HS work followed by guided return to the Root Lock kernel and review.
 - For policy or platform conflicts that make the Root Lock kernel unsuitable for an extended period, teams can remain on the maintenance kernel (the product continues to run and log in non-enforcing mode) or remove Root Lock entirely. Both paths are supported and documented.
 - Physical or console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control. No software on the system can block this path.
@@ -156,7 +172,9 @@ Organisations with formal "no custom kernel," "no modified kernel," or "vendor-c
 
 In those cases the supported path is:
 
-- HeartSuite Joint File System (HJFS) — a filesystem-based enforcement layer that provides per-program, per-version file isolation and automatic backup/rollback on a completely standard kernel. No kernel replacement is required. HJFS is deployable on cloud instances where the kernel is provider-managed and on systems under strict kernel certification rules. See the full [HJFS documentation](../../hjfs/) (overview, deployment scenarios, limits, and how it complements execution/network controls).
+- HeartSuite Joint File System (HJFS) — a filesystem-based enforcement layer that provides per-program, per-version file isolation and automatic backup/rollback on a completely standard kernel. No kernel replacement is required.
+
+  HJFS is deployable on cloud instances where the kernel is provider-managed and on systems under strict kernel certification rules. See the full [HJFS documentation](../../hjfs/) (overview, deployment scenarios, limits, and how it complements execution/network controls).
 - Layered controls on the standard kernel (SELinux or AppArmor in enforcing mode, seccomp filters, eBPF-based detection where needed, network egress filtering, EDR, vulnerability management, and HIDS). Root Lock's execution and network gating concepts are not applicable without the Root Lock kernel.
 - Where both file isolation and execution/network gating are required under a no-custom-kernel constraint, HJFS plus existing host tooling is the evaluated combination. HeartSuite Exec is the HJFS program UI; it does not add those gates.
 

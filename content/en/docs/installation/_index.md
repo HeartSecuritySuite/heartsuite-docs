@@ -18,7 +18,9 @@ menu:
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-configured cloud instance (for example AWS AMI or GCP image). The Root Lock kernel is already installed and the Dashboard confirms initial setup is complete on first boot and appears immediately — skip ahead to the allowlisting queues. Installer and initial setup logs from the image build are in `/var/log/heartsuite/`. View and download them directly from the provider's web console (for example AWS CloudWatch Logs after agent setup, or "Get system log"; see Appendices for step-by-step). Serial console provides an alternative.
+Launch a pre-configured cloud instance (AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers). The Dashboard confirms initial setup is complete on first boot — skip ahead to the allowlisting queues.
+
+Installer and initial setup logs from the image build are in `/var/log/heartsuite/`. Use the provider serial console if you need them.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
 Run a single install command, then reboot multiple times to build the initial allowlist of startup and shutdown programs.

@@ -13,15 +13,25 @@ toc: false
 
 ---
 
-HeartSuite's Linux kernel contains just 9 loadable modules — compared to 3,500 to 4,000 in a standard Debian Linux system. This isn't because the system is less capable; it's because the kernel was built for one job and nothing else was included.
+Root Lock ships a Linux kernel with 9 loadable modules. A standard Debian Linux system typically ships 3,500 to 4,000.
 
-The approach extends beyond raw module count. HeartSuite disables specific kernel features that security researchers have identified as the most common paths for bypassing security controls: BPF (a programmable kernel interface), FUSE (user-space filesystems), overlay filesystems, and all competing security policy engines including AppArmor and SELinux. Each of these has been used in documented real-world attacks to escape software sandboxes or override security policies.
+That count is not a capability cut. The kernel is built for one job. Nothing else is included.
 
-On an independent audit using the open-source `kernel-hardening-checker` tool — the same tool used by Linux kernel security researchers — HeartSuite's kernel outperforms the Arch Linux hardened kernel on attack-surface measures: 91 out of 132 checks passed by HeartSuite versus 77 out of 132 for Arch linux-hardened (compared on the same 5.19.x kernel generation, making scores directly equivalent). Arch linux-hardened scores lower on this axis because it keeps features like BPF, FUSE, and AppArmor enabled — features that its general-purpose users depend on, but that also provide paths for bypassing security controls.
+Root Lock also disables the kernel features most often used to bypass security controls: BPF (a programmable kernel interface), FUSE (user-space filesystems), overlay filesystems, and competing security policy engines including AppArmor and SELinux. Each of these has been used in documented real-world attacks to escape software sandboxes or override security policies.
 
-**Where Root Lock is not strongest:** Exploit resistance. When a kernel vulnerability is discovered — a memory bug, a logic flaw — certain protection techniques make it much harder to turn that bug into a working attack. The Root Lock kernel does not include most of these techniques, scoring 31 out of 109 checks on this measure. The era-matched Arch linux-hardened kernel (same kernel generation) scores 69 out of 109 on the same tool. Root Lock is designed to prevent attacks from bypassing its controls — not to harden against every possible kernel vulnerability.
+On an independent audit with the open-source `kernel-hardening-checker` tool — the same tool Linux kernel security researchers use — the Root Lock kernel outperforms Arch linux-hardened on attack-surface measures.
 
-The configuration is publicly verifiable. The SHA-256 hash of the kernel configuration file is published, and any qualified security team can reproduce the measurements above using publicly available tools.
+Scores, compared on the same 5.19.x kernel generation so they are directly equivalent: **91 out of 132** checks passed by Root Lock versus **77 out of 132** for Arch linux-hardened.
+
+Arch linux-hardened scores lower on this axis because it keeps BPF, FUSE, and AppArmor enabled. Its general-purpose users depend on those features. They also provide paths for bypassing security controls.
+
+**Where Root Lock is not strongest:** Exploit resistance.
+
+When a kernel vulnerability is discovered — a memory bug, a logic flaw — certain protection techniques make it much harder to turn that bug into a working attack. The Root Lock kernel does not include most of those techniques. It scores **31 out of 109** checks on this measure. The era-matched Arch linux-hardened kernel (same kernel generation) scores **69 out of 109** on the same tool.
+
+Root Lock is designed to prevent attacks from bypassing its controls. It is not designed to harden against every possible kernel vulnerability.
+
+The configuration is publicly verifiable. The SHA-256 hash of the kernel configuration file is published. Any qualified security team can reproduce the measurements above using publicly available tools.
 
 ---
 

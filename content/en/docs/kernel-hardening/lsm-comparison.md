@@ -20,7 +20,9 @@ SELinux, AppArmor, and TOMOYO all answer the same question: *given that a kernel
 
 HeartSuite answers a different question: *which kernel features should exist on this system at all?*
 
-This is not a claim that one approach is universally superior. For **single-purpose containment appliances**, removing bypass primitives from the kernel is more reliable than writing policy around them — because policy can be misconfigured, and because certain primitives (BPF, FUSE, overlayfs) can defeat any MAC policy regardless of how carefully it is written.
+This is not a claim that one approach is universally superior.
+
+For **single-purpose containment appliances**, removing bypass primitives from the kernel is more reliable than writing policy around them. Policy can be misconfigured. Certain primitives (BPF, FUSE, overlayfs) can defeat any MAC policy regardless of how carefully it is written.
 
 ---
 
@@ -65,7 +67,7 @@ Root Lock is not a general-purpose MAC replacement. Choose SELinux, AppArmor, or
 - You require **MLS / MCS** (Multi-Level Security / Multi-Category Security) for labeled data separation.
 - You need **container runtime support** that depends on USER_NS or overlayfs (Kubernetes, Docker, Podman, LXC).
 - Your compliance framework mandates a specific named LSM (e.g., STIG-mandated SELinux).
-- You need to audit **permitted accesses**, not just denials — HeartSuite logs every denied file access, socket connection, and sandbox violation with the specific program path and target resource, but successful accesses are not logged. SELinux and TOMOYO can record both. If a full allowed-access trail is also required, SELinux can run alongside HeartSuite on supported deployments — see [Co-existence](#co-existence).
+- You need to audit **permitted accesses**, not just denials. Root Lock logs every denied file access, socket connection, and sandbox violation with the specific program path and target resource. Successful accesses are not logged. SELinux and TOMOYO can record both. If a full allowed-access trail is also required, SELinux can run alongside Root Lock on supported deployments — see [Co-existence](#co-existence).
 
 ---
 
@@ -77,7 +79,7 @@ Choose Root Lock when:
 - Your threat model centers on **containment escape** — a compromised application attempting to break out of its enforcement boundary.
 - You want **zero policy surface** — no policy file, no `audit2allow`, no profile to misconfigure.
 - BPF tooling, container runtimes, FUSE mounts, and user namespaces are **not part of the system's attack surface** — they are absent from the kernel, not restricted by policy.
-- You want a **violation-focused audit trail**: every denied file access, network connection, and sandbox violation is logged with the specific program path and target resource. In Setup Mode, would-be denials are logged and permitted simultaneously — giving full visibility into the policy surface without blocking anything.
+- You want a **violation-focused audit trail**: every denied file access, network connection, and sandbox violation is logged with the specific program path and target resource. In Setup Mode, would-be denials are logged and permitted simultaneously. That gives full visibility into the policy surface without blocking anything.
 - You want independent verifiability: the kernel config SHA-256 is published and measurements are reproducible with an open-source tool.
 
 ---
@@ -93,9 +95,11 @@ HeartSuite's VFS hooks fire **before** the LSM chain (`security_path_*()` calls)
 - If HeartSuite **denies** an operation → the SELinux hook is never reached. HeartSuite is the first and final authority on that call.
 - If HeartSuite **allows** an operation → SELinux can still deny it. SELinux can only **add** restrictions to what HeartSuite allows, never grant access HeartSuite denies.
 
-This is intentional and safe. On RHEL/Fedora, SELinux is Enforcing by default; the stacking is additive, not conflicting. On Debian/Ubuntu, no SELinux policy is loaded by default. Either way, HeartSuite's enforcement cannot be bypassed via the SELinux layer.
+This is intentional and safe. On RHEL/Fedora, SELinux is Enforcing by default; the stacking is additive, not conflicting. On Debian/Ubuntu, no SELinux policy is loaded by default. Either way, Root Lock enforcement cannot be bypassed via the SELinux layer.
 
-*RHEL operational note:* As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for HeartSuite's specific operations. If AVC denials appear, `ausearch -m AVC -ts recent | audit2why` identifies them and `audit2allow` generates the targeted module. HeartSuite's enforcement is unaffected — SELinux operates after HS in the hook chain and cannot override HS decisions.
+*RHEL operational note:* As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for Root Lock's specific operations. If AVC denials appear, `ausearch -m AVC -ts recent | audit2why` identifies them and `audit2allow` generates the targeted module.
+
+Root Lock enforcement is unaffected. SELinux operates after Root Lock in the hook chain and cannot override Root Lock decisions.
 
 ---
 

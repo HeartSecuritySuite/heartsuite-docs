@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Keys, strip text, and ceremony steps shown here are the intended appliance path and may change. The screenshots are docs mock-ups of that path, not a capture of the shipping Root Lock TUI (`[f]` is still File Access there).
 
-This walkthrough is the intended console path on the appliance image. There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
+This walkthrough is the intended console path on a Root Lock Firewall appliance image. There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
 
 ## 1. First boot is observation
 
@@ -25,7 +25,9 @@ The Suggested Next Step points at pending firewall events, not at a catalog of b
 
 From the Dashboard, open **Firewall Rules** with `[f]`.
 
-Each pending event is something that already happened on this box during observation: a listener, an inbound attempt, a repeated source. Firewall Rules groups related events when they share a service or origin so you are not paging through identical lines. View samples with `[v]` before approving a group.
+Each pending event is something that already happened on this box during observation: a listener, an inbound attempt, a repeated source.
+
+Firewall Rules groups related events when they share a service or origin so you are not paging through identical lines. View samples with `[v]` before approving a group.
 
 `[a]` Approve creates an allowlist entry for that traffic. `[s]` Skip leaves it for later. `[s]` is Skip, not Seal. There is no blind "allow all pending."
 
@@ -35,7 +37,9 @@ An approval is a decision you make. The Dashboard does not confirm a suggestion 
 
 ## 3. Empty the queue before you seal
 
-An empty queue is required. It is not enough. The Suggested Next Step offers **Seal Firewall** with `[l]` only when the precondition checklist also passes. Most appliances need several days of representative traffic before that offer is earned — a development host that never saw production clients will under-teach the allowlist.
+An empty queue is required. It is not enough. The Suggested Next Step offers **Seal Firewall** with `[l]` only when the precondition checklist also passes.
+
+Most appliances need several days of representative traffic before that offer is earned. A development host that never saw production clients will under-teach the allowlist.
 
 The image already leaves a small set of ports open to any source (workload ports, and the SSH port even when no administrative SSH listener is running). Observation does not produce those. Seal keeps them. Narrow them through Maintenance after you know the workload.
 
@@ -43,7 +47,9 @@ The image already leaves a small set of ports open to any source (workload ports
 
 ## 4. Type YES, then reboot the host
 
-The confirmation word is `YES` — uppercase, case-sensitive. After you confirm, reboot from the console or hypervisor so Firewall Lockdown is applied with Root Lock Lockdown. The Dashboard does not reboot the host. `[r]` shows reboot instructions after the seal is accepted.
+The confirmation word is `YES` — uppercase, case-sensitive.
+
+After you confirm, reboot from the console or hypervisor so Firewall Lockdown is applied with Root Lock Lockdown. The Dashboard does not reboot the host. `[r]` shows reboot instructions after the seal is accepted.
 
 ![Firewall Lockdown with preconditions met, approved rule counts and samples, logging present, SIEM not configured, and the YES prompt in frame](test_docs_firewall_lockdown_yes.svg)
 
@@ -51,11 +57,15 @@ After reboot the strip is quiet when both seals are in place. Mutate keys are ab
 
 ## 5. Inventory is read-only
 
-After reboot, `[l]` opens the same Firewall Lockdown surface as inventory. It shows the allowlist that is in effect, and whether Root Lock Lockdown is present. Advisories can flag a rule that is broader than the traffic that earned it. They are not editable here.
+After reboot, `[l]` opens the same Firewall Lockdown surface as inventory. It shows the allowlist that is in effect, and whether Root Lock Lockdown is present.
+
+Advisories can flag a rule that is broader than the traffic that earned it. They are not editable here.
 
 ## 6. Change only through Maintenance
 
-To change a sealed rule, open **Maintenance** with `[m]`. Enter reduced posture with `[e]`, then type `YES`. Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot. SSH from a laptop is not the recovery path. Console or serial is.
+To change a sealed rule, open **Maintenance** with `[m]`. Enter reduced posture with `[e]`, then type `YES`.
+
+Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot. SSH from a laptop is not the recovery path. Console or serial is.
 
 ## What this demonstrates
 

@@ -15,7 +15,7 @@ menu:
 **Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into allowlisting.
 
 > [!NOTE]
-> Cloud users often skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Logs from that build-time process are in /var/log/heartsuite/ and accessible via the provider's serial console.
+> Cloud users skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Logs from that build-time process are in `/var/log/heartsuite/` and accessible via the provider's serial console.
 
 ## What happens after the first boot
 

@@ -1,6 +1,6 @@
 ---
 title: "Where file isolation is enough — and where it is not"
-linkTitle: "Deployment Scenarios"
+linkTitle: "Deployment scenarios"
 weight: 15
 description: "When HJFS alone is enough, when it should sit beside Root Lock, and when a different control is the right one for the workload."
 categories: ["Essentials"]
@@ -15,9 +15,9 @@ toc: true
 
 ### Desktop and workstation environments
 
-The HJFS isolation model maps directly onto what desktop programs need: each program confined to its own storage area, with no path between them. A word processor cannot touch a browser's files, and neither can reach files belonging to any other program. With [Advanced Protection](../advanced-protection/), user-facing documents are opened only through an OS-mediated dialog, giving the user direct control over which files each program can access.
+The HJFS isolation model maps directly onto what desktop programs need: each program confined to its own storage area, with no path between them. A word processor cannot touch a browser's files, and neither can reach files belonging to any other program.
 
-Desktop deployments use the full HJFS model: per-program isolation, per-version storage, and OS-mediated user file access.
+With [Advanced protection](../advanced-protection/), user-facing documents are opened only through an OS-mediated dialog, giving the user direct control over which files each program can access.
 
 ### Multi-user systems
 
@@ -25,9 +25,9 @@ On systems with multiple user accounts, HJFS layers per-user isolation on top of
 
 ### Software supply chain environments
 
-Development, build, and CI systems are high-value targets for supply chain attacks. A tainted dependency or build tool update is one of the most significant risks in this environment because it operates with the same trust as the legitimate version.
+Development, build, and CI systems are high-value targets for supply chain attacks. A tainted dependency or build tool update operates with the same trust as the legitimate version.
 
-HJFS version isolation addresses this directly. When a program is updated, its prior version — including all its libraries and data files — is preserved in a separate storage area. A tainted update cannot access or destroy data created by the legitimate version. Rollback to the prior clean version is a single utility command, with no data loss.
+HJFS version isolation addresses this. When a program is updated, its prior version — including all its libraries and data files — is preserved in a separate storage area. A tainted update cannot access or destroy data created by the legitimate version. Rollback to the prior clean version is a single utility command, with no data loss.
 
 ### Regulated environments
 
@@ -39,9 +39,11 @@ HJFS runs on a standard kernel — no kernel modification required. This makes i
 
 ### Alongside Root Lock by HeartSuite
 
-HJFS and Root Lock address complementary layers. Root Lock controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation. Together they cover all three OS-level controls — file access, network communication, and program execution.
+HJFS and Root Lock address complementary layers. Root Lock controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation.
 
-For production server and regulated deployments, running both closes all three dimensions. See [What HJFS Does and Does Not Cover](../introduction/limits/) for the specific gaps each fills.
+Together they cover all three OS-level controls — file access, network communication, and program execution.
+
+For production server and regulated deployments, running both closes all three dimensions. See [What HJFS does and does not cover](../introduction/limits/) for the specific gaps each fills.
 
 ---
 
@@ -49,12 +51,18 @@ For production server and regulated deployments, running both closes all three d
 
 ### Remote or cloud-only storage
 
-HJFS isolates files at the local filesystem layer. Data stored on remote or cloud-hosted filesystems is not protected by HJFS unless HJFS is running on the host where that data resides. A client program accessing remote storage over a network connection is outside HJFS's scope on the remote side. Network-level connection control for those programs is handled by Root Lock.
+HJFS isolates files at the local filesystem layer. Data stored on remote or cloud-hosted filesystems is not protected by HJFS unless HJFS is running on the host where that data resides.
 
-### Environments needing execution or network control without HS1
+A client program accessing remote storage over a network connection is outside HJFS's scope on the remote side. On the local host, per-program file isolation still holds. Network-level connection control for those programs is handled by Root Lock.
 
-HJFS v1.0 does not control which programs can execute or which network connections programs can open. Where these controls are the primary requirement, use Root Lock, which enforces both at the kernel level. HJFS can be added alongside it for filesystem-layer isolation.
+### Environments needing execution or network control
+
+HJFS v1.0 does not control which programs can execute or which network connections programs can open. Where these controls are the primary requirement, use Root Lock, which enforces both at the kernel level.
+
+HJFS can be added alongside it for filesystem-layer isolation. Per-program file isolation on a standard kernel still holds.
 
 ### Windows and macOS
 
-HJFS on Linux uses standard kernel filesystem registration — no special permissions or OS modifications required. On Windows and macOS, registering a filesystem requires cooperation from Microsoft or Apple respectively. That cooperation is the blocking constraint, not a technical limitation of HJFS itself. Linux is the current deployment target. Support for Windows and macOS is planned.
+HJFS on Linux uses standard kernel filesystem registration — no special permissions or OS modifications required.
+
+On Windows and macOS, registering a filesystem requires cooperation from Microsoft or Apple respectively. That cooperation is the blocking constraint, not a technical limitation of HJFS itself. Linux is the current deployment target. Support for Windows and macOS is planned.

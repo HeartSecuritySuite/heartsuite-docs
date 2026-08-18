@@ -1,6 +1,6 @@
 ---
 title: "What HJFS does and does not cover"
-linkTitle: "Protection Limits"
+linkTitle: "Protection limits"
 weight: 3
 description: "Where HJFS file isolation holds, where a program can still hurt you inside its own area, and what to run alongside it."
 categories: ["Essentials"]
@@ -11,7 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: HJFS enforces one thing: file read/write access is per program and per version — including programs running as root. No program can read or write files belonging to another. An attacker who stays within a compromised program's own storage area is constrained but not stopped. This page states exactly where the boundary is, and what handles the rest.
+**Overview**: HJFS enforces one thing: file read/write access is per program and per version — including programs running as root.
+
+No program can read or write files belonging to another. An attacker who stays within a compromised program's own storage area is constrained but not stopped. This page states exactly where the boundary is, and what handles the rest.
 
 ---
 
@@ -23,7 +25,9 @@ toc: true
 
 Within that area, every write is automatically backed up to a protected location no program can access. Recovery is always available: the restore utility returns any file to any prior version, including versions created before the compromise.
 
-**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is outside HJFS's scope. Once data is in memory, the network path is open. Root Lock by HeartSuite closes this gap. See [Network exfiltration](#network-exfiltration) below.
+**What HJFS does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is outside HJFS's scope. Once data is in memory, the network path is open.
+
+The file isolation still holds. Root Lock by HeartSuite closes the network gap. See [Network exfiltration](#network-exfiltration) below.
 
 ---
 
@@ -33,7 +37,9 @@ Within that area, every write is automatically backed up to a protected location
 
 **What HJFS enforces.** The program can only reach files within its own storage area. Credentials, documents, and configuration files belonging to other programs are inaccessible. The data available for exfiltration is bounded by isolation.
 
-**What HJFS does not cover.** HJFS controls what data a program can reach; it does not control which connections a program can open. A program that holds data in its own storage area and has an open network path can exfiltrate that data. Root Lock provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [Root Lock](../../../docs/network/).
+**What HJFS does not cover.** HJFS controls what data a program can reach; it does not control which connections a program can open. A program that holds data in its own storage area and has an open network path can exfiltrate that data.
+
+The reachable set is still that program's own files. Root Lock provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [Root Lock](../../../docs/network/).
 
 ---
 
@@ -41,9 +47,11 @@ Within that area, every write is automatically backed up to a protected location
 
 **The scenario.** An attacker downloads a tool — a privilege escalation script, a credential dumper, a reverse shell — and attempts to run it.
 
-**What HJFS enforces.** HJFS controls what running programs can access. Execution control is Root Lock's domain. This is a deliberate division of layers, not a gap.
+**What HJFS enforces.** HJFS confines what a running program can open. Files belonging to other programs stay unreachable even if a new binary starts. Execution control is Root Lock's domain. This is a deliberate division of layers, not a gap.
 
-**What HJFS does not cover.** A binary placed on the system can be launched. Root Lock requires any new binary to have an allowlist entry before it can execute. HJFS operates at the filesystem layer; Root Lock operates at the kernel. See [Root Lock](../../../docs/).
+**What HJFS does not cover.** HJFS does not decide which programs may start. A binary placed on the system can be launched.
+
+Once it is running, HJFS still confines it to its own storage area. Root Lock requires any new binary to have an allowlist entry before it can execute. See [Root Lock](../../../docs/).
 
 ---
 
@@ -55,13 +63,15 @@ Within that area, every write is automatically backed up to a protected location
 
 **What HJFS does not cover.** A malicious version of a program has the same access to that program's storage area as the legitimate version. Secrets stored in a program's own files are accessible to any version of that program, including a compromised one.
 
-Advanced Protection partially closes this gap for user-facing files. Under the advanced tier, user files can only be opened through an OS-mediated dialog, limiting silent reads even within the program. Internal files remain accessible to the program by name. See [Advanced Protection](../../advanced-protection/).
+Files belonging to other programs remain unreachable. Advanced protection further limits silent reads of user-facing files: those open only through an OS-mediated dialog. Internal files remain accessible to the program by name. See [Advanced protection](../../advanced-protection/).
 
 ---
 
 ## Physical access
 
-Physical access is the only path that defeats HJFS file isolation. All software-based attempts to cross program storage boundaries are prevented at the filesystem layer. The specific defeat path is physical access combined with deletion of the HJFS drive. Standard facility controls — locked racks, access logging, physical security policies — are the appropriate countermeasure. See [Security guarantees](../hjfs-overview/#security-guarantees) for details.
+Physical access is the only path that defeats HJFS file isolation. All software-based attempts to cross program storage boundaries are prevented at the filesystem layer.
+
+The specific defeat path is physical access combined with deletion of the HJFS drive. Standard facility controls — locked racks, access logging, physical security policies — are the appropriate countermeasure. See [Security guarantees](../hjfs-overview/#security-guarantees) for details.
 
 ---
 
@@ -74,6 +84,6 @@ HJFS provides filesystem-level file isolation. Network monitoring, detection, an
 | Network exfiltration | Root Lock (kernel-level network allowlisting) or network-layer egress controls |
 | Unauthorized program execution | Root Lock (kernel-level program allowlisting) |
 | Detection within approved boundaries | SIEM, NDR, endpoint detection tools |
-| Secrets management within a program | Secrets management tools; Advanced Protection for user files |
+| Secrets management within a program | Secrets management tools; Advanced protection for user files |
 
 For the full picture of how Root Lock and HJFS work together, see [HJFS and Root Lock: what each covers](../hjfs-overview/#hjfs-and-root-lock-what-each-covers).

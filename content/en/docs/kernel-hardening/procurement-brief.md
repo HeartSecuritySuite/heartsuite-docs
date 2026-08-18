@@ -15,7 +15,9 @@ toc: true
 **Evidence status:** Measured scores on this page reference the **published 5.19.6** stream (2026-05-19, [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker)). New deployments use **6.18.9**; config hash and checker parity for that stream are in progress — see [Evidence Status](evidence-status/) and [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/).  
 **Legacy technical data (measured):** [kernel-comparison-matrix-5.19.6.md](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-For enterprise buyers and CISOs evaluating the custom kernel in regulated environments — including deployment patterns, Secure Boot status, fleet management, risk transfer, supply chain artifacts, recovery paths, compatibility, and alternatives for strict "no custom kernel" policies — see the [Enterprise Adoption Guide](enterprise-adoption-guide/). Kernel support policy, distribution compatibility, and scanner hygiene: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+For enterprise buyers and CISOs evaluating the custom kernel in regulated environments — including deployment patterns, Secure Boot status, fleet management, risk transfer, supply chain artifacts, recovery paths, compatibility, and alternatives for strict "no custom kernel" policies — see the [Enterprise Adoption Guide](enterprise-adoption-guide/).
+
+Kernel support policy, distribution compatibility, and scanner hygiene: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
 ---
 
@@ -23,7 +25,9 @@ For enterprise buyers and CISOs evaluating the custom kernel in regulated enviro
 
 Every Linux kernel ships with hundreds of configuration choices that determine how easy it is to exploit vulnerabilities or escape security controls. This document compares HeartSuite's kernel choices to a directly comparable community-hardened kernel and the KSPP industry benchmark.
 
-All numbers in the tables below are outputs of the same measurement tool applied identically to each **5.19.6-era** kernel configuration. No estimates. The Arch linux-hardened comparison uses the 5.19.11 release — the same kernel generation as HeartSuite 5.19.6, making scores directly comparable. **Do not** apply these figures to **6.18.9** deployments; request pre-release 6.18.9 evidence via support or watch [Evidence Status](evidence-status/) for publication.
+All numbers in the tables below are outputs of the same measurement tool applied identically to each **5.19.6-era** kernel configuration. No estimates.
+
+The Arch linux-hardened comparison uses the 5.19.11 release — the same kernel generation as Root Lock 5.19.6, making scores directly comparable. **Do not** apply these figures to **6.18.9** deployments. Request pre-release 6.18.9 evidence via support, or watch [Evidence Status](evidence-status/) for publication.
 
 ---
 
@@ -62,7 +66,9 @@ What Root Lock does *not* add — and dedicated hardened kernels do:
 - Allocator randomization (`SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`)
 - Kernel stack erasure on syscall return (`KSTACK_ERASE`)
 
-These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs HS's 31/109 (28.4%). Root Lock 5.19.6 sits at the vanilla upstream baseline for exploit-resistance. For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — Root Lock covers the relevant threat at the right operating point; the Decision guide below covers when adding exploit-resistance hardening alongside Root Lock makes sense.
+These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs Root Lock's 31/109 (28.4%). Root Lock 5.19.6 sits at the vanilla upstream baseline for exploit-resistance.
+
+For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — Root Lock covers the relevant threat at the right operating point. The Decision guide below covers when adding exploit-resistance hardening alongside Root Lock makes sense.
 
 ---
 

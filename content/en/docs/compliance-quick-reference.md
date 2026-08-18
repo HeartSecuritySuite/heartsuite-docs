@@ -12,21 +12,21 @@ Detailed control mappings are in the [Compliance Reference: NIST CSF & ISO 27001
 
 ---
 
-**What does HeartSuite enforce?**
+**What does Root Lock by HeartSuite enforce?**
 
-Three gates: execution (default-deny binary allowlist), file access (per-programme path restrictions), and network (per-programme outbound IPv4/IPv6 allowlist). All three override root privilege.
+Three gates: execution (default-deny binary allowlist), file access (per-program path restrictions), and network (per-program outbound IPv4/IPv6 allowlist). All three override root privilege.
 
 ---
 
 **What does Lockdown seal?**
 
-Authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, cron/anacron, `/usr/lib/`, and HeartSuite's own configuration and kernel image directory — plus file backup snapshots (no programme, including root, can access them at runtime).
+Authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, cron/anacron, `/usr/lib/`, and Root Lock's own configuration and kernel image directory — plus file backup snapshots (no program, including root, can access them at runtime).
 
 These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Mode Switching and Lockdown](../mode-switching/) for the full list and behaviour.
 
 ---
 
-**What is HeartSuite's primary NIST CSF function?**
+**What is Root Lock's primary NIST CSF function?**
 
 **Protect**. It makes partial contributions to Identify (software inventory via the allowlisting workflow), Detect (denial-event logging and alerting), and Recover (per-write file versioning). It does not cover Respond.
 
@@ -41,32 +41,40 @@ A.8 (Technological Controls) — particularly A.8.2, A.8.3, A.8.7, A.8.9, A.8.13
 **What is explicitly not covered?**
 
 - A.6 — all People Controls (personnel screening, training, separation of duties)
-- A.7 — Physical Controls (HeartSuite *depends on* physical security; it does not provide it)
+- A.7 — Physical Controls (Root Lock *depends on* physical or serial-console security; it does not provide it)
 - Threat intelligence, SIEM, anomaly detection, RBAC within the Dashboard, vulnerability scanning, data encryption, NTP synchronisation, offsite backup
 
 ---
 
 **What is the cloud serial-console bypass risk?**
 
-HeartSuite installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same bypass path as physical keyboard access. From the serial console you can `cat /var/log/heartsuite/install.log` (installer), `cat /var/log/heartsuite/initial-setup-latest.log`, `journalctl -t heartsuite`, etc. Restricting serial console access is a customer-side cloud IAM responsibility.
+Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same bypass path as a keyboard.
+
+From the serial console you can `cat /var/log/heartsuite/install.log` (installer), `cat /var/log/heartsuite/initial-setup-latest.log`, `journalctl -t heartsuite`, and similar. Restricting serial console access is a customer-side cloud IAM responsibility.
 
 ---
 
 **What are the logging retention limits?**
 
-`/.hs/sys/HS_log.txt` (kernel activity) is cleared on each maintenance cycle. Operational logs are in `/var/log/heartsuite/` (install.log, ui.log, initial setup logs). These are visible on cloud serial consoles (AWS, Linode LISH, Hetzner, etc.). `/var/log/heartsuite/ui.log` is capped at ~8 MB. The syslog/journald streams (heartsuite tag) are the mechanism for long-term SIEM/audit evidence. Protected enforcement state lives in `/.hs/sys/` (not standard logs).
+`/.hs/sys/HS_log.txt` (kernel activity) is cleared on each maintenance cycle. Operational logs are in `/var/log/heartsuite/` (install.log, ui.log, initial setup logs). These are visible on cloud serial consoles (AWS, Linode LISH, Hetzner, etc.).
+
+`/var/log/heartsuite/ui.log` is capped at ~8 MB. The syslog/journald streams (`heartsuite` tag) are the mechanism for long-term SIEM/audit evidence. Protected enforcement state lives in `/.hs/sys/` (not standard logs).
 
 ---
 
-**What audit logging and SIEM integration does HeartSuite provide?**
+**What audit logging and SIEM integration does Root Lock provide?**
 
-Root Lock by HeartSuite includes SOC 2-aligned audit logging and SIEM integration so security teams and auditors have a complete, attributable record of what happened. Every allowlist approval (programs, file paths, network destinations) is written to a dedicated, persistent JSONL audit log with timestamp, uid, and tty. All kernel enforcement decisions are streamed in real time as structured RFC 5424 syslog for direct ingestion into Splunk, Elastic, Datadog, QRadar, and similar platforms — separate from higher-level alerts. An always-on rotating application audit log captures UI and core events. Lockdown advisories are verdict-driven and provenance-gated for high-signal auditability.
+Every allowlist approval (programs, file paths, network destinations) is written to a dedicated, persistent JSONL audit log with timestamp, uid, and tty.
+
+All kernel enforcement decisions are streamed in real time as structured RFC 5424 syslog for direct ingestion into Splunk, Elastic, Datadog, QRadar, and similar platforms — separate from higher-level alerts. An always-on rotating application audit log captures UI and core events. Lockdown advisories are verdict-driven and provenance-gated for high-signal auditability.
 
 ---
 
 **What is the Dashboard access control model?**
 
-No RBAC. Every Linux root user has identical, unrestricted access to all Dashboard functions. There is no operator/administrator distinction and no per-user audit attribution within HeartSuite. Attributing actions to named individuals requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
+No RBAC. Every Linux root user has identical access to all Dashboard functions. There is no operator/administrator distinction and no per-user audit attribution within Root Lock.
+
+Attributing actions to named individuals requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
 
 ---
 

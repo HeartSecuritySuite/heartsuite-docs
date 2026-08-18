@@ -31,8 +31,6 @@ When initial setup is complete, the Dashboard confirms:
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode, time in mode, and lockdown status
 - **Suggested Next Step**: Directs you to begin program allowlisting
 
-No user action is required and no manual verification command is needed. The Dashboard confirms this automatically.
-
 ## Protection state
 
 The protection state indicator appears as a full-width, high-contrast bar at the top of the Dashboard. Its content depends on the current system state:

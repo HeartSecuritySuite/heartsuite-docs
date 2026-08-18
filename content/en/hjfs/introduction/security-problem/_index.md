@@ -9,25 +9,31 @@ type: docs
 toc: true
 ---
 
+> **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
+
 ## The scribe analogy
 
-Imagine you need to write documents but cannot write yourself, so you hire a scribe. The scribe writes faithfully as you dictate. Then the session ends — and the scribe leaves with your documents. At that point the scribe holds custody of your work. The scribe could demand payment before returning the documents, alter them outside your presence, or copy them for others. This is only possible because you gave the scribe custody over your documents.
+Imagine you need to write documents but cannot write yourself, so you hire a scribe. The scribe writes faithfully as you dictate. Then the session ends — and the scribe leaves with your documents.
 
-A word processor on your computer plays the role of the scribe. When you run any program, the OS grants it your full file access rights. Ransomware exploits exactly this: it opens your files using the same system call as any legitimate program, reads them into memory, encrypts them, and overwrites the originals — all because the OS hands over custody to any program you run, without asking whether you intended it.
+At that point the scribe holds custody of your work. The scribe could demand payment before returning the documents, alter them, or copy them for others. That is possible only because you gave the scribe custody.
 
-To reclaim control, the solution is the same as with the scribe: the user, not the program, holds custody of the documents. HJFS enforces this at the filesystem level.
+A word processor plays the same role. When you run any program, the OS grants it your full file access rights. Ransomware exploits exactly this: it opens your files using the same system call as any legitimate program, reads them, encrypts them, and overwrites the originals.
+
+The OS hands over custody to any program you run, without asking whether you intended it. HJFS keeps custody with the user, not the program, at the filesystem level.
 
 ## The root cause
 
-The root cause of most malware damage is a design assumption made in the earliest operating systems and carried forward unchanged: file access permissions are granted to users, not to programs. When a user runs a program, that program inherits the user's full file access rights. A word processor and a ransomware process running as the same user have identical access to every file that user owns.
+The root cause of most malware damage is a design assumption made in the earliest operating systems and carried forward unchanged: file access permissions are granted to users, not to programs.
 
-This single assumption creates three persistent vulnerabilities that layered security tools cannot fully close.
+When a user runs a program, that program inherits the user's full file access rights. A word processor and a ransomware process running as the same user have identical access to every file that user owns.
 
 ## Three expressions of the problem
 
 ### 1. Unrestricted file access
 
-The OS function `open()` allows any running program to read, write, or delete any file the current user owns. Malware uses this to encrypt files for ransom, exfiltrate data, or silently corrupt application state. Backup tools can only restore from a previous snapshot taken before the damage; detection tools identify known attack patterns but react after access has already been granted, and miss any attack without a prior signature.
+The OS function `open()` allows any running program to read, write, or delete any file the current user owns. Malware uses this to encrypt files for ransom, exfiltrate data, or silently corrupt application state.
+
+Backup tools can only restore from a previous snapshot taken before the damage. Detection tools identify known attack patterns but react after access has already been granted, and miss any attack without a prior signature.
 
 ### 2. Unrestricted network communication
 

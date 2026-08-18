@@ -11,7 +11,13 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: A listening service on a general-purpose host accepts inbound packets unless a filter refuses them. That is the Unix default this product closes. Root Lock Firewall is the host-shaped stateful packet filter on a closed HeartSuite appliance. Root Lock is the hardened OS under it, not the filter. You receive an image, not a package. The Dashboard shows traffic as it happens. You approve a finite allowlist for this box's inbound and outbound path. Firewall Lockdown seals that set. Packets are judged by connection state on Linux netfilter's nft path. Execution, file access, and per-program outbound destinations remain [Root Lock by HeartSuite](../../../docs/)'s domain.
+**Overview**: A listening service on a general-purpose host accepts inbound packets unless a filter refuses them. That is the Unix default this product closes.
+
+Root Lock Firewall is the host-shaped stateful packet filter on a closed HeartSuite appliance. [Root Lock by HeartSuite](../../../docs/) is the hardened OS under it, not the filter. You receive an image, not a package.
+
+The Dashboard shows traffic as it happens. You approve a finite allowlist for this box's inbound and outbound path. Firewall Lockdown seals that set.
+
+Packets are judged by connection state on Linux netfilter's nft path. Execution, file access, and per-program outbound destinations remain Root Lock's domain.
 
 ## What you receive
 
@@ -51,7 +57,9 @@ The human act is the same one Root Lock already uses for programs and destinatio
 
 Silence on the strip means Firewall Lockdown and Root Lock Lockdown are both in place. It does not mean an NGFW somewhere else is healthy.
 
-Firewall Lockdown and Root Lock Lockdown are paired on the appliance and are not the same act. Firewall Lockdown seals the packet allowlist. Root Lock Lockdown seals the kernel allowlist (programs, files, outbound destinations). Changing either after seal requires the maintenance path.
+Firewall Lockdown and Root Lock Lockdown are paired on the appliance and are not the same act. Firewall Lockdown seals the packet allowlist. Root Lock Lockdown seals the kernel allowlist (programs, files, outbound destinations).
+
+Changing either after seal requires the maintenance path.
 
 ## What stays on Root Lock
 

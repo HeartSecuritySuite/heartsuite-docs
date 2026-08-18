@@ -9,7 +9,9 @@ type: docs
 toc: true
 ---
 
-**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected. Maintenance — such as installing packages, editing files, or applying updates — is the period during which you temporarily reduce Root Lock by HeartSuite's protection to make changes. The Dashboard's Maintenance (`[m]`) guides you through the entire process, from safety preparation to re-engaging Lockdown. The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or on the maintenance kernel — it is not shown in Setup Mode, because in Setup Mode you are already in the maintenance-ready state.
+**Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected.
+
+Maintenance is the period when you temporarily reduce Root Lock by HeartSuite's protection to install packages, edit files, or apply updates. The Dashboard's Maintenance (`[m]`) guides you from the safety checklist through re-engaging Lockdown.
 
 Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the maintenance kernel) is only needed when the immutable seal is active, which is the less common path.
 
@@ -46,18 +48,20 @@ After completing the safety checklist, the Maintenance explains what will change
 
 Type `YES` (case-sensitive) to confirm the switch. The Dashboard reboots to apply the mode change.
 
-After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears. Make your changes — install packages, edit configuration, update software. Root Lock logs all new activity silently.
+After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears.
+
+Make your changes — install packages, edit configuration, update software. Root Lock logs all new activity silently.
 
 When finished, re-engage Lockdown from the Dashboard. New activity from the maintenance period appears in the review queues. Review and approve them through the standard allowlisting flow before Lockdown resumes.
 
-## Option 2: boot the Non-HS Kernel (Lockdown active)
+## Option 2: boot the maintenance kernel (Lockdown + sealed)
 
 > [!NOTE]
-> This path requires physical presence at the machine — a keyboard and monitor, a serial port, or your cloud provider's serial console (AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start.
+> This path requires a keyboard and monitor, a serial port, or your cloud provider's serial console (AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start.
 
-When Lockdown is active, the Maintenance does not offer the Setup Mode switch. Instead, it explains the situation and guides you through a 3-step process. This is the most complex journey in the product — it involves two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where Root Lock is completely absent.
+When the immutable seal is active, Maintenance does not offer the Setup Mode switch. It guides you through a 3-step process: two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where Root Lock is completely absent.
 
-### Step 1 of 3: boot Non-HS Kernel and remove immutable flags
+### Step 1 of 3: boot the maintenance kernel and remove immutable flags
 
 After the safety checklist and typing `YES` to confirm, the Dashboard prepares you for the GRUB boot menu — the one moment where it cannot provide guidance. It shows the exact entry to select (Maintenance or vanilla Non-HS; do not select the branded HS / Root Lock kernel). Press `[r]` to reboot.
 
@@ -90,11 +94,19 @@ Make your changes — install software, update packages, modify configuration fi
 
 ### Step 3 of 3: boot Root Lock kernel and review
 
-Select the branded Root Lock (HS) kernel from GRUB. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Mode Switching and Lockdown](../../mode-switching/)). The Dashboard then shows Setup Mode is active and the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
+Select the branded Root Lock (HS) kernel from GRUB. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Mode Switching and Lockdown](../../mode-switching/)). The Dashboard then shows Setup Mode is active and the maintenance step counter.
+
+Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard.
+
+If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
 
 > [!WARNING]
 > The maintenance kernel provides no Root Lock protection whatsoever. The safety checklist is critical for this path.
 
 ## Manual recovery outside the Maintenance
 
-When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the maintenance kernel. If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1." The Maintenance's `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.
+When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the maintenance kernel.
+
+If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1."
+
+The Maintenance `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.

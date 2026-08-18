@@ -13,7 +13,9 @@ menu:
     identifier: "system-requirements"
 ---
 
-**Overview**: Root Lock by HeartSuite requires an x86 Linux system running a supported distribution. Debian, Ubuntu-derived, Alpine, and several RPM-based distributions are supported or validated; see the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) for tiers and versions. It ships with two Root Lock kernels (5.19 legacy and 6.18 primary) and a set of tools that enforce allowlist-based security at the kernel level.
+**Overview**: Confirm the host is x86 Linux on a supported distribution before you install. Root Lock by HeartSuite ships two kernels (5.19 legacy and 6.18 primary) and omits the kernel features attackers use to hide, shadow directories, and reach root.
+
+Debian, Ubuntu-derived, Alpine, and several RPM-based distributions are supported or validated; see the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) for tiers and versions.
 
 ## Supported platforms
 
@@ -31,7 +33,7 @@ Root Lock is distributed with two kernels based on mainline Linux: 5.19 and 6.18
 
 ## Software compatibility notes
 
-The Root Lock kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). These are the attack surface the design removes. Software that needs them runs on the maintenance kernel or a separate system.
+The Root Lock kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). Those features are the path to root, hide, shadow, and bypass. Software that depends on them is not a fit by design — run it on a separate host, or use the Container-host install for a long-lived, steady container set.
 
 The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
 
@@ -46,6 +48,4 @@ The Root Lock kernel is installed alongside your existing kernel via GRUB — it
 
 The Root Lock kernel itself can run as a guest inside KVM, VMware, or other hypervisors — only running virtual machines from within the Root Lock kernel is unavailable.
 
-Execution environment requirement: the host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives HeartSuite its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are refused by design. See the guard in the proposed installer and the framing in [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint).
-
-These omissions are deliberate. Root Lock replaces the runtime tools these primitives enable. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).
+The host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives Root Lock its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are not a fit by design. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).

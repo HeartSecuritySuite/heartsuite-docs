@@ -14,7 +14,9 @@ toc: true
 **Subject:** Root Lock by HeartSuite HS kernel (5.19 and 6.18 lines; v1.6.4 commercial baseline: kernel 6.18.9)  
 **Audience:** Procurement, security architects, and platform engineers selecting or certifying a base OS for Root Lock.
 
-This matrix states which distributions HeartSuite has validated in release testing, which are officially supported without a specific gate run, and where customer-side validation is required before production Lockdown. It complements the workload-level exclusions in [System Requirements](../../introduction/system-requirements/) and the buyer-facing deployment guidance in the [Enterprise Adoption Guide](enterprise-adoption-guide/).
+This matrix states which distributions HeartSuite has validated in release testing, which are officially supported without a specific gate run, and where customer-side validation is required before production Lockdown.
+
+It complements the workload-level exclusions in [System Requirements](../../introduction/system-requirements/) and the buyer-facing deployment guidance in the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
 ---
 
@@ -61,7 +63,9 @@ A **cross-distro release gate** runs after every kernel update. The April 2026 v
 
 **Architecture:** x86_64 (64-bit) only. No ARM or other ISA builds are offered for the HS kernel.
 
-**Secure Boot (all distributions):** HS kernel UEFI Secure Boot support is incomplete. Deployments with mandatory Secure Boot for the HS entry may require MOK enrollment during install or booting the HS kernel with Secure Boot disabled while retaining the signed Non-HS kernel for maintenance. Details: [Enterprise Adoption Guide → Secure Boot](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap).
+**Secure Boot (all distributions):** HS kernel UEFI Secure Boot support is incomplete.
+
+Deployments with mandatory Secure Boot for the HS entry may require MOK enrollment during install. Alternatively, boot the HS kernel with Secure Boot disabled while retaining the signed Non-HS kernel for maintenance. Details: [Enterprise Adoption Guide → Secure Boot](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap).
 
 ---
 
@@ -77,7 +81,9 @@ Officially in [System Requirements](../../introduction/system-requirements/) and
 
 ### Compatible (customer validation)
 
-Same packaging family or ABI lineage as a validated build, but HeartSuite has not published test results for your exact vendor branding, minor release, or gold image. Rocky 9.7 validation implies Rocky 9.x and AlmaLinux 9.x are structurally compatible; RHEL 8/9 require validation on the customer's subscribed minor until branded RHEL matrices are published.
+Same packaging family or ABI lineage as a validated build, but HeartSuite has not published test results for your exact vendor branding, minor release, or gold image.
+
+Rocky 9.7 validation implies Rocky 9.x and AlmaLinux 9.x are structurally compatible. RHEL 8/9 require validation on the customer's subscribed minor until branded RHEL matrices are published.
 
 ### Not supported
 
@@ -99,7 +105,9 @@ RPM-based support expanded in the **v1.6.4 multi-distro release (April 2026)**. 
 | **RHEL 8 / RHEL 9** | **Compatible — customer validation on their minor.** Binaries are RHEL-compatible, but HeartSuite has not published branded RHEL minor test matrices. Run the install bundle on your subscribed RHEL gold image and complete Setup Mode before fleet Lockdown. |
 | **AlmaLinux 8 / 9** | **Compatible — equivalent to Rocky.** Expect the same installer behaviour as Rocky on the same major version; validate on your minor. |
 
-**SELinux on RHEL-family systems:** HeartSuite VFS hooks run before the LSM chain. SELinux can only add restrictions after HeartSuite allows an operation; it cannot bypass HeartSuite denials. On RHEL and Fedora, SELinux is Enforcing by default. As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for HeartSuite-specific operations. If AVC denials appear, use `ausearch` and `audit2allow` to build a targeted module — HeartSuite enforcement is unaffected. Full hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence) (*RHEL operational note*).
+**SELinux on RHEL-family systems:** Root Lock VFS hooks run before the LSM chain. SELinux can only add restrictions after Root Lock allows an operation. It cannot bypass Root Lock denials. On RHEL and Fedora, SELinux is Enforcing by default.
+
+As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for Root Lock-specific operations. If AVC denials appear, use `ausearch` and `audit2allow` to build a targeted module. Root Lock enforcement is unaffected. Full hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence) (*RHEL operational note*).
 
 ---
 
@@ -160,7 +168,7 @@ Root Lock as a **hypervisor host** (running VMs from this kernel) is not support
 
 Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether the **workload** belongs on the HS kernel is a separate decision — the same across every row in the matrix.
 
-Root Lock deliberately removes kernel features used as bypass primitives. Workloads that depend on those features require the **Non-HS kernel** (maintenance mode) or a **separate host**, regardless of whether the distribution is Validated or Supported.
+Root Lock deliberately removes kernel features used as bypass primitives. Workloads that depend on those features do not run on the HS kernel. Keep them on a host whose kernel still compiles those features, or on a separate host — regardless of whether the distribution is Validated or Supported.
 
 | Requirement | On HS kernel? | Reference |
 |-------------|---------------|-----------|
