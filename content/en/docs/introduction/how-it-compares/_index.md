@@ -97,7 +97,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
-**Related designs.** The idea that root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
+**Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
 
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each tool above retains strengths Root Lock does not replicate.
 
@@ -153,7 +153,15 @@ To reach a file, a process must hold a token for that file's underlying storage.
 
 Existing Linux software does not run on seL4 without a full OS porting effort. For a commercial server running standard software, deploying seL4 means replacing the entire software environment, not just the kernel.
 
-**The policy-integrity gap.** seL4 has no policy database; authority is the token set, which is structural. Root Lock maintains an allowlist database, and Lockdown seals it: `chattr +i` across the relevant paths plus a kernel flag that blocks `chattr` via the ioctl hook at runtime, preventing any running program from modifying the allowlist. The two approaches defend at different layers: seL4 makes authority impossible to forge; Root Lock makes the allowlist impossible to modify after Lockdown engages.
+**How Root Lock enforces the same principle on existing software.** Root Lock installs as a modified Linux kernel on a host already running standard software. Root Lock controls whether each program can execute, which files it can read or write, and which network connections it can make. The existing binaries run without modification.
+
+Root Lock observes what each binary does during Setup Mode; you build the allowlist through the Dashboard queues, review and approve, then engage Lockdown. The guarantee is a kernel-enforced allowlist on the software the host already runs.
+
+**The Setup Mode gap.** seL4 has no learning phase. Token grants are designed at system build time by the developer who builds the system. There is no "observe what this service actually needs at runtime, then derive its policy" workflow.
+
+Root Lock's Setup Mode is the practical answer for standard infrastructure: run the system, record every access in the Dashboard queues, review and approve, then engage Lockdown. For any environment running standard Linux software, Root Lock's Setup Mode provides the observe-and-build path that seL4 cannot offer.
+
+**The policy-integrity gap.** seL4 has no policy file. Authority is the token set. There is nothing to edit after the system is built. Root Lock's policy is an allowlist file. An attacker with root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
 
 **Platform.** seL4 is not a Linux kernel; standard Linux software requires a full porting effort to run on it. Root Lock targets Linux 5.19.6 and 6.18 and is installed by replacing the kernel on an existing host.
 
@@ -289,4 +297,10 @@ Nothing the attacker ran survives a reboot.
 
 To see the three enforcement mechanisms tested against real attacks, including what happens when attackers stay within approved boundaries, see [When Root Isn't Enough](../in-practice/).
 
-**The compliance answer.** SOC 2, PCI DSS, and ISO 27001 each include a privileged-access control question: can an administrator, or an attacker who has compromised one, remotely disable security controls? Under Lockdown, by design, root has no path to modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Supported bypass of the seal requires the physical presence or cloud serial console to reboot in the non HS maintenance kernel as described above. Every tool in the bypass table earlier in this page can be disabled by an attacker with remote root via a stoppable control plane; Root Lock removes that class of disable. For managed security providers, this is the residual-risk class change they describe to auditors — the same for every Root Lock-protected server they manage in financial services, healthcare, and defence. Auditors who need kernel config residuals and mediation-completeness notes should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).
+**The compliance answer.** SOC 2, PCI DSS, and ISO 27001 each include a privileged-access control question: can an administrator, or an attacker who has compromised one, remotely disable security controls?
+
+Under Lockdown, root cannot modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Changing the seal takes physical presence or the cloud serial console, to boot the maintenance kernel, as described above.
+
+Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the leftover-risk change they describe to auditors. It is the same for every HeartSuite-protected server they manage in financial services, healthcare, and defence.
+
+Auditors who need kernel-config leftovers and notes on whether every path is gated should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).
