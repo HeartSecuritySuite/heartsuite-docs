@@ -32,7 +32,7 @@ Root Lock is not active while the maintenance kernel is running. Schedule update
 
 ## Before you begin
 
-- **Disengage Lockdown if it is active.** Lockdown uses `chattr +i` filesystem immutability on HeartSuite configuration files; the installer cannot replace them while Lockdown is engaged. From the Dashboard, open Maintenance (`[m]`) and follow the guided path to disengage. (Any grant narrowing done via per-panel actions/opt-outs during original activation will need re-review after update.)
+- **Disengage Lockdown if it is active.** Lockdown uses `chattr +i` filesystem immutability on HeartSuite configuration files; the installer cannot replace them while Lockdown is engaged. From the Dashboard, open Maintenance (`[m]`) and follow the guided path to disengage.
 - **Verify the bundle.** Compare the SHA-256 of `heartsuite-install.sh` against the published checksum before running it.
 
 ## Update procedure
@@ -54,7 +54,7 @@ Root Lock is not active while the maintenance kernel is running. Schedule update
    ```
 
 6. The installer applies the update and reboots automatically into the new Root Lock kernel.
-7. If new programs are encountered, Root Lock reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed (Phase 1). The Dashboard appears when this is complete.
+7. If new programs are encountered, Root Lock reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed during initial setup. The Dashboard appears when this is complete.
 8. Re-engage Lockdown from the Dashboard if it was active before the update.
 
 ## If the update fails

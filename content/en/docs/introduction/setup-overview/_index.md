@@ -1,8 +1,8 @@
 ---
-title: "Seven phases from install to Lockdown"
+title: "From install to Lockdown"
 linkTitle: "The Setup Journey"
 weight: 2
-description: "The Dashboard walks you from system verification to Lockdown. What each phase asks you to approve, and why later phases stay locked."
+description: "Initial setup runs unattended. Then the Dashboard walks you from program allowlisting to Lockdown."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "setup", "modes", "secure", "allowlist", "overview"]
 type: docs
@@ -23,34 +23,36 @@ Setup Mode solves this problem. In Setup Mode, Root Lock logs all activity witho
 
 Setup Mode is the default after installation. Root Lock's automated backup also operates during Setup Mode, capturing versions of protected directories so files can be restored even before Lockdown is active.
 
-## The 7 phases
+## Initial setup, then the Dashboard checklist
 
-Root Lock organizes the setup journey into seven phases. The Dashboard tracks progress through each phase and always displays a Suggested Next Step.
+Initial setup runs unattended after you boot the Root Lock kernel. It reads startup and shutdown activity, adds those programs to the allowlist, and reboots as needed. Cloud images already finished this at image-prep time. The Dashboard does not appear until initial setup is complete.
 
-| Phase | Name | Description |
-|-------|------|-------------|
-| 1 | System Verification | Confirms the Root Lock kernel is active and the system is in Setup Mode. Auto-completes on Cloud instances. |
-| 2 | Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
-| 3 | Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers (`[s]`), if applicable. |
-| 4 | File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
-| 5 | Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
-| 6 | Alert Settings | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings (`[e]`). |
-| 7 | Lockdown | Locked until phases 2 through 6 are complete. Activate via the Dashboard's Lockdown button (`[l]`): prep shows checklist + per-panel actions/opt-outs (e.g. [u] undo, [p]/[g]/[x]), inventory read-only, then type `YES` (case-sensitive). |
+The Dashboard then tracks the remaining checklist and always displays a Suggested Next Step.
 
-## Cloud vs. Local Path
+| Checklist | Description |
+|-----------|-------------|
+| Program Allowlisting | Review and approve programs detected during observation from the Dashboard's Programs queue (`[p]`). |
+| Script Launchers | Configure Secure Script Launchers for interpreted scripts from the Dashboard's Launchers (`[s]`), if applicable. |
+| File Access Allowlisting | Review and approve file reads and writes from the Dashboard's File Access queue (`[f]`). |
+| Internet Access Allowlisting | Review and approve internet connections from the Dashboard's Internet Access queue (`[i]`). |
+| Alert Settings | Configure at least one push channel (email, syslog, or webhook) from the Dashboard's Alert Settings (`[e]`). |
+| Lockdown | Locked until the earlier checklist items are complete. Activate via the Dashboard's Lockdown button (`[l]`). Review the checklist, then type `YES` (case-sensitive). |
 
-### Cloud Path
+## Cloud Path and Local Path
 
+{{< choice-pane >}}
+{{< choice-card header="Cloud Path" >}}
 Users who launch a pre-installed Root Lock cloud instance (AWS AMI, GCP image) boot directly into Setup Mode. The Dashboard confirms setup is complete. The Dashboard appears on first login with the current system state and a Suggested Next Step. No manual verification is required. Installer logs from the cloud image build are accessible via the provider's serial console.
-
-### Local Path
-
+{{< /choice-card >}}
+{{< choice-card header="Local Path" >}}
 Users who install Root Lock on bare-metal or custom VMs follow a longer path:
 
 1. Download and extract the installation package.
 2. Prepare GRUB and install the Root Lock kernel.
 3. Root Lock reads the startup and shutdown logs automatically, rebooting between passes until all startup and shutdown programs are in the allowlist.
-4. After setup is complete, the Dashboard appears and the journey merges with the Cloud path.
+4. After setup is complete, the Dashboard appears and the journey merges with the Cloud Path.
+{{< /choice-card >}}
+{{< /choice-pane >}}
 
 Both paths converge at the Dashboard after setup. From that point forward, the workflow is identical.
 
@@ -67,12 +69,12 @@ graph TD
     B -- Local --> D["Boot setup runs automatically — reboots between passes"]
     D --> C
     C --> E[Dashboard appears — Suggested Next Step]
-    E --> F["Phase 2: Programs queue — approve programs"]
-    F --> G["Phase 3: Script Launchers — if applicable"]
-    G --> H["Phase 4: File Access queue — approve file access"]
-    H --> I["Phase 5: Internet Access queue — approve connections"]
-    I --> J["Phase 6: Configure alerts"]
-    J --> K["Phase 7: Activate Lockdown"]
+    E --> F["Programs queue — approve programs"]
+    F --> G["Script Launchers — if applicable"]
+    G --> H["File Access queue — approve file access"]
+    H --> I["Internet Access queue — approve connections"]
+    I --> J["Configure alerts"]
+    J --> K["Activate Lockdown"]
     K --> L["[r] Reboot — Lockdown active on next boot"]
     L --> M{Maintenance needed?}
     M -- Yes --> N["Maintenance guides through steps"]
@@ -86,7 +88,7 @@ graph TD
 >
 > Complete all allowlisting phases in Setup Mode before activating Lockdown. If boot and shutdown programs have not been approved, the system will fail to start or shut down correctly.
 
-When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown requires typing `YES` (case-sensitive) to confirm and displays an allowlist summary and precondition checklist before proceeding. Before confirmation, the prep shown during Lockdown activation offers actions and opt-outs (e.g. `[u]` undo grants, `[p]` patch, `[g]` restrict tools from observed usage, `[x]` exclude — see [Mode Switching and Lockdown](../../mode-switching/) for details). The inventory is read-only.
+When phases 2 through 6 are complete, the Dashboard unlocks Phase 7. The Suggested Next Step will prompt you to activate Lockdown. Activating Lockdown displays an allowlist summary and a precondition checklist, then requires typing `YES` (case-sensitive) to confirm. See [Mode Switching and Lockdown](../../mode-switching/) for the activation flow.
 
 After activating Lockdown, the Dashboard offers one reboot option: `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every Root Lock kernel boot.
 

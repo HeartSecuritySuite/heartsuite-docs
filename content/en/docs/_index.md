@@ -17,9 +17,22 @@ type: docs
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-Root Lock supports two paths: **Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after initial setup (System Verification). Logs from the process are visible via the provider serial console.
+Root Lock supports two paths: 
 
-Root Lock is a strong fit for production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts). Hosts that run a shared-kernel container runtime (Docker, containerd, Podman) or eBPF-based tooling locally require the maintenance kernel: the Root Lock kernel is deliberately built without overlay filesystems, user namespaces, and the BPF syscall because those are the privilege-escalation primitives that supply the attack surface, path to root, and bypass vectors the design removes.
+**Cloud** (pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers — the Dashboard appears on first login) and **Local** (manual installation with a guided setup across several reboots). Both paths converge at the Dashboard after initial setup (System Verification). Logs from the process are visible via the provider serial console.
+
+Root Lock supports two setup paths. Both arrive at the Dashboard after initial setup.
+
+{{< choice-pane >}}
+{{< choice-card header="Cloud Path" >}}
+Pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers. The Dashboard appears on first login.
+{{< /choice-card >}}
+{{< choice-card header="Local Path" >}}
+Manual installation with a guided setup across several reboots.
+{{< /choice-card >}}
+{{< /choice-pane >}}
+
+Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Hosts that run Docker, containerd, Podman, or local eBPF tooling need the maintenance kernel. See [Deployment Scenarios](introduction/deployment-scenarios/).
 
 ## Introduction and concepts
 
