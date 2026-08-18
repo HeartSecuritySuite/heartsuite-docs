@@ -19,7 +19,7 @@ Kernel and operational logs (`journalctl -k` or dmesg; `/var/log/heartsuite/inst
 
 The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
-- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", or "maintenance kernel", you immediately know what protection level is active. No indicator means Lockdown with immutable seal — full protection.
+- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", "Lockdown applied", or "maintenance kernel", you immediately know what protection level is active. "Lockdown applied" is Lockdown with the immutable seal.
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode with uptime, and lockdown status.
 - **Pending/Denied counts**: In Setup Mode, these are pending items awaiting approval. In Lockdown, these are denied actions that may need allowlisting.
 - **Suggested Next Step**: Provides a single, actionable recommendation based on the current system state.

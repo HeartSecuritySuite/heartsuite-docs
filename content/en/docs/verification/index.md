@@ -39,7 +39,7 @@ The protection state indicator appears as a full-width, high-contrast bar at the
 |-------|-----------|
 | Setup Mode | SETUP MODE: logging only, nothing is blocked |
 | Lockdown (no immutable seal) | LOCKDOWN: immutable seal not applied |
-| Lockdown + sealed | No indicator (silence means safety) |
+| Lockdown + sealed | Lockdown applied |
 | maintenance kernel | maintenance kernel: Root Lock not active. No blocking. No logging. No backups. |
 
 ## Status line at the bottom
