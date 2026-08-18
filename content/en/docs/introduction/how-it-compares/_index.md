@@ -95,7 +95,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 **Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine.
 
-Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
+Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The question is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
 **Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
 
@@ -217,7 +217,7 @@ The table below answers each question in full for the main enforcement mechanism
 | seccomp-bpf sandboxes (bubblewrap, firejail, systemd, browser sandboxes) | The parent process that sets the filter | The child process the filter applies to | A sibling process launched without the filter is unaffected. Filters are scoped to a process tree, not a program identity |
 | gVisor | Container runtime administrator | Syscalls from inside the sandboxed container | Compromise the gVisor sentry process, or exploit a syscall-emulation bug |
 | Linux EDR agents (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) | SOC team via a cloud console | Monitored processes | Root kills the agent, unloads the driver, or exploits a BYOVD bypass |
-| **Root Lock** | **You in Setup Mode; allowlist sealed by Lockdown** | **Every program, including those running as root** | **Physical presence or the cloud serial console to boot the maintenance kernel. Leftover: whether Setup Mode approved too much, and whether someone at the console can unseal it. See Circumvention** |
+| **Root Lock** | **You in Setup Mode; allowlist sealed by Lockdown** | **Every program, including those running as root** | **Physical presence or the cloud serial console to boot the maintenance kernel. What can still go wrong: whether Setup Mode approved too much, and whether someone at the console can unseal it. See Circumvention** |
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes: one container, one labelled domain, one process tree, one observed program. Root Lock narrows it to *every* program via a system-wide allowlist, root included.
 
