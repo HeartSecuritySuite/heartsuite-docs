@@ -125,6 +125,48 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 | [CVE-2026-64283](#cve-2026-64283) | KVM guest_memfd (`CONFIG_KVM_GUEST_MEMFD`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
 | [CVE-2026-64531](#cve-2026-64531) | Open vSwitch datapath (`CONFIG_OPENVSWITCH`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
 | [CVE-2026-64564](#cve-2026-64564) | SCTP ASCONF DEL-IP (`CONFIG_IP_SCTP`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
+| [CVE-2026-45837](#cve-2026-45837) | BPF arena (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
+| [CVE-2026-45839](#cve-2026-45839) | BPF CO-RE relocation parser (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-45851](#cve-2026-45851) | EFI unaccepted memory table (`CONFIG_UNACCEPTED_MEMORY`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-45853](#cve-2026-45853) | AMDGPU DRM driver (`CONFIG_DRM_AMDGPU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-45893](#cve-2026-45893) | AppArmor DFA table unpack (`CONFIG_SECURITY_APPARMOR`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-45903](#cve-2026-45903) | BPF helper prototypes (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected |
+| [CVE-2026-45943](#cve-2026-45943) | EROFS ztailpacking (`CONFIG_EROFS_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-45957](#cve-2026-45957) | RCU preempt (`CONFIG_PREEMPT_RCU`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
+| [CVE-2026-46033](#cve-2026-46033) | IPsec authencesn (`CONFIG_CRYPTO_AUTHENC`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-46045](#cve-2026-46045) | MD last-level bitmap (`CONFIG_MD_LLBITMAP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
+| [CVE-2026-46130](#cve-2026-46130) | dm-verity FEC (`CONFIG_DM_VERITY_FEC`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-46136](#cve-2026-46136) | MediaTek mt7921 Wi-Fi (`CONFIG_MT7921E`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-46162](#cve-2026-46162) | Intel ice Ethernet (`CONFIG_ICE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-46180](#cve-2026-46180) | Broadcom FullMAC Wi-Fi (`CONFIG_BRCMFMAC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-46234](#cve-2026-46234) | vsock (`CONFIG_VSOCKETS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-46294](#cve-2026-46294) | Device-mapper ioctl (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
+| [CVE-2026-46309](#cve-2026-46309) | Intel Xe DRM (`CONFIG_DRM_XE`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-52962](#cve-2026-52962) | CephFS setxattr (`CONFIG_CEPH_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-53059](#cve-2026-53059) | Device-mapper dirty log (`CONFIG_DM_MIRROR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in APO |
+| [CVE-2026-53089](#cve-2026-53089) | BPF offload info fill (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-53119](#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
+| [CVE-2026-53120](#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.5 HIGH</span> | Affected — Secure Mode + Lockdown limit post-exploitation |
+| [CVE-2026-53129](#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> | Affected — Secure Mode + Lockdown limit post-exploitation |
+| [CVE-2026-53136](#cve-2026-53136) | AMD display BIOS parser (`CONFIG_DRM_AMDGPU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53137](#cve-2026-53137) | AMD HDMI HDCP 2.x (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53138](#cve-2026-53138) | AMD display VBIOS walk (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53143](#cve-2026-53143) | AMD KFD SDMA checkpoint (`CONFIG_HSA_AMD`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-53149](#cve-2026-53149) | Thunderbolt property parser (`CONFIG_USB4`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53233](#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
+| [CVE-2026-53255](#cve-2026-53255) | Bluetooth MGMT advertising (`CONFIG_BT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-53272](#cve-2026-53272) | EROFS compressed read (`CONFIG_EROFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-53286](#cve-2026-53286) | Intel IDPF ethernet (`CONFIG_IDPF`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53303](#cve-2026-53303) | F2FS sysfs extension_list (`CONFIG_F2FS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-53330](#cve-2026-53330) | AMD DisplayPort LTTPR (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-53346](#cve-2026-53346) | Rust arm64 unwind tables (`CONFIG_RUST`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
+| [CVE-2026-64186](#cve-2026-64186) | AMD IOMMU debugfs (`CONFIG_IOMMU_DEBUGFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
+| [CVE-2026-64237](#cve-2026-64237) | Elan I2C touchpad (`CONFIG_MOUSE_ELAN_I2C`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64245](#cve-2026-64245) | fbdev mode database (`CONFIG_FB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2025-71306](#cve-2025-71306) | IMA exec appraisal (`CONFIG_IMA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-45998](#cve-2026-45998) | RxRPC (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-46191](#cve-2026-46191) | framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs |
+| [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -3353,6 +3395,622 @@ On 6.18.9-hs, `CONFIG_XFS_FS=m` and `CONFIG_MODULES=y`. The unfixed fill helpers
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-45837
+
+
+
+### CVE-2026-45839
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF CO-RE relocation parser (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — `CONFIG_BPF_SYSCALL` is not compiled; `bpf()` returns `ENOSYS`; `bpf_core_parse_spec()` is unreachable
+
+CVE-2026-45839 is a signed-index out-of-bounds read in `bpf_core_parse_spec()`. CO-RE accessor strings are colon-separated field indices parsed with `sscanf("%d")`. A negative index passes the upper-bound check (`access_idx >= btf_vlen(t)`) and is cast to `u32` 0xffffffff inside `btf_member_bit_offset()`, reading far past the BTF members array. A local caller with `CAP_BPF` triggers it on `BPF_PROG_LOAD`.
+
+`# CONFIG_BPF_SYSCALL is not set` on 5.19.6-HeartSuite. The public derived 6.18 pin turns `CONFIG_BPF_SYSCALL` off (`bpf()` returns `ENOSYS`). There is no verifier, no CO-RE relocation path, and no `bpf_core_parse_spec()` in the running kernel on either released pin. Both pins also ship `CONFIG_DEBUG_INFO_NONE=y` with no vmlinux BTF.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45851
+
+**Status:** Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9
+**Component:** EFI unaccepted memory table (CONFIG_UNACCEPTED_MEMORY absent on 5.19.6; CONFIG_UNACCEPTED_MEMORY=y on 6.18.9)
+**Base Score:** 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite:** 0.0 — 5.19.6 is outside the NVD range and does not compile unaccepted memory; 6.18.9 compiles the path but the trigger requires Intel TDX guest firmware that presents an unaccepted memory table.
+
+reserve_unaccepted() under-reserves the EFI unaccepted memory table when the table start address is not page-aligned. The tail of the table is left unreserved, the table is overwritten or becomes inaccessible, and the kernel panics in accept_memory(). Upstream recorded that failure when starting Intel TDX guests with specific memory sizes (for example greater than 64 GB).
+
+NVD marks Linux before 6.6 unaffected. HeartSuite 5.19.6 has no CONFIG_UNACCEPTED_MEMORY option and no accept_memory symbol. HeartSuite 6.18.9 sits in 6.13–6.18.13 and builds CONFIG_UNACCEPTED_MEMORY=y, but a standard HeartSuite Core Secure deployment is not an Intel TDX guest and does not receive that firmware table.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45853
+
+**Status**: Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9
+**Component**: AMDGPU DRM driver (`CONFIG_DRM_AMDGPU`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — `# CONFIG_DRM_AMDGPU is not set` on 5.19.6 and the NVD range starts at 6.11; on 6.18.9 the driver is compiled as a module but no AMD GPU is present
+**Affected range**: 6.11 through 6.12.74; 6.13 through 6.18.13; 6.19 through 6.19.3
+**Upstream fix**: 6.12.75, 6.18.14, 6.19.4
+
+`amdgpu_gmc_get_nps_memranges()` in `drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c` frees a range table with `kfree()` after `amdgpu_discovery_get_nps_info()` allocated it with `kvcalloc()`. When that allocation comes from vmalloc, `kfree()` corrupts kernel memory.
+
+On 5.19.6 the AMDGPU driver is not compiled and the function does not exist. On 6.18.9 `CONFIG_DRM_AMDGPU=m` sits inside the NVD window, but the path runs only when an AMD GPU is present and the driver binds. No AMD GPU is present on a HeartSuite Core Secure server deployment.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45893
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: AppArmor DFA table unpack (`CONFIG_SECURITY_APPARMOR`)
+**Base Score**: 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile AppArmor; on 6.18.9-hs the policy-unpack path is not reachable from the allowlist
+**Affected range**: Linux 4.11 through 6.12.74; 6.13 through 6.18.13; 6.19 through 6.19.3. Both HeartSuite production kernels sit in that window until the config and allowlist gates apply.
+**Upstream fix**: 6.12.75; 6.18.14; 6.19.4
+
+This CVE describes an unaligned memory access in `unpack_table()` (`security/apparmor/match.c`). AppArmor copies DFA match tables out of a userspace policy blob with aligned `be16_to_cpu` / `be32_to_cpu`. A blob that is not naturally aligned produces an out-of-bounds read. The function runs only when a profile is loaded or replaced through the AppArmor securityfs interface.
+
+On 5.19.6, `# CONFIG_SECURITY_APPARMOR is not set`. The AppArmor code is not compiled. The `CONFIG_LSM` string still names apparmor; that string does not compile the module when the Kconfig option is off.
+
+On 6.18.9-hs, `CONFIG_SECURITY_APPARMOR=y` and `CONFIG_DEFAULT_SECURITY_APPARMOR=y`. AppArmor is a live LSM. That is not enough to reach `unpack_table`. Reaching the bug requires writing a packed profile to `/sys/kernel/security/apparmor/.load` or `.replace`. `apparmor_parser` and the `aa-*` policy tools are not on the allowlist. Default allowlist records grant `/usr/lib` and `/etc` only, read-only; writes to `/sys/kernel/security/apparmor/` are denied. Under Lockdown, `FS_IOC_SETFLAGS` returns `-EPERM`, so the allowlist cannot be extended to add those programs or that path.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If a 6.18.9-hs deployment adds `apparmor_parser` or write access to `/sys/kernel/security/apparmor/` to the allowlist, treat this CVE as Affected at 7.1 HIGH with Confidentiality and Availability High and Integrity None.
+
+### CVE-2026-45903
+
+**Status**: Not Affected
+**Component**: BPF syscall / verifier helper prototypes (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — `CONFIG_BPF_SYSCALL` is not compiled; `bpf()` returns `ENOSYS`
+
+After a verifier refactor, several BPF helper prototypes omitted `MEM_RDONLY` or `MEM_WRITE` on `ARG_PTR_TO_MEM` arguments. The verifier then treated helper buffers as unchanged and dropped later reads, producing incorrect memory access.
+
+NVD lists Linux 6.14 through 6.18.13 and 6.19 through 6.19.3. 5.19.6 is outside that range. On both released pins the `bpf()` syscall is not compiled. There is no verifier and no helper-prototype path.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45943
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: EROFS filesystem (`CONFIG_EROFS_FS`, `CONFIG_EROFS_FS_ZIP`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile EROFS; on 6.18.9-hs the erofs module cannot be loaded and a ztailpacking image cannot be attached
+**Affected range**: 5.17 through 6.12.77; 6.13 through 6.18.13; 6.19 through 6.19.3. Both 5.19.6 and 6.18.9-hs are in range. Fixed in 6.12.78, 6.18.14, 6.19.4, and 7.0.
+**Upstream fix**: 6.12.78, 6.18.14, 6.19.4, 7.0; stable commits 5de1aa0bf3a5, 92088bd9aa2a, ad07ea069f92, c134a40f86ef
+
+This CVE describes a NULL pointer dereference in `z_erofs_decompress_pcluster()`. Compressed folios for ztailpacking pclusters must be valid before those pclusters are added to the I/O chain. If a fatal signal interrupts `read_mapping_folio()` while the inline tail is being fetched, `z_erofs_decompress_queue()` treats the folio as valid and dereferences a NULL page. Integrity impact is None. The entry is a `read()` of a file on a mounted EROFS volume that uses ztailpacking.
+
+On 5.19.6, `# CONFIG_EROFS_FS is not set`. The EROFS decompression path is not in the running kernel.
+
+On 6.18.9-hs, `CONFIG_EROFS_FS=m` and `CONFIG_EROFS_FS_ZIP=y`. Reaching the path requires the erofs module to be loaded and a ztailpacking EROFS volume to be mounted, then a `read()` of a compressed file. `modprobe`, `insmod`, and `kmod` are not on the allowlist, so `erofs.ko` cannot be loaded. `mkfs.erofs`, `dump.erofs`, and `fsck.erofs` are not on the allowlist. `mount` is on the allowlist; under Lockdown, `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`, so a brought-in image cannot be attached. HeartSuite startup and setup do not mount EROFS.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45957
+
+**Status**: Not exploitable
+**Component**: RCU preemptible tree (`CONFIG_PREEMPT_RCU`, `CONFIG_TREE_RCU`); documented trigger is ftrace softirq stack tracing (`CONFIG_FTRACE`, `CONFIG_TRACING`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H) — NVD
+**Score on HeartSuite**: 0.0 — the deadloop requires ftrace softirq events with stack traces; no tracing program and no tracefs write grant are in the allowlist
+**Affected range**: Linux 5.8 through 6.6.127, 6.7–6.12.74, 6.13–6.18.13, and 6.19–6.19.3. **5.19.6 and 6.18.9-hs are both in range.** Fixed in 6.6.128, 6.12.75, 6.18.14, 6.19.4, and 7.0
+**Upstream fix**: `d41e37f26b31` (mainline); stable 6.18.14+
+
+This CVE describes an infinite recursion in `rcu_read_unlock_special()`. After commit `5f5fa7ea89dc` removed recursion protection from `__rcu_read_unlock()`, that function can call `raise_softirq_irqoff(RCU_SOFTIRQ)` without a pending-work flag. When ftrace is recording the softirq raise and walking the stack, the unwind re-enters `rcu_read_unlock_special()` and the CPU deadloops. The impact is a local denial of service. The path does not escalate to root.
+
+`CONFIG_PREEMPT_RCU=y`, `CONFIG_TREE_RCU=y`, `CONFIG_FTRACE=y`, and `CONFIG_TRACING=y` are compiled in on both fielded kernels. That is not enough. The deadloop is not the ordinary RCU unlock path. It requires the irq/softirq tracepoints to be armed with stack traces. Those controls live under `/sys/kernel/tracing/`. Enabling them takes a tracing program (`trace-cmd`, `perf`) or a write to that filesystem. None of those programs appear in the allowlist. Default allowlist directory grants are `/usr/lib` and `/etc` only. File-open write checks refuse any other path. An attacker who has already gained root cannot add a tracer: Lockdown returns `EPERM` for `FS_IOC_SETFLAGS`, `mount()`, `fsmount()`, and `move_mount()`, so the allowlist cannot be expanded and a bind-mount cannot cover `/sys/kernel/tracing/`.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If your deployment adds `trace-cmd`, `perf`, or a program that writes `/sys/kernel/tracing/` to the allowlist, treat this CVE as Affected at 7.1 HIGH for availability.
+
+### CVE-2026-46033
+
+**Status**: 5.19.6 Not exploitable — feature not compiled; 6.18.9-hs Not exploitable — tool not in APO
+**Component**: IPsec authencesn (`CONFIG_CRYPTO_AUTHENC`)
+**Base Score**: 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile the AF_ALG AEAD interface the bug uses; 6.18.9-hs compiles that interface as a module and HeartSuite APO does not include the programs that load it
+
+authencesn requires a zero authsize or an authsize of at least 4 bytes because the ESN encrypt and decrypt paths always move 4 bytes of high-order sequence number at the end of the authenticated data. Instance creation copied the inner ahash digest size into the default authsize without rejecting the invalid 1..3 range. Binding that instance through AF_ALG then ran the ESN tail handling with a too-short tag and hit an out-of-bounds read.
+
+Both HeartSuite kernels are in the NVD range (Linux 4.11 through 6.18.26) and compile `crypto/authencesn.c` via `CONFIG_CRYPTO_AUTHENC`. The unprivileged trigger is AF_ALG (`CONFIG_CRYPTO_USER_API_AEAD`) after instantiating authencesn with a 1..3-byte ahash such as `cbcmac(cipher_null)` from the CCM template. 5.19.6 has `CONFIG_CRYPTO_USER_API_AEAD` and `CONFIG_CRYPTO_USER` not set, so that userspace crypto path is not present. 6.18.9-hs builds AF_ALG AEAD, authenc, CCM, and IPsec ESP as modules. Reaching the path requires those modules to be loaded. HeartSuite APO does not include `modprobe`, `insmod`, `ip`, `setkey`, or IPsec daemons. Module autoload also runs `modprobe` and is refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46045
+
+**Status:** Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs
+**Component:** MD last-level bitmap (`CONFIG_MD_LLBITMAP`)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 0.0 — CONFIG_MD_LLBITMAP is not compiled; 5.19.6 is outside the affected range
+
+The bug is in md-llbitmap page reads: the code picks the first assigned non-faulty rdev without checking In_sync, so bitmap pages can be read from a spare still being rebuilt. That path exists only in drivers/md/md-llbitmap.c under CONFIG_MD_LLBITMAP.
+
+NVD lists Linux 6.18 through 6.18.26 and 6.19 through 7.0.3. HeartSuite 5.19.6 is outside that range and the option is not present. HeartSuite 6.18.9-hs is in range and has `# CONFIG_MD_LLBITMAP is not set`. Classic MD bitmap (`CONFIG_MD_BITMAP`) is a different file and is not this bug.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46130
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: dm-verity forward error correction (`CONFIG_DM_VERITY`, `CONFIG_DM_VERITY_FEC`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and does not compile dm-verity; on 6.18.9-hs the FEC decode path requires veritysetup or dmsetup, which are not on the allowlist
+**Affected range**: NVD: 6.1.125 through 6.2; 6.6.72 through 6.7; 6.12.10 through 6.13; 6.13 through 7.0.6 (first 6.18 fix is 6.18.42). **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.42
+**Upstream fix**: `430a05cb926f6bdf53e81460a2c3a553257f3f61` (mainline 7.1-rc1); stable 6.18.42, 7.0.7
+
+This CVE describes an out-of-bounds read in `fec_decode_bufs()`. The decoder assumes the first Reed-Solomon codeword's parity bytes never split across parity blocks. For non-default `fec_roots` values and a reduced buffer count, that assumption is false and the walk reads past the parity block buffer. Integrity impact is none. The bug does not grant root.
+
+On 5.19.6-HeartSuite-2.0, `# CONFIG_DM_VERITY is not set`. `CONFIG_DM_VERITY_FEC` has no line. `drivers/md/dm-verity-fec.c` is not compiled.
+
+On 6.18.9-hs, `CONFIG_DM_VERITY=m` and `CONFIG_DM_VERITY_FEC=y`. That is not enough. The decode path runs only after a verity target with FEC is mapped and a hash verification failure enters FEC recovery. Creating that mapping requires `veritysetup` or `dmsetup`. Loading the module requires `modprobe`. None of those programs are on the HeartSuite allowlist. No default Root Lock deployment mounts a verity+FEC volume. Secure Mode refuses to execute the missing tools. Under Lockdown the allowlist cannot be changed.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+If a 6.18.9-hs deployment adds `veritysetup` or `dmsetup` and a way to load `dm-verity` to the allowlist, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
+
+### CVE-2026-46136
+
+**Status:** Not exploitable — hardware absent (6.18.9-hs); Not Affected (5.19.6)
+**Component:** MediaTek mt76 mt7921 Wi-Fi (`CONFIG_MT7921E`, `CONFIG_MT7921U`)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 0.0 — the trigger requires a MediaTek MT7921 Wi-Fi adapter. HeartSuite Core Secure servers do not present that hardware. On 5.19.6 the driver is not compiled and the kernel version is outside the NVD range.
+
+The bug is a CLC (country power table) buffer-length underflow in the mt7921 MCU path. An undersized CLC blob wraps `buf_len` and either loops until the driver fails to initialize or applies an invalid power setting.
+
+HeartSuite 6.18.9-hs builds `mt7921e` and `mt7921u` as modules. Those modules attach only when MT7921 PCIe or USB hardware is present. HeartSuite servers have no such adapter, so the CLC path is never entered.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46162
+
+**CVE-2026-46162**
+
+**Status:** 5.19.6-HeartSuite-2.0: Not Affected. 6.18.9-hs: Not exploitable — tool not in APO.
+
+**Component:** Intel ice Ethernet driver, `ice_sf_eth_activate()` (`drivers/net/ethernet/intel/ice/ice_sf_eth.c`). Config gate: `# CONFIG_ICE is not set` on 5.19.6-HeartSuite-2.0; `CONFIG_ICE=m` with `CONFIG_ICE_SWITCHDEV=y` on 6.18.9-hs.
+
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+
+**Score on HeartSuite:** 0.0. 5.19.6 is outside the NVD range (the Scalable Function path was added in 6.12) and the ice driver is not compiled. On 6.18.9 the ice module is compiled, but the double-free runs only when userspace activates an Intel Ethernet 800 Series Scalable Function. That path is `devlink port add … flavour pcisf` followed by `devlink port function set … state active` after switchdev mode is enabled. `devlink` and `ip` are not on the HeartSuite default allowlist, so Secure Mode refuses to execute them. Lockdown keeps that allowlist immutable for the boot.
+
+The bug is a double free on the ice Scalable Function activate error path. When `auxiliary_device_add()` fails, `ice_sf_eth_activate()` calls `auxiliary_device_uninit()`, the device release callback frees `sf_dev`, and the error path then frees the same object again. NVD lists Linux 6.12 through 6.12.87, 6.13 through 6.18.29, and 6.19 through 7.0.6.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46180
+
+**Status**: Not exploitable
+**Component**: Broadcom FullMAC WiFi driver (`CONFIG_BRCMFMAC`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — Broadcom FullMAC WiFi hardware absent
+
+In `drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c`, `brcmf_sdio_bus_stop()` and `brcmf_sdio_remove()` send `SIGTERM` to the SDIO watchdog kthread and then call `kthread_stop()` on the same `task_struct`. If the kthread exits between those two calls, `kthread_stop()` uses a freed task. The fix takes a reference with `get_task_struct()` and switches the stop to `kthread_stop_put()`.
+
+HeartSuite 5.19.6 does not compile `CONFIG_BRCMFMAC`. HeartSuite 6.18.9 compiles `CONFIG_BRCMFMAC=m` with `CONFIG_BRCMFMAC_SDIO=y`. The watchdog kthread exists only after a Broadcom FullMAC SDIO device probes. No such NIC is present on a HeartSuite Core Secure server.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46234
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: vsock (`CONFIG_VSOCKETS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile AF_VSOCK; 6.18.9-hs ships vsock as modules that cannot be loaded because modprobe, insmod, and kmod are not on the allowlist
+**Affected range**: Linux 5.5–5.10.257, 5.11–5.15.208, 5.16–6.1.174, 6.2–6.6.139, 6.7–6.12.89, 6.13–6.18.31, 6.19–7.0.8. Both 5.19.6 and 6.18.9-hs are in range. Fixed in 6.18.32+ and 6.1.175+
+**Upstream fix**: stable 6.18.32+ / 6.1.175+
+
+This CVE describes inverted buffer-size clamping in `vsock_update_buffer_size()`. The function clamped to the maximum first and then to the minimum. Setting a minimum larger than the maximum let `vsk->buffer_size` grow past `vsk->buffer_max_size` and broke the intended socket memory bound. NVD classifies that as CWE-787.
+
+On 5.19.6, `# CONFIG_VSOCKETS is not set`. The AF_VSOCK family is not in the kernel.
+
+On 6.18.9-hs, `CONFIG_VSOCKETS=m` with loopback, virtio, VMware VMCI, vsockmon, and vhost_vsock also `=m`. Reaching the path requires the vsock family to be registered and a process to open an AF_VSOCK socket and call setsockopt. The installer and startup scripts do not load vsock. The allowlist has no vsock, qemu, or socat program, and no modprobe, insmod, or kmod. Kernel autoload of the `net-pf-40` family also execs modprobe and is refused. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added.
+
+The network hook at connect() and sendto() does not fire on socket() or setsockopt. That does not change the result: the vsock family is not registered.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+If a 6.18.9-hs deployment loads `vsock.ko` and an allowlisted program creates AF_VSOCK sockets, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-46294
+
+**Status**: Not exploitable — tool not in APO
+**Component**: Device mapper ioctl (`CONFIG_BLK_DEV_DM=y` on 5.19.6; `CONFIG_BLK_DEV_DM=m` on 6.18.9-hs)
+**Base Score**: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — both kernels compile device mapper; HeartSuite APO does not include the programs that issue device-mapper ioctls
+**Affected range**: Linux 2.6.12.1 through 5.10.257; 5.11 through 5.15.208; 5.16 through 6.1.174; 6.2 through 6.6.139; 6.7 through 6.12.87; 6.13 through 6.18.29; 6.19 through 7.0.6. Both HeartSuite production kernels sit in that window.
+**Upstream fix**: bounds check after `align_ptr()` in `retrieve_status()` (`drivers/md/dm-ioctl.c`); stable 6.18.30+
+
+The bug is a buffer overflow in `retrieve_status()`. The function writes a status string, then aligns the output pointer to the next 8-byte boundary without checking that the aligned pointer stays inside the buffer. The next loop iteration computes `remaining = len - (outptr - outbuf)`. When `outptr` is past the buffer, that subtraction wraps and the write goes out of bounds.
+
+NVD scores the overflow as a local path to high impact. The kernel description states that only root can issue device-mapper ioctls, and that libdevmapper uses an 8-byte-aligned buffer so the alignment step does not overshoot on the ordinary library path. Reaching the overflow therefore requires a program that opens `/dev/mapper/control` and issues a device-mapper ioctl with an output buffer that is not 8-byte aligned.
+
+On 5.19.6, `CONFIG_BLK_DEV_DM=y`. `retrieve_status`, `ctl_ioctl`, and `dm_ctl_ioctl` are in the running image.
+
+On 6.18.9-hs, `CONFIG_BLK_DEV_DM=m`. The ioctl path is not in vmlinux. Loading the module requires `modprobe`/`insmod`/`kmod`, which are not on the allowlist.
+
+`dmsetup`, LVM (`lvcreate`, `lvchange`, `vgchange`, `pvcreate`), `cryptsetup`, `kpartx`, `multipath`, and `dmeventd` are not on the allowlist. Lockdown refuses `FS_IOC_SETFLAGS`, so the allowlist cannot be extended to add them. The ioctl path is never reached.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46309
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: Intel Xe DRM driver — xe_vm_madvise_ioctl PAT coherency (`CONFIG_DRM_XE`)
+**Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and has no Xe driver; on 6.18.9-hs the trigger requires Intel Xe GPU hardware that is not present
+**Affected range**: Linux 6.18 through 6.18.31; 6.19 through 7.0.8; 7.1-rc1. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.32
+**Upstream fix**: 6.18.32; 7.0.9; 7.1
+
+This CVE describes a missing validation in `xe_vm_madvise_ioctl()`. A local caller can apply a PAT index with `XE_COH_NONE` coherency to CPU-cached memory. The kernel page-clear then stays dirty in the CPU cache. An Intel Xe iGPU using that PAT index bypasses the CPU caches and reads stale DRAM, disclosing contents of previously freed pages from other processes.
+
+`CONFIG_DRM_XE` does not exist on 5.19.6-HeartSuite-2.0. The Xe driver and `xe_vm_madvise.c` are not in that kernel. NVD marks every release before 6.18 unaffected.
+
+On 6.18.9-hs, `CONFIG_DRM_XE=m`. Reaching `xe_vm_madvise_ioctl()` requires a bound Intel Xe GPU and a DRM device node. No Intel Xe iGPU or discrete Xe GPU is present on a standard HeartSuite server deployment. Without that hardware the module does not bind, Xe DRM nodes are not created, and the ioctl is not reachable.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-52962
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: CephFS setxattr (`CONFIG_CEPH_FS`, `CONFIG_CEPH_LIB`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — NVD; Red Hat 5.5 (AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile CephFS; 6.18.9-hs ships Ceph as an unloaded module and no allowlisted program mounts CephFS or loads that module
+**Affected range**: NVD: 5.3.1 through 5.10.258; 5.11 through 5.15.209; 5.16 through 6.1.175; 6.2 through 6.6.141; 6.7 through 6.12.91; 6.13 through 6.18.33; 6.19 through 7.0.10. Both HeartSuite production kernels sit in that window until the config and load gates apply.
+**Upstream fix**: 5d3cc36b4e77 (mainline); stable 6.18.33+
+
+This CVE describes a buffer leak in `__ceph_setxattr()`. On the retry path, `old_blob` can hold `ci->i_xattrs.prealloc_blob`. Taking the `do_sync` path then skips `ceph_buffer_put(old_blob)`, so the prior allocation is never released. That is a kernel memory leak. It is not a write primitive.
+
+On 5.19.6, `# CONFIG_CEPH_FS is not set` and `# CONFIG_CEPH_LIB is not set`. The 5.19.6 System.map has no Ceph symbols. `__ceph_setxattr` is not in the running image.
+
+On 6.18.9-hs, `CONFIG_CEPH_FS=m` and `CONFIG_CEPH_LIB=m`. The filesystem is not built in. The 6.18.9-hs System.map has no Ceph symbols. Reaching `__ceph_setxattr` requires a mounted CephFS volume. That state requires loading `ceph.ko` and the Ceph userspace (`mount.ceph`, `ceph`). Those programs are not on the HeartSuite allowlist. `modprobe`, `kmod`, and `insmod` are not on the allowlist, so the module is not loaded. `mount` is on the allowlist; it cannot load the Ceph module or run `mount.ceph`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53059
+
+Status: Not exploitable — tool not in APO
+Component: Device-mapper dirty log (CONFIG_BLK_DEV_DM, CONFIG_DM_MIRROR)
+Base Score: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+Score on HeartSuite: 0.0
+
+The bug is an integer overflow in the device-mapper dirty log. A 64-bit region count is truncated to 32 bits, the log bitsets are allocated too small, and later bit operations write out of bounds in kernel heap. The trigger is creating a device-mapper mirror whose region count overflows UINT_MAX. That requires dmsetup (or LVM). HeartSuite APO does not ship dmsetup or LVM; the attack surface is not reachable.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53089
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF offload map/prog info fill (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — `CONFIG_BPF_SYSCALL` is not compiled; `bpf()` returns `ENOSYS`
+
+This CVE is a use-after-free in the BPF offload info-fill path. Querying information for an offloaded BPF map or program calls `get_net()` on the netdev network namespace while that namespace can already be tearing down, which increments a zero refcount.
+
+`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the public derived 6.18 pin (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program or map store, and no offload info-fill path on either released pin.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53119
+
+
+
+### CVE-2026-53120
+
+**CVE-2026-53120**
+**Status:** Affected — Secure Mode + Lockdown limit post-exploitation
+**Component:** PCI core driver_override (CONFIG_PCI=y, CONFIG_SYSFS=y on 5.19.6 and 6.18.9)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 7.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H) — Modified Integrity None because Secure Mode refuses new programs and Lockdown blocks chattr and all three mount syscalls. Confidentiality High and Availability High remain (in-memory reads and crash).
+
+The bug is a use-after-free in the PCI bus match path. When a driver is probed through __driver_attach(), match() runs without the device lock and reads the driver_override string while a concurrent write to /sys/bus/pci/devices/<addr>/driver_override can free it.
+
+PCI is compiled in on both fielded kernels and is present on a standard server. The trigger is a write to that sysfs attribute plus a concurrent driver attach. Allowlisted shells, python3, and systemd can perform that write when they hold a write grant on the PCI sysfs node. The path is not a socket path.
+
+**Secure Mode + Lockdown.** Even if the use-after-free is turned into kernel execution and a root userspace, Secure Mode refuses every non-allowlisted program at exec. Lockdown returns -EPERM on FS_IOC_SETFLAGS, so immutable flags cannot be cleared, and returns -EPERM on mount, fsmount, and move_mount, so bind-mounts over sealed paths fail. The residual risks are in-memory data exfiltration and availability impact.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at execve, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-53129
+
+**Status:** Affected — Secure Mode + Lockdown limit post-exploitation
+**Component:** fs/mbcache (`CONFIG_FS_MBCACHE=y` and `CONFIG_EXT4_FS=y` on 5.19.6-HeartSuite-2.0; `CONFIG_FS_MBCACHE=m` and `CONFIG_EXT4_FS=m` on 6.18.9-hs)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 6.1 — Modified Confidentiality Low, Integrity None (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a kernel use-after-free that reaches root cannot persist or remount. Availability stays High: a crash is residual. In-memory reads remain.
+
+`mb_cache_destroy()` tears down the ext4 extended-attribute cache without canceling pending shrink work. If entry creation already scheduled that work, the worker touches the cache after free. The trigger is the last put of a mounted ext4 volume — `umount` of that volume, or teardown at reboot. Both fielded kernels ship the code. `mount` and `umount` are on the HeartSuite allowlist. Lockdown refuses new mounts; it does not refuse `umount`. An already-mounted extra ext4 volume, or the last put of root ext4 at reboot, still reaches destroy.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-53136
+
+**Status**: 5.19.6: Not exploitable — feature not compiled. 6.18.9: Not exploitable — hardware absent.
+**Component**: AMD display BIOS parser (`CONFIG_DRM_AMDGPU`, `CONFIG_DRM_AMD_DC`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — AMD GPU driver not compiled on 5.19.6; AMD GPU hardware absent on 6.18.9
+
+The bug is an out-of-bounds heap write in the AMD display BIOS parser. Unvalidated VBIOS HDMI retimer register counts are used as loop bounds when copying retimer I2C settings into fixed-size arrays during driver probe.
+
+On 5.19.6 `CONFIG_DRM_AMDGPU` is not set, so the parser is not in the image. On 6.18.9 `CONFIG_DRM_AMDGPU=m` and `CONFIG_DRM_AMD_DC=y`, so the parser is in the amdgpu module. Probe runs only when an AMD GPU presents a VBIOS integrated-info table. That hardware is not present on a HeartSuite Core Secure server deployment.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53137
+
+**Status:** Not exploitable — hardware absent (6.18.9-hs); Not exploitable — feature not compiled (5.19.6)
+**Component:** drm/amd/display HDMI HDCP 2.x (`CONFIG_DRM_AMDGPU=m`, `CONFIG_DRM_AMD_DC=y` on 6.18.9-hs; `# CONFIG_DRM_AMDGPU is not set` on 5.19.6)
+**Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite:** 0.0
+
+The bug is an unclamped I2C read in `mod_hdcp_read_rx_id_list()` during HDMI HDCP 2.x repeater authentication. The driver takes a 10-bit message size from the sink RxStatus register and uses it as the read length into `rx_id_list[177]`. A malicious HDMI repeater that advertises a size larger than the buffer overruns the destination.
+
+HeartSuite 5.19.6 does not compile the AMD GPU driver. HeartSuite 6.18.9 compiles the AMD display engine as a module, but the trigger requires an AMD GPU HDMI port attached to a malicious HDCP 2.x repeater. That hardware is not present on a HeartSuite Core Secure deployment.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53138
+
+**Status**: Not exploitable — hardware absent (6.18.9-hs); Not exploitable — feature not compiled (5.19.6)
+**Component**: AMD display / amdgpu (`CONFIG_DRM_AMDGPU`, `CONFIG_DRM_AMD_DC`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile amdgpu; 6.18.9-hs compiles it as a module and the VBIOS parser runs only when an AMD GPU is probed
+**Affected range**: Linux 4.15 through 6.18.35 (6.18 stable fixed in 6.18.36). Both HeartSuite production kernels sit in that window until the config and hardware gates apply.
+**Upstream fix**: 6.18.36+ (bound every VBIOS record-chain walk to BIOS_MAX_NUM_RECORD)
+
+This bug is an unbounded walk of the AMD VBIOS record chain in `bios_parser.c` and `bios_parser2.c`. The loops stop only on a 0xFF record-type sentinel or a zero record size. A malformed VBIOS image that omits the terminator is walked without a cap at amdgpu probe, and the last steps can read past the image.
+
+On 5.19.6, `# CONFIG_DRM_AMDGPU is not set`. The display parser is not in the kernel.
+
+On 6.18.9-hs, `CONFIG_DRM_AMDGPU=m` and `CONFIG_DRM_AMD_DC=y`. The drop ships `amdgpu.ko`. The installer extracts modules and runs depmod; startup does not load amdgpu. The parser runs only when amdgpu binds to an AMD GPU. A headless HeartSuite Core Secure server has no AMD display GPU, so the probe path is not reached.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53143
+
+
+
+### CVE-2026-53149
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: Thunderbolt / USB4 property parser (`CONFIG_USB4`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H) — NVD
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile `CONFIG_USB4`; on 6.18.9-hs the parser runs only after a USB4/Thunderbolt host controller enumerates a device, and that hardware is absent
+**Affected range**: Linux 4.15 through 6.18.35 (and later unfixed stables). Both fielded kernels sit in NVD windows: 5.19.6 in 5.16–6.1.175; 6.18.9-hs in 6.13–6.18.35. Fixed in 6.18.36+
+**Upstream fix**: thunderbolt: Bound root directory content to block size
+
+`__tb_property_parse_dir()` does not check that `content_offset + content_len` fits in `block_len` for the root directory. When `rootdir->length` is `block_len - 2` or larger, the entry loop reads past the allocated property block. The path runs when the kernel parses a Thunderbolt/USB4 device's root property directory after a controller enumerates a device.
+
+On 5.19.6, `# CONFIG_USB4 is not set`. The Thunderbolt driver is not in that kernel.
+
+On 6.18.9-hs, `CONFIG_USB4=m` is compiled. Parsing still requires a USB4/Thunderbolt host controller and a connected device that presents a property directory. Headless HeartSuite servers have no such controller. `CONFIG_USB4_DEBUGFS_WRITE` is not set, so there is no debugfs write path that can feed a crafted directory without hardware.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53233
+
+**Status**: Not Affected on 5.19.6; Affected — Secure Mode + Lockdown limit post-exploitation on 6.18.9
+**Component**: netdev generic netlink RX bind (`CONFIG_NET_DEVMEM`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 on 5.19.6 — BIND_RX / `CONFIG_NET_DEVMEM` do not exist before Linux 6.12; 7.3 HIGH on 6.18.9 — Lockdown reduces MI: High→Low; C and A remain High
+**Affected range**: Linux 6.12 through 6.12.93, 6.13 through 6.18.35, 6.19 through 7.0.12
+**Upstream fix**: 6.12.94, 6.18.36, 7.0.13
+
+The bug is a double-free in `netdev_nl_bind_rx_doit()`. After a successful dma-buf bind to NIC RX queues, `genlmsg_reply()` always consumes the reply skb. On a reply failure (full receive buffer) the error path called `nlmsg_free()` on that same skb and unbound the dma-buf. The kernel then frees already-freed memory.
+
+`CONFIG_NET_DEVMEM` is not present on 5.19.6-HeartSuite-2.0. NVD marks every release below 6.12 unaffected. `netdev_nl_bind_rx_doit` is absent from that kernel’s System.map. The trigger cannot be reached on 5.19.6.
+
+On 6.18.9-hs `CONFIG_NET_DEVMEM=y` and `netdev_nl_bind_rx_doit` is in the image. The command is `NETDEV_CMD_BIND_RX` on the netdev generic-netlink family (`GENL_ADMIN_PERM`). HeartSuite’s network hook fires at `connect()` and at `sendto()` with a destination address; it does not fire at netlink `sendmsg()`. A process that already holds `CAP_NET_ADMIN` issues the command directly. The bind succeeds only on a NIC that implements queue-management ops (mlx5, bnxt with the queue API, gve) with tcp-data-split enabled and a dma-buf fd (`CONFIG_UDMABUF=y`). Those drivers are compiled as modules and load when the NIC is present. virtio-net in 6.18.9 has no queue-management ops, so a virtio-only guest does not complete the bind; a host with mlx5, gve, or bnxt does.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode’s allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+These constraints are why the Score on HeartSuite on 6.18.9 reflects a reduced MI (High→Low): root cannot clear immutable flags (`FS_IOC_SETFLAGS` returns `-EPERM`), cannot `mount` / `fsmount` / `move_mount`, and cannot add allowlist records. Confidentiality and Availability remain High. The double-free itself is kernel memory corruption and is outside the layer those API checks close. Residual risks are in-memory data exfiltration and availability impact.
+
+### CVE-2026-53255
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: Bluetooth MGMT advertising TLV (`CONFIG_BT`)
+**Base Score**: 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile Bluetooth; 6.18.9-hs ships the stack as an unloaded module and no allowlisted program sends MGMT_OP_ADD_ADVERTISING
+**Affected range**: Linux 4.9 through 6.18.35 (6.18 stable fixed in 6.18.36). Both HeartSuite production kernels sit in that window until the config and load gates apply.
+**Upstream fix**: stable 6.18.36+
+
+This CVE describes a one-byte out-of-bounds read in `tlv_data_is_valid()`. The parser reads each advertising field length from `data[i]` and then inspects `data[i + 1]` for managed EIR types before proving the field still fits in the buffer. A malformed `MGMT_OP_ADD_ADVERTISING` request whose length byte is the last byte of the buffer reads one byte past the advertising data.
+
+On 5.19.6, `# CONFIG_BT is not set`. The Bluetooth socket family, HCI layer, and MGMT parser are absent from the running kernel.
+
+On 6.18.9-hs, `CONFIG_BT=m`. Reaching the parser requires the Bluetooth module to be loaded, a registered HCI controller, and a trusted MGMT command. `MGMT_OP_ADD_ADVERTISING` is not in the untrusted command set; the kernel refuses it without `CAP_NET_ADMIN`. HeartSuite APO does not include `bluetoothd`, `bluetoothctl`, `btmgmt`, or `modprobe`/`insmod`/`kmod`. Module autoload also runs `modprobe` and is refused. The MGMT advertising path is not reached.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-53272
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: EROFS compressed read (`CONFIG_EROFS_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — NVD
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile EROFS; 6.18.9-hs builds EROFS as a module that is not in vmlinux and cannot be loaded because modprobe/insmod/kmod are not on the allowlist
+**Affected range**: Linux 5.17 through 6.12.93, 6.13 through 6.18.35, 6.19 through 7.0.12, and 7.1-rc1–rc6. Both HeartSuite production kernels sit in that window until the config and load gates apply.
+**Upstream fix**: 1aee05e814d2 (mainline); stable 6.12.94, 6.18.36, 7.0.13
+
+This CVE describes a use-after-free on the EROFS superblock decompress flag. `z_erofs_endio()` calls `z_erofs_decompress_kickoff()`, which queues `z_erofs_decompressqueue_work()` and then writes the superblock after that queue. Once the work unlocks the folios, unmount can free the superblock before that write.
+
+On 5.19.6, `# CONFIG_EROFS_FS is not set`. The decompress path is absent from the running kernel. System.map contains no erofs symbols.
+
+On 6.18.9-hs, `CONFIG_EROFS_FS=m` with `CONFIG_EROFS_FS_ZIP=y`. The 6.18.9 `z_erofs_decompress_kickoff()` still writes the decompress flag after `queue_work`. The vmlinux System.map contains no erofs symbols. Startup does not load EROFS. Reaching the race requires a loaded erofs module and a mounted compressed EROFS volume that is then unmounted while I/O completes. The allowlist has no `modprobe`, `insmod`, `kmod`, `mkfs.erofs`, `fsck.erofs`, or `dump.erofs`. Module autoload execs `modprobe` and is refused. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added, and `mount()`, `fsmount()`, and `move_mount()` return `EPERM`, so a new EROFS volume cannot be mounted.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If a 6.18.9-hs deployment loads erofs and mounts a compressed EROFS volume, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-53286
+
+**Status**: Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: Intel IDPF ethernet driver — IDC auxiliary device plug (`CONFIG_IDPF`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and has no IDPF driver; 6.18.9-hs has no Intel IDPF/IPU/E830 device, so the aux-device error path is never reached
+**Affected range**: 6.17 through 6.18.32; 6.19 through 7.0.9; 7.1-rc1 through 7.1-rc3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.33
+**Upstream fix**: 6.18.33, 7.0.10, 7.1
+
+This CVE describes a double-free and use-after-free in the Intel IDPF driver's IDC auxiliary-device error paths in `drivers/net/ethernet/intel/idpf/idpf_idc.c`. When `auxiliary_device_add()` fails in `idpf_plug_vport_aux_dev()` or `idpf_plug_core_aux_dev()`, the `err_aux_dev_add` label calls `auxiliary_device_uninit()` and falls through to `err_aux_dev_init`. Uninit runs the release callback that frees `iadev`. The fall-through then reads `adev->id` from the freed object for `ida_free()` and double-frees `iadev` with `kfree()`.
+
+On 5.19.6 the IDPF Kconfig symbol does not exist. The Intel ethernet block ends at IGC. NVD lists versions before 6.17 as unaffected.
+
+On 6.18.9-hs `CONFIG_IDPF=m`. The 6.18.9 `idpf_idc.c` still has the fall-through. Those functions run only after the idpf driver probes an Intel Infrastructure Data Path Function PCI device (Intel IPU / Ethernet Controller E830 PF or VF) and IDC RDMA initialization plugs the core or vport auxiliary device. A standard HeartSuite Core Secure server has no such device. Without the PCI device the driver does not probe, the plug functions are not called, and the error path is not reached.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+If a 6.18.9-hs deployment attaches an Intel IDPF/IPU/E830 device, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+
+### CVE-2026-53303
+
+
+
+### CVE-2026-53330
+
+
+
+### CVE-2026-53346
+
+**Status:** Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs
+**Component:** rust arm64 unwind tables (`CONFIG_RUST`, `CONFIG_UNWIND_TABLES`, `CONFIG_UNWIND_PATCH_PAC_INTO_SCS`)
+**Base Score:** 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite:** 0.0 — 5.19.6 is outside the NVD range; 6.18.9-hs is an x86_64 image and does not compile Rust kernel code or ARM64 unwind-table patching
+**Affected range:** Linux 6.12 through 6.12.93; 6.13 through 6.18.35; 6.19 through 7.0.12; 7.1-rc1 through 7.1-rc6. **5.19.6 is not in range.** Production **6.18.9-hs** is in range until base ≥ 6.18.36
+**Upstream fix:** 6.12.94, 6.18.36, 7.0.13, 7.1
+
+The bug is a rustc missing `uwtable` LLVM module flag on arm64. `-Cforce-unwind-tables=y` annotates functions but not the module, so compiler-generated functions such as `asan.module_ctor` have no uwtable. With `CONFIG_UNWIND_PATCH_PAC_INTO_SCS` the SCS boot patcher patches `paciasp` and skips `autiasp`. The kernel then crashes in `do_ctors()` / `do_basic_setup` during boot.
+
+Both production configs are `Linux/x86` with `CONFIG_X86_64=y`. Neither file contains `CONFIG_RUST`, `CONFIG_ARM64`, `CONFIG_UNWIND_TABLES`, or `CONFIG_UNWIND_PATCH_PAC_INTO_SCS`. 6.18.9-hs has `CONFIG_HAVE_RUST=y` and `CONFIG_RUSTC_VERSION=0`; rustc is not present and `CONFIG_RUST` is not enabled. Both have `# CONFIG_KASAN is not set`. The path lives in `arch/arm64/Makefile` and is not in the x86 image.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-64186
+
+**Status:** Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs
+**Component:** AMD IOMMU debugfs (`CONFIG_AMD_IOMMU_DEBUGFS`, `CONFIG_IOMMU_DEBUGFS`)
+**Base Score:** 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite:** 0.0 — AMD IOMMU debugfs is not compiled; `iommu_mmio_write` and `iommu_capability_write` are absent
+**Affected range:** Linux 6.17 through 6.18.33; 6.19 through 7.0.10; 7.1-rc1 through 7.1-rc3. 5.19.6 is not in range. Fixed in 6.18.34+ and 7.0.11+
+
+The bug is a signed/unsigned mismatch in AMD IOMMU debugfs. `iommu_mmio_write()` and `iommu_capability_write()` store a user-supplied offset in an `int` after parsing it with `kstrtou32_from_user()`. A large value becomes negative and can be used as an out-of-bounds index.
+
+`drivers/iommu/amd/debugfs.c` is compiled only when `CONFIG_AMD_IOMMU_DEBUGFS` is enabled. That option depends on `CONFIG_IOMMU_DEBUGFS`. Both production configs have `# CONFIG_IOMMU_DEBUGFS is not set` and no `CONFIG_AMD_IOMMU_DEBUGFS` line. `CONFIG_AMD_IOMMU=y` builds the IOMMU driver; it does not build the debugfs write handlers.
+
+5.19.6 is outside the NVD range (the write handlers landed in 6.17). The 5.19 `debugfs.c` has no `iommu_mmio_write` or `iommu_capability_write`. 6.18.9-hs is inside 6.17–6.18.33. The 6.18.9-hs System.map contains none of `iommu_mmio_write`, `iommu_capability_write`, or `amd_iommu_debugfs`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-64237
+
+**Status**: Not exploitable
+**Component**: Elan I2C touchpad (`CONFIG_MOUSE_ELAN_I2C`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — Elan I2C touchpad hardware absent; 5.19.6 does not compile the driver
+
+The elan_i2c firmware updater indexes the firmware blob at a signature address derived from a page count, then walks those pages, without checking that the blob is large enough. A truncated firmware file produces an out-of-bounds read. The trigger is a write to the driver's `update_fw` sysfs attribute after the I2C client has probed.
+
+`CONFIG_MOUSE_ELAN_I2C` is not set on HeartSuite 5.19.6. On HeartSuite 6.18.9 it is built as a module. The driver is the Elan I2C/SMBus laptop touchpad. HeartSuite Core Secure runs on headless server hardware with no Elan I2C touchpad, so the probe never binds and the firmware parser is never reached.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-64245
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs
+**Component**: fbdev mode database (`CONFIG_FB`, `CONFIG_FB_MODE_HELPERS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range and framebuffer support is not compiled; on 6.18.9-hs `fb_find_mode()` is compiled in but no allowlisted program can load a driver that calls it
+**Affected range**: 6.4 through 6.6.143; 6.7 through 6.12.94; 6.13 through 6.18.37 (includes 6.18.9); 6.19 through 7.1.2. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.38
+**Upstream fix**: `85b6256469ce` (mainline 7.2); stable 6.6.144, 6.12.95, 6.18.38, 7.1.3
+
+This CVE describes a use-after-free in `fb_find_mode()`. When the caller passes a NULL mode string the function copies the kernel `video=` option into a heap buffer, frees that buffer at the parse-done label, and then still compares the freed string against the mode database.
+
+`# CONFIG_FB is not set` on 5.19.6-HeartSuite-2.0. The introducing change is 6.4. 5.19.6 predates it and does not compile fbdev.
+
+On 6.18.9-hs, `CONFIG_FB=y` and `CONFIG_FB_MODE_HELPERS=y`. That is not enough. The built-in framebuffer drivers (`CONFIG_FB_EFI`, `CONFIG_FB_VESA`, `CONFIG_FB_SIMPLE`) register firmware-supplied timings and do not call `fb_find_mode()`. The generic `/dev/fb*` mode ioctl uses `fb_set_var()`, which also does not call `fb_find_mode()`. The remaining callers are modular legacy or virtual framebuffer drivers. Loading those drivers requires `modprobe` or `insmod`. Those programs, and `fbset`, are not in the HeartSuite allowlist. Secure Mode refuses to execute them. Under Lockdown the allowlist is immutable, so root cannot add them.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2025-71306
+
+**Status**: Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: IMA exec appraisal (`CONFIG_IMA`, `CONFIG_IMA_APPRAISE`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the NVD range and builds without IMA; 6.18.9 compiles IMA but the exec appraisal path is not armed and cannot be armed from the allowlist
+**Affected range**: Linux 6.14 through 6.19.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until the IMA policy gate applies.
+**Upstream fix**: 6.19.4+
+
+The bug is a stack out-of-bounds read when IMA appraises an exec. `is_bprm_creds_for_exec()` is reached only from `ima_appraise_measurement()` on a BPRM_CHECK policy rule.
+
+HeartSuite 5.19.6 is outside that range and has `# CONFIG_IMA is not set`.
+
+HeartSuite 6.18.9 is inside the range and compiles `CONFIG_IMA=y` and `CONFIG_IMA_APPRAISE=y`. `process_measurement()` returns immediately when no IMA policy is loaded. The 6.18 default policy is empty unless a boot parameter (`ima_policy=`, `ima_appraise_tcb`, `ima_tcb`) or a write to the IMA policy file installs an APPRAISE rule that covers exec. HeartSuite install and startup do not set those boot parameters. Architecture Secure Boot rules appraise modules, kexec, and policy — not exec. IMA policy utilities are not on the allowlist, and no allowlisted program is granted write access to the IMA policy file. Under Lockdown the allowlist is immutable.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-45998
+
+**Status**: Not Affected on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: RxRPC (`CONFIG_AF_RXRPC`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the NVD range and does not compile AF_RXRPC; 6.18.9-hs compiles AF_RXRPC as a module, and the programs that load or use that module are not on the allowlist
+**Affected range**: Linux 6.2 through 6.6.139; 6.7 through 6.12.85; 6.13 through 6.18.26; 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until the module is loaded.
+**Upstream fix**: 6.6.140, 6.12.86, 6.18.27, 7.0.4
+
+This CVE describes a use-after-free after `skb_unshare()` fails in `rxrpc_input_packet()`. Allocation failure NULLs the skb in `rxrpc_io_thread()`, and a later trace helper then oopses on the stale pointer.
+
+5.19.6 predates the introduction and is built with `# CONFIG_AF_RXRPC is not set`. 6.18.9-hs is in range and is built with `CONFIG_AF_RXRPC=m`.
+
+Reaching the bug requires the RxRPC family to be registered so inbound packets hit `rxrpc_input_packet()`. On 6.18.9-hs the family is a module. Opening `socket(AF_RXRPC)` asks the kernel to autoload the protocol family; that autoload executes `modprobe`, which has no allowlist record and is refused. AFS clients and RxRPC userspace programs are also absent from the allowlist. The fielded kernel image has no rxrpc symbols, so the stack is not built in and is not loaded at boot.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-46191
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in APO on 6.18.9-hs
+**Component**: framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`, `CONFIG_FRAMEBUFFER_CONSOLE_ROTATION`)
+**Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
+**Score on HeartSuite**: 0.0 — 5.19.6 does not compile framebuffer support; 6.18.9-hs compiles fbcon rotation, but no allowlisted program can request rotation
+**Affected range**: Linux 2.6.15 through 6.6.139; 6.7 through 6.12.89; 6.13 through 6.18.31; 6.19 through 7.0.6. Both HeartSuite production kernels sit in that window.
+**Upstream fix**: 6.6.140, 6.12.90, 6.18.32, 7.0.7, 7.1
+
+This CVE describes an out-of-bounds font-buffer access in `fbcon_rotate_font()`. When reallocation of the rotated font buffer fails, the old buffer is kept. Printing a high character code to the rotated console overflows that buffer. Integrity impact is none.
+
+On 5.19.6, `# CONFIG_FB is not set`. Framebuffer console rotation is not compiled. `fbcon_rotate_font` is absent from the production System.map.
+
+On 6.18.9-hs, `CONFIG_FRAMEBUFFER_CONSOLE=y` and `CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y`. Rotation is requested by writing `/sys/class/graphics/fbcon/rotate` or `rotate_all`, or by the `fbcon=rotate:` boot option. The default rotation is unrotated. `con2fbmap`, `fbset`, `setfont`, and `fbterm` are not on the allowlist. Default allowlist directory grants do not cover that sysfs path. Secure Mode refuses to execute the missing tools. Under Lockdown the allowlist is immutable.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-52992
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Secure Mode + Lockdown limit post-exploitation
+**Component**: ADFS filesystem (`CONFIG_ADFS_FS`)
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
+**Score on HeartSuite**: 7.3 HIGH on 6.18.9-hs — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High. 0.0 on 5.19.6
+**Affected range**: Linux 5.6 through 5.10.257; 5.11 through 5.15.208; 5.16 through 6.1.174; 6.2 through 6.6.140; 6.7 through 6.12.90; 6.13 through 6.18.32; 6.19 through 7.0.9. Both HeartSuite production kernels sit in that window. Fixed in 6.18.33+.
+**Upstream fix**: `dd9d3e16c2d5` (mainline); stable 6.18.33+
+
+This CVE describes an out-of-bounds write when mounting a crafted ADFS image. `adfs_validate_bblk()` accepted a disc record with `nzones == 0`. `adfs_read_map()` then called `kmalloc_array(0, …)` and `adfs_map_layout()` wrote through `dm[-1]`. Old-format images already rejected a zero zone count. New-format images did not.
+
+On 5.19.6, `# CONFIG_ADFS_FS is not set`. The helpers are not compiled.
+
+On 6.18.9-hs, `CONFIG_ADFS_FS=m`. The installer unpacks the full module tarball into `/lib/modules`. That tarball contains `kernel/fs/adfs/adfs.ko.xz` (16 372 bytes, ELF x86-64 relocatable) and the `fs-adfs` alias. `MODULE_SIG=y` and `MODULE_SIG_ALL=y` sign that shipped module; `# CONFIG_MODULE_SIG_FORCE is not set` is irrelevant for this signed object. `python3` is on the allowlist and can load a shipped module. `mount` is on the allowlist. Autoload on `mount -t adfs` also resolves `fs-adfs` to that same file.
+
+Lockdown returns `-EPERM` on `mount`, `fsmount`, and `move_mount`. It does not intercept `fsopen` or `fsconfig`. Creating the superblock (`vfs_get_tree` → `adfs_fill_super` → `adfs_validate_bblk`) still runs. The out-of-bounds write is reached before any attach check.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Secure Mode's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+These constraints are why the Score on HeartSuite on 6.18.9 reflects a reduced MI (High→Low): root cannot clear immutable flags, cannot `mount` / `fsmount` / `move_mount` of a new tree after the fact, and cannot add allowlist records. Confidentiality and Availability remain High. The out-of-bounds write itself is kernel memory corruption and is outside the layer those API checks close.
 
 ### CVE-2026-64239
 
