@@ -1,8 +1,8 @@
 ---
-title: "Kernel Support Policy"
+title: "How long each Root Lock kernel is maintained"
 linkTitle: "Kernel Support Policy"
 weight: 10
-description: "Root Lock kernel support policy for HS kernel streams, LTS strategy, patch targets, update delivery, version-string semantics, 5.19 deprecation, and boundaries versus distribution-vendor maintenance models."
+description: "LTS streams, patch targets, 5.19 deprecation, and how Root Lock kernel maintenance differs from a distro vendor's model."
 categories: ["Reference"]
 tags: ["kernel", "support", "patching", "lifecycle", "enterprise", "rhel"]
 type: docs
@@ -11,7 +11,7 @@ toc: true
 
 **Overview**: How HeartSuite maintains, patches, and delivers the HS kernel under subscription — LTS strategy, coordinated update bundles, and how that differs from distribution-vendor errata programs such as RHEL.
 
-**Audience**: Procurement, risk, compliance, and platform teams evaluating Root Lock by HeartSuite kernel maintenance alongside existing distribution patching programs.
+**Audience**: Procurement, risk, compliance, and platform teams evaluating Root Lock kernel maintenance alongside existing distribution patching programs.
 
 **Related reading**: [Enterprise Adoption Guide](enterprise-adoption-guide/), [Updating HeartSuite](../../maintenance/updating-heartsuite/), [Kernel Security Transparency](../../security/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
@@ -19,7 +19,7 @@ toc: true
 
 ## What this policy covers
 
-This policy describes how HeartSuite supports the **Root Lock kernel** — the custom-built Linux kernel that Root Lock requires for Lockdown enforcement — under a commercial **subscription**.
+This policy describes how HeartSuite supports the **Root Lock kernel** — the custom-built Linux kernel that Root Lock by HeartSuite requires for Lockdown enforcement — under a commercial **subscription**.
 
 It applies to:
 

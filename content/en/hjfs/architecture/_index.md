@@ -1,7 +1,8 @@
 ---
-title: "Architecture and compatibility"
+title: "HJFS on a stock kernel"
+linkTitle: "Architecture"
 weight: 20
-description: "Technical architecture, OS compatibility, application notes, and scope for HeartSuite Joint File System."
+description: "How HJFS isolates files without replacing the kernel, which operating systems it targets, and what stays out of scope for the prototype."
 categories: ["Essentials"]
 tags: ["hjfs", "architecture", "compatibility", "deployment", "os-support"]
 type: docs

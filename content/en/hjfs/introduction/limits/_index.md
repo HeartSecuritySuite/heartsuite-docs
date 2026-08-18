@@ -1,8 +1,8 @@
 ---
-title: "What HJFS Does and Does Not Cover"
+title: "What HJFS does and does not cover"
 linkTitle: "Protection Limits"
 weight: 3
-description: "Where HJFS's file isolation holds, where it does not, and what to use alongside it."
+description: "Where HJFS file isolation holds, where a program can still hurt you inside its own area, and what to run alongside it."
 categories: ["Essentials"]
 tags: ["hjfs", "security", "limits", "exfiltration", "network", "in-practice"]
 type: docs

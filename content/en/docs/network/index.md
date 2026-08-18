@@ -1,7 +1,8 @@
 ---
-title: "Network and Remote Access"
+title: "Each program gets its own internet destinations"
+linkTitle: "Network and Remote Access"
 weight: 60
-description: "Reviewing and approving internet destinations for each program."
+description: "Outbound connections are allowlisted per program and per address. Approving a destination for curl does not approve it for wget."
 type: docs
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "network", "permissions", "security", "remote-access"]
@@ -82,4 +83,4 @@ When the Internet Access queue is empty, the Dashboard marks Phase 5 complete an
 
 ## Inbound connections
 
-Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use the OS firewall (`iptables`, `nftables`, `ufw`) or cloud provider security groups for inbound network controls.
+Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when the workload lives on a HeartSuite appliance and you want that inbound layer observed and sealed.

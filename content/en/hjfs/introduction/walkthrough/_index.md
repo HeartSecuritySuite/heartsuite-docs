@@ -2,7 +2,7 @@
 title: "Walkthrough: per-version isolation"
 linkTitle: "Walkthrough"
 weight: 3
-description: "A short CLI walkthrough showing how HJFS preserves data across program versions, including rollback."
+description: "Upgrade a program, keep its data, roll back the version. A short CLI walkthrough of HJFS per-version isolation and restore."
 categories: ["Essentials"]
 tags: ["hjfs", "walkthrough", "example", "version-management"]
 type: docs

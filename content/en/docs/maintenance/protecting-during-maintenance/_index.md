@@ -1,7 +1,8 @@
 ---
-title: "Protecting During Maintenance"
+title: "Keep a gate up while you change the system"
+linkTitle: "Protecting During Maintenance"
 weight: 2
-description: "Securing your server during maintenance windows to prevent attacks."
+description: "Setup Mode and the maintenance kernel both lower the gate. How to shorten that window, keep a recovery path, and get back to Lockdown."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "protection"]
 type: docs
@@ -89,7 +90,7 @@ Make your changes — install software, update packages, modify configuration fi
 
 ### Step 3 of 3: boot Root Lock kernel and review
 
-Select the branded Root Lock (HS) kernel from GRUB. The Dashboard appears automatically, showing Setup Mode is active and displaying the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
+Select the branded Root Lock (HS) kernel from GRUB. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Mode Switching and Lockdown](../../mode-switching/)). The Dashboard then shows Setup Mode is active and the maintenance step counter. Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard. If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
 
 > [!WARNING]
 > The maintenance kernel provides no Root Lock protection whatsoever. The safety checklist is critical for this path.

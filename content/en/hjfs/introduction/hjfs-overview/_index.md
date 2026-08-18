@@ -1,8 +1,8 @@
 ---
-title: "HJFS Overview"
+title: "Each program gets its own storage area"
 linkTitle: "HJFS Overview"
 weight: 2
-description: "How HJFS confines programs to their own storage areas — eliminating the OS's default of shared file access across all programs."
+description: "HJFS confines programs to their own files. The OS default — every program inherits your documents — is the hole this closes."
 categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "overview", "security", "concepts"]
 type: docs

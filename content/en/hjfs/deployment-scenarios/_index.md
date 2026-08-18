@@ -1,7 +1,8 @@
 ---
-title: "Deployment Scenarios"
+title: "Where file isolation is enough — and where it is not"
+linkTitle: "Deployment Scenarios"
 weight: 15
-description: "Environments where HJFS fits well, where it fits alongside Root Lock by HeartSuite, and where it does not apply."
+description: "When HJFS alone is enough, when it should sit beside Root Lock, and when a different control is the right one for the workload."
 categories: ["Essentials"]
 tags: ["hjfs", "deployment", "scenarios", "compatibility", "use-cases"]
 type: docs

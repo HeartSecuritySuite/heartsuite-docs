@@ -91,7 +91,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 |---|---|
 | Need kernel-level per-program execution + file + network control that survives compromised root, and can accommodate the Root Lock kernel | Root Lock with Root Lock kernel |
 | Must run eBPF tooling locally or require full dynamic container orchestration after policy is sealed | maintenance kernel (or adjacent standard host) + other controls; consider HJFS for file isolation layer |
-| Strict "no custom or modified kernel" policy (certification, vendor support contract, or internal mandate) | HJFS (standard kernel) for file isolation + network/execution controls via existing tooling or HeartSuite Exec Lock companion where applicable; see [HJFS documentation](../../hjfs/) |
+| Strict "no custom or modified kernel" policy (certification, vendor support contract, or internal mandate) | HJFS (standard kernel) for file isolation, with [HeartSuite Exec](../../../exec-lock/) as the HJFS program UI. Kernel execution and network default-deny remain Root Lock and require the Root Lock kernel; on a stock kernel use existing host tooling. See [HJFS documentation](../../hjfs/) |
 | Want both layers | Root Lock (execution/network) + HJFS (file isolation and versioning) on the same host where the Root Lock kernel is acceptable |
 
 Full compatibility notes and known non-fits live in [How Root Lock Compares](../../introduction/how-it-compares/) (section "Where a separate kernel is required") and the system-requirements pages. As more storage, networking, EDR, and monitoring vendors publish explicit coexistence statements, this section will be expanded with a published matrix.

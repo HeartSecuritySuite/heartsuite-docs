@@ -1,7 +1,8 @@
 ---
-title: "Advanced Protection"
+title: "The OS holds the file dialog, not the program"
+linkTitle: "Advanced Protection"
 weight: 25
-description: "The advanced protection tier of HJFS — internal and user file separation, OS-mediated file dialogs, and export/import functions."
+description: "Advanced HJFS: separate internal and user files, OS-mediated dialogs, and export/import — so programs never hold custody of your documents."
 categories: ["Essentials"]
 tags: ["hjfs", "advanced", "user-files", "internal-files", "volition", "export", "import"]
 type: docs

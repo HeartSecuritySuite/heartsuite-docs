@@ -1,7 +1,8 @@
 ---
-title: "Script Launchers and Python Setup"
+title: "Python should not inherit every script's rights"
+linkTitle: "Script Launchers"
 weight: 50
-description: "Setting up secure launchers for scripts like Python, Perl, and PHP."
+description: "If python3 may use the network, every Python script inherits that. Secure Script Launchers give each script its own allowlist entry."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "security", "interpreters"]
 type: docs

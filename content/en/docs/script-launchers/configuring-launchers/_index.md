@@ -1,7 +1,8 @@
 ---
-title: "Configuring Script Launchers"
+title: "Turn on per-script allowlisting"
+linkTitle: "Configuring Script Launchers"
 weight: 2
-description: "How to activate per-script allowlisting for Python, Perl, and PHP interpreters."
+description: "Activate Secure Script Launchers for Python, Perl, and PHP so each script is reviewed on its own, not as the interpreter."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "security", "interpreters"]
 type: docs

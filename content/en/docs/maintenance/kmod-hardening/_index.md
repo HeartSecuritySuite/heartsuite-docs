@@ -1,7 +1,8 @@
 ---
-title: "Restricting Kernel Module Loading"
+title: "Stop kmod from loading just any module"
+linkTitle: "Restricting Kernel Module Loading"
 weight: 4
-description: "How to limit kmod's file access permissions to specific modules before Lockdown engages, for deployments where kmod is allowlisted."
+description: "If kmod is on the allowlist, limit which module files it may read before Lockdown. Otherwise any module file it can open can be loaded."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "kmod", "modules"]
 type: docs

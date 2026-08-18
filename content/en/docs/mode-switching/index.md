@@ -1,7 +1,8 @@
 ---
-title: "Mode Switching and Lockdown"
+title: "Lockdown seals the allowlist, including from root"
+linkTitle: "Mode Switching and Lockdown"
 weight: 80
-description: "How to activate Lockdown, and manage the trust boundary through maintenance."
+description: "Setup Mode records; Lockdown blocks. The Dashboard checklist, the YES confirmation, and why undoing the seal needs a reboot you can reach."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
 toc: true
@@ -32,7 +33,7 @@ The indicator at the top of the Dashboard shows the current protection state, an
 
 ### Trust graduation across modes
 
-Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Lockdown, trust is withdrawn from running programs regardless of which user runs them; any program, including one running as root, must be on the allowlist. With the immutable seal applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window deliberately, and booting the maintenance kernel for Lockdown recovery requires physical presence — a keyboard and monitor, a serial port, or your cloud provider's serial console — preventing a remote attacker from triggering it.
+Each mode defines a different trust boundary. In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked. In Lockdown, trust is withdrawn from running programs regardless of which user runs them; any program, including one running as root, must be on the allowlist. With the immutable seal applied, your ability to change the allowlist at runtime is also withdrawn — configuration is sealed until the next reboot. Maintenance reopens that window on purpose. Booting the maintenance kernel takes a keyboard and monitor, a serial port, or the cloud serial console. SSH is not enough.
 
 ### Protection state
 
@@ -107,6 +108,9 @@ After confirming, the Dashboard offers one reboot option:
 
 Lockdown is applied on the next reboot and persists — to make changes, use the Dashboard's Maintenance (`[m]`), which guides you through booting the maintenance kernel and removing the seal.
 
+> [!NOTE]
+> **Serial console after this reboot (and after Maintenance return):** open the serial console (for example AWS EC2 Serial Console, `virsh console`, or your provider's serial). When you see **Press Enter to start.** (you may also see `[press ENTER to login]`), press **Enter once**. The Dashboard opens. That key does not confirm Lockdown or Maintenance — the mode change already finished at boot. Waiting with no key is normal; the machine is ready.
+
 ### Returning to Setup Mode
 
 From the Dashboard, use the Lockdown button (`[l]`) to return to Setup Mode for maintenance. You must return to Setup Mode before installing packages or making configuration changes that Lockdown would block.
@@ -131,7 +135,7 @@ Lockdown is applied automatically as part of activating Lockdown from the Dashbo
 | Logging | Yes | Yes |
 | Backups | Yes | Yes |
 | Can root edit allowlist entries or Root Lock config files? | Yes | **No** — immutable; attempts to write are blocked by the kernel until the seal is removed via Maintenance |
-| Can an attacker with root tamper with security settings? | Possible | **No** — protected by immutability |
+| Can an attacker who already has remote root tamper with security settings? | Possible | **No** — protected by immutability |
 | Can you modify files made immutable by Lockdown? | Yes | **No** — until the seal is removed via the Maintenance on the maintenance kernel |
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes** — automatically. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored automatically when you enter Maintenance. |
 | Can the immutable seal be engaged in Setup Mode? | N/A | No — Lockdown is required first |
@@ -146,7 +150,7 @@ The five categories Lockdown seals:
 
 - **HeartSuite configuration** — your allowlist files, the mode state file, and the kernel image directory. Defends against allowlist tampering and kernel swap by an attacker who escalates to root.
 - **System integrity** — shared libraries (`/usr/lib/`), systemd unit directories, the SSH server config, and sudo policy. Defends against shared-library injection (a modified `libc.so` backdooring every program loading it), malicious systemd units installed to fire on next boot, and SSH or sudo policy weakened by a brief root compromise.
-- **Authentication state** — the account database (`/etc/passwd`, `/etc/shadow`, `/etc/group`) and no-login shells. Defends against an attacker who reaches root creating accounts, changing passwords, or converting service accounts into interactive logins.
+- **Authentication state** — the account database (`/etc/passwd`, `/etc/shadow`, `/etc/group`) and no-login shells. Defends against an attacker who already has root creating accounts, changing passwords, or converting service accounts into interactive logins.
 - **Scheduled tasks and login scripts** — cron and anacron configuration, environment defaults, and root's shell profiles. Defends against an attacker scheduling a script to run after a reboot but before Lockdown re-engages, and against bash-profile backdoors that run on the next root login.
 - **Maintenance tools** — file editors (`nano`, `vim`, `sed`, `ed`) made non-executable, and `rm`/`cp`/`mv` replaced with restricted copies whose write access is limited to the paths the kernel saw those tools used for during Setup Mode. Defends against a compromised approved program leveraging admin tools that run with their own broad scope, not the caller's.
 
@@ -155,7 +159,7 @@ The five categories Lockdown seals:
 
 If the Root Lock kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The machine is then without Root Lock protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access, repairing or replacing the failed kernel, and re-engaging Lockdown through the maintenance journey.
 
-Once Lockdown is engaged, the Root Lock kernel disables `chattr` entirely — no user or program, including root, can change the immutability flags. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
+Once Lockdown is on, root cannot change the immutability flags. The kernel disables `chattr`. This means no allowlist entries, configuration files, or protected directories can be modified, deleted, or added while Lockdown is active.
 
 Lockdown persists across reboots — the HeartSuite startup script re-engages it automatically each time the Root Lock kernel starts. The only way to remove it is to boot the maintenance kernel and follow the maintenance journey. Lockdown cannot be engaged in Setup Mode; if you try, an error message is written to the kernel log. The filesystem immutability applied by Lockdown via `chattr +i` is a flag stored on disk, not in kernel memory. This means that immutable flags set during Lockdown persist across reboots, including reboots into the maintenance kernel. If you boot the maintenance kernel for maintenance after Lockdown was active, the Dashboard's Maintenance wizard runs `HS_unlock.sh` for you via `[u]` Remove Flags. For recovery outside the Dashboard, run `HS_unlock.sh` before attempting to modify any files that were made immutable.
 
@@ -165,7 +169,7 @@ Two of the five seals close attacks that are easy to miss.
 
 **Compromised programs cannot borrow another program's tools.** When an approved web server runs `rm`, the deletion uses `rm`'s permissions, not the web server's. `rm` legitimately needs broad access during maintenance — so its allowlist is broad. A compromised approved program could otherwise borrow that breadth. Lockdown replaces `rm` with `limited_rm`, whose own write paths cover only what the system was observed using `rm` for during Setup Mode. Same for `cp` and `mv`.
 
-**Nothing planted before the reboot survives it.** Lockdown engages after boot — there's a brief gap between the system coming up and the seal taking hold. Without sealing cron, anacron, environment defaults, and root's shell profiles, an attacker who reached root before a reboot could plant a script to run in that gap. With those files sealed during the prior Lockdown, the script never reaches them — and on the next boot, nothing has changed.
+**Nothing planted before the reboot survives it.** Lockdown engages after boot — there's a brief gap between the system coming up and the seal taking hold. Without sealing cron, anacron, environment defaults, and root's shell profiles, an attacker who already had root before a reboot could plant a script to run in that gap. With those files sealed during the prior Lockdown, the script never reaches them — and on the next boot, nothing has changed.
 
 ### Automatic Lockdown on boot
 

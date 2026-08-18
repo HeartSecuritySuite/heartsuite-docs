@@ -1,7 +1,8 @@
 ---
-title: "Procurement Brief: Kernel Hardening at a Glance"
+title: "Kernel hardening in one comparison table"
+linkTitle: "Procurement Brief"
 weight: 5
-description: "Plain-language comparison of Root Lock by HeartSuite HS kernel hardening against industry alternatives — 6.18.9 primary commercial baseline; measured tables reference the published 5.19.6 legacy stream until 6.18.9 evidence ships."
+description: "Side-by-side hardening of the Root Lock kernel against industry alternatives — for procurement and architecture reviews."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "procurement", "comparison"]
 type: docs

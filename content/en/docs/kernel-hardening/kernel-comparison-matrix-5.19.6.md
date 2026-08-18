@@ -1,5 +1,6 @@
 ---
-title: "Kernel Hardening Comparison Matrix"
+title: "Hardening scores: 5.19.6 against the field"
+linkTitle: "Comparison matrix 5.19.6"
 weight: 20
 description: "kernel-hardening-checker comparison of Root Lock 5.19.6 against industry hardened kernels and stock references, with reproduction commands."
 categories: ["Reference"]
@@ -76,7 +77,7 @@ These projects were not scored with the checker in this analysis — either beca
 
 | Project | Bypass Prevention | Exploit Resistance | Module Footprint | Availability | Primary Use Case |
 |---|---|---|---|---|---|
-| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | **~9 modules** (measured) | Commercial | Containment of untrusted code on dedicated appliance |
+| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | **~9 modules** (measured) | Commercial | Containment of untrusted code on dedicated appliance |
 | Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source | General-purpose hardened desktop/server |
 | NixOS linux_hardened | Moderate | **High** | Hundreds | **Removed from nixpkgs 2025** (lack of maintenance) | Was: reproducible hardened NixOS systems |
 | grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription | Maximum exploit resistance; enterprise |

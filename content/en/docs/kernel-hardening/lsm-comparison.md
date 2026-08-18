@@ -1,7 +1,8 @@
 ---
-title: "LSM Comparison: HeartSuite vs SELinux, AppArmor, and TOMOYO"
+title: "SELinux, AppArmor, TOMOYO — a different job"
+linkTitle: "LSM Comparison"
 weight: 35
-description: "Comparison of Root Lock by HeartSuite's enforcement model against SELinux, AppArmor, and TOMOYO — focused on bypass-primitive resistance and purpose-fit for containment deployments."
+description: "LSM policy can be set permissive by root. Root Lock is compiled in. When each model fits containment, and when it does not."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "SELinux", "AppArmor", "TOMOYO", "LSM", "comparison"]
 type: docs

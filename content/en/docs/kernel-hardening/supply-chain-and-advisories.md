@@ -1,8 +1,8 @@
 ---
-title: "Supply Chain and Advisory Feeds"
+title: "How to verify the kernel you downloaded"
 linkTitle: "Supply Chain & Advisories"
 weight: 14
-description: "HeartSuite HS kernel supply-chain artefacts — SHA-256 bundle integrity, bundle manifest fields, reproducible config hashes, published machine-readable advisory feeds (CONFIG-gate SBOM, OSV, CycloneDX), and roadmap for GPG/cosign signing and OVAL."
+description: "SHA-256 bundles, published OSV and CycloneDX feeds, config hashes, and which signing steps are still on the roadmap."
 categories: ["Reference"]
 tags: ["kernel", "supply-chain", "sbom", "oval", "osv", "cosign", "gpg", "procurement", "compliance", "integrity"]
 type: docs
@@ -251,7 +251,7 @@ SBOM publication improves **dependency inventory and procurement automation**; i
 
 ---
 
-## What Root Lock does not provide (supply-chain scope)
+## What HeartSuite does not provide (supply-chain scope)
 
 To set expectations for RFPs and vendor-risk assessments:
 
