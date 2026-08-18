@@ -1,8 +1,8 @@
 ---
-title: "Distribution Compatibility Matrix"
+title: "Which distros boot the Root Lock kernel"
 linkTitle: "Distro Compatibility"
 weight: 7
-description: "Which Linux distributions Root Lock by HeartSuite supports for the HS kernel — validation tiers, boot paths, RPM and Debian family notes, workload fit, and how to report compatibility issues."
+description: "Validation tiers for Debian, Ubuntu, Rocky, Alma, and other bases — boot paths, workload fit, and how to report a problem."
 categories: ["Reference"]
 tags: ["kernel", "debian", "ubuntu", "alpine", "rhel", "rocky", "enterprise", "compatibility"]
 type: docs
