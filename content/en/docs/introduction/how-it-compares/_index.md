@@ -97,7 +97,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
-**Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
+**Related designs.** The idea that root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
 
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each tool above retains strengths Root Lock does not replicate.
 
@@ -129,7 +129,11 @@ Both syslog streams (per-decision enforcement events and aggregated alerts) reac
 
 For software you write yourself, the model is clean. For a fleet of existing Linux binaries you did not write, it means modifying every program you want to protect, or not protecting it.
 
-**The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow. For any environment running software it did not write — which is most production infrastructure — HS's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
+**How Root Lock reaches the same goal without application changes.** VFS hook points in `namei.c`, `open.c`, `exec.c`, and `exit.c` intercept path traversal and check the calling process's allowlist entry against the path. Network hooks in `socket.c` check outbound routable connections (both `connect()` calls and `sendto()` calls with an explicit destination address) against the program's IP allowlist; local IPC over UNIX domain sockets and NETLINK is exempt by design.
+
+Default access paths are filtered rather than severed. Existing Linux binaries run without modification; Root Lock observes what they do and enforces the allowlist against it. Root Lock makes this choice (hook-at-VFS rather than cap_enter-before-first-access) precisely to enable application transparency: no binary needs to be rewritten to be protected.
+
+**The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow. For any environment running software it did not write, which is most production infrastructure, HS's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
 
 **The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root. Root Lock's policy is an allowlist file. An attacker with root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
 
@@ -145,9 +149,9 @@ The two designs make opposite choices: modify the application, or maintain a pol
 
 To reach a file, a process must hold a token for that file's underlying storage. To message another process, it must hold a token for the communication channel. There is no global path namespace to traverse: if you do not hold the token, the kernel rejects the call before any check fires.
 
-**How Root Lock enforces the same principle on existing software.** Root Lock installs as a modified Linux kernel on a host already running standard software. Root Lock controls whether each program can execute, which files it can read or write, and which network connections it can make — the existing binaries run without modification. Root Lock observes what each binary does during Setup Mode; you build the allowlist through the Dashboard queues, review and approve, then engage Lockdown. The guarantee is a kernel-enforced allowlist on the software the host already runs.
+**What those guarantees require in practice.** seL4's proofs depend on keeping the kernel small enough that every line can be verified (roughly 10,000 lines of C). That means seL4 contains no file system, no network stack, no device drivers. Every service that exists in a standard Linux installation (SSH, package management, web server, any application) must be rebuilt as a userspace component with explicit token grants.
 
-**The Setup Mode gap.** seL4 has no learning phase. Token grants are designed at system build time by the developer who builds the system. There is no "observe what this service actually needs at runtime, then derive its policy" workflow. Root Lock's Setup Mode is the practical answer for standard infrastructure: run the system, record every access in the Dashboard queues, review and approve, then engage Lockdown. For any environment running standard Linux software, Root Lock's Setup Mode provides the observe-and-build path that seL4 cannot offer.
+Existing Linux software does not run on seL4 without a full OS porting effort. For a commercial server running standard software, deploying seL4 means replacing the entire software environment, not just the kernel.
 
 **The policy-integrity gap.** seL4 has no policy database; authority is the token set, which is structural. Root Lock maintains an allowlist database, and Lockdown seals it: `chattr +i` across the relevant paths plus a kernel flag that blocks `chattr` via the ioctl hook at runtime, preventing any running program from modifying the allowlist. The two approaches defend at different layers: seL4 makes authority impossible to forge; Root Lock makes the allowlist impossible to modify after Lockdown engages.
 
