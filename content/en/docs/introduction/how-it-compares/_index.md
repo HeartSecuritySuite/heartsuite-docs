@@ -13,16 +13,27 @@ menu:
     identifier: "how-it-compares"
 ---
 
-**Overview**: Root Lock by HeartSuite controls per program whether it can execute, which files it can read or write, and which network connections it can make — including for programs running as root. Standard operating systems grant these rights to users. Ken Thompson built Unix that way in 1969 on an unused PDP-7 at Bell Labs — designed for a small group of trusted researchers, not for networked infrastructure or a world with malware. Every operating system since inherited the decision unchanged. Root Lock does not. It replaces a set of runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root. It does not replace your SIEM, network detection, vulnerability scanner, or HIDS — those answer different questions and should be run alongside.
+**Overview**: Root Lock by HeartSuite controls per program whether it can execute, which files it can read or write, and which network connections it can make, including for programs running as root.
+
+Standard operating systems grant these rights to users. Ken Thompson built Unix that way in 1969 on an unused PDP-7 at Bell Labs, designed for a small group of trusted researchers, not for networked infrastructure or a world with malware. Every operating system since inherited the decision unchanged. Until now.
+
+{{< cardpane >}}
+{{< card header="**What it replaces**" >}}
+Runtime-confinement and kernel-observability tools whose enforcement can be disabled by an attacker with root.
+{{< /card >}}
+{{< card header="**What it does not**" >}}
+Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer different questions and should be run alongside.
+{{< /card >}}
+{{< /cardpane >}}
 
 ## Kernel architecture
 
 | Standard Linux | Root Lock |
 |---|---|
-| Wide kernel + security agent watching it | Minimal kernel — features removed at build time |
-| BPF programs enforce blocking policy | BPF syscall deliberately omitted — nothing to unload; closes the verifier attack surface |
-| Kernel module driver provides telemetry | No agent module — no module to kill |
-| OverlayFS and FUSE enabled for containers | Compiled out — the CVE class disappears with them |
+| Wide kernel + security agent watching it | Minimal kernel. Features removed at build time |
+| BPF programs enforce blocking policy | BPF syscall deliberately omitted. Nothing to unload; closes the verifier attack surface |
+| Kernel module driver provides telemetry | No agent module. No module to kill |
+| OverlayFS and FUSE enabled for containers | Compiled out. The CVE class disappears with them |
 | Config file: 12,000+ lines, audited by tooling | Config file: 5,050 lines, readable by a person |
 | Blocking depends on runtime configuration | Blocking is compiled into the binary itself |
 
@@ -30,7 +41,7 @@ menu:
 graph TB
     Root(["Root attacker"])
 
-    subgraph SL["Standard Linux — runtime layers"]
+    subgraph SL["Standard Linux: runtime layers"]
         EDR["EDR agent\nCrowdStrike · SentinelOne"]
         BPF["eBPF runtime\nFalco · Tetragon · Sysdig"]
         LSM["LSM hooks\nAppArmor · SELinux"]
@@ -38,7 +49,7 @@ graph TB
         EDR --> BPF --> LSM --> K
     end
 
-    subgraph HS["Root Lock — compiled enforcement"]
+    subgraph HS["Root Lock: compiled enforcement"]
         HSK["Kernel binary\nenforcement compiled in\nBPF syscall absent"]
     end
 
@@ -54,9 +65,9 @@ graph TB
     style HSK fill:#d4f4dd,stroke:#2a7a40
 ```
 
-Standard Linux security tools are runtime layers an attacker with root can reach and disable. Root Lock compiles enforcement into the kernel binary itself — the BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
+Standard Linux security tools are runtime layers an attacker with root can reach and disable. Root Lock compiles enforcement into the kernel binary itself. The BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
 
-Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features Root Lock has compiled out, the answer is always no — without patching, without policy, without an agent checking.
+Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features Root Lock has compiled out, the answer is always no, without patching, without policy, without an agent checking.
 
 Most runtime security products sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). Root Lock sits at Layer 2: enforcement is compiled into the kernel binary itself, not a program installed in userspace. An attacker who already has remote root can turn those products off. They kill the program, unload the module, or set the LSM policy permissive. Sitting at Layer 2 leaves nothing to turn off. Changing the sealed allowlist takes physical presence or the cloud serial console — not SSH, even as root. Risk around complete mediation is discussed under [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all products mapped by layer, see [Layer Analysis](../layer-analysis/).
 
@@ -71,14 +82,14 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 | Product | What it does | How it can be disabled | How Root Lock compares |
 |---|---|---|---|
 | **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker with root can unload the BPF program, kill the agent, or disable the BPF syscall | Root Lock removes the BPF syscall entirely from the kernel. There is no agent to kill and no hook to unload. Enforcement is compiled in. |
-| **AppArmor, SELinux, SMACK, Landlock** (userspace LSM frameworks) | Per-process MAC profiles limiting filesystem and capability access | Root with the right capability can set SELinux to permissive, unload an AppArmor profile, or modify the policy file | Root Lock's allowlist is stored in configuration files made immutable under Lockdown, and the Root Lock kernel will not let any program change them while it's running. Even root cannot edit it. |
+| **AppArmor, SELinux, SMACK, Landlock** (userspace LSM frameworks) | Per-process MAC profiles limiting filesystem and capability access | Root can set SELinux to permissive, unload an AppArmor profile, or edit the policy file | Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. The files are immutable, and the kernel refuses the write. |
 | **seccomp-bpf sandboxes** (systemd services, browser sandboxes, bubblewrap, firejail) | Per-process syscall filters set by the process itself or its parent | A parent with equivalent privilege can spawn the same binary without the filter. Filters are scoped to a process tree, not to the program identity | Root Lock gates by program identity, not process lineage. A program's allowlist applies every time it runs, regardless of who spawned it. |
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | Root Lock *is* the kernel — one layer instead of two, with nothing to unload. Used as a guest kernel inside a microVM, it provides kernel-level enforcement for the workload. |
 | **Linux EDR agents** (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) | Kernel module or eBPF agent providing telemetry, detection, and response | Root can kill the agent process, unload the kernel module, or tamper with the driver. Many breaches include "disable EDR" as an early step | Root Lock has no agent and no module to unload — it is the kernel. When attackers use legitimate tools rather than new malware — the pattern in most modern breaches — EDR detects the suspicious behavior. Root Lock constrains it differently: even a legitimate tool can only reach the files and network destinations its allowlist entry approves. Note: EDR provides telemetry and response Root Lock does not. Treat Root Lock as a replacement for the preventive-enforcement dimension only; for detection and response, see the complementary table below. EDR agents that deploy via eBPF cannot attach on-host — the BPF syscall is not present on the Root Lock kernel. Under Lockdown, agents that install as kernel modules are blocked without an allowlist entry — the same gate that applies to every other program. Both HS syslog streams — per-decision enforcement events and aggregated alerts — reach the EDR ingestion pipeline via a single rsyslog forwarding rule, with no external tooling required. Detection and response coverage continues through the log pipeline without an on-host sensor. |
 
 **The common pattern.** Every product in this table can be disabled by an attacker with root. They can kill the security agent, unload the BPF program, or set the LSM permissive. Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. This requires a different operational model, discussed in [Circumvention and Recovery](#circumvention-and-recovery).
 
-**Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy before encryption or lateral movement. Root Lock is designed so that class of move has no agent process, BPF program, or unloadable module to target; residual risk shifts toward mediation completeness of seal and control paths, allowlist hygiene after Setup Mode, and physical or console recovery — not whether a userspace guard is still running.
+**Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine. Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The leftover risk is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
 **Related designs.** Pieces of policy-integrity-under-root appear elsewhere — for example Android SELinux with verified boot, and FreeBSD `securelevel` with `schg` immutability. Root Lock productizes host-wide per-program allowlisting, observe-and-ratify Setup Mode, and a custom reduced Linux kernel for servers.
 
@@ -106,7 +117,7 @@ The comparison below is scoped to preventive enforcement; telemetry, behavioural
 
 **The Setup Mode gap.** Capsicum has no learning phase. Policy lives in application source code, written at development time by the developer who wrote the application. There is no "observe what this binary actually needs at runtime, then derive its allowlist" workflow. For any environment running software it did not write — which is most production infrastructure — HS's Setup Mode is the practical path: record what the binary does, review, approve, then lock. Capsicum offers no equivalent.
 
-**The policy-integrity gap.** Because Capsicum's policy is application code, there is no runtime policy database to protect after deployment. Root Lock maintains an allowlist database, and Lockdown seals it — `chattr +i` across the relevant paths plus a kernel flag that blocks `chattr` via the ioctl hook at runtime, so no running program can remove the immutability. That second layer — protecting the policy itself from an attacker who has already reached root — has no analogue in Capsicum's design, because Capsicum never needed it. Root Lock needs it precisely because its policy is something an attacker would want to modify.
+**The policy-integrity gap.** Capsicum's policy lives in the application. After it ships, there is no policy file to edit, so Capsicum never had to protect one from root. Root Lock's policy is an allowlist file. An attacker with root would want to change it. Lockdown seals that file: the files are immutable, and the kernel refuses the write.
 
 **Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. HS targets Linux 5.19.6 and 6.18 natively.
 
