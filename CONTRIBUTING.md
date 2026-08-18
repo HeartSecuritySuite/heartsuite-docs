@@ -46,6 +46,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 - Code blocks with syntax highlighting: ```bash, ```yaml, etc.
 - Images: Store in page folder, use relative paths.
 - Links: Use relative paths for internal docs.
+- Mermaid: every flowchart node needs a `style` line from the Kernel architecture palette — red `fill:#fdd,stroke:#c44` (disableable / over-privileged / attacker), gray `fill:#eee,stroke:#888` (process / setup), green `fill:#d4f4dd,stroke:#2a7a40` (Root Lock / Lockdown). Gantt charts use the same hex in a `themeVariables` init line. Unstyled mermaid fails `npm run check:terms`.
 
 ### File Organization
 - `content/en/` — all content goes here.
