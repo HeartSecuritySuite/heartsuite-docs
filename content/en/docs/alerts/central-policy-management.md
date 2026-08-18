@@ -1,5 +1,5 @@
 ---
-title: "Central Policy Management and External Control"
+title: "Drive the allowlist from your own tooling"
 linkTitle: "Central Policy"
 weight: 2
 description: "Keep policy in Ansible, Terraform, ServiceNow, or custom automation. Export and apply Root Lock allowlists at fleet scale — not one TUI per host."

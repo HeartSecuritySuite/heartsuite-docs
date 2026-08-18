@@ -1,7 +1,7 @@
 ---
-title: "HeartSuite documentation"
+title: "HeartSuite product documentation"
 linkTitle: "Home"
-description: "Documentation for Root Lock by HeartSuite and related HeartSuite products."
+description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network — even as root."
 ---
 
 *Root Lock by HeartSuite | Humans in Command*

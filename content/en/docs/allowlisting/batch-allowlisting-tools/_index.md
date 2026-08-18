@@ -1,7 +1,8 @@
 ---
-title: "Batch Allowlisting Tools"
+title: "Allowlist many hosts without the TUI"
+linkTitle: "Batch Allowlisting Tools"
 weight: 4
-description: "CLI tools for scripted and automated allowlisting workflows."
+description: "CLI tools for scripted allowlisting when the Dashboard queues are not the right path — image builds, fleets, and repeatable installs."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "batch", "allowlist", "tools", "cli"]
 type: docs
