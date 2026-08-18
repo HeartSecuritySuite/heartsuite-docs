@@ -67,7 +67,7 @@ These mitigations slow down or prevent exploitation of kernel memory bugs. Arch 
 
 ## Broader market landscape
 
-| Product | Bypass Prevention | Exploit Resistance | Module Footprint | Availability |
+| Tool | Bypass Prevention | Exploit Resistance | Module Footprint | Availability |
 |---|---|---|---|---|
 | **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled | Low — vanilla upstream baseline | **~9 modules** | Commercial |
 | Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY_SOURCE, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source |

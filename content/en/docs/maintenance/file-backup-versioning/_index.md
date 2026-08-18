@@ -14,9 +14,9 @@ author: Ron Hessing
 
 Root Lock monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — protection begins from first boot, before you have reviewed a single item.
 
-Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock backs up on every write. There is no window. Other security products that offer rollback on Linux — including endpoint products with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
+Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock backs up on every write. There is no window. Other security tools that offer rollback on Linux — including endpoint tools with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
-CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup product itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
+CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup tool itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
 
 By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup.
 

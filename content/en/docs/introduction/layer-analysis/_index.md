@@ -2,7 +2,7 @@
 title: "Linux Security Layer Analysis"
 linkTitle: "Layer Analysis"
 weight: 7
-description: "A taxonomy of Linux host security products by enforcement layer — where each mechanism sits in the stack and what that means for bypass surface."
+description: "A taxonomy of Linux host security tools by enforcement layer — where each mechanism sits in the stack and what that means for bypass surface."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "comparison", "edr", "ebpf", "selinux", "apparmor", "gvisor", "layers", "taxonomy"]
 type: docs
@@ -13,7 +13,7 @@ menu:
     identifier: "layer-analysis"
 ---
 
-**Purpose**: Security audits and competitive evaluations often group products by vendor category — EDR, SIEM, NDR — without capturing where in the kernel stack enforcement actually happens. This page maps Linux host security products to the enforcement layer they occupy. Layer placement determines bypass surface: a product enforcing at Layer 2 cannot be disabled by a mechanism that only reaches Layer 3 or above.
+**Purpose**: Security audits and competitive evaluations often group tools by vendor category — EDR, SIEM, NDR — without capturing where in the kernel stack enforcement actually happens. This page maps Linux host security tools to the enforcement layer they occupy. Layer placement determines bypass surface: a tool enforcing at Layer 2 cannot be disabled by a mechanism that only reaches Layer 3 or above.
 
 ## Layer definitions
 
@@ -24,15 +24,15 @@ menu:
 | **3** | LSM / kernel hooks | In-tree LSM frameworks, eBPF programs attached to kernel hooks |
 | **4** | Userspace sandbox | Agents and runtimes that compose Layer 3 primitives — run as userspace processes |
 | **5** | Userspace telemetry / response | Kernel-module or eBPF agents primarily providing detection, alerting, and response |
-| **Adj.** | Complementary controls | Products that answer different questions — no enforcement overlap with Layers 2–5 |
+| **Adj.** | Complementary controls | Tools that answer different questions — no enforcement overlap with Layers 2–5 |
 
-The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root. A Layer 2 kernel configuration cannot be changed without rebooting into a different kernel. For a visual representation of this by product, see [Kernel architecture](../how-it-compares/#kernel-architecture).
+The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root. A Layer 2 kernel configuration cannot be changed without rebooting into a different kernel. For a visual representation of this by tool, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
-## Product map
+## Tool map
 
 ### Layer 2 — Kernel-embedded enforcement
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | Kernel-embedded allowlist / stripped kernel | **Root Lock by HeartSuite**, custom hardened kernels, unikernels |
 | Hardware-virtualized micro-isolation | Firecracker, Kata Containers, Cloud Hypervisor |
@@ -41,7 +41,7 @@ Enforcement is part of the kernel binary. Changing it requires a reboot into a d
 
 ### Layer 2–3 — Userspace-process-run-as-kernel
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | Userspace syscall-emulating kernel (intercepts container syscalls) | gVisor (sentry process) |
 
@@ -49,7 +49,7 @@ gVisor intercepts container syscalls in a userspace process that acts as the con
 
 ### Layer 3 — LSM hooks (in-tree)
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | Mandatory Access Control LSM | SELinux, AppArmor, SMACK, Tomoyo |
 | Capability / path-based LSM | Landlock, Yama, LoadPin |
@@ -58,7 +58,7 @@ Policy is applied to a running kernel from outside. Root with the right capabili
 
 ### Layer 3 — LSM hook + eBPF programs
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | eBPF programs attached via KRSI / LSM BPF | Tetragon (Cilium), Cilium network path, KRSI primitives |
 
@@ -66,15 +66,15 @@ eBPF programs are loaded into a running kernel at runtime. Root can unload the B
 
 ### Layer 3–5 — eBPF observability with optional in-kernel kill
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | eBPF detection; optional kill signal | Falco (detection only, no kill), Tetragon (detect + kill), Sysdig Secure |
 
-These products span layers depending on configuration: eBPF programs run at Layer 3, the userspace agent sits at Layer 5. The kill capability (where present) runs in-kernel but is loaded and managed by a userspace process.
+These tools span layers depending on configuration: eBPF programs run at Layer 3, the userspace agent sits at Layer 5. The kill capability (where present) runs in-kernel but is loaded and managed by a userspace process.
 
 ### Layer 4 — Userspace agent sandbox
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | Userspace runtime composing seccomp-bpf, namespaces, cgroups | bubblewrap, Firejail, Flatpak sandbox, Snap confinement, OpenShell (NVIDIA) |
 
@@ -82,7 +82,7 @@ These tools set up confinement using kernel primitives (seccomp-bpf, Linux names
 
 ### Layer 5 — Agent-based EDR / XDR
 
-| Mechanism | Products |
+| Mechanism | Tools |
 |---|---|
 | Kernel module or eBPF agent: telemetry, detection, response | CrowdStrike Falcon, SentinelOne Singularity, Microsoft Defender for Endpoint, Elastic Defend, Wazuh |
 
@@ -90,9 +90,9 @@ The agent provides detection and response capabilities that Root Lock does not r
 
 ## Complementary controls (no enforcement overlap)
 
-These products do not overlap with Layers 2–5 enforcement. They answer different questions and should run alongside host enforcement.
+These tools do not overlap with Layers 2–5 enforcement. They answer different questions and should run alongside host enforcement.
 
-| Category | Products | What they answer |
+| Category | Tools | What they answer |
 |---|---|---|
 | **SIEM / SOAR** | Splunk, Elastic Security, Microsoft Sentinel, IBM QRadar, Sumo Logic, Graylog, Wazuh, Cortex XSOAR, Tines, Torq | Fleet-wide event correlation, alerting, playbook response |
 | **NDR / NTA** | Darktrace, ExtraHop Reveal(x), Vectra AI, Corelight, Cisco Secure Network Analytics, Arista NDR | Passive network behavioral analysis, lateral-movement detection |
@@ -102,6 +102,6 @@ These products do not overlap with Layers 2–5 enforcement. They answer differe
 
 ## Takeaway
 
-Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement product sits at Layer 3 (LSM hooks, eBPF programs) or higher — meaning a sufficiently privileged attacker can disable it remotely without rebooting. The Layer 2 position is what makes physical presence the only bypass path.
+Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 (LSM hooks, eBPF programs) or higher — meaning a sufficiently privileged attacker can disable it remotely without rebooting. The Layer 2 position is what makes physical presence the only bypass path.
 
-For the product-by-product comparison with bypass analysis, see [How It Compares](../how-it-compares/).
+For the tool-by-tool comparison with bypass analysis, see [How It Compares](../how-it-compares/).
