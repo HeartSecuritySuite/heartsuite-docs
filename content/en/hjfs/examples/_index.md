@@ -1,8 +1,8 @@
 ---
-title: "Real-World Attack Containment"
+title: "When ransomware cannot reach another program's files"
 linkTitle: "Attack Examples"
 weight: 30
-description: "How HJFS is designed to contain real-world malware attacks and breaches."
+description: "How HJFS is designed to contain WannaCry, Log4Shell, and a tainted update: damage stops at the compromised program's storage area."
 categories: ["Essentials"]
 tags: ["hjfs", "security", "malware", "ransomware", "cve", "examples"]
 type: docs

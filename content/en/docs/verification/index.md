@@ -1,5 +1,6 @@
 ---
-title: "Verifying Installation and Basic Setup"
+title: "Confirm the Root Lock kernel is actually running"
+linkTitle: "Verification"
 weight: 30
 description: "Checking Root Lock by HeartSuite activation and initial configuration."
 categories: ["Installation"]

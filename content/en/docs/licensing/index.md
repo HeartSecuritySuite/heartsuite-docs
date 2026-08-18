@@ -1,7 +1,8 @@
 ---
-title: "Licensing and Subscription"
+title: "A subscription is what turns on Lockdown"
+linkTitle: "Licensing and Subscription"
 weight: 85
-description: "Activating subscriptions for Lockdown."
+description: "Lockdown (Phase 7) requires an active subscription. How to activate it in the Dashboard, and what you can still do without one."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "license", "subscription", "activation"]
 toc: true

@@ -1,7 +1,8 @@
 ---
-title: "File Backup and Versioning"
+title: "Backups that ransomware cannot delete"
+linkTitle: "File Backup and Versioning"
 weight: 91
-description: "Automatic backups for designated directories and version restoration to protect against malware."
+description: "Every write in a protected directory is versioned before it lands. Under Lockdown, no program — including root — can reach those versions."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security", "files"]
 toc: true

@@ -1,7 +1,8 @@
 ---
-title: "Introduction and overview"
+title: "The OS still treats every program as you"
+linkTitle: "Introduction"
 weight: 10
-description: "Overview of HeartSuite Joint File System, its design goals, and how it differs from kernel-based security."
+description: "File permissions are granted to users, not programs. HJFS isolates each program's files on a stock kernel. Start here for the prototype."
 categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "overview", "concepts"]
 type: docs

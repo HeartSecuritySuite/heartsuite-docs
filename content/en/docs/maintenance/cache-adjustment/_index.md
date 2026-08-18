@@ -1,7 +1,8 @@
 ---
-title: "Adjusting the Cache Size"
+title: "When 255 allowlist slots is not enough"
+linkTitle: "Adjusting the Cache Size"
 weight: 3
-description: "How Root Lock by HeartSuite auto-tunes its allowlist cache, and when manual intervention is needed."
+description: "The Dashboard auto-tunes the allowlist cache. Manual sizing is only needed when the allowlist exceeds the kernel maximum of 255 entries."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "cache", "performance", "tuning"]
 type: docs

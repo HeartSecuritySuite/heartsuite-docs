@@ -1,7 +1,8 @@
 ---
-title: "Kernel Security Transparency"
+title: "CVEs this kernel scores at 0.0 — and why"
+linkTitle: "Kernel Security Transparency"
 weight: 107
-description: "CVE status for the Root Lock by HeartSuite kernel — precise status and technical rationale for each relevant vulnerability, including Not Affected entries where the vulnerable code path is absent by design."
+description: "Every relevant kernel CVE: what it can do here, what it cannot, and why. Not Affected when the code path was never compiled in."
 categories: ["Reference"]
 tags: ["heartsuite", "linux", "security", "cve", "kernel", "vulnerability"]
 type: docs
@@ -74,7 +75,7 @@ Across every reachable CVE in this document, the answer is the same — and shor
 - **Service disruption.** Root can panic the kernel via syscall primitives or `kill -9` allowlisted services. Availability hardening is a separate control; HS does not prevent denial-of-service.
 - **Lateral movement.** Attackers can pivot through whatever the allowlisted process tree permits, but cannot extend that tree. New processes outside the allowlist do not run.
 
-Under Lockdown, the kernel controls three things per program — whether it can execute, which files it can read or write, and which network destinations it can reach — and holds those controls regardless of user privilege, including root. The allowlist is sealed — immutable on disk, refused at runtime by the kernel itself: no program or user, including root, can modify it while the machine is running.
+Under Lockdown the kernel decides, per program, whether it can run, which files it can read or write, and which destinations it can reach. Root does not change that. The allowlist cannot be edited while the machine is running. The files are immutable. The kernel refuses the write.
 
 ### Out of scope
 
@@ -93,6 +94,7 @@ Under Lockdown, the kernel controls three things per program — whether it can 
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Code not compiled in |
 | [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on Root Lock |
+| [CVE-2026-46242](#cve-2026-46242) | epoll (`CONFIG_EPOLL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6 (introduced in 6.4); Not exploitable on 6.18.9-hs — linked-epoll close race not constructible from the allowlist |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected — Lockdown reduces persistence and integrity impact; confidentiality and availability remain HIGH |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -362,6 +364,25 @@ This CVE describes a local privilege escalation through an out-of-bounds write i
 `CONFIG_AF_RXRPC` is not compiled into the Root Lock kernel. The rxrpc address family is not available; an attempt to open an `AF_RXRPC` socket returns `EAFNOSUPPORT`. The vulnerable code in `net/rxrpc/` is entirely absent from the running kernel. The Root Lock kernel predates the upstream fix, but the fix is not required: there is no reachable code path for this bug on any Root Lock deployment. The Dirty Frag chain has no second link on this system.
 
 The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-46242
+
+**Status**: Not Affected on 5.19.6; Not exploitable on 6.18.9-hs  
+**Component**: epoll — event polling subsystem (`CONFIG_EPOLL`)  
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org)  
+**Score on HeartSuite**: 0.0 — 5.19.6 is outside the affected range; on 6.18.9-hs the linked-epoll close race is not constructible from the allowlist  
+**Affected range**: 6.4 through 6.18.32; also narrow LTS windows 5.15.209–5.15.x and 6.1.175–6.1.177. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.33  
+**Upstream fix**: `a6dc643c6931` (mainline); stable 6.18.33+
+
+This CVE describes a use-after-free in `ep_remove()`. When one epoll instance monitors another, a concurrent `close()` can clear `file->f_ep` and then keep using that `struct file` while `__fput()` frees the watched `struct eventpoll`. The construction turns the race into an attacker-controlled free against the wrong slab cache and privilege escalation to root.
+
+`CONFIG_EPOLL=y` is compiled in on both fielded kernels. That is not enough for 5.19.6: the mainline introduction is 6.4 (`58c9b016e128`). 5.19.6 predates that change, so the 5.19.6 `ep_remove` path is not the vulnerable one.
+
+On 6.18.9-hs the vulnerable interleaving is present until a 6.18.33+ base. Reaching it requires allocating two specifically linked epoll instances and driving the close ordering from a dedicated program. No such program appears in the HS allowlist. An attacker who has already gained root cannot add one: Lockdown prevents allowlist modification, backdoor installation, and persistence across reboot. The kernel therefore refuses to run a dropped exploit binary.
+
+The trigger cannot be reached on any default Root Lock deployment.
+
+If your 6.18.9-hs deployment adds a program that performs the linked-epoll close pattern to the allowlist, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
 
 ### CVE-2024-47685
 
@@ -3025,7 +3046,7 @@ The trigger cannot be reached on any default Root Lock deployment.
 
 Root Lock is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
 
-Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](#cve-2026-31431) — `chattr +i` filesystem immutability combined with the kernel refusing runtime allowlist changes means an attacker who reaches root in Lockdown has no path to persistence or to modifying the allowlist.
+Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](#cve-2026-31431). An attacker who already has root still cannot persist and still cannot edit the allowlist. The files are immutable. The kernel refuses the write.
 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|
@@ -4695,7 +4716,7 @@ Every entry on this page was verified source-first. No assumptions were made abo
 
 **Gate 3 — Can an exploit program run?** Under Lockdown, the program allowlist is made filesystem-immutable. No new program entries can be added. An attacker-dropped exploit program has no allowlist entry and cannot execute. This gate does not apply to CVEs exploitable from within an already-running, allowlisted process.
 
-**Gate 4 — What can root actually do under Lockdown?** When a CVE achieves root privilege, HeartSuite Lockdown applies a further constraint. The kernel refuses to clear filesystem immutable flags (`chattr -i` is blocked at the syscall level). All three mount syscall variants are blocked. Lockdown is one-way — it can only be cleared by a hardware reboot, and rebooting requires physical or serial console access to the GRUB menu. An attacker who reaches root in Lockdown has no path to persistence, cannot modify the allowlist, cannot add backdoors, and cannot survive a reboot.
+**Gate 4 — What can root actually do under Lockdown?** When a CVE achieves root privilege, HeartSuite Lockdown applies a further constraint. The kernel refuses to clear filesystem immutable flags (`chattr -i` is blocked at the syscall level). All three mount syscall variants are blocked. Lockdown is one-way. Clearing it takes a reboot from the console or the serial console. An attacker who already has root cannot persist, cannot edit the allowlist, cannot add a backdoor, and cannot survive a reboot. SSH is not enough.
 
 The two residual risks that Lockdown does not close are in-memory data exfiltration (reading live process memory) and availability impact (crashing the system). These are noted in affected entries where relevant.
 

@@ -1,8 +1,8 @@
 ---
-title: "Roadmap"
+title: "What the HJFS prototype covers today"
 linkTitle: "Roadmap"
 weight: 35
-description: "Current prototype scope and planned development for HeartSuite Joint File System."
+description: "Current HeartSuite Joint File System prototype scope, what the first cut includes, and what is planned next."
 categories: ["Essentials"]
 tags: ["hjfs", "roadmap", "planned", "prototype"]
 type: docs

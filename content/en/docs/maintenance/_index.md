@@ -1,7 +1,8 @@
 ---
-title: "Advanced Configuration and Maintenance"
+title: "Every maintenance window is an attack window"
+linkTitle: "Maintenance"
 weight: 90
-description: "How to perform maintenance safely on a Root Lock by HeartSuite system, from Setup Mode transitions to Lockdown recovery."
+description: "Setup Mode logs but stops blocking; the maintenance kernel unloads Root Lock. How to make changes without leaving a hole."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "updates", "security", "advanced"]
 toc: true
@@ -18,7 +19,7 @@ The Maintenance appears only when the system is in Lockdown, Lockdown+sealed, or
 ## In this section
 
 - [Protecting During Maintenance](protecting-during-maintenance/) — Step-by-step guidance for maintenance windows, from the safety checklist through Lockdown recovery across two reboots.
-- [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups that even root cannot reach under Lockdown — restore any earlier version of a file when needed.
+- [File Backup and Versioning](file-backup-versioning/). Automatic versioned backups. Under Lockdown, root cannot reach them. Restore any earlier version from the Dashboard.
 - [Cache Adjustment](cache-adjustment/) — Tuning the allowlist cache for servers with large numbers of concurrent programs.
 - [Restricting Kernel Module Loading](kmod-hardening/) — Limiting kmod's access to specific modules for deployments where kmod is allowlisted.
 - [Updating HeartSuite](updating-heartsuite/) — Apply a HeartSuite update bundle, including the two-reboot sequence and Lockdown considerations.

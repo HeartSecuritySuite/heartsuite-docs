@@ -1,7 +1,8 @@
 ---
-title: "Troubleshooting and Logs"
+title: "Blocked, wrong kernel, or silent fail?"
+linkTitle: "Troubleshooting and Logs"
 weight: 100
-description: "Diagnosing blocked programs, the system being in the wrong mode or kernel, and recovering from kernel issues."
+description: "Most failures are a missing allowlist entry, Setup vs Lockdown, or the maintenance kernel. How to tell which, and how to recover."
 categories: ["Support"]
 tags: ["heartsuite", "linux", "logs", "issues", "help", "debugging"]
 toc: true

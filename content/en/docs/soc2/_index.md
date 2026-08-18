@@ -1,7 +1,8 @@
 ---
-title: "SOC 2 Control Mapping"
+title: "SOC 2 TSC mapped to Root Lock controls"
+linkTitle: "SOC 2 Control Mapping"
 weight: 113
-description: "Root Lock by HeartSuite mapped to AICPA Trust Services Criteria (TSC) for SOC 2 Type I and Type II audits."
+description: "AICPA Trust Services Criteria mapped to Root Lock capabilities — for customers preparing a SOC 2 Type I or Type II audit."
 categories: ["Reference"]
 tags: ["compliance", "SOC 2", "AICPA"]
 type: docs
@@ -55,7 +56,7 @@ The three dimensions of per-program access control:
 
 Access permissions are built during Setup Mode via the Dashboard's review queues, where each program's execution, file access, and network access is presented for explicit human approval before Lockdown is activated.
 
-Under Lockdown, the allowlist is sealed using filesystem immutability (`chattr +i`) and the running kernel refuses any modification to it — including from root. No program or user can extend access permissions at runtime.
+Under Lockdown, root cannot change the allowlist. The files are immutable (`chattr +i`). The kernel refuses the write. No program can extend access at runtime.
 
 **Scope**: Every allowlist approval action (programs, file paths, network destinations) is recorded in a dedicated, persistent JSONL approval log with timestamp, uid, and tty. This provides direct session attribution for changes to the policy. In environments where multiple administrators share root access, uid/tty-to-person attribution still requires correlating against customer-side session records (terminal session logging via `auditd`, a privileged access management tool, or equivalent). Dashboard access requires Linux root credentials; there is no additional authentication layer within HeartSuite.
 
@@ -105,9 +106,9 @@ The five sealed categories:
 | Scheduled tasks and login scripts | Cron and anacron configuration, environment defaults, root shell profiles |
 | Maintenance tools | File editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies |
 
-While Lockdown is active, the kernel itself disables `chattr` — no user or program, including root, can remove the immutable flags. Modifying any of these resources requires booting the maintenance kernel, which requires physical presence (keyboard and monitor, serial port, or cloud provider serial console).
+While Lockdown is active, root cannot remove the immutable flags. The kernel disables `chattr`. Modifying any of these resources requires booting the maintenance kernel, which requires physical presence (keyboard and monitor, serial port, or cloud provider serial console).
 
-This means an attacker who reaches root via SSH cannot modify the SSH server configuration, create new user accounts, change passwords, install malicious cron jobs, or plant login-script backdoors.
+An attacker who already has root over SSH cannot edit the SSH config, create accounts, change passwords, install cron jobs, or plant login-script backdoors.
 
 **Scope**: HeartSuite installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from HeartSuite. Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 
@@ -353,7 +354,7 @@ Root Lock provides technical controls for the detection and containment phases o
 
 HeartSuite creates a backup version of every file write in protected directories. Unlike scheduled snapshot tools, there is no backup window — if a file is encrypted or corrupted at 3:47 AM, the version from 3:46 AM exists. This is the gap that ransomware exploits in schedule-based backup tools (and the gap CVE-2024-40711 for Veeam Backup & Replication exploited by targeting the backup agent itself).
 
-Under Lockdown, backup files are protected by the kernel itself — no program, including root, can read or overwrite them. The backup agent itself is not a running process and cannot be killed; the protection is structural.
+Under Lockdown, root cannot read or overwrite the backups. The kernel blocks every program. There is no backup agent to kill.
 
 **Recovery workflow**:
 
@@ -466,7 +467,7 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Exfiltration prevention**: Even if a program can read confidential data within its file access allowlist, it cannot send that data to an unapproved destination. The network allowlist restricts each program to specific IPs. A program with no approved outbound destinations has no exfiltration path at all.
 
-**Scope**: An attacker who reaches root on the running system can read disk content with direct kernel-level access. Confidentiality *during* a live breach session is the role of disk encryption (dm-crypt/LUKS), not HeartSuite Lockdown. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; disk-level encryption covers backup files if applied at the OS level. HeartSuite limits what data can be *exfiltrated*, not what data can be *read* from a running kernel session.
+**Scope**: An attacker who already has root can read disk content with direct kernel-level access. Confidentiality *during* a live breach session is the role of disk encryption (dm-crypt/LUKS), not HeartSuite Lockdown. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; disk-level encryption covers backup files if applied at the OS level. HeartSuite limits what data can be *exfiltrated*, not what data can be *read* from a running kernel session.
 
 **Evidence artifacts**:
 

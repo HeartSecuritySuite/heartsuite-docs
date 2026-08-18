@@ -1,7 +1,8 @@
 ---
-title: "Updating HeartSuite"
+title: "Apply an update without dropping Lockdown blindly"
+linkTitle: "Updating Root Lock"
 weight: 5
-description: "How to apply a HeartSuite update bundle, including the two-reboot sequence and Lockdown considerations."
+description: "How to apply an update bundle: the two-reboot sequence, what happens to Lockdown, and how to confirm you are back on the new kernel."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "updates", "kernel", "installer"]
 type: docs

@@ -1,7 +1,7 @@
 ---
-title: "Roadmap 2016 — present"
+title: "From 2016 research to kernel default-deny"
 linkTitle: "Roadmap"
-description: "See where Root Lock by HeartSuite is headed—kernel-level enforcement that root cannot bypass."
+description: "How program allowlisting, Lockdown, file versioning, and script launchers were designed as one architecture — and what is still ahead."
 lastmod: "2026-05-27"
 weight: 110
 menu:
@@ -345,7 +345,9 @@ gantt
 
 > [!WARNING]
 > **Container Support**  
-> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the Root Lock kernel) is not part of the design — it would require re-introducing OverlayFS and user namespaces, the same privilege-escalation primitives the Root Lock kernel intentionally omits. The supported path is OCI images built and run off-host; one direction under evaluation is running untrusted workloads in per-task microVMs (Kata Containers, Firecracker) where Root Lock is the guest kernel. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
+> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the Root Lock kernel) is not part of the strict design — it would require OverlayFS and user namespaces, the privilege-escalation primitives the Root Lock kernel intentionally omits on the strict baseline. The supported path is OCI images built and run off-host.  
+>  
+> **MicroVM evaluation (host-as-VMM only):** Root Lock as the **guest** kernel inside a per-task VM/microVM (Kata, Firecracker, or plain KVM) is shipped — see [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes) and [Containers & microVMs](../introduction/containers-and-microvms/). **Host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests.
 
 > [!WARNING]
 > **File-Access Consequence Text**  

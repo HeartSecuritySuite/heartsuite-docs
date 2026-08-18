@@ -1,16 +1,16 @@
 ---
-title: "HeartSuite Exec Lock"
-linkTitle: "Exec Lock"
-description: "Kernel-level program execution control and network allowlisting, designed to work alongside HJFS."
+title: "HeartSuite Exec"
+linkTitle: "Exec"
+description: "HeartSuite Exec is the filesystem UI for programs, next to HJFS. Root Lock is the kernel product."
 categories: ["Essentials"]
-tags: ["heartsuite", "execution", "network", "allowlisting", "hjfs"]
+tags: ["heartsuite", "exec", "hjfs", "filesystem"]
 type: docs
 toc: true
 ---
 
-**Overview**: HeartSuite Exec Lock provides the program execution and network controls of Root Lock by HeartSuite without the file access layer. It is designed to be deployed together with HJFS. HJFS supplies per-program, per-version file isolation and automatic data backup. HeartSuite Exec Lock supplies kernel-level gating of which programs may run and which network destinations they may reach.
+> **Proposal**: HeartSuite Exec has no engineering underway. This page records the intended product only. There is no release timeline.
 
-## What the product controls
+**Overview**: HeartSuite Exec is the filesystem UI for programs, next to HeartSuite Joint File System (HJFS). Root Lock by HeartSuite is the kernel product. HeartSuite Exec is not Root Lock, and it is not a kernel slice.
 
 | Control | Layer | How it works |
 |---------|-------|--------------|
@@ -18,26 +18,18 @@ toc: true
 | Outbound network connections | Kernel | Only approved IP destinations are permitted. All other connection attempts are blocked at the kernel. |
 | File access | — | Not provided. Use HJFS for file isolation, version rollback, and automatic backup. |
 
-## Why this product exists
+HJFS isolates each program's files on a stock kernel. It operates entirely within the filesystem layer. Executables live in a separate area. The official tools for that area today are `HJFS_update_program` (install a new program version) and `HJFS_version_manager` (list, check, and set the active version).
 
-Full Root Lock and HJFS currently cannot be used together because both implement file access controls at different layers. Removing file access management from Root Lock removes that conflict. The resulting product supplies exactly the two controls that HJFS does not yet provide.
+HeartSuite Exec is the planned UI for those program tools: install, update, and version selection against the HJFS Executables area. File isolation stays with HJFS, including the OS file-selection dialog already specified under [Advanced Protection](../hjfs/advanced-protection/).
 
-Administrators who adopt HJFS for its file protections can add HeartSuite Exec Lock to regain strong kernel-level execution and network enforcement without replacing HJFS's file model.
+HeartSuite Exec does not add kernel execution gates. It does not add kernel network gates. [Root Lock network controls](../docs/network/) are not compatible with HJFS today; later network mediation is planned inside HJFS, not as a companion product.
 
-## How it works with HJFS
+## Who uses which product
 
-HJFS confines every program to its own storage area at the filesystem layer. HeartSuite Exec Lock adds the two missing gates at the kernel layer:
-
-- A program cannot launch unless it has an allowlist entry.
-- A program cannot open a network connection unless the destination is approved.
-
-Together the two products close all three OS-level attack surfaces: execution, file access, and network communication. Neither product alone provides the full set.
-
-## Relationship to Root Lock
-
-Customers who do not need HJFS continue to use Root Lock unchanged. That product still supplies execution, network, and file controls in a single package.
-
-Customers who want HJFS's stronger file isolation use HeartSuite Exec Lock alongside HJFS. The two together give the same three-layer coverage that Root Lock once provided, but with the file layer now handled by HJFS.
+| Need | Product |
+|------|---------|
+| Kernel default-deny for programs, files, and outbound network on a general-purpose host | Root Lock |
+| Per-program files on a stock kernel | HJFS; HeartSuite Exec is that product's program UI |
 
 ## Current status
 
@@ -46,5 +38,6 @@ This product is a proposal. No engineering work has begun and no release timelin
 ## See also
 
 - [HJFS Overview](../hjfs/introduction/hjfs-overview/)
+- [HJFS architecture](../hjfs/architecture/)
 - [Root Lock overview](../docs/introduction/heartsuite-overview/)
 - [How Root Lock compares](../docs/introduction/how-it-compares/)

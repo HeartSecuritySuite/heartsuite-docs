@@ -2,7 +2,7 @@
 title: "How HJFS Compares"
 linkTitle: "How It Compares"
 weight: 35
-description: "What HJFS is, what it is not, what it complements, and how to choose between HJFS alone or alongside Root Lock by HeartSuite."
+description: "What HJFS is, what it is not, what it complements, and when to run it alone versus beside Root Lock by HeartSuite."
 categories: ["Essentials"]
 tags: ["hjfs", "comparison", "heartsuite", "deployment", "security"]
 type: docs

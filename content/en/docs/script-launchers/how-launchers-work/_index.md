@@ -1,7 +1,8 @@
 ---
-title: "How Script Launchers Work"
+title: "One interpreter, many script allowlists"
+linkTitle: "How launchers work"
 weight: 1
-description: "Explanation of Root Lock by HeartSuite's secure script launchers and their security benefits."
+description: "Without launchers, every script shares the interpreter's permissions. Launchers split that so an approved python3 cannot run an unapproved script."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "security", "interpreters", "launchers"]
 type: docs

@@ -1,8 +1,8 @@
 ---
-title: "The security problem HJFS solves"
+title: "Your word processor inherits every file you own"
 linkTitle: "The security problem"
 weight: 1
-description: "The OS design flaw that makes malware damage possible, and how HJFS addresses it."
+description: "Malware encrypts your files with the same open() your editor uses. HJFS keeps custody with you, not with the program you ran."
 categories: ["Essentials"]
 tags: ["hjfs", "security", "malware", "plenary-power", "design"]
 type: docs

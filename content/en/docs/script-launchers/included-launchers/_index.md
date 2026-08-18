@@ -1,7 +1,8 @@
 ---
-title: "Included Script Launchers"
+title: "Which script launchers ship in the box"
+linkTitle: "Included Script Launchers"
 weight: 3
-description: "List of available secure script launchers in Root Lock by HeartSuite."
+description: "Secure Script Launchers included with Root Lock. The Dashboard offers them in Phase 3 when it finds the matching interpreter."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "scripts", "python", "perl", "php", "launchers"]
 type: docs
