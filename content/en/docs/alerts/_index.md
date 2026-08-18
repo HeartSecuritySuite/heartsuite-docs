@@ -15,7 +15,7 @@ Alerts notify you of these blocks and of state changes the moment they happen. O
 
 ## For fleet and enterprise scale
 
-Single-host setup is on this page (Dashboard → Alert Settings). For production fleets and compliance programmes, use the dedicated guides:
+Single-host setup is on this page (Dashboard → Alert Settings). For production fleets and compliance programs, use the dedicated guides:
 
 - [SIEM and Fleet Integration](siem-integration/) — Syslog, webhook, and status JSON for Splunk, Elastic, PagerDuty, and similar tools. The recommended path when you manage many servers without per-host TUI toil.
 - [Central Policy Management and External Control](central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation; consume syslog, JSONL approval logs, status.json, and webhooks for central visibility.
@@ -41,7 +41,7 @@ Configure SMTP credentials to receive email alerts directly. Required fields:
 - **Sender** and **Recipient** addresses
 - **Password** (masked on entry; never displayed after saving)
 
-Select Save to store the configuration. Root Lock by HeartSuite validates all fields but does not attempt a live connection at save time. Select Test to send a test email — this is the only moment where SMTP connectivity is verified. If the test fails, the exact SMTP error code is shown:
+Select Save to store the configuration. Root Lock validates all fields but does not attempt a live connection at save time. Select Test to send a test email — this is the only moment where SMTP connectivity is verified. If the test fails, the exact SMTP error code is shown:
 
 ```text
 Test email failed: [535 Authentication credentials invalid]
