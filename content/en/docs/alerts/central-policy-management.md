@@ -19,10 +19,10 @@ Keep policy curation, change approval, and fleet-wide visibility inside the tool
 
 A central system (CMDB, Git repository as source of truth, ITSM workflow, or custom script) owns the authoritative list of approved programs, file-access paths, and network destinations.
 
-- Generate or maintain policy as simple text lists (one absolute program path per line) or structured data that your automation can parse.
+- Generate or maintain policy as text lists (one absolute program path per line) or structured data that your automation can parse.
 - Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
-- **Dense fleets (recommended):** harvest an install-time APO baseline from one dense reference host, package Root Lock **with that seed**, then install via Ansible using the seeded package so initial setup is short (not multi-hour learn-from-cold on every node).
-- **Post-install text lists** (`hs_seeds`, `batch_record_add.py`) are for extras and program-path fleet reuse **after** install — they do not replace install-time APO pre-seed.
+- **Dense fleets (recommended):** harvest an install-time allowlist baseline from one dense reference host, package Root Lock **with that seed**, then install via Ansible using the seeded package so initial setup is short — not a multi-hour observation period on every node.
+- **Post-install text lists** (`hs_seeds`, `batch_record_add.py`) are for extras and program-path fleet reuse **after** install — they do not replace install-time allowlist pre-seed.
 
 ### Two seed mechanisms (do not conflate)
 
@@ -30,22 +30,22 @@ A central system (CMDB, Git repository as source of truth, ITSM workflow, or cus
 |---|--------------------------------|--------------------------------|
 | **Purpose** | Seed **first**, then install: initial setup starts from a known dense baseline | Additive program approvals for extras after Root Lock is up |
 | **When** | **Before/at** install (package or image includes baseline) | After Root Lock is installed; **not** while initial setup is still running |
-| **Shape** | Vendor packaging / installer options such as `--apo-seed` (baseline APO material) | Plain text: one absolute **program** path per line (`#` comments OK) |
+| **Shape** | Vendor packaging / installer options such as `--apo-seed` (baseline allowlist material) | Plain text: one absolute **program** path per line (`#` comments OK) |
 | **Apply with** | Seeded installer / image; Ansible by **running that installer** | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
 
-**Not required:** re-apply a full harvested baseline via **text** `hs_seeds` or `batch_record_add.py` after initial setup on the same host class. That does not skip multi-hour learning; use install-time APO pre-seed for that.
+**Not required:** re-apply a full harvested baseline via **text** `hs_seeds` or `batch_record_add.py` after initial setup on the same host class. That does not skip a multi-hour observation period; use install-time allowlist pre-seed for that.
 
 **Useful text seeds:** role-scoped bootstrap lists (for example SSH and app entrypoints), stack extras after residual queue review, and hosts that never observed those paths.
 
 ### Recommended order (dense / fleet — seed first)
 
-1. **Reference host:** one machine of this class finishes initial setup, runs the real dense workload, residual queues reviewed (pay multi-hour learning **once** if the host was seed-off).
-2. **Harvest installer APO baseline** from that host with vendor harvest / packaging tooling (file and grant material for install-time pre-seed — not a program-path text list alone). Ansible may orchestrate collection over SSH; the artifact is still **installer baseline**, not `hs_seeds`.
+1. **Reference host:** one machine of this class finishes initial setup, runs the real dense workload, residual queues reviewed (pay the multi-hour observation period **once** if the host was seed-off).
+2. **Harvest installer allowlist baseline** from that host with vendor harvest / packaging tooling (file and grant material for install-time pre-seed — not a program-path text list alone). Ansible may orchestrate collection over SSH; the artifact is still **installer baseline**, not `hs_seeds`.
 3. **Review** and promote the baseline into your package pipeline.
 4. **Build or obtain** a Root Lock install package **with baseline pre-seed enabled** (for example installer option `--apo-seed` / packaged baseline). Default customer packages may be seed-off until you enable this.
 5. **Clean OS** on each fleet node.
 6. **Ansible installs Root Lock using that seeded package** (point the playbook’s install bundle at the pre-seeded installer). Initial setup uses the seed and finishes quickly.
-7. Deploy application / hardening automation; residual Dashboard allow for deltas only.
+7. Deploy application / hardening automation; residual Dashboard review for deltas only.
 8. Optional: post-install text program lists for extras (`hs-manage-allowlist list` → review → `hs_seeds` / `batch_record_add.py`).
 9. Activate Lockdown only when subscription, alerts, and queue gates are ready.
 
@@ -70,11 +70,13 @@ Examples for the primary integration patterns follow.
 
 ### 1. Ansible — playbooks for seeding and applying policy
 
-HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lock`) for fleet policy application and Lockdown transitions. It is modelled on `linux-system-roles.selinux` and ships with coordinated release materials; email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if you need the role package. On every installed host, the `limited_tools` Python API under `/opt/heartsuite` is the runtime integration surface the role uses. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
+HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lock`) for fleet policy application and Lockdown transitions. It is modelled on `linux-system-roles.selinux` and ships with coordinated release materials; email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if you need the role package.
+
+On every installed host, the `limited_tools` Python API under `/opt/heartsuite` is the runtime integration surface the role uses. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
 
 #### Official Ansible role: `heartsecurity.root_lock`
 
-**Overview**: The role provides variable-driven, idempotent management of allowlist programs and mode transitions. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns to HeartSuite.
+**Overview**: The role provides variable-driven management of allowlist programs and mode transitions. Re-running a play does not create duplicate entries. It is modelled on `linux-system-roles.selinux` (and `rhel-system-roles.selinux`) so administrators familiar with RHEL declarative SELinux policy can apply the same playbook patterns.
 
 The role is intentionally narrow in scope: it assumes Root Lock is already installed on the target and focuses on allowlist management plus mode transitions (Setup Mode / Lockdown). Full server provisioning and deployment scenarios — base OS preparation, hardening using established standards such as the dev-sec collection, SFTP receiver setup, bundle-based installation, and post-install configuration — are supported by thin orchestrator playbooks. These compose the `heartsecurity.root_lock` role with upstream collections and custom tasks for the unique requirements of a host (for example source-restricted firewalls or dedicated backup directories).
 
