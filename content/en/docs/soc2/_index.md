@@ -27,7 +27,7 @@ Each criterion entry includes: the control requirement, how HeartSuite satisfies
 
 ## How to use this document
 
-Root Lock by HeartSuite is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
+Root Lock is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
 
 - HeartSuite satisfies specific sub-criteria as a **technical control** in your control environment.
 - You still need **organizational controls** (policies, procedures, access reviews, training) alongside it.
@@ -41,9 +41,9 @@ Root Lock by HeartSuite is deployed on Linux servers to enforce a default-deny s
 
 **Control requirement**: The entity implements logical access security measures to restrict access to information assets to authorized users.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
-Root Lock by HeartSuite controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root. In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
+Root Lock controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root. In Lockdown, every program must have an explicit allowlist entry before the kernel will permit it to execute, read or write files, or make outbound network connections.
 
 The three dimensions of per-program access control:
 
@@ -73,7 +73,7 @@ Under Lockdown, the allowlist is sealed using filesystem immutability (`chattr +
 
 **Control requirement**: The entity restricts access to information assets based on job responsibilities.
 
-**How HeartSuite addresses this**:
+**How Root Lock addresses this**:
 
 HeartSuite does not implement role-based access control within the Dashboard. Every user with Linux root access has identical, unrestricted access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and maintenance mode. There is no operator/administrator distinction, no per-function permission check, and no audit trail distinguishing one root user's actions from another.
 
@@ -91,7 +91,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 **Control requirement**: Logical access security measures restrict access to infrastructure, including operating system configurations, network configurations, and authentication databases.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 HeartSuite Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory (read-only, with pointers to the prep for any grant adjustments using the per-panel actions such as `[u]` undos). The Lockdown activation log records what was sealed.
 
@@ -125,9 +125,9 @@ This means an attacker who reaches root via SSH cannot modify the SSH server con
 
 **Control requirement**: The entity restricts the transmission of confidential information to authorized internal and external users and protects it during transmission.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
-HeartSuite enforces per-program outbound network controls. In Lockdown, every outbound connection attempt by every program is either on the network allowlist or blocked at the kernel. This applies regardless of user privilege.
+Root Lock enforces per-program outbound network controls. In Lockdown, every outbound connection attempt by every program is either on the network allowlist or blocked at the kernel. This applies regardless of user privilege.
 
 Specific transmission controls:
 
@@ -136,7 +136,7 @@ Specific transmission controls:
 - **C2 callback prevention**: In Lockdown, any program attempting to connect to a destination not in its network allowlist is blocked. This includes malware attempting to reach command-and-control infrastructure. The Log4Shell attack (CVE-2021-44228), which works by causing a vulnerable application to reach outbound to attacker infrastructure, is blocked at the network gate.
 - **Exfiltration prevention**: Even if an attacker compromises an approved program, that program can only connect to destinations already in its network allowlist — destinations reviewed and approved by an administrator during Setup Mode.
 
-**Scope**: HeartSuite enforces no inbound connection controls. Inbound network filtering (port restrictions, protocol controls) is a customer-side responsibility via the OS (`iptables`, `nftables`, `ufw`) or cloud security groups.
+**Scope**: Root Lock enforces no inbound connection controls. Inbound network filtering (port restrictions, protocol controls) is a customer-side responsibility via the OS (`iptables`, `nftables`, `ufw`) or cloud security groups.
 
 **Evidence artifacts**:
 
@@ -151,15 +151,15 @@ Specific transmission controls:
 
 **Control requirement**: The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
-This is the primary use case of Root Lock by HeartSuite. The implementation is structural, not signature-based:
+This is the primary use case of Root Lock. The implementation is structural, not signature-based:
 
-**Default-deny execution**: In Lockdown, the HeartSuite kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether the file was detected by any scanner.
+**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether the file was detected by any scanner.
 
 **Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not — in Lockdown, it is blocked before the interpreter processes it.
 
-**Reduced kernel features attackers can reach**: The HeartSuite kernel deliberately omits primitives that are common privilege-escalation and bypass paths (eBPF, FUSE, overlay, user namespaces, competing LSMs). This removes the attack surface by design.
+**Reduced kernel features attackers can reach**: The Root Lock kernel deliberately omits primitives that are common privilege-escalation and bypass paths (eBPF, FUSE, overlay, user namespaces, competing LSMs). This removes the attack surface by design.
 
 See [System Requirements](../introduction/system-requirements/#software-compatibility-notes) and [Deployment Scenarios](../introduction/deployment-scenarios/) for details.
 
@@ -185,9 +185,9 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **Control requirement**: The entity uses detection and monitoring procedures to identify (1) changes to configurations that introduce vulnerabilities; (2) susceptibility to new vulnerabilities; (3) security events indicating potential or actual threats.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
-**Vulnerability surface reduction**: HeartSuite reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the HeartSuite kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after HeartSuite's structural mitigations. CVEs affecting kernel features not compiled into HeartSuite receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present in the HeartSuite kernel by design.
+**Vulnerability surface reduction**: HeartSuite reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after HeartSuite's structural mitigations. CVEs affecting kernel features not compiled into HeartSuite receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present in the Root Lock kernel by design.
 
 **Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, HeartSuite configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel level and can be detected via the "Critical file version created outside maintenance window" alert, which fires when a new backup version is created for files under `/etc/`, `/bin/`, `/usr/bin/`, `/sbin/`, `/lib/`, or `/usr/lib/` while Lockdown is active.
 
@@ -201,7 +201,7 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 | Mode/state changes (Setup ↔ Lockdown) | Immediate alert on all channels on every state change |
 | New allowlist pushed while Lockdown active | Immediate alert on all channels |
 
-**Integration with vulnerability management**: HeartSuite is explicitly designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). HeartSuite reduces the blast radius of an unpatched vulnerability; the scanner maps what needs patching. Both controls are needed for SOC 2.
+**Integration with vulnerability management**: Root Lock is explicitly designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). Root Lock reduces the blast radius of an unpatched vulnerability; the scanner maps what needs patching. Both controls are needed for SOC 2.
 
 **Evidence artifacts**:
 
@@ -218,7 +218,7 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **Control requirement**: The entity monitors system components and the operation of those components for anomalies that are indicative of malicious acts, natural disasters, and errors affecting the entity's ability to meet its objectives.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 **Continuous protection state monitoring**:
 
@@ -233,7 +233,7 @@ The HeartSuite Dashboard displays a full-width, high-contrast protection state i
 
 **Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
 
-**Syslog integration**: Root Lock by HeartSuite emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME (a single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both). The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`; the structured data includes the decision type, program, and target. Lag is typically under one second. The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
+**Syslog integration**: Root Lock emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME (a single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both). The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`; the structured data includes the decision type, program, and target. Lag is typically under one second. The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
 
 **Webhook integration**: Every alert is POSTed immediately as a JSON payload to the configured webhook endpoint. Example payload structure:
 
@@ -269,7 +269,7 @@ This payload can drive PagerDuty, OpsGenie, Slack, or any incident management to
 
 **Control requirement**: The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives, and, if so, takes actions to prevent or address such failures.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 HeartSuite classifies security events into two tiers:
 
@@ -306,9 +306,9 @@ In Lockdown, the Dashboard's review queues shift from approval mode to read-only
 
 **Control requirement**: The entity responds to identified security incidents by executing a defined incident response program.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
-HeartSuite provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control. HeartSuite's role in incident response:
+Root Lock provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control. Root Lock's role in incident response:
 
 **Containment (structural)**:
 
@@ -347,7 +347,7 @@ HeartSuite provides technical controls for the detection and containment phases 
 
 **Control requirement**: The entity identifies, develops, and implements activities to recover from identified security incidents and communicates those activities.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 **Per-write versioned backups**:
 
@@ -364,9 +364,9 @@ Under Lockdown, backup files are protected by the kernel itself — no program, 
 | Restore from CLI/automation | `hs-version-manager restore <path> --version <timestamp>` |
 | List available versions | `hs-version-manager list <path>` |
 
-**System recovery after HeartSuite kernel failure**:
+**System recovery after Root Lock kernel failure**:
 
-If the HeartSuite kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The system is then without HeartSuite protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access.
+If the Root Lock kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The system is then without Root Lock protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access.
 
 **Scope**: Backup files are versioned filesystem copies — there is no encryption at the HeartSuite layer. If backup confidentiality at rest is required, disk-level encryption (dm-crypt/LUKS) must be configured at the OS level by the customer. An alert fires when backup transitions from enabled to disabled, and when any previously-covered directory is removed from coverage.
 
@@ -385,7 +385,7 @@ If the HeartSuite kernel fails to load, the startup script isolates the primary 
 
 **Control requirement**: The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its change management objectives.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 **All changes require a maintenance window**:
 
@@ -408,7 +408,7 @@ HeartSuite updates are delivered as a single self-extracting bundle (`heartsuite
 sha256sum -c heartsuite-install.sh.sha256
 ```
 
-The installer aborts if run on the active HeartSuite kernel, requiring the two-reboot update sequence that prevents unapproved code from replacing the kernel while it is running.
+The installer aborts if run on the active Root Lock kernel, requiring the two-reboot update sequence that prevents unapproved code from replacing the kernel while it is running.
 
 **Allowlist as change record**:
 
@@ -433,7 +433,7 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Control requirement**: The entity protects against or mitigates environmental threats that could impair the availability of the system.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 **Ransomware resilience**: The primary availability threat to production servers is ransomware. HeartSuite addresses this at two layers:
 
@@ -460,7 +460,7 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Control requirement**: The entity identifies and maintains confidential information to meet the entity's objectives related to confidentiality.
 
-**How HeartSuite satisfies this**:
+**How Root Lock satisfies this**:
 
 **File access containment**: Every program can only read the files in its file access allowlist. A compromised application cannot read credentials, private keys, or confidential data that it was never approved to access during Setup Mode. This applies regardless of user privilege.
 

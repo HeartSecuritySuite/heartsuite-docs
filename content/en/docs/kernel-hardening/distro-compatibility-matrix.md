@@ -12,7 +12,7 @@ toc: true
 **Overview**: Which Linux distributions HeartSuite has validated for the HS kernel, what each support tier means, and where RHEL-family images need customer-side validation before production Lockdown.
 
 **Subject:** Root Lock by HeartSuite HS kernel (5.19 and 6.18 lines; v1.6.4 commercial baseline: kernel 6.18.9)  
-**Audience:** Procurement, security architects, and platform engineers selecting or certifying a base OS for Root Lock by HeartSuite.
+**Audience:** Procurement, security architects, and platform engineers selecting or certifying a base OS for Root Lock.
 
 This matrix states which distributions HeartSuite has validated in release testing, which are officially supported without a specific gate run, and where customer-side validation is required before production Lockdown. It complements the workload-level exclusions in [System Requirements](../../introduction/system-requirements/) and the buyer-facing deployment guidance in the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
@@ -31,7 +31,7 @@ Each row assigns a **tier** that tells you what HeartSuite has tested and what y
 
 **Columns in the main table**
 
-- **HS kernels** — Root Lock by HeartSuite ships two kernel lines: **5.19** and **6.18**. New commercial baselines use the 6.18 line (for example, `6.18.9-HeartSuite-1.0` for v1.6.4). Either line may be selected at install; both enforce the same Root Lock by HeartSuite contract.
+- **HS kernels** — Root Lock ships two kernel lines: **5.19** and **6.18**. New commercial baselines use the 6.18 line (for example, `6.18.9-HeartSuite-1.0` for v1.6.4). Either line may be selected at install; both enforce the same Root Lock contract.
 - **Boot** — How the installer sets the default kernel entry. UEFI Secure Boot for the **HS kernel entry** remains [incomplete](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap); the original distribution kernel (Non-HS) retains its signing status for maintenance and recovery.
 
 A **cross-distro release gate** runs after every kernel update. The April 2026 v1.6.4 gate validated: Debian 12, Debian 13 (Trixie), Ubuntu 24.04, Fedora 41, Rocky 9.7, CentOS Stream 9, Alpine 3.21, and openSUSE Tumbleweed. See the [Roadmap](../../roadmap/#v164-multi-distro-release-april-2026) for release history.
@@ -144,15 +144,15 @@ Alpine's musl-based userspace is fully within scope when the distribution versio
 
 ## Workload fit (not distro-specific)
 
-Distribution compatibility answers whether Root Lock by HeartSuite **installs and boots** on your base OS. Whether the **workload** belongs on the HS kernel is a separate decision — the same across every row in the matrix.
+Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether the **workload** belongs on the HS kernel is a separate decision — the same across every row in the matrix.
 
-Root Lock by HeartSuite deliberately removes kernel features used as bypass primitives. Workloads that depend on those features require the **Non-HS kernel** (maintenance mode) or a **separate host**, regardless of whether the distribution is Validated or Supported.
+Root Lock deliberately removes kernel features used as bypass primitives. Workloads that depend on those features require the **Non-HS kernel** (maintenance mode) or a **separate host**, regardless of whether the distribution is Validated or Supported.
 
 | Requirement | On HS kernel? | Reference |
 |-------------|---------------|-----------|
 | Local eBPF tooling (Falco, Cilium Tetragon, bpftrace, bcc, etc.) | No | [System Requirements](../../introduction/system-requirements/#software-compatibility-notes) |
 | FUSE mounts (sshfs, s3fs, AppImage, gocryptfs, …) | No | Same |
-| Dynamic Kubernetes (HPA, pod reschedule after Lockdown) | No | [How Root Lock by HeartSuite Compares](../../introduction/how-it-compares/) |
+| Dynamic Kubernetes (HPA, pod reschedule after Lockdown) | No | [How Root Lock Compares](../../introduction/how-it-compares/) |
 | KVM **hypervisor host** (running VMs from this kernel) | No | [System Requirements](../../introduction/system-requirements/#software-compatibility-notes) |
 | Rootless / unprivileged user-namespace containers | No | Same |
 | HS kernel as **guest** inside KVM, VMware, or cloud hypervisors | Yes | Same |
@@ -172,7 +172,7 @@ Organizations with a strict **no custom or modified kernel** policy — certific
 |----------|------|
 | File isolation without custom kernel | [HJFS documentation](../../hjfs/) |
 | Execution and network controls without HS kernel | [HeartSuite Exec Lock](../../../exec-lock/) alongside HJFS where applicable |
-| Full three-layer coverage when HS kernel is acceptable | Root Lock by HeartSuite (HS kernel) + HJFS on the same host |
+| Full three-layer coverage when HS kernel is acceptable | Root Lock (HS kernel) + HJFS on the same host |
 
 HJFS limits, deployment scenarios, and comparison to kernel-level enforcement: [HJFS how-it-compares](../../hjfs/how-it-compares/) and [HJFS limits](../../hjfs/introduction/limits/). Procurement mapping: [Enterprise Adoption Guide → Honest limitations](enterprise-adoption-guide/#honest-limitations).
 
@@ -189,12 +189,12 @@ If install or HS kernel boot fails on a Supported or Compatible distribution, co
 1. **`/var/log/heartsuite/install.log`** — installer steps and outcome (see [Appendices](../../appendices/)).
 2. **Kernel identity:** output of `uname -r` (expected to end in `HeartSuite` when the HS kernel is active, for example `6.18.9-HeartSuite-1.0`).
 3. **OS identity:** contents of `/etc/os-release`.
-4. **Root Lock by HeartSuite version** and whether the failure occurs during install, first HS boot, Setup Mode, or Lockdown.
+4. **Root Lock version** and whether the failure occurs during install, first HS boot, Setup Mode, or Lockdown.
 5. **Boot loader** in use (GRUB vs extlinux) and whether UEFI Secure Boot is enabled.
 
 For non-blocking bugs on supported platforms, open a GitHub issue using the Bug Report template on the public repository. **Do not** use public issues for security vulnerabilities — email support@heartsecsuite.com for responsible disclosure.
 
-Kernel update recovery procedures if a new HS kernel fails to boot: [Updating Root Lock by HeartSuite](../../maintenance/updating-heartsuite/).
+Kernel update recovery procedures if a new HS kernel fails to boot: [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
 ---
 
@@ -206,8 +206,8 @@ Kernel update recovery procedures if a new HS kernel fails to boot: [Updating Ro
 - [LSM Comparison](lsm-comparison/) — SELinux co-existence and RHEL operational note
 - [Procurement Brief](procurement-brief/) — Hardening posture comparison for buyers
 - [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — Scanner false-positive workflow for HS kernel hosts
-- [How Root Lock by HeartSuite Compares](../../introduction/how-it-compares/) — What requires a separate kernel or host
-- [Deployment Scenarios](../../introduction/deployment-scenarios/) — Where Root Lock by HeartSuite fits in production
+- [How Root Lock Compares](../../introduction/how-it-compares/) — What requires a separate kernel or host
+- [Deployment Scenarios](../../introduction/deployment-scenarios/) — Where Root Lock fits in production
 - [Roadmap](../../roadmap/#v164-multi-distro-release-april-2026) — v1.6.4 multi-distro validation history
 - [HJFS documentation](../../hjfs/) — Standard-kernel alternative for strict kernel policies
 - [Before You Begin](../../getting-started/before-you-begin/) — Prerequisites and cloud vs local install paths

@@ -7,17 +7,17 @@ tags: ["compliance", "NIST", "ISO 27001"]
 type: docs
 ---
 
-This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. It is intended for compliance officers, auditors, and security staff evaluating where HeartSuite contributes to an organisation's compliance posture and where complementary controls are required.
+This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. It is intended for compliance officers, auditors, and security staff evaluating where Root Lock contributes to an organisation's compliance posture and where complementary controls are required.
 
-HeartSuite is a **preventive enforcement layer**, not a comprehensive compliance platform. It addresses a specific, high-value problem: enforcing a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise. This document clarifies what that means for your compliance programme and what questions remain open.
+Root Lock is a **preventive enforcement layer**, not a comprehensive compliance platform. It addresses a specific, high-value problem: enforcing a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise. This document clarifies what that means for your compliance programme and what questions remain open.
 
 For SOC 2 Trust Services Criteria mapping, see the [SOC 2 Control Mapping](../soc2/) document.
 
 ---
 
-## What HeartSuite Enforces
+## What Root Lock enforces
 
-HeartSuite operates through three enforcement gates, applied per programme, not per user or per privilege level.
+Root Lock operates through three enforcement gates, applied per programme, not per user or per privilege level.
 
 | Gate | What it controls |
 |---|---|
@@ -55,7 +55,7 @@ This is HeartSuite's primary contribution.
 | **PR.AC-5** — Network integrity | Network allowlist restricts each programme to approved destinations; unapproved outbound connections are blocked at the kernel socket layer. |
 | **PR.DS-1** — Data-at-rest protection | File versioning backups are sealed by the kernel under Lockdown; no programme (including root) can delete or alter backup copies at runtime. |
 | **PR.DS-5** — Protection against data leaks | Outbound network allowlist limits exfiltration paths; programmes cannot reach unapproved destinations. |
-| **PR.IP-1** — Baseline configuration | Allowlist and immutability together constitute an enforced configuration baseline. No configuration change is possible at runtime without a maintenance window that requires rebooting to a non-HeartSuite kernel. |
+| **PR.IP-1** — Baseline configuration | Allowlist and immutability together constitute an enforced configuration baseline. No configuration change is possible at runtime without a maintenance window that requires rebooting to a maintenance kernel. |
 | **PR.IP-12** — Vulnerability management | HeartSuite reduces the exploitable blast radius: approved programme CVEs with network or file-access exploitation paths are constrained by allowlist boundaries. |
 | **PR.MA-2** — Remote maintenance | Maintenance windows are structured: requires kernel reboot, checklist-guided steps, and Dashboard review of all new activity before re-engaging Lockdown. |
 | **PR.PT-1** — Audit log protection | Under Lockdown, immutability flags protect log files; the kernel prevents attribute changes that would allow log deletion. |
@@ -105,7 +105,7 @@ HeartSuite does not implement role-based access control within the Dashboard. Ev
 
 ### A.7 — Physical Controls
 
-Not covered. HeartSuite's Lockdown state requires **physical access to bypass** (reboot to a non-HeartSuite kernel to clear immutability flags). This means physical security of the host is a dependency, not a capability HeartSuite provides.
+Not covered. Root Lock's Lockdown state requires **physical access to bypass** (reboot to a maintenance kernel to clear immutability flags). This means physical security of the host is a dependency, not a capability Root Lock provides.
 
 In cloud deployments, the cloud provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) provides the same bypass path as physical keyboard access. HeartSuite installs `agetty` autologin on `/dev/ttyS0`; restricting serial console access in the cloud provider's IAM is therefore a customer-side dependency that must be addressed to maintain the integrity of Lockdown's protection model.
 
@@ -148,7 +148,7 @@ Written to `~/.cache/heartsuite/status.json` every 60 seconds by the HeartSuite 
 |---|---|---|
 | `node_id` | string | Configured host identifier |
 | `mode` | string | `"Lockdown"`, `"Setup Mode"`, or `"Unknown"` |
-| `is_hs_kernel` | bool | Whether the running kernel is the HeartSuite kernel |
+| `is_hs_kernel` | bool | Whether the running kernel is the Root Lock kernel |
 | `lockdown` | bool | Whether Lockdown is currently active |
 | `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
 | `pending_programs` | int | Programmes awaiting review |
@@ -184,7 +184,7 @@ The following 11 questions remain without a complete public answer. Status annot
 
 1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Mostly answerable in public docs.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets by severity, notification channels, and version-string semantics are in the [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner and audit workflows are in [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). Binding SLAs remain in the subscription agreement; OVAL/OSV feeds and GPG-signed bundles are not yet generally available.
 
-1. **Is there a published SBOM for the HeartSuite kernel and Dashboard components?** *(Partially answerable.)* SPDX/CycloneDX SBOM and GPG/cosign bundle signing are on the public roadmap; today bundles use SHA-256 only. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/) and [Evidence Status](../kernel-hardening/evidence-status/).
+1. **Is there a published SBOM for the Root Lock kernel and Dashboard components?** *(Partially answerable.)* SPDX/CycloneDX SBOM and GPG/cosign bundle signing are on the public roadmap; today bundles use SHA-256 only. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/) and [Evidence Status](../kernel-hardening/evidence-status/).
 
 1. **What is HeartSuite's vulnerability disclosure and response programme?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 
@@ -208,7 +208,7 @@ The following 11 questions remain without a complete public answer. Status annot
 
 ## Cloud Shared-Responsibility Matrix
 
-When Root Lock by HeartSuite runs as a guest VM on a cloud platform, responsibility for controls is split across three parties.
+When Root Lock runs as a guest VM on a cloud platform, responsibility for controls is split across three parties.
 
 | Control layer | HeartSuite | Cloud provider | Customer |
 |---|---|---|---|

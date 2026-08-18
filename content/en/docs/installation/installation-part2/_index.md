@@ -12,14 +12,14 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock by HeartSuite reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into allowlisting.
+**Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into allowlisting.
 
 > [!NOTE]
 > Cloud users often skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Logs from that build-time process are in /var/log/heartsuite/ and accessible via the provider's serial console.
 
 ## What happens after the first boot
 
-Root Lock by HeartSuite reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
+Root Lock reads the startup and shutdown logs, adds the programs it finds to the allowlist, and reboots. This repeats until no new programs are found — typically three to five passes, depending on the distribution.
 
 **While initial setup is running, you will see:**
 
@@ -47,14 +47,14 @@ If repeated reconnects still show the status line rather than the Dashboard:
    cat /var/log/heartsuite/install.log          # bundle installer phase
    cat /var/log/heartsuite/initial-setup-latest.log   # or ls /var/log/heartsuite/ for step logs
    ```
-2. Verify the Root Lock by HeartSuite kernel is loaded:
+2. Verify the Root Lock kernel is loaded:
 
    ```bash
    uname -r
    ```
 
    Expected output ends in `HeartSuite`.
-3. If the wrong kernel booted, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu manually (requires serial console access on cloud).
+3. If the wrong kernel booted, reboot and select the Root Lock kernel from the GRUB menu manually (requires serial console access on cloud).
 
 ## If setup stops with an error
 

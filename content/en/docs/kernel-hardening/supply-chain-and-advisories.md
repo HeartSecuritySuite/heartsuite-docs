@@ -177,7 +177,7 @@ Enterprise Linux teams often use **OVAL** definitions with OpenSCAP, or **OSV** 
 For release tag **`hs-v1.6.4-kernel-6.18.9`** (`gate_status: PASS` in the catalogue):
 
 - **`index.json`** — Feed catalogue (`hs-advisory-catalog/v1`) with release tag, HeartSuite version, kernel base, and per-feed `published` flags.
-- **`hs-cve-config-sbom.json`** — CONFIG-gate Not-Affected manifest (`hs-cve-config-sbom/v1`) produced by the CVE↔CONFIG crosswalk gate in Core Secure CI.
+- **`hs-cve-config-sbom.json`** — CONFIG-gate Not-Affected manifest (`hs-cve-config-sbom/v1`) produced by the CVE↔CONFIG crosswalk gate in Root Lock CI.
 - **`osv.json`** — 279 OSV entries derived from the CONFIG SBOM and transparency page (alias of `osv/all.json`).
 - **`sbom.cyclonedx.json`** — CycloneDX bill of materials for the coordinated bundle.
 
@@ -251,7 +251,7 @@ SBOM publication improves **dependency inventory and procurement automation**; i
 
 ---
 
-## What HeartSuite does not provide (supply-chain scope)
+## What Root Lock does not provide (supply-chain scope)
 
 To set expectations for RFPs and vendor-risk assessments:
 

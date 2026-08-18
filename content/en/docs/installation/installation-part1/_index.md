@@ -15,25 +15,25 @@ menu:
 **Overview**: After running the install command, the machine reboots into the Root Lock by HeartSuite kernel.
 
 > [!NOTE]
-> Cloud users skip this step entirely. The Root Lock by HeartSuite kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. The Dashboard appears automatically on first boot.
+> Cloud users skip this step entirely. The Root Lock kernel is pre-installed and on first boot the Dashboard confirms Phase 1 is complete. The Dashboard appears automatically on first boot.
 
-## Reboot into the Root Lock by HeartSuite kernel
+## Reboot into the Root Lock kernel
 
-The installer sets the Root Lock by HeartSuite kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
+The installer sets the Root Lock kernel as the default boot target and reboots automatically. A 5-second countdown appears — press **Ctrl+C** to cancel if you need to inspect logs before rebooting.
 
-After reboot, Root Lock by HeartSuite reads the startup and shutdown logs and adds those programs to the allowlist automatically. Continue with [Installation Part 2](../installation-part2/).
+After reboot, Root Lock reads the startup and shutdown logs and adds those programs to the allowlist automatically. Continue with [Installation Part 2](../installation-part2/).
 
 > [!NOTE]
 > **If you are connected over SSH**, your session drops when the reboot fires — this is expected. Reconnect after the system comes back. While initial setup is running, each SSH login shows a brief status line and drops you at a regular shell; the Dashboard appears once complete. The serial console (virsh console, AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, etc.) shows the current step on every boot. On cloud serial, run `cat /var/log/heartsuite/install.log` to see bundle output or `journalctl -t heartsuite` for enforcement.
 
 > [!NOTE]
-> **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the Root Lock by HeartSuite kernel from the GRUB menu manually.
+> **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the Root Lock kernel from the GRUB menu manually.
 
-## If the system does not boot into HeartSuite
+## If the system does not boot into Root Lock
 
 If the machine boots to the wrong kernel or hangs:
 
 1. Verify the installer completed without errors before the reboot fired.
-2. Reboot and select the Root Lock by HeartSuite kernel from the GRUB menu manually.
+2. Reboot and select the Root Lock kernel from the GRUB menu manually.
 
 If the issue persists, contact HeartSuite support — we're happy to help.

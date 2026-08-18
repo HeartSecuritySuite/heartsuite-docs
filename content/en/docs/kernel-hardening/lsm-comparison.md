@@ -58,7 +58,7 @@ An attacker who can reach any "Open" primitive has a path to bypass LSM enforcem
 
 ## When SELinux, AppArmor, or TOMOYO is the right choice
 
-HeartSuite is not a general-purpose MAC replacement. Choose SELinux, AppArmor, or TOMOYO when:
+Root Lock is not a general-purpose MAC replacement. Choose SELinux, AppArmor, or TOMOYO when:
 
 - You are running a **general-purpose multi-user system** where diverse workloads need fine-grained per-process policy.
 - You require **MLS / MCS** (Multi-Level Security / Multi-Category Security) for labeled data separation.
@@ -68,9 +68,9 @@ HeartSuite is not a general-purpose MAC replacement. Choose SELinux, AppArmor, o
 
 ---
 
-## When HeartSuite is the right choice
+## When Root Lock is the right choice
 
-Choose HeartSuite when:
+Choose Root Lock when:
 
 - You are deploying a **single-purpose appliance** running one or a small set of known workloads.
 - Your threat model centers on **containment escape** — a compromised application attempting to break out of its enforcement boundary.

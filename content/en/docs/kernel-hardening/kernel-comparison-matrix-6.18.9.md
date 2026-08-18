@@ -84,7 +84,7 @@ These projects were not scored with the checker in the pending 6.18.9 analysis p
 | Project | Bypass Prevention | Exploit Resistance | Module Footprint | Availability | Primary Use Case |
 |---|---|---|---|---|---|
 | **HeartSuite 6.18.9** | **Very High** — same bypass-removal philosophy as 5.19.6; **IO_URING and KEXEC disabled** (port improvement) | Low–Moderate (expected) — *pending measured confirmation* | Minimal loadable module set (expected; *pending runtime count*) | Commercial | Containment of untrusted code on dedicated appliance |
-| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled; IO_URING/KEXEC gaps | Low — vanilla upstream baseline ([measured](kernel-comparison-matrix-5.19.6/)) | **~9 modules** ([measured](../evidence-pack-5.19.6.txt)) | Commercial (legacy stream) | Same; maintenance-only per [Kernel Support Policy](kernel-support-policy/) |
+| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled; IO_URING/KEXEC gaps | Low — vanilla upstream baseline ([measured](kernel-comparison-matrix-5.19.6/)) | **~9 modules** ([measured](../evidence-pack-5.19.6.txt)) | Commercial (legacy stream) | Same; maintenance-only per [Kernel Support Policy](kernel-support-policy/) |
 | Arch linux-hardened 6.18.x | Moderate — keeps BPF, FUSE, AppArmor, USER_NS for general-purpose use | **High** — HARDENED_USERCOPY, FORTIFY, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source | General-purpose hardened desktop/server |
 | grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription | Maximum exploit resistance; enterprise |
 | CLIP OS (ANSSI) | High — minimal modules + BPF disabled | High — KSPP-style mitigations | ~400 | Public (archived) | Government/high-security Linux platform |
@@ -94,7 +94,7 @@ These projects were not scored with the checker in the pending 6.18.9 analysis p
 
 - "Bypass Prevention" = removal of subsystems that can circumvent MAC/LSM enforcement.
 - "Exploit Resistance" = mitigations against kernel memory bugs (heap, stack, pointer corruption).
-- Only **HeartSuite 5.19.6** scores in this section are fully checker-backed today. **HeartSuite 6.18.9** qualitative row will be reconciled against measured output when the evidence pack publishes.
+- Only **Root Lock 5.19.6** scores in this section are fully checker-backed today. **HeartSuite 6.18.9** qualitative row will be reconciled against measured output when the evidence pack publishes.
 
 ---
 

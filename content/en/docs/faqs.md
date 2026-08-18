@@ -27,76 +27,76 @@ It is also not a fit for hosts that run eBPF-based tools like Falco, Cilium, or 
 
 {{< details summary="Can I use the same allowlist across a fleet or Kubernetes cluster?" >}}
 
-A: Yes. Each host runs the Root Lock by HeartSuite kernel with the same allowlist installed locally — no HeartSuite-provided central policy server or cloud dependency for enforcement or distribution. The same allowlist configuration (curated as policy-as-code or in your CMDB) can be distributed to any number of hosts by your existing automation (Ansible, Terraform + GitOps, Puppet, custom scripts, ServiceNow-driven workflows). Production deployments run Root Lock by HeartSuite across hundreds or thousands of nodes, all enforcing the same approved-programs policy. Fleet-wide event correlation, policy reconciliation, and compliance reporting are handled by your SIEM and control planes alongside Root Lock by HeartSuite — see [How Root Lock by HeartSuite Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
+A: Yes. Each host runs the Root Lock kernel with the same allowlist installed locally — no HeartSuite-provided central policy server or cloud dependency for enforcement or distribution. The same allowlist configuration (curated as policy-as-code or in your CMDB) can be distributed to any number of hosts by your existing automation (Ansible, Terraform + GitOps, Puppet, custom scripts, ServiceNow-driven workflows). Production deployments run Root Lock across hundreds or thousands of nodes, all enforcing the same approved-programs policy. Fleet-wide event correlation, policy reconciliation, and compliance reporting are handled by your SIEM and control planes alongside Root Lock — see [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
 
 {{< /details >}}
 
-{{< details summary="How does Root Lock by HeartSuite compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
+{{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: Root Lock by HeartSuite replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. Root Lock by HeartSuite has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How Root Lock by HeartSuite Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how Root Lock by HeartSuite can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only). For a detailed SELinux comparison, see "How does Root Lock by HeartSuite compare to SELinux specifically?" below.
+A: Root Lock replaces these tools on the preventive-enforcement dimension. Each of them can be disabled by an attacker who already has root — Falco agents can be killed, BPF programs unloaded, SELinux set permissive, AppArmor profiles detached, gVisor processes compromised, EDR drivers tampered with. Root Lock has no agent to kill and no module to unload, and under Lockdown even root cannot change the allowlist at runtime. See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table including how each can be disabled and how Root Lock can itself be circumvented (physical presence — keyboard and monitor, serial port, or cloud serial console — only). For a detailed SELinux comparison, see "How does Root Lock compare to SELinux specifically?" below.
 
 {{< /details >}}
 
-{{< details summary="How does Root Lock by HeartSuite compare to SELinux specifically?" >}}
+{{< details summary="How does Root Lock compare to SELinux specifically?" >}}
 
-A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock by HeartSuite does not replicate; SELinux's domain transitions and per-service profiles are deliberate capabilities, not gaps.
+A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock does not replicate; SELinux's domain transitions and per-service profiles are deliberate capabilities, not gaps.
 
 The limitation is the trust boundary. Root with the right capability can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly. If the system is compromised before SELinux policy is fully hardened, the attacker has the same access as any root process and can dismantle the policy from there.
 
-Root Lock by HeartSuite's distinction is where enforcement is anchored. Under Lockdown, the allowlist is sealed at the filesystem level (`chattr +i`) and the HeartSuite kernel refuses to lift that seal at runtime — by any process, including root. There is no remote path to disable enforcement; modifying the allowlist requires booting the maintenance kernel, which requires physical presence — a keyboard and monitor, serial port, or your cloud provider's serial console.
+Root Lock's distinction is where enforcement is anchored. Under Lockdown, the allowlist is sealed at the filesystem level (`chattr +i`) and the Root Lock kernel refuses to lift that seal at runtime — by any process, including root. There is no remote path to disable enforcement; modifying the allowlist requires booting the maintenance kernel, which requires physical presence — a keyboard and monitor, serial port, or your cloud provider's serial console.
 
-The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock by HeartSuite does not provide; Root Lock by HeartSuite adds the sealed boundary SELinux does not. See [How Root Lock by HeartSuite Compares](introduction/how-it-compares/) for the full side-by-side.
+The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side.
 
 {{< /details >}}
 
-{{< details summary="What software can I remove or stop paying for if I run Root Lock by HeartSuite?" >}}
+{{< details summary="What software can I remove or stop paying for if I run Root Lock?" >}}
 
-A: Root Lock by HeartSuite replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a product entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
+A: Root Lock replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a product entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
 
 **Can remove or reduce:**
 
-- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): enforcement is covered by the allowlist, and the BPF syscall is deliberately absent from the HeartSuite kernel by design (it is one of the privilege-escalation primitives that would supply attack surface and bypass paths). These tools cannot run on it anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
-- **gVisor**: if used solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock by HeartSuite is a direct replacement as the guest kernel.
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): enforcement is covered by the allowlist, and the BPF syscall is deliberately absent from the Root Lock kernel by design (it is one of the privilege-escalation primitives that would supply attack surface and bypass paths). These tools cannot run on it anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
+- **gVisor**: if used solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock is a direct replacement as the guest kernel.
 - **AppArmor / SELinux**: no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [Security as Economics](introduction/security-as-economics/) for the full comparison.
-- **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE): prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to Root Lock by HeartSuite.
+- **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE): prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to Root Lock.
 
 **Cannot remove:**
 
-- **SIEM, NDR, vulnerability scanners, and HIDS/FIM** — these answer questions Root Lock by HeartSuite does not: fleet correlation, traffic analysis, compliance reporting, and patch prioritisation. See "Does Root Lock by HeartSuite replace my SIEM, NDR, or vulnerability scanner?" below.
+- **SIEM, NDR, vulnerability scanners, and HIDS/FIM** — these answer questions Root Lock does not: fleet correlation, traffic analysis, compliance reporting, and patch prioritisation. See "Does Root Lock replace my SIEM, NDR, or vulnerability scanner?" below.
 
 {{< /details >}}
 
-{{< details summary="Does Root Lock by HeartSuite replace my SIEM, NDR, or vulnerability scanner?" >}}
+{{< details summary="Does Root Lock replace my SIEM, NDR, or vulnerability scanner?" >}}
 
-A: No. Root Lock by HeartSuite enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or produce compliance reports across a fleet on its own. (The same allowlist can be distributed to any number of hosts by your automation; see the FAQ above: "Can I use the same allowlist across a fleet or Kubernetes cluster?") SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that Root Lock by HeartSuite does not address. Run Root Lock by HeartSuite alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. Root Lock by HeartSuite's syslog streams, JSONL approval log, status.json, and webhook are designed inputs for your SIEM and control planes. See [How Root Lock by HeartSuite Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
+A: No. Root Lock enforces at the kernel level on each host individually — it does not correlate events across a fleet, ingest external data, or produce compliance reports across a fleet on its own. (The same allowlist can be distributed to any number of hosts by your automation; see the FAQ above: "Can I use the same allowlist across a fleet or Kubernetes cluster?") SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that Root Lock does not address. Run Root Lock alongside them — it reduces the volume of events those products have to reason about by making a class of attacks impossible rather than merely visible. Root Lock's syslog streams, JSONL approval log, status.json, and webhook are designed inputs for your SIEM and control planes. See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
 
 {{< /details >}}
 
 {{< details summary="Why is kernel-level enforcement better than eBPF or agent-based security?" >}}
 
-A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes within the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them. Root Lock by HeartSuite's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the Root Lock by HeartSuite kernel is running, blocking is active. This is the difference between a lock on the door and a guard standing next to it.
+A: Many security products — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes within the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them. Root Lock's enforcement is compiled into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the Root Lock kernel is running, blocking is active. This is the difference between a lock on the door and a guard standing next to it.
 
 {{< /details >}}
 
-{{< details summary="How is Root Lock by HeartSuite itself protected from attacks? How do I know that Root Lock by HeartSuite won't be targeted or compromised?" >}}
+{{< details summary="How is Root Lock itself protected from attacks? How do I know that Root Lock won't be targeted or compromised?" >}}
 
 A: Lockdown makes all allowlist entries and configuration files immutable at the filesystem level, then disables the ability to change immutability flags at the kernel level. This means not even root can modify, delete, or add allowlist entries while Lockdown is active — the kernel itself prevents it. To make changes, the Dashboard's Maintenance (`[m]`) guides you through a 3-step process that includes booting the maintenance kernel to remove the immutable flags. The Dashboard confirms Lockdown status after every reboot.
 
 {{< /details >}}
 
-{{< details summary="What are the system requirements for Root Lock by HeartSuite?" >}}
+{{< details summary="What are the system requirements for Root Lock?" >}}
 
-A: x86 (64-bit) Linux. **Validated** in release testing: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21. **Supported** without a specific gate run: Debian 11, Ubuntu-derived, Alpine 3.x. **RPM enterprise** (RHEL, AlmaLinux, SLES): RHEL-compatible — validate on your subscribed minor before production. Root Lock by HeartSuite ships two HeartSuite kernel lines: **6.18** (primary) and **5.19** (legacy). Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
+A: x86 (64-bit) Linux. **Validated** in release testing: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21. **Supported** without a specific gate run: Debian 11, Ubuntu-derived, Alpine 3.x. **RPM enterprise** (RHEL, AlmaLinux, SLES): RHEL-compatible — validate on your subscribed minor before production. Root Lock ships two Root Lock kernel lines: **6.18** (primary) and **5.19** (legacy). Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
 
 {{< /details >}}
 
-{{< details summary="How can I download Root Lock by HeartSuite?" >}}
+{{< details summary="How can I download Root Lock?" >}}
 
 A: Download the tar file from heartsecsuite.com — the download form is on the website; direct wget links are not provided.
 
 {{< /details >}}
 
-{{< details summary="Is technical support available for Root Lock by HeartSuite customers?" >}}
+{{< details summary="Is technical support available for Root Lock customers?" >}}
 
 A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heartsecsuite.com](https://heartsecsuite.com).
 
@@ -104,19 +104,19 @@ A: Yes. Email support@heartsecsuite.com or visit the tech support page on [heart
 
 {{< details summary="How do I report a bug or security issue?" >}}
 
-A: For product bugs, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock by HeartSuite version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation corrections, open an issue on [heartsuite-docs](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com for responsible disclosure — do not use public issue trackers.
+A: For product bugs, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation corrections, open an issue on [heartsuite-docs](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com for responsible disclosure — do not use public issue trackers.
 
 {{< /details >}}
 
-{{< details summary="Can Root Lock by HeartSuite automatically backup files?" >}}
+{{< details summary="Can Root Lock automatically backup files?" >}}
 
-A: Yes. Every time a file in a configured directory is modified, Root Lock by HeartSuite automatically creates a new versioned backup with a timestamp and file size. Under Lockdown, the kernel itself blocks any program (including root) from reaching the backup files — so even if an attacker compromises an approved program, the previous versions remain intact. Versions are never automatically deleted. Use the Dashboard's Backup (`[b]`) to add or remove directories, browse version history, and restore any previous version of a file.
+A: Yes. Every time a file in a configured directory is modified, Root Lock automatically creates a new versioned backup with a timestamp and file size. Under Lockdown, the kernel itself blocks any program (including root) from reaching the backup files — so even if an attacker compromises an approved program, the previous versions remain intact. Versions are never automatically deleted. Use the Dashboard's Backup (`[b]`) to add or remove directories, browse version history, and restore any previous version of a file.
 
 {{< /details >}}
 
-{{< details summary="Will Root Lock by HeartSuite flood me with alerts?" >}}
+{{< details summary="Will Root Lock flood me with alerts?" >}}
 
-A: No. Most security products generate high volumes of alerts because they flag suspicious patterns — leading to alert fatigue where real threats get lost in the noise. Root Lock by HeartSuite only alerts on genuinely unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Events are deduplicated and batched in 5-minute windows, with an hourly cap on email alerts. In Lockdown with a complete allowlist, alerts are rare — because the allowlist already covers all legitimate activity. Configure alerts through the Dashboard's Alert Settings (`[e]`) (email, syslog, or webhook).
+A: No. Most security products generate high volumes of alerts because they flag suspicious patterns — leading to alert fatigue where real threats get lost in the noise. Root Lock only alerts on genuinely unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Events are deduplicated and batched in 5-minute windows, with an hourly cap on email alerts. In Lockdown with a complete allowlist, alerts are rare — because the allowlist already covers all legitimate activity. Configure alerts through the Dashboard's Alert Settings (`[e]`) (email, syslog, or webhook).
 
 {{< /details >}}
 
@@ -126,7 +126,7 @@ A: Lockdown requires an active subscription, all review queues to be cleared, an
 
 {{< /details >}}
 
-{{< details summary="I work remotely a lot; can I still access a Root Lock by HeartSuite server remotely?" >}}
+{{< details summary="I work remotely a lot; can I still access a Root Lock server remotely?" >}}
 
 A: Yes. Allowlist the SSH program and the IP addresses you connect from — remote access works the same as any other approved program.
 
@@ -134,11 +134,11 @@ A: Yes. Allowlist the SSH program and the IP addresses you connect from — remo
 
 {{< details summary="What is the Dashboard?" >}}
 
-A: The Dashboard is how you manage Root Lock by HeartSuite. It shows your current mode (Setup or Lockdown), progress through each setup phase, pending or denied counts, and a Suggested Next Step that tells you exactly what to do next. The indicator at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
+A: The Dashboard is how you manage Root Lock. It shows your current mode (Setup or Lockdown), progress through each setup phase, pending or denied counts, and a Suggested Next Step that tells you exactly what to do next. The indicator at the top confirms the current protection state at a glance. The Dashboard appears automatically on first login.
 
 {{< /details >}}
 
-{{< details summary="How does Root Lock by HeartSuite guide me through setup?" >}}
+{{< details summary="How does Root Lock guide me through setup?" >}}
 
 A: The Dashboard walks you through seven phases, from verifying your installation to activating full protection. Each phase focuses on one task — approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`). The Dashboard tracks your progress and always shows the next step. Lockdown unlocks only after all prior phases are complete.
 
@@ -146,17 +146,17 @@ A: The Dashboard walks you through seven phases, from verifying your installatio
 
 ## Installation
 
-{{< details summary="Will installing the Root Lock by HeartSuite kernel break my existing software?" >}}
+{{< details summary="Will installing the Root Lock kernel break my existing software?" >}}
 
-A: The HeartSuite kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot back to the maintenance kernel at any time from the GRUB menu, and the Dashboard remains accessible on both. The HeartSuite kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
+A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot back to the maintenance kernel at any time from the GRUB menu, and the Dashboard remains accessible on both. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
 
 Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the system logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. You see what is affected before anything is blocked.
 
-All feature removals are intentional design decisions and documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification. The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are the privilege-escalation primitives that give attackers the attack surface, path to root, and bypass of enforcement; most production server workloads do not depend on them. The HeartSuite kernel is built without them by design.
+All feature removals are intentional design decisions and documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification. The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are the privilege-escalation primitives that give attackers the attack surface, path to root, and bypass of enforcement; most production server workloads do not depend on them. The Root Lock kernel is built without them by design.
 
 {{< /details >}}
 
-{{< details summary="Once I've installed Root Lock by HeartSuite, can a program access files without adding the directories to the allowlist entry?" >}}
+{{< details summary="Once I've installed Root Lock, can a program access files without adding the directories to the allowlist entry?" >}}
 
 A: No. In Lockdown, a program can only access files and directories that have been explicitly approved through the Dashboard's File Access review queue. After allowlisting a program's execution in Phase 2, you approve its file access in Phase 4 — the Dashboard shows every file the program attempted to read or write.
 
@@ -164,7 +164,7 @@ A: No. In Lockdown, a program can only access files and directories that have be
 
 {{< details summary="Why do I need to reboot multiple times during installation?" >}}
 
-A: The Root Lock by HeartSuite kernel must be loaded during the installation process. Each setup step — run via the System Setup — captures startup and shutdown programs that appeared in the previous boot. Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Lockdown.
+A: The Root Lock kernel must be loaded during the installation process. Each setup step — run via the System Setup — captures startup and shutdown programs that appeared in the previous boot. Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Lockdown.
 
 {{< /details >}}
 
@@ -184,7 +184,7 @@ A: Check the Dashboard's Suggested Next Step — it will indicate what remains. 
 
 {{< details summary="A new program is being blocked in Lockdown — what should I do?" >}}
 
-A: In Lockdown, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs Root Lock by HeartSuite has not seen before. To resolve it, select Maintenance (`[m]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then re-engage Lockdown.
+A: In Lockdown, any program not on the allowlist is blocked. This typically happens after installing new software or a system update that introduces programs Root Lock has not seen before. To resolve it, select Maintenance (`[m]`) from the Dashboard — it guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then re-engage Lockdown.
 
 {{< /details >}}
 
@@ -202,7 +202,7 @@ A: The Dashboard unlocks Lockdown when all prior phases are complete and shows i
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: Root Lock by HeartSuite requires every outbound connection to be explicitly approved per program. When a program attempts a connection during Setup Mode, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there. In Lockdown, any connection not on the allowlist is refused at the kernel.
+A: Root Lock requires every outbound connection to be explicitly approved per program. When a program attempts a connection during Setup Mode, it appears in the Dashboard's Internet Access review queue with the destination IP, reverse DNS, and program metadata. Approve the connection from there. In Lockdown, any connection not on the allowlist is refused at the kernel.
 
 {{< /details >}}
 
@@ -222,13 +222,13 @@ A: Lockdown makes all allowlist entries and configuration files immutable (`chat
 
 {{< details summary="How do I apply the immutable seal after Lockdown?" >}}
 
-A: The seal is applied as part of Lockdown activation (see the "How do I activate Lockdown?" entry above). Once confirmed and rebooted, Lockdown + sealed is active automatically on every HeartSuite kernel boot.
+A: The seal is applied as part of Lockdown activation (see the "How do I activate Lockdown?" entry above). Once confirmed and rebooted, Lockdown + sealed is active automatically on every Root Lock kernel boot.
 
 {{< /details >}}
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select the Maintenance (`[m]`) from the Dashboard. It detects that Lockdown is active and guides you through a 3-step process: booting the maintenance kernel to remove immutable flags (`[u]`), making your changes, then rebooting back to the Root Lock by HeartSuite kernel to review new activity and re-engage Lockdown. The Dashboard resumes at the correct step after each reboot.
+A: Select the Maintenance (`[m]`) from the Dashboard. It detects that Lockdown is active and guides you through a 3-step process: booting the maintenance kernel to remove immutable flags (`[u]`), making your changes, then rebooting back to the Root Lock kernel to review new activity and re-engage Lockdown. The Dashboard resumes at the correct step after each reboot.
 
 {{< /details >}}
 
@@ -240,19 +240,19 @@ A: Select the Maintenance (`[m]`) from the Dashboard. It detects whether Lockdow
 
 ## Troubleshooting
 
-{{< details summary="How do I check if Root Lock by HeartSuite is active?" >}}
+{{< details summary="How do I check if Root Lock is active?" >}}
 
-A: The indicator at the top of the Dashboard immediately shows whether Root Lock by HeartSuite is active and what mode it is in. The Dashboard appears automatically on login.
+A: The indicator at the top of the Dashboard immediately shows whether Root Lock is active and what mode it is in. The Dashboard appears automatically on login.
 
 {{< /details >}}
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: Reboot into the maintenance kernel (select the Maintenance entry from GRUB). The Dashboard resumes automatically on the maintenance kernel and guides you through the maintenance steps. Once back on the Root Lock by HeartSuite kernel, the Dashboard will show any pending items that caused the hang.
+A: Reboot into the maintenance kernel (select the Maintenance entry from GRUB). The Dashboard resumes automatically on the maintenance kernel and guides you through the maintenance steps. Once back on the Root Lock kernel, the Dashboard will show any pending items that caused the hang.
 
 {{< /details >}}
 
-{{< details summary="How to clear Root Lock by HeartSuite logs?" >}}
+{{< details summary="How to clear Root Lock logs?" >}}
 
 A: The Dashboard automatically clears the activity log when all review queues are empty — no manual action is required.
 

@@ -76,7 +76,7 @@ These projects were not scored with the checker in this analysis — either beca
 
 | Project | Bypass Prevention | Exploit Resistance | Module Footprint | Availability | Primary Use Case |
 |---|---|---|---|---|---|
-| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | **~9 modules** (measured) | Commercial | Containment of untrusted code on dedicated appliance |
+| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | **~9 modules** (measured) | Commercial | Containment of untrusted code on dedicated appliance |
 | Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source | General-purpose hardened desktop/server |
 | NixOS linux_hardened | Moderate | **High** | Hundreds | **Removed from nixpkgs 2025** (lack of maintenance) | Was: reproducible hardened NixOS systems |
 | grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription | Maximum exploit resistance; enterprise |

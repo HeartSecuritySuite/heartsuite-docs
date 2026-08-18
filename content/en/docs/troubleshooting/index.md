@@ -30,22 +30,22 @@ Root Lock by HeartSuite captures all activity and presents it through the Dashbo
 
 The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
-For compliance, SIEM integration, or long-term retention, Root Lock by HeartSuite also emits a per-decision enforcement stream and a separate alert stream over RFC 5424 syslog (plus a persistent JSONL approval log). See the dedicated [SIEM and Fleet Integration](../alerts/siem-integration/) page for configuration examples. Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
+For compliance, SIEM integration, or long-term retention, Root Lock also emits a per-decision enforcement stream and a separate alert stream over RFC 5424 syslog (plus a persistent JSONL approval log). See the dedicated [SIEM and Fleet Integration](../alerts/siem-integration/) page for configuration examples. Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
 
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 
 ## Kernel log
 
-The Dashboard's review queues automatically collect entries from both the Root Lock by HeartSuite activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
+The Dashboard's review queues automatically collect entries from both the Root Lock activity log and the kernel log. During normal operation, you do not need to read `dmesg` directly.
 
-The kernel log is useful for advanced troubleshooting in three situations: a program fails but the Dashboard shows zero pending or denied items for it; the Root Lock by HeartSuite activity log has been cleared or rotated; or you need to correlate Root Lock by HeartSuite entries with other kernel messages:
+The kernel log is useful for advanced troubleshooting in three situations: a program fails but the Dashboard shows zero pending or denied items for it; the Root Lock activity log has been cleared or rotated; or you need to correlate Root Lock entries with other kernel messages:
 
 ```bash
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the Root Lock by HeartSuite kernel and the maintenance kernel — on the maintenance kernel, the indicator at the top shows "maintenance kernel — Root Lock not active" and blocking is inactive.
+The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the Root Lock kernel and the maintenance kernel — on the maintenance kernel, the indicator at the top shows "maintenance kernel — Root Lock not active" and blocking is inactive.
 
 ## Reporting issues
 
-If you encounter a product bug, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock by HeartSuite version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation issues, use [heartsuite-docs issues](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com — do not use public issue trackers.
+If you encounter a product bug, email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with your Root Lock version, kernel version (`uname -r`), the protection state shown at the top of your Dashboard, and steps to reproduce. For documentation issues, use [heartsuite-docs issues](https://github.com/HeartSecuritySuite/heartsuite-docs/issues). For security vulnerabilities, email support@heartsecsuite.com — do not use public issue trackers.

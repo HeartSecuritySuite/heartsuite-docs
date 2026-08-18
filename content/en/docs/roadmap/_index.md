@@ -170,11 +170,11 @@ gantt
 
 > [!NOTE]
 > **eBPF Intentionally Disabled** (2022)  
-> BPF system calls are disabled at build time. This is a deliberate security decision: BPF verifier vulnerabilities have historically bypassed the exact kernel hooks HeartSuite relies on for enforcement. Disabling eBPF closes that attack surface permanently. The operational trade-off is that standard eBPF-based forensics tools cannot run on the host running the HeartSuite kernel. The supported architecture for eBPF-class observability is an adjacent monitoring host running a standard kernel, receiving HeartSuite kernel logs via syslog. For full forensic depth, operators boot the maintenance kernel, perform analysis, and boot back—consistent with the physical-access trust model.
+> BPF system calls are disabled at build time. This is a deliberate security decision: BPF verifier vulnerabilities have historically bypassed the exact kernel hooks HeartSuite relies on for enforcement. Disabling eBPF closes that attack surface permanently. The operational trade-off is that standard eBPF-based forensics tools cannot run on the host running the Root Lock kernel. The supported architecture for eBPF-class observability is an adjacent monitoring host running a standard kernel, receiving Root Lock kernel logs via syslog. For full forensic depth, operators boot the maintenance kernel, perform analysis, and boot back—consistent with the physical-access trust model.
 
 > [!NOTE]
 > **FUSE and OverlayFS Intentionally Disabled** (2022)  
-> Both filesystem types are disabled at build time because they are well-known sandbox bypass and path-confusion primitives that attackers use to shadow protected directories or escape controls. This is a deliberate design choice to remove the attack surface rather than layer policy on top of it. Container support is provided by building and running images off-host (or isolating untrusted workloads in per-task microVMs with Root Lock by HeartSuite as the guest kernel), rather than enabling these primitives on the HS host.
+> Both filesystem types are disabled at build time because they are well-known sandbox bypass and path-confusion primitives that attackers use to shadow protected directories or escape controls. This is a deliberate design choice to remove the attack surface rather than layer policy on top of it. Container support is provided by building and running images off-host (or isolating untrusted workloads in per-task microVMs with Root Lock as the guest kernel), rather than enabling these primitives on the HS host.
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  
@@ -278,7 +278,7 @@ gantt
 
 > [!NOTE]
 > **Documentation and advisory transparency — v1.6.2 onward** (March 2026)  
-> Public documentation site and machine-readable advisory feeds at `/advisories/`. HeartSuite kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
+> Public documentation site and machine-readable advisory feeds at `/advisories/`. Root Lock kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
 
 > [!NOTE]
 > **TUI Overlay Prototype** (March 18–26, 2026)  
@@ -294,7 +294,7 @@ gantt
 
 > [!NOTE]
 > **GRUB Automation + Alpine / OpenRC Support** (April 23–29, 2026)  
-> Installer sets HeartSuite kernel as GRUB default and reboots automatically. Falls back to console instructions on Alpine/extlinux. Both systemd and OpenRC service unit variants ship.
+> Installer sets Root Lock kernel as GRUB default and reboots automatically. Falls back to console instructions on Alpine/extlinux. Both systemd and OpenRC service unit variants ship.
 
 > [!NOTE]
 > **v1.6.4 Commercial Release — Kernel 6.18.9** (April 26, 2026)  
@@ -318,7 +318,7 @@ gantt
 
 > [!NOTE]
 > **Lockdown Engages Automatically on Every Boot** (May 2026)  
-> From the moment HeartSuite activates, Lockdown is always on. Five path categories are sealed unconditionally—there is no configuration switch to skip it. The only way to lift Lockdown is to reboot into a non-HeartSuite kernel; no runtime command can clear it.
+> From the moment HeartSuite activates, Lockdown is always on. Five path categories are sealed unconditionally—there is no configuration switch to skip it. The only way to lift Lockdown is to reboot into a maintenance kernel; no runtime command can clear it.
 
 > [!NOTE]
 > **Phase 1 Unattended Install Service** (May 2026)  
@@ -345,7 +345,7 @@ gantt
 
 > [!WARNING]
 > **Container Support**  
-> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the HeartSuite kernel) is not part of the design — it would require re-introducing OverlayFS and user namespaces, the same privilege-escalation primitives the HeartSuite kernel intentionally omits. The supported path is OCI images built and run off-host; one direction under evaluation is running untrusted workloads in per-task microVMs (Kata Containers, Firecracker) where Root Lock by HeartSuite is the guest kernel. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
+> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the Root Lock kernel) is not part of the design — it would require re-introducing OverlayFS and user namespaces, the same privilege-escalation primitives the Root Lock kernel intentionally omits. The supported path is OCI images built and run off-host; one direction under evaluation is running untrusted workloads in per-task microVMs (Kata Containers, Firecracker) where Root Lock is the guest kernel. HeartSuite-internal error codes are being mapped to standard POSIX error codes for container-compatible output.
 
 > [!WARNING]
 > **File-Access Consequence Text**  

@@ -22,10 +22,10 @@ menu:
 
 ## In this section
 
-- [Root Lock by HeartSuite Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7 phases.
+- [Root Lock Overview](heartsuite-overview/) — Core features, how it protects against malware, and the 7 phases.
 - [The Setup Journey](setup-overview/) — The seven phases from installation to Lockdown, the Cloud and Local paths, and how the Dashboard guides you.
 - [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
-- [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where Root Lock by HeartSuite fits best, plus notes on incompatible stacks.
-- [How Root Lock by HeartSuite Compares](how-it-compares/) — What Root Lock by HeartSuite replaces, what it complements, and how it can be circumvented.
+- [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where Root Lock fits best, plus notes on incompatible stacks.
+- [How Root Lock Compares](how-it-compares/) — What Root Lock replaces, what it complements, and how it can be circumvented.
 
-For detailed installation steps, see [Installation](../installation/). Root Lock by HeartSuite supports both Cloud (pre-installed) and Local (manual install) paths — both converge at the Dashboard after Phase 1 (System Verification).
+For detailed installation steps, see [Installation](../installation/). Root Lock supports both Cloud (pre-installed) and Local (manual install) paths — both converge at the Dashboard after Phase 1 (System Verification).

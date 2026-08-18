@@ -12,13 +12,13 @@ toc: true
 
 ## Default deployments: no action required
 
-If kmod, modprobe, and insmod have no allowlist entries, Root Lock by HeartSuite refuses to execute them in Lockdown. No module-loading hardening is needed — skip this page.
+If kmod, modprobe, and insmod have no allowlist entries, Root Lock refuses to execute them in Lockdown. No module-loading hardening is needed — skip this page.
 
 ## When kmod is allowlisted
 
 Some hardware configurations require kmod at startup to dynamically load drivers or filesystem modules the system needs to boot. Once kmod has an allowlist entry, it can execute — and without further restriction, kmod's file access permissions determine which modules it can load.
 
-The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod attempts to load a module outside its permitted paths, Root Lock by HeartSuite blocks the file access in Lockdown before the module can be read.
+The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod attempts to load a module outside its permitted paths, Root Lock blocks the file access in Lockdown before the module can be read.
 
 ## Restricting kmod's file access permissions
 

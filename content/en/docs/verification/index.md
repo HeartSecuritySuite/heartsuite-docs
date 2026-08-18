@@ -14,7 +14,7 @@ type: docs
 
 ### Cloud Path
 
-When you launch a pre-installed Root Lock by HeartSuite cloud instance, the Dashboard confirms setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if troubleshooting the build-time phase.
+When you launch a pre-installed Root Lock cloud instance, the Dashboard confirms setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if troubleshooting the build-time phase.
 
 ### Local Path
 
@@ -24,7 +24,7 @@ After completing the local installation process (download, GRUB preparation, ker
 
 When Phase 1 is complete, the Dashboard confirms:
 
-- **Protection state** (indicator at the top): Shows **SETUP MODE**: Root Lock by HeartSuite is active, logging only, nothing blocked
+- **Protection state** (indicator at the top): Shows **SETUP MODE**: Root Lock is active, logging only, nothing blocked
 - **Phase Progress**: Shows Phase 1 as **Complete**
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode, time in mode, and lockdown status
 - **Suggested Next Step**: Directs you to begin Phase 2: Program Allowlisting
@@ -50,16 +50,16 @@ Below the protection state indicator, a status line shows:
 Root Lock    Setup Mode active for 3d 7h: logging only, nothing is blocked
 ```
 
-- **Kernel indicator**: "Root Lock" (when the Root Lock by HeartSuite kernel is active) or "maintenance kernel" (when booted to the recovery kernel with no Root Lock by HeartSuite loaded)
+- **Kernel indicator**: "Root Lock" (when the Root Lock kernel is active) or "maintenance kernel" (when booted to the recovery kernel with no Root Lock loaded)
 - **Mode**: Setup Mode or Lockdown, with time in current mode
 - **Lockdown**: `—` (Setup Mode), `Not applied` (Lockdown without immutable seal), or `Applied` (Lockdown with immutable seal)
 
 ## What to do if verification fails
 
-If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "maintenance kernel" when you intended to boot Root Lock by HeartSuite):
+If Phase 1 does not complete, or the indicator at the top shows a state you did not expect (for example, "maintenance kernel" when you intended to boot Root Lock):
 
-1. Check the status line at the bottom of the Dashboard. It shows the kernel indicator ("Root Lock" or "maintenance kernel"). If it shows the maintenance kernel, reboot and select the Root Lock by HeartSuite kernel from the GRUB menu.
-2. Check that the Root Lock by HeartSuite systemd service is running:
+1. Check the status line at the bottom of the Dashboard. It shows the kernel indicator ("Root Lock" or "maintenance kernel"). If it shows the maintenance kernel, reboot and select the Root Lock kernel from the GRUB menu.
+2. Check that the Root Lock systemd service is running:
 
    ```bash
    systemctl status heartsuite
