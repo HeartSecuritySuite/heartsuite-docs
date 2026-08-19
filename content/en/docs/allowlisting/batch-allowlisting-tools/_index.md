@@ -45,12 +45,12 @@ Where `<file>` contains one absolute program path per line, for example:
 > [!WARNING]
 > `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context. Do not use this tool as a substitute for install-time baseline packaging, and do not run bulk seeds while initial setup is still running unless you have a deliberate exception.
 
-## hs-manage-allowlist
+## hs-app-perm-orders-manager
 
-`hs-manage-allowlist` provides a browser and editor for existing allowlist entries. It is not a review tool — it operates on entries that have already been created. Use it to inspect, modify, or remove existing entries. `hs-manage-allowlist list` is the usual harvest command when a reference host’s reviewed programs should feed a central text seed for other hosts:
+`/.hs/sys/hs-app-perm-orders-manager` browses and edits existing allowlist entries (`/.hs/sys` is not on `PATH`). It is not a review tool — it operates on entries that have already been created. Use it to inspect, modify, or remove existing entries. `list` is the usual harvest command when a reference host's reviewed programs should feed a central text seed for other hosts:
 
 ```bash
-# hs-manage-allowlist --help
+# /.hs/sys/hs-app-perm-orders-manager --help
 ```
 
 Both tools require root. Run them from a root shell:

@@ -110,7 +110,7 @@ This is the difference between a lock on the door and a guard standing next to i
 
 A: Lockdown makes allowlist entries and configuration files immutable at the filesystem, then disables changing immutability flags in the kernel. Under Lockdown, root cannot add, delete, or change allowlist entries. The kernel refuses the write.
 
-To make changes, Maintenance (`[m]`) guides you through a 3-step process that includes booting the maintenance kernel to remove the immutable flags. The Dashboard confirms Lockdown status after every reboot.
+To make changes, open Maintenance (`[m]`). After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you return to Setup Mode on the Root Lock kernel. The Dashboard confirms Lockdown status after every reboot.
 
 {{< /details >}}
 
@@ -152,7 +152,7 @@ Use Backup (`[b]`) to add or remove directories, browse version history, and res
 
 A: No. Most security tools flag suspicious patterns and generate high volumes of alerts. Real threats get lost in the noise.
 
-Root Lock only alerts on unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Events are deduplicated and batched in 5-minute windows, with an hourly cap on email.
+Root Lock only alerts on unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Email groups those blocks in a 5-minute window and caps at three block emails per hour, then sends a digest. Syslog and webhook emit each alert immediately.
 
 In Lockdown with a complete allowlist, alerts are rare — the allowlist already covers legitimate activity. Configure alerts through Alert Settings (`[e]`) (email, syslog, or webhook).
 
