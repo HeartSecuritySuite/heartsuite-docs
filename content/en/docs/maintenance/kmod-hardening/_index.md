@@ -13,11 +13,11 @@ toc: true
 
 If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. Restrict that entry's file access to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the machine.
 
-## Default deployments: no action required
+An allowlisted kmod with directory-level read under `/lib/modules` can open module files that were never observed during Setup Mode.
 
-If kmod, modprobe, and insmod have no allowlist entries, Root Lock refuses to execute them in Lockdown. No module-loading hardening is needed — skip this page.
+## When no extra work is needed
 
-## When kmod is allowlisted
+If `kmod`, `modprobe`, and `insmod` have no allowlist entries, Lockdown refuses to execute them. You can skip the rest of this page.
 
 Some hardware configurations require kmod at startup to dynamically load drivers or filesystem modules the system needs to boot. Once kmod has an allowlist entry, it can execute — and without further restriction, kmod's file access permissions determine which modules it can load.
 
