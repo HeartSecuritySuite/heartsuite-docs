@@ -30,8 +30,8 @@ Root Lock is not a RHEL-only product. The [Distro Compatibility Matrix](distro-c
 
 Every measured number derives from the open-source `kernel-hardening-checker` tool applied identically to HeartSuite and reference kernels. No estimates. Raw evidence files and config SHA-256 hashes are included so any qualified team can verify independently.
 
-- [Evidence Status](evidence-status/) — 5.19.6 published vs 6.18.9 commercial baseline (in progress).
-- [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Primary stream structure; measured scores pending publication.
+- [Evidence Status](evidence-status/) — 6.18.9-hs #37 pack published 2026-08-18; 5.19.6 remains the legacy pack.
+- [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Fielded 6.18.9-hs #37 measured scores.
 - [Comparison Matrix (5.19.6)](kernel-comparison-matrix-5.19.6/) — Legacy stream, fully measured: HeartSuite vs vanilla defconfig, Arch hardened, and KSPP target.
 - [Auditor Brief](auditor-brief/) — Threat model, measured strengths and gaps, residual risks, and self-reproduction commands for security auditors and red teams.
 - [LSM Comparison](lsm-comparison/) — HeartSuite vs SELinux, AppArmor, and TOMOYO: enforcement model, bypass-primitive resistance, and co-existence.

@@ -2,89 +2,79 @@
 title: "Kernel hardening in one comparison table"
 linkTitle: "Procurement Brief"
 weight: 5
-description: "Side-by-side hardening of the Root Lock kernel against industry alternatives — for procurement and architecture reviews."
+description: "Side-by-side hardening of the fielded 6.18.9-hs Root Lock kernel against bundled checker references — for procurement and architecture reviews."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "procurement", "comparison"]
 type: docs
 toc: true
 ---
 
-**Overview**: Side-by-side comparison of HeartSuite's kernel hardening choices against community hardened kernels and industry benchmarks — start here if you are evaluating the HS kernel for procurement.
+**Overview**: Side-by-side comparison of Root Lock by HeartSuite kernel configuration choices against community hardened kernels and the KSPP benchmark.
 
-**Subject:** Root Lock by HeartSuite HS kernel — **6.18.9 primary** (commercial baseline, HeartSuite v1.6.4), **5.19.6 legacy**  
-**Evidence status:** Measured scores on this page reference the **published 5.19.6** stream (2026-05-19, [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker)). New deployments use **6.18.9**; config hash and checker parity for that stream are in progress — see [Evidence Status](evidence-status/) and [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/).  
-**Legacy technical data (measured):** [kernel-comparison-matrix-5.19.6.md](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
+**Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**). **5.19.6** is the legacy measured stream.  
+**Evidence:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18, checker `e870d01`). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
 
-For enterprise buyers and CISOs evaluating the custom kernel in regulated environments — including deployment patterns, Secure Boot status, fleet management, risk transfer, supply chain artifacts, recovery paths, compatibility, and alternatives for strict "no custom kernel" policies — see the [Enterprise Adoption Guide](enterprise-adoption-guide/).
-
-Kernel support policy, distribution compatibility, and scanner hygiene: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+For deployment, Secure Boot, fleet, and “no custom kernel” alternatives see the [Enterprise Adoption Guide](enterprise-adoption-guide/). Support and scanner notes: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
 ---
 
 ## What this document covers
 
-Every Linux kernel ships with hundreds of configuration choices that determine how easy it is to exploit vulnerabilities or escape security controls. This document compares HeartSuite's kernel choices to a directly comparable community-hardened kernel and the KSPP industry benchmark.
+All numbers below are outputs of `kernel-hardening-checker` commit `e870d0141259f875d3d1b54fef49dec7074e4cac` applied to the **#37 pin config** (SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`) and to configs bundled with that checker.
 
-All numbers in the tables below are outputs of the same measurement tool applied identically to each **5.19.6-era** kernel configuration. No estimates.
+Arch linux-hardened **6.18.16-hardened1** is the era-matched 6.18.x peer. Vanilla 6.17.3 is cross-version orientation. **Do not** mix these percentages with the 5.19.6 pack (checker `b9b83a0`).
 
-The Arch linux-hardened comparison uses the 5.19.11 release — the same kernel generation as Root Lock 5.19.6, making scores directly comparable. **Do not** apply these figures to **6.18.9** deployments. Request pre-release 6.18.9 evidence via support, or watch [Evidence Status](evidence-status/) for publication.
+This page measures the **fielded** pin. It does not describe a derived cut that disables `IO_URING` or `KEXEC`.
 
 ---
 
-## At a glance
+## At a glance (fielded 6.18.9-hs #37)
 
-| What you care about | HS 5.19.6 | Arch linux-hardened 5.19.11 | KSPP benchmark |
+| What you care about | HS 6.18.9-hs #37 | Arch linux-hardened 6.18.16 | KSPP x86-64* |
 |---|---|---|---|
-| Dangerous features disabled | **68.9%** (91/132 checks) | 58.3% (77/132) | 99.2% (131/132) |
-| Exploit-resistance mitigations | 28.4% (31/109 checks) | **63.3%** (69/109) | 85.3% (93/109) |
-| Loadable kernel modules at runtime | **0 loaded** (9 available) | Hundreds | Not measured |
-| BPF subsystem disabled | **Yes** | No | Yes |
-| AppArmor / TOMOYO / YAMA / Landlock / IMA / EVM disabled | **Yes (all 6)** | No | No |
-| Module signing enforced | No | **Yes** | Yes |
-| Independently verifiable | **Yes** — SHA-256 published | Yes | Yes |
+| Dangerous features disabled (attack-surface) | 43.5% (57/131) | 58.0% (76/131) | 100% (131/131) |
+| Exploit-resistance mitigations | 70.9% (78/110) | **83.6%** (92/110) | 84.5% (93/110) |
+| Overall checker | 57.1% (148/259) | 69.9% (181/259) | 91.4% (235/257) |
+| Loadable modules at runtime (Debian 12 guest) | **74 loaded** (4190 `.ko.xz` shipped) | Hundreds | Not measured |
+| BPF syscall compiled out | **No** (`=y`) | No | Yes (intent) |
+| AppArmor / TOMOYO / YAMA / Landlock / IMA / EVM compiled out | **No** (all present; live LSM includes them) | No | No |
+| `MODULE_SIG` | Yes | Yes | Yes |
+| `MODULE_SIG_FORCE` | No | No (SHA512 row differs) | Yes (intent) |
+| Independently verifiable | **Yes** — pin SHA-256 + pack | Bundled in checker | Bundled in checker |
 
-*KSPP benchmark anchored to kernel 6.17; its version-agnostic recommendations set the de facto industry target but are not directly score-comparable to 5.19.x.*
+\* KSPP is a recommendation fragment, not a shipping kernel. Vanilla 6.17.3 in the pack is still cross-version.
+
+Legacy 5.19.6 glance (checker `b9b83a0`, **not** comparable item-for-item): attack-surface 68.9% (91/132), exploit-resistance 28.4% (31/109), 0 modules loaded / 9 `.ko`. See the [5.19.6 matrix](kernel-comparison-matrix-5.19.6/).
 
 ---
 
-## What Root Lock is optimized for
+## What this pin is and is not
 
-Root Lock removes or disables the kernel features that are most commonly used to *bypass* security controls — not necessarily those used to *exploit* vulnerabilities.
+On **5.19.6**, Root Lock compiled out BPF, user namespaces, FUSE, OverlayFS, AppArmor, and TOMOYO, and sat near vanilla on exploit-resistance.
 
-This means:
+On **fielded 6.18.9-hs #37** that story is inverted:
 
-- **Attacker cannot use BPF** to override security decisions at runtime. (Arch linux-hardened keeps BPF enabled; it's widely used by system tools and container runtimes.)
-- **Attacker cannot use user namespaces** (`CONFIG_USER_NS=n`) to create a fake root environment. (Arch linux-hardened 5.19.11 keeps user namespaces enabled for container use.)
-- **Attacker cannot use FUSE or overlay filesystems** to confuse path-based enforcement.
-- **No competing security policies** (AppArmor, SELinux at runtime, YAMA, Landlock, IMA, EVM) that could interfere with or be manipulated to weaken Root Lock's decisions.
+- Bypass primitives above are **compiled in** (`OVERLAY_FS=m`).
+- Live LSM on the measured guest: `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`.
+- Exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**.
+- `IO_URING`, `KEXEC`, and `KEXEC_FILE` are **=y**.
 
-What Root Lock does *not* add — and dedicated hardened kernels do:
-
-- Memory initialization on allocation/free (`INIT_ON_ALLOC_DEFAULT_ON`, `INIT_ON_FREE_DEFAULT_ON`)
-- Bounds-checking on kernel-to-user copies (`HARDENED_USERCOPY`)
-- Compiler-level hardening (`FORTIFY_SOURCE`, `RANDSTRUCT`, `GCC_PLUGIN_LATENT_ENTROPY`)
-- Allocator randomization (`SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`)
-- Kernel stack erasure on syscall return (`KSTACK_ERASE`)
-
-These mitigations slow down or prevent exploitation of kernel memory bugs. Arch linux-hardened 5.19.11 scores 69/109 (63.3%) on this axis vs Root Lock's 31/109 (28.4%). Root Lock 5.19.6 sits at the vanilla upstream baseline for exploit-resistance.
-
-For deployments where the primary concern is a compromised process escaping its enforcement boundary — not kernel memory exploitation — Root Lock covers the relevant threat at the right operating point. The Decision guide below covers when adding exploit-resistance hardening alongside Root Lock makes sense.
+Lockdown and the allowlist still constrain unallowlisted programs and (when engaged) new module loads. That is policy, not `ENOSYS`.
 
 ---
 
 ## Broader market landscape
 
-| Tool | Bypass Prevention | Exploit Resistance | Module Footprint | Availability |
+| Tool | Bypass prevention | Exploit resistance | Module footprint | Availability |
 |---|---|---|---|---|
-| **Root Lock 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS disabled | Low — vanilla upstream baseline | **~9 modules** | Commercial |
-| Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY_SOURCE, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source |
-| grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription |
-| CLIP OS (ANSSI) | High — minimal modules, BPF disabled | High — KSPP-style mitigations | ~400 | Public (archived) |
-| Hardened Gentoo | Moderate | High | Large | Free, open-source |
-| GrapheneOS | High (Android-targeted) | **Very High** — extensive Android hardening patches | Android-specific | Free, open-source |
-| Kicksecure / Whonix | Low–Moderate | Low–Moderate — mostly OS-level, not kernel patches | Standard Debian | Free, open-source |
+| **Root Lock 6.18.9-hs #37** | Low–moderate on compile-out (measured 43.5% AS) | Moderate–high (measured 70.9% ER) | 74 loaded / thousands shipped | Commercial |
+| **Root Lock 5.19.6** (legacy) | **Very high** compile-out (measured 68.9% AS) | Low — vanilla baseline (28.4% ER) | **0 loaded / 9 `.ko`** | Commercial (legacy) |
+| Arch linux-hardened 6.18.16 | Moderate | **High** (83.6% ER measured) | Hundreds | Free, open-source |
+| grsecurity / PaX | High | **Very high** | Large | Paid subscription |
+| CLIP OS (ANSSI) | High | High | ~400 | Public (archived) |
+| GrapheneOS | High (Android) | **Very high** | Android-specific | Free, open-source |
 
-*Note: NixOS `linux_hardened` was removed from nixpkgs in 2025 due to lack of maintenance and is no longer an active project. Qualitative characterizations are drawn from each project's public documentation. Only HS and Arch linux-hardened scores are directly measured and era-matched.*
+Arch 6.18.16 is era-matched. The 5.19.6 row uses the older pack.
 
 ---
 
@@ -92,28 +82,30 @@ For deployments where the primary concern is a compromised process escaping its 
 
 **Choose Root Lock if your primary concern is:**
 
-- Preventing a compromised application from escaping its security boundary
-- Ensuring no in-kernel feature (BPF, FUSE, namespaces) can be used to bypass your security policy
-- Minimizing the total kernel attack surface (9 loadable modules vs. thousands)
-- Running a single-purpose security appliance, not a general-purpose server
+- Kernel-enforced allowlist and Lockdown on a dedicated host
+- A closed, reviewed program set after Setup Mode
+- Running as a **guest** on KVM, VMware, or cloud hypervisors
 
-**Consider adding a hardened kernel layer if your concern is also:**
+**Do not choose it expecting the 5.19.6 compile-out brochure on a 6.18.9-hs host.** BPF, FUSE, OverlayFS, user namespaces, and AppArmor are present on this pin. Local eBPF tooling and FUSE are not `ENOSYS`.
 
-- Protection against kernel-level exploitation (heap corruption, use-after-free, ROP)
-- Compliance requirements that enumerate specific KSPP mitigations
-- Environments where root access cannot be fully constrained
+**Consider extra kernel hardening or a future derived cut if you also need:**
 
-**Root Lock is not a replacement for:** network firewalls, application-layer WAFs, SIEM, endpoint detection/response — it operates at the kernel enforcement layer, not at the network or application layer.
+- The 5.19-style compiled-out bypass list (`BPF=n`, `IO_URING=n`, `KEXEC=n`, …)
+- KSPP items still FAIL on this pin (`INIT_ON_FREE`, `KSTACK_ERASE`, `MODULE_SIG_FORCE`, …)
+
+**Root Lock is not a replacement for** network firewalls, WAFs, SIEM, or EDR hunting. It is host-local kernel enforcement.
 
 ---
 
 ## Verification
 
-HeartSuite's kernel configuration is published with a SHA-256 hash. Any qualified security team can reproduce these measurements using the open-source `kernel-hardening-checker` tool:
-
 ```
-Config SHA-256: d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc
-Tool: https://github.com/a13xp0p0v/kernel-hardening-checker (commit b9b83a0)
+Pin config SHA-256: 3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9
+vmlinuz SHA-256:    1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a
+uname -r:           6.18.9-hs
+file(1) build:      #37
+Tool: https://github.com/a13xp0p0v/kernel-hardening-checker (commit e870d0141259f875d3d1b54fef49dec7074e4cac)
+Expected checker:   OK 148 / FAIL 111
 ```
 
-Full methodology and raw data: `evidence-pack-5.19.6.txt`
+Do not hash guest `/boot/config-6.18.9-hs` (11-line RD stub). Full methodology: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).
