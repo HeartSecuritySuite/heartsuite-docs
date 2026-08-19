@@ -15,7 +15,7 @@ Raw enforcement decisions and higher-level alerts are emitted in real time. SIEM
 
 ## Syslog (recommended for SIEM ingestion)
 
-When the Fleet tab "Syslog" toggle is enabled, every alert and every kernel-level enforcement decision is written to the local journal (ident `heartsuite` / `heartsuite-alert`).
+When the Fleet tab **Syslog** switch is on (*Send alerts to /dev/log (LOG_AUTH facility)*), every alert and every kernel **denial** is written to the local journal under identifier `heartsuite`. Successful allowlisted work is not streamed. Alert message text begins with `heartsuite-alert:`.
 
 **Filebeat / Elastic (or any rsyslog-compatible shipper)**
 
@@ -58,40 +58,51 @@ journalctl -t heartsuite --since "1 minute ago"
 
 ## Webhook (for PagerDuty, OpsGenie, Slack, etc.)
 
-Enter a valid HTTPS URL in the Fleet tab. Root Lock posts a compact JSON payload on every alert (immediate delivery, no batching — let your receiver deduplicate).
+Enter an HTTPS URL in **Webhook URL (must be HTTPS)** on the Fleet tab. Root Lock posts a JSON payload on every alert (immediate delivery, no batching — let your receiver deduplicate). HTTP (non-TLS) URLs are rejected. When the URL contains `pagerduty.com` or `opsgenie.com`, the matching key field appears and Root Lock posts that vendor's native format instead of the generic payload.
 
-Example payload:
+Example generic payload (a Lockdown block):
 
 ```json
 {
-  "node_id":    "prod-web-03",
-  "event_type": "new_program_blocked",
-  "timestamp":  "2026-03-31T14:22:00Z",
-  "mode":       "Lockdown",
-  "lockdown":   true,
-  "paths":      ["/tmp/dropper", "/tmp/payload"],
-  "count":      2
+  "node_id":            "prod-web-03",
+  "event_type":         "new_program_blocked",
+  "timestamp":          "2026-03-31T14:22:00Z",
+  "mode":               "Secure Mode",
+  "lockdown":           true,
+  "tier":               2,
+  "paths":              ["/tmp/dropper", "/tmp/payload"],
+  "count":              2,
+  "message":            "2 previously unseen programs blocked.",
+  "subscription":       "Active",
+  "total_pending":      2,
+  "pending_programs":   2,
+  "pending_file_r":     0,
+  "pending_file_w":     0,
+  "pending_network":    0,
+  "enrich_failed":      false
 }
 ```
 
-Supported targets (paste the URL and any required key into the Fleet tab):
+`mode` is `Setup Mode` or `Secure Mode`. `lockdown` is the seal boolean. `tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network.
 
-- PagerDuty Events API v2
-- OpsGenie Incoming Webhook
+Supported targets:
+
+- PagerDuty Events API v2 (routing key field appears for `pagerduty.com` URLs)
+- OpsGenie Incoming Webhook (API key field appears for `opsgenie.com` URLs)
 - Slack Incoming Webhooks
 - Generic HTTPS JSON receivers
 
-Use the "Test Webhook" button in the UI to validate delivery.
+Test Webhook (`[w]`) sends a test POST.
 
 ## Status JSON (pull-based monitoring)
 
-A passive, always-on snapshot is written every 60 seconds to `~/.cache/heartsuite/status.json` (world-readable when the alert daemon runs).
+A passive, always-on snapshot is written every 60 seconds to `~/.cache/heartsuite/status.json`. No Fleet setting turns this on or off.
 
 Fields of particular interest for health checks:
 
-- `mode`, `is_hs_kernel`, `lockdown`, `daemon_ok`
+- `mode`, `is_hs_kernel`, `lockdown`, `daemon_ok`, `node_id`
 - `pending_*` counts (non-zero in Lockdown usually indicates something needs investigation)
-- Per-channel `last_*_error` objects
+- `channel_errors` (`email`, `syslog`, `webhook`), each with `message` and `at`
 
 Tools that can consume it directly:
 
@@ -116,7 +127,7 @@ Use the Dashboard for deliberate changes, review queues, and sealing on individu
 
 ### Production path on real hosts
 
-On production hosts, enable the policy and posture export option in the Fleet tab of Alert Settings. Ship enforcement and alert streams via syslog or Filebeat as described above. Ingest into your existing Elasticsearch cluster and build Kibana dashboards with your standard security, retention, and access controls. No separate HeartSuite download is required for this path.
+On production hosts, ship enforcement and alert streams via syslog or Filebeat as described above. Ingest into your existing Elasticsearch cluster and build Kibana dashboards with your standard security, retention, and access controls. Alert Settings has no policy-or-posture export switch — Fleet configures syslog and webhook only. No separate HeartSuite download is required for this path.
 
 ### `tools/kibana-bridge` (optional evaluation stack)
 
@@ -160,7 +171,7 @@ After setup, Kibana includes preconfigured data views:
 
 An optional imported dashboard, **HeartSuite - Policy Overview**, may also be present when saved objects are bundled with your checkout.
 
-To feed live data during lab work, enable Fleet tab export on a host and forward telemetry to the bridge ingest receiver, or ingest exported policy data into your production Elasticsearch using the same field model. Setup detail is included in the evaluation kit README shipped with `tools/kibana-bridge/`.
+To feed live data during lab work, forward syslog or the evaluation-kit telemetry to the bridge ingest receiver, or ingest exported policy data into your production Elasticsearch using the same field model. Setup detail is included in the evaluation kit README shipped with `tools/kibana-bridge/`.
 
 ### Pairing with Ansible central policy
 
@@ -173,9 +184,8 @@ See [Central Policy Management and External Control](central-policy-management/)
 ## Verification commands (run on the HeartSuite host)
 
 ```bash
-# Recent alerts and enforcement decisions
+# Recent alerts and enforcement decisions (journal identifier is heartsuite)
 journalctl -t heartsuite --since "10 minutes ago"
-journalctl -t heartsuite-alert --since "10 minutes ago"
 
 # Status snapshot (for pull monitors)
 cat ~/.cache/heartsuite/status.json | jq .
@@ -183,7 +193,7 @@ cat ~/.cache/heartsuite/status.json | jq .
 
 ## Relationship to the Dashboard
 
-All channels are configured in Alert Settings (`[e]`). The Fleet tab is the place for SIEM, webhook, syslog, and status. Email remains available as a supplementary or low-volume channel.
+All channels are configured from the Dashboard: Alerts (`[e]`) opens Alert Settings. The Fleet tab is the place for syslog, webhook, and Setup Mode Alerts. Status JSON is written whenever the alert daemon is running. Email remains available as a supplementary or low-volume channel.
 
 At fleet scale: syslog for the SIEM, webhook for incident response platforms, and Status JSON for infrastructure-as-code health checks. The Dashboard remains the place for initial setup, exception review, and maintenance — not for ongoing fleet monitoring.
 
