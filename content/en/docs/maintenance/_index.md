@@ -14,16 +14,17 @@ These guides cover how to make changes without leaving a hole an attacker can us
 
 Maintenance is a time period during which you temporarily step out of Lockdown to make changes. It is not a separate mode. Root Lock has two modes: Setup Mode and Lockdown.
 
-During maintenance you either switch to Setup Mode (the kernel logs but stops blocking) or boot the maintenance kernel (Root Lock is not loaded). The Dashboard's Maintenance (`[m]`) detects whether the immutable seal is active and guides you through the correct path.
+The Dashboard's Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path.
 
-For most maintenance — installing packages, applying patches, editing configuration — the correct path is switching to Setup Mode. That requires one reboot, stays on the Root Lock kernel, and needs no GRUB interaction. Booting the maintenance kernel is only required when Lockdown+sealed is active.
+- **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
+- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required. Reboot and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and the machine returns to Setup Mode on the Root Lock kernel. That is two reboots before you can install software or edit sealed files.
 
-Maintenance appears only in Lockdown, Lockdown+sealed, or on the maintenance kernel. It is not shown in Setup Mode — you are already in the maintenance-ready state, and the Dashboard's review queues and Suggested Next Step are the workflow.
+The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 
 ## In this section
 
-- [Protecting During Maintenance](protecting-during-maintenance/) — Step-by-step guidance for maintenance windows, from the safety checklist through Lockdown recovery across two reboots.
-- [File Backup and Versioning](file-backup-versioning/). Automatic versioned backups. Under Lockdown, root cannot reach them. Restore any earlier version from the Dashboard.
-- [Cache Adjustment](cache-adjustment/) — Tuning the allowlist cache for servers with large numbers of concurrent programs.
-- [Restricting Kernel Module Loading](kmod-hardening/) — Limiting kmod's access to specific modules for deployments where kmod is allowlisted.
-- [Updating Root Lock](updating-heartsuite/) — Apply a Root Lock update bundle, including the two-reboot sequence and Lockdown considerations.
+- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown, then install software or edit files in Setup Mode and lock down again.
+- [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
+- [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
+- [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.
+- [Updating Root Lock](updating-heartsuite/) — Unseal first, stay on the maintenance kernel to run the bundle, then return to the new Root Lock kernel.

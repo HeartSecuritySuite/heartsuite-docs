@@ -1,8 +1,8 @@
 ---
 title: "Backups that ransomware cannot delete"
 linkTitle: "File Backup and Versioning"
-weight: 91
-description: "Every write in a protected directory is versioned before it lands. Under Lockdown, no program — including root — can reach those versions."
+weight: 3
+description: "Every write in a protected directory is versioned before it lands. Under Lockdown, other programs are not intended to reach those versions."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security", "files"]
 toc: true
@@ -13,7 +13,7 @@ author: Ron Hessing
 
 Modern ransomware targets backup systems first — shadow copies and backup agents are typically deleted before files are encrypted.
 
-Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Under Lockdown, the kernel itself prevents any program from reaching those backups.
+Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Versioning runs on the Root Lock kernel in both Setup Mode and Lockdown. Backup is a recovery store, not a prevention control: it does not stop the first write.
 
 Root Lock's backups are not permission-protected: no program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
 
