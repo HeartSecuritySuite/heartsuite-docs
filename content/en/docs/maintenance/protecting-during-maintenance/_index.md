@@ -2,7 +2,7 @@
 title: "Keep a gate up while you change the system"
 linkTitle: "Protecting During Maintenance"
 weight: 2
-description: "Setup Mode and the maintenance kernel both lower the gate. How to shorten that window, keep a recovery path, and get back to Lockdown."
+description: "After Lockdown, Maintenance unseals from the console and returns you to Setup Mode. How to shorten the unprotected period, keep a recovery path, and lock down again."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "protection"]
 type: docs
@@ -13,11 +13,13 @@ toc: true
 
 Maintenance is the period when you temporarily reduce Root Lock by HeartSuite's protection to install packages, edit files, or apply updates. The Dashboard's Maintenance (`[m]`) guides you from the safety checklist through re-engaging Lockdown.
 
-Most maintenance uses **Option 1** below — a single reboot that stays on the Root Lock kernel in Setup Mode. No GRUB interaction and no old kernel required. **Option 2** (booting the maintenance kernel) is only needed when the immutable seal is active, which is the less common path.
+After Lockdown, the path is the console. You select **Maintenance: unseal and return to Root Lock** at the boot menu. The seal lifts automatically, and the machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel to remove flags by hand.
+
+A one-reboot switch that stays on the Root Lock kernel applies only when the strip already says **Lockdown not applied** — the seal is missing. That is not the usual path after a completed Lockdown.
 
 ## Starting maintenance
 
-From the Dashboard in Lockdown, select Maintenance (`[m]`). The Dashboard automatically detects whether the immutable seal is active and presents the correct path — you do not need to determine this yourself.
+From the Dashboard in Lockdown, select Maintenance (`[m]`). The Dashboard detects whether the immutable seal is active and presents the correct path.
 
 ### Safety checklist
 
@@ -34,9 +36,9 @@ The Dashboard shows green checkmarks for items that pass and amber warnings for 
 > [!NOTE]
 > The safety checklist is more critical for the Lockdown path (Option 2), where Root Lock will be completely absent. For the standard path (Option 1), Root Lock continues logging and running backups.
 
-## Option 1: switch to Setup Mode (no Lockdown)
+## After Lockdown: unseal from the console
 
-This is the standard maintenance path. The Root Lock kernel stays active. Logging and backups remain fully operational.
+This is the path when Lockdown is applied. Physical or serial-console access is required (keyboard and monitor, a serial port, or your cloud provider's serial console — AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start. You cannot do this from SSH.
 
 After completing the safety checklist, the Maintenance explains what will change:
 

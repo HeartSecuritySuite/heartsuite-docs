@@ -90,4 +90,4 @@ Literal IPv4/IPv6 addresses only — no CIDR notation, no DNS-based rules. Inbou
 
 Installer bundles: SHA-256 checksum only. There is no GPG or PGP signature verifying the bundle's origin against a HeartSuite-controlled signing key. Authenticity depends on retrieving the bundle over HTTPS from the HeartSuite distribution endpoint.
 
-Machine-readable artifacts at [`/advisories/`](/advisories/): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/).
+Machine-readable artifacts at [`/advisories/`](/advisories/index.json): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/).

@@ -83,7 +83,7 @@ Example generic payload (a Lockdown block):
 }
 ```
 
-`mode` is `Setup Mode` or `Secure Mode`. `lockdown` is the seal boolean. `tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network.
+`mode` is the on-disk token (`"Setup Mode"` or `"Secure Mode"`). The Dashboard label for `"Secure Mode"` is Lockdown. `lockdown` is the seal boolean. `tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network.
 
 Supported targets:
 

@@ -51,7 +51,7 @@ Recommended directories include those containing user documents, executable file
 
 ## Restoring file versions
 
-If a file is compromised — for example, encrypted by ransomware — the Dashboard's Backup lets you browse version history and restore any previous version of any file in a protected directory. The Backup offers two browse modes:
+If a file is compromised — for example, encrypted by ransomware — Backup lets you browse version history and restore any previous version of any file in a protected directory. On the Restore tab:
 
 - **File-first** (`[f]`) — navigate by directory and file, then view versions of the selected file
 - **Timeline** (`[t]`) — navigate by date, showing all files modified on a given day

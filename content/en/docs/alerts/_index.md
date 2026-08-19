@@ -99,7 +99,7 @@ Example generic payload (a Lockdown block):
 }
 ```
 
-`tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network. `mode` is the Dashboard mode string (`Setup Mode` or `Secure Mode`). `lockdown` is the separate seal boolean.
+`tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network. `mode` is the on-disk token (`"Setup Mode"` or `"Secure Mode"`). The Dashboard label for `"Secure Mode"` is Lockdown. `lockdown` is the separate seal boolean.
 
 To receive this payload, create an integration in your incident management tool and paste the endpoint URL into **Webhook URL (must be HTTPS)**:
 
@@ -153,7 +153,7 @@ These blocks apply a threshold filter. They fire in Lockdown, and also in Setup 
 
 ### Email — 5-minute accumulation window
 
-Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 seconds produces one email — subject *Root Lock by HeartSuite — 40 unknown programs blocked — prod-web-03* — not 40 individual messages. Volume and velocity are the attack signal; 40 separate emails fragment that signal into noise.
+Blocks are grouped before delivery. A dropper that installs 40 payloads in 90 seconds produces one email — subject *Root Lock — 40 unknown programs blocked — prod-web-03* — not 40 individual messages. Volume and velocity are the attack signal; 40 separate emails fragment that signal into noise.
 
 - The 5-minute window starts on the first block of a given type
 - Additional blocks of the same type within that window are added to the pending bundle
