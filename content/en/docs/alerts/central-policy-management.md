@@ -9,7 +9,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the operator experience for a single host. Enterprises use their control planes to manage policy and observe at scale.
+**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the surface for a single host. Enterprises use their control planes to manage policy and observe at scale.
 
 There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with export surfaces for central consumption and attribution.
 
@@ -210,13 +210,13 @@ The dedicated JSONL approval log (with uid/tty attribution for each change) and 
 
 ## Consuming data for central visibility, auditing, and harvesting
 
-All of the following surfaces are available without additional configuration once the daemon is running. They are the mechanism by which your central tooling observes state and reconstructs history.
+Status JSON and the JSONL approval log are written whenever the alert daemon is running. Syslog is off until you enable it on Alert Settings → Fleet. Webhook requires an HTTPS URL on that same tab.
 
 - **Status JSON** (`~/.cache/heartsuite/status.json`, updated every 60 seconds) — lightweight pull surface for health and pending counts. Use from Ansible facts, Nagios/Zabbix checks over SSH, or any scheduled collector. Key fields for fleet dashboards: `mode`, `lockdown`, `is_hs_kernel`, `daemon_ok`, `pending_*` counts, `node_id`. See the schema in the [Appendices](../appendices/).
 
-- **Dedicated JSONL approval log** — persistent, append-only record of every allowlist change (program, file path, or network destination) with timestamp, uid, and tty. This is the primary artifact for change attribution and audit reconstruction. Forward it (or its directory) via your existing log shipper alongside the syslog streams.
+- **Dedicated JSONL approval log** (`/var/log/heartsuite/allowlist-audit.log`) — persistent, append-only record of every allowlist **approval** (not skips or removals) with timestamp, uid, and tty. This is the primary artifact for change attribution. Forward that file with your existing log shipper. It is not copied into syslog.
 
-- **Structured syslog streams** — two real-time RFC 5424 streams under the `heartsuite` APP-NAME. One carries every kernel decision (enforcement: `HS-PROG-DENY`, `HS-FILE-DENY`, etc.). The other carries aggregated alerts (`new_program_blocked`, mode changes, etc.). A single rsyslog rule forwards both. Full configuration examples and Filebeat patterns are in the [SIEM and Fleet Integration](siem-integration/) page.
+- **Structured syslog streams** — when Fleet Syslog is on, denial lines (`HS-PROG-DENY`, `HS-FILE-DENY`, and similar) and aggregated alerts (`new_program_blocked`, mode changes) share ident `heartsuite`. Alert lines use the message prefix `heartsuite-alert:`. A single rsyslog rule forwards both. Full configuration examples and Filebeat patterns are in the [SIEM and Fleet Integration](siem-integration/) page.
 
 - **Webhook** — HTTPS POST of compact JSON alert payloads on every significant event. Configure the endpoint in Alert Settings; use for immediate routing into ServiceNow, PagerDuty, or your own policy-evaluation service.
 
@@ -228,7 +228,7 @@ See [Alert Settings](.) for configuration of syslog and webhook (Fleet tab) and 
 
 The Dashboard remains the right surface for one-off investigation, initial setup on a new host, and guided maintenance windows. At fleet scale, routine policy application and observation move to your central tooling.
 
-Lockdown is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for "new allowlist file pushed while Lockdown is active" fire on all configured channels.
+Lockdown is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for pending programs while Lockdown stays applied fire on all configured channels.
 
 ## Next steps and related documentation
 
