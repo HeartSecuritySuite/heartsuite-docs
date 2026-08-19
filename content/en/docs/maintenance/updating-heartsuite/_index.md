@@ -1,8 +1,8 @@
 ---
 title: "Apply an update without dropping Lockdown blindly"
 linkTitle: "Updating Root Lock"
-weight: 5
-description: "How to apply an update bundle: the two-reboot sequence, what happens to Lockdown, and how to confirm you are back on the new kernel."
+weight: 6
+description: "Unseal first, stay on the maintenance kernel to run the bundle, then confirm you are back on the new Root Lock kernel."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "updates", "kernel", "installer"]
 type: docs
@@ -18,7 +18,7 @@ toc: true
 - The Dashboard files under `/opt/heartsuite/`
 - GRUB configuration, so the new kernel becomes the default boot target
 
-It does not modify user data, the existing allowlist entries, or backup files. Initial setup may add new allowlist entries if the new kernel encounters programs that were not running under the previous kernel.
+It does not modify user data, the existing allowlist entries, or backup files. After the new kernel boots, new programs appear in the review queues for you to approve.
 
 ## Why two reboots are required
 
