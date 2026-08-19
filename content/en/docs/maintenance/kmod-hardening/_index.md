@@ -1,15 +1,15 @@
 ---
 title: "Stop kmod from loading just any module"
 linkTitle: "Restricting Kernel Module Loading"
-weight: 4
-description: "If kmod is on the allowlist, limit which module files it may read before Lockdown. Otherwise any module file it can open can be loaded."
+weight: 5
+description: "If kmod can execute, limit which module files it may read before Lockdown. Directory grants under /lib/modules are the real risk."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "kmod", "modules"]
 type: docs
 toc: true
 ---
 
-**Overview**: Root Lock by HeartSuite does not add `kmod`, `modprobe`, or `insmod` to the allowlist during installation. In Lockdown, none of them can execute, and a standard deployment needs no extra module-loading configuration.
+**Overview**: Root Lock by HeartSuite does not load kernel modules through a separate `init_module` gate. What kmod may load is what it may **read**. If `kmod`, `modprobe`, or `insmod` can execute and can read a `.ko` file, that module can be loaded.
 
 If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. Restrict that entry's file access to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the machine.
 

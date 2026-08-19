@@ -33,7 +33,7 @@ By default, `/home` is configured for backup. You can add or remove directories 
 
 ## Configuring protected directories
 
-From the Dashboard, select Backup (`[b]`). The Dashboard shows your current backup configuration — which directories are protected and when they were last backed up.
+From the Dashboard, select Backup (`[b]`). Backup has two tabs: **Configure** and **Restore**. Configure shows which directories are protected and when they were last versioned.
 
 ![Backup configured with 3 protected directories](test_docs_backup_configured.svg)
 
@@ -58,7 +58,7 @@ If a file is compromised — for example, encrypted by ransomware — the Dashbo
 
 To restore a single file, select it and choose the version to restore. Each version shows its timestamp and file size.
 
-For ransomware recovery where many files were modified on the same date, use the Timeline view (`[t]`), press `[d]` to filter by date, review the affected files, and press `[b]` to batch restore all of them in one operation.
+For ransomware recovery where many files were modified on the same date, use Timeline (`[t]`), press `[d]` to filter by date, review the affected files, and press `[b]` to batch restore all of them in one operation.
 
 ## Lockdown and backup
 
@@ -66,18 +66,18 @@ When Lockdown is active, the backup configuration file is sealed — no user or 
 
 ## Backup encryption
 
-Root Lock backup files are versioned filesystem copies. They are not encrypted at the HeartSuite layer. If your environment requires data-at-rest encryption — for example, to meet GDPR, HIPAA, or PCI DSS requirements — configure full-disk encryption (dm-crypt/LUKS) at the OS level. LUKS encryption covers the backup files automatically, since they reside on the same filesystem as the rest of the host.
+Root Lock backup files are versioned filesystem copies. They are not encrypted by Root Lock. If your environment requires data-at-rest encryption — for example, to meet GDPR, HIPAA, or PCI DSS requirements — configure full-disk encryption (dm-crypt/LUKS) at the OS level. LUKS encryption covers the backup files automatically, since they reside on the same filesystem as the rest of the host.
 
 ## CLI access for scripting and automation
 
-For scripting and automation workflows that run without the Dashboard, the following CLI tools are available:
+For scripting and automation that runs without the Dashboard:
 
 ```bash
-# hs-backup-config-manager add /var/www
-# hs-backup-config-manager remove /home
 # hs-backup-config-manager list
+# hs-backup-config-manager add -d /var/www
+# hs-backup-config-manager del -d /home
 # hs-version-manager list /home/user/document.txt
-# hs-version-manager restore /home/user/document.txt --version 2023-11-01
+# hs-version-manager replace /home/user/document.txt <token>
 ```
 
 The Dashboard is the supported path for normal use.
