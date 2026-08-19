@@ -22,7 +22,7 @@ For deployment, Secure Boot, fleet, and “no custom kernel” alternatives see 
 
 All numbers below are outputs of `kernel-hardening-checker` commit `e870d0141259f875d3d1b54fef49dec7074e4cac` applied to the **#37 pin config** (SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`) and to configs bundled with that checker.
 
-Arch linux-hardened **6.18.16-hardened1** is the era-matched 6.18.x peer. Vanilla 6.17.3 is cross-version orientation. **Do not** mix these percentages with the 5.19.6 pack (checker `b9b83a0`).
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers. **Do not** mix these percentages with the 5.19.6 pack (checker `b9b83a0`).
 
 This page measures the **fielded** pin. It does not describe a derived cut that disables `IO_URING` or `KEXEC`.
 
@@ -42,7 +42,7 @@ This page measures the **fielded** pin. It does not describe a derived cut that 
 | `MODULE_SIG_FORCE` | No | No (SHA512 row differs) | Yes (intent) |
 | Independently verifiable | **Yes** — pin SHA-256 + pack | Bundled in checker | Bundled in checker |
 
-\* KSPP is a recommendation fragment, not a shipping kernel. Vanilla 6.17.3 in the pack is still cross-version.
+\* KSPP is a recommendation fragment, not a shipping kernel.
 
 Legacy 5.19.6 glance (checker `b9b83a0`, **not** comparable item-for-item): attack-surface 68.9% (91/132), exploit-resistance 28.4% (31/109), 0 modules loaded / 9 `.ko`. See the [5.19.6 matrix](kernel-comparison-matrix-5.19.6/).
 

@@ -2,7 +2,7 @@
 title: "Hardening matrix for kernel 6.18.9"
 linkTitle: "Comparison matrix 6.18.9"
 weight: 18
-description: "Measured checker scores and runtime for the fielded 6.18.9-hs #37 pin. Arch and vanilla rows are cross-version."
+description: "Measured checker scores and runtime for the fielded 6.18.9-hs #37 pin, with era-matched Arch 6.18.16 and vanilla 6.18.9 defconfig."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison", "6.18"]
 type: docs
@@ -23,13 +23,13 @@ toc: true
 
 ## Part 1 — Measured comparison
 
-Arch linux-hardened **6.18.16-hardened1** is era-matched 6.18.x (no 6.18.9-hardened in the Arch archive). Vanilla 6.17.3 is **cross-version**.
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are era-matched 6.18.x (no 6.18.9-hardened in the Arch archive).
 
 | Config | Source | Kernel | Overall | Attack-surface | Exploit-resistance |
 |---|---|---|---|---|---|
 | **HS 6.18.9-hs #37** | Pin payload config (SHA `3cd18247…`) | 6.18.9 | **148/259 (57.1%)** | **57/131 (43.5%)** | **78/110 (70.9%)** |
 | Arch linux-hardened 6.18.16 | Packaging tag `6.18.16.hardened1-1` `config.x86_64` | 6.18.16-hardened1 | 181/259 (69.9%) | 76/131 (58.0%) | 92/110 (83.6%) |
-| Vanilla x86_64 defconfig (bundled)* | Checker bundle | 6.17.3 | 153/259 (59.1%) | 88/131 (67.2%) | 56/110 (50.9%) |
+| Vanilla x86_64 defconfig | `make ARCH=x86_64 defconfig` on linux-6.18.9 | 6.18.9 | 153/259 (59.1%) | 88/131 (67.2%) | 56/110 (50.9%) |
 
 ### Reading the table
 
@@ -40,9 +40,9 @@ Arch linux-hardened **6.18.16-hardened1** is era-matched 6.18.x (no 6.18.9-harde
 
 ### What this shows
 
-HS 6.18.9-hs **does not** lead attack-surface (43.5% vs era-matched Arch 58.0% and cross-version vanilla 67.2%). Bypass primitives that 5.19.6 compiled out are **on** here.
+HS 6.18.9-hs **does not** lead attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%). Bypass primitives that 5.19.6 compiled out are **on** here.
 
-HS 6.18.9-hs **does** sit above bundled vanilla 6.17 on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
+HS 6.18.9-hs **does** sit above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
 
 ### Bypass-primitive options — measured
 
