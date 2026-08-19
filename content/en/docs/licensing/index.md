@@ -14,7 +14,7 @@ author: Ron Hessing
 
 ## Subscription
 
-A subscription is required before you can activate Lockdown. The Dashboard also keeps Lockdown locked until the prior checklist items are complete. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow.
+A subscription is required before you can activate Lockdown. The Dashboard also keeps Lockdown locked until the prior checklist items are complete. See [Lockdown](../mode-switching/) for the activation flow.
 
 The subscription is a text file. One subscription can cover up to 9999 servers — at purchase, you specify how many servers it covers. You can purchase additional subscriptions if needed.
 
@@ -36,7 +36,7 @@ If activation is successful, the program creates an activation key and displays 
 
 The Dashboard shows subscription status when it requires attention — an expired subscription appears as a warning on the Dashboard with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing.
 
-With your subscription active and the prior checklist items complete, proceed to [Mode Switching and Lockdown](../mode-switching/) to activate Lockdown.
+With your subscription active and the prior checklist items complete, proceed to [Lockdown](../mode-switching/) to activate Lockdown.
 
 ## Root Lock kernel source code (GPL)
 
