@@ -40,75 +40,46 @@ The Dashboard shows green checkmarks for items that pass and amber warnings for 
 
 This is the path when Lockdown is applied. Physical or serial-console access is required (keyboard and monitor, a serial port, or your cloud provider's serial console — AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start. You cannot do this from SSH.
 
-After completing the safety checklist, the Maintenance explains what will change:
+After the safety checklist, Maintenance tells you to reboot from the **console**. It does not offer `[r]` Reboot on this path — the boot-menu choice has to happen at the console.
+
+1. Open the console and restart the machine there.
+2. At the boot menu, select **Maintenance: unseal and return to Root Lock**. Do not select the branded Root Lock kernel.
+3. The seal lifts automatically (`HS_unlock.sh`). The machine restarts on its own and returns to the Root Lock kernel in Setup Mode.
+4. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Lockdown](../../mode-switching/)).
+
+The boot menu appears a second time during that automatic return. Let it be: reboot is already in motion and there is nothing to select.
+
+You are then in Setup Mode on the Root Lock kernel:
+
+- Blocking is off; logging and backups are on.
+- New activity appears in the review queues.
+- Maintenance (`[m]`) is hidden — you can already install software and edit files.
+
+Make your changes — install packages, edit configuration, update software. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../mode-switching/).
+
+If you accidentally select the Root Lock kernel at the first boot menu instead of the Maintenance entry, the Dashboard detects that and sends you back to reboot and select the correct entry.
+
+> [!WARNING]
+> Between selecting the Maintenance entry and the automatic return, Root Lock is not loaded. The safety checklist is the gate for that interval.
+
+## When the seal is not applied
+
+If the strip says **Lockdown not applied**, Maintenance offers a switch to Setup Mode that stays on the Root Lock kernel. Type `YES` (case-sensitive). The Dashboard then offers `[r]` Reboot.
+
+After that reboot:
 
 - Root Lock switches from blocking to logging only
 - The Root Lock kernel remains active
 - Backups continue running
 - The existing allowlist is preserved
-- New activity is logged, not blocked — it will appear in the review queues when you re-engage Lockdown
+- New activity is logged, not blocked — it will appear in the review queues when you lock down again
 
-Type `YES` (case-sensitive) to confirm the switch. The Dashboard reboots to apply the mode change.
+This path is for an unfinished or drifted seal, not for a host that already shows **Lockdown applied**.
 
-After rebooting, the Dashboard shows Setup Mode is active with a Suggested Next Step. If the safety checklist was skipped, a persistent reminder appears.
+## Manual recovery outside Maintenance
 
-Make your changes — install packages, edit configuration, update software. Root Lock logs all new activity silently.
-
-When finished, re-engage Lockdown from the Dashboard. New activity from the maintenance period appears in the review queues. Review and approve them through the standard allowlisting flow before Lockdown resumes.
-
-## Option 2: boot the maintenance kernel (Lockdown + sealed)
-
-> [!NOTE]
-> This path requires a keyboard and monitor, a serial port, or your cloud provider's serial console (AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start.
-
-When the immutable seal is active, Maintenance does not offer the Setup Mode switch. It guides you through a 3-step process: two reboots, a kernel selection at GRUB where the Dashboard cannot guide you, and a period where Root Lock is completely absent.
-
-### Step 1 of 3: boot the maintenance kernel and remove immutable flags
-
-After the safety checklist and typing `YES` to confirm, the Dashboard prepares you for the GRUB boot menu — the one moment where it cannot provide guidance. It shows the exact entry to select (Maintenance or vanilla Non-HS; do not select the branded HS / Root Lock kernel). Press `[r]` to reboot.
-
-The Dashboard saves your maintenance session state before rebooting. This state persists across reboots and kernel changes — the step counter ("Step X of 3") follows you throughout the process.
-
-After selecting the appropriate Non-HS / Maintenance entry from GRUB, the Dashboard resumes automatically on login. It detects the absence of the Root Lock kernel module and adjusts its interface — actions that require the Root Lock kernel are hidden entirely, not greyed out. The Dashboard shows:
-
-- "maintenance kernel active. Root Lock is not loaded."
-- "No blocking. No logging. No backups."
-- "Maintenance step 1 of 3: Remove immutable flags."
-
-Press `[u]` to remove the immutable flags set by Lockdown. After the flags are removed, the Dashboard presents the automatic Lockdown re-engagement choice:
-
-- `[d]` **Disable automatic Lockdown re-engagement** — the startup script will no longer apply Lockdown on boot. You can re-enable this later. This simplifies future maintenance.
-- `[k]` **Keep automatic re-engagement** — Lockdown will re-apply on every Root Lock kernel boot. Future maintenance will require this same process.
-
-Both options carry equal weight — neither is recommended over the other. The choice depends on your operational needs.
-
-> [!NOTE]
-> If you accidentally select the wrong kernel at GRUB (the Root Lock kernel instead of the maintenance kernel), the Dashboard detects this and guides you to reboot and select the correct kernel.
-
-### Step 2 of 3: make your changes
-
-The Dashboard transitions to the maintenance workspace:
-
-- "Maintenance step 2 of 3: Make your changes."
-- "You are on the maintenance kernel. Root Lock is not active. Changes made now will not be logged."
-
-Make your changes — install software, update packages, modify configuration files. When finished, press `[f]` to prepare the return to the Root Lock kernel. The Dashboard pre-configures Setup Mode for the next boot.
-
-### Step 3 of 3: boot Root Lock kernel and review
-
-Select the branded Root Lock (HS) kernel from GRUB. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Mode Switching and Lockdown](../../mode-switching/)). The Dashboard then shows Setup Mode is active and the maintenance step counter.
-
-Software installed during maintenance may generate new entries — these appear in the review queues. Review and approve them, then re-engage Lockdown from the Dashboard.
-
-If the immutable seal was previously active and you kept automatic re-engagement, Lockdown will re-apply on the next reboot.
-
-> [!WARNING]
-> The maintenance kernel provides no Root Lock protection whatsoever. The safety checklist is critical for this path.
-
-## Manual recovery outside the Maintenance
-
-When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including reboots to the maintenance kernel.
+When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including a reboot that reaches the maintenance kernel.
 
 If you attempt to modify a file that was made immutable during a previous Lockdown session, you will encounter an error such as "could not open <filename> file; errno:1."
 
-The Maintenance `[u]` Remove immutable flags handles this automatically during Step 1 of the Lockdown path. For recovery outside the Dashboard, run `HS_unlock.sh`.
+The console Maintenance entry runs `HS_unlock.sh` for you. For recovery outside the Dashboard, run `HS_unlock.sh`.
