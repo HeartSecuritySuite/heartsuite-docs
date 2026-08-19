@@ -69,7 +69,7 @@ Verified directly from config file:
   CONFIG_KEXEC_FILE       -> # CONFIG_KEXEC_FILE is not set   [DISABLED ✓]
 
 Score: 5/7 intentional disables verified in config.
-IO_URING and KEXEC remain enabled in 5.19.6; both are explicitly disabled in the 6.18.x successor config (HS-DEV-005 in docs/porting/HS-DEVIATIONS.md).
+IO_URING and KEXEC remain enabled in 5.19.6. The fielded 6.18.9-hs #37 pin also keeps both =y (plus KEXEC_FILE=y). See evidence-pack-6.18.9.txt — do not treat HS-DEV-005 target posture as the shipped 6.18 config.
 
 === 4. ALTERNATIVE LSMs (all disabled) ===
 

@@ -1,8 +1,8 @@
 ---
-title: "What this kernel needs — and what it omits"
+title: "What this kernel needs — and what differs by stream"
 linkTitle: "System Requirements"
 weight: 3
-description: "CPU, disk, and supported distributions, plus the kernel features Root Lock deliberately does not ship. Confirm these before you install."
+description: "Architecture, current lab distributions, and how 5.19 vs the fielded 6.18 pin treat eBPF, FUSE, OverlayFS, and KVM. Confirm these before you install."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "requirements", "specs", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "x86"]
 type: docs
@@ -13,40 +13,38 @@ menu:
     identifier: "system-requirements"
 ---
 
-**Overview**: Confirm the host is x86 Linux on a supported distribution before you install. Root Lock by HeartSuite ships two kernels (5.19 legacy and 6.18 primary) and omits the kernel features attackers use to hide, shadow directories, and reach root.
+**Overview**: Confirm the host is x86 Linux on a distribution from the current lab matrix before you install. Root Lock by HeartSuite ships a **6.18** kernel for new images (`uname -r` is `6.18.9-hs` on the fielded pin) and a **5.19** kernel only for old-glibc hosts (Debian 11, Ubuntu 20.04). The two lines are not the same configuration.
 
-Debian, Ubuntu-derived, Alpine, and several RPM-based distributions are supported or validated; see the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) for tiers and versions.
+See the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) for tiers, versions, and kernel line per row. That page is the source for which bases are Supported, In lab, Experimental, or Legacy.
 
 ## Supported platforms
 
 | Component | Supported |
 |-----------|-----------|
 | Architecture | x86 (64-bit) |
-| Distributions | See [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) — validated: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21; supported: Debian 11, Ubuntu-derived, Alpine 3.x; RPM enterprise (RHEL, AlmaLinux, SLES): customer validation |
-| Kernels | Root Lock kernel 5.19 (legacy), Root Lock kernel 6.18 (primary) |
+| Distributions | Current k6 lab set: Debian 12/13, Ubuntu 22.04/24.04 (**Supported**). Ubuntu 26.04, Rocky 9, Fedora 42 (**In lab**). Alpine 3.21, CentOS Stream 9, openSUSE Tumbleweed (**Experimental**). Debian 11 and Ubuntu 20.04 (**Legacy, 5.19 only**). RHEL, AlmaLinux, SLES, and other Ubuntu-derived images: customer validation. Full notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/). |
+| Kernels | 6.18 for new installs (`6.18.9-hs`). 5.19 only on Debian 11 / Ubuntu 20.04. |
 
-Root Lock supports Debian/Ubuntu-derived and Alpine distributions on x86, plus RPM-based distributions validated in the v1.6.4 release gate (Rocky 9.7, Fedora 41, CentOS Stream 9). Branded RHEL and AlmaLinux are RHEL-compatible — validate on your gold image before fleet Lockdown. Full tiers and notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/).
+Do not use the April 2026 v1.6.4 list (Fedora 41, Rocky 9.7, Alpine 3.21 as “validated,” Ubuntu 22.04 omitted). That table is retired.
 
 ## Kernel
 
-Root Lock is distributed with two kernels based on mainline Linux: 5.19 and 6.18. One of these kernels must be booted for Root Lock to function. The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
+New Debian 12/13 and Ubuntu 22.04/24.04 installs boot the 6.18 Root Lock kernel. Debian 11 and Ubuntu 20.04 take the k5 installer and 5.19 only — they must not consume the 6.18 bundle. The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
 
 ## Software compatibility notes
 
-The Root Lock kernel is deliberately built without several features attackers use for privilege escalation or to bypass controls (eBPF, FUSE, overlay, user namespaces, etc.). Those features are the path to root, hide, shadow, and bypass. Software that depends on them is not a fit by design — run it on a separate host, or use the Container-host install for a long-lived, steady container set.
+The **5.19** legacy kernel compiled out eBPF, FUSE, OverlayFS, user namespaces, AppArmor, and KVM. The **fielded 6.18 pin** (`6.18.9-hs`, packaging `6.18.9-HeartSuite-3`, build `#37`) compiles those interfaces in (`CONFIG_BPF_SYSCALL=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_KVM=m`). Do not treat “not a fit” on 6.18 as `ENOSYS`.
 
-The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals any compatibility issue before Lockdown enforces: programs that would fail in Lockdown appear in the Dashboard review queues during the observation period. Software not in the table below will run without modification.
+The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals programs that would fail in Lockdown in the Dashboard review queues. Software not listed below is not automatically denied; Lockdown still requires an allowlist entry for each program.
 
-| Not available on the Root Lock kernel | Affects |
-|-----------|---------|
-| eBPF program loading (`CONFIG_BPF_SYSCALL`) | Cilium, Falco, Tetragon, Pixie, bpftrace, bcc, Tracee, and other eBPF-based observability and runtime-detection tools |
-| FUSE (`CONFIG_FUSE_FS`) | sshfs, s3fs, rclone mounts, NTFS-3G, AppImage, gocryptfs |
-| Overlay filesystem (`CONFIG_OVERLAY_FS`) | Standard-host installs: not enabled — overlay filesystems give attackers a path to shadow protected directories. Container-host installs: enabled (`CONFIG_OVERLAY_FS=m`) — Docker, containerd, Podman, and CRI-O use the `overlay2` storage driver. See [Deployment Scenarios → Container Hosts](../deployment-scenarios/#container-hosts). |
-| AppArmor, SMACK, Landlock (userspace LSM frameworks) | Snap confinement, Ubuntu default profiles, LXD |
-| Unprivileged user namespaces (`CONFIG_USER_NS`) | Rootless containers |
-| KVM (`CONFIG_KVM`) | Running Root Lock as a hypervisor host for virtual machines |
-
-The Root Lock kernel itself can run as a guest inside KVM, VMware, or other hypervisors — only running virtual machines from within the Root Lock kernel is unavailable.
+| Workload | 5.19 legacy | Fielded 6.18 (`6.18.9-hs`) |
+|-----------|-------------|------------------------------|
+| eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall not compiled | Syscall compiled in. Lockdown still refuses unallowlisted loaders. |
+| FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Not compiled | Compiled in. New mounts after Lockdown follow product mount rules. |
+| Overlay / typical container storage | Not compiled | Module (`=m`). Dynamic Kubernetes after Lockdown remains a poor fit because of allowlist and mount seal, not because OverlayFS is absent. |
+| AppArmor userspace (Snap, Ubuntu profiles, LXD) | Not compiled | Compiled in. Validate on the running kernel. |
+| Unprivileged user namespaces / rootless containers | Not compiled | Compiled in. Still validate under Lockdown. |
+| KVM hypervisor **host** | Not compiled | Module (`=m`). **Not a supported product role.** Root Lock as a **guest** on KVM/VMware/cloud is supported. |
 
 The host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives Root Lock its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are not a fit by design. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).
 

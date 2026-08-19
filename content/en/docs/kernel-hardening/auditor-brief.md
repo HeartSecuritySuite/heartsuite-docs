@@ -2,133 +2,120 @@
 title: "What a red team should test on this kernel"
 linkTitle: "Auditor Brief"
 weight: 22
-description: "Hardening posture for auditors and red teams. 6.18.9 is the commercial baseline; measured scores still cite the published 5.19.6 stream."
+description: "Hardening posture for auditors and red teams on the fielded 6.18.9-hs #37 pin, with the 5.19.6 pack kept as legacy."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite HS kernel — **6.18.9 primary** (commercial baseline, HeartSuite v1.6.4), **5.19.6 legacy**  
-**Evidence status:** Published config SHA-256, checker output, and runtime verification exist for the **5.19.6** stream only. The **6.18.9** stream is the current commercial baseline (`6.18.9-HeartSuite-1.0`); measured evidence is in progress — see [Evidence Status](evidence-status/).  
-**Primary stream (6.18.9):** [Kernel Hardening Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — structure published; scores pending  
-**Legacy stream (5.19.6):** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, kernel-hardening-checker commit `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
+**Subject:** Root Lock by HeartSuite — fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**); **5.19.6** legacy  
+**Evidence status:** Measured config SHA-256, checker output, and runtime verification for **6.18.9-hs #37** are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18). The **5.19.6** pack remains the legacy measured stream.  
+**Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
+**Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-The threat model and measured sections below describe the **published 5.19.6** dataset until `evidence-pack-6.18.9.txt` replaces them. Design intent for 6.18.9 includes disabling `CONFIG_IO_URING` and `CONFIG_KEXEC` (both enabled in 5.19.6).
-
----
-
-## Threat Model
-
-HeartSuite's kernel hardening targets one specific threat: **a process on the protected system attempting to bypass the kernel module's VFS-level enforcement**. The design choice is to remove the kernel features that make bypass possible, rather than to harden the kernel against general exploitation.
+This page describes the **fielded #37 pin**. It does not describe a derived unpublished cut that turns `IO_URING` / `KEXEC` off. Those options are **=y** on the binary that boots.
 
 ---
 
-## What the measurements show
+## Threat model
+
+Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. On the 5.19.6 pack that was done mainly by compiling bypass primitives out. On the fielded 6.18.9-hs pin those primitives are compiled **in**. Enforcement on this pin is the Root Lock allowlist and Lockdown, running **alongside** other LSMs, not instead of a compiled-out surface.
+
+---
+
+## What the measurements show (6.18.9-hs #37)
+
+Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-08-18, against pin config SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`.
+
+Arch linux-hardened **6.18.16-hardened1** is the era-matched 6.18.x peer (no 6.18.9-hardened in the Arch archive). Vanilla 6.17.3 defconfig is **cross-version**. Do not mix these percentages with the 5.19.6 pack (`b9b83a0`, different item universe).
 
 ### Attack-surface reduction
 
-Automated score: **91/132 (68.9%)**  
-Reference points (era-matched, same 5.19.x kernel generation): Arch linux-hardened 5.19.11: 77/132 (58.3%). Vanilla upstream defconfig 5.17: 90/132 (68.2%). KSPP target (6.17, version-agnostic intent): 131/132 (99.2%).
+Automated score: **57/131 (43.5%)**  
+Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Cross-version vanilla 6.17.3 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-The Root Lock kernel outperforms production distros and common hardened-distro kernels on this axis. It disables `BPF_SYSCALL`, `USER_NS`, `FUSE_FS`, `OVERLAY_FS`, `APPARMOR`, `TOMOYO`, and ~25 additional network/crypto/debug subsystems that Arch and NixOS keep enabled for their general-purpose user bases. Those are the subsystems with the most relevant LSM-bypass CVE history.
-
-**Caveat:** the automated checker scores vanilla 5.17 defconfig at 90/132, nearly identical to Root Lock. The checker does not distinguish *intentionally hardened to* a value from *never configured to begin with.* The vanilla defconfig also does not enable BPF or AppArmor by default.
-
-The operational difference is enforcement. A production system built on a vanilla defconfig will have these features added over time. The Root Lock build procedure enforces the disables regardless.
+The fielded pin does **not** lead this axis. Pin greps: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
-Automated score: **31/109 (28.4%)**  
-Reference points (era-matched): Arch linux-hardened 5.19.11: 69/109 (63.3%). Vanilla upstream defconfig 5.17: 29/109 (26.6%). KSPP target (6.17): 93/109 (85.3%).
+Automated score: **78/110 (70.9%)**  
+Era-matched Arch linux-hardened 6.18.16: 92/110 (83.6%). Cross-version vanilla 6.17.3: 56/110 (50.9%). KSPP: 93/110 (84.5%).
 
-HS's exploit-resistance posture is at the vanilla upstream baseline. It does not add `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `KFENCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `MODULE_SIG`, or the other ~57 KSPP mitigations that dedicated hardened kernels enable.
+This pin is **above** vanilla 6.17 on this axis. Present: `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`, `KFENCE`, `MODULE_SIG`. Still missing or unforced: `INIT_ON_FREE_DEFAULT_ON`, `MODULE_SIG_FORCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `KFENCE_SAMPLE_INTERVAL=0`.
+
+Overall checker: **148/259 (57.1%)**.
+
+### Runtime (Debian 12 guest, 2026-08-18)
+
+Guest `hs-test-debian-12-k6-3-20260818-1705` (192.168.122.167), `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
+
+- `/sys/kernel/security/lsm` = `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`
+- `lsmod`: **74** modules loaded; **4190** `*.ko.xz` under `/lib/modules/6.18.9-hs`; `modules.builtin` **198**
+- No selinuxfs. `/proc/self/attr/current` = `unconfined`
+- dmesg: LSM list above at t+0.05s; `activating Heartsuite service` / monitor ON at t+4s
+- Guest `/boot/config-6.18.9-hs` is an **11-line initramfs RD stub**, not the build config. Hash the pin payload config, not that file.
 
 ---
 
 ## Residual risks
 
 **1. Kernel memory corruption / exploitation**  
-The Root Lock kernel provides no additional protection beyond vanilla upstream defaults for heap-based exploits (use-after-free, double-free, type confusion). An attacker who can reach a vulnerable in-kernel code path with sufficient primitive quality has no extra mitigations beyond `STACKPROTECTOR_STRONG`, `KASLR`, `RANDOMIZE_MEMORY`, and `STRICT_KERNEL_RWX`. All of those are vanilla defaults.
+Self-protection is 78/110, not the 5.19.6 vanilla-baseline story. Heap and CFI gaps remain: no `INIT_ON_FREE_DEFAULT_ON`, no `KSTACK_ERASE`, no `RANDSTRUCT_FULL`, KFENCE sample interval 0, IOMMU default is lazy. An attacker who reaches a reliable in-kernel primitive still has those gaps.
 
-*Attack path:* Any reachable kernel vulnerability with reliable heap-layout control.
+**2. Competing LSMs are live**  
+The 5.19.6 “sole enforcing MAC / SELinux permissive / no securityfs” write-up is **false** on this pin. AppArmor, TOMOYO, Yama, Landlock, BPF LSM, IMA, and EVM initialize. Red-team work must include stacked-LSM interaction (policy denials, IMA, AppArmor profiles), not only Root Lock.
 
-**2. SELinux runtime state — verified permissive**  
-`CONFIG_SECURITY_SELINUX=y` with `CONFIG_DEFAULT_SECURITY_SELINUX=y`. SELinux is compiled-in. Runtime verification on the test VM (2026-05-19) shows:
-
-- `/sys/fs/selinux/enforce` = `0` — permissive mode, no policy loaded
-- `/proc/self/attr/current` = `kernel` — initial context, no confinement active
-- securityfs is not mounted (no `/sys/kernel/security/lsm` file)
-
-SELinux initializes at boot but does not enforce. Root Lock is the sole enforcing MAC LSM. dmesg confirms Root Lock is enforcing within 4 seconds of boot.
-
-*Residual note for production:* this relies on runtime service configuration keeping SELinux permissive. Verify `cat /sys/fs/selinux/enforce` = `0` on each production deployment. A loaded SELinux policy that flips to enforcing mode would add a competing LSM to the stack.
-
-**3. MODULE_SIG not enforced**  
-`CONFIG_MODULE_SIG=n`. Kernel module signing is not enforced. A root-level attacker can load an arbitrary unsigned kernel module, including one that unloads or bypasses HeartSuite's VFS hooks.
-
-*Mitigating factor:* Lockdown's `kmod` block (when engaged) prevents loading additional modules post-Lockdown. This is an operator-procedure-dependent mitigation, not a config-enforced one.
+**3. MODULE_SIG is on; MODULE_SIG_FORCE is not**  
+`CONFIG_MODULE_SIG=y`. `CONFIG_MODULE_SIG_FORCE` is not set. `kernel.modules_disabled=0`. Lockdown’s kmod block, when engaged, is still an operator-procedure mitigation for *new* loads after Lockdown.
 
 **4. Can root unseal the allowlist or turn enforcement off?**  
-Root cannot lift the allowlist seal or turn enforcement off. There is no agent to kill, no module to unload, and no LSM to set permissive. Seal and control integrity are kernel-enforced product contracts. What can still go wrong is whether some other kernel path can still write the seal or a HeartSuite control. Check sibling attributes and extra syscalls on the pin you deploy. Do not treat the architecture diagram as the gate list.
+Root cannot lift the allowlist seal or turn enforcement off through an intended agent kill. Seal and control integrity are kernel-enforced product contracts. Extra syscalls and sibling attributes on **this pin** still need live gates. Do not treat the architecture diagram as the gate list.
 
-*Auditor action:* verify live gates on the **deployed ship pin** with the operator's regression suite or release checklist when available — do not assume completeness from architecture diagrams alone.
+*Auditor action:* verify live gates on the **deployed ship pin** (`6.18.9-hs` #37) with the operator’s regression suite.
 
 **5. Allowlist breadth after learning**  
-Setup Mode records observed behaviour. You ratify grants into the allowlist. Residual risk after Lockdown is not only whether enforcement can be disabled, but whether the ratified allowlist is wider than the intended least-privilege slice (NIST-style residual on configuration scope). Over-broad program, file, or network grants increase blast radius inside an otherwise sealed host.
-
-*Auditor action:* sample allowlist entries against workload role; treat Setup Mode duration and review hygiene as part of control effectiveness, not only kernel config scores.
+Setup Mode records observed behaviour. You ratify grants. Residual risk after Lockdown includes an allowlist wider than the intended slice.
 
 **6. Intentional maintenance and console recovery path**  
-Supported recovery of a sealed allowlist requires booting the maintenance (Non-HS) kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical or serial-console access — keyboard and monitor, serial port, or cloud provider serial console. This is intentional and documented. It is not a remote disable of the stoppable-agent class.
-
-Residual risk includes any operational process that weakens console or boot-path controls (shared hypervisor console credentials, unattended serial access, unrestricted out-of-band management).
+Supported recovery of a sealed allowlist requires booting the maintenance kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical or serial-console access — keyboard and monitor, serial port, or cloud provider serial console.
 
 **7. Confused deputy among allowlisted programs**  
-Enforcement is per program identity. A process that is correctly allowlisted for a powerful role (package manager, backup helper, orchestration agent) can still be abused within its grants if an attacker controls its inputs or configuration. Residual risk is lateral or deputy misuse inside approved scope, not absence of a kernel gate.
+Enforcement is per program identity. An allowlisted powerful role can still be abused inside its grants.
 
 **8. Portable open flags and size mutation under a read grant**  
-POSIX leaves combining `O_TRUNC` with a read-only open **undefined**; truncation is guaranteed only with write open modes. Many Linux systems still truncate on `O_RDONLY|O_TRUNC` when DAC write allows; man-page NOTES document this fielded behaviour. By default Root Lock does **not** redefine that UAPI corner.
-
-What can still happen: a program with a **read** file grant (write not granted on that leaf) can still change the file's size — typically emptying it — if it opens the path with `O_RDONLY|O_TRUNC` (or equivalent) and ordinary Unix write permission allows the truncate.
-
-This is a scoped residual under allowlist enforcement.
-
-Who is affected: operators and auditors reviewing **read-only** grants on leaves where size or integrity matters (logs, flags, small config files). Programs that already have a write grant on that leaf are outside this residual.
-
-*Auditor action:* document residual-risk acceptance for this corner; sample sensitive leaves that hold read grants only; do not treat kernel.org bug filing as the primary control response.
+By default Root Lock does **not** redefine the `O_RDONLY|O_TRUNC` UAPI corner. A program with a **read** grant can still change file size if DAC write allows the truncate.
 
 ---
 
 ## How to reproduce these measurements
 
-Run on any Linux host with Python 3:
-
 ```bash
-# Clone the checker
-git clone --depth 1 https://github.com/a13xp0p0v/kernel-hardening-checker /tmp/khc
+git clone https://github.com/a13xp0p0v/kernel-hardening-checker /tmp/khc
+git -C /tmp/khc checkout e870d0141259f875d3d1b54fef49dec7074e4cac
 
-# Obtain the HS config (from the HS 5.19.6 kernel package)
-# Verify: sha256sum config-5.19.6-HeartSuite-1.0
-# Expected: d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc
+# Use the pin payload config — NOT guest /boot/config-6.18.9-hs (11-line stub)
+sha256sum config-6.18.9-hs
+# Expected: 3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9
 
-# Run
-python3 /tmp/khc/bin/kernel-hardening-checker -c config-5.19.6-HeartSuite-1.0
-
-# Expected summary: OK - 129 / FAIL - 129
+python3 /tmp/khc/bin/kernel-hardening-checker -c config-6.18.9-hs
+# Expected summary: OK - 148 / FAIL - 111
 ```
 
-To verify the bypass-primitive disables directly:
+Bypass-primitive greps on the **pin** config:
 
 ```bash
-grep -E "^(CONFIG_BPF_SYSCALL|CONFIG_FUSE_FS|CONFIG_OVERLAY_FS|\
-CONFIG_SECURITY_APPARMOR|CONFIG_SECURITY_TOMOYO)" \
-  config-5.19.6-HeartSuite-1.0
+grep -E "^(CONFIG_BPF_SYSCALL|CONFIG_IO_URING|CONFIG_FUSE_FS|CONFIG_OVERLAY_FS|CONFIG_SECURITY_APPARMOR|CONFIG_SECURITY_TOMOYO|CONFIG_KEXEC|CONFIG_KEXEC_FILE|CONFIG_USER_NS)=" \
+  config-6.18.9-hs
 ```
 
-To verify LSM state on a running HeartSuite VM:
+Runtime on a guest whose `file /boot/vmlinuz-$(uname -r)` contains `#37`:
 
 ```bash
-cat /sys/kernel/security/lsm
-cat /proc/cmdline
+uname -r
+# 6.18.9-hs
+python3 -c "print(open('/sys/kernel/security/lsm').read())"
+# lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm
 ```
+
+Full raw notes: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).

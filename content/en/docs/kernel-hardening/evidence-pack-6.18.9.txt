@@ -1,0 +1,237 @@
+Root Lock by HeartSuite — Kernel Hardening Evidence Pack
+Subject: fielded 6.18.9-hs pin (packaging 6.18.9-HeartSuite-3, build #37)
+Retrieved: 2026-08-18
+Tool: kernel-hardening-checker commit e870d0141259f875d3d1b54fef49dec7074e4cac
+        (github.com/a13xp0p0v/kernel-hardening-checker; short e870d01)
+Runtime verification: hs-test-debian-12-k6-3-20260818-1705 (192.168.122.167),
+        2026-08-18 22:46–22:48 UTC, Debian 12 (bookworm)
+
+This pack measures the **fielded** binary. It is not a derived unpublished
+hardening cut. IO_URING, KEXEC, and KEXEC_FILE remain =y on this pin.
+
+=== 1. CONFIG AND BINARY IDENTITY ===
+
+Fielded vmlinuz (guest /boot/vmlinuz-6.18.9-hs):
+  SHA-256: 1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a
+  file(1): 6.18.9-hs (root@debian13) #37 SMP PREEMPT_DYNAMIC Sat Aug  1 09:34:23 CDT 2026
+  Matches VERSION_MAP entry fielded-6.18.9-hs-37.
+
+Canonical analysis config (staged pin payload — used for all checker runs):
+  SHA-256: 3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9
+  Path: HS code/kernel/6.18.9-HeartSuite-3/compressed_files/config-6.18.9-hs
+  Line count: 11762
+  Banner: Linux/x86 6.18.9 Kernel Configuration
+  Compiler recorded: gcc (Debian 14.2.0-19) 14.2.0
+  Matches VERSION_MAP binary.config_sha256 for fielded-6.18.9-hs-37.
+  CONFIG_IKCONFIG is not set — the running image does not export IKCONFIG.
+
+Guest /boot/config-6.18.9-hs is **not** the build config:
+  SHA-256: 82c569bd08dd1733c74a557683786755a72016b1c8476957cba3b1c94ba0faf4
+  11 lines. Installer RD fragment (CONFIG_RD_* / BLK_DEV_INITRD) written by
+  ensure_initramfs_rd_config(). Do not hash this file as the kernel .config.
+
+Runtime kernel (VM boot, 2026-08-18):
+  uname -r: 6.18.9-hs
+  uname -a: Linux heartsuite-test 6.18.9-hs #37 SMP PREEMPT_DYNAMIC Sat Aug  1 09:34:23 CDT 2026 x86_64 GNU/Linux
+  /proc/version: Linux version 6.18.9-hs (root@debian13) (gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44) #37 SMP PREEMPT_DYNAMIC Sat Aug  1 09:34:23 CDT 2026
+  cmdline: BOOT_IMAGE=/boot/vmlinuz-6.18.9-hs root=UUID=9ddd50a9-c5bd-4b32-92eb-baf1f858a484 ro
+           console=tty0 console=ttyS0,115200 earlyprintk=ttyS0,115200 consoleblank=0 loglevel=4 edd=off
+  vmlinuz SHA-256 on guest matches the pin ✓
+
+Architecture (detected by checker): X86_64
+Kernel version (detected by checker from pin config): 6.18.9
+
+=== 2. MODULE INVENTORY ===
+
+Runtime lsmod (hs-test-debian-12-k6-3-20260818-1705, 2026-08-18): 74 modules loaded.
+  Includes kvm, kvm_amd, cfg80211, virtio_*, ext4, xfs, dm_crypt, qxl/drm, usbhid.
+  This is a general-purpose loadable set, not the 5.19.6 "0 loaded / 9 .ko" cut.
+
+Loadable modules on guest /lib/modules/6.18.9-hs:
+  4190 files, all *.ko.xz
+
+modules.builtin line count: 198
+  Path: /lib/modules/6.18.9-hs/modules.builtin
+
+modules_disabled sysctl (runtime): 0 — module loading is not locked after boot
+kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y / CONFIG_KEXEC_FILE=y
+
+Comparison: the published 5.19.6 pack recorded 0 modules loaded and 9 .ko files.
+Do not carry those 5.19.6 module numbers onto this pin.
+
+=== 3. BYPASS-PRIMITIVE OPTIONS (config grep on pin SHA 3cd18247…) ===
+
+Verified directly from the canonical analysis config:
+
+  CONFIG_BPF_SYSCALL       -> CONFIG_BPF_SYSCALL=y                 [ENABLED]
+  CONFIG_IO_URING          -> CONFIG_IO_URING=y                    [ENABLED]
+  CONFIG_FUSE_FS           -> CONFIG_FUSE_FS=y                     [ENABLED]
+  CONFIG_OVERLAY_FS        -> CONFIG_OVERLAY_FS=m                  [MODULE]
+  CONFIG_SECURITY_APPARMOR -> CONFIG_SECURITY_APPARMOR=y           [ENABLED]
+  CONFIG_SECURITY_TOMOYO   -> CONFIG_SECURITY_TOMOYO=y             [ENABLED]
+  CONFIG_KEXEC             -> CONFIG_KEXEC=y                       [ENABLED]
+  CONFIG_KEXEC_FILE        -> CONFIG_KEXEC_FILE=y                  [ENABLED]
+  CONFIG_USER_NS           -> CONFIG_USER_NS=y                     [ENABLED]
+  CONFIG_MODULE_SIG        -> CONFIG_MODULE_SIG=y                  [ENABLED]
+  CONFIG_MODULE_SIG_FORCE  -> # CONFIG_MODULE_SIG_FORCE is not set [not forced]
+
+Score against the 5.19.6 "6+1 disable" checklist: 0/8 of BPF/IO_URING/FUSE/
+OVERLAY/APPARMOR/TOMOYO/KEXEC/USER_NS are disabled on this pin.
+The 5.19.6 pack's sentence that 6.18.x disables IO_URING and KEXEC is
+**false for the fielded #37 pin**. Those three =y values (IO_URING, KEXEC,
+KEXEC_FILE) are recorded here as shipped, not as a derived unpublished cut.
+
+=== 4. ALTERNATIVE LSMs (compiled in on this pin) ===
+
+  CONFIG_SECURITY_YAMA         -> CONFIG_SECURITY_YAMA=y
+  CONFIG_SECURITY_LOCKDOWN_LSM -> CONFIG_SECURITY_LOCKDOWN_LSM=y
+  CONFIG_SECURITY_LANDLOCK     -> CONFIG_SECURITY_LANDLOCK=y
+  CONFIG_IMA                   -> CONFIG_IMA=y
+  CONFIG_EVM                   -> CONFIG_EVM=y
+  CONFIG_SECURITY_SELINUX      -> CONFIG_SECURITY_SELINUX=y
+  CONFIG_DEFAULT_SECURITY_SELINUX -> # CONFIG_DEFAULT_SECURITY_SELINUX is not set
+
+Score: 0/5 of the 5.19.6 "alternative LSMs disabled" set remain disabled.
+
+=== 5. RUNTIME LSM STATE ===
+
+Runtime verification (hs-test-debian-12-k6-3-20260818-1705, 2026-08-18):
+
+  /sys/kernel/security/lsm:
+    lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm
+
+  securityfs: present
+  AppArmor securityfs: present
+  /sys/fs/selinux: absent (no selinuxfs; /sys/fs/selinux/enforce unreadable)
+  /proc/self/attr/current: unconfined
+
+  dmesg LSM init:
+    [    0.054574] LSM: initializing lsm=lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm
+    [    0.054574] Yama: becoming mindful.
+    [    0.054574] AppArmor: AppArmor initialized
+    [    0.054574] TOMOYO Linux initialized
+    [    0.119884] AppArmor: AppArmor Filesystem Enabled
+    [    0.570302] AppArmor: AppArmor sha256 policy hashing enabled
+    [    0.570345] evm: Initialising EVM extended attributes:
+
+  HeartSuite activation (dmesg, t+4s):
+    [    0.371724] HEARTSUITE INFO: state variables initialized
+    [    4.333859] 2026-08-18 22:46:00 UTC HEARTSUITE INFO: activating Heartsuite service...
+    [    4.333866] 2026-08-18 22:46:00 UTC HEARTSUITE INFO: setting APO records cache size to 25
+    [    4.335094] HEARTSUITE: backup activated
+    [    4.335098] 2026-08-18 22:46:00 UTC HEARTSUITE INFO: turning monitor state ON
+
+  HeartSuite symbols present in /proc/kallsyms (107 names containing HS_ / hs_),
+  including HS_is_on, HS_locked_down, HS_unload_sandbox_record, HS_lockdown_state.
+
+CONCLUSION:
+  Root Lock activates on this guest. It is **not** the sole LSM on the stack.
+  Competing LSMs listed above are compiled in and initialized. Do not copy the
+  5.19.6 "sole enforcing MAC / securityfs absent / SELinux permissive" write-up
+  onto this pin.
+
+=== 6. CPU MITIGATIONS (6.18 CONFIG_MITIGATION_* names) ===
+
+From the canonical analysis config (checker reports these directly):
+
+  CONFIG_MITIGATION_SPECTRE_V1=y     checker OK
+  CONFIG_MITIGATION_SPECTRE_V2=y     checker OK
+  CONFIG_MITIGATION_RETBLEED=y       checker OK
+
+=== 7. AUTOMATED CHECKER SCORES ===
+
+kernel-hardening-checker commit e870d0141259f875d3d1b54fef49dec7074e4cac
+Applied identically to all configs below. Same tool, same commit, same -c invocation.
+JSON mode used for category tallies; verbose totals match 148 OK / 111 FAIL on HS.
+
+ERA-MATCHED 6.18.x Arch linux-hardened: packaging tag 6.18.16.hardened1-1
+(closest archived 6.18.x hardened; no 6.18.9-hardened in the Arch archive).
+Vanilla 6.18.9 defconfig was not generated in this run (kernel.org tarball
+did not finish). Vanilla 6.17.3 remains CROSS-VERSION orientation.
+
+Config                               | OK  | FAIL | Total | OK%  | Source
+-------------------------------------|-----|------|-------|------|-------------------
+HS 6.18.9-hs #37                     | 148 |  111 |  259  | 57.1 | pin config SHA 3cd18247… (this pack §1)
+Arch linux-hardened 6.18.16-hardened1| 181 |   78 |  259  | 69.9 | gitlab.archlinux.org linux-hardened @ 6.18.16.hardened1-1 config.x86_64 (SHA256 286d7e1e…) — ERA-MATCHED 6.18.x
+Vanilla x86_64 defconfig 6.17.3      | 153 |  106 |  259  | 59.1 | bundled x86_64_defconfig_6.17.config (SHA256 36db0253…) — CROSS-VERSION
+KSPP recommended x86-64              | 235 |   22 |  257  | 91.4 | bundled kspp-kconfig-x86-64.config (SHA256 c0f9eaaf…) — intent benchmark
+Arch linux-hardened 6.15.11-hardened1| 180 |   79 |  259  | 69.5 | bundled Arch_hardened_x86_64.config (SHA256 73aaeed5…) — CROSS-VERSION (superseded by 6.18.16 row)
+
+=== 8. PER-CATEGORY CHECKER SCORES ===
+
+Category              | HS 6.18.9-hs #37 | Arch lh 6.18.16 | Vanilla 6.17.3* | KSPP*
+----------------------|------------------|-----------------|-----------------|------
+cut_attack_surface    | 57/131 (43.5%)   | 76/131 (58.0%)  | 88/131 (67.2%)  | 131/131 (100%)
+self_protection       | 78/110 (70.9%)   | 92/110 (83.6%)  | 56/110 (50.9%)  | 93/110 (84.5%)
+security_policy       | 11/12 (91.7%)    | 9/12 (75.0%)    | 8/12 (66.7%)    | 8/12 (66.7%)
+harden_userspace      | 1/5 (20.0%)      | 3/5 (60.0%)     | 0/5 (0.0%)      | 2/3 (66.7%)
+network_security      | 1/1              | 1/1             | 1/1             | 1/1
+TOTAL                 | 148/259 (57.1%)  | 181/259 (69.9%) | 153/259 (59.1%) | 235/257 (91.4%)
+
+* Vanilla 6.17.3 is cross-version. Arch 6.18.16-hardened1 is era-matched 6.18.x.
+  Directional reading vs the published 5.19.6 pack (different checker commit b9b83a0,
+  different item universe): this pin is **weaker on attack-surface** and **stronger
+  on self_protection** than HS 5.19.6 (91/132 and 31/109 on that older checker).
+
+=== 9. KEY SELF-PROTECTION OPTIONS ON THIS PIN ===
+
+Present (=y, checker OK):
+  CONFIG_INIT_ON_ALLOC_DEFAULT_ON, CONFIG_HARDENED_USERCOPY, CONFIG_FORTIFY_SOURCE,
+  CONFIG_SLAB_FREELIST_RANDOM, CONFIG_SLAB_FREELIST_HARDENED, CONFIG_KFENCE,
+  CONFIG_MODULE_SIG, CONFIG_SECURITY_YAMA, CONFIG_SECURITY_LANDLOCK,
+  CONFIG_SECURITY_LOCKDOWN_LSM
+
+Absent or not forced (checker FAIL / not found):
+  CONFIG_INIT_ON_FREE_DEFAULT_ON, CONFIG_MODULE_SIG_FORCE, CONFIG_RANDSTRUCT_FULL,
+  CONFIG_KSTACK_ERASE, CONFIG_GCC_PLUGIN_LATENT_ENTROPY, CONFIG_UBSAN_BOUNDS,
+  CONFIG_PAGE_TABLE_CHECK, CONFIG_IOMMU_DEFAULT_DMA_STRICT,
+  CONFIG_KFENCE_SAMPLE_INTERVAL=0 (desired 100)
+
+=== 10. HS UNIQUE CHECKER OKs VS ARCH 6.18.16 HARDENED ===
+
+Options where HS passes and Arch 6.18.16-hardened1 fails (6):
+  CONFIG_LSM, CONFIG_SECURITY_LOCKDOWN_LSM_EARLY,
+  CONFIG_SECURITY_SELINUX_BOOTPARAM, CONFIG_X86_INTEL_TSX_MODE_OFF,
+  CONFIG_ZSMALLOC_STAT, CONFIG_ACPI_CONFIGFS
+
+Not an attack-surface leadership claim.
+
+=== 11. ARCH 6.18.16 HARDENED UNIQUE OKs VS HS (39) ===
+
+Includes (excerpt): CONFIG_KEXEC, CONFIG_KEXEC_FILE, CONFIG_INIT_ON_FREE_DEFAULT_ON,
+  CONFIG_KSTACK_ERASE, CONFIG_MODULE_SIG_SHA512, CONFIG_IOMMU_DEFAULT_DMA_STRICT,
+  CONFIG_DEVMEM, CONFIG_PROC_KCORE, CONFIG_CRASH_DUMP, CONFIG_MAGIC_SYSRQ,
+  CONFIG_LIVEPATCH, CONFIG_USERFAULTFD
+
+Arch 6.18.16 also disables KEXEC / KEXEC_FILE (checker OK); HS #37 leaves both =y.
+
+=== 12. HOW TO REPRODUCE ===
+
+  git clone https://github.com/a13xp0p0v/kernel-hardening-checker /tmp/khc
+  git -C /tmp/khc checkout e870d0141259f875d3d1b54fef49dec7074e4cac
+  python3 /tmp/khc/bin/kernel-hardening-checker \
+    -c /path/to/config-6.18.9-hs
+  # Expected summary line: [+] Check is finished: 'OK' - 148 / 'FAIL' - 111
+  sha256sum /path/to/config-6.18.9-hs
+  # Expected: 3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9
+
+  Do not use guest /boot/config-6.18.9-hs (11-line RD stub).
+  Do not use an unpinned checker HEAD — item counts move.
+
+Runtime on a guest booted into 6.18.9-hs #37:
+
+  uname -r                          # 6.18.9-hs
+  file /boot/vmlinuz-6.18.9-hs      # must contain #37
+  sha256sum /boot/vmlinuz-6.18.9-hs # 1b44fffb…
+  python3 -c "print(open('/sys/kernel/security/lsm').read())"
+  lsmod | wc -l                     # header + loaded modules (74 loaded on this guest)
+  dmesg | grep -E 'LSM: initializing|activating Heartsuite'
+
+=== 13. SOURCE CITATIONS ===
+
+  Pin registry: github-heartsuite-core-secure VERSION_MAP.yaml fielded-6.18.9-hs-37
+  Deviation registry (seed-as-is IO_URING/KEXEC): docs/porting/HS-DEVIATIONS.md HS-DEV-003/005
+  Published 5.19.6 pack (do not mix scores): evidence-pack-5.19.6.txt
+  Checker: github.com/a13xp0p0v/kernel-hardening-checker @ e870d01
+  Arch 6.18.16-hardened1 config: gitlab.archlinux.org/archlinux/packaging/packages/linux-hardened
+    tag 6.18.16.hardened1-1, file config.x86_64, SHA-256 286d7e1e5a2af411e071b024e3e771effb468b463d1d3f26c604ac2e49c03739

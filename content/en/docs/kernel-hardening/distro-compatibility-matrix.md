@@ -2,142 +2,149 @@
 title: "Which distros boot the Root Lock kernel"
 linkTitle: "Distro Compatibility"
 weight: 7
-description: "Validation tiers for Debian, Ubuntu, Rocky, Alma, and other bases — boot paths, workload fit, and how to report a problem."
+description: "Current lab set for Debian, Ubuntu, Rocky, and other bases — kernel line per distro, workload fit on the shipped 6.18 pin, and how to report a problem."
 categories: ["Reference"]
 tags: ["kernel", "debian", "ubuntu", "alpine", "rhel", "rocky", "enterprise", "compatibility"]
 type: docs
 toc: true
 ---
 
-**Overview**: Which Linux distributions HeartSuite has validated for the HS kernel, what each support tier means, and where RHEL-family images need customer-side validation before production Lockdown.
+**Overview**: Which Linux distributions Root Lock by HeartSuite currently tests, which kernel line each row uses, and what you still own before production Lockdown. This page follows the live-matrix catalog as of 2026-08-18. It replaces the April 2026 v1.6.4 “Validated” table (Fedora 41, Alpine 3.21 as validated, Ubuntu 22.04 omitted).
 
-**Subject:** Root Lock by HeartSuite HS kernel (5.19 and 6.18 lines; v1.6.4 commercial baseline: kernel 6.18.9)  
-**Audience:** Procurement, security architects, and platform engineers selecting or certifying a base OS for Root Lock.
+**Audience**: Procurement, security architects, and platform engineers selecting a base OS.
 
-This matrix states which distributions HeartSuite has validated in release testing, which are officially supported without a specific gate run, and where customer-side validation is required before production Lockdown.
-
-It complements the workload-level exclusions in [System Requirements](../../introduction/system-requirements/) and the buyer-facing deployment guidance in the [Enterprise Adoption Guide](enterprise-adoption-guide/).
+This matrix complements the workload notes in [System Requirements](../../introduction/system-requirements/) and the buyer-facing deployment guidance in the [Enterprise Adoption Guide](enterprise-adoption-guide/).
 
 ---
 
 ## How to read this matrix
 
-Each row assigns a **tier** that tells you what HeartSuite has tested and what you own in procurement:
+Each row assigns a **tier** that says what HeartSuite has run recently and what you own:
 
 | Tier | Meaning for buyers |
 |------|-------------------|
-| **Validated** | Passed the cross-distro release gate on the listed version. HeartSuite installs, boots the HS kernel, completes Setup Mode, and reaches Lockdown on this combination in CI. |
-| **Supported** | Listed in official system requirements and expected to work with the standard installer. May not appear in every gate run; validate in your staging environment before fleet rollout. |
-| **Compatible (customer validation)** | Same RPM or Debian family as a validated build, but HeartSuite has not published branded testing for your exact minor or vendor image. You run install and Lockdown on your gold image before production. |
+| **Supported** | In the current k6 `release-core` lab set (Debian 12/13, Ubuntu 22.04/24.04). Install and initial setup have recent matrix coverage. Lockdown (M2) was **not** release-certified on 2026-08-18 — validate Lockdown on your gold image. |
+| **In lab** | In the current catalog (`release-plus` or equivalent) with a named caveat. Not certified. |
+| **Experimental** | Catalog `experimental` set, or explicitly not certified. Useful for CI; not a procurement baseline. |
+| **Legacy (5.19 only)** | Old-glibc hosts. They take the k5 installer and the 5.19 Root Lock kernel only. A 6.18 install is refused. |
+| **Compatible (customer validation)** | Same RPM or Debian family as a tested row, but HeartSuite has not published branded testing for your exact minor or vendor image. You run install and Lockdown on your gold image before production. |
 | **Not supported** | Outside architecture or distribution scope. Use HJFS on a standard kernel or a supported base OS. |
 
-**Columns in the main table**
+Do **not** read “Supported” as “Lockdown certified on this date.” The latest completed M2 `release-core` campaign (2026-08-18) finished **PARTIAL** on all four core guests (`Release eligible: no`).
 
-- **HS kernels** — Root Lock ships two kernel lines: **5.19** and **6.18**. New commercial baselines use the 6.18 line (for example, `6.18.9-HeartSuite-1.0` for v1.6.4). Either line may be selected at install; both enforce the same Root Lock contract.
-- **Boot** — How the installer sets the default kernel entry. UEFI Secure Boot for the **HS kernel entry** remains [incomplete](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap); the original distribution kernel (Non-HS) retains its signing status for maintenance and recovery.
+**Columns**
 
-A **cross-distro release gate** runs after every kernel update. The April 2026 v1.6.4 gate validated: Debian 12, Debian 13 (Trixie), Ubuntu 24.04, Fedora 41, Rocky 9.7, CentOS Stream 9, Alpine 3.21, and openSUSE Tumbleweed. See the [Roadmap](../../roadmap/#v164-multi-distro-release-april-2026) for release history.
+- **Kernel line** — Which Root Lock kernel the current installer for that row ships. New Debian 12/13 and Ubuntu 22.04/24.04 images use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only. You do not pick both lines at install on a given row.
+- **Boot** — How the installer sets the default kernel entry. UEFI Secure Boot for the Root Lock kernel entry remains [incomplete](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap). The original distribution kernel (maintenance kernel) keeps its signing status for recovery.
+
+Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.yaml` (2026-08-18).
 
 ---
 
 ## Main compatibility table
 
-| Distribution | Versions | Tier | HS kernels | Boot | Notes |
-|--------------|----------|------|------------|------|-------|
-| **Debian** | 13 (Trixie) | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. Primary reference for new deployments. |
-| **Debian** | 12 (Bookworm) | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. |
-| **Debian** | 11 (Bullseye) | **Supported** | 5.19, 6.18 | GRUB | In system requirements; validate on your image before fleet Lockdown. |
-| **Ubuntu** | 24.04 LTS | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. |
-| **Ubuntu-derived** | Other LTS / current releases | **Supported** | 5.19, 6.18 | GRUB | Derivatives sharing Debian packaging and GRUB (Mint, Pop!_OS, etc.). Staging validation recommended. |
-| **Rocky Linux** | 9.7 | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. Lead RPM reference for enterprise RHEL-compatible fleets. |
-| **Fedora** | 41 | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. Fast-moving upstream; useful for CI and pre-production, not a long-term LTS substitute. |
-| **CentOS Stream** | 9 | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. **Faster churn** than Rocky or RHEL — retest after every `dnf update` that changes the kernel ABI or boot stack. |
-| **RHEL** | 8.x, 9.x | **Compatible (customer validation)** | 5.19, 6.18 | GRUB | RHEL-compatible; branded RHEL minor testing not yet published. Validate on **your** subscribed minor and gold image. SELinux Enforcing may need a targeted policy module — see [RHEL operational note](lsm-comparison/#co-existence). |
-| **AlmaLinux** | 8.x, 9.x | **Compatible (customer validation)** | 5.19, 6.18 | GRUB | Treat as equivalent to Rocky Linux for compatibility expectations; validate on your minor. |
-| **Alpine Linux** | 3.21 | **Validated** | 5.19, 6.18 | extlinux (GRUB where present) | April 2026 gate. OpenRC service units ship alongside systemd variants. Installer falls back to **console instructions** when extlinux automation cannot set the default entry. |
-| **Alpine Linux** | Other 3.x | **Supported** | 5.19, 6.18 | extlinux | Same OpenRC and extlinux behaviour as 3.21; staging validation recommended. |
-| **openSUSE** | Tumbleweed | **Validated** | 5.19, 6.18 | GRUB | April 2026 gate. **Development and CI only** — rolling release; not a procurement baseline for regulated production. |
-| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 5.19, 6.18 | GRUB | Enterprise SUSE images vary by subscription and SP level. Contact support@heartsecsuite.com before committing a SLES gold image. |
-| **Other Linux** | — | **Not supported** | — | — | Contact support@heartsecsuite.com for roadmap or HJFS alternatives. |
+| Distribution | Versions | Tier | Kernel line | Boot | Notes |
+|--------------|----------|------|-------------|------|-------|
+| **Debian** | 13 (Trixie) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Seedless initial setup can stress OpenSSH split paths. |
+| **Debian** | 12 (Bookworm) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Primary lab reference. |
+| **Debian** | 11 (Bullseye) | **Legacy (5.19 only)** | 5.19 | GRUB | glibc &lt; 2.34. k6 / 6.18 install is not offered. |
+| **Ubuntu** | 24.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud images are UEFI/OVMF pflash; remaining lab PARTIAL is post-seal SSH or kernel ledger, not snapshot create. |
+| **Ubuntu** | 22.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Pair with 24.04. Omitted from the April 2026 public table. |
+| **Ubuntu** | 26.04 LTS | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. First matrix inclusion 2026-08-15. **Not certified.** |
+| **Ubuntu** | 20.04 LTS | **Legacy (5.19 only)** | 5.19 | GRUB | Same glibc floor as Debian 11. k6 / 6.18 install is not offered. |
+| **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same as the Ubuntu LTS you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives. Staging validation required. AppArmor is compiled in on the current 6.18 pin — see [Workload fit](#workload-fit-not-distro-specific). |
+| **Rocky Linux** | 9 | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. Last full green BLS path ~2026-07-11; re-validate on the current k6 bundle. Not “Rocky 9.7 always green.” |
+| **Fedora** | 42 | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. Cloud root is often btrfs. Install preflight can refuse until a btrfs-capable module set is present. Not Fedora 41. Not certified. |
+| **CentOS Stream** | 9 | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Catalog `expected: experimental`. OpenSSH 9.8 can split SSH into two programs; first-run setup may need extra reboots. Faster churn than Rocky. |
+| **RHEL** | 8.x, 9.x | **Compatible (customer validation)** | 6.18 unless your image is old-glibc | GRUB | Branded RHEL minor testing is not published. Validate on **your** subscribed minor and gold image. |
+| **AlmaLinux** | 8.x, 9.x | **Compatible (customer validation)** | 6.18 unless your image is old-glibc | GRUB | Treat as structurally close to Rocky on the same major; validate on your minor. |
+| **Alpine Linux** | 3.21.x (tester pin 3.21.6) | **Experimental** | 6.18 (`6.18.9-hs`) | extlinux (GRUB where present) | Catalog set `experimental`. OpenRC units ship alongside systemd. Installer prints **console instructions** when extlinux automation cannot set the default entry. Lab path is the real-glibc runtime, not a musl-only claim. |
+| **Alpine Linux** | Other 3.x | **Compatible (customer validation)** | 6.18 (`6.18.9-hs`) | extlinux | Same OpenRC / extlinux behaviour; staging validation required. |
+| **openSUSE** | Tumbleweed | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Rolling release. GRUB `saved_entry` and SELinux `bin_t` labeling are load-bearing. Development and CI only — not a regulated production baseline. |
+| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 6.18 (`6.18.9-hs`) | GRUB | SP level and partner images vary. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before committing a SLES gold image. |
+| **Other Linux** | — | **Not supported** | — | — | Contact [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for roadmap or HJFS alternatives. |
 | **Non-x86** | ARM, RISC-V, etc. | **Not supported** | — | — | x86_64 only. |
 
-**Architecture:** x86_64 (64-bit) only. No ARM or other ISA builds are offered for the HS kernel.
+**Architecture:** x86_64 (64-bit) only. No ARM or other ISA builds are offered for the Root Lock kernel.
 
-**Secure Boot (all distributions):** HS kernel UEFI Secure Boot support is incomplete.
+**Secure Boot (all distributions):** Root Lock kernel UEFI Secure Boot support is incomplete.
 
-Deployments with mandatory Secure Boot for the HS entry may require MOK enrollment during install. Alternatively, boot the HS kernel with Secure Boot disabled while retaining the signed Non-HS kernel for maintenance. Details: [Enterprise Adoption Guide → Secure Boot](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap).
+Deployments that require Secure Boot for the Root Lock entry may need MOK enrollment during install. Alternatively, boot the Root Lock kernel with Secure Boot disabled while retaining the signed maintenance kernel. Details: [Enterprise Adoption Guide → Secure Boot](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap).
 
 ---
 
 ## Tier definitions
 
-### Validated
-
-HeartSuite ran the full cross-distro release gate on the stated distribution version: install bundle, HS kernel boot, Setup Mode, service lifecycle (systemd or OpenRC), and Lockdown smoke checks. These rows are the default answer for RFP compatibility questions tied to v1.6.4 and later kernel bundles.
-
 ### Supported
 
-Officially in [System Requirements](../../introduction/system-requirements/) and covered by commercial support when install and Lockdown succeed on the customer image. HeartSuite may not re-run every gate on every supported minor; your staging environment is the final gate before production.
+The distribution is in the current k6 `release-core` set. HeartSuite runs install, first boot, and initial setup against it in the live matrix. As of 2026-08-18, Lockdown M2 on that set is **not** a published green sign-off. Your staging Lockdown run is the last gate before fleet rollout.
+
+### In lab
+
+The distribution is in the current catalog with a documented caveat (btrfs preflight, not certified, last green date older than the current bundle). Commercial support still applies when install and Lockdown succeed on the customer image.
+
+### Experimental
+
+Catalog `experimental`, or rolling / not certified. Expect extra reboots, boot-loader edge cases, or a missing release sign-off.
+
+### Legacy (5.19 only)
+
+Debian 11 and Ubuntu 20.04 use the k5 installer and the 5.19 Root Lock kernel. They must never consume the current k6 / 6.18 bundle.
 
 ### Compatible (customer validation)
 
-Same packaging family or ABI lineage as a validated build, but HeartSuite has not published test results for your exact vendor branding, minor release, or gold image.
+Same packaging family as a tested row. HeartSuite has not published results for your exact vendor branding, minor, or gold image.
 
-Rocky 9.7 validation implies Rocky 9.x and AlmaLinux 9.x are structurally compatible. RHEL 8/9 require validation on the customer's subscribed minor until branded RHEL matrices are published.
+Rocky 9 lab coverage does **not** certify every Rocky 9.x or AlmaLinux 9.x minor. RHEL 8/9 require validation on the customer's subscribed minor.
 
 ### Not supported
 
-Outside current product scope. Use a supported distribution, the Non-HS kernel on a separate host for incompatible workloads, or [HJFS](../../hjfs/) on a standard kernel where custom kernels are prohibited.
+Outside current product scope. Use a supported distribution, the maintenance kernel on a separate host for incompatible workloads, or [HJFS](../../hjfs/) on a standard kernel where custom kernels are prohibited.
 
 ---
 
 ## RPM / RHEL family
 
-RPM-based support expanded in the **v1.6.4 multi-distro release (April 2026)**. This matrix is the authoritative source for distribution tiers; [System Requirements](../../introduction/system-requirements/) and [FAQs](../../faqs/) link here for current status.
-
-**Lead with Rocky 9.7 (Validated).** For enterprise fleets standardizing on RHEL-compatible userspace, Rocky Linux 9.7 is the reference RPM image: GRUB defaulting, SELinux stacking, and coordinated bundle install match what HeartSuite tests in CI.
+Lead with **Rocky 9 (in lab)** for RHEL-compatible userspace. Re-run install and Lockdown on the current k6 bundle; do not treat a 2026-07 BLS path as a standing certificate.
 
 | Distribution | Guidance |
 |--------------|----------|
-| **Rocky Linux 9.7** | Validated — default RPM choice for new deployments. |
-| **Fedora 41** | Validated — suitable for engineering and pre-production; shorter support window than Rocky or RHEL. |
-| **CentOS Stream 9** | Validated with **faster churn warning**: Stream tracks RHEL development; kernel and userspace updates land more aggressively than Rocky. Re-validate after significant `dnf` upgrades. |
-| **RHEL 8 / RHEL 9** | **Compatible — customer validation on their minor.** Binaries are RHEL-compatible, but HeartSuite has not published branded RHEL minor test matrices. Run the install bundle on your subscribed RHEL gold image and complete Setup Mode before fleet Lockdown. |
-| **AlmaLinux 8 / 9** | **Compatible — equivalent to Rocky.** Expect the same installer behaviour as Rocky on the same major version; validate on your minor. |
+| **Rocky Linux 9** | In lab — default RPM choice to *start* validation. Re-validate on your minor. |
+| **Fedora 42** | In lab — engineering and pre-production. btrfs-root cloud images can fail install preflight. Shorter support window than Rocky or RHEL. |
+| **CentOS Stream 9** | Experimental — Stream tracks RHEL development; retest after `dnf` upgrades that change the boot stack or OpenSSH layout. |
+| **RHEL 8 / RHEL 9** | Compatible — customer validation on the subscribed minor. |
+| **AlmaLinux 8 / 9** | Compatible — expect similar installer behaviour to Rocky on the same major; validate on your minor. |
 
-**SELinux on RHEL-family systems:** Root Lock VFS hooks run before the LSM chain. SELinux can only add restrictions after Root Lock allows an operation. It cannot bypass Root Lock denials. On RHEL and Fedora, SELinux is Enforcing by default.
-
-As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for Root Lock-specific operations. If AVC denials appear, use `ausearch` and `audit2allow` to build a targeted module. Root Lock enforcement is unaffected. Full hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence) (*RHEL operational note*).
+**SELinux on RHEL-family systems:** On RHEL and Fedora, SELinux is Enforcing by default. Root Lock VFS hooks are designed to run before the LSM chain, so SELinux can add restrictions after Root Lock allows an operation and cannot lift a Root Lock denial. A targeted SELinux policy module may still be needed for product paths. If AVC denials appear, use `ausearch` and `audit2allow`. Hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence). That LSM page is still written against the **5.19.6** measured pack — do not treat it as the 6.18.9-hs LSM list.
 
 ---
 
 ## Debian and Ubuntu family
 
-Debian and Ubuntu-derived distributions remain the longest-supported install path and the majority of documentation examples.
+Debian 12/13 and Ubuntu 22.04/24.04 are the current k6 `release-core` set and the majority of documentation examples.
 
 | Distribution | Guidance |
 |--------------|----------|
-| **Debian 12 / 13** | Validated (April 2026 gate). Preferred for new Debian-based gold images. |
-| **Debian 11** | Supported — widely deployed; validate on your image if you remain on Bullseye. |
-| **Ubuntu 24.04 LTS** | Validated (April 2026 gate). |
-| **Other Ubuntu-derived** | Supported — derivatives using `.deb` packages and GRUB. AppArmor is present on Ubuntu but disabled in the HS kernel build; Snap and LXD confinement that depends on AppArmor userspace LSM is unavailable on the HS kernel. See [System Requirements → Software compatibility](../../introduction/system-requirements/#software-compatibility-notes). |
+| **Debian 12 / 13** | Supported (lab). Preferred for new Debian-based gold images. |
+| **Debian 11** | Legacy — 5.19 / k5 only. |
+| **Ubuntu 24.04 LTS** | Supported (lab). UEFI/pflash on cloud images. |
+| **Ubuntu 22.04 LTS** | Supported (lab). |
+| **Ubuntu 26.04 LTS** | In lab — not certified. |
+| **Ubuntu 20.04 LTS** | Legacy — 5.19 / k5 only. |
+| **Other Ubuntu-derived** | Compatible — `.deb` + GRUB. Validate Snap/LXD on the **running** kernel; the current 6.18 pin compiles AppArmor in. |
 
-Installer behaviour on Debian/Ubuntu: sets the HS kernel as the GRUB default and reboots automatically when GRUB automation succeeds (v1.6.4+). The original distribution kernel remains in GRUB as Maintenance and vanilla entries for recovery.
+On Debian/Ubuntu the installer sets the Root Lock kernel as the GRUB default and reboots when GRUB automation succeeds. The original distribution kernel remains in GRUB as Maintenance and vanilla entries for recovery.
 
 ---
 
 ## Alpine Linux
 
-Alpine is a supported, validated path for minimal and container-adjacent appliances.
-
 | Topic | Detail |
 |-------|--------|
-| **Validated version** | Alpine 3.21 (April 2026 gate). |
-| **Init system** | **OpenRC** — HeartSuite ships OpenRC service unit variants alongside systemd oneshots. |
-| **Boot loader** | Many Alpine images use **extlinux** rather than GRUB. The installer sets the HS kernel as default where automation applies; when extlinux cannot be updated automatically, the installer prints **console instructions** for the operator to complete the default entry change. |
-| **Tier for other 3.x** | Supported — same packaging model; validate before production. |
-
-Alpine's musl-based userspace is fully within scope when the distribution version is supported or validated. Workload exclusions (eBPF, FUSE, dynamic containers after Lockdown, KVM host mode) apply regardless of distribution — see [Workload fit](#workload-fit-not-distro-specific) below.
+| **Current tester pin** | Alpine 3.21.6 (`experimental` catalog set). |
+| **Init system** | **OpenRC** — OpenRC service unit variants ship alongside systemd oneshots. |
+| **Boot loader** | Many images use **extlinux**. When automation cannot update the default entry, the installer prints **console instructions**. |
+| **Other 3.x** | Compatible — same packaging model; validate before production. |
 
 ---
 
@@ -145,8 +152,8 @@ Alpine's musl-based userspace is fully within scope when the distribution versio
 
 | Distribution | Guidance |
 |--------------|----------|
-| **openSUSE Tumbleweed** | **Validated** (April 2026 gate) for **development and CI only**. Rolling updates make it unsuitable as a fixed procurement baseline for regulated production. |
-| **SUSE Linux Enterprise (SLES)** | **Compatible — contact support.** SP level, BCI vs full SLES, and partner images affect boot stack and package layout. Engage support@heartsecsuite.com before standardizing a SLES gold image. |
+| **openSUSE Tumbleweed** | **Experimental** — development and CI only. Rolling updates make it unsuitable as a fixed procurement baseline. |
+| **SUSE Linux Enterprise (SLES)** | **Compatible — contact support.** SP level, BCI vs full SLES, and partner images affect the boot stack. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before standardizing a SLES gold image. |
 
 ---
 
@@ -156,80 +163,97 @@ Root Lock runs as a **guest** on AWS EC2 (including Nitro), KVM, VMware, and oth
 
 Before you install on a cloud instance:
 
-- Keep the provider serial console enabled. SSH drops during the first Root Lock reboot; the console is how you recover if the instance does not come back.
+- Keep the provider serial console enabled. SSH can drop during the first Root Lock reboot; the console is how you recover if the instance does not come back.
 - Run the install once on your target instance type in staging before fleet rollout.
-- If the installer stops before reboot, read `/var/log/heartsuite/install.log` and contact support@heartsecsuite.com and attach the log file for review and assistance.
+- If the installer stops before reboot, read `/var/log/heartsuite/install.log` and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with the log attached.
 
-Root Lock as a **hypervisor host** (running VMs from this kernel) is not supported. See [Workload fit](#workload-fit-not-distro-specific) and [System Requirements](../../introduction/system-requirements/).
+Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a supported product role**. That is a support-scope statement. The fielded 6.18 pin compiles `CONFIG_KVM=m`; do not read “not supported” as “KVM is compiled out.” See [Workload fit](#workload-fit-not-distro-specific).
 
 ---
 
 ## Workload fit (not distro-specific)
 
-Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether the **workload** belongs on the HS kernel is a separate decision — the same across every row in the matrix.
+Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether a **workload** belongs on that host is a separate decision.
 
-Root Lock deliberately removes kernel features used as bypass primitives. Workloads that depend on those features do not run on the HS kernel. Keep them on a host whose kernel still compiles those features, or on a separate host — regardless of whether the distribution is Validated or Supported.
+The two kernel lines are **not** the same configuration.
 
-| Requirement | On HS kernel? | Reference |
-|-------------|---------------|-----------|
-| Local eBPF tooling (Falco, Cilium Tetragon, bpftrace, bcc, etc.) | No | [System Requirements](../../introduction/system-requirements/#software-compatibility-notes) |
-| FUSE mounts (sshfs, s3fs, AppImage, gocryptfs, …) | No | Same |
-| Dynamic Kubernetes (HPA, pod reschedule after Lockdown) | No | [How Root Lock Compares](../../introduction/how-it-compares/) |
-| KVM **hypervisor host** (running VMs from this kernel) | No | [System Requirements](../../introduction/system-requirements/#software-compatibility-notes) |
-| Rootless / unprivileged user-namespace containers | No | Same |
-| HS kernel as **guest** inside KVM, VMware, or cloud hypervisors | Yes | Same |
-| Fixed appliance, regulated server, closed workload set | Yes | [Deployment Scenarios](../../introduction/deployment-scenarios/) |
+| Interface | 5.19 legacy (Debian 11 / Ubuntu 20.04) | Fielded 6.18 pin (`6.18.9-hs`, packaging `6.18.9-HeartSuite-3`, build `#37`) |
+|-----------|----------------------------------------|-------------------------------------------------------------------------------|
+| `CONFIG_BPF_SYSCALL` | not set | `=y` |
+| `CONFIG_FUSE_FS` | not set | `=y` |
+| `CONFIG_OVERLAY_FS` | not set | `=m` |
+| `CONFIG_USER_NS` | not set | `=y` |
+| `CONFIG_SECURITY_APPARMOR` | not set | `=y` |
+| `CONFIG_KVM` | not set | `=m` |
 
-Full exclusion table and container-host install notes: [System Requirements](../../introduction/system-requirements/). Decision tree for mixed environments: [Enterprise Adoption Guide → Compatibility](enterprise-adoption-guide/#compatibility-and-certification).
+On the **current 6.18 pin**, “this tool cannot run” is **not** an `ENOSYS` / compiled-out claim for eBPF, FUSE, OverlayFS, user namespaces, AppArmor, or KVM. A program can still fail because it is not on the allowlist, because Lockdown refuses a new mount or a new module load, or because the role is unsupported.
+
+| Requirement | On the current 6.18 pin | On 5.19 legacy |
+|-------------|-------------------------|----------------|
+| Local eBPF tooling (Falco, bpftrace, bcc, …) | Syscall is compiled in. Lockdown still refuses unallowlisted loaders. | Syscall not compiled. |
+| FUSE mounts (sshfs, s3fs, AppImage, …) | FUSE is compiled in. New mounts after Lockdown follow product mount rules. | FUSE not compiled. |
+| Overlay / typical container storage | `overlay` is available as a module. Dynamic Kubernetes after Lockdown is still a poor fit (allowlist and mount seal), not because OverlayFS is absent. | Overlay not compiled. |
+| KVM **hypervisor host** | **Not a supported product role** (module may be present). | Not compiled. |
+| Rootless / unprivileged user-namespace containers | User namespaces are compiled in. Still validate under Lockdown; do not assume rootless “just works.” | User namespaces not compiled. |
+| Root Lock as a **guest** inside KVM, VMware, or cloud hypervisors | Yes | Yes |
+| Fixed appliance, regulated server, closed workload set | Yes | Yes |
+
+Full exclusion table: [System Requirements](../../introduction/system-requirements/). Mixed-environment decision tree: [Enterprise Adoption Guide → Compatibility](enterprise-adoption-guide/#compatibility-and-certification).
 
 ---
 
 ## HJFS alternative
 
-Organizations with a strict **no custom or modified kernel** policy — certification rules, cloud provider-managed kernels, or vendor OS support contracts that forbid replacing the distribution kernel — should not force the HS kernel onto those images.
+Organizations with a strict **no custom or modified kernel** policy — certification rules, cloud provider-managed kernels, or vendor OS support contracts that forbid replacing the distribution kernel — should not force the Root Lock kernel onto those images.
 
-**HeartSuite Joint File System (HJFS)** provides per-program, per-version file isolation and automatic backup on a **completely standard kernel**. No kernel replacement is required. HJFS is deployable on any distribution where a standard kernel is mandated, including cloud instances where the provider owns the kernel image.
+**HeartSuite Joint File System (HJFS)** provides per-program, per-version file isolation and automatic backup on a **standard kernel**. No kernel replacement is required.
 
 | Scenario | Path |
 |----------|------|
 | File isolation without custom kernel | [HJFS documentation](../../hjfs/) |
-| Program install, update, and version UI without a custom kernel | [HeartSuite Exec](../../../exec-lock/) — filesystem UI next to HJFS |
-| Full three-layer coverage when HS kernel is acceptable | Root Lock (HS kernel) + HJFS on the same host |
+| Program install, update, and version UI without a custom kernel | [HeartSuite Exec](../../exec-lock/) — filesystem UI next to HJFS |
+| Full three-layer coverage when the Root Lock kernel is acceptable | Root Lock kernel + HJFS on the same host |
 
-HJFS limits, deployment scenarios, and comparison to kernel-level enforcement: [HJFS how-it-compares](../../hjfs/how-it-compares/) and [HJFS limits](../../hjfs/introduction/limits/). Procurement mapping: [Enterprise Adoption Guide → Honest limitations](enterprise-adoption-guide/#honest-limitations).
+HJFS limits and comparison: [HJFS how-it-compares](../../hjfs/how-it-compares/) and [HJFS limits](../../hjfs/introduction/limits/). Procurement mapping: [Enterprise Adoption Guide → Honest limitations](enterprise-adoption-guide/#honest-limitations).
 
 ---
 
 ## Reporting issues
 
-If install or HS kernel boot fails on a Supported or Compatible distribution, contact HeartSuite support with enough context to reproduce the failure:
+If install or Root Lock kernel boot fails on a Supported, In lab, Experimental, Legacy, or Compatible distribution, email support with enough context to reproduce:
 
-**Email:** support@heartsecsuite.com
+**Email:** [support@heartsecsuite.com](mailto:support@heartsecsuite.com)
 
 **Include:**
 
 1. **`/var/log/heartsuite/install.log`** — installer steps and outcome (see [Appendices](../../appendices/)).
-2. **Kernel identity:** output of `uname -r` (expected to end in `HeartSuite` when the HS kernel is active, for example `6.18.9-HeartSuite-1.0`).
+2. **Kernel identity:** output of `uname -r`.
+   - Current 6.18 stream: expect **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build `#37`). Absence of the word `HeartSuite` does **not** mean you are on the maintenance kernel.
+   - 5.19 legacy: expect a string such as `5.19.6-HeartSuite-2.0`.
+   - Maintenance kernel: a distribution version string with no Root Lock packaging (for example a stock `debian` or `el` uname).
 3. **OS identity:** contents of `/etc/os-release`.
-4. **Root Lock version** and whether the failure occurs during install, first HS boot, Setup Mode, or Lockdown.
-5. **Boot loader** in use (GRUB vs extlinux) and whether UEFI Secure Boot is enabled.
+4. **Root Lock version** and whether the failure occurs during install, first Root Lock boot, initial setup, or Lockdown.
+5. **Boot loader** (GRUB vs extlinux) and whether UEFI Secure Boot is enabled.
 
-For non-blocking bugs on supported platforms, open a GitHub issue using the Bug Report template on the public repository. **Do not** use public issues for security vulnerabilities — email support@heartsecsuite.com for responsible disclosure.
+For non-blocking bugs on supported platforms, open a GitHub issue using the Bug Report template on the public repository. **Do not** use public issues for security vulnerabilities — email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for responsible disclosure.
 
-Kernel update recovery procedures if a new HS kernel fails to boot: [Updating Root Lock](../../maintenance/updating-heartsuite/).
+Kernel update recovery if a new Root Lock kernel fails to boot: [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
 ---
 
 ## Related reading
 
 - [Kernel Support Policy](kernel-support-policy/) — LTS strategy, patch targets, version-string semantics, and notification
-- [System Requirements](../../introduction/system-requirements/) — Architecture, kernel lines, and software exclusion table
+- [System Requirements](../../introduction/system-requirements/) — Architecture, kernel lines, and software notes
 - [Enterprise Adoption Guide](enterprise-adoption-guide/) — Secure Boot status, fleet operations, procurement decision tree
-- [LSM Comparison](lsm-comparison/) — SELinux co-existence and RHEL operational note
-- [Procurement Brief](procurement-brief/) — Hardening posture comparison for buyers
-- [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — Scanner false-positive workflow for HS kernel hosts
-- [How Root Lock Compares](../../introduction/how-it-compares/) — What requires a separate kernel or host
-- [Deployment Scenarios](../../introduction/deployment-scenarios/) — Where Root Lock fits in production
-- [Roadmap](../../roadmap/#v164-multi-distro-release-april-2026) — v1.6.4 multi-distro validation history
-- [HJFS documentation](../../hjfs/) — Standard-kernel alternative for strict kernel policies
+- [LSM Comparison](lsm-comparison/) — SELinux co-existence (5.19.6 measured pack)
+- [Procurement Brief](procurement-brief/) — Hardening posture comparison (5.19.6 measured pack)
+- [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — Scanner workflow; do not infer 6.18 compile-out from 5.19 greps
+- [How Root Lock Compares](../../introduction/how-it-compares/) — What belongs on a separate host
+- [Deployment Scenarios](../../introduction/deployment-scenarios/) — Where Root Lock fits
+- [HJFS documentation](../../hjfs/) — Standard-kernel alternative
 - [Before You Begin](../../getting-started/before-you-begin/) — Prerequisites and cloud vs local install paths
+
+---
+
+*Last updated: 2026-08-18. Rows follow `distro_catalog.yaml`. Workload Kconfig values are from the fielded 6.18.9-hs `#37` config and the published 5.19.6-HeartSuite-1.0 pack. No complete Lockdown M2 release-core gate exists for this date.*
