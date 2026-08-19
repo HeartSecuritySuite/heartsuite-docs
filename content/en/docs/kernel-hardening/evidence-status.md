@@ -35,7 +35,7 @@ The two lines do **not** share the same kernel config. 5.19.6 compiled out BPF/F
 
 **Known limits of this publication**
 
-- Era-matched Arch linux-hardened **6.18.16-hardened1** is in the pack. Vanilla 6.17.3 remains cross-version (6.18.9 defconfig tarball did not finish).
+- Era-matched Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are in the pack.
 - Guest `/boot/config-6.18.9-hs` is an 11-line RD stub. `CONFIG_IKCONFIG` is off. Analysis uses the pin payload config whose SHA matches `VERSION_MAP`.
 - This is the **fielded** pin, including `IO_URING=y`, `KEXEC=y`, `KEXEC_FILE=y`. It is not a derived unpublished hardening cut.
 
@@ -54,6 +54,7 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 | 6.18.9-hs #37 pin SHA + checker + runtime pack | **Done** (2026-08-18) |
 | Auditor / procurement / 6.18 matrix refresh from that pack | **Done** (2026-08-18) |
 | Era-matched Arch linux-hardened **6.18.16** row | **Done** (2026-08-18) |
+| Era-matched vanilla **6.18.9** `defconfig` | **Done** (2026-08-18) |
 | `/boot/config-*` matching the pin (stop shipping the RD stub as `config-6.18.9-hs`) | **Open** — installer/product |
 | Derived cut with IO_URING/KEXEC/BPF compiled out | **Not this pin** — do not advertise as shipped |
 

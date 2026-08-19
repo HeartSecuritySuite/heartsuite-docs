@@ -28,19 +28,19 @@ Root Lock targets **a process on the protected system attempting to bypass VFS-l
 
 Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-08-18, against pin config SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`.
 
-Arch linux-hardened **6.18.16-hardened1** is the era-matched 6.18.x peer (no 6.18.9-hardened in the Arch archive). Vanilla 6.17.3 defconfig is **cross-version**. Do not mix these percentages with the 5.19.6 pack (`b9b83a0`, different item universe).
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers (no 6.18.9-hardened in the Arch archive). Do not mix these percentages with the 5.19.6 pack (`b9b83a0`, different item universe).
 
 ### Attack-surface reduction
 
 Automated score: **57/131 (43.5%)**  
-Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Cross-version vanilla 6.17.3 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
+Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
 The fielded pin does **not** lead this axis. Pin greps: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
 Automated score: **78/110 (70.9%)**  
-Era-matched Arch linux-hardened 6.18.16: 92/110 (83.6%). Cross-version vanilla 6.17.3: 56/110 (50.9%). KSPP: 93/110 (84.5%).
+Era-matched Arch linux-hardened 6.18.16: 92/110 (83.6%). Era-matched vanilla 6.18.9 defconfig: 56/110 (50.9%). KSPP: 93/110 (84.5%).
 
 This pin is **above** vanilla 6.17 on this axis. Present: `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`, `KFENCE`, `MODULE_SIG`. Still missing or unforced: `INIT_ON_FREE_DEFAULT_ON`, `MODULE_SIG_FORCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `KFENCE_SAMPLE_INTERVAL=0`.
 

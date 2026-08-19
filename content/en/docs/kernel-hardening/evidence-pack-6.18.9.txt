@@ -144,31 +144,32 @@ kernel-hardening-checker commit e870d0141259f875d3d1b54fef49dec7074e4cac
 Applied identically to all configs below. Same tool, same commit, same -c invocation.
 JSON mode used for category tallies; verbose totals match 148 OK / 111 FAIL on HS.
 
-ERA-MATCHED 6.18.x Arch linux-hardened: packaging tag 6.18.16.hardened1-1
-(closest archived 6.18.x hardened; no 6.18.9-hardened in the Arch archive).
-Vanilla 6.18.9 defconfig was not generated in this run (kernel.org tarball
-did not finish). Vanilla 6.17.3 remains CROSS-VERSION orientation.
+ERA-MATCHED 6.18.x peers:
+  Arch linux-hardened packaging tag 6.18.16.hardened1-1 (no 6.18.9-hardened
+  in the Arch archive). Vanilla x86_64: `make ARCH=x86_64 defconfig` on
+  linux-6.18.9.tar.xz from cdn.kernel.org (2026-08-18).
 
 Config                               | OK  | FAIL | Total | OK%  | Source
 -------------------------------------|-----|------|-------|------|-------------------
 HS 6.18.9-hs #37                     | 148 |  111 |  259  | 57.1 | pin config SHA 3cd18247… (this pack §1)
 Arch linux-hardened 6.18.16-hardened1| 181 |   78 |  259  | 69.9 | gitlab.archlinux.org linux-hardened @ 6.18.16.hardened1-1 config.x86_64 (SHA256 286d7e1e…) — ERA-MATCHED 6.18.x
-Vanilla x86_64 defconfig 6.17.3      | 153 |  106 |  259  | 59.1 | bundled x86_64_defconfig_6.17.config (SHA256 36db0253…) — CROSS-VERSION
+Vanilla x86_64 defconfig 6.18.9      | 153 |  106 |  259  | 59.1 | make ARCH=x86_64 defconfig on linux-6.18.9 (SHA256 684976f3…) — ERA-MATCHED
 KSPP recommended x86-64              | 235 |   22 |  257  | 91.4 | bundled kspp-kconfig-x86-64.config (SHA256 c0f9eaaf…) — intent benchmark
+Vanilla x86_64 defconfig 6.17.3      | 153 |  106 |  259  | 59.1 | bundled x86_64_defconfig_6.17.config (SHA256 36db0253…) — CROSS-VERSION (same totals as 6.18.9 defconfig)
 Arch linux-hardened 6.15.11-hardened1| 180 |   79 |  259  | 69.5 | bundled Arch_hardened_x86_64.config (SHA256 73aaeed5…) — CROSS-VERSION (superseded by 6.18.16 row)
 
 === 8. PER-CATEGORY CHECKER SCORES ===
 
-Category              | HS 6.18.9-hs #37 | Arch lh 6.18.16 | Vanilla 6.17.3* | KSPP*
-----------------------|------------------|-----------------|-----------------|------
-cut_attack_surface    | 57/131 (43.5%)   | 76/131 (58.0%)  | 88/131 (67.2%)  | 131/131 (100%)
-self_protection       | 78/110 (70.9%)   | 92/110 (83.6%)  | 56/110 (50.9%)  | 93/110 (84.5%)
-security_policy       | 11/12 (91.7%)    | 9/12 (75.0%)    | 8/12 (66.7%)    | 8/12 (66.7%)
-harden_userspace      | 1/5 (20.0%)      | 3/5 (60.0%)     | 0/5 (0.0%)      | 2/3 (66.7%)
-network_security      | 1/1              | 1/1             | 1/1             | 1/1
-TOTAL                 | 148/259 (57.1%)  | 181/259 (69.9%) | 153/259 (59.1%) | 235/257 (91.4%)
+Category              | HS 6.18.9-hs #37 | Arch lh 6.18.16 | Vanilla 6.18.9 | KSPP*
+----------------------|------------------|-----------------|----------------|------
+cut_attack_surface    | 57/131 (43.5%)   | 76/131 (58.0%)  | 88/131 (67.2%) | 131/131 (100%)
+self_protection       | 78/110 (70.9%)   | 92/110 (83.6%)  | 56/110 (50.9%) | 93/110 (84.5%)
+security_policy       | 11/12 (91.7%)    | 9/12 (75.0%)    | 8/12 (66.7%)   | 8/12 (66.7%)
+harden_userspace      | 1/5 (20.0%)      | 3/5 (60.0%)     | 0/5 (0.0%)     | 2/3 (66.7%)
+network_security      | 1/1              | 1/1             | 1/1            | 1/1
+TOTAL                 | 148/259 (57.1%)  | 181/259 (69.9%) | 153/259 (59.1%)| 235/257 (91.4%)
 
-* Vanilla 6.17.3 is cross-version. Arch 6.18.16-hardened1 is era-matched 6.18.x.
+* KSPP is an intent fragment. Arch 6.18.16 and vanilla 6.18.9 defconfig are era-matched.
   Directional reading vs the published 5.19.6 pack (different checker commit b9b83a0,
   different item universe): this pin is **weaker on attack-surface** and **stronger
   on self_protection** than HS 5.19.6 (91/132 and 31/109 on that older checker).
@@ -235,3 +236,5 @@ Runtime on a guest booted into 6.18.9-hs #37:
   Checker: github.com/a13xp0p0v/kernel-hardening-checker @ e870d01
   Arch 6.18.16-hardened1 config: gitlab.archlinux.org/archlinux/packaging/packages/linux-hardened
     tag 6.18.16.hardened1-1, file config.x86_64, SHA-256 286d7e1e5a2af411e071b024e3e771effb468b463d1d3f26c604ac2e49c03739
+  Vanilla 6.18.9 defconfig: cdn.kernel.org linux-6.18.9.tar.xz; make ARCH=x86_64 defconfig
+    SHA-256 684976f30914d64fcdf61a32247eafa84d12f8303b8f30e35c157aa14696f613
