@@ -31,12 +31,14 @@ Cloud images already finished this at image-prep time. The Dashboard appears whe
 
 | Checklist | Description |
 |-----------|-------------|
-| Program Allowlisting | Review and approve programs from the Dashboard's Programs queue (`[p]`). |
-| Script Launchers | Configure Secure Script Launchers from Launchers (`[s]`), if applicable. |
-| File Access Allowlisting | Review and approve file reads and writes from the File Access queue (`[f]`). |
-| Internet Access Allowlisting | Review and approve internet connections from the Internet Access queue (`[i]`). |
-| Alert Settings | Configure at least one push channel (email, syslog, or webhook) from Alert Settings (`[e]`). |
-| Lockdown | Locked until the earlier checklist items are complete. Activate from Lockdown (`[l]`). Review the checklist, then type `YES` (case-sensitive). |
+| 1. Program Allowlisting | Review and approve programs from the Dashboard's Programs queue (`[p]`). |
+| 2. File Access Allowlisting | Review and approve file reads and writes from the File Access queue (`[f]`). |
+| 3. Internet Access Allowlisting | Review and approve internet connections from the Internet Access queue (`[i]`). |
+| 4. Secure Script Launchers | Configure Secure Script Launchers from Launchers (`[s]`), if applicable. |
+| 5. Alert Configuration | Configure at least one push channel (email, syslog, or webhook) from Alert Settings (`[e]`). |
+| 6. Lockdown | Locked until the earlier checklist items are complete. Activate from Lockdown (`[l]`). Review the checklist, then type `YES` (case-sensitive). |
+
+On the Dashboard, the Suggested Next Step can open Launchers (`[s]`) after Programs if interpreters are pending, even though that row sits at 4.
 
 ## Cloud Path and Local Path
 
@@ -70,9 +72,9 @@ graph TD
     H --> I["Internet Access queue — approve connections"]
     I --> J["Configure alerts"]
     J --> K["Activate Lockdown"]
-    K --> L["[r] Reboot — Lockdown active on next boot"]
+    K --> L["YES — probe reboot, then seal reboot"]
     L --> M{Maintenance needed?}
-    M -- Yes --> N["Maintenance guides through steps"]
+    M -- Yes --> N["Maintenance [m] — console unseal, return to Setup"]
     N --> K
     M -- No --> O[System secured]
 
@@ -99,12 +101,12 @@ graph TD
 >
 > Complete all allowlisting in Setup Mode before activating Lockdown. If boot and shutdown programs have not been approved, the host will fail to start or shut down correctly.
 
-Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. See [Mode Switching and Lockdown](../../mode-switching/) for the activation flow.
+Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. That starts a probe reboot; a second reboot applies the seal. See [Lockdown](../../mode-switching/) for the activation flow.
 
-After activating Lockdown, the Dashboard offers `[r]` Reboot — Lockdown active on next boot. Lockdown is engaged automatically on every Root Lock kernel boot.
+After Lockdown, the startup script re-engages the seal on every Root Lock kernel boot.
 
 ## Maintenance in Lockdown
 
-To change a sealed allowlist, open Maintenance (`[m]`) from the Dashboard. `[m]` is the unseal path: remove immutable flags on the maintenance kernel, make changes, then return to the Root Lock kernel and review new activity.
+To change a sealed allowlist, open Maintenance (`[m]`) from the Dashboard. After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you return to Setup Mode. Review new activity, then lock down again.
 
-For the full 3-step process, see [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+See [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).

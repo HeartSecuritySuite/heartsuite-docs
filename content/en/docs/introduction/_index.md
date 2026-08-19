@@ -20,7 +20,7 @@ menu:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Mode Switching and Lockdown](../mode-switching/) covers activation.
+In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Lockdown](../mode-switching/) covers activation.
 
 ## In this section
 

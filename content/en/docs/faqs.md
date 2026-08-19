@@ -180,7 +180,7 @@ The indicator at the top confirms the current protection state. The Dashboard ap
 
 {{< details summary="How does Root Lock guide me through setup?" >}}
 
-A: A checklist walks you through the work: approving programs (`[p]`), configuring script launchers (`[l]`), approving file access (`[f]`), approving internet access (`[i]`), and setting up alerts (`[e]`).
+A: A checklist walks you through the work: approving programs (`[p]`), approving file access (`[f]`), approving internet access (`[i]`), configuring script launchers (`[s]`), and setting up alerts (`[e]`).
 
 The Dashboard tracks progress and always shows the next step. Lockdown unlocks only after the prior checklist items are complete.
 
@@ -210,9 +210,9 @@ After you approve a program's execution, you approve its file access separately.
 
 {{< details summary="Why do I need to reboot multiple times during installation?" >}}
 
-A: The Root Lock kernel must be loaded during installation. Each setup step — run via System Setup — records startup and shutdown programs that appeared in the previous boot.
+A: The Root Lock kernel must be loaded during installation. Unattended initial setup records startup and shutdown programs that appeared in the previous boot and reboots as needed.
 
-Multiple steps are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. Skipping steps can leave essential programs unapproved, which would cause the system to hang in Lockdown.
+Multiple passes are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. The Dashboard appears when that chain is complete. There is no System Setup screen.
 
 {{< /details >}}
 
@@ -222,9 +222,9 @@ A: Check GRUB settings (e.g., uncomment GRUB_DISABLE_LINUX_UUID for VMs), verify
 
 {{< /details >}}
 
-{{< details summary="The System Setup is not showing Setup Complete — what next?" >}}
+{{< details summary="The Dashboard has not appeared after install — what next?" >}}
 
-A: The Dashboard's Suggested Next Step indicates what remains. Press `[a]` from System Setup to run the next step. The host reboots automatically after each step that finds new programs.
+A: Initial setup is still running. It is unattended: the host reboots on its own between passes. Watch the serial console for the finishing-install banner, or `cat /var/log/heartsuite/install.log`. The Dashboard appears when initial setup is complete. There is no System Setup screen and no `[a]` to press.
 
 {{< /details >}}
 
@@ -254,9 +254,9 @@ A: The Dashboard unlocks Lockdown when the prior checklist items are complete an
 
 {{< details summary="How do I add network access for a program?" >}}
 
-A: Every outbound connection must be approved per program. When a program connects during Setup Mode, it appears in the Internet Access review queue with the destination IP, reverse DNS, and program metadata.
+A: Every outbound destination must be approved per program. When a program connects during Setup Mode, it appears in the Internet Access queue (`[i]`) with its destination IPs and any reverse-DNS or CDN label the Dashboard resolved.
 
-Approve the connection from there. In Lockdown, any connection not on the allowlist is refused at the kernel.
+Approve network access from there. Approving an IP for one program does not approve it for another. In Lockdown, any destination not on that program's list is refused at the kernel. Inbound ports and client source IPs are out of scope — see [Network and Remote Access](network/).
 
 {{< /details >}}
 
@@ -286,17 +286,15 @@ A: The seal is applied as part of Lockdown activation (see the "How do I activat
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select Maintenance (`[m]`) from the Dashboard. It detects that Lockdown is active and guides you through a 3-step process: booting the maintenance kernel to remove immutable flags (`[u]`), making your changes, then rebooting back to the Root Lock kernel to review new activity and re-engage Lockdown.
-
-The Dashboard resumes at the correct step after each reboot.
+A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land in Setup Mode. Review new activity in the queues, then re-engage Lockdown (`[l]`).
 
 {{< /details >}}
 
 {{< details summary="How do I maintain or update in Lockdown?" >}}
 
-A: Maintenance (`[m]`) detects whether Lockdown is active and chooses the correct path — a switch to Setup Mode, or a guided 3-step process across two reboots when the maintenance kernel is required.
+A: Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path — a `YES` switch to Setup Mode on the Root Lock kernel, or the console GRUB entry **Maintenance: unseal and return to Root Lock** when the seal is applied.
 
-The Dashboard handles all steps, including a pre-maintenance safety checklist.
+For a product update you must unseal first, then boot the maintenance kernel again so it stays up while you run the installer. See [Updating Root Lock](maintenance/updating-heartsuite/).
 
 {{< /details >}}
 
@@ -310,15 +308,13 @@ A: The indicator at the top of the Dashboard immediately shows whether Root Lock
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: Reboot into the maintenance kernel (select the Maintenance entry from GRUB). The Dashboard resumes automatically and guides you through the maintenance steps.
-
-Once back on the Root Lock kernel, the Dashboard shows any pending items that caused the hang.
+A: From a physical or serial console, reboot and select **Maintenance: unseal and return to Root Lock**. The Dashboard is not launched on the maintenance kernel. Express return brings you back to the Root Lock kernel in Setup Mode, where the Dashboard shows any pending items that caused the hang.
 
 {{< /details >}}
 
 {{< details summary="How to clear Root Lock logs?" >}}
 
-A: The Dashboard automatically clears the activity log when all review queues are empty — no manual action is required.
+A: The Dashboard automatically clears the activity log (`/.hs/sys/HS_log.txt`) when all review queues are empty and Secure Script Launchers is not still pending. A maintenance reboot also clears it. There is no `hs-clear-logs` command. `ui.log`, the JSONL approval log, and the journal are not cleared by that path.
 
 {{< /details >}}
 

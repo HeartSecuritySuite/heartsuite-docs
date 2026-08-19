@@ -66,7 +66,7 @@ If something goes wrong during setup, the next login (SSH or serial console) sho
 Two options are available:
 
 - **`[r]` Retry** — restarts the setup from where it stopped.
-- **`[q]` Open shell** — drops you to a shell to investigate before retrying. On cloud provider dashboards, view/download logs directly (e.g., AWS CloudWatch after agent setup via SSM, or Get system log; see Appendices for step-by-step without SSH/console).
+- **`[q]` Open shell** — drops you to a shell to investigate before retrying. On the serial console, `cat /var/log/heartsuite/install.log` or `cat /var/log/heartsuite/initial-setup-latest.log`. AWS **Get system log** is a serial buffer, not CloudWatch. CloudWatch needs the platform agent plus IAM; Root Lock does not install it.
 
 > [!WARNING]
 > Setup must complete before you activate Lockdown. If the initial allowlist is incomplete, the system may hang on boot or shutdown after activating Lockdown.
