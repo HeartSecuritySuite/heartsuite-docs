@@ -65,7 +65,7 @@ If initial setup does not complete, or the indicator at the top shows a state yo
    systemctl status heartsuite
    ```
 
-3. For local installations, verify that the System Setup completed — it shows **Setup Complete** in green when all startup and shutdown programs have been allowlisted. If not, return to the System Setup and press `[a]` to run another step.
+3. For local installations, the Dashboard appears only after unattended initial setup finishes. If it has not appeared, check `/var/log/heartsuite/install.log` on the serial console. There is no System Setup screen.
 4. If the Dashboard shows "UNKNOWN STATE: protection status cannot be determined", follow the Suggested Next Step displayed on the Dashboard.
 5. If the issue persists, contact support at support@heartsecsuite.com.
 

@@ -37,10 +37,12 @@ From the Dashboard, select Backup (`[b]`). The Dashboard shows your current back
 
 ![Backup configured with 3 protected directories](test_docs_backup_configured.svg)
 
-From here you can:
+From Configure you can:
 
-- **Add directories** (`[n]`) — protect additional directories (e.g., `/var/www`, `/etc`, `/usr/lib`)
-- **Remove directories** (`[r]`) — stop backing up a directory (removing a directory does not delete existing backups; existing versions are retained)
+- **Add a directory** (`[a]`) — protect additional directories (for example `/var/www`, `/etc`, `/usr/lib`)
+- **Remove from backup** (`[r]`) — stop backing up a directory. Existing versions are retained until the retention window expires.
+
+`[n]` on Backup is Cancel, not add.
 
 Recommended directories include those containing user documents, executable files, configuration, and shared libraries. Avoid high-churn directories like log directories — backup creates a new version on every write.
 
