@@ -22,15 +22,15 @@ Even a legitimate tool already on your allowlist — curl, python, a system util
 
 In Setup Mode, Root Lock logs every program execution, file access, and outbound network connection without blocking anything. These populate three review queues visible from the Dashboard:
 
-- **Programs queue** (`[p]`) — programs attempting to execute
-- **File Access queue** (`[f]`) — programs attempting to read or write files
-- **Internet Access queue** (`[i]`) — programs attempting outbound connections
+- **Programs queue** (`[p]`) — programs that executed without an allowlist entry
+- **File Access queue** (`[f]`) — programs that already have an allowlist entry and read or wrote files not yet granted
+- **Internet Access queue** (`[i]`) — programs that already have an allowlist entry and reached destinations not yet granted
 
-The Dashboard shows pending counts for each queue and provides a Suggested Next Step directing you to the queue that needs attention first.
+The Dashboard shows pending counts for each queue and provides a Suggested Next Step. When Programs is empty, that screen suggests File Access (`[f]`). After you return to the Dashboard, the Suggested Next Step opens Secure Script Launchers (`[s]`) if interpreters are pending, otherwise the next queue that still has items.
 
-**The queues build on each other.** File access and network activity are only recorded for programs already approved in the Programs queue.
+The three queues are independent lists. Suggested Next Step prefers Programs when that count is non-zero, then Secure Script Launchers, then File Access, then Internet Access — that is suggestion order, not a lock. `[p]`, `[f]`, and `[i]` stay on the Dashboard; you can open Internet Access while Programs still has pending items.
 
-A program making live network connections will not appear in the Internet Access queue until you have approved it in the Programs queue first. If Internet Access or File Access appears empty while the machine is active, check whether the Programs queue still has pending items.
+Programs that already have an allowlist entry (from initial setup, install grants, a previous approve, or `[p]`) can appear in File Access and Internet Access as soon as they read a file or reach an address that is not yet approved. A binary with no allowlist entry yet is listed under Programs. Its file reads and connections are not listed until it has an entry and runs again.
 
 ## Working through a queue
 
@@ -54,7 +54,7 @@ Two additional keys appear contextually, not in the footer:
 
 | Key | When available |
 |-----|---------------|
-| `[u]` | Undo — available for 5 seconds after an approval; cancels the last approval and returns the item to the queue |
+| `[u]` | Undo — available until the next approve or skip; cancels the last approval and returns the item to the queue |
 
 ### Metadata shown in review
 
@@ -80,8 +80,7 @@ The review queues handle large volumes without requiring blind bulk approval. Vo
 Each item is presented one at a time with full metadata. Example for a program execution:
 
 ```text
-Program attempted to execute:
-/usr/bin/nano
+/usr/bin/nano executed during Setup Mode.
 Package:     nano 7.2-1 -- small, friendly text editor
 Attempts:    3
 
@@ -103,7 +102,7 @@ When the volume of remaining items is large, Root Lock presents a summary of wha
 > [!NOTE]
 > Review grouping and sort order are independent dimensions. A program in any group may appear in any grouping presentation. For example, a program with no package entry that generated 200 file reads would appear in the "Unknown origin" group (sorted first) but could be presented as a grouped review (because the items are groupable by directory).
 
-## Programs queue (Phase 2)
+## Programs queue
 
 When a program executes without an allowlist entry, Root Lock logs it. The Programs queue presents it for review.
 
@@ -124,7 +123,7 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 ![Programs queue review item with package metadata and action keys](test_docs_programs_queue_review.svg)
 
-## File Access queue (Phase 4)
+## File Access queue
 
 Once you approve a program's execution, Root Lock begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
 
@@ -134,7 +133,7 @@ Once you approve a program's execution, Root Lock begins logging every file it a
 Example review prompt for a file read:
 
 ```text
-/usr/bin/python3 attempted to read:
+/usr/bin/python3 read during Setup Mode:
 /usr/lib/python3/dist-packages/apt/__init__.py
 Program:     python3 3.11.2-1 -- interactive high-level object-oriented language
 File owner:  python3-apt 2.6.0
@@ -150,7 +149,7 @@ This file access has not been allowlisted.
 Example review prompt for a file write:
 
 ```text
-/usr/bin/journald attempted to write:
+/usr/bin/journald wrote during Setup Mode:
 /var/log/journal/machine-id/system.journal
 Program:     systemd 252-19 -- system and service manager
 File owner:  systemd 252-19
@@ -171,29 +170,34 @@ From the Dashboard, select the File Access queue (`[f]`).
 > Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). Root Lock groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
 
 > [!NOTE]
-> Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 exist, 34 no longer exist."
+> Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 still exist; 34 have been removed since".
 
-## Internet Access queue (Phase 5)
+## Internet Access queue
 
 Programs that make outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.
 
 Example review prompt:
 
 ```text
-/usr/bin/curl attempted an outbound connection:
-Destination: 93.184.216.34 -- example.com (Edgecast, US)
-Program:     curl 7.88.1-10 -- command line tool for transferring data with URL syntax
-Attempts:    7
+Network: reviewing 1 of 2
 
-This destination has not been allowlisted for this program.
+curl connected to 3 addresses during Setup Mode  (3 total connections)
 
-[a] Approve this connection for /usr/bin/curl
+Approving grants curl network access to these destinations.
+
+[a] Approve network access
 [s] Skip for now
+[?] What does approving this mean?
+
+── Destinations (3) ──
+  8.8.8.8 (dns.google)                         ×1
+  1.1.1.1 (one.one.one.one)                    ×1
+  142.250.74.46 (lga34s32-in-f14.1e100.net)    ×1
 ```
 
 From the Dashboard, select the Internet Access queue (`[i]`).
 
-![Internet access queue with destination IP and reverse DNS](test_docs_internet_access_populated.svg)
+![Internet Access queue: curl with three destinations and Approve network access](test_docs_internet_access_populated.svg)
 
 ## Progress and completion
 
@@ -206,8 +210,8 @@ Programs: reviewing 3 of 7  ─────────────────�
 When a queue is empty:
 
 ```text
-All program events resolved.
-Returning to Dashboard…
+All Programs events reviewed.
+Suggested: Review pending File Access events
 ```
 
 Allow several days to a week of observation in Setup Mode so systemd timers, cron jobs, and infrequent services appear in the queues before you activate Lockdown.
@@ -223,12 +227,12 @@ Use `[n]` to navigate through denied items one by one. To approve a denied progr
 
 ## CLI access for scripting and automation
 
-For scripting and automation workflows that run without the Dashboard, `hs-manage-allowlist` provides a browser and editor for existing allowlist entries. See its built-in help:
+For scripting and automation workflows that run without the Dashboard, `/.hs/sys/hs-app-perm-orders-manager` browses and edits existing allowlist entries (`/.hs/sys` is not on `PATH`). See its built-in help:
 
 ```bash
-# hs-manage-allowlist --help
+# /.hs/sys/hs-app-perm-orders-manager --help
 ```
 
 The Dashboard is the supported path for normal use.
 
-When the Programs queue (Phase 2) is empty, the Dashboard's Suggested Next Step directs you to [Phase 3: Script Launchers](../../script-launchers/) — or to Phase 4 (File Access) if launchers are not applicable. The Dashboard tracks which phases remain and always shows what needs attention next.
+After you return to the Dashboard with Programs empty, the Suggested Next Step directs you to [Secure Script Launchers](../../script-launchers/) (`[s]`) if interpreters are pending — or to File Access (`[f]`) if launchers are complete or not applicable. The Lockdown Checklist tracks the remaining rows and always shows what needs attention next.

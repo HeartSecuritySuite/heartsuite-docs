@@ -22,29 +22,34 @@ Network permissions are per-program and per-destination. Approving `93.184.216.3
 
 ## Using the Internet Access queue
 
-Select the Internet Access queue from the Dashboard (`[i]`). Each connection shows:
+From the Dashboard, select the Internet Access queue (`[i]`). The review panel header says **Network**. Each program already on the allowlist is one item, with every destination it reached listed together:
 
-- **Program**: the full path and package metadata (name, version, description, maintainer)
-- **Destination**: the IP address with reverse DNS hostname (e.g., `93.184.216.34 (example.com, Edgecast, US)`)
-- **Attempts**: how many times this connection was attempted
+- **Program**: path and package metadata when the distro database has an entry
+- **Destinations**: each literal IP, with a hostname or CDN label when one resolved — for example `8.8.8.8 (dns.google)` or `151.101.0.223 (files.pythonhosted.org, Fastly CDN)`. Unresolved addresses show as the bare IP. There is no country field.
+- **Counts**: `×N` next to each address, plus a total in the header
 
 Example review prompt:
 
 ```text
-/usr/bin/curl attempted an outbound connection:
-Destination: 93.184.216.34 (example.com, Edgecast, US)
-Program:     curl 7.88.1-10 (command line tool for transferring data with URL syntax)
-Attempts:    7
+Network: reviewing 1 of 2
 
-This destination has not been allowlisted for this program.
+curl connected to 3 addresses during Setup Mode  (3 total connections)
 
-[a] Approve this connection for /usr/bin/curl
+Approving grants curl network access to these destinations.
+
+[a] Approve network access
 [s] Skip for now
+[?] What does approving this mean?
+
+── Destinations (3) ──
+  8.8.8.8 (dns.google)                         ×1
+  1.1.1.1 (one.one.one.one)                    ×1
+  142.250.74.46 (lga34s32-in-f14.1e100.net)    ×1
 ```
 
-Press `[a]` to approve the destination for that program, or `[s]` to skip it for later.
+Press `[a]` to approve every listed address for that program, or `[s]` to skip it for later.
 
-When the Internet Access queue is empty, the Dashboard marks Phase 5 as complete and updates the Suggested Next Step.
+When the Internet Access queue is empty, the Lockdown Checklist marks **3. Internet Access Allowlisting** complete and updates the Suggested Next Step.
 
 ## Approving a network destination
 
@@ -54,35 +59,37 @@ Suppose `wget` is on the program allowlist but no network destinations have been
 # wget https://example.com/agreement.html
 ```
 
-Root Lock intercepts the connection and the attempt appears in the Internet Access queue with the destination `45.60.22.168 (example.com)`. After you approve it, the same `wget` command completes without generating another entry for that IP address.
+Root Lock logs the connection. It appears in the Internet Access queue as a destination such as `93.184.216.34 (example.com)`. After you approve it, the same `wget` command does not generate another entry for that IP address. A later connection to a different IP for the same hostname is a new destination.
 
 ## Reviewing existing network permissions
 
-To browse or edit network destinations that have already been approved, select Allowed (`[a]`) from the Dashboard. Existing entries are grouped by category (Programs, File Access, and Internet Access) so you can quickly find and modify network permissions.
+To browse or edit destinations that have already been approved, select Allowed (`[a]`) from the Dashboard. Entries are grouped as Uninstalled, Programs, File access, Internet Access, and Root Lock. A program with approved destinations appears under Internet Access.
 
 ## CLI access for scripting and automation
 
-For scripting and automation workflows that run without the Dashboard, `hs-manage-allowlist` provides direct CLI access:
+For scripting without the Dashboard, the allowlist manager is `/.hs/sys/hs-app-perm-orders-manager` (`/.hs/sys` is not on `PATH`):
 
 ```bash
-# hs-manage-allowlist add -x /usr/bin/wget -n 45.60.22.168
+# /.hs/sys/hs-app-perm-orders-manager add -x /usr/bin/wget -n 93.184.216.34
 ```
 
-Or look up the entry number first:
+Or look up the record number first:
 
 ```bash
-# hs-manage-allowlist list | grep wget
+# /.hs/sys/hs-app-perm-orders-manager list | grep wget
 277
 /usr/bin/wget
-# hs-manage-allowlist add -r 277 -n 192.142.166.196
+# /.hs/sys/hs-app-perm-orders-manager add -r 277 -n 192.0.2.10
 ```
 
 The Dashboard is the supported path for normal use.
 
 For general allowlisting concepts (program execution, file access, write permissions), see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
 
-When the Internet Access queue is empty, the Dashboard marks Phase 5 complete and directs you to [Phase 6: Alert Settings](../alerts/).
+When the Internet Access queue is empty, the Suggested Next Step goes to [Alert Settings](../alerts/) (`[e]`) if alerts are not configured yet — or to Lockdown (`[l]`) if they already are. Backup (`[b]`) can appear before Lockdown when backup is not configured.
 
-## Inbound connections
+## Inbound connections and remote login
 
-Root Lock manages outbound connections only. Inbound connection filtering (restricting which ports are reachable, blocking port scans, rate-limiting login attempts) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when you move the workload onto that Firewall appliance image and want inbound and this-host path observed and sealed.
+Root Lock manages outbound connections only. Inbound filtering (which ports are reachable, port scans, who may connect) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when you move the workload onto that Firewall appliance image and want inbound and this-host path observed and sealed.
+
+To log in over SSH, approve the SSH server to execute and to read the files it needs. Adding the addresses you connect from to Internet Access does not grant inbound access — that queue is outbound destinations only. Restrict source IPs in sshd or the packet filter. Lockdown offers Harden SSH (`[h]`) when an authorized key is already present. See [Mode Switching and Lockdown](../mode-switching/).
