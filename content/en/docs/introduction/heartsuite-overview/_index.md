@@ -33,7 +33,7 @@ Initial setup runs unattended on first boot of the Root Lock kernel, and again a
 | 2. File Access Allowlisting | Review and approve file read/write access for programs |
 | 3. Internet Access Allowlisting | Review and approve outbound internet connections |
 | 4. Secure Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
-| 5. Alert Configuration | Set up notification channels (email, syslog, webhook) |
+| 5. Alert Settings | Set up notification channels (email, syslog, webhook) |
 | 6. Lockdown | Activate Lockdown — locked until the earlier checklist items are complete |
 
 ## Reduced kernel footprint

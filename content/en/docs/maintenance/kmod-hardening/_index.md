@@ -33,7 +33,12 @@ If kmod already has directory-level file access permissions, use `hs-manage-allo
 
 After narrowing kmod's file access permissions, reboot and confirm the machine starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[l]`).
 
-If kmod still has directory-level access at that point, the Dashboard shows it in the review before confirmation. Adjust it before typing `YES` (case-sensitive). See [Mode Switching and Lockdown](../../mode-switching/).
+After Lockdown engages:
+
+- **Allowlist entries are sealed** — kmod's entry cannot be modified while Lockdown is active.
+- **Startup scripts are sealed** — system-wide shell configuration, systemd unit directories, and cron. Attackers cannot insert scripts that would run before Lockdown re-engages on the next boot and expand kmod's permissions.
+
+Lockdown does not independently refuse `init_module`. The restriction is the program allowlist plus file access on module paths.
 
 ## Per-user shell profile coverage
 

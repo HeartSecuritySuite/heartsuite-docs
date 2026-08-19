@@ -35,7 +35,7 @@ Cloud images already finished this at image-prep time. The Dashboard appears whe
 | 2. File Access Allowlisting | Review and approve file reads and writes from the File Access queue (`[f]`). |
 | 3. Internet Access Allowlisting | Review and approve internet connections from the Internet Access queue (`[i]`). |
 | 4. Secure Script Launchers | Configure Secure Script Launchers from Launchers (`[s]`), if applicable. |
-| 5. Alert Configuration | Configure at least one push channel (email, syslog, or webhook) from Alert Settings (`[e]`). |
+| 5. Alert Settings | Configure at least one push channel (email, syslog, or webhook) from Alert Settings (`[e]`). |
 | 6. Lockdown | Locked until the earlier checklist items are complete. Activate from Lockdown (`[l]`). Review the checklist, then type `YES` (case-sensitive). |
 
 On the Dashboard, the Suggested Next Step can open Launchers (`[s]`) after Programs if interpreters are pending, even though that row sits at 4.
