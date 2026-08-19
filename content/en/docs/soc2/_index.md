@@ -84,7 +84,7 @@ In environments where multiple administrators share root access, uid/tty-to-pers
 
 Root Lock does not implement role-based access control within the Dashboard. Every user with Linux root access has identical access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and Maintenance.
 
-There is no operator/administrator distinction, no per-function permission check, and no audit trail distinguishing one root user's actions from another.
+There is no operator/administrator distinction and no per-function permission check. Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log` with timestamp, uid, and tty. That distinguishes sessions, not people who share uid 0. Person attribution still requires customer-side session records.
 
 CC6.3 is an organizational control for this product. Restricting which personnel can reach root — and attributing their actions — requires customer-side controls: `sudoers` policy, a privileged access management tool, bastion host session recording, or equivalent.
 
@@ -176,7 +176,7 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **Module loading restriction**: In Lockdown, `kmod`, `modprobe`, and `insmod` have no allowlist entries by default and cannot execute. Module-based rootkits cannot be installed because the module loaders cannot run. Where kmod is required for hardware drivers, its file access permissions can be restricted to specific `.ko` paths.
 
-**Post-compromise file recovery**: When an approved program is compromised and encrypts or corrupts files (for example ransomware inside an approved process), per-write backup preserves every version. Recovery starts from the moment before the damage began, not the last scheduled backup window. Under Lockdown, the kernel blocks all programs from accessing the backup directory — including an attacker running as root.
+**Post-compromise file recovery**: When an approved program is compromised and encrypts or corrupts files (for example ransomware inside an approved process), per-write backup preserves every version. Recovery starts from the moment before the damage began, not the last scheduled backup window. Under Lockdown, the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling (`hs-backup` and `hs-version-manager`). That includes root.
 
 **Alert on new blocked programs**: In Lockdown, any program path that appears in the denial log and has never appeared in any prior log session triggers an alert to all configured channels immediately.
 
@@ -244,11 +244,11 @@ The Dashboard displays a full-width, high-contrast protection state indicator sh
 | Lockdown + sealed | Lockdown applied |
 | maintenance kernel | maintenance kernel — no blocking, logging, or backups |
 
-**Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required.
+**Status JSON polling surface**: `~/.cache/heartsuite/status.json` is updated every 60 seconds. Ansible, Nagios, Zabbix, and similar tools can read this file via SSH pull for automated health checks. No additional configuration required. The `mode` field is `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"` — the same internal token as the webhook. The Dashboard label for the first value is Lockdown. The `lockdown` field is the seal bool. See the field table in [Compliance Reference](../heartsuite-compliance-nist-iso27001/#hs-statusjson-field-reference).
 
-**Syslog integration**: Root Lock emits two structured RFC 5424 syslog streams to `/dev/log` under the `heartsuite` APP-NAME. A single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both.
+**Syslog integration**: After you enable Syslog on Alert Settings → Fleet, Root Lock writes denial lines and aggregated alerts to the journal under ident `heartsuite`. A single rsyslog rule such as `:programname, isequal, "heartsuite" @@siem-host:514` forwards both.
 
-The enforcement stream emits one record per kernel decision (program execution, file access, or network connection) with MSGIDs such as `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, and `HS-NET-DENY`. Structured data includes the decision type, program, and target. Lag is typically under one second.
+The enforcement stream emits one record per **denial** (`HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, `HS-NET-DENY`), not per successful allowlisted access. Structured data includes the decision type, program, and target. Lag is typically under one second.
 
 The alert stream carries higher-level, deduplicated events (`new_program_blocked`, `network_burst`, mode changes, and similar). Alerts are also delivered via the configured webhook and email channels; those timestamps reflect alert evaluation time rather than the original kernel event time.
 
@@ -256,26 +256,37 @@ The alert stream carries higher-level, deduplicated events (`new_program_blocked
 
 ```json
 {
-  "node_id":    "prod-web-03",
-  "event_type": "new_program_blocked",
-  "timestamp":  "2026-03-31T14:22:00Z",
-  "mode":       "Lockdown",
-  "lockdown":   false,
-  "paths":      ["/tmp/dropper", "/tmp/payload"],
-  "count":      2
+  "node_id":          "prod-web-03",
+  "event_type":       "new_program_blocked",
+  "timestamp":        "2026-03-31T14:22:00Z",
+  "mode":             "Secure Mode",
+  "lockdown":         true,
+  "tier":             2,
+  "paths":            ["/tmp/dropper", "/tmp/payload"],
+  "count":            2,
+  "message":          "Previously unseen program blocked",
+  "subscription":     "Active",
+  "total_pending":    0,
+  "pending_programs": 0,
+  "pending_file_r":   0,
+  "pending_file_w":   0,
+  "pending_network":  0,
+  "enrich_failed":    false
 }
 ```
 
+`mode` is the on-disk monitor token (`"Secure Mode"`, `"Setup Mode"`, or `"Unknown"`). The Dashboard and email copy say **Lockdown** for that first value. `lockdown` is the immutable-seal bool, not a synonym for mode.
+
 This payload can drive PagerDuty, OpsGenie, Slack, or any incident management tool.
 
-**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode. The rotating application audit log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, use the syslog streams.
+**Log retention and audit channels**: The on-device activity log (`/.hs/sys/HS_log.txt`) is a temporary denial buffer. It is cleared on every maintenance cycle and auto-cleared when all review queues drain in Setup Mode (and Secure Script Launchers is not still pending). At about 32 MiB it is rotated in place. The rotating application log (`/var/log/heartsuite/ui.log`) is size-capped at approximately 8 MB. For long-term retention and cross-host correlation, enable Fleet Syslog and ship ident `heartsuite`.
 
-Every allowlist approval is written to a dedicated, persistent JSONL approval log containing timestamp, uid, and tty for each change to programs, file paths, or network destinations. Lockdown activation decisions are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
+Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log` with timestamp, uid, and tty. The file rotates at 1 MB and keeps one `.1` copy; ship it to a SIEM for Type II periods longer than that window. Lockdown activation decisions are verdict-driven and carry provenance back to the specific allowlist state and decision records that produced them.
 
 **Evidence artifacts**:
 
 - Syslog forwarding rule in `/etc/rsyslog.d/heartsuite.conf` (or equivalent) capturing the `heartsuite` ident
-- Dedicated JSONL approval log with timestamp, uid, tty, and entry details for every allowlist change
+- Dedicated JSONL approval log (`/var/log/heartsuite/allowlist-audit.log`) with timestamp, uid, tty, and entry details for every allowlist approval
 - Per-decision enforcement stream records in the customer SIEM (MSGIDs for program, file, and network decisions)
 - Sample alert payloads from webhook endpoint
 - `~/.cache/heartsuite/status.json` showing current system state
@@ -306,7 +317,7 @@ Root Lock classifies security events into two tiers:
 
 **What is never alerted** (documented in the product to prevent alert fatigue):
 
-- Anything in Setup Mode
+- Setup Mode, unless Fleet **Setup Mode alerts** is enabled
 - Repeated blocks of a program-destination pair already seen in the current session
 - File version activity under `/tmp/`, `/var/tmp/`, or `/dev/shm/`
 
@@ -338,13 +349,13 @@ Root Lock provides technical controls for the detection and containment phases o
 **Investigation**:
 
 - Dashboard Lockdown queue shows all denied items (blocked programs, file accesses, network connections) with timestamps and paths
-- `journalctl -t heartsuite-alert` provides a timestamped log of all alerts
+- `journalctl -t heartsuite` provides a timestamped log of alerts and enforcement decisions (message text begins with `heartsuite-alert:`)
 - File version history in Dashboard Backup shows what changed and when, supporting forensic timeline reconstruction
 
 **Allowlist update during active incident**:
 
-- If a compromised program must be removed from the allowlist, a maintenance window is required (Option 1: switch to Setup Mode, or Option 2: boot maintenance kernel for Lockdown recovery)
-- Maintenance presents a safety checklist (network isolation, daemon shutdown, SSH restriction) before allowing mode changes
+- If a compromised program must be removed from the allowlist, a maintenance window is required. After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. When the seal is not applied, Maintenance switches you to Setup Mode on the Root Lock kernel.
+- Maintenance presents a readiness checklist (listening ports, SSH findings) on the unsealed path before the `YES` switch.
 
 **Recovery**:
 
@@ -374,7 +385,7 @@ Root Lock creates a backup version of every file write in protected directories.
 
 That is the gap ransomware exploits in schedule-based backup tools, and the gap CVE-2024-40711 for Veeam Backup & Replication exploited by targeting the backup agent itself.
 
-Under Lockdown, root cannot read or overwrite the backups. The kernel blocks every program. There is no backup agent to kill.
+Under Lockdown, root cannot overwrite or delete the backups. The kernel blocks write and unlink to `/.hs/b/` for every program except Root Lock backup tooling. There is no backup agent to kill.
 
 **Recovery workflow**:
 
@@ -414,7 +425,7 @@ Any change to system configuration, installed software, or network access patter
 
 The required change management flow:
 
-1. Open a maintenance window from the Dashboard (Maintenance `[t]`)
+1. Open a maintenance window from the Dashboard (Maintenance `[m]`)
 2. Complete the safety checklist (network isolation, daemon shutdown, SSH restriction)
 3. Confirm mode switch (type `YES`)
 4. Make changes — install packages, update configuration, apply updates
@@ -436,6 +447,8 @@ The installer aborts if run on the active Root Lock kernel, requiring the two-re
 The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
 
 **Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint.
+
+Machine-readable supply-chain artifacts are published at [`/advisories/`](/advisories/): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available.
 
 There is no built-in multi-host push from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns.
 
@@ -519,7 +532,7 @@ Backup files are versioned filesystem copies with no encryption at the Root Lock
 | CC7.3 Security event evaluation | Alert classification (immediate vs. threshold); Lockdown queue for investigation | Alert logs, denied-item queue, SIEM records |
 | CC7.4 Incident response | Structural containment; investigation queue; file restore; no customer IR runbook template | Maintenance log, restore records, customer IR policy |
 | CC7.5 Recovery | Per-write versioned backup under kernel protection; alerts on backup-disabled and coverage-reduced transitions; no encryption at HeartSuite layer | Backup config, version history, restore log |
-| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); per-host allowlist applied by customer automation with rich export (status.json, JSONL approval log, syslog, webhook) for central consumption; no built-in multi-host push from HeartSuite | Maintenance log, install log, allowlist, central automation records, SIEM/JSONL evidence |
+| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); CycloneDX/OSV/CONFIG SBOM at `/advisories/`; per-host allowlist applied by customer automation with rich export (status.json, JSONL approval log, syslog, webhook) for central consumption; no built-in multi-host push from HeartSuite | Maintenance log, install log, allowlist, central automation records, SIEM/JSONL evidence |
 | A1.2 Availability protection | Ransomware blocking in Lockdown + per-write recovery; malware persistence prevention | Backup config, alert log, maintenance checklist |
 | C1.1 Confidentiality | File access scoping; outbound exfiltration prevention; no backup encryption at HeartSuite layer | File/network allowlist, disk encryption config |
 

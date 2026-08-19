@@ -20,7 +20,9 @@ Three gates: execution (default-deny binary allowlist), file access (per-program
 
 **What does Lockdown seal?**
 
-Authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, cron/anacron, `/usr/lib/`, and Root Lock's own configuration and kernel image directory — plus file backup snapshots (no program, including root, can access them at runtime).
+Five categories, using `chattr +i`: Root Lock configuration and kernel image directory; system integrity (`/usr/lib/`, systemd units, SSH config, sudo policy); authentication files (`/etc/passwd`, `/etc/shadow`, `/etc/group`); scheduled tasks and login scripts (cron/anacron, root profiles); and maintenance tools (editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies).
+
+File backup snapshots are a separate kernel write-protection of `/.hs/b/`, not a sixth `chattr` category. Under Lockdown, no program except Root Lock backup tooling can write or delete those versions, including root.
 
 These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Mode Switching and Lockdown](../mode-switching/) for the full list and behaviour.
 
@@ -56,25 +58,25 @@ From the serial console you can `cat /var/log/heartsuite/install.log` (installer
 
 **What are the logging retention limits?**
 
-`/.hs/sys/HS_log.txt` (kernel activity) is cleared on each maintenance cycle. Operational logs are in `/var/log/heartsuite/` (install.log, ui.log, initial setup logs). These are visible on cloud serial consoles (AWS, Linode LISH, Hetzner, etc.).
+`/.hs/sys/HS_log.txt` is a temporary denial buffer. The Dashboard clears it in Setup Mode when the review queues are empty and Secure Script Launchers is not still pending. A maintenance reboot also clears it. At about 32 MiB the file is rotated in place.
 
-`/var/log/heartsuite/ui.log` is capped at ~8 MB. The syslog/journald streams (`heartsuite` tag) are the mechanism for long-term SIEM/audit evidence. Protected enforcement state lives in `/.hs/sys/` (not standard logs).
+`/var/log/heartsuite/ui.log` is capped at about 8 MB. Approvals go to `/var/log/heartsuite/allowlist-audit.log`. Long-term SIEM evidence is the journal ident `heartsuite`, after you enable Syslog on Alert Settings → Fleet. Protected enforcement state lives in `/.hs/sys/` (not standard logs). These files are visible on the serial console.
 
 ---
 
 **What audit logging and SIEM integration does Root Lock provide?**
 
-Every allowlist approval (programs, file paths, network destinations) is written to a dedicated, persistent JSONL audit log with timestamp, uid, and tty.
+Every allowlist approval (programs, file paths, network destinations) is written to `/var/log/heartsuite/allowlist-audit.log` with timestamp, uid, and tty.
 
-All kernel enforcement decisions are streamed in real time as structured RFC 5424 syslog for direct ingestion into Splunk, Elastic, Datadog, QRadar, and similar platforms — separate from higher-level alerts. An always-on rotating application audit log captures UI and core events. Lockdown advisories are verdict-driven and provenance-gated for high-signal auditability.
+When Fleet Syslog is enabled, denial lines and aggregated alerts are written to the journal under ident `heartsuite` for Splunk, Elastic, Datadog, QRadar, and similar platforms. Successful allowlisted work is not logged. `ui.log` is the rotating application log. Lockdown advisories are verdict-driven and provenance-gated for high-signal auditability.
 
 ---
 
 **What is the Dashboard access control model?**
 
-No RBAC. Every Linux root user has identical access to all Dashboard functions. There is no operator/administrator distinction and no per-user audit attribution within Root Lock.
+No RBAC. Every Linux root user has identical access to all Dashboard functions. There is no operator/administrator distinction and no extra authentication layer inside Root Lock.
 
-Attributing actions to named individuals requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
+Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log` with timestamp, uid, and tty. Attributing those sessions to named people requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
 
 ---
 
@@ -86,4 +88,6 @@ Literal IPv4/IPv6 addresses only — no CIDR notation, no DNS-based rules. Inbou
 
 **What is the signing and integrity status of update bundles?**
 
-SHA-256 checksum only. There is no GPG or PGP signature verifying the bundle's origin against a HeartSuite-controlled signing key. Authenticity depends on retrieving the bundle over HTTPS from the HeartSuite distribution endpoint.
+Installer bundles: SHA-256 checksum only. There is no GPG or PGP signature verifying the bundle's origin against a HeartSuite-controlled signing key. Authenticity depends on retrieving the bundle over HTTPS from the HeartSuite distribution endpoint.
+
+Machine-readable artifacts at [`/advisories/`](/advisories/): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/).
