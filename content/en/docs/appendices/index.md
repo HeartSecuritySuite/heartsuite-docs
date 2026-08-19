@@ -15,39 +15,39 @@ Except for the Secure Script Launchers, all tools are located in `/.hs/sys`. The
 
 ## Day-to-day
 
-The Dashboard guides you through every phase. These are the main views you use in normal operation.
+The Dashboard guides you through the Lockdown Checklist. These are the main views you use in normal operation.
 
-- **Dashboard** — manages Root Lock. Displays phase progress, pending and denied counts, the protection state indicator, the status line at the bottom, and the Suggested Next Step. Appears automatically on login. Launch it manually with `heartsuite`.
+- **Dashboard** — manages Root Lock. Displays the Lockdown Checklist, pending and denied counts, the protection state indicator, the status line at the bottom, and the Suggested Next Step. Appears automatically on login. Launch it manually with `heartsuite`.
 - **Programs queue** (`[p]`) — review and approve pending program executions from the Dashboard. Presents items with full metadata, grouped intelligently.
 - **File Access queue** (`[f]`) — review and approve pending file accesses from the Dashboard. Handles read access and write access approvals separately.
 - **Internet Access queue** (`[i]`) — review and approve pending internet connections from the Dashboard. Allows allowlisting specific IPs per program.
 - **Allowed** (`[a]`) — browse and edit existing allowlist entries from the Dashboard.
-- **Browser View** (`[w]`) — enable or disable browser-based access to Root Lock via SSH tunnel from the Dashboard.
-- **Launchers** (`[s]`) — configure Secure Script Launchers from the Dashboard.
-- **Alert Settings** (`[e]`) — configure alert channels (email, syslog, or webhook) from the Dashboard. At least one channel must be configured before Lockdown activation. See [Alert Settings](../alerts/).
-- **Lockdown** (`[l]`) — activate Lockdown from the Dashboard. Shows the precondition checklist, observation period summary, and allowlist review. Type `YES` (case-sensitive) to confirm. After activation, offers `[r]` Reboot. See [Mode Switching and Lockdown](../mode-switching/) for the activation flow.
-- **Maintenance** (`[m]`) — guided maintenance workflows from the Dashboard. Detects Lockdown status automatically, presents a safety checklist (`[c]`/`[s]`), and guides through mode switching or the 3-step Lockdown maintenance process (`[u]`/`[d]`/`[k]`/`[f]`). Appears only in Lockdown, Lockdown+sealed, and maintenance kernel states — hidden in Setup Mode by design.
-- **Backup** (`[b]`) — manage file backup and versioning from the Dashboard. Offers File-first (`[f]`) and Timeline (`[t]`) browse modes, date filtering (`[d]`), batch restore (`[b]`), directory management (`[n]` add, `[r]` remove), and `[tab]` to switch panels.
+- **Launchers** (`[s]`) — configure Secure Script Launchers from the Dashboard. Hidden once Lockdown is applied.
+- **Alert Settings** (`[e]`) — configure alert channels (email, syslog, or webhook) from the Dashboard. At least one channel must be configured before Lockdown activation. Hidden once Lockdown is applied. See [Alert Settings](../alerts/).
+- **Lockdown** (`[l]`) — in Setup Mode, open Lockdown from the Dashboard. Shows the precondition checklist, observation period summary, and allowlist review. Type `YES` (case-sensitive) to start a probe reboot; a second reboot applies the seal. In Lockdown, the same key opens the read-only Lockdown Inventory. See [Lockdown](../mode-switching/) for the activation flow.
+- **Maintenance** (`[m]`) — guided maintenance from the Dashboard. After Lockdown, sends you to the console to select **Maintenance: unseal and return to Root Lock**; the seal lifts automatically and the machine returns in Setup Mode. If the strip already says Lockdown not applied, Maintenance offers a `YES` switch that stays on the Root Lock kernel. Safety checklist is `[c]` / `[s]`. Grid button in Lockdown; keyboard `[m]` also works in Setup Mode after you unseal. See [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+- **Backup** (`[b]`) — manage file backup and versioning from the Dashboard. Configure vs Restore tabs. Add a directory (`[a]`), Remove from backup (`[r]`). Restore: File-first (`[f]`), Timeline (`[t]`), date filter (`[d]`), batch restore (`[b]`). `[n]` is Cancel.
+- **About** (`[o]`) — product and build identity from the Dashboard.
 
 ## Lockdown scripts
 
 These run automatically when you engage or unlock Lockdown via the Dashboard. You do not need to invoke or edit them yourself.
 
-- **`HS_lockdown.sh`** — runs when you press `[l]` Lockdown → `[r]` Reboot, and again automatically on every boot. It seals Root Lock's configuration so it can't be changed while the Root Lock kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), replaces `rm`, `cp`, and `mv` with restricted copies whose write scope matches what the kernel saw those tools used for during Setup Mode, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
-- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The Maintenance runs this for you when you press `[u]` as part of removing the Lockdown seal. Invoke it yourself only if you need recovery outside the Dashboard.
+- **`HS_lockdown.sh`** — runs when Lockdown is applied, and again automatically on every Root Lock kernel boot after that. It seals Root Lock's configuration so it can't be changed while the Root Lock kernel is running, disables common file editors (`nano`, `vim`, `sed`, `ed`), seals the restricted `rm`/`cp`/`mv` copies, then engages Lockdown. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
+- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. Maintenance runs this for you on the console unseal path. Invoke it yourself only if you need recovery outside the Dashboard.
 
 ## Recovery & scripting CLI
 
 For scripting, automation, and recovery scenarios. UI users rarely need these — most have a Dashboard equivalent that handles them automatically.
 
-- **`hs-manage-allowlist`** — CLI tool to browse and edit allowlist entries directly. For advanced workflows and automation. View `--help` for details.
-- **`hs-mode-switch`** — change whether Root Lock starts in Setup or Lockdown on next boot. The Dashboard's Lockdown button (`[l]`) handles this for normal use; this CLI is for scripting and automation. View `--help` for details.
-- **`hs-cache-size`** — set the kernel allowlist cache size (10–255). The Dashboard auto-adjusts this on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
-- **`hs-activate-subscription`** — activates the server using your Root Lock subscription. Required before Lockdown can be activated.
-- **`hs-backup-config-manager`** — specify directories for automatic file backup (e.g., /home). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup (`[b]`) for directory management.
-- **`hs-version-manager`** — restore prior versions of backed-up files. Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
-- **`hs-secure-script-launcher-manager`** — configures interpreter names for Secure Script Launchers. Prefer the Dashboard's Launchers (`[s]`) for normal use. View `--help` for scripting details.
-- **`hs-clear-logs`** — manually clears the Root Lock activity log. In normal operation, the Dashboard auto-clears the log when all review queues are empty, so manual clearing is rarely needed.
+- **`hs-app-perm-orders-manager`** — CLI tool to browse and edit allowlist entries (`/.hs/sys/hs-app-perm-orders-manager`; that directory is not on `PATH`). House name in some docs: `hs-manage-allowlist`. For advanced workflows and automation. View `--help` for details.
+- **`hs-monitor-state`** — on-disk binary that sets Setup Mode or Lockdown on next boot (`/.hs/sys/hs-monitor-state`). The Dashboard Lockdown button (`[l]`) is the normal path. There is no `hs-mode-switch` file on a current install.
+- **`hs-cache-size`** — glossary name for the kernel allowlist cache size (10–255). On disk the binary is `/.hs/sys/hs-APO-cache-size`. The cache is an LRU window, not a program cap. The Dashboard auto-expands it on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
+- **`register_HS_license`** — activates the server using your Root Lock subscription (`/.hs/sys/register_HS_license`). Some Dashboard copy still prints the house name `hs-activate-subscription`. Required before Lockdown can be activated.
+- **`hs-backup-config-manager`** — specify directories for automatic file backup (`list`, `add -d <path>`, `del -d <path>`). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup (`[b]`) for directory management.
+- **`hs-version-manager`** — restore prior versions of backed-up files (`list`, `versions`, `replace <path> <token>`). Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
+- **`hs-shim-manager`** — configures interpreter names for Secure Script Launchers (`/.hs/sys/hs-shim-manager`). House name: `hs-secure-script-launcher-manager`. Prefer the Dashboard's Launchers (`[s]`) for normal use. View `--help` for scripting details.
+- **`empty_HS_log.sh`** — clears `/.hs/sys/HS_log.txt`. The Dashboard does this when queues drain in Setup Mode. There is no `hs-clear-logs` binary.
 
 ## Internal / automatic
 
@@ -56,9 +56,9 @@ These run on their own — you do not need to invoke them yourself.
 - **`activate_HS`** — turns Root Lock service on. The installation routine adds a systemd service that runs this automatically at startup.
 - **`hs-curfew`** — stops Root Lock from backing up files before shutdown. A systemd service executes this automatically before shutdown or reboot.
 - **`hs-unlock-progs`** — runs automatically as part of `HS_unlock.sh`. Not invoked directly in normal use.
-- **`hs-os-boot-setup.py`** — used internally by Installation during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation.
+- **`add_logged_permissions.py` / `add_start_and_shutdown_programs.py`** — used internally during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation. There is no `hs-os-boot-setup.py` on a current install.
 - **`init_base_records.sh`** — used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.
-- **`HS_startup.sh`** — runs automatically when the system boots, turning Root Lock on. The Dashboard's Maintenance (`[m]`) edits this file when you change Lockdown re-engagement settings.
+- **`HS_startup.sh`** — runs automatically when the system boots, turning Root Lock on. On the maintenance kernel it also lifts the immutable seal before express return.
 
 ## Legacy / scripted deployment only
 
@@ -70,48 +70,56 @@ Off the user path. Prefer the Dashboard review tools for any standard workflow.
 
 ## Secure Script Launchers
 
-Located in `/usr/bin` (in the default PATH). Configured via the Dashboard's Launchers (`[s]`).
+Installed in `/usr/bin` (in the default PATH). Configured via the Dashboard's Launchers (`[s]`). Four launchers ship; there is no Java launcher.
 
-- **`hs-python-launcher`** — Secure Script Launcher for Python 3
-- **`hs-python2-launcher`** — Secure Script Launcher for Python 2
-- **`hs-perl-launcher`** — Secure Script Launcher for Perl
-- **`hs-php-launcher`** — Secure Script Launcher for PHP
+| On disk | House name | Interpreter |
+|---|---|---|
+| `hs_python3` | `hs-python-launcher` | Python 3 |
+| `hs_python2` | `hs-python2-launcher` | Python 2 |
+| `hs_perl` | `hs-perl-launcher` | Perl |
+| `hs_php` | `hs-php-launcher` | PHP |
 
 ## Log files
 
-These files are written automatically by Root Lock. They are not tools and require no user invocation.
+These files are written automatically by Root Lock. They are not tools and require no user invocation. Day-to-day you use the Dashboard review queues, not these paths.
 
-On cloud instances, logs are accessible from the provider's web console. The serial console (ttyS0) has root autologin enabled, so connecting shows a shell. Some providers also expose recent console output (including early installer messages) directly in the browser.
+Three cloud surfaces are not the same thing:
 
-To have logs appear in the provider console (for example CloudWatch Logs on AWS), configure the platform's logging agent to collect files under `/var/log/heartsuite/`. Protected files in `/.hs/sys/` are readable over serial for recovery but are not standard operational logs.
+- **Serial console** (EC2 Serial Console, Linode LISH, Hetzner, Azure Serial Console, GCP serial, and others) — interactive `cat` of local files. The serial console (ttyS0) has root autologin.
+- **Get system log** (AWS) — a buffered serial snapshot in the provider console. It is not CloudWatch.
+- **CloudWatch / Cloud Logging / Log Analytics** — the **platform** logging agent plus IAM. Root Lock does not install that agent. On AWS, if the CloudWatch agent is already present at install, Root Lock may drop a collect config for `/var/log/heartsuite/`. You still attach the instance role. `/.hs/sys/HS_log.txt` is not in that collect list.
 
-- **`/.hs/sys/HS_log.txt`** — the on-device activity/enforcement log. Records program executions, file accesses, and network connection attempts. Cleared on maintenance and when queues drain in Setup Mode. Forwarded to journald/syslog as `heartsuite`.
-- **`/var/log/heartsuite/install.log`** — written by the installer bundle. Records steps and outcome. Copied here on errors for persistence and serial console access. On AWS, recent output is also available via **Actions > Monitor and troubleshoot > Get system log** in the EC2 console.
-- **Dedicated JSONL approval log** (`/root/.local/share/heartsuite/allowlist-audit.log` or equivalent) — persistent record of every allowlist approval action.
-- **`/var/log/heartsuite/ui.log`** — the rotating application audit log. Captures UI interactions, core events, and errors. Size-capped ~8 MB.
-- **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some legacy `phase1-step-N.log` names may remain on disk).
-- **Syslog streams (RFC 5424)** — real-time enforcement and alert streams under the `heartsuite` APP-NAME to `/dev/log`. Recommended for SIEM (see [SIEM and Fleet Integration](../alerts/siem-integration/)).
+- **`/.hs/sys/HS_log.txt`** — temporary denial buffer (plus a few activation lines), not a success audit. Cleared in Setup Mode when the review queues are empty and Secure Script Launchers is not still pending; also cleared on a maintenance reboot; rotated in place at about 32 MiB. Forwarded to journald as ident `heartsuite` **only** when Syslog is enabled on Alert Settings → Fleet.
+- **`/var/log/heartsuite/install.log`** — installer bundle output, persisted on every install persist for serial recovery. On AWS, recent serial output is also on **Actions > Monitor and troubleshoot > Get system log**.
+- **`/var/log/heartsuite/allowlist-audit.log`** — JSONL of allowlist **approvals** (timestamp, uid, tty). Rotates at 1 MB and keeps one `.1` copy. Not under `~/.local/share/heartsuite/`.
+- **`/var/log/heartsuite/ui.log`** — rotating Python application log (INFO and above). Size-capped at about 8 MB. Not a keystroke transcript.
+- **`/var/log/heartsuite/dropped_violations.log`** — denials that were already allowlisted and therefore dropped from the review queues. Advanced artifact, not a daily surface.
+- **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some leftover `phase1-step-N.log` names may remain on disk).
+- **Syslog streams (RFC 5424)** — denial lines and aggregated alerts under ident `heartsuite`, after you enable the Fleet Syslog toggle. Alert lines use the message prefix `heartsuite-alert:`; that is not a second `journalctl -t` tag. See [SIEM and Fleet Integration](../alerts/siem-integration/).
 - **`~/.cache/heartsuite/status.json`** — system status snapshot (not a log).
 
   | Field | Type | Notes |
   |---|---|---|
   | `node_id` | string | Configured host identifier |
-  | `mode` | string | `"Lockdown"`, `"Setup Mode"`, or `"Unknown"` |
-  | `is_hs_kernel` | bool | Whether the running kernel is the Root Lock kernel |
-  | `lockdown` | bool | Whether Lockdown is currently active |
-  | `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
-  | `pending_programs` | int | Programs awaiting review |
-  | `pending_files` | int | Sum of pending read + pending write entries |
-  | `pending_network` | int | Network destinations awaiting review |
+  | `mode` | string | `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"`. `"Secure Mode"` is the on-disk token; the Dashboard and email copy say **Lockdown**. |
+  | `is_hs_kernel` | bool \| null | Whether the running kernel is the Root Lock kernel. `null` if the daemon did not observe the host this cycle. |
+  | `lockdown` | bool \| null | Whether the immutable seal is currently applied. Separate from `mode`. |
+  | `lockdown_on_boot` | bool \| null | Whether Lockdown re-engages on the next Root Lock boot |
+  | `pending_programs` | int \| null | Programs awaiting review |
+  | `pending_files` | int \| null | Sum of pending read + pending write entries |
+  | `pending_network` | int \| null | Network destinations awaiting review |
+  | `fully_protected` | bool \| null | True when `mode` is `"Secure Mode"` and the seal is applied |
+  | `subscription` | string \| null | `"Active"` or `"Expired"` |
+  | `version` | string | Build identity |
   | `last_alert_at` | string | ISO 8601 UTC timestamp of last alert, or empty string |
   | `updated_at` | string | ISO 8601 UTC timestamp of last daemon write |
   | `daemon_ok` | bool | Whether the HeartSuite daemon is running normally |
-  | `channel_errors` | object | Optional — present only when a delivery error has occurred |
+  | `channel_errors` | object | Present when the daemon writes an `AlertState` (includes empty strings when healthy) |
   | └ `email.message` / `email.at` | string | Last email delivery error and its timestamp |
   | └ `syslog.message` / `syslog.at` | string | Last syslog delivery error and its timestamp |
   | └ `webhook.message` / `webhook.at` | string | Last webhook delivery error and its timestamp |
 
-  For monitoring integrations, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that together confirm a healthy Lockdown state.
+  For monitoring integrations, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that together confirm a healthy Lockdown state. Treat `"Secure Mode"` plus `lockdown: true` as the sealed Lockdown posture.
 
 ## Integration tooling (evaluation and fleet automation)
 

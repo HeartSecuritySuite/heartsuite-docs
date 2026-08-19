@@ -1,13 +1,13 @@
 ---
 title: "Compliance Reference: NIST CSF & ISO 27001"
 weight: 112
-description: "How Root Lock by HeartSuite maps to NIST Cybersecurity Framework and ISO 27001:2022 Annex A controls."
+description: "How Root Lock by HeartSuite maps to NIST CSF 1.1 and ISO 27001:2022 Annex A controls."
 categories: ["Reference"]
 tags: ["compliance", "NIST", "ISO 27001"]
 type: docs
 ---
 
-This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) and ISO 27001:2022 Annex A controls. Use it to see where Root Lock contributes to a compliance posture and where complementary controls are required.
+This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) 1.1 and ISO 27001:2022 Annex A controls. Use it to see where Root Lock contributes to a compliance posture and where complementary controls are required.
 
 Root Lock is a **preventive enforcement layer**, not a comprehensive compliance platform. It enforces a default-deny execution, file-access, and network policy at kernel level — one that survives root compromise.
 
@@ -25,11 +25,11 @@ Root Lock operates through three enforcement gates, applied per program, not per
 | **File access** | Each approved program can only read or write paths explicitly permitted in its allowlist entry. |
 | **Network access** | Each approved program can only connect to specific IPv4/IPv6 addresses. All other outbound connections are blocked. |
 
-Two modes govern behaviour: **Setup Mode** (log and review, no blocking) and **Lockdown** (blocking active, configuration sealed with filesystem immutability flags that root cannot clear at runtime).
+Two modes govern behaviour: **Setup Mode** (log and review, no blocking) and **Lockdown** (blocking active, configuration sealed with filesystem immutability flags that, by design, remote root cannot clear at runtime). Recovery is the maintenance kernel via physical or serial-console access.
 
 Under Lockdown, kernel-level immutability also protects authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, scheduled tasks (cron/anacron), system libraries (`/usr/lib/`), and Root Lock's own configuration and kernel image directory.
 
-File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel prevents any program, including root, from accessing those backups.
+File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling, including root.
 
 ---
 
@@ -41,7 +41,7 @@ Root Lock contributes to asset visibility through the **program allowlisting wor
 
 **What is not covered:** Root Lock does not produce a hardware asset inventory, does not integrate with a CMDB via an inbound API, and does not aggregate inventory across a fleet on its own.
 
-The inventory is per-host and lives in the Dashboard. Export to asset management tooling and fleet aggregation uses the syslog streams, status.json, dedicated JSONL approval log, and harvest of allowlist state into your SIEM or central systems (see [Central Policy Management and External Control](alerts/central-policy-management/)).
+The inventory is per-host and lives in the Dashboard. Export to asset management tooling and fleet aggregation uses the syslog streams, status.json, dedicated JSONL approval log, and harvest of allowlist state into your SIEM or central systems (see [Central Policy Management and External Control](../alerts/central-policy-management/)).
 
 Relevant CSF categories: ID.AM-1, ID.AM-2 (partially)
 
@@ -55,9 +55,9 @@ This is Root Lock's primary contribution.
 | **PR.AC-3** — Remote access management | Network allowlist controls outbound connection destinations per program; inbound access is not managed. |
 | **PR.AC-4** — Access control, least privilege | Per-program execution and file-access allowlists enforce least-privilege at the enforcement layer, overriding user and root privilege. |
 | **PR.AC-5** — Network integrity | Network allowlist restricts each program to approved destinations; unapproved outbound connections are blocked at the kernel socket layer. |
-| **PR.DS-1** — Data-at-rest protection | File versioning backups are sealed by the kernel under Lockdown; no program (including root) can delete or alter backup copies at runtime. |
+| **PR.DS-1** — Data-at-rest protection | File versioning backups are write-protected by the kernel under Lockdown; no program except Root Lock backup tooling (including root) can delete or alter backup copies at runtime. |
 | **PR.DS-5** — Protection against data leaks | Outbound network allowlist limits exfiltration paths; programs cannot reach unapproved destinations. |
-| **PR.IP-1** — Baseline configuration | Allowlist and immutability together constitute an enforced configuration baseline. No configuration change is possible at runtime without a maintenance window that requires rebooting to a maintenance kernel. |
+| **PR.IP-1** — Baseline configuration | Allowlist and immutability together constitute an enforced configuration baseline. After the seal is applied, no configuration change is possible at runtime without a maintenance window that boots the maintenance kernel. |
 | **PR.IP-12** — Vulnerability management | HeartSuite reduces the exploitable blast radius: approved program CVEs with network or file-access exploitation paths are constrained by allowlist boundaries. |
 | **PR.MA-2** — Remote maintenance | Maintenance windows are structured: requires kernel reboot, checklist-guided steps, and Dashboard review of all new activity before re-engaging Lockdown. |
 | **PR.PT-1** — Audit log protection | Under Lockdown, immutability flags protect log files; the kernel prevents attribute changes that would allow log deletion. |
@@ -93,7 +93,7 @@ Relevant CSF categories: RC.RP-1 (partially). Fleet-wide recovery plans, backup-
 |---|---|
 | **A.5.7** — Threat intelligence | Not covered. HeartSuite has no threat feed integration. |
 | **A.5.15** — Access control | Kernel-enforced per-program access control, overriding user and root privilege. Supports enforcement of an access control policy. |
-| **A.5.22** — Monitoring, review and change management of supplier services | HeartSuite has conducted a rigorous internal security audit covering 42 formally evidenced properties across multiple scenario categories. No independent third-party engagement has been commissioned. HeartSuite is not submitted to NCSC CPA, NIAP, or Common Criteria evaluation. Several kernel hardening choices (`CONFIG_BPF_SYSCALL=n`, `CONFIG_KEXEC_FILE=n`, removal of eBPF verifier exposure, `chattr`-based immutability) align with the attack-surface-reduction objectives of Common Criteria Protection Profiles, but the certification process has not been initiated. |
+| **A.5.22** — Monitoring, review and change management of supplier services | HeartSuite has conducted a rigorous internal security audit covering 42 formally evidenced properties across multiple scenario categories (internal catalog; some coverage gaps remain). No independent third-party engagement has been commissioned. HeartSuite is not submitted to NCSC CPA, NIAP, or Common Criteria evaluation. Several kernel hardening choices (`CONFIG_BPF_SYSCALL=n`, `CONFIG_KEXEC_FILE=n`, removal of eBPF verifier exposure, `chattr`-based immutability) align with the attack-surface-reduction objectives of Common Criteria Protection Profiles, but the certification process has not been initiated. |
 | **A.5.23** — ICT supply chain security | Partially. Root Lock blocks new or modified binaries at the execution gate, preventing a trojanised update from running unless it replaces an already-allowlisted binary with identical path. |
 | **A.5.28** — Collection of evidence | Per-decision enforcement stream, dedicated JSONL approval log (with uid/tty attribution), rotating application audit log, and Dashboard records constitute attributable evidence of both policy changes and enforcement decisions. Export to SIEM is the path for long-term retention and fleet correlation. |
 | **A.5.29** — Information security during disruption | Not covered. No continuity or DR controls. |
@@ -117,19 +117,19 @@ In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial 
 
 | Control | HeartSuite contribution |
 |---|---|
-| **A.8.2** — Privileged access rights | Immutable seal and per-program enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with a timestamp and TTY in `/var/log/heartsuite/ui.log`; attributing TTY sessions to named personnel requires customer-side session logging (auditd or a PAM tool). |
+| **A.8.2** — Privileged access rights | Immutable seal and per-program enforcement override root privilege at runtime. Root cannot execute new binaries, modify sealed files, or clear Lockdown state. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with timestamp, uid, and tty in `/var/log/heartsuite/allowlist-audit.log`; attributing those sessions to named personnel requires customer-side session logging (auditd or a PAM tool). The rotating application log (`/var/log/heartsuite/ui.log`) is supplementary. |
 | **A.8.3** — Information access restriction | Per-program file-access allowlist restricts which paths each program can read or write. |
 | **A.8.4** — Access to source code | Not covered natively; HeartSuite does not distinguish source code files. File-access allowlists can be configured to restrict access to specific paths. |
 | **A.8.5** — Secure authentication | Immutable seal protects `/etc/passwd`, `/etc/shadow`, and SSH configuration from runtime modification. HeartSuite does not provide authentication mechanisms itself. |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
 | **A.8.8** — Management of technical vulnerabilities | Not covered. HeartSuite constrains the impact of unpatched vulnerabilities via allowlist boundaries but does not scan for, report on, or remediate them. |
-| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. The allowlist is managed per-host; there is no built-in inbound remote management interface or multi-host push mechanism from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform + GitOps, ServiceNow, custom CM, etc.) with rich exports (status.json, dedicated JSONL approval log with uid/tty attribution, structured syslog, webhook) for central consumption and drift detection. See [Central Policy Management and External Control](alerts/central-policy-management/). Revoking a compromised allowlist entry requires a maintenance window — no emergency revocation path exists while Lockdown is active. Boot-path integrity: `CONFIG_IMA` is not set (Integrity Measurement Architecture disabled) and `CONFIG_KEXEC_FILE` is not set (signed-image kexec variant compiled out). The kernel image directory is sealed under Lockdown via `chattr +i`, but there is no Secure Boot enforcement, no shim, and no IMA measurement log. |
+| **A.8.9** — Configuration management | Allowlist plus Lockdown constitutes an enforced configuration state. No change is possible at runtime without a documented maintenance window. Dashboard records all approvals. The allowlist is managed per-host; there is no built-in inbound remote management interface or multi-host push mechanism from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform + GitOps, ServiceNow, custom CM, etc.) with rich exports (status.json, dedicated JSONL approval log with uid/tty attribution, structured syslog, webhook) for central consumption and drift detection. See [Central Policy Management and External Control](../alerts/central-policy-management/). Revoking a compromised allowlist entry requires a maintenance window — no emergency revocation path exists while Lockdown is active. Boot-path integrity: `CONFIG_IMA` is not set (Integrity Measurement Architecture disabled) and `CONFIG_KEXEC_FILE` is not set (signed-image kexec variant compiled out). The kernel image directory is sealed under Lockdown via `chattr +i`, but there is no Secure Boot enforcement, no shim, and no IMA measurement log. |
 | **A.8.10** — Information deletion | Not covered. HeartSuite's restricted `rm` under Lockdown limits accidental deletion but has no secure-deletion or data-retention controls. |
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
-| **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots, kernel-sealed from runtime interference. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
-| **A.8.15** — Logging | Kernel emits a per-decision enforcement stream (every execution, file access, and network decision) and a separate higher-level alert stream as structured RFC 5424 syslog under the `heartsuite` APP-NAME. Every allowlist approval is written to a dedicated, persistent JSONL log with timestamp, uid, and tty. An always-on rotating application audit log captures UI and core events. On-device activity buffers are cleared on maintenance; the syslog streams and dedicated JSONL approval log are the mechanisms for audit-period retention and reconstruction. Lockdown advisories are verdict-driven with provenance to the underlying records. |
-| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). The Fleet tab in Alert Settings configures a `node_id`, syslog server, and webhook URL; it is a one-way outbound push channel only. There is no built-in inbound API or remote allowlist control from HeartSuite itself. Central policy application and fleet-wide views are achieved by driving the per-host CLI tools (hs-manage-allowlist, batch tools) from your automation and consuming the syslog streams, JSONL approval log, status.json, and webhook into your SIEM / CMDB / orchestration layer. See [Central Policy Management and External Control](alerts/central-policy-management/). No fleet-wide or behavioural monitoring inside HeartSuite. |
+| **A.8.13** — Information backup | File Backup & Versioning provides automatic per-write versioned snapshots. Under Lockdown the kernel blocks write and delete to `/.hs/b/` for every program except Root Lock backup tooling. Backup files are versioned filesystem copies with no encryption at the HeartSuite layer; for data-at-rest requirements (GDPR, HIPAA, PCI DSS), disk-level encryption (dm-crypt/LUKS) must be configured at the OS level. No offsite copy capability. |
+| **A.8.15** — Logging | Kernel emits a per-**denial** enforcement stream (`HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, `HS-NET-DENY`) and a separate higher-level alert stream as structured RFC 5424 syslog under the `heartsuite` APP-NAME. Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log` (JSONL, timestamp, uid, tty; rotates at 1 MB + `.1`). An always-on rotating application audit log (`/var/log/heartsuite/ui.log`) captures UI and core events. On-device activity buffers are cleared on maintenance; the syslog streams and the JSONL approval log are the mechanisms for audit-period retention and reconstruction. Lockdown advisories are verdict-driven with provenance to the underlying records. |
+| **A.8.16** — Monitoring activities | Alert triggers deliver denial events to email, syslog, webhook, or passive status endpoint (`~/.cache/heartsuite/status.json`, updated every 60 seconds — see schema below). Alert Settings Email tab sets **Node ID** (`node_id` in JSON), SMTP, and **Your email**. The Fleet tab sets **Setup Mode Alerts**, the syslog switch (local `/dev/log` only — no syslog-server field), and **Webhook URL (must be HTTPS)**. All of those are one-way outbound or local write. There is no built-in inbound API or remote allowlist control from HeartSuite itself. Central policy application and fleet-wide views are achieved by driving the per-host CLI tools (`hs-app-perm-orders-manager`, batch tools) from your automation and consuming the syslog streams, JSONL approval log, status.json, and webhook into your SIEM / CMDB / orchestration layer. See [Central Policy Management and External Control](../alerts/central-policy-management/). No fleet-wide or behavioural monitoring inside HeartSuite. |
 | **A.8.17** — Clock synchronisation | Not covered. HeartSuite does not manage NTP or clock state. |
 | **A.8.18** — Use of privileged utility programs | Under Lockdown, privileged tools (editors, module loaders, file operation utilities) are sealed. Kernel-module hardening documentation covers `kmod` allowlisting. |
 | **A.8.19** — Installation of software on operational systems | Per-program execution allowlist enforces "approved programs only." New software cannot execute until it has been reviewed and approved through the Dashboard. |
@@ -151,34 +151,37 @@ Written to `~/.cache/heartsuite/status.json` every 60 seconds by the HeartSuite 
 | Field | Type | Notes |
 |---|---|---|
 | `node_id` | string | Configured host identifier |
-| `mode` | string | `"Lockdown"`, `"Setup Mode"`, or `"Unknown"` |
-| `is_hs_kernel` | bool | Whether the running kernel is the Root Lock kernel |
-| `lockdown` | bool | Whether Lockdown is currently active |
-| `lockdown_on_boot` | bool \| null | Lockdown re-engagement setting; null if unset |
-| `pending_programs` | int | Programmes awaiting review |
-| `pending_files` | int | Sum of `pending_file_r` + `pending_file_w` |
-| `pending_network` | int | Network destinations awaiting review |
+| `mode` | string | `"Secure Mode"`, `"Setup Mode"`, or `"Unknown"`. `"Secure Mode"` is the on-disk token; the Dashboard and email copy say **Lockdown**. |
+| `is_hs_kernel` | bool \| null | Whether the running kernel is the Root Lock kernel. `null` if the daemon did not observe the host this cycle. |
+| `lockdown` | bool \| null | Whether the immutable seal is currently applied. Separate from `mode`. |
+| `lockdown_on_boot` | bool \| null | Whether Lockdown re-engages on the next Root Lock boot |
+| `pending_programs` | int \| null | Programs awaiting review |
+| `pending_files` | int \| null | Sum of `pending_file_r` + `pending_file_w` |
+| `pending_network` | int \| null | Network destinations awaiting review |
+| `fully_protected` | bool \| null | True when `mode` is `"Secure Mode"` and the seal is applied |
+| `subscription` | string \| null | `"Active"` or `"Expired"` |
+| `version` | string | Build identity |
 | `last_alert_at` | string | ISO 8601 UTC timestamp of last alert, or empty string |
 | `updated_at` | string | ISO 8601 UTC timestamp of last daemon write |
 | `daemon_ok` | bool | Whether the HeartSuite daemon is running normally |
-| `channel_errors` | object | **Optional** — present only when the daemon passes an `AlertState` with errors |
+| `channel_errors` | object | Present when the daemon writes an `AlertState` (includes empty strings when healthy) |
 | └ `email.message` / `email.at` | string | Last email delivery error and its timestamp |
 | └ `syslog.message` / `syslog.at` | string | Last syslog delivery error and its timestamp |
 | └ `webhook.message` / `webhook.at` | string | Last webhook delivery error and its timestamp |
 
-For Nagios/Zabbix/Ansible polling, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that constitute a healthy Lockdown state.
+For Nagios/Zabbix/Ansible polling, `lockdown`, `is_hs_kernel`, and `daemon_ok` are the three fields that constitute a healthy Lockdown state. Treat `"Secure Mode"` plus `lockdown: true` as the sealed Lockdown posture.
 
 ---
 
 ## Open Questions
 
-The following 11 questions remain without a complete public answer. Status annotations indicate how close each is to being closeable.
+The following items remain open or only partly answerable. Kernel CVE process, OSV, and CycloneDX are no longer in that set.
 
 ### Evidence & Attestation
 
-1. **Can HeartSuite export a signed compliance evidence package** — a machine-readable record of the current allowlist, Lockdown state, and alert history — for submission to an auditor or GRC platform?
+1. **Can HeartSuite export a signed compliance evidence package** — a machine-readable record of the current allowlist, Lockdown state, and alert history — for submission to an auditor or GRC platform? Today you harvest `status.json`, the JSONL approval log, and syslog. There is no signed, single-file evidence package.
 
-2. **Does HeartSuite generate a time-stamped attestation of continuous Lockdown state?** `hs-status.json` reflects current state only; the daemon's reboot history records reboots, not continuous Lockdown state. There is no historical attestation record.
+2. **Does HeartSuite generate a time-stamped attestation of continuous Lockdown state?** `status.json` reflects current state only; the daemon's reboot history records reboots, not continuous Lockdown state. There is no historical attestation record.
 
 ### Access Control & Identity
 
@@ -186,9 +189,9 @@ The following 11 questions remain without a complete public answer. Status annot
 
 ### Vulnerability & Patch Management
 
-1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Mostly answerable in public docs.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets by severity, notification channels, and version-string semantics are in the [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner and audit workflows are in [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). Binding SLAs remain in the subscription agreement; OVAL/OSV feeds and GPG-signed bundles are not yet generally available.
+1. **How does HeartSuite handle kernel CVEs in its own kernel build?** *(Answerable in public docs.)* Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets by severity, notification channels, and version-string semantics are in the [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner and audit workflows are in [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). **OSV is published** (279 entries at [`/advisories/osv.json`](/advisories/osv.json)). OVAL XML and GPG-signed bundles are not generally available. Binding SLAs remain in the subscription agreement. Measured 6.18.9 hardening scores are still pending publication; see [Evidence Status](../kernel-hardening/evidence-status/).
 
-1. **Is there a published SBOM for the Root Lock kernel and Dashboard components?** *(Partially answerable.)* SPDX/CycloneDX SBOM and GPG/cosign bundle signing are on the public roadmap; today bundles use SHA-256 only. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/) and [Evidence Status](../kernel-hardening/evidence-status/).
+1. **Is there a published SBOM for the Root Lock kernel and Dashboard components?** *(Partially answerable.)* **CycloneDX** bundle SBOM and CONFIG-gate SBOM are published at [`/advisories/`](/advisories/). Installer bundles still use SHA-256 only — there is no GPG or cosign signature. SPDX dual-format is not generally available. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/).
 
 1. **What is HeartSuite's vulnerability disclosure and response program?** *(Organisational — not in the product.)* Customers need a responsible disclosure policy and CVE numbering authority (CNA) status for ISO 27001 A.5.22 procurement assessments.
 

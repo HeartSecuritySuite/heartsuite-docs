@@ -29,12 +29,12 @@ Initial setup runs unattended on first boot of the Root Lock kernel, and again a
 
 | Checklist | Purpose |
 |-----------|---------|
-| Program Allowlisting | Review and approve programs that need to execute |
-| Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
-| File Access Allowlisting | Review and approve file read/write access for programs |
-| Internet Access Allowlisting | Review and approve outbound internet connections |
-| Alert Settings | Set up notification channels (email, syslog, webhook) |
-| Lockdown | Activate Lockdown — locked until the earlier checklist items are complete |
+| 1. Program Allowlisting | Review and approve programs that need to execute |
+| 2. File Access Allowlisting | Review and approve file read/write access for programs |
+| 3. Internet Access Allowlisting | Review and approve outbound internet connections |
+| 4. Secure Script Launchers | Configure interpreters for Python, Perl, PHP (if applicable) |
+| 5. Alert Configuration | Set up notification channels (email, syslog, webhook) |
+| 6. Lockdown | Activate Lockdown — locked until the earlier checklist items are complete |
 
 ## Reduced kernel footprint
 
@@ -58,9 +58,9 @@ An allowlist entry says whether a program may execute, which files it may read o
 
 The Dashboard presents three review queues:
 
-- **Programs queue** (`[p]`) — programs attempting to execute
-- **File Access queue** (`[f]`) — programs attempting to read or write files
-- **Internet Access queue** (`[i]`) — programs attempting outbound connections
+- **Programs queue** (`[p]`) — programs that executed during Setup Mode
+- **File Access queue** (`[f]`) — programs that read or wrote files during Setup Mode
+- **Internet Access queue** (`[i]`) — programs that made outbound connections during Setup Mode
 
 File access is approved as **read** or **write**. Write includes read. See [Allowlisting Basics](../../allowlisting/allowlisting-basics/) for how the queues group volume.
 
@@ -71,13 +71,13 @@ File access is approved as **read** or **write**. Write includes read. See [Allo
 
 Activating Lockdown requires empty review queues, configured alerts, and an active subscription. Type `YES` (case-sensitive) to confirm.
 
-Once Lockdown is applied, the allowlist cannot change while the machine is running, including as root. `[r]` reboots with Lockdown active on next boot. `[m]` Maintenance is the path to make changes. See [Mode Switching and Lockdown](../../mode-switching/).
+Once Lockdown is applied, the allowlist cannot change while the machine is running, including as root. `YES` starts a probe reboot; a second reboot applies the seal. `[m]` Maintenance is the path to make changes. See [Lockdown](../../mode-switching/).
 
 ### 3. File backup and versioning
 
 Root Lock backs up files in designated directories on every write. The version manager can restore a version after encryption, deletion, or modification.
 
-Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. Root Lock's backups are not permission-protected: under Lockdown, the kernel itself blocks write access to backup files. No program, including root, can reach them.
+Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. Root Lock's backups are not permission-protected: under Lockdown, the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling, including root.
 
 When an approved program is compromised, recovery starts from the write before the damage, not the last scheduled snapshot.
 

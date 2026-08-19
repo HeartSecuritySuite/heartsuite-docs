@@ -2,7 +2,7 @@
 title: "From 2016 research to kernel default-deny"
 linkTitle: "Roadmap"
 description: "How program allowlisting, Lockdown, file versioning, and script launchers were designed as one architecture — and what is still ahead."
-lastmod: "2026-05-27"
+lastmod: "2026-08-18"
 weight: 110
 menu:
   main:
@@ -13,11 +13,13 @@ toc: true
 no_list: true
 ---
 
-Traditional endpoint security detects threats after they execute. Root Lock by HeartSuite takes the opposite approach: it prevents malware from executing in the first place — at the kernel level, where not even root can override the controls.
+Traditional endpoint security detects threats after they execute. Root Lock by HeartSuite takes the opposite approach: it prevents malware from executing in the first place — at the kernel, per program, including as root.
 
-Even if malware is downloaded to a Root Lock server, the architecture prevents it from running its harmful commands. That stops zero-day attacks before any signature, rule, or heuristic could catch them.
+In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. Recovery is the maintenance kernel via physical or serial-console access. See [Circumvention and recovery](../introduction/how-it-compares/#circumvention-and-recovery).
 
-The five core features that make this possible — program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers — were designed together as a single architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
+Even if malware is downloaded to a Root Lock server, it cannot run its harmful commands unless that program is already on the allowlist. That stops zero-day attacks before any signature, rule, or heuristic could catch them.
+
+The core features that make this possible — program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers — were designed together as a single architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 
 The foundations reach back to 2016: security had become an incoherent patchwork of disconnected tools with no unified design. Years of academic research followed — seven peer-reviewed papers on database security, forensics, and cryptographic erasure — culminating in *Zero Day Secure*, the book that articulates the problem Root Lock is built to solve.
 
@@ -41,24 +43,25 @@ gantt
     Purging Compliance from Backups — CYBER 2021                 :done, 2021-10-03, 2021-10-04
 
     section Design & Architecture (2021)
-    5 core features designed — prevent-before-detect  :done, 2021-01-01, 2021-12-31
+    Core features designed — prevent-before-detect     :done, 2021-01-01, 2021-12-31
     SPF binary format + 4 custom Linux syscalls        :done, 2021-06-01, 2022-03-31
     Patent applications filed                          :done, 2021-09-01, 2022-06-30
 
     section Kernel Engine (2022)
-    APO enforcement engine (Setup Mode + Lockdown)     :done, 2022-01-01, 2022-12-31
-    LSM replacement — all competing LSMs disabled      :done, 2022-01-01, 2022-09-30
-    eBPF intentionally disabled (BPF verifier surface) :done, 2022-01-01, 2022-09-30
+    Program allowlist engine (Setup Mode + Lockdown)   :done, 2022-01-01, 2022-12-31
+    LSM replacement — competing LSMs disabled          :done, 2022-01-01, 2022-09-30
+    eBPF compiled out (BPF verifier surface)           :done, 2022-01-01, 2022-09-30
+    FUSE and OverlayFS compiled out                    :done, 2022-01-01, 2022-09-30
     Network allowlist — IP-literal kernel enforcement  :done, 2022-06-01, 2022-12-31
-    APO audit logging                                  :done, 2022-11-01, 2023-01-31
+    Allowlist audit logging                            :done, 2022-11-01, 2023-01-31
 
     section Tooling Build-out (2023)
     Backup subsystem                                  :done, 2023-01-01, 2023-06-30
-    Shim programs — Python / Perl / PHP               :done, 2023-02-20, 2023-10-25
+    Secure Script Launchers — Python / Perl / PHP     :done, 2023-02-20, 2023-10-25
     Hash-based file versioning (supply-chain defence) :done, 2023-03-01, 2023-07-01
     Management tools — first compiled release (6 bins) :done, 2023-06-01, 2023-07-01
     Lockdown tooling                                  :done, 2023-09-11, 2023-10-31
-    APO manager + batch tools + shim manager          :done, 2023-10-01, 2023-11-30
+    Allowlist manager + batch tools + launcher manager :done, 2023-10-01, 2023-11-30
     US Patent 11,822,699 B1                           :done, 2023-11-21, 2023-11-22
 
     section v1.0 Release (2024)
@@ -73,31 +76,25 @@ gantt
     Linux 6.18 LTS kernel port                        :done, 2025-11-15, 2025-12-31
     Zero Day Secure — published (Simon & Schuster)    :done, 2025-10-01, 2025-10-02
 
-    section Open-Source Launch (2026 Q1)
+    section Public docs and 6.18 (2026 Q1)
     Linux 6.18 LTS          :done, 2026-01-15, 2026-02-24
-    Public open-source release — v1.6.2 tagged        :done, 2026-03-05, 2026-03-12
-    TUI overlay prototype                             :done, 2026-03-18, 2026-03-26
+    Public docs and /advisories/ feeds                :done, 2026-03-05, 2026-03-12
 
     section v1.6.4 Multi-Distro (2026 Q2)
-    Distro validation gate — 8 distributions          :done, 2026-04-22, 2026-04-26
+    Eight distributions evaluated                     :done, 2026-04-22, 2026-04-26
     GRUB automation + Alpine / OpenRC support         :done, 2026-04-23, 2026-04-29
     v1.6.4 commercial release — kernel 6.18.9         :done, 2026-04-26, 2026-04-27
 
     section TUI Dashboard (2026 Q2)
     Textual TUI — initial commit                      :done, 2026-04-28, 2026-04-29
     Review queues, cohort grouping, noise filter      :done, 2026-04-28, 2026-05-07
-    Alert system — SMTP, PagerDuty, OpsGenie          :done, 2026-04-28, 2026-05-07
+    Alert system — email, syslog, webhook             :done, 2026-04-28, 2026-05-07
     Allowlist management + backup & restore           :done, 2026-05-04, 2026-05-10
-    Lockdown auto-engages on every boot               :done, 2026-05-07, 2026-05-12
+    Lockdown re-engages on every Root Lock boot       :done, 2026-05-07, 2026-05-12
     Initial setup unattended install service          :done, 2026-05-12, 2026-05-14
 
     section In Progress
-    Container isolation via microVM — evaluation      :active, 2026-05-14, 2026-09-30
-
-    section Planned
-    Java shim launcher                               :2026-07-01, 2026-08-31
-    Network allowlist — CIDR and DNS support         :2026-07-01, 2026-09-30
-    Backup retention policies                        :2026-07-01, 2026-08-31
+    Host-as-VMM evaluation                            :active, 2026-05-14, 2026-09-30
 ```
 
 ## Feature details by status
@@ -144,8 +141,8 @@ gantt
 ### Design & architecture (2021)
 
 > [!NOTE]
-> **Five Core Features Designed — Prevent-Before-Detect Architecture** (~2021)  
-> The five core features that define HeartSuite were designed together as a single architecture before any kernel code was written: program allowlist (APO), Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers for interpreted code. The design goal was to stop malware from executing at all—not to detect it after the fact. This "prevent-before-detect" approach is what separates HeartSuite from traditional endpoint security.
+> **Core features designed — prevent-before-detect architecture** (~2021)  
+> The core features that define Root Lock were designed together as a single architecture before any kernel code was written: program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers for interpreted code. The design goal was to stop malware from executing at all—not to detect it after the fact. This "prevent-before-detect" approach is what separates Root Lock from traditional endpoint security.
 
 > [!NOTE]
 > **SPF (Secure Permission Format) Binary File Format** (~2021–2022)  
@@ -157,41 +154,45 @@ gantt
 
 > [!NOTE]
 > **Patent Applications Filed** (~2021–2022)  
-> The inventions behind APO enforcement and OS-level sandboxing were filed with the USPTO. Issued as US 11,822,699 B1 (November 2023) and US 11,983,288 B1 (May 2024).
+> The inventions behind program-allowlist enforcement and OS-level sandboxing were filed with the USPTO. Issued as US 11,822,699 B1 (November 2023) and US 11,983,288 B1 (May 2024).
 
 ---
 
 ### Kernel engine (2022)
 
 > [!NOTE]
-> **APO Enforcement Engine — Setup Mode + Lockdown** (2022)  
-> HeartSuite modifies five upstream kernel subsystems with enforcement hooks: program execution gating, file naming operations (create, rename, delete), file access control, outbound network restrictions, and process cleanup on exit. In Setup Mode, violations are logged but not blocked. In Lockdown, programs without an allowlist entry cannot execute, and programs with one cannot exceed it.
+> **Program allowlist engine — Setup Mode + Lockdown** (2022)  
+> Root Lock modifies five upstream kernel subsystems with enforcement hooks: program execution gating, file naming operations (create, rename, delete), file access control, outbound network restrictions, and process cleanup on exit. In Setup Mode, violations are logged but not blocked. In Lockdown, programs without an allowlist entry cannot execute, and programs with one cannot exceed it.
 
 > [!NOTE]
-> **LSM Replacement — HeartSuite Is the Only Security Module** (2022)  
-> HeartSuite does not layer on top of the Linux Security Module framework—it replaces it. AppArmor, TOMOYO, Landlock, and several other LSMs are all disabled at build time. HeartSuite implements its own path-based enforcement in their place, eliminating the interaction complexity and potential bypass paths that arise when multiple security modules run alongside each other.
+> **LSM replacement — Root Lock is the security module** (2022)  
+> Root Lock does not layer on top of the Linux Security Module framework — it replaces it. AppArmor, TOMOYO, Landlock, and several other LSMs are disabled at build time. Root Lock implements its own path-based enforcement in their place, eliminating the interaction complexity and potential bypass paths that arise when multiple security modules run alongside each other.
 
 > [!NOTE]
-> **eBPF Intentionally Disabled** (2022)  
+> **eBPF intentionally disabled** (2022)  
 > BPF system calls are disabled at build time. BPF verifier vulnerabilities have historically bypassed the exact kernel hooks Root Lock relies on for enforcement. Disabling eBPF closes that path permanently.
 >
 > Local eBPF tooling is not a fit by design: the BPF syscall is how attackers hide, reach root, and bypass host controls. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
 
 > [!NOTE]
-> **FUSE and OverlayFS Intentionally Disabled** (2022)  
-> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel.
+> **FUSE and OverlayFS intentionally disabled** (2022)  
+> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, as the [Container-host install](../introduction/containers-and-microvms/) for a long-lived image set, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel.
+
+> [!NOTE]
+> **Current 6.18 commercial kernel**  
+> The 2022 design above is the 5.19 line. On the current 6.18 commercial kernel those interfaces are compiled in; “not a fit” is allowlist and mount policy, not a missing syscall. Workload notes: [System Requirements](../introduction/system-requirements/#software-compatibility-notes).
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  
-> Outbound network connections are checked by the kernel against the IP entries in a program's allowlist entry. The allowlist is literal-IP-only: no CIDR ranges, no DNS resolution, no wildcards. Each destination IP must be enumerated explicitly. IPv4 and IPv6 addresses are separate entries. For services behind round-robin DNS or CDNs, operators route egress through a fixed-IP forward proxy that is itself allowlisted.
+> Outbound network connections are checked by the kernel against the IP entries in a program's allowlist entry. The allowlist is literal-IP-only: no CIDR ranges, no DNS resolution, no wildcards. Each destination IP must be enumerated explicitly. IPv4 and IPv6 addresses are separate entries. For services behind round-robin DNS or CDNs, route egress through a fixed-IP forward proxy that is itself allowlisted.
 
 > [!NOTE]
 > **LRU Sandbox Cache — Scales to Thousands of Concurrent Instances** (2022)  
 > Only one allowlist entry needs to be loaded into kernel memory per running program, regardless of how many concurrent instances are running. The cache uses a configurable LRU policy (default: 25 entries, minimum: 10) with timestamp-based eviction. Memory overhead stays flat even on heavily loaded servers.
 
 > [!NOTE]
-> **APO Log Infrastructure** (late 2022)  
-> All kernel-intercepted events—program launches, file access attempts, and outbound connection attempts—are recorded as structured log entries. These feed the TUI review queues and the alert daemon. The integrity of the logging surface is continuously verified by CI.
+> **Allowlist log infrastructure** (late 2022)  
+> All kernel-intercepted events—program launches, file access attempts, and outbound connection attempts—are recorded as structured log entries. These feed the Dashboard review queues and the alert daemon.
 
 > [!NOTE]
 > **kmod and kexec Attack Paths Closed by Default** (2022)  
@@ -206,28 +207,24 @@ gantt
 > The in-kernel backup-on-write subsystem comes online. When a file in a monitored directory is closed after a write, the kernel automatically invokes the backup tool. Only the HeartSuite backup binary can access the backup store; no other program has an allowlist entry for it, making the backup archive inaccessible to malware.
 
 > [!NOTE]
-> **Shim Programs — Python, Perl, PHP** (February 2023)  
-> Four Secure Script Launchers extend allowlist gating to interpreted code. When a script is launched through an HS shim, the kernel checks that the *script path itself* has an allowlist entry—not just the interpreter binary. This prevents a malicious Python script from running simply because the Python interpreter is approved.
+> **Secure Script Launchers — Python, Perl, PHP** (February 2023)  
+> Four Secure Script Launchers extend allowlist gating to interpreted code. When a script is launched through a launcher, the kernel checks that the *script path itself* has an allowlist entry—not just the interpreter binary. This prevents a malicious Python script from running simply because the Python interpreter is approved.
 
 > [!NOTE]
 > **Hash-Based File Versioning** (~mid-2023)  
 > Each backed-up file version is stored in a hash-named directory. Version hashes prevent supply-chain attacks: a modified file produces a different hash, making the tampered version distinguishable from any approved version. The version manager retrieves any specific version by hash.
 
 > [!NOTE]
-> **Management Tools — First Compiled Release** (June 2023)  
-> Six production binaries compiled in a single release: `hs-APO-cache-size`, `hs-monitor-state`, `hs-backup`, `hs-version-manager`, `hs-shim-manager`, and `hs-backup-config-manager`.
-
-> [!NOTE]
 > **Lockdown Tooling** (September–October 2023)  
 > `HS_lockdown.sh` applies immutability to critical paths across seven categories: HeartSuite config and tooling, the allowlist database, system authentication files, SSH configuration, the boot partition, systemd unit directories, and cron directories. This closes the attack path where an attacker schedules a script at next boot to re-widen permissions. Lockdown is reboot-only-reversible—there is no runtime command that clears it.
 
 > [!NOTE]
-> **APO Manager + Batch Tools** (October 2023)  
-> The allowlist manager and a suite of batch population tools finalize. `add_start_and_shutdown_programs.py` automates the Setup Mode workflow: it parses kernel log events and promotes them into allowlist entries, reducing manual setup to edge cases.
+> **Allowlist manager + batch tools** (October 2023)  
+> The allowlist manager and batch population tools finalize. During Setup Mode, kernel log events can be promoted into allowlist entries so most of the initial inventory does not have to be typed by hand.
 
 > [!NOTE]
 > **US Patent 11,822,699 B1 — Issued** (November 21, 2023)  
-> *Preventing Surreptitious Access to File Data by Malware.* Covers the core APO enforcement model: removing plenary power from applications and enforcing per-program file and network access through kernel modifications.
+> *Preventing Surreptitious Access to File Data by Malware.* Covers the core program-allowlist enforcement model: removing plenary power from applications and enforcing per-program file and network access through kernel modifications.
 
 ---
 
@@ -235,11 +232,7 @@ gantt
 
 > [!NOTE]
 > **HeartSuite v1.0 — Linux 5.19.6** (January 20, 2024)  
-> First full production release: compiled kernel, tools, installer, systemd service units, and operator documentation. Shipped to beta customers on Debian 11.
-
-> [!NOTE]
-> **Setup Documentation** (November 2023)  
-> Comprehensive operator guide covering the full lifecycle: installation, Setup Mode log-to-allowlist workflow, shim configuration, automatic file backup setup, mode switching, licensing, Lockdown, maintenance, cache size adjustment, and the complete tool inventory.
+> First full production release: compiled kernel, tools, installer, systemd service units, and documentation. Shipped to beta customers on Debian 11.
 
 > [!NOTE]
 > **Two Distribution Models**  
@@ -255,47 +248,39 @@ gantt
 
 > [!NOTE]
 > **18 Months of Continuous Production Deployment** (2024–2025)  
-> HeartSuite v1.0 shipped in January 2024 and ran in production continuously through 2025 without a kernel change. Real deployments shaped the tooling, the allowlist workflow, and operator documentation. By the time v1.6 was scoped, the core architecture had already proven itself under live conditions—not in a lab.
+> HeartSuite v1.0 shipped in January 2024 and ran in production through 2025. Real deployments shaped the tooling, the allowlist workflow, and documentation.
 
 > [!NOTE]
 > **LTS-Only Kernel Strategy — No Chasing Releases** (2025)  
-> A full compatibility report was produced for Linux 6.12, then set aside: 6.12 is not an LTS kernel. HeartSuite commits only to long-term support kernels, so operators are never forced onto a short-maintenance-window base. 6.18 LTS was selected as the next target.
+> A full compatibility report was produced for Linux 6.12, then set aside: 6.12 is not an LTS kernel. Root Lock commits only to long-term support kernels, so you are never forced onto a short-maintenance-window base. 6.18 LTS was selected as the next target.
 
 > [!NOTE]
-> **Eight Linux Distributions — Evaluated and Targeted** (late 2025)  
-> Before writing a line of installer code, every target distribution was evaluated for init system, bootloader, kernel packaging, and service management differences. The result: a v1.6.4 installer that works correctly on eight distributions by design, not as an afterthought.
+> **Eight Linux distributions — evaluated and targeted** (late 2025)  
+> Before writing a line of installer code, every target distribution was evaluated for init system, bootloader, kernel packaging, and service management differences. That work produced the v1.6.4 installer. Current support and lab tiers: [Distro Compatibility](../kernel-hardening/distro-compatibility-matrix/).
 
 > [!NOTE]
 > **Linux 6.18 LTS Kernel Port** (late 2025)  
-> Full port from the 5.19.6 line to Linux 6.18 LTS, covering hook relocations and syscall ABI changes. Documented as a reference for future kernel version upgrades.
+> Full port from the 5.19.6 line to Linux 6.18 LTS.
 
 > [!NOTE]
-> **Zero Day Secure — Book Published** (~October 2025)  
-> Karen Heart's *Zero Day Secure: Why Modern Operating Systems Can't Stop Malware and How to Fix Them*, published by Simon & Schuster (ISBN 9781968865078). The book presents the architectural argument that HeartSuite implements in code: that operating systems must be redesigned to prevent malware execution at the kernel level, not detect it after the fact. It is the written form of the insight that motivated nine years of research and development—from the first frustration in 2016 to a running kernel in production.
+> **Zero Day Secure — book published** (~October 2025)  
+> *Zero Day Secure: Why Modern Operating Systems Can't Stop Malware and How to Fix Them*, published by Simon & Schuster (ISBN 9781968865078). The book presents the architectural argument that Root Lock implements in code: that operating systems must be redesigned to prevent malware execution at the kernel level, not detect it after the fact.
 
 ---
 
-### Open-source launch — v1.6.2 (2026 Q1)
-
-> [!NOTE]
-> **Decision: Target Linux 6.18 LTS** (January–February 2026)  
-> Following the 6.12 compatibility analysis, 6.18 was selected as the porting target: it is a long-term support kernel with a stable maintenance window that matches HeartSuite's release cadence.
+### Public docs and 6.18 — v1.6.2 (2026 Q1)
 
 > [!NOTE]
 > **Documentation and advisory transparency — v1.6.2 onward** (March 2026)  
-> Public documentation site and machine-readable advisory feeds at `/advisories/`. Root Lock kernel corresponding source is available on written GPL request via support@heartsecsuite.com; a public kernel source repository is not offered at this time.
-
-> [!NOTE]
-> **TUI Overlay Prototype** (March 18–26, 2026)  
-> First working Textual TUI overlay: naming overlay, log viewer, tree parser, and Layer 1 CLI tools. Category colors and three-pane dashboard layout established.
+> Public documentation site and machine-readable advisory feeds at `/advisories/` (CONFIG-gate SBOM, OSV, CycloneDX). Root Lock kernel corresponding source is available on written GPL request via support@heartsecsuite.com.
 
 ---
 
 ### v1.6.4 multi-distro release (April 2026)
 
 > [!NOTE]
-> **Multi-Distro Validation Gate — 8 Distributions** (April 22–26, 2026)  
-> Validated on Debian 12, Debian 13 (Trixie), Ubuntu 24.04, Fedora 41, Rocky 9.7, CentOS Stream 9, Alpine 3.21, and openSUSE Tumbleweed. A cross-distro release gate runs after every kernel update.
+> **Eight distributions evaluated** (April 22–26, 2026)  
+> The v1.6.4 installer was exercised across Debian, Ubuntu, Fedora, Rocky, CentOS Stream, Alpine, and openSUSE. For which of those are Supported, In lab, or Experimental today, use [Distro Compatibility](../kernel-hardening/distro-compatibility-matrix/).
 
 > [!NOTE]
 > **GRUB Automation + Alpine / OpenRC Support** (April 23–29, 2026)  
@@ -311,97 +296,55 @@ gantt
 
 > [!NOTE]
 > **Textual TUI Dashboard** (April 28, 2026)  
-> Root-only, SSH-compatible, keyboard-first management console. No graphical environment required. All six setup phases trackable from the Dashboard.
+> Root-only, SSH-compatible, keyboard-first management console. No graphical environment required. The six-row Lockdown Checklist is trackable from the Dashboard.
 
 > [!NOTE]
 > **Three Review Queues — Programs, File Access, Internet Access**  
 > Cohort-first traversal, inline help overlays, sidebar with cohort groupings. Ghost files display with a "no longer exists" label. Approved items leave the queue permanently.
 
 > [!NOTE]
-> **Alert System — SMTP, Syslog, PagerDuty, OpsGenie** (April–May 2026)  
-> Guided six-phase configuration. Alert daemon runs as a background service. Supports RFC 5424 syslog, PagerDuty Events API v2, and OpsGenie native format.
+> **Alert system — email, syslog, webhook** (April–May 2026)  
+> Alert Settings (`[e]`) has two tabs: Email and Fleet. Email is SMTP. Fleet is syslog, webhook, and Node ID. The alert daemon runs as a background service. Webhook delivery can target PagerDuty Events API v2 and OpsGenie when you paste those HTTPS endpoints.
 
 > [!NOTE]
-> **Lockdown Engages Automatically on Every Boot** (May 2026)  
-> From the moment HeartSuite activates, Lockdown is always on. Five path categories are sealed unconditionally—there is no configuration switch to skip it. The only way to lift Lockdown is to reboot into a maintenance kernel; no runtime command can clear it.
+> **Lockdown re-engages on every Root Lock boot** (May 2026)  
+> You review queues in Setup Mode, then type `YES` to activate Lockdown. Once Lockdown is on, five path categories are sealed, and `HS_lockdown.sh` re-engages that seal on every Root Lock kernel boot. The path out is Maintenance (`[m]`) and the maintenance kernel, via physical or serial-console access if automatic GRUB configuration does not apply.
 
 > [!NOTE]
 > **Initial Setup Unattended Install Service** (May 2026)  
-> A systemd oneshot service (with OpenRC shim) chains the allowlist approval loop across reboots without requiring an active operator session. Setup Mode completes automatically: the service pre-seeds allowlist entries, tracks setup state, and signals readiness—no console session required between reboots.
+> A systemd oneshot service (with an OpenRC equivalent) chains the allowlist approval loop across reboots without an active console session. Initial setup completes automatically: the service pre-seeds allowlist entries, tracks setup state, and signals readiness—no console session required between reboots.
 
 > [!NOTE]
 > **Allowlist Management, Backup & Restore, Maintenance Wizard**  
 > Per-entry allowlist removal, bulk stale-entry cleanup, backup timeline view with date-based restore, and a two-path maintenance wizard (simple update vs. new-program approval cycle).
 
----
-
-### Infrastructure + CI (2026)
-
-> [!NOTE]
-> **Formal Verification Framework** (May 2026)  
-> A multi-gate verification framework covers build checks, static analysis, syscall smoke testing on both allow and deny paths, memory safety testing, cross-distro validation across all 8 supported distributions, post-Lockdown mount refusal verification, and a source-surface manifest that ensures no enforcement hook is silently removed or disabled.
-
-> [!NOTE]
-> **Always-On UI Audit Log + Safe Error Handling** (May 2026)  
-> All UI actions logged to a rotating file. Silent error handling eliminated across the UI and core layers. A CI walker enforces this on every commit.
-
 {{% /tab %}}
 {{% tab header="In Progress" %}}
 
-> [!WARNING]
-> **Container Support**  
-> Direct shared-kernel container hosting (Docker, containerd, Podman on a host running the Root Lock kernel) is not part of the strict design — it would require OverlayFS and user namespaces, the privilege-escalation primitives the Root Lock kernel intentionally omits on the strict baseline. The supported path is OCI images built and run off-host.  
->
-> **MicroVM evaluation (host-as-VMM only):** Root Lock as the **guest** kernel inside a per-task VM/microVM (Kata, Firecracker, or plain KVM) is shipped — see [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes) and [Containers & microVMs](../introduction/containers-and-microvms/). **Host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests.
+### Host-as-VMM evaluation
 
-> [!WARNING]
-> **File-Access Consequence Text**  
-> The file review currently understates the scope of a file-access permission — naming the file rather than the parent directory that the allowlist entry actually covers. Fix specified; not yet applied.
+Root Lock as the **guest** kernel inside a per-task VM or microVM (Kata, Firecracker, or plain KVM) is **shipped**. The Container-host install for a long-lived, steady image set is also shipped. See [Containers and microVMs](../introduction/containers-and-microvms/) and [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-> [!WARNING]
-> **Lockdown — final form**  
-> Lockdown activation is automatic on boot. The inventory during activation is read-only. The Lockdown button integrates the checklist. Type `YES` to confirm.
+What is still under evaluation: **host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests. A Root Lock kernel as the KVM *host* is not a supported product role.
+
+Shared-kernel Docker, containerd, or Podman as the default on a Standard-host install remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window. Continuous scheduling is not the design.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}
 
+No delivery dates are committed for the items below.
+
 ### User-facing features
 
-> [!NOTE]
-> **Java Shim Launcher**  
-> The five shipped Secure Script Launchers cover Python 2, Python 3, Perl, and PHP. A Java launcher is planned: Java scripts and applications would receive the same per-script APO enforcement that Python/Perl/PHP enjoy today. Without it, Java deployments are APO-gated at the JVM binary level only, not at the individual `.jar` or script level.
+**Java launcher.** Four Secure Script Launchers ship today: Python 2, Python 3, Perl, and PHP. A Java launcher is planned so `.jar` files and Java applications receive the same per-script allowlist entry that Python/Perl/PHP scripts get. Until then, Java is gated at the JVM binary only.
 
-> [!NOTE]
-> **Network Allowlist — CIDR and DNS Support**  
-> The current network allowlist is literal-IP-only: no CIDR ranges, no DNS resolution, no wildcards. Adding CIDR support would allow a subnet to be expressed as a single entry rather than enumerating every IP individually—significant for cloud deployments where destination IPs are dynamic or managed via DNS.
+**Network allowlist — CIDR and DNS.** The network allowlist is still literal IPv4/IPv6 only: no CIDR ranges, no DNS resolution, no wildcards. CIDR would let a subnet be one entry. Until then, enumerate each IP or route egress through a fixed-IP forward proxy that is itself allowlisted.
 
-> [!NOTE]
-> **Backup Retention — Configuration Backend Integration**  
-> Tiered retention policy UI is designed (7-day full / 90-day daily / monthly). The backup configuration tool needs per-directory retention subcommands before the UI can connect.
+**Backup retention.** Versions are never automatically deleted today. A tiered retention policy (7-day full / 90-day daily / monthly) is planned.
 
-> [!NOTE]
-> **Multi-File Selection in Restore**  
-> Version manager currently restores one file at a time. Multi-file and directory-level restore selection planned.
-
----
-
-### Testing & verification
-
-> [!NOTE]
-> **Kernel Self-Tests + Filesystem Test Suite**  
-> Two additional test suites are defined in the verification framework and deferred pending resource allocation.
-
-> [!NOTE]
-> **Extended Fuzz Testing**  
-> Fuzz testing of the allowlist record parser and the custom system call interfaces is planned as a future verification gate.
+**Multi-file selection in restore.** The version manager restores one file at a time from the CLI. Dashboard Timeline already supports date-filtered batch restore. Multi-file and directory-level restore from the version manager is planned.
 
 {{% /tab %}}
 {{< /tabpane >}}
 
-## Community-driven development
-
-Join the conversation—suggest features, report issues, or discuss the architecture.
-
-### Get started
-
-[Get Started](/docs/) | [Open an Issue](https://github.com/HeartSecuritySuite/heartsuite-docs/issues/new)
+[Get Started](/docs/) · [support@heartsecsuite.com](mailto:support@heartsecsuite.com)

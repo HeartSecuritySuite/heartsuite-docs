@@ -17,7 +17,7 @@ type: docs
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Mode Switching and Lockdown](mode-switching/) covers activation.
+In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Lockdown](mode-switching/) covers activation.
 
 Root Lock supports two setup paths. Both arrive at the Dashboard after initial setup.
 
@@ -38,7 +38,7 @@ Root Lock fits production servers, regulated workstations, build and CI infrastr
 - [Deployment Scenarios](introduction/deployment-scenarios/) — Where Root Lock fits best, and where it doesn't.
 - [How Root Lock Compares](introduction/how-it-compares/) — What Root Lock replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
 - [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
-- [Mode Switching and Lockdown](mode-switching/) — Setup Mode and Lockdown.
+- [Lockdown](mode-switching/) — Setup Mode and Lockdown.
 
 ## Get started
 
@@ -56,7 +56,7 @@ The pages below are the individual steps, linked from Quick Start:
 - [Alert Settings](alerts/) — Set up push notifications for blocks and state changes.
 - [SIEM and Fleet Integration](alerts/siem-integration/) — Connect to Splunk, Elastic, PagerDuty, and other tools at fleet scale (syslog, webhook, status JSON).
 - [Central Policy Management and External Control](alerts/central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation.
-- [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, and cache adjustment.
+- [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, cache adjustment, kmod file-access narrowing, and updating Root Lock.
 
 ## Troubleshoot and reference
 
