@@ -17,11 +17,12 @@ menu:
 
 Two different programs running under the same user get separate allowlist entries with separate permissions. The Dashboard guides you through each approval and tracks your progress.
 
-Allowlisting spans three phases of the Root Lock setup process:
+The Dashboard Lockdown Checklist shows three review queues, then Secure Script Launchers as a separate row (not a queue):
 
-- **Phase 2 — Program Allowlisting** (`[p]`): Approve which programs are permitted to execute.
-- **Phase 4 — File Access Allowlisting** (`[f]`): Approve which files and directories each program can read or write.
-- **Phase 5 — Internet Access Allowlisting** (`[i]`): Approve which outbound internet destinations each program can reach.
+1. **Program Allowlisting** (`[p]`): Approve which programs are permitted to execute.
+2. **File Access Allowlisting** (`[f]`): Approve which files and directories each program can read or write.
+3. **Internet Access Allowlisting** (`[i]`): Approve which outbound internet destinations each program can reach.
+4. **Secure Script Launchers** (`[s]`): Give each Python, Perl, or PHP script its own allowlist entry. See [Script Launchers](../script-launchers/).
 
 Start from the Dashboard — it shows how many items are waiting in each queue and the Suggested Next Step directs you to whichever needs attention. The review queues manage volume through intelligent grouping, not blind bulk approval.
 
