@@ -112,7 +112,7 @@ They can observe a Root Lock host from adjacent infrastructure via network taps 
 
 Root Lock's value is the sealed boundary (`chattr +i` immutability plus a running kernel that refuses runtime changes), not richer policy syntax.
 
-Migrating from AppArmor requires no cleanup: `CONFIG_SECURITY_APPARMOR` is compiled out of the Root Lock kernel and existing profiles cease to apply at the first Root Lock kernel boot.
+On **5.19.6**, `CONFIG_SECURITY_APPARMOR` is compiled out and existing profiles cease to apply at the first Root Lock kernel boot. On fielded **6.18.9-hs**, AppArmor is present in the live LSM list — do not assume profiles disappeared.
 
 *seccomp-bpf sandboxes* in systemd services, browser sandboxes, bubblewrap, and firejail sit closer to the syscall surface than Root Lock can. A Chromium renderer's own seccomp filter is genuine defence-in-depth from inside the program; Root Lock does not replace it, and both layers are worth keeping.
 
