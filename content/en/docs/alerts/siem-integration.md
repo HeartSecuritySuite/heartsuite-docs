@@ -11,7 +11,7 @@ type: docs
 
 **Overview**: Root Lock by HeartSuite integrates with your existing SIEM, EDR, and observability stack via syslog (journald/rsyslog) and webhook. Configure once in Alert Settings → Fleet, and let your central tooling handle monitoring, correlation, and alerting. There is no requirement to run the Dashboard on every host for day-to-day fleet visibility.
 
-Raw **denial** decisions and higher-level alerts are emitted in real time. Successful allowlisted work is not streamed. That is not a complete IR picture — it is the block stream. Incident tools receive the events you configure them to receive.
+Raw **denial** decisions and higher-level alerts are emitted in real time. Successful allowlisted work is not streamed. Incident tools receive the events you configure them to receive.
 
 ## Syslog (recommended for SIEM ingestion)
 

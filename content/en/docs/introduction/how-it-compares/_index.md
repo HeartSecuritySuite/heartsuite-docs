@@ -289,13 +289,13 @@ Root Lock makes a class of attacks impossible rather than merely visible. Your S
 
 ### How Root Lock feeds these tools
 
-Block events reach a SIEM via two RFC 5424 syslog streams, both delivered to `/dev/log` with APP-NAME `heartsuite`. One rsyslog rule forwards both:
+Block events reach a SIEM via the local journal under identifier `heartsuite` (written to `/dev/log`). One rsyslog rule can forward that identifier; how it lands on the wire (RFC 3164 vs RFC 5424) depends on your rsyslog/journald configuration, not on Root Lock.
 
 ```text
 :programname, isequal, "heartsuite" @@your-siem:514
 ```
 
-The enforcement stream emits one datagram per kernel decision (MSGID `HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, `HS-NET-DENY`; structured data carries `type`, `prog`, and `target`; lag ≤1 second). The alert stream carries aggregated events (`new_program_blocked`, `network_burst`, and others).
+The enforcement stream emits one record per **denial** (`HS-PROG-DENY`, `HS-FILE-DENY`, `HS-FILE-WDENY`, `HS-NET-DENY`). The alert stream carries aggregated events (`new_program_blocked`, `network_burst`, and others). Successful allowlisted work is not streamed.
 
 For push notifications, an HTTPS webhook (JSON; native PagerDuty Events API v2 and OpsGenie Alert API adapters) delivers alert-level events only. Webhook and email timestamps reflect alert evaluation time, not kernel event time; when correlating across sources, account for up to the daemon poll interval (typically 30–60 s).
 

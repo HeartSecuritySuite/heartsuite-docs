@@ -2,7 +2,7 @@
 title: "Compliance questions, answered on one page"
 linkTitle: "Compliance Quick Reference"
 weight: 111
-description: "Direct answers to questions that come up in sales, briefings, and customer GRC preparation — with links to the NIST, ISO 27001, and SOC 2 maps. Not examination procedures."
+description: "Direct answers for sales, briefings, and customer GRC preparation, with links to the NIST, ISO 27001, and SOC 2 maps."
 categories: ["Reference"]
 tags: ["compliance", "NIST", "ISO 27001", "quick reference"]
 type: docs
@@ -36,7 +36,7 @@ These are the paths sealed by default. During maintenance on the maintenance ker
 
 **Which ISO 27001:2022 Annex A controls can a customer SoA cite as technical contributions?**
 
-A.8 technological controls — particularly A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.15, A.8.19 — as **contributions**, not coverage. A.5.15 is an organizational access **policy**; the kernel can enforce a policy the customer already wrote. **A.5.23 is cloud-use governance, not ICT supply chain** (that is A.5.21) and is not a Root Lock strength. A product cannot satisfy Annex A; the organization's ISMS and Statement of Applicability do.
+A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.15, and A.8.19. Cite them as contributions on the customer's Statement of Applicability. A.5.15 is the customer's access **policy**; the kernel can enforce that policy once it exists. ICT supply chain is **A.5.21**. **A.5.23** is cloud-use governance.
 
 ---
 

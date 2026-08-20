@@ -7,13 +7,13 @@ tags: ["compliance", "NIST", "ISO 27001"]
 type: docs
 ---
 
-This document maps Root Lock by HeartSuite capabilities to the NIST Cybersecurity Framework (CSF) **1.1** and ISO/IEC 27001:2022 **Annex A** as **technical contributions** a customer may cite after their own risk assessment. It is not a Statement of Applicability, not an ISMS, and not a product certification.
+This document maps Root Lock by HeartSuite capabilities to NIST CSF **1.1** and ISO/IEC 27001:2022 **Annex A** as technical contributions a customer may cite after their own risk assessment.
 
-ISO 27001 certifies an **organization's ISMS** (clauses 4–10). Annex A is a reference control set selected in a **Statement of Applicability**. CSF 1.1 outcomes are organizational. A kernel allowlist does not “cover A.8” or “implement ISO 27001.”
+ISO 27001 certifies an organization's ISMS (clauses 4–10). Annex A is the reference set declared in a **Statement of Applicability**. CSF 1.1 outcomes are organizational. Put this product on the SoA only where a kernel allowlist actually treats the risk.
 
-CSF 2.0 (February 2024) reorganized Protect (for example PR.AC → PR.AA). This page stays on **1.1 IDs** so the table does not mix versions. It is not a 2.0 crosswalk.
+CSF 2.0 (February 2024) reorganized Protect (PR.AC → PR.AA and similar). This page stays on **1.1 IDs** so the table is one version.
 
-Root Lock is a **preventive enforcement layer**, not a comprehensive compliance platform. It enforces a default-deny execution, file-access, and network policy at kernel level — one that, under Lockdown, remote root is not intended to lift at runtime.
+Root Lock is a preventive enforcement layer: default-deny execution, file access, and outbound network policy at the kernel. Under Lockdown, remote root has no intended path to lift that policy at runtime.
 
 For SOC 2 Trust Services Criteria mapping, see the [SOC 2 Control Mapping](../soc2/) document.
 
@@ -100,7 +100,7 @@ Cite these only in a customer **Statement of Applicability** after risk treatmen
 
 ### A.5: Organisational controls
 
-Most A.5 rows are **organizational**. A host kernel does not implement them.
+Most A.5 rows are **organizational**.
 
 | Control | HeartSuite contribution |
 |---|---|
@@ -137,7 +137,7 @@ In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial 
 | **A.8.5** — Secure authentication | **Not covered.** HeartSuite provides no authentication mechanism. Sealing `/etc/passwd` and `sshd_config` is integrity of those files, not authentication. |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
 | **A.8.8** — Management of technical vulnerabilities | Not covered. HeartSuite constrains the impact of unpatched vulnerabilities via allowlist boundaries but does not scan for, report on, or remediate them. |
-| **A.8.9** — Configuration management | Allowlist plus Lockdown is an enforced host configuration state. Changes take a maintenance window. No HeartSuite multi-host push. Customer automation applies policy per host. No emergency revocation while Lockdown is sealed. **Boot integrity:** fielded 6.18.9-hs has `CONFIG_KEXEC_FILE=y` and live LSM includes IMA/EVM; do not cite 5.19.6 `CONFIG_IMA` / `CONFIG_KEXEC_FILE` not-set as the current pin. Secure Boot for the HS kernel remains incomplete. See [Threat model](../kernel-hardening/auditor-brief/) and [Central Policy Management](../alerts/central-policy-management/). |
+| **A.8.9** — Configuration management | Allowlist plus Lockdown is an enforced host configuration state. Changes take a maintenance window. No HeartSuite multi-host push. Customer automation applies policy per host. No emergency revocation while Lockdown is sealed. Boot-path integrity: `CONFIG_IMA` is not set and `CONFIG_KEXEC_FILE` is not set. The kernel image directory is sealed under Lockdown via `chattr +i`. Secure Boot for the HS kernel remains incomplete. See [Central Policy Management](../alerts/central-policy-management/). |
 | **A.8.10** — Information deletion | Not covered. HeartSuite's restricted `rm` under Lockdown limits accidental deletion but has no secure-deletion or data-retention controls. |
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
@@ -203,7 +203,7 @@ The following items remain open or only partly answerable. Kernel CVE process, O
 
 ### Vulnerability & Patch Management
 
-1. **How does HeartSuite handle kernel CVEs in its own kernel build?** Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets, notification channels, and version-string semantics: [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner workflow: [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). **OSV is published** (279 entries at [`/advisories/osv.json`](/advisories/osv.json)). Treat those OSV records as HeartSuite’s feed, not as a substitute for CSAF/VEX, and confirm gates on the **running pin** — fielded 6.18.9-hs does not compile BPF/FUSE/io_uring out. OVAL XML and GPG-signed bundles are not generally available. Binding SLAs remain in the subscription agreement. Measured 6.18.9-hs #37 scores are published; see [Evidence Status](../kernel-hardening/evidence-status/).
+1. **How does HeartSuite handle kernel CVEs in its own kernel build?** Active kernel maintenance is evidenced by the 5.19.6 → 6.18 LTS port. Public patch targets, notification channels, and version-string semantics: [Kernel Support Policy](../kernel-hardening/kernel-support-policy/). Scanner workflow: [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/). **OSV is published** (279 entries at [`/advisories/osv.json`](/advisories/osv.json)). OVAL XML and GPG-signed bundles are not generally available. Binding SLAs remain in the subscription agreement. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 1. **Is there a published SBOM for the Root Lock kernel and Dashboard components?** *(Partially answerable.)* **CycloneDX** bundle SBOM and CONFIG-gate SBOM are published at [`/advisories/`](/advisories/index.json). Installer bundles still use SHA-256 only — there is no GPG or cosign signature. SPDX dual-format is not generally available. See [Supply Chain and Advisory Feeds](../kernel-hardening/supply-chain-and-advisories/).
 
