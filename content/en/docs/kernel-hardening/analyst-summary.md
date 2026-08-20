@@ -19,7 +19,7 @@ That count is not a capability cut. The kernel is built for one job. Nothing els
 
 Root Lock also disables the kernel features most often used to bypass security controls: BPF (a programmable kernel interface), FUSE (user-space filesystems), overlay filesystems, and competing security policy engines including AppArmor and SELinux. Each of these has been used in documented real-world attacks to escape software sandboxes or override security policies.
 
-On an independent audit with the open-source `kernel-hardening-checker` tool — the same tool Linux kernel security researchers use — the Root Lock kernel outperforms Arch linux-hardened on attack-surface measures.
+On a run of the open-source `kernel-hardening-checker` config linter — the same tool Linux kernel security researchers use — the Root Lock kernel outperforms Arch linux-hardened on attack-surface measures.
 
 Scores, compared on the same 5.19.x kernel generation so they are directly equivalent: **91 out of 132** checks passed by Root Lock versus **77 out of 132** for Arch linux-hardened.
 

@@ -2,7 +2,7 @@
 title: "What a red team should test on this kernel"
 linkTitle: "Auditor Brief"
 weight: 22
-description: "Hardening posture for auditors and red teams on the fielded 6.18.9-hs #37 pin, with the 5.19.6 pack kept as legacy."
+description: "Threat model, measured scores, and residual risks on the fielded 6.18.9-hs #37 pin. 5.19.6 remains the legacy pack."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
@@ -72,7 +72,7 @@ The 5.19.6 “sole enforcing MAC / SELinux permissive / no securityfs” write-u
 **4. Can root unseal the allowlist or turn enforcement off?**  
 Root cannot lift the allowlist seal or turn enforcement off through an intended agent kill. Seal and control integrity are kernel-enforced product contracts. Extra syscalls and sibling attributes on **this pin** still need live gates. Do not treat the architecture diagram as the gate list.
 
-*Auditor action:* verify live gates on the **deployed ship pin** (`6.18.9-hs` #37) with the operator’s regression suite.
+Confirm live gates on the **deployed ship pin** (`6.18.9-hs` #37). Checker percentages measure the published `.config`; they sit next to a residual-risk list for architecture review.
 
 **5. Allowlist breadth after learning**  
 Setup Mode records observed behaviour. You ratify grants. Residual risk after Lockdown includes an allowlist wider than the intended slice.

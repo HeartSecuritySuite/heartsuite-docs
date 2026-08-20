@@ -8,11 +8,13 @@ tags: ["compliance", "SOC 2", "AICPA"]
 type: docs
 ---
 
-**Purpose**: This document maps Root Lock by HeartSuite product capabilities to the AICPA Trust Services Criteria (TSC) used in SOC 2 audits. Hand it to auditors, or use it while preparing a Type I or Type II engagement.
+**Purpose**: Vendor map of Root Lock by HeartSuite capabilities onto selected AICPA Trust Services Criteria (2017 TSC, 2022 revised points of focus), for a customer preparing a Type I or Type II examination.
 
-Each criterion entry includes the control requirement, how Root Lock satisfies it, where it does not, and what evidence an auditor should request.
+A TSC is met by the **entity's control environment**. HeartSuite does not hold a SOC 2 report. Use each row as a starting list of host-level activities and artefacts; the practitioner still designs the tests.
 
-The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described in the logging and change-management sections below. They are the primary artifacts for reconstructing allowlist changes and enforcement decisions.
+Availability (A1) and Confidentiality (C1) apply only when those categories are in the examination. Security (CC1–CC9) is always in. This page covers the CC6–CC8 rows where a host kernel MAC can contribute.
+
+The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described below. They help reconstruct allowlist changes and denials. JSONL rotates at 1 MB with one `.1` copy — ship it to a SIEM for Type II periods longer than that window.
 
 ---
 
@@ -22,19 +24,19 @@ The dedicated JSONL approval log, per-decision enforcement syslog stream, and ro
 - [CC6 — Logical and physical access controls](#cc6--logical-and-physical-access-controls)
 - [CC7 — System operations](#cc7--system-operations)
 - [CC8 — Change management](#cc8--change-management)
-- [A1 — Availability](#a1--availability)
-- [C1 — Confidentiality](#c1--confidentiality)
+- [A1 — Availability](#a1--availability) (only if Availability is in the examination)
+- [C1 — Confidentiality](#c1--confidentiality) (only if Confidentiality is in the examination)
 - [Summary table](#summary-table)
 
 ---
 
 ## How to use this document
 
-Root Lock is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 audit:
+Root Lock is deployed on Linux servers to enforce a default-deny security policy at the kernel level. It is a technical control your organization operates. In a SOC 2 examination:
 
-- Root Lock satisfies specific sub-criteria as a **technical control** in your control environment.
+- Root Lock can **support** specific criteria as one **technical activity** in your control environment.
 - You still need **organizational controls** (policies, procedures, access reviews, training) alongside it.
-- Evidence artifacts listed here are those your auditor can observe, request logs of, or inspect directly on the host.
+- Artefacts listed here are host-level items you can retain. Operating effectiveness over the period still needs walkthrough, inquiry, inspection, and sampling.
 
 ---
 
@@ -42,9 +44,9 @@ Root Lock is deployed on Linux servers to enforce a default-deny security policy
 
 ### CC6.1 — Logical access security: Restricting access to information assets
 
-**Control requirement**: The entity implements logical access security measures to restrict access to information assets to authorized users.
+**Official criterion**: The entity implements logical access security software, infrastructure, and architectures over protected information assets to protect them from security events to meet the entity's objectives.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 Root Lock controls, per program, which programs can execute, which files they can read or write, and which network destinations they can connect to — independently of which user account runs them, including root.
 
@@ -76,11 +78,11 @@ In environments where multiple administrators share root access, uid/tty-to-pers
 
 ---
 
-### CC6.3 — Role-based access control
+### CC6.3 — Access authorization based on roles, responsibilities, or system design
 
-**Control requirement**: The entity restricts access to information assets based on job responsibilities.
+**Official criterion**: The entity authorizes, modifies, or removes access to data, software, functions, and related assets based on roles, responsibilities, or the system design and changes, giving consideration to the concepts of least privilege and segregation of duties.
 
-**How Root Lock addresses this**:
+**How Root Lock can support a customer control**:
 
 Root Lock does not implement role-based access control within the Dashboard. Every user with Linux root access has identical access to all Dashboard functions: allowlist approval, Lockdown activation and deactivation, alert configuration, log clearing, and Maintenance.
 
@@ -96,11 +98,15 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 ---
 
-### CC6.6 — Logical access controls for infrastructure: Restricting privileged access
+### CC6.6 — Threats from sources outside system boundaries
 
 **Control requirement**: Logical access security measures restrict access to infrastructure, including operating system configurations, network configurations, and authentication databases.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
+
+Root Lock does **not** implement inbound / boundary access control. There is no inbound packet filter, VPN, or external-user authentication in the product. Inbound filtering remains a customer-side OS packet filter or cloud security group — that complementary control is what typically addresses CC6.6.
+
+What Root Lock *does* on the host (the five-category `chattr +i` seal of OS configuration, authentication files, and related paths) is a **logical access / change-protection** activity. Cite it under CC6.1 and CC8.1. The inventory stays here so the seal is documented in one place.
 
 Lockdown seals five categories of system infrastructure using `chattr +i` filesystem immutability. During activation the Dashboard shows a per-category inventory. The Lockdown activation log records what was sealed.
 
@@ -132,11 +138,13 @@ Restricting serial console access is a customer-side organizational control enfo
 
 ---
 
-### CC6.7 — Transmission integrity and confidentiality
+### CC6.7 — Transmission, movement, and removal of information
 
-**Control requirement**: The entity restricts the transmission of confidential information to authorized internal and external users and protects it during transmission.
+**Official criterion**: The entity restricts the transmission, movement, and removal of information to authorized internal and external users and processes, and protects it during those activities.
 
-**How Root Lock satisfies this**:
+Root Lock does not encrypt customer data in transit. HTTPS for the product's own webhook covers that webhook only. Per-program outbound IP allowlisting can **support** a customer control that limits where programs may send data. TLS, removable media, and DLP stay on the customer side.
+
+**How Root Lock can support a customer control**:
 
 Root Lock enforces per-program outbound network controls. In Lockdown, every outbound connection attempt by every program is either on the network allowlist or blocked at the kernel. This applies regardless of user privilege.
 
@@ -160,9 +168,9 @@ Specific transmission controls:
 
 ### CC6.8 — Malware and unauthorized software prevention
 
-**Control requirement**: The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software.
+**Official criterion**: The entity implements controls to prevent or detect and act upon the introduction of unauthorized or malicious software.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 This is the primary use case of Root Lock. The implementation is structural, not signature-based.
 
@@ -192,11 +200,13 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 ## CC7 — System operations
 
-### CC7.1 — Detection of vulnerabilities and threats
+### CC7.1 — Detection of configuration changes and new vulnerabilities
 
-**Control requirement**: The entity uses detection and monitoring procedures to identify (1) changes to configurations that introduce vulnerabilities; (2) susceptibility to new vulnerabilities; (3) security events indicating potential or actual threats.
+**Official criterion**: The entity uses detection and monitoring procedures to identify (1) changes to configurations that introduce new vulnerabilities, and (2) susceptibilities to newly discovered vulnerabilities.
 
-**How Root Lock satisfies this**:
+A customer scanner remains the usual CC7.1 control. Root Lock can reduce blast radius of some unpatched flaws. Denial alerts belong under CC7.2.
+
+**How Root Lock can support a customer control**:
 
 **Vulnerability surface reduction**: Root Lock reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after those structural mitigations. CVEs affecting kernel features not compiled in receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present by design.
 
@@ -214,7 +224,7 @@ The "Critical file version created outside maintenance window" alert fires when 
 | Mode/state changes (Setup ↔ Lockdown) | Immediate alert on all channels on every state change |
 | New allowlist pushed while Lockdown active | Immediate alert on all channels |
 
-**Integration with vulnerability management**: Root Lock is explicitly designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). Root Lock reduces the blast radius of an unpatched vulnerability; the scanner maps what needs patching. Both controls are needed for SOC 2.
+**Integration with vulnerability management**: Root Lock is designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). Root Lock can reduce the blast radius of an unpatched vulnerability; the scanner maps what needs patching. SOC 2 does not prescribe those two tools. The entity still needs a vulnerability-identification control for CC7.1.
 
 **Evidence artifacts**:
 
@@ -229,9 +239,11 @@ The "Critical file version created outside maintenance window" alert fires when 
 
 ### CC7.2 — System monitoring for anomalies and indicators of compromise
 
-**Control requirement**: The entity monitors system components and the operation of those components for anomalies that are indicative of malicious acts, natural disasters, and errors affecting the entity's ability to meet its objectives.
+**Official criterion**: The entity monitors system components and the operation of those components for anomalies that are indicative of malicious acts, natural disasters, and errors affecting the entity's ability to meet its objectives.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
+
+The items below are policy-deny logging and a protection-state indicator. A customer SIEM may consume them for CC7.2. Anomaly analysis (NIST CSF DE.AE) stays outside this product.
 
 **Continuous protection state monitoring**:
 
@@ -297,9 +309,9 @@ Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log`
 
 ### CC7.3 — Evaluation of security events
 
-**Control requirement**: The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives, and, if so, takes actions to prevent or address such failures.
+**Official criterion**: The entity evaluates security events to determine whether they could or have resulted in a failure of the entity to meet its objectives, and, if so, takes actions to prevent or address such failures.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 Root Lock classifies security events into two tiers:
 
@@ -334,9 +346,9 @@ In Lockdown, the Dashboard review queues shift from approval to read-only invest
 
 ### CC7.4 — Incident response
 
-**Control requirement**: The entity responds to identified security incidents by executing a defined incident response program.
+**Official criterion**: The entity responds to identified security incidents by executing a defined incident response program.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 Root Lock provides technical controls for the detection and containment phases of incident response. It does not provide a full incident response program — that is an organizational control.
 
@@ -375,9 +387,9 @@ Root Lock provides technical controls for the detection and containment phases o
 
 ### CC7.5 — Recovery from security incidents
 
-**Control requirement**: The entity identifies, develops, and implements activities to recover from identified security incidents and communicates those activities.
+**Official criterion**: The entity identifies, develops, and implements activities to recover from identified security incidents.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 **Per-write versioned backups**:
 
@@ -415,9 +427,9 @@ If the Root Lock kernel fails to load, the startup script isolates the primary n
 
 ### CC8.1 — Controls for changes to infrastructure and software
 
-**Control requirement**: The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its change management objectives.
+**Official criterion**: The entity authorizes, designs, develops or acquires, configures, documents, tests, approves, and implements changes to infrastructure, data, software, and procedures to meet its objectives.
 
-**How Root Lock satisfies this**:
+**How Root Lock can support a customer control**:
 
 **All changes require a maintenance window**:
 
@@ -467,13 +479,19 @@ In fleet deployments, allowlist changes are applied per server by the customer's
 
 ## A1 — Availability
 
-### A1.2 — Environmental threats and system components
+### A1.2 — Environmental protections, backup, and recovery infrastructure
 
-**Control requirement**: The entity protects against or mitigates environmental threats that could impair the availability of the system.
+**Official criterion**: The entity authorizes, designs, develops or acquires, implements, operates, approves, maintains, and monitors environmental protections, software, data backup processes, and recovery infrastructure to meet its objectives.
 
-**How Root Lock satisfies this**:
+A1 applies only if Availability is in the examination.
 
-**Ransomware resilience**: The primary availability threat to production servers is ransomware. Root Lock addresses this at two layers:
+**How Root Lock can support a customer control**:
+
+Root Lock does **not** provide environmental protections (power, HVAC, fire, physical site). Those remain the customer's or cloud provider's controls.
+
+The product **can** contribute to the **backup and recovery** clause of A1.2: per-write versioned copies under `/.hs/b/`, kernel-protected under Lockdown. Those copies stay on the host and are unencrypted at the Root Lock layer. Offsite DR and LUKS stay with the customer.
+
+**Ransomware** (separate from environmental protections above). Root Lock addresses it at two layers:
 
 1. **Prevention layer**: In Lockdown, programs not on the allowlist cannot execute — a ransomware binary dropped on the server cannot run.
 2. **Recovery layer**: If ransomware runs inside an approved process (e.g., malware that hijacks a legitimate application), per-write backups preserve all file versions. Under Lockdown, the kernel protects backup files from the compromised process.
@@ -496,13 +514,17 @@ An alert fires when backup is disabled or a covered directory is removed from co
 
 ## C1 — Confidentiality
 
-### C1.1 — Protection of confidential information
+### C1.1 — Identification and maintenance of confidential information
 
-**Control requirement**: The entity identifies and maintains confidential information to meet the entity's objectives related to confidentiality.
+**Official criterion**: The entity identifies and maintains confidential information to meet the entity's objectives related to confidentiality.
 
-**How Root Lock satisfies this**:
+C1 applies only if Confidentiality is in the examination.
 
-**File access containment**: Every program can only read the files in its file access allowlist. A compromised application cannot read credentials, private keys, or confidential data that it was never approved to access during Setup Mode. This applies regardless of user privilege.
+**How Root Lock can support a customer control**:
+
+Classification and inventory of confidential information remain a customer process. File-access allowlists can **support protection** of paths the customer has already classified.
+
+**File access containment** (protection of classified paths, not identification): Every program can only read the files in its file access allowlist. A compromised application cannot read credentials, private keys, or confidential data that it was never approved to access during Setup Mode. This applies regardless of user privilege.
 
 **Exfiltration prevention**: Even if a program can read confidential data within its file access allowlist, it cannot send that data to an unapproved destination. The network allowlist restricts each program to specific IPs. A program with no approved outbound destinations has no exfiltration path at all.
 
@@ -520,13 +542,13 @@ Backup files are versioned filesystem copies with no encryption at the Root Lock
 
 ## Summary table
 
-| SOC 2 criterion | HeartSuite coverage | Evidence type |
-|-----------------|---------------------|---------------|
-| CC6.1 Logical access | Program/file/network allowlist; kernel-level blocking in Lockdown | Allowlist export, Dashboard screenshot |
-| CC6.3 Role separation | Not implemented — flat root access; organizational control required | Customer `sudoers` policy, PAM records |
-| CC6.6 Infrastructure access | Lockdown seals 5 categories (`chattr +i`); maintenance kernel requires physical/serial presence | Sealed file inventory, Lockdown activation log |
-| CC6.7 Transmission protection | Per-program outbound allowlist in Lockdown; HTTPS-only webhook; no inbound controls | Network allowlist, webhook config |
-| CC6.8 Malware prevention | Default-deny execution in Lockdown; Secure Script Launchers; compiled-out rootkit features; per-write backup | Block alert log, CVE table, backup config |
+| SOC 2 criterion | Product contribution (not “satisfies”) | Customer artefacts |
+|-----------------|----------------------------------------|--------------------|
+| CC6.1 Logical access | Program/file/network allowlist; kernel-level blocking in Lockdown | Allowlist export, Dashboard screenshot, JSONL log |
+| CC6.3 Authorization / SoD | Not implemented in the Dashboard — flat root access; organizational control required | Customer `sudoers` policy, PAM or privileged-access records |
+| CC6.6 Outside-boundary threats | **Not covered** (no inbound filter). Five-category seal is CC6.1/CC8.1 | Cloud SG / host packet filter; seal inventory if citing CC6.1 |
+| CC6.7 Transmission / movement | Outbound IP allowlist may support a customer control; product webhook HTTPS is not entity TLS | Network allowlist; customer TLS/DLP separately |
+| CC6.8 Unauthorized software | Default-deny execution in Lockdown; Secure Script Launchers; compiled-out rootkit features; per-write backup | Block alert log, CVE table, backup config |
 | CC7.1 Threat detection | Block alerts (new program, network burst, critical file); SIEM syslog integration (per-decision enforcement stream + alert stream) | Alert configuration, syslog rule, dedicated JSONL approval log, SIEM records |
 | CC7.2 System monitoring | Protection state indicator; status.json; two syslog streams (enforcement decisions + alerts); webhook; dedicated JSONL approval log; rotating application audit log | SIEM records + JSONL approval log for Type II audit period |
 | CC7.3 Security event evaluation | Alert classification (immediate vs. threshold); Lockdown queue for investigation | Alert logs, denied-item queue, SIEM records |
@@ -538,4 +560,4 @@ Backup files are versioned filesystem copies with no encryption at the Root Lock
 
 ---
 
-Last Updated: 2026-08-18
+Last Updated: 2026-08-20

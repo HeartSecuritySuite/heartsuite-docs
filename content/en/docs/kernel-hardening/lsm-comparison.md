@@ -106,5 +106,5 @@ Root Lock enforcement is unaffected. SELinux operates after Root Lock in the hoo
 ## Further reading
 
 - [Comparison Matrix](../kernel-comparison-matrix-5.19.6/) — Measured kernel-hardening-checker scores: HeartSuite vs Arch linux-hardened vs vanilla defconfig.
-- [Auditor Brief](../auditor-brief/) — Residual risks, threat model, and self-reproduction instructions.
+- [Threat model](../auditor-brief/) — Residual risks, threat model, and self-reproduction instructions.
 - [Procurement Brief](../procurement-brief/) — Decision guide for buyers choosing between hardened kernel options.

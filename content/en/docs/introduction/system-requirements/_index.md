@@ -2,7 +2,7 @@
 title: "What this kernel needs — and what differs by stream"
 linkTitle: "System Requirements"
 weight: 3
-description: "Architecture, current lab distributions, and how 5.19 vs the fielded 6.18 pin treat eBPF, FUSE, OverlayFS, and KVM. Confirm these before you install."
+description: "Architecture, supported distributions, and kernel features the Root Lock kernel omits. Confirm these before you install."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "requirements", "specs", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "x86"]
 type: docs
@@ -33,18 +33,18 @@ New Debian 12/13 and Ubuntu 22.04/24.04 installs boot the 6.18 Root Lock kernel.
 
 ## Software compatibility notes
 
-The **5.19** legacy kernel compiled out eBPF, FUSE, OverlayFS, user namespaces, AppArmor, and KVM. The **fielded 6.18 pin** (`6.18.9-hs`, packaging `6.18.9-HeartSuite-3`, build `#37`) compiles those interfaces in (`CONFIG_BPF_SYSCALL=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_KVM=m`). Do not treat “not a fit” on 6.18 as `ENOSYS`.
+The Root Lock kernel omits eBPF, FUSE, OverlayFS, user namespaces, AppArmor, and KVM host-mode. Tools that need those interfaces run on another host or on the maintenance kernel.
 
 The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. Setup Mode reveals programs that would fail in Lockdown in the Dashboard review queues. Software not listed below is not automatically denied; Lockdown still requires an allowlist entry for each program.
 
-| Workload | 5.19 legacy | Fielded 6.18 (`6.18.9-hs`) |
-|-----------|-------------|------------------------------|
-| eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall not compiled | Syscall compiled in. Lockdown still refuses unallowlisted loaders. |
-| FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Not compiled | Compiled in. New mounts after Lockdown follow product mount rules. |
-| Overlay / typical container storage | Not compiled | Module (`=m`). Dynamic Kubernetes after Lockdown remains a poor fit because of allowlist and mount seal, not because OverlayFS is absent. |
-| AppArmor userspace (Snap, Ubuntu profiles, LXD) | Not compiled | Compiled in. Validate on the running kernel. |
-| Unprivileged user namespaces / rootless containers | Not compiled | Compiled in. Still validate under Lockdown. |
-| KVM hypervisor **host** | Not compiled | Module (`=m`). **Not a supported product role.** Root Lock as a **guest** on KVM/VMware/cloud is supported. |
+| Workload | On the Root Lock kernel |
+|-----------|-------------------------|
+| eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall omitted |
+| FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Omitted |
+| Overlay / typical container storage | Omitted. Dynamic Kubernetes after Lockdown is also a poor fit because of the mount seal. |
+| AppArmor userspace (Snap, Ubuntu profiles, LXD) | Omitted |
+| Unprivileged user namespaces / rootless containers | Omitted |
+| KVM hypervisor **host** | Not a supported product role. Root Lock as a **guest** on KVM/VMware/cloud is supported. |
 
 The host must be bare metal or a full virtual machine (KVM, cloud hypervisors, VMware etc.) that gives Root Lock its own kernel to boot. Shared-kernel containers (OpenVZ, LXC, Docker/Podman as a guest sharing the provider kernel, systemd-nspawn) are not a fit by design. See [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint) and [Deployment Scenarios](../deployment-scenarios/).
 

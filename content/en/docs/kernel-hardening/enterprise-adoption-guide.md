@@ -13,7 +13,7 @@ toc: true
 
 **Audience**: Fortune 500 CISOs, procurement, risk, and compliance teams evaluating Root Lock by HeartSuite for production and regulated workloads.
 
-**Related reading**: Start with the [Procurement Brief](../procurement-brief/) (comparison table and decision guide) and [Auditor Brief](../auditor-brief/) (threat model and residual risks). Cross-references throughout this guide point to the full set of kernel-hardening, security, operational, and comparison pages.
+**Related reading**: Start with the [Procurement Brief](../procurement-brief/) (comparison table and decision guide) and [Threat model](../auditor-brief/) (threat model and residual risks). Cross-references throughout this guide point to the full set of kernel-hardening, security, operational, and comparison pages.
 
 ---
 
@@ -45,7 +45,7 @@ Root Lock treats the kernel as an integrated part of the delivered product, not 
   Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
 - **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries — the vulnerable code path is absent by design; no patch or policy change is required. For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked.
 
-  Scores on HeartSuite are computed and published (many high/critical CVEs drop to 0.0 environmental score on HS deployments). Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+  Scores on HeartSuite are computed and published. Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 - **Stack pairing and testing**: The kernel is built, tested, and supported together with the matching userspace. The full enforcement contract (VFS hooks + Lockdown seal + allowlist) is validated across supported distributions.
 - **Support SLAs**: Commercial subscription terms cover the integrated stack, including kernel-related incidents, coordinated updates, and guidance on deployment and recovery. Activation and support details appear in the [Subscription](../../licensing/) section and your subscription agreement.
 
@@ -86,16 +86,16 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 - SIEM / SOAR ingestion via the two syslog streams and webhook (see [Alert Settings](../../alerts/)).
 - Monitoring and status collection via `~/.cache/heartsuite/status.json` (Ansible facts, Nagios, Zabbix, custom collectors).
 - Container workloads with fixed pod sets established before Lockdown engages (see deployment notes in [How Root Lock Compares](../../introduction/how-it-compares/)).
-- EDR and observability via log forwarding (no on-host eBPF attachment or kernel-module agents are possible or required; enforcement events flow through the existing syslog channel).
+- EDR and observability via log forwarding (no on-host eBPF attachment). Enforcement events flow through syslog. Denial logs cover blocks only.
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
 **Does not run on the HS kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
-- Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is deliberately absent.
+- Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is omitted.
 - Dynamic Kubernetes environments with frequent pod creation, HPA scale-out, or rescheduling after Lockdown (mount operations required for new containers are refused).
-- KVM hypervisor hosts (KVM host-mode features are compiled out).
+- KVM hypervisor hosts. Root Lock runs as a guest.
 - Rootless / unprivileged user-namespace containers.
-- Any workload or tooling that explicitly requires one of the compiled-out features for its core function.
+- Any workload that needs a compiled-out kernel feature for its core function.
 
 **Decision tree (high level)**
 
@@ -121,22 +121,21 @@ The Root Lock kernel is managed the same way you manage base OS images and polic
 
 This model keeps ownership of policy curation, change records, and visibility inside the tools your teams already run.
 
-## Risk transfer under commercial subscription
+## Commercial subscription and kernel support
 
-A commercial subscription for Root Lock covers the full delivered stack, including the kernel:
+A commercial subscription for Root Lock covers the delivered stack, including the kernel:
 
-- Vendor support and SLAs for incidents, updates, and deployment guidance that encompass kernel behaviour.
-- Contractual risk-transfer terms (indemnification and liability provisions) as set out in the subscription agreement for the licensed software.
-- Access to the verification artifacts published on this site (config hashes, evidence packs, CVE transparency data) that support customer and auditor due diligence.
+- Vendor support and SLAs for incidents, updates, and deployment guidance that encompass kernel behaviour, as set out in the subscription agreement.
+- Access to the verification artifacts published on this site (config hashes, evidence packs, CVE transparency data) for customer due diligence.
 - Coordinated release process so that kernel changes, userspace changes, and documentation remain in sync.
 
-The kernel does not carry a separate support contract or separate risk posture. It is part of the integrated product under the same subscription that enables Lockdown.
+The kernel does not carry a separate support contract. It is part of the integrated product under the same subscription that enables Lockdown.
 
-Details of indemnity scope, SLA commitments, and verification deliverables are in your specific subscription agreement. See the [Subscription](../../licensing/) page for activation mechanics.
+Indemnity, limitation of liability, and SLA credits are contract terms. Residual kernel CVE risk stays with the operator. See the [Subscription](../../licensing/) page for activation mechanics and your agreement for the binding text.
 
 ## Supply chain transparency and integrity
 
-- **Reproducible posture verification**: Every released Root Lock kernel includes a published SHA-256 of its exact `.config` file. Any team can obtain the config from the kernel package and re-run the open-source `kernel-hardening-checker` to reproduce the exact attack-surface and exploit-resistance scores shown in the [Procurement Brief](../procurement-brief/) and [Auditor Brief](../auditor-brief/).
+- **Reproducible posture verification**: Every released Root Lock kernel includes a published SHA-256 of its exact `.config` file. Any team can obtain the config from the kernel package and re-run the open-source `kernel-hardening-checker` to reproduce the exact attack-surface and exploit-resistance scores shown in the [Procurement Brief](../procurement-brief/) and [Threat model](../auditor-brief/).
 
   See `evidence-pack-*.txt` files for raw output.
 - **Installer and bundle integrity**: Distributed bundles include SHA-256 manifests (`.sha256` files) for verification before execution.
@@ -159,10 +158,10 @@ This is the documented, supported escape hatch for operational needs, kernel pol
 
 Nothing on the kernel posture page relies on "trust us."
 
-- Reproduce hardening measurements yourself with the published config SHA-256 and the open-source checker (full commands in [Auditor Brief](../auditor-brief/)).
+- Reproduce hardening measurements yourself with the published config SHA-256 and the open-source checker (full commands in [Threat model](../auditor-brief/)).
 - Review every relevant CVE with the exact "Not Affected / Score on HeartSuite 0.0 / bounded impact" rationale on the [Kernel Security Transparency](../../security/) page.
 - Inspect live state via the status JSON, per-decision syslog events, approval log, and the sealed allowlist files (all readable or harvestable without special privileges beyond normal admin access).
-- For procurement and audit packages: the Procurement Brief, Auditor Brief, comparison matrix, and evidence packs are self-contained artefacts that can be attached directly to RFPs, due-diligence questionnaires, and auditor workpapers.
+- For procurement and due-diligence packages: attach the Procurement Brief, threat-model page, comparison matrix, and evidence packs to an RFP or vendor questionnaire. The customer's control testing still has to stand on its own.
 
 ## Honest limitations
 
@@ -180,12 +179,12 @@ In those cases the supported path is:
 
 The [HJFS how-it-compares](../../hjfs/how-it-compares/) and limits pages, together with the bypass and circumvention sections of [How Root Lock Compares](../../introduction/how-it-compares/), give procurement teams the material needed to map requirements to the appropriate product or combination.
 
-Root Lock positions the Root Lock kernel for the subset of workloads where the documented properties (compiled enforcement, physical-presence recovery only, bounded CVE impact via compiled-out features and Lockdown) justify the kernel change.
+Root Lock positions the Root Lock kernel for the subset of workloads where the documented properties (compiled enforcement, physical- or serial-console recovery, compiled-out bypass primitives, and Lockdown) justify the kernel change.
 
 ## Next steps for enterprise evaluation
 
 1. Read the [Procurement Brief](../procurement-brief/) decision guide and run the published measurements on a test deployment.
-2. Review the [Auditor Brief](../auditor-brief/) and the full CVE transparency page.
+2. Review the [Threat model](../auditor-brief/) and the full CVE transparency page.
 3. Pilot using a cloud pre-configured instance or a Packer-built pre-configured image on a non-production workload.
 4. Map your compatibility requirements against the decision tree and the "where a separate kernel is required" section of [How Root Lock Compares](../../introduction/how-it-compares/).
 5. For platforms with Secure Boot or Marketplace requirements, request current runbook and timeline status from support.
@@ -196,4 +195,4 @@ The kernel is one component of a larger control. The surrounding pages (central 
 
 ---
 
-*This page is intentionally buyer- and auditor-facing. All posture claims reference publicly reproducible artefacts or the open CVE transparency data. Last updated: 2026-06-16.*
+*This page is buyer-facing. Posture claims must match the fielded pin in [Evidence Status](evidence-status/). Last updated: 2026-08-20.*
