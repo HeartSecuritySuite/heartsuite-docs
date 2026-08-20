@@ -30,12 +30,11 @@ Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer diffe
 
 | Standard Linux | Root Lock |
 |---|---|
-| Wide kernel + security agent watching it | Minimal kernel. Features removed at build time |
-| BPF programs enforce blocking policy | BPF syscall deliberately omitted. Nothing to unload; closes the verifier attack surface |
-| Kernel module driver provides telemetry | No agent module. No module to kill |
-| OverlayFS and FUSE enabled for containers | Compiled out. The CVE class disappears with them |
-| Config file: 12,000+ lines, audited by tooling | Config file: 5,050 lines, readable by a person |
-| Blocking depends on runtime configuration | Blocking is compiled into the binary itself |
+| Wide kernel + security agent watching it | Custom kernel. **5.19.6** compiled many bypass primitives out. Fielded **6.18.9-hs** keeps BPF, FUSE, OverlayFS, and stacked LSMs in; enforcement is allowlist + Lockdown. |
+| BPF programs enforce blocking policy | **5.19.6:** BPF syscall omitted. **6.18.9-hs:** BPF is `=y`; Root Lock still does not rely on an unloadable eBPF policy. |
+| Kernel module driver provides telemetry | No HeartSuite agent module to kill. Other modules exist on 6.18.9-hs (thousands shipped). |
+| OverlayFS and FUSE enabled for containers | **5.19.6:** compiled out. **6.18.9-hs:** FUSE `=y`, OverlayFS `=m`. |
+| Blocking depends on runtime configuration | Blocking is compiled into the kernel; the allowlist is sealed under Lockdown |
 
 ```mermaid
 graph TB
@@ -50,7 +49,7 @@ graph TB
     end
 
     subgraph HS["Root Lock: compiled enforcement"]
-        HSK["Kernel binary\nenforcement compiled in\nBPF syscall absent"]
+        HSK["Kernel binary\nenforcement compiled in\nno HS agent to kill"]
     end
 
     Root -."kill".-> EDR

@@ -95,7 +95,7 @@ Three cloud surfaces are not the same thing:
 - **`/var/log/heartsuite/ui.log`** — rotating Python application log (INFO and above). Size-capped at about 8 MB. Not a keystroke transcript.
 - **`/var/log/heartsuite/dropped_violations.log`** — denials that were already allowlisted and therefore dropped from the review queues. Advanced artifact, not a daily surface.
 - **Initial setup logs** (`/var/log/heartsuite/initial-setup-*.log`) — per-iteration output from the boot setup chain (some leftover `phase1-step-N.log` names may remain on disk).
-- **Syslog streams (RFC 5424)** — denial lines and aggregated alerts under ident `heartsuite`, after you enable the Fleet Syslog toggle. Alert lines use the message prefix `heartsuite-alert:`; that is not a second `journalctl -t` tag. See [SIEM and Fleet Integration](../alerts/siem-integration/).
+- **Syslog streams** — denial lines and aggregated alerts under ident `heartsuite`, after you enable the Fleet Syslog toggle (local `/dev/log`; wire format depends on your rsyslog/journald setup). Alert lines use the message prefix `heartsuite-alert:`; that is not a second `journalctl -t` tag. See [SIEM and Fleet Integration](../alerts/siem-integration/).
 - **`~/.cache/heartsuite/status.json`** — system status snapshot (not a log).
 
   | Field | Type | Notes |
