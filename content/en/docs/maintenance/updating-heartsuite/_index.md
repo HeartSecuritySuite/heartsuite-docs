@@ -24,7 +24,7 @@ It does not modify user data, the existing allowlist entries, or backup files. A
 
 The installer will not run while the Root Lock kernel is booted. It checks `uname -r`, stops, and tells you to reboot onto a kernel that is not Root Lock — your original distro kernel, or the Maintenance entry.
 
-If Lockdown is still sealed, the first **Maintenance: unseal and return to Root Lock** boot is not a place to run the installer. Express return lifts the seal and bounces you back to Setup Mode on the Root Lock kernel. Stay-up on the maintenance kernel happens only after posture is already open.
+Follow the printed instructions. On many hosts that is a one-shot command such as `grub-reboot '…' && reboot` for **this** machine — copy it; do not invent a number. If the installer cannot pick an entry, it tells you to open the console and choose stock or Maintenance at the boot menu. After that boot, `uname -r` must not be a Root Lock release. Then run the installer again.
 
 If Lockdown is applied (the strip says **Lockdown applied**), you need two different boots. Do not run the installer on the first one.
 
