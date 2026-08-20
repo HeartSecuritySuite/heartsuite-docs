@@ -102,7 +102,7 @@ graph TD
 The Dashboard is where you activate Lockdown. When all preconditions are met, the Suggested Next Step offers Lockdown activation. The precondition checklist includes:
 
 - All review queues are empty (Programs `[p]`, File Access `[f]`, Internet Access `[i]`)
-- Earlier checklist items are complete (Program Allowlisting through Alert Configuration)
+- Earlier checklist items are complete (Program Allowlisting through Alert Settings)
 - Subscription is active
 - `heartsuite.service` is enabled so the seal can engage on the next boot
 - Three days with no newly discovered programs, paths, or destinations — or `[s]` to skip that countdown
@@ -135,7 +135,7 @@ If the queues stay clear, Root Lock finalizes Lockdown and reboots again to appl
 
 - `[r]` **Reboot now: Lockdown will be applied**
 
-That second reboot is the seal. Again: at the boot menu, do nothing. Default is Root Lock by HeartSuite. Do not select Maintenance.
+That second reboot is the seal. Again: at the boot menu, do nothing. Default is Root Lock. Do not select Maintenance.
 
 Lockdown then persists on every Root Lock kernel boot. To make changes, use Maintenance (`[m]`).
 
