@@ -33,6 +33,6 @@ Every measured number derives from the open-source `kernel-hardening-checker` to
 - [Evidence Status](evidence-status/) — 6.18.9-hs #37 pack published 2026-08-18; 5.19.6 remains the legacy pack.
 - [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Fielded 6.18.9-hs #37 measured scores.
 - [Comparison Matrix (5.19.6)](kernel-comparison-matrix-5.19.6/) — Legacy stream, fully measured: HeartSuite vs vanilla defconfig, Arch hardened, and KSPP target.
-- [Auditor Brief](auditor-brief/) — Threat model, measured strengths and gaps, residual risks, and self-reproduction commands for security auditors and red teams.
+- [Threat model and residual risk](auditor-brief/) — Fielded-pin threat model, measured scores, residual risks, and reproduction commands.
 - [LSM Comparison](lsm-comparison/) — HeartSuite vs SELinux, AppArmor, and TOMOYO: enforcement model, bypass-primitive resistance, and co-existence.
 - [Analyst Summary](analyst-summary/) — Non-technical summary for journalists and analysts, with fact-checker citations.

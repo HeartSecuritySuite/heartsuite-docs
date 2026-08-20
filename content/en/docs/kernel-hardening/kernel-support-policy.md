@@ -35,7 +35,9 @@ It applies to:
 
 ## LTS-only strategy
 
-HeartSuite commits to **mainline LTS kernel bases only** — not arbitrary upstream version chasing and not long-lived forks of non-LTS releases.
+HeartSuite's **current** commercial baseline is a **mainline LTS** kernel (6.18). New streams are LTS bases — not arbitrary upstream version chasing.
+
+The **5.19** stream is a legacy exception: 5.19 was a short-lived mainline release. It remains in this policy only for existing deployments until the deprecation window closes.
 
 **Why LTS-only**
 
@@ -78,15 +80,17 @@ For deployment implications, coexistence with distribution maintenance, and flee
 
 The running kernel version is shown by `uname -r`. On an HS deployment, the string identifies the HeartSuite build, not a distribution errata package.
 
-**Example**: `6.18.9-HeartSuite-1.0`
+**Fielded 6.18 pin:** `uname -r` is **`6.18.9-hs`**. Packaging label is `6.18.9-HeartSuite-3` (build **#37**). Absence of the word `HeartSuite` in `uname -r` does **not** mean you are on the maintenance kernel.
 
-| Component | Value | Meaning |
+**Legacy 5.19 example:** `5.19.6-HeartSuite-1.0`
+
+| Component | Fielded 6.18 example | Meaning |
 |---|---|---|
 | Upstream LTS base | `6.18.9` | The mainline LTS kernel version HeartSuite built from for this release. This is the upstream tag lineage, not a count of every upstream commit merged since a prior HeartSuite build. |
-| Vendor segment | `HeartSuite` | Identifies the binary as an HS kernel built and supported by HeartSuite, distinct from the distribution kernel packages on the same host. |
-| HeartSuite build release | `1.0` | HeartSuite's patch/release ordinal for this upstream base — increments when HeartSuite ships a new rebuild or bundle for the same LTS line (security rebuilds, coordinated stack updates). |
+| Vendor segment | `hs` in `uname`; `HeartSuite` in the packaging label | Identifies the binary as an HS kernel. Match `uname -r` to [Evidence Status](evidence-status/) and the distro matrix, not to a single historical suffix. |
+| HeartSuite build | packaging `6.18.9-HeartSuite-3`, `file` **#37** | HeartSuite's rebuild/bundle identity for this upstream base. |
 
-Legacy 5.19 deployments follow the same pattern (for example, `5.19.6-HeartSuite-<release>`).
+On 6.18 the HS-vs-maintenance test is `uname -r` plus `file` on vmlinuz, as documented in [Evidence Status](evidence-status/). The fielded pin is `6.18.9-hs`.
 
 ### What the version string does **not** mean
 

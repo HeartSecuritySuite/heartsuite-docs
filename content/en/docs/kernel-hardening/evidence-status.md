@@ -31,7 +31,7 @@ The two lines do **not** share the same kernel config. 5.19.6 compiled out BPF/F
 - **Identity** — uname `6.18.9-hs`, `file` `#37`, vmlinuz SHA-256 `1b44fffb…`, pin config SHA-256 `3cd18247…` in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
 - **Automated scores** — checker `e870d01`: overall 148/259 (57.1%), attack-surface 57/131 (43.5%), exploit-resistance 78/110 (70.9%)
 - **Runtime** — Debian 12 guest: 74 modules loaded, 4190 `.ko.xz`, LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activate at t+4s
-- **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Auditor Brief](auditor-brief/) now follow this pack
+- **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Threat model](auditor-brief/) now follow this pack
 
 **Known limits of this publication**
 
@@ -64,7 +64,7 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 
 **Evaluating a 6.18.9-hs deployment today**
 
-- Use [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) and [Auditor Brief](auditor-brief/).
+- Use [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) and [Threat model](auditor-brief/).
 - Confirm `uname -r` is `6.18.9-hs` and `file` on vmlinuz contains `#37`. Absence of the word `HeartSuite` does not mean the maintenance kernel.
 - Do not close BPF/FUSE/io_uring scanner findings as compiled-out on this pin.
 

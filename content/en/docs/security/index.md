@@ -61,7 +61,9 @@ CVEs are rated by severity (e.g., HIGH means a score of 7+). A "0.0" score here 
 
 ### Which kernel these scores apply to
 
-Scores are written for two fielded lines: **5.19.6-HeartSuite** and **6.18** after the pre-release derivation. The public 6.18 pin turns off `CONFIG_IO_URING`, `CONFIG_KEXEC`, and `CONFIG_BPF_SYSCALL` (the raw 6.18.9-hs seed still has those `=y`; that seed is not the public claim). Other 6.18.9-hs module flags (`CONFIG_KVM`, `CONFIG_IP_SCTP`, `CONFIG_XFS_FS`, `CONFIG_NF_TABLES`) stay as in the current drop until they are derived separately. Where the two kernels differ, the entry states both.
+Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18**. Compiled-out rows (BPF, FUSE, and similar gates) are the product claim. Where the two lines differ, the entry states both.
+
+**Score on HeartSuite** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. Reachable + Lockdown bounds maps to **Affected, mitigated**.
 
 ## What malware can and cannot do on this system
 
@@ -3407,7 +3409,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 CVE-2026-45839 is a signed-index out-of-bounds read in `bpf_core_parse_spec()`. CO-RE accessor strings are colon-separated field indices parsed with `sscanf("%d")`. A negative index passes the upper-bound check (`access_idx >= btf_vlen(t)`) and is cast to `u32` 0xffffffff inside `btf_member_bit_offset()`, reading far past the BTF members array. A local caller with `CAP_BPF` triggers it on `BPF_PROG_LOAD`.
 
-`# CONFIG_BPF_SYSCALL is not set` on 5.19.6-HeartSuite. The public derived 6.18 pin turns `CONFIG_BPF_SYSCALL` off (`bpf()` returns `ENOSYS`). There is no verifier, no CO-RE relocation path, and no `bpf_core_parse_spec()` in the running kernel on either released pin. Both pins also ship `CONFIG_DEBUG_INFO_NONE=y` with no vmlinux BTF.
+`# CONFIG_BPF_SYSCALL is not set` on the Root Lock kernel (`bpf()` returns `ENOSYS`). There is no verifier, no CO-RE relocation path, and no `bpf_core_parse_spec()` in the running kernel. Both lines also ship `CONFIG_DEBUG_INFO_NONE=y` with no vmlinux BTF.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3688,7 +3690,7 @@ The trigger cannot be reached on any Root Lock deployment.
 
 This CVE is a use-after-free in the BPF offload info-fill path. Querying information for an offloaded BPF map or program calls `get_net()` on the netdev network namespace while that namespace can already be tearing down, which increments a zero refcount.
 
-`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the public derived 6.18 pin (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program or map store, and no offload info-fill path on either released pin.
+`CONFIG_BPF_SYSCALL` is not compiled (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program or map store, and no offload info-fill path.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -4259,7 +4261,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 The BPF syscall interface is the kernel entry point through which user-space programs load and run BPF programs in kernel context. CVE-2021-20194 describes a heap overflow in the BPF verifier reachable by a local user who submits a crafted BPF program, gaining elevated privilege.
 
-`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the public derived 6.18 pin (`bpf()` returns `ENOSYS`). The raw 6.18.9-hs seed still has `CONFIG_BPF_SYSCALL=y`; that seed is not the public claim. There is no verifier, no BPF program store, and no reachable code path for this CVE on either released pin.
+`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the 6.18 pin (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program store, and no reachable code path for this CVE.
 
 ### Netfilter nftables
 
@@ -5713,20 +5715,13 @@ When a scanner flags Root Lock for a CVE listed as Not Affected on this page, th
 
 For the full verification workflow (maintenance-kernel exceptions, scanner configuration, audit evidence, and published OSV feeds), see [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
 
-Share this page with your auditor or scanner vendor as the reference for any disputed CVE entry. For compliance teams that require a configuration-level proof, the config gate for any entry on this page can be confirmed on the Root Lock host:
+Share this page with your scanner vendor as the reference for any disputed CVE entry. For a configuration-level proof, confirm the config gate on the Root Lock host:
 
 ```bash
 grep CONFIG_<GATE> /boot/config-$(uname -r)
 ```
 
-For example, to confirm CVE-2026-31431:
-
-```bash
-$ grep CONFIG_CRYPTO_USER_API_AEAD /boot/config-$(uname -r)
-CONFIG_CRYPTO_USER_API_AEAD=n
-```
-
-Replace `CONFIG_<GATE>` with the config gate listed in the relevant section. Any `=n` result confirms that config gate is not compiled into the running kernel.
+Replace `CONFIG_<GATE>` with the config gate listed in the relevant section. An `=n` result confirms that gate is not compiled into the running kernel.
 
 ## The Four Assessment Gates
 

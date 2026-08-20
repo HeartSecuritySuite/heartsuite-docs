@@ -13,7 +13,7 @@ toc: true
 
 **Audience**: Procurement, vendor risk, GRC, and platform security teams mapping HeartSuite deliverables to supply-chain questionnaires, SOC 2 / ISO evidence requests, and enterprise Linux vulnerability-management programs.
 
-**Related reading**: [Kernel Support Policy](kernel-support-policy/), [Enterprise Adoption Guide](enterprise-adoption-guide/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/), [Evidence Status](evidence-status/), [Auditor Brief](auditor-brief/), [Updating HeartSuite](../../maintenance/updating-heartsuite/).
+**Related reading**: [Kernel Support Policy](kernel-support-policy/), [Enterprise Adoption Guide](enterprise-adoption-guide/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/), [Evidence Status](evidence-status/), [Threat model](auditor-brief/), [Updating HeartSuite](../../maintenance/updating-heartsuite/).
 
 ---
 
@@ -75,8 +75,8 @@ Full install procedure and maintenance-window context: [Updating HeartSuite](../
 
 Every released HS kernel stream publishes the **SHA-256 hash of the exact kernel `.config`** used for that build. This hash is the anchor for independent hardening verification:
 
-- Compare the published hash to the config on a running system: `sha256sum /boot/config-$(uname -r)`
-- Re-run the open-source `kernel-hardening-checker` against that config to reproduce attack-surface and exploit-resistance scores (commands in the [Auditor Brief](auditor-brief/))
+- Compare the published hash to the **pin payload `.config`**, not guest `/boot/config-$(uname -r)` on 6.18.9-hs. That file is an 11-line initramfs stub (`CONFIG_IKCONFIG` is off). Hashes and commands: [Threat model](auditor-brief/), [Evidence Status](evidence-status/).
+- Re-run the open-source `kernel-hardening-checker` against that pin config to reproduce attack-surface and exploit-resistance scores
 - Cross-check stream-specific raw output in `evidence-pack-*.txt` artefacts referenced from the comparison and auditor pages
 
 Config hashes are **per stream** (for example, 6.18 primary LTS and legacy 5.19), not a single global value. Publication status per stream is tracked in [Evidence Status](evidence-status/).
@@ -106,11 +106,11 @@ HeartSuite does **not** maintain a public kernel source repository at this time.
 
 Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
 
-- Output of `uname -r` (for example, `6.18.9-HeartSuite-1.0`)
+- Output of `uname -r` (fielded pin: `6.18.9-hs`) and `file` on vmlinuz (expect `#37`)
 - HeartSuite product version (for example, v1.6.4)
 - Release tag or `heartsuite-install.sh.sha256` reference if known
 
-HeartSuite will provide source matching that build. Independent verification of kernel configuration does **not** require source access — use the published `.config` SHA-256 and reproduction steps in the [Auditor Brief](auditor-brief/).
+HeartSuite will provide source matching that build. Independent verification of kernel configuration does **not** require source access — use the published `.config` SHA-256 and reproduction steps in the [Threat model](auditor-brief/).
 
 ### Subscription notification
 
@@ -127,7 +127,7 @@ Each coordinated release is accompanied by a **bundle manifest** (shipped with t
 | Field | Purpose | Example / notes |
 |---|---|---|
 | **HeartSuite product version** | Identifies the coordinated stack release | For example, HeartSuite v1.6.4 |
-| **HS kernel version string** | Running kernel identity after install | For example, `6.18.9-HeartSuite-1.0` — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
+| **HS kernel version string** | Running kernel identity after install | Fielded pin: `6.18.9-hs` (packaging `6.18.9-HeartSuite-3`, build #37) — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
 | **Stream** | Supported LTS line | `6.18` (primary) or `5.19` (legacy) |
 | **Bundle checksum** | SHA-256 of `heartsuite-install.sh` | Must match `heartsuite-install.sh.sha256` |
 | **Config SHA-256** | Hash of the kernel `.config` for this build | Links reproducible verification to this release |
@@ -207,10 +207,10 @@ The feeds **do not** replicate RHSA numbering or distribution errata semantics. 
 1. Pull the catalogue: `curl -fsS https://docs.heartsecsuite.com/advisories/index.json`
 2. Ingest `hs-cve-config-sbom.json` and `osv.json` into your vulnerability-management platform.
 3. For CVEs not covered by machine-readable entries, use **[CVE Hygiene for Scanners](cve-hygiene-for-scanners/)**:
-   - Confirm boot context (`HeartSuite` in `uname -r` vs maintenance kernel).
+   - Confirm boot context: fielded HS kernel is `6.18.9-hs` (see [Evidence Status](evidence-status/)). A missing `HeartSuite` substring still matches that pin.
    - Look up the CVE on [Kernel Security Transparency](../../security/).
-   - Verify config gates with `grep CONFIG_* /boot/config-$(uname -r)`.
-   - Record false positives in your scanner exception register with transparency links.
+   - Verify compiled-out claims against the **pin payload config**. Guest `/boot/config-6.18.9-hs` is a stub.
+   - Record exceptions with pin identity, config evidence, and a transparency link.
 
 Continue using **distribution OVAL/errata** for Non-HS kernel maintenance windows and for non-kernel packages.
 
@@ -231,7 +231,7 @@ OVAL XML general availability will be announced in release notes when ready.
 
 **Complementary artefacts** (always available):
 
-- Published kernel `.config` SHA-256 and `evidence-pack-*.txt` for reproducible hardening measurement (5.19.6 published; 6.18.9 in progress — see [Evidence Status](evidence-status/))
+- Published kernel `.config` SHA-256 and `evidence-pack-*.txt` for reproducible hardening measurement (5.19.6 legacy pack; 6.18.9-hs #37 pack published 2026-08-18 — see [Evidence Status](evidence-status/))
 - CONFIG-gate SBOM at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json)
 - Bundle SHA-256 manifests
 - CVE transparency and bundle manifest CVE lists
@@ -279,7 +279,7 @@ If a control framework **requires** GA OVAL feeds or GPG/cosign signing before p
 - [Evidence Status](evidence-status/) — 5.19.6 vs 6.18.9 publication status.
 - [Enterprise Adoption Guide](enterprise-adoption-guide/) — Fleet operations, supply-chain summary, Secure Boot status, and honest limitations.
 - [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — HS kernel CVE verification; ingest published OSV/CONFIG SBOM feeds; OVAL interim workflow.
-- [Auditor Brief](auditor-brief/) — Threat model, reproduction commands, evidence packs.
+- [Threat model](auditor-brief/) — Threat model, reproduction commands, evidence packs.
 - [Distro Compatibility Matrix](distro-compatibility-matrix/) — Stream and distribution validation.
 - [Kernel Security Transparency](../../security/) — Per-CVE status and config gates.
 - [Updating HeartSuite](../../maintenance/updating-heartsuite/) — Bundle verification and two-reboot update path.

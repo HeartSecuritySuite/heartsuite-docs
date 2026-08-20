@@ -343,10 +343,10 @@ Nothing the attacker ran survives a reboot.
 
 To see the three enforcement mechanisms tested against real attacks, including what happens when attackers stay within approved boundaries, see [When Root Isn't Enough](../in-practice/).
 
-**The compliance answer.** SOC 2, PCI DSS, and ISO 27001 each include a privileged-access control question: can an administrator, or an attacker who has compromised one, remotely disable security controls?
+**Privileged access.** SOC 2, PCI DSS, and ISO 27001 each expect the organization to restrict and review privileged access. None of them is a single question of the form “can an administrator remotely disable this product?”
 
-Under Lockdown, root cannot modify the sealed allowlist or disable enforcement the way agents and LSMs can be stopped or set permissive. Changing the seal takes physical or serial-console access, to boot the maintenance kernel, as described above.
+Under Lockdown, remote root cannot modify the sealed allowlist or disable Root Lock the way a userspace agent can be killed. Changing the seal takes physical or serial-console access, to boot the maintenance kernel.
 
-Every tool in the bypass table earlier in this page can be turned off by an attacker who already has remote root. Root Lock does not have that class of disable. For managed security providers, that is the change they describe to auditors. It is the same for every Root Lock-protected server they manage in financial services, healthcare, and defence.
+That is one technical activity a customer control may cite. It does not satisfy a TSC, an Annex A control, or a PCI requirement by itself. Examiners still test identity, access reviews, logging, and the rest of the control environment.
 
-Auditors who need kernel-config notes and whether every path is gated should also see the [Auditor Brief](../../kernel-hardening/auditor-brief/).
+For kernel-config notes and residual risk on the fielded pin, see [Threat model and residual risk](../../kernel-hardening/auditor-brief/).
