@@ -47,9 +47,9 @@ Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Com
 
 {{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown). It does not replace Falco's rules, SELinux domain transitions, or EDR telemetry.
+A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown).
 
-An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, remote root is not intended to lift the Root Lock seal. That is the comparison on the disable path — not a reason to remove those tools.
+An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, remote root has no intended path to lift the Root Lock seal. That is the comparison on the disable path.
 
 See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table. Recovery takes physical or serial-console access: keyboard and monitor, serial port, or cloud serial console. For SELinux specifically, see the next question.
 
