@@ -33,8 +33,7 @@ The Dashboard shows green checkmarks for items that pass and amber warnings for 
 
 ![Maintenance checklist with mixed status indicators](test_docs_maintenance_checklist_mixed.svg)
 
-> [!NOTE]
-> The safety checklist is more critical for the Lockdown path (Option 2), where Root Lock will be completely absent. For the standard path (Option 1), Root Lock continues logging and running backups.
+The safety checklist matters most when you are about to lift the seal. While you are in Setup Mode with the Root Lock kernel still loaded, logging and backups continue.
 
 ## After Lockdown: unseal from the console
 

@@ -166,7 +166,16 @@ A: Lockdown requires an active subscription, all review queues to be cleared, an
 
 {{< details summary="I work remotely a lot; can I still access a Root Lock server remotely?" >}}
 
-A: Yes. Allowlist the SSH program and the IP addresses you connect from — remote access works the same as any other approved program.
+A: Yes. Approve the SSH server to execute and to read the files it needs, the same as any other program. Installer seeds commonly already cover `sshd`.
+
+Internet Access (`[i]`) is outbound destinations only. Adding the address you connect *from* there does not grant inbound SSH.
+
+Root Lock still has SSH posture controls:
+
+- **Lockdown** — Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off). Inbound permits (`[o]` / `[a]`) record which source addresses may reach sshd while sealed. `[r]` / `[j]` choose whether SSH stays up under Lockdown.
+- **Maintenance** — console-only (network down), a restricted SSH route, or leave SSH open. You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+
+sshd's own config, an OS packet filter, and cloud security groups still apply. If you SSH *from* the Root Lock host *to* other hosts, those destination IPs appear in Internet Access for the SSH client. See [Network and Remote Access](network/).
 
 {{< /details >}}
 

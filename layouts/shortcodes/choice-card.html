@@ -4,7 +4,8 @@
     <div class="card-header">{{ . | $.Page.RenderString }}</div>
     {{ end -}}
     <div class="card-body">
-      {{ .Inner | $.Page.RenderString }}
+      {{/* default RenderString is inline and strips the wrapping <p> from a single paragraph */}}
+      {{ .Inner | $.Page.RenderString (dict "display" "block") }}
     </div>
   </div>
 </div>

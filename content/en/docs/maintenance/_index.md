@@ -14,10 +14,12 @@ These guides cover how to make changes without leaving a hole an attacker can us
 
 Maintenance is a time period during which you temporarily step out of Lockdown to make changes. It is not a separate mode. Root Lock has two modes: Setup Mode and Lockdown.
 
-The Dashboard's Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path.
+During maintenance you either switch to Setup Mode (the kernel logs but stops blocking) or boot the maintenance kernel (Root Lock is not loaded). The Dashboard's Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path.
+
+Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch with no GRUB is only when the strip already says Lockdown not applied.
 
 - **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
-- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required. Reboot and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and the machine returns to Setup Mode on the Root Lock kernel. That is two reboots before you can install software or edit sealed files.
+- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required. Reboot and select **Maintenance: unseal and return to Root Lock**. That is two reboots before you can install software or edit sealed files.
 
 The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 

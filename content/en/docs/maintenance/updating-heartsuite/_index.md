@@ -20,42 +20,41 @@ toc: true
 
 It does not modify user data, the existing allowlist entries, or backup files. After the new kernel boots, new programs appear in the review queues for you to approve.
 
-## Why two reboots are required
+## Why you cannot install on the Root Lock kernel
 
-The running Root Lock kernel cannot replace itself. The installer verifies this and aborts if it detects it is running on the Root Lock kernel. An update therefore requires:
+The running Root Lock kernel cannot replace itself. The installer aborts if it detects that kernel, and prints a host-specific `grub-reboot` line for the stock or maintenance target.
 
-1. A reboot from the Root Lock kernel to the maintenance kernel.
-2. Running the installer on the maintenance kernel.
-3. A reboot back into the new Root Lock kernel.
+If Lockdown is still sealed, the first **Maintenance: unseal and return to Root Lock** boot is not a place to run the installer. Express return lifts the seal and bounces you back to Setup Mode on the Root Lock kernel. Stay-up on the maintenance kernel happens only after posture is already open.
 
-Root Lock is not active while the maintenance kernel is running. Schedule updates during a planned maintenance window.
+Schedule updates during a planned maintenance window. Root Lock is not loaded while the maintenance kernel is running.
 
 ## Before you begin
 
-- **Disengage Lockdown if it is active.** Lockdown uses `chattr +i` filesystem immutability on HeartSuite configuration files; the installer cannot replace them while Lockdown is engaged. From the Dashboard, open Maintenance (`[m]`) and follow the guided path to disengage.
+- **Unseal first if Lockdown is active.** From the Dashboard, open Maintenance (`[m]`) and follow the sealed path in [Protecting During Maintenance](../protecting-during-maintenance/). You must land in Setup Mode before a later maintenance-kernel boot will stay up.
 - **Verify the bundle.** Compare the SHA-256 of `heartsuite-install.sh` against the published checksum before running it.
+- **Physical or serial-console access** for the GRUB picks and for recovery if the new kernel does not boot.
 
 ## Update procedure
 
 1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`.
-2. Verify integrity:
+2. If Lockdown is sealed, open Maintenance (`[m]`) and complete the unseal path. You should be in Setup Mode on the Root Lock kernel before the next step.
+3. Reboot and select the maintenance kernel (or the stock target the installer printed) at the GRUB menu so the machine **stays** off the Root Lock kernel.
+4. Verify integrity:
 
    ```bash
    sha256sum -c heartsuite-install.sh.sha256
    ```
 
    Expected output: `heartsuite-install.sh: OK`
-3. Reboot and select the maintenance kernel at the GRUB menu.
-4. Log in as root over SSH or the serial console (AWS EC2 Serial Console, Linode LISH, Hetzner, etc.). On failure, inspect `/var/log/heartsuite/install.log` via serial.
-5. Run the installer:
+5. Log in as root over SSH or the serial console (AWS EC2 Serial Console, Linode LISH, Hetzner, and others). On failure, inspect `/var/log/heartsuite/install.log` on the serial console.
+6. Run the installer:
 
    ```bash
    bash heartsuite-install.sh
    ```
 
-6. The installer applies the update and reboots automatically into the new Root Lock kernel.
-7. If new programs are encountered, Root Lock reads the startup logs, adds the programs it finds to the allowlist, and reboots as needed during initial setup. The Dashboard appears when this is complete.
-8. Re-engage Lockdown from the Dashboard if it was active before the update.
+7. The installer applies the update and, by default, reboots into the new Root Lock kernel.
+8. If new programs appear, they show in the review queues. Approve them through the Dashboard, then re-engage Lockdown (`[l]`) if it was active before the update.
 
 ## If the update fails
 

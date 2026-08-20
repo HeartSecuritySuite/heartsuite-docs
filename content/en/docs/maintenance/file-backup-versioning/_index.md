@@ -15,11 +15,11 @@ Modern ransomware targets backup systems first — shadow copies and backup agen
 
 Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Versioning runs on the Root Lock kernel in both Setup Mode and Lockdown. Backup is a recovery store, not a prevention control: it does not stop the first write.
 
-Root Lock's backups are not permission-protected: no program, including malware running as root, can read or destroy them. Versions are never automatically deleted.
+Under Lockdown, the kernel keeps other programs — including malware running as root — off those backup versions. That gate is absent on the maintenance kernel. Changing which directories are protected requires a [maintenance window](../protecting-during-maintenance/).
 
 ## Automatic versioning
 
-Root Lock monitors a list of protected directories. When any file in those directories (including subdirectories) is written, Root Lock silently creates a new versioned backup before the write completes. This runs automatically in both Setup Mode and Lockdown — versioning begins from first boot, before you have reviewed a single item.
+Root Lock monitors the protected directories you select. When any file in those directories (including subdirectories) is written, Root Lock creates a new versioned backup before the write completes. Versioning begins from first boot, before you have reviewed a single item.
 
 Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from.
 
@@ -27,7 +27,7 @@ Root Lock backs up on every write. There is no window.
 
 Other security tools that offer rollback on Linux — including endpoint tools with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
-CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup tool itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit — under Lockdown, the kernel itself prevents any program from reaching them.
+CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup tool itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit.
 
 By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup.
 
@@ -46,8 +46,7 @@ From Configure you can:
 
 Recommended directories include those containing user documents, executable files, configuration, and shared libraries. Avoid high-churn directories like log directories — backup creates a new version on every write.
 
-> [!NOTE]
-> Backup is optional. You can remove all directories, disabling backup entirely. Lockdown does not require backup to be configured.
+Backup is optional. You can remove all directories, disabling backup entirely. Lockdown does not require backup to be configured.
 
 ## Restoring file versions
 

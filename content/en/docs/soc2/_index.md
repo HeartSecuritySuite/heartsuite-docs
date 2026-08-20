@@ -448,7 +448,7 @@ The allowlist is the authoritative record of every program, file access, and net
 
 **Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint.
 
-Machine-readable supply-chain artifacts are published at [`/advisories/`](/advisories/): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available.
+Machine-readable supply-chain artifacts are published at [`/advisories/`](/advisories/index.json): CONFIG-gate SBOM, OSV, and CycloneDX. SPDX dual-format and GPG/cosign signing are not generally available.
 
 There is no built-in multi-host push from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns.
 
