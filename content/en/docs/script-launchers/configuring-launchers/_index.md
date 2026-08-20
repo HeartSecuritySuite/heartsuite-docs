@@ -40,7 +40,7 @@ Each interpreter now routes through its launcher. Scripts using
 these interpreters will be reviewed on their own permission terms.
 ```
 
-Press `[q]` to return to the Dashboard. The Dashboard marks Phase 3 complete.
+Press `[q]` to return to the Dashboard. The Lockdown Checklist marks **4. Secure Script Launchers** complete.
 
 ## If no script interpreters are detected
 
@@ -48,21 +48,23 @@ If none of the known interpreters have appeared in the activity log yet, the Das
 
 ```text
 No script interpreter log events detected.
-You may proceed to the next phase without activating any launchers.
+None of the known interpreters have appeared in the activity log yet.
+
+Proceed without activating launchers.
 ```
 
-Phase 3 is not required if your system does not use script interpreters.
+Secure Script Launchers is not required if your system does not use script interpreters. The checklist row then reads **Not applicable**.
 
 ## Skipping launcher setup
 
 Press `[s]` to skip without activating. Root Lock notifies you:
 
 ```text
-Script launcher activation skipped.
-Interpreters will remain blocked in Lockdown until approved.
+Skipped. Interpreters without a Secure Script Launcher
+activated will be blocked under Lockdown.
 ```
 
-You can return to the Launchers (`[s]`) at any time to activate launchers before activating Lockdown.
+Skip does not mark the checklist row complete. The Suggested Next Step stays on Launchers (`[s]`) while interpreters are still pending. You can return to Launchers at any time to activate them before Lockdown.
 
 ## Testing a launcher directly
 
@@ -74,4 +76,4 @@ Before or after Dashboard activation, you can run a script through a specific la
 
 This applies the script's allowlist entry rather than the interpreter's. Running the same script with `python3` directly uses the interpreter's broader permissions. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.
 
-After activating launchers, return to the Dashboard. The Suggested Next Step directs you to [file access allowlisting](../../allowlisting/allowlisting-basics/) via the File Access queue (`[f]`).
+After activating launchers, return to the Dashboard. The Suggested Next Step directs you to [file access allowlisting](../../allowlisting/allowlisting-basics/) via the File Access queue (`[f]`) if that queue still has items.

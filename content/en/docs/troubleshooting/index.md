@@ -13,7 +13,7 @@ type: docs
 
 Root Lock by HeartSuite shows which one on the Dashboard. The indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do.
 
-Kernel and operational logs (`journalctl -k` or dmesg; `/var/log/heartsuite/install.log`, `ui.log`, initial setup logs) can be viewed and downloaded from cloud provider web dashboards without SSH or an interactive serial console. See Appendices > Log files for AWS CloudWatch/SSM, GCP Cloud Logging, and Azure Log Analytics. Serial console remains the universal recovery path.
+Installer and Dashboard logs live under `/var/log/heartsuite/`. Use the provider **serial console** to `cat` them. AWS **Get system log** is a buffered serial snapshot — it is not CloudWatch. CloudWatch, Cloud Logging, and Log Analytics need the **platform** logging agent plus IAM; Root Lock does not install that agent. Paths and the three cloud surfaces are listed in [Appendices → Log files](../appendices/#log-files).
 
 ## Where to start
 
@@ -33,9 +33,9 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 Root Lock logs activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
 
-The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty, the Dashboard automatically clears the log on its next refresh. No manual action is required.
+The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty **and** Secure Script Launchers is not still pending, the Dashboard automatically clears the log on its next refresh. No manual action is required.
 
-For compliance, SIEM integration, or long-term retention, Root Lock also emits a per-decision enforcement stream and a separate alert stream over RFC 5424 syslog (plus a persistent JSONL approval log). See the dedicated [SIEM and Fleet Integration](../alerts/siem-integration/) page for configuration examples. Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
+For compliance, SIEM integration, or long-term retention, enable **Syslog** on Alert Settings → Fleet. Denial lines and aggregated alerts then go to the journal under ident `heartsuite` (alert lines use the message prefix `heartsuite-alert:`). Approvals are in `/var/log/heartsuite/allowlist-audit.log`. See [SIEM and Fleet Integration](../alerts/siem-integration/). Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
 
 Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
 
@@ -49,7 +49,7 @@ The kernel log is useful for advanced troubleshooting in three situations: a pro
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard is accessible on both the Root Lock kernel and the maintenance kernel — on the maintenance kernel, the indicator at the top shows "maintenance kernel — Root Lock not active" and blocking is inactive.
+The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard runs on the Root Lock kernel. On the maintenance kernel the TUI is Maintenance standalone, not the Dashboard; the strip reads `maintenance kernel: Root Lock not active    No blocking · No logging · No backups`. Express return is meant to get you off that kernel quickly.
 
 ## Reporting issues
 

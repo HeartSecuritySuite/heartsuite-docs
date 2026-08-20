@@ -2,7 +2,7 @@
 # Fails CI if deprecated terminology appears in docs source.
 BANNED=(
   # Mode names — §5.1 (DD-060)
-  "Secure Mode"             # → Lockdown
+  # "Secure Mode" is handled below: quoted JSON token allowed, unquoted banned
   "Monitor Mode"            # → Setup Mode
   "Denial Mode"             # → Lockdown
   "Denial mode"             # → Lockdown
@@ -53,6 +53,24 @@ for term in "${BANNED[@]}"; do
     found=1
   fi
 done
+
+# §5.1: "Secure Mode" is retired as a user-facing mode name. The on-disk
+# status/webhook token is still the literal "Secure Mode" (style guide:
+# code-level value pending rename). Allow only the quoted token.
+secure_mode=$(python3 - <<'PY'
+from pathlib import Path
+for path in sorted(Path("content").rglob("*.md")):
+    for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        cleaned = line.replace('"Secure Mode"', "")
+        if "Secure Mode" in cleaned:
+            print(f"{path}:{i}:{line}")
+PY
+)
+if [[ -n "$secure_mode" ]]; then
+  echo "BANNED TERM: \"Secure Mode\" (use Lockdown; quoted JSON token \"Secure Mode\" is allowed)"
+  echo "$secure_mode"
+  found=1
+fi
 
 # R45: headings must name what the user sees/does/gets — not "How X Works"
 how_works=$(grep -rEn --include="*.md" "^##+ How .+ Works" content/ || true)

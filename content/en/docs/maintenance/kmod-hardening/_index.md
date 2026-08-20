@@ -13,25 +13,31 @@ toc: true
 
 If your hardware requires kmod at startup to load device drivers or filesystem modules, kmod must have an allowlist entry. Restrict that entry's file access to only the specific modules it needs before engaging Lockdown. An allowlisted kmod with unrestricted file access can load any module on the machine.
 
-An allowlisted kmod with directory-level read under `/lib/modules` can open module files that were never observed during Setup Mode.
-
 ## When no extra work is needed
 
 If `kmod`, `modprobe`, and `insmod` have no allowlist entries, Lockdown refuses to execute them. You can skip the rest of this page.
 
+## When kmod is allowlisted
+
 Some hardware configurations require kmod at startup to dynamically load drivers or filesystem modules the system needs to boot. Once kmod has an allowlist entry, it can execute — and without further restriction, kmod's file access permissions determine which modules it can load.
 
-The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod attempts to load a module outside its permitted paths, Root Lock blocks the file access in Lockdown before the module can be read.
+The hardening step is to narrow those file access permissions to the specific module paths kmod legitimately needs. If kmod tries to load a module outside its permitted paths, Root Lock denies the file access in Lockdown before the module can be read.
 
-## Restricting kmod's file access permissions
+An allowlisted kmod with directory-level read under `/lib/modules` can open module files that were never observed during Setup Mode.
 
-Do this before engaging Lockdown. Once Lockdown is active, allowlist entries are sealed and cannot be modified without a [maintenance window](../protecting-during-maintenance/).
+## Narrow file access before Lockdown
 
-When kmod's startup activity appears in the **File Access queue (`[f]`)** during Setup Mode, approve individual `.ko` file paths rather than directory-level access. Approving a directory grants kmod read access to everything under it — including modules not present during observation. Approving specific file paths limits kmod to exactly what it accessed during Setup Mode.
+Do this before you type `YES` on Lockdown. Once Lockdown is active, allowlist entries are sealed. Changing them takes a [maintenance window](../protecting-during-maintenance/).
 
-If kmod already has directory-level file access permissions, use `hs-manage-allowlist` to remove the broad entries and re-add specific paths. See `hs-manage-allowlist --help` for usage.
+When kmod's startup activity appears in the File Access queue (`[f]`) during Setup Mode, approve individual `.ko` paths rather than directory-level access. Approving a directory grants read access to everything under it — including modules not present during observation.
 
-After narrowing kmod's file access permissions, reboot and confirm the machine starts normally with no kmod access denials in the review queues. Then activate Lockdown from the Lockdown button (`[l]`).
+If directory grants under `/lib/modules` are still present when you open Lockdown (`[l]`), seal prep **auto-narrows** them. That panel is an advisory, not a `YES` gate. `[m]` on that panel undoes the narrowing — it is not Maintenance. Under Lockdown the same inventory is read-only.
+
+Leftover grants after auto-narrow belong in Allowed (`[a]`) or File Access (`[f]`), not a CLI as the normal path.
+
+After narrowing, reboot and confirm the machine starts with no unexpected kmod denials in the review queues. Then activate Lockdown (`[l]`).
+
+## What stays sealed after Lockdown
 
 After Lockdown engages:
 
@@ -44,12 +50,4 @@ Lockdown does not independently refuse `init_module`. The restriction is the pro
 
 Lockdown seals system-wide shell configuration — `/etc/profile`, environment defaults, and cron — preventing an attacker from planting scripts that run at the next boot and expand kmod's permissions before Lockdown re-engages. Per-user profile files (`~/.bash_profile`, `~/.bash_login`, `~/.profile`, `~/.bashrc`, `~/.inputrc`) are not covered automatically because the correct set depends on your user configuration.
 
-If your deployment requires coverage for specific user accounts, enable the commented-out entries for those users in `HS_lockdown.sh` before engaging Lockdown.
-
-## How Lockdown reinforces the restriction
-
-After Lockdown engages, three layers protect against module-loading attacks:
-
-- **Allowlist entries are sealed** — kmod's allowlist entry cannot be modified while Lockdown is active. An attacker cannot add new module paths even with root access.
-- **Startup scripts are sealed** — Lockdown seals system-wide shell configuration, systemd unit directories, and cron. Attackers cannot insert scripts that would run before Lockdown re-engages on the next boot and expand kmod's permissions.
-- **Kernel-level block** — Lockdown blocks new module loads at the kernel level, independently of the allowlist.
+If specific user accounts need that coverage, enable the commented-out entries for those users in `HS_lockdown.sh` before engaging Lockdown.
