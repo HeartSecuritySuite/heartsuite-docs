@@ -100,7 +100,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 ### CC6.6 — Threats from sources outside system boundaries
 
-**Control requirement**: Logical access security measures restrict access to infrastructure, including operating system configurations, network configurations, and authentication databases.
+**Official criterion**: The entity implements logical access security measures to protect against threats from sources outside its system boundaries.
 
 **How Root Lock can support a customer control**:
 
