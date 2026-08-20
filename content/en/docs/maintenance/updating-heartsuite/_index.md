@@ -22,11 +22,16 @@ It does not modify user data, the existing allowlist entries, or backup files. A
 
 ## Why you cannot install on the Root Lock kernel
 
-The running Root Lock kernel cannot replace itself. The installer aborts if it detects that kernel, and prints a host-specific `grub-reboot` line for the stock or maintenance target.
+The installer will not run while the Root Lock kernel is booted. It checks `uname -r`, stops, and tells you to reboot onto a kernel that is not Root Lock — your original distro kernel, or the Maintenance entry.
 
 If Lockdown is still sealed, the first **Maintenance: unseal and return to Root Lock** boot is not a place to run the installer. Express return lifts the seal and bounces you back to Setup Mode on the Root Lock kernel. Stay-up on the maintenance kernel happens only after posture is already open.
 
-Schedule updates during a planned maintenance window. Root Lock is not loaded while the maintenance kernel is running.
+If Lockdown is applied (the strip says **Lockdown applied**), you need two different boots. Do not run the installer on the first one.
+
+1. **Unseal.** From Maintenance (`[m]`), reboot at the console and select **Maintenance: unseal and return to Root Lock**. The seal lifts and the machine comes back by itself to the Root Lock kernel in Setup Mode. That trip across the maintenance kernel is short on purpose — you will not stay there, and the installer is not for that boot.
+2. **Install.** When the Dashboard is in Setup Mode, reboot again and select Maintenance (or the original distro kernel the installer named). This time the machine stays off Root Lock. Log in and run `heartsuite-install.sh` there.
+
+On that second boot, Root Lock is not loaded: it does not block programs, does not log, and does not take backups. Choose a time when that gap is acceptable.
 
 ## Before you begin
 
