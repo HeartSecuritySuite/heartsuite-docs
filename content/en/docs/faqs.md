@@ -37,19 +37,19 @@ Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon are not a fit fo
 
 {{< details summary="Can I use the same allowlist across a fleet or Kubernetes cluster?" >}}
 
-A: Yes. Each host runs the Root Lock kernel with the same allowlist installed locally. There is no HeartSuite-provided central policy server and no cloud dependency for enforcement or distribution.
+A: Same allowlist **across a fleet of similar hosts**: yes. Each host runs the Root Lock kernel with the allowlist installed locally. There is no HeartSuite central policy server. Your automation (Ansible, Terraform + GitOps, Puppet, scripts) distributes the files.
 
-Your existing automation (Ansible, Terraform + GitOps, Puppet, custom scripts, ServiceNow-driven workflows) distributes the same allowlist — curated as policy-as-code or in your CMDB — to any number of hosts. Production deployments run this across hundreds or thousands of nodes.
+**Kubernetes:** only for long-lived, fixed pod sets established **before** Lockdown. Dynamic scheduling, HPA scale-out, and new mounts after Lockdown are not a fit. See [Deployment Scenarios](introduction/deployment-scenarios/) and [Containers and microVMs](introduction/containers-and-microvms/).
 
-Fleet-wide event correlation, policy reconciliation, and compliance reporting stay in your SIEM and control planes. See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
+Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Compliance reporting stays in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
 
 {{< /details >}}
 
 {{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
-A: These tools sit on the preventive-enforcement dimension Root Lock replaces. An attacker who already has remote root kills the Falco agent, unloads the BPF program, or sets SELinux permissive.
+A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown). It does not replace Falco's rules, SELinux domain transitions, or EDR telemetry.
 
-Root Lock has nothing to turn off. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited.
+An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, remote root is not intended to lift the Root Lock seal. That is the comparison on the disable path — not a reason to remove those tools.
 
 See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table. Recovery takes physical or serial-console access: keyboard and monitor, serial port, or cloud serial console. For SELinux specifically, see the next question.
 
@@ -71,7 +71,7 @@ The two are not mutually exclusive. SELinux's domain transitions and distributio
 
 A: Root Lock replaces the preventive-enforcement layer of the following tool categories. Whether you can remove a tool entirely depends on whether you were running it purely for prevention, or also for telemetry and response.
 
-**Can remove or reduce:**
+**What Root Lock can replace (narrowly):**
 
 - **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): the allowlist covers blocking, and the BPF syscall is omitted by design — it is how attackers hide, reach root, and bypass host controls. These tools cannot run on the Root Lock kernel anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
 - **gVisor**: if used solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock is a direct replacement as the guest kernel.

@@ -11,7 +11,7 @@ type: docs
 
 **Overview**: Root Lock by HeartSuite integrates with your existing SIEM, EDR, and observability stack via syslog (journald/rsyslog) and webhook. Configure once in Alert Settings → Fleet, and let your central tooling handle monitoring, correlation, and alerting. There is no requirement to run the Dashboard on every host for day-to-day fleet visibility.
 
-Raw enforcement decisions and higher-level alerts are emitted in real time. SIEM platforms receive the full picture; incident tools receive actionable events.
+Raw **denial** decisions and higher-level alerts are emitted in real time. Successful allowlisted work is not streamed. That is not a complete IR picture — it is the block stream. Incident tools receive the events you configure them to receive.
 
 ## Syslog (recommended for SIEM ingestion)
 
@@ -32,7 +32,7 @@ output.elasticsearch:
 logging.level: warning
 ```
 
-One ingest configuration works for Splunk, QRadar, Graylog, Loki (via promtail), etc. Both the per-decision enforcement stream and the aggregated alert events flow under the same tag.
+The journal identifier is `heartsuite` on every host. How you ship that identifier is stack-specific: Filebeat journald for Elastic, a universal forwarder or HEC for Splunk, a DSM for QRadar, promtail for Loki. The YAML below is an Elastic example, not a universal ingest path.
 
 Pre-flight check on the host:
 

@@ -17,7 +17,7 @@ Keep policy curation, change approval, and fleet-wide visibility inside the tool
 
 ## Policy curation in your central systems
 
-A central system (CMDB, Git repository as source of truth, ITSM workflow, or custom script) owns the authoritative list of approved programs, file-access paths, and network destinations.
+A repository you already run (usually Git, applied by Ansible, Terraform, or similar) owns the list of approved programs, file-access paths, and network destinations. A CMDB holds configuration items (hosts, apps), not that grant list. An ITSM ticket can approve a change; it is not the policy store.
 
 - Generate or maintain policy as text lists (one absolute program path per line) or structured data that your automation can parse.
 - Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
@@ -192,7 +192,7 @@ This pattern works especially well for immutable or frequently reprovisioned fle
 ### 4. ServiceNow or ITSM platforms — change-driven policy
 
 - Model allowlist additions, removals, or baseline updates as standard or emergency change requests.
-- Approved changes update a central policy repository (Git, CMDB, or dedicated store) or directly enqueue an automation job.
+- Approved changes update the Git (or equivalent) policy repository, then automation applies them per host.
 - The automation (Ansible, scripts, or ServiceNow Flow Designer + MID server) applies the delta to the target hosts using the CLI tools above.
 - On completion, the automation closes the change ticket and posts the resulting JSONL approval log excerpts (or a pointer to the SIEM record) as evidence.
 
