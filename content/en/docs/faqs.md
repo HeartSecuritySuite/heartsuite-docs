@@ -305,7 +305,7 @@ A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, ty
 
 A: Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path — a `YES` switch to Setup Mode on the Root Lock kernel, or the console GRUB entry **Maintenance: unseal and return to Root Lock** when the seal is applied.
 
-For a product update you must unseal first, then boot the maintenance kernel again so it stays up while you run the installer. See [Updating Root Lock](maintenance/updating-heartsuite/).
+A product update does not run on the Root Lock kernel, including Setup Mode. If Lockdown is applied, unseal first, then boot the original distro kernel or Maintenance so it stays up while you run the installer. See [Updating Root Lock](maintenance/updating-heartsuite/).
 
 {{< /details >}}
 
