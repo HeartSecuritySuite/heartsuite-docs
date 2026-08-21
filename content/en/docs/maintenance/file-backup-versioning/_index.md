@@ -15,6 +15,10 @@ Modern ransomware targets backup systems first — shadow copies and backup agen
 
 Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Versioning runs on the Root Lock kernel in both Setup Mode and Lockdown. Backup is a recovery store, not a prevention control: it does not stop the first write.
 
+Delayed activation does not change that rule. A **malicious sleeper** is an approved program that behaves as expected for a long time, then encrypts or overwrites files it is already allowed to write. Root Lock still versions every write in a directory you selected on Backup (`[b]`). The default is `/home`.
+
+HeartSuite Joint File System (HJFS) versions every program data file with no directory list. See [The malicious sleeper attack](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack).
+
 Under Lockdown, the kernel keeps other programs — including malware running as root — off those backup versions. That gate is absent on the maintenance kernel. Changing which directories are protected requires a [maintenance window](../protecting-during-maintenance/).
 
 ## Automatic versioning

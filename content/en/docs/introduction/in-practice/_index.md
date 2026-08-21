@@ -95,6 +95,10 @@ If vsftpd is on the allowlist, the backdoor activates inside vsftpd's own proces
 
 Root Lock limits what the attacker can do with that shell — file reads and outbound network connections remain gated. A program already approved to run can exercise its approved permissions, including ones a backdoor author planned for.
 
+The delayed-activation case is the **malicious sleeper**: an approved program behaves as expected for months, then uses those same permissions. The execute gate does not fire. In Lockdown, file reads and writes stay inside the program's allowlist, and outbound destinations stay closed.
+
+[Backup](../../maintenance/file-backup-versioning/) recovers protected directories from the write before the damage. It does not stop the first write to an approved path. Per-program-version file isolation, and automatic backup of every data file, are [HeartSuite Joint File System (HJFS)](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack).
+
 **Attacks within a program's approved scope.** A compromised web server that reads only files it is already approved to read, and connects only to destinations already in its network allowlist, operates within its allowlist. Every file outside that scope is still blocked. Every connection to an unapproved destination is still refused.
 
 Tight allowlisting limits the blast radius. Under Lockdown, the kernel blocks any program (including root) from reaching backup files, so previous versions remain intact and restorable from the Dashboard's Backup.
