@@ -51,7 +51,7 @@ Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Com
 
 A: Bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances. That is the fleet path; it does not need a console session on each node.
 
-In-place package installs and in-place Root Lock updates still work on a **single** host after unseal — [Protecting During Maintenance](maintenance/protecting-during-maintenance/) and [Updating Root Lock](maintenance/updating-heartsuite/). Ansible distributes allowlists; it does not lift the seal. See [Central Policy](alerts/central-policy-management/) and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+In-place package installs still work on a **single** host after unseal — [Protecting During Maintenance](maintenance/protecting-during-maintenance/). An in-place Root Lock update is the same unseal, then `bash heartsuite-install.sh` from a terminal and type `YES` — [Updating Root Lock](maintenance/updating-heartsuite/). Ansible distributes allowlists; it does not lift the seal. See [Central Policy](alerts/central-policy-management/) and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
 {{< /details >}}
 

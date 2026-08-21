@@ -11,7 +11,7 @@ toc: true
 
 **Overview**: Every maintenance window is an attack window — blocking is temporarily suspended, and anything an attacker can reach during that period is unprotected.
 
-Maintenance is the period when you temporarily reduce Root Lock by HeartSuite's protection to install packages, edit files, or apply updates. The Dashboard's Maintenance (`[m]`) guides you from the safety checklist through re-engaging Lockdown.
+Maintenance is the period when you temporarily reduce Root Lock by HeartSuite's protection to install packages or edit files. The Dashboard's Maintenance (`[m]`) guides you from the safety checklist through re-engaging Lockdown. Replacing the Root Lock kernel is a different path: [Updating Root Lock](../updating-heartsuite/).
 
 After Lockdown, the path is the console. You select **Maintenance: unseal and return to Root Lock** at the boot menu. The seal lifts automatically, and the machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel to remove flags by hand.
 
@@ -54,7 +54,9 @@ You are then in Setup Mode on the Root Lock kernel:
 - New activity appears in the review queues.
 - Maintenance (`[m]`) is hidden — you can already install software and edit files.
 
-Make your changes — install packages, edit configuration, update software. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../lockdown/).
+Make your changes — install packages and edit configuration. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../lockdown/).
+
+To replace Root Lock itself, do not wait on this kernel for the bundle. From a terminal in this Setup Mode window run `bash heartsuite-install.sh` and type `YES`. See [Updating Root Lock](../updating-heartsuite/).
 
 If you accidentally select the Root Lock kernel at the first boot menu instead of the Maintenance entry, the Dashboard detects that and sends you back to reboot and select the correct entry.
 

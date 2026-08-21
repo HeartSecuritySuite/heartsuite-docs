@@ -235,4 +235,4 @@ These are the actual scripts Lockdown uses. Most users never invoke them directl
 
 There is no separate CLI for changing mode. Use Lockdown (`[l]`) and Maintenance (`[m]`) on the Dashboard.
 
-Setup is complete. When you need to install software, update configuration, or recover from Lockdown, see [Maintenance](../maintenance/).
+Setup is complete. When you need to install software or recover from Lockdown, see [Maintenance](../maintenance/). To replace the Root Lock kernel, see [Updating Root Lock](../maintenance/updating-heartsuite/).

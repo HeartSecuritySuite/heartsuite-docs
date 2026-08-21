@@ -122,7 +122,7 @@ Root Lock kernel updates are delivered only as part of **coordinated HeartSuite 
 
   Expected output: `heartsuite-install.sh: OK`
 
-- Each bundle updates the Root Lock kernel (`vmlinuz-<version>-HeartSuite-<release>`), userspace tools, Dashboard files, and GRUB defaults together so the enforcement stack stays paired and tested.
+- Each bundle updates the Root Lock kernel, userspace tools, Dashboard files, and GRUB defaults together so the enforcement stack stays paired and tested.
 
 ### Applying an update
 
