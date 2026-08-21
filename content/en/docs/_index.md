@@ -58,7 +58,7 @@ The pages below are the individual steps, linked from Quick Start:
 - [Alert Settings](alerts/) — Set up push notifications for blocks and state changes.
 - [SIEM and Fleet Integration](alerts/siem-integration/) — Connect to Splunk, Elastic, PagerDuty, and other tools at fleet scale (syslog, webhook, status JSON).
 - [Central Policy Management and External Control](alerts/central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation.
-- [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, cache adjustment, kmod file-access narrowing, and updating Root Lock.
+- [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, cache adjustment, kmod file-access narrowing, updating Root Lock, and reprovisioning locked fleets from an updated image.
 
 ## Troubleshoot and reference
 

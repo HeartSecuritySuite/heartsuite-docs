@@ -71,6 +71,8 @@ When installing new software, return to Setup Mode first. The Debian package man
 
 Open Maintenance (`[m]`) before using `dpkg`, add any additional access permissions needed, then lock down again from Lockdown (`[l]`).
 
+One host can run many approved programs under Lockdown. Replacing those program files, or installing packages that write new files, still takes Setup Mode — the same Maintenance path, once. Many locked hosts reprovision from an updated image instead; see [Maintenance](../maintenance/) and [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+
 ```mermaid
 graph TD
     A["Dashboard: Lockdown Checklist complete"] --> B["Queues empty, alerts on, subscription active"]

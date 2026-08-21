@@ -182,4 +182,9 @@ if [[ $? -ne 0 ]]; then
   found=1
 fi
 
+# Lockdown-patch / fleet-unseal claims (KVM-proven public sentences)
+if ! bash "$(dirname "$0")/check-lockdown-patch-claims.sh"; then
+  found=1
+fi
+
 exit $found

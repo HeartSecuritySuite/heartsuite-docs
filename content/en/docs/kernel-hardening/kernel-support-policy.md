@@ -142,6 +142,8 @@ Teams that provision from images may **reprovision from an updated pre-configure
 
 Image pipelines should pin bundle version, checksum, and Root Lock kernel string in build metadata for audit traceability.
 
+In-place bundle application after Lockdown still needs the console unseal on that host. Teams that will not open a console on every node should treat image reprovision as the fleet path. Package installs on a live sealed host are a different job — [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+
 ---
 
 ## Patch commitment tiers

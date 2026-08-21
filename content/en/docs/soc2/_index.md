@@ -439,10 +439,10 @@ The required change management flow:
 
 1. Open a maintenance window from the Dashboard (Maintenance `[m]`)
 2. Complete the safety checklist (network isolation, daemon shutdown, SSH restriction)
-3. Confirm mode switch (type `YES`)
+3. If Lockdown is applied: reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. If the strip already says Lockdown not applied: type `YES` and reboot once
 4. Make changes — install packages, update configuration, apply updates
 5. Review new activity in the Dashboard queues (new programs, file accesses, network destinations)
-6. Approve new entries explicitly before re-engaging Lockdown
+6. Approve new entries explicitly before re-engaging Lockdown (`[l]`)
 
 **Update integrity verification**:
 
@@ -465,6 +465,8 @@ Machine-readable supply-chain artifacts are published at [`/advisories/`](/advis
 There is no built-in multi-host push from a HeartSuite server. Policy is applied per-host by your automation (Ansible, Terraform, scripts, GitOps, ServiceNow, etc.), with rich export for central consumption and attribution. See [Central Policy Management and External Control](../alerts/central-policy-management/) for patterns.
 
 In fleet deployments, allowlist changes are applied per server by the customer's control plane. Lockdown entitlement still requires per-host subscription activation.
+
+There is no remote unseal from Ansible. Fleet-scale software updates are applied by reprovisioning instances from an updated image, or by the per-host maintenance window above. See [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
 **Evidence artifacts**:
 

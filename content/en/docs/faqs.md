@@ -47,6 +47,14 @@ Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Com
 
 {{< /details >}}
 
+{{< details summary="How do I patch many hosts that are already in Lockdown?" >}}
+
+A: Bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances. That is the fleet path; it does not need a console session on each node.
+
+In-place package installs and in-place Root Lock updates still work on a **single** host after unseal — [Protecting During Maintenance](maintenance/protecting-during-maintenance/) and [Updating Root Lock](maintenance/updating-heartsuite/). Ansible distributes allowlists; it does not lift the seal. See [Central Policy](alerts/central-policy-management/) and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+
+{{< /details >}}
+
 {{< details summary="How does Root Lock compare to Falco, AppArmor, SELinux, gVisor, or Linux EDR?" >}}
 
 A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown).
@@ -306,6 +314,8 @@ A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, ty
 A: Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path — a `YES` switch to Setup Mode on the Root Lock kernel, or the console GRUB entry **Maintenance: unseal and return to Root Lock** when the seal is applied.
 
 A product update will not overwrite Root Lock while that kernel is booted. Setup Mode is still the Root Lock kernel. If Lockdown is applied, unseal first. From a terminal in Setup Mode, run `bash heartsuite-install.sh` and type `YES` for one stock boot. The default stays Root Lock. See [Updating Root Lock](maintenance/updating-heartsuite/).
+
+Many locked hosts reprovision from an updated image instead (see the "How do I patch many hosts that are already in Lockdown?" entry above).
 
 {{< /details >}}
 
