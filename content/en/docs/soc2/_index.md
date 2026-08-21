@@ -208,7 +208,7 @@ A customer scanner remains the usual CC7.1 control. Root Lock can reduce blast r
 
 **How Root Lock can support a customer control**:
 
-**Vulnerability surface reduction**: Root Lock reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on HeartSuite" ratings showing the actual risk after those structural mitigations. CVEs affecting kernel features not compiled in receive a Score on HeartSuite of 0.0 — the vulnerable feature is not present by design.
+**Vulnerability surface reduction**: Root Lock reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on Root Lock" ratings showing the actual risk after those structural mitigations. CVEs affecting kernel features not compiled in receive a Score on Root Lock of 0.0 — the vulnerable feature is not present by design.
 
 **Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, Root Lock configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel.
 
@@ -452,7 +452,7 @@ Updates are delivered as a single self-extracting bundle (`heartsuite-install.sh
 sha256sum -c heartsuite-install.sh.sha256
 ```
 
-The installer aborts if run on the active Root Lock kernel, requiring the two-reboot update sequence that prevents unapproved code from replacing the kernel while it is running.
+The installer aborts if run on the active Root Lock kernel because it cannot overwrite protected files while that kernel is booted. See [Updating Root Lock](../maintenance/updating-heartsuite/).
 
 **Allowlist as change record**:
 
