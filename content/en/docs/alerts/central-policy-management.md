@@ -11,6 +11,8 @@ type: docs
 
 **Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the surface for a single host. Enterprises use their control planes to manage policy and observe at scale.
 
+Cloud Path and Local Path remain how each host is installed. This page is not a different install. It is how you harvest a baseline, install that package on many hosts, and apply extras without a Dashboard session on every machine.
+
 There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with export surfaces for central consumption and attribution.
 
 Keep policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration). The subscription activation step that enables Lockdown remains a per-host entitlement check. The content of the policy itself can be fully external.

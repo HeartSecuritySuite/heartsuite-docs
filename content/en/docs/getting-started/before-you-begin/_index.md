@@ -8,7 +8,7 @@ toc: true
 type: docs
 ---
 
-**Overview**: Confirm the requirements below match your system, then follow Cloud Path or Local Path.
+**Overview**: Confirm the requirements below match your system, then follow Cloud Path or Local Path on that host.
 
 ## System requirements
 
@@ -34,4 +34,6 @@ Download the installation package from [heartsecsuite.com](https://heartsecsuite
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Both paths merge at the Dashboard after initial setup is complete. Cloud users continue to [Verifying Installation](../../verification/). Local users continue to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
+Cloud Path and Local Path merge at the Dashboard after initial setup is complete. Cloud users continue to [Verifying Installation](../../verification/). Local users continue to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
+
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).

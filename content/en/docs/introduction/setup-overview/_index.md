@@ -47,17 +47,19 @@ On the Dashboard, the Suggested Next Step can open Launchers (`[s]`) after Progr
 Pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers. The Dashboard appears on first login.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial setup runs unattended. Once the Dashboard appears, both paths merge.
+Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial setup runs unattended. Once the Dashboard appears, Cloud Path and Local Path merge.
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-[Getting Started](../../getting-started/) covers both paths.
+[Getting Started](../../getting-started/) covers Cloud Path and Local Path.
+
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).
 
 ![Dashboard after setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
 
 ## From installation to Lockdown
 
-The following diagram shows the path from installation to Lockdown, including the maintenance cycle.
+The following diagram shows installation to Lockdown on one host, including the maintenance cycle.
 
 ```mermaid
 graph TD

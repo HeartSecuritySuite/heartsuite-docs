@@ -12,11 +12,11 @@ menu:
     weight: 18
 ---
 
-**Overview**: Root Lock by HeartSuite runs on two paths — Cloud (pre-installed instance, Dashboard appears on first login) and Local (manual installation with multiple reboots). Both converge at the Dashboard after initial setup.
+**Overview**: On a single host, Root Lock by HeartSuite uses Cloud Path (pre-installed instance, Dashboard appears on first login) or Local Path (manual installation with multiple reboots). Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 
 ## Before you begin
 
-Check [Before You Begin](before-you-begin/) for system requirements and prerequisites, then follow your path below.
+Check [Before You Begin](before-you-begin/) for system requirements and prerequisites, then follow Cloud Path or Local Path below.
 
 ## Choose your path
 
@@ -40,4 +40,6 @@ Install Root Lock on bare-metal or a custom VM:
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Once initial setup is complete, both paths merge — the Dashboard shows the setup checklist and the Suggested Next Step directs you to begin [allowlisting](../allowlisting/).
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../alerts/central-policy-management/).
+
+Once initial setup is complete, Cloud Path and Local Path merge — the Dashboard shows the setup checklist and the Suggested Next Step directs you to begin [allowlisting](../allowlisting/).

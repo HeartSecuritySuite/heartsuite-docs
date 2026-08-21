@@ -39,6 +39,8 @@ Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon are not a fit fo
 
 A: Same allowlist **across a fleet of similar hosts**: yes. Each host runs the Root Lock kernel with the allowlist installed locally. There is no HeartSuite central policy server. Your automation (Ansible, Terraform + GitOps, Puppet, scripts) distributes the files.
 
+Install on each host is still Cloud Path or Local Path. Ansible does not replace Cloud Path or Local Path; it runs them and then applies policy.
+
 **Kubernetes:** only for long-lived, fixed pod sets established **before** Lockdown. Dynamic scheduling, HPA scale-out, and new mounts after Lockdown are not a fit. See [Deployment Scenarios](introduction/deployment-scenarios/) and [Containers and microVMs](introduction/containers-and-microvms/).
 
 Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Compliance reporting stays in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).

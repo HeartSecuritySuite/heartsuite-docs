@@ -25,9 +25,9 @@ In Lockdown, anything not on the allowlist is blocked before it can act. Root ca
 ## In this section
 
 - [Root Lock Overview](heartsuite-overview/) — Core features, how it protects against malware, and the setup checklist.
-- [The Setup Journey](setup-overview/) — Initial setup, then the Dashboard checklist from installation to Lockdown, the Cloud and Local paths, and how the Dashboard guides you.
+- [The Setup Journey](setup-overview/) — Initial setup, then the Dashboard checklist from installation to Lockdown, Cloud Path and Local Path, and how the Dashboard guides you.
 - [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
 - [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where Root Lock fits best, plus notes on incompatible stacks.
 - [How Root Lock Compares](how-it-compares/) — What Root Lock replaces, what it complements, and how it can be circumvented.
 
-For detailed installation steps, see [Installation](../installation/). [Getting Started](../getting-started/) covers Cloud Path and Local Path. Both converge at the Dashboard after initial setup.
+For detailed installation steps, see [Installation](../installation/). [Getting Started](../getting-started/) covers Cloud Path and Local Path. On a single host they converge at the Dashboard after initial setup. Many hosts still install through Cloud Path or Local Path on each machine — see [Central Policy](../alerts/central-policy-management/).

@@ -23,6 +23,8 @@ Root Lock operates standalone — no SaaS policy server, no agent-to-console cha
 
 A web server serves pages. A database answers queries. A reverse proxy forwards traffic. Each has a shape you review and approve in the Dashboard queues after a few days of Setup Mode logging, then you activate Lockdown.
 
+On a homogeneous fleet of these servers, you still install through Cloud Path or Local Path on each host. Harvest a baseline from one reference host, then apply it with Ansible — see [Central Policy](../../alerts/central-policy-management/).
+
 Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Lockdown.
 
 Under Lockdown, even root can no longer change the allowlist while the server runs. An attacker who already has remote root is left with nowhere to go.

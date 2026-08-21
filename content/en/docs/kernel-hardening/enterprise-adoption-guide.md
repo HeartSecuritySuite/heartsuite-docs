@@ -54,7 +54,7 @@ Root Lock treats the kernel as an integrated part of the delivered product, not 
 Enterprise teams do not want operators making daily kernel choices. The product and recommended deployment patterns are built to keep the kernel choice at image-build or initial-provision time.
 
 - **Cloud Path**: Pre-configured instances on major providers (AWS, Google Cloud, Azure, DigitalOcean, Linode, and others) arrive with the Root Lock kernel already installed and set as default. The Dashboard appears on first login with initial setup complete. Serial console access from the provider remains available for recovery.
-- **Pre-configured image recipes and automated install**: Use your existing Packer, Terraform, Ansible, or cloud-init pipelines to produce base images that include the Root Lock install bundle. The installer sets the Root Lock kernel as the GRUB default, performs the initial boot, and surfaces the Dashboard. Baseline allowlists can be pre-seeded for homogeneous fleets (see [Alert Settings](../../alerts/) — fleet syslog, webhook, and central policy patterns).
+- **Automated install**: Packer, Terraform, Ansible, or cloud-init still land each host on Cloud Path (pre-built image) or Local Path (run the installer). The installer sets the Root Lock kernel as the GRUB default, performs the initial boot, and surfaces the Dashboard. Baseline allowlists can be pre-seeded for homogeneous fleets (see [Central Policy](../../alerts/central-policy-management/)).
 - **Hiding details from operators**: After initial provisioning, day-to-day interaction is through the Dashboard or central automation. Kernel selection appears only in the documented Maintenance flow (when changes are required) and in the System Info Strip when running on the maintenance kernel.
 
   GRUB entries for the original distribution kernel are retained for the recovery path, split into Maintenance and vanilla entries, with Maintenance labelled as the Setup Mode destination.
@@ -110,7 +110,7 @@ Full compatibility notes and known non-fits live in [How Root Lock Compares](../
 
 ## Operational model for fleets
 
-The Root Lock kernel is managed the same way you manage base OS images and policies — through the control planes you already own.
+Each host still installs through Cloud Path or Local Path. The Root Lock kernel is managed the same way you manage base OS images and policies — through the control planes you already own.
 
 - **Image lifecycle**: Treat the Root Lock kernel + baseline allowlist as part of your pre-configured image. Packer templates call the official install bundle, pre-seed policy via the batch tools, and produce an image that boots directly to the protected state. Reprovision or patch images on the same cadence as your other distributions.
 - **Provisioning**: Terraform, cloud-init, or your IaC tool launches the image (or runs the installer non-interactively). No special kernel module or agent is required after boot.

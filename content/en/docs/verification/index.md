@@ -18,9 +18,11 @@ type: docs
 When you launch a pre-installed Root Lock cloud instance, the Dashboard confirms initial setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if you need the installer or initial setup logs from the image build.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-After completing the local installation process (download, GRUB preparation, kernel install, and unattended initial setup), the Dashboard appears. From here, both paths proceed identically.
+After completing the local installation process (download, GRUB preparation, kernel install, and unattended initial setup), the Dashboard appears. From here, Cloud Path and Local Path proceed identically.
 {{< /choice-card >}}
 {{< /choice-pane >}}
+
+The Dashboard shows the same state on a fleet host after Cloud Path or Local Path initial setup. Applying allowlists across many hosts is [Central Policy](../alerts/central-policy-management/).
 
 ## What the Dashboard shows
 
