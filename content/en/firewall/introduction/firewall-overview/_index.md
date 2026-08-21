@@ -30,7 +30,7 @@ The image is closed:
 - You reach the box on the console or serial console. There is no public administrative SSH by default, and no Docker runtime.
 - HeartSuite is the update authority. The sealed image does not fetch rules or reputation from a public CDN.
 
-You do not install Root Lock Firewall onto an existing Ubuntu or Debian kernel. Install scripts that appear in development trees are for laboratory layer installs on a test guest, not the customer model.
+You do not install Root Lock Firewall onto an existing Ubuntu or Debian kernel. Install scripts that appear in development trees are for laboratory layer installs on a test guest. They are not the product.
 
 ## What the filter decides
 
@@ -44,7 +44,7 @@ The product does not inspect application payloads, terminate TLS in order to cla
 
 ## Observation, approval, and Firewall Lockdown
 
-The human act is the same one Root Lock already uses for programs and destinations:
+You use the same observe → approve → seal path Root Lock already uses for programs and destinations:
 
 **observe what is real → approve what is necessary → seal what was earned.**
 
@@ -72,7 +72,3 @@ Changing either after seal requires the maintenance path.
 | Is the chosen packet allowlist sealed? | Root Lock Firewall (Firewall Lockdown) |
 
 See [Network and Remote Access](../../../docs/network/) for Root Lock's outbound queue, and [What Root Lock Firewall does and does not cover](../limits/) for residuals.
-
-## Status
-
-Root Lock Firewall is a prototype. Capabilities, configuration, and deployment details are subject to change. Root Lock remains the shipped kernel product.

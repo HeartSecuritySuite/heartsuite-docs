@@ -11,6 +11,8 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
+**Overview**: A process that is listening will accept a connection from anywhere the routing table can reach, unless a packet filter refuses the packet first.
+
 ## Two different defaults
 
 Root Lock by HeartSuite starts from one Unix inheritance: a program that can run may open files and make outbound connections as the user who launched it.

@@ -11,9 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: HJFS enforces one thing: file read/write access is per program and per version — including programs running as root.
+**Overview**: A compromised program can still hurt the files it already owns. HeartSuite Joint File System (HJFS) still keeps that program inside its own storage area, including as root.
 
-No program can read or write files belonging to another. An attacker who stays within a compromised program's own storage area is constrained but not stopped. This page states exactly where the boundary is, and what handles the rest.
+No program can read or write files belonging to another. This page states where that boundary holds, and what handles the rest.
 
 ---
 
@@ -21,7 +21,7 @@ No program can read or write files belonging to another. An attacker who stays w
 
 **The scenario.** An attacker gains control of a running program — through a vulnerability, a malicious update, or a backdoor compiled into an approved binary. The program is already running and has legitimate access to its own storage area.
 
-**What HJFS enforces.** Files belonging to other programs are not reachable — not by name, not by path enumeration, not by any program on the system. The blast radius is structurally bounded to the compromised program's own area.
+**What HJFS enforces.** Files belonging to other programs are not reachable — not by name, not by path enumeration, not by any program. Damage stops at the compromised program's own area.
 
 Within that area, every write is automatically backed up to a protected location no program can access. Recovery is always available: the restore utility returns any file to any prior version, including versions created before the compromise.
 
@@ -69,9 +69,9 @@ Files belonging to other programs remain unreachable. Advanced protection furthe
 
 ## Physical access
 
-Physical access is the only path that defeats HJFS file isolation. All software-based attempts to cross program storage boundaries are prevented at the filesystem layer.
+Physical or serial-console access is the path that defeats HJFS file isolation. All software-based attempts to cross program storage boundaries are prevented at the filesystem layer.
 
-The specific defeat path is physical access combined with deletion of the HJFS drive. Standard facility controls — locked racks, access logging, physical security policies — are the appropriate countermeasure. See [Security guarantees](../hjfs-overview/#security-guarantees) for details.
+The specific defeat path is removing the HJFS drive. Standard facility controls — locked racks, access logging, console IAM, physical security policies — are the appropriate countermeasure. File isolation still holds for every software path while the drive is present. See [Security guarantees](../hjfs-overview/#security-guarantees).
 
 ---
 
@@ -86,4 +86,4 @@ HJFS provides filesystem-level file isolation. Network monitoring, detection, an
 | Detection within approved boundaries | SIEM, NDR, endpoint detection tools |
 | Secrets management within a program | Secrets management tools; Advanced protection for user files |
 
-For the full picture of how Root Lock and HJFS work together, see [HJFS and Root Lock: what each covers](../hjfs-overview/#hjfs-and-root-lock-what-each-covers).
+On a Root Lock kernel, both can share the host. See [HJFS and Root Lock: what each covers](../hjfs-overview/#hjfs-and-root-lock-what-each-covers).

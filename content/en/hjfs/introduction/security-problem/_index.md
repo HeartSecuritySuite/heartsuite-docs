@@ -11,44 +11,18 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-## The scribe analogy
+**Overview**: When you run a program, the OS grants it every file you can reach. A word processor and ransomware running as the same user have the same access.
 
-Imagine you need to write documents but cannot write yourself, so you hire a scribe. The scribe writes faithfully as you dictate. Then the session ends — and the scribe leaves with your documents.
-
-At that point the scribe holds custody of your work. The scribe could demand payment before returning the documents, alter them, or copy them for others. That is possible only because you gave the scribe custody.
-
-A word processor plays the same role. When you run any program, the OS grants it your full file access rights. Ransomware exploits exactly this: it opens your files using the same system call as any legitimate program, reads them, encrypts them, and overwrites the originals.
-
-The OS hands over custody to any program you run, without asking whether you intended it. HJFS keeps custody with the user, not the program, at the filesystem level.
+HeartSuite Joint File System (HJFS) keeps file access with you, not with the program. Isolation is per program and per version, including as root.
 
 ## The root cause
 
-The root cause of most malware damage is a design assumption made in the earliest operating systems and carried forward unchanged: file access permissions are granted to users, not to programs.
+File permissions are granted to users, not to programs. That assumption is still the default. A word processor and a ransomware process running as the same user have identical access to every file that user owns.
 
-When a user runs a program, that program inherits the user's full file access rights. A word processor and a ransomware process running as the same user have identical access to every file that user owns.
+Ransomware opens your files using the same system call as any legitimate program, reads them, encrypts them, and overwrites the originals. Backup restores a snapshot taken before the damage. Detection reacts after access was already granted, and only to attacks it already recognizes.
 
-## Three expressions of the problem
+## What HJFS changes
 
-### 1. Unrestricted file access
+HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem. Each program has its own storage area. No other program can read or write those files, including programs running as root.
 
-The OS function `open()` allows any running program to read, write, or delete any file the current user owns. Malware uses this to encrypt files for ransom, exfiltrate data, or silently corrupt application state.
-
-Backup tools can only restore from a previous snapshot taken before the damage. Detection tools identify known attack patterns but react after access has already been granted, and miss any attack without a prior signature.
-
-### 2. Unrestricted network communication
-
-The OS function `connect()` allows any running program to open outbound network connections. Malware uses this to exfiltrate data and communicate with command-and-control infrastructure. Network filtering blocks known patterns but cannot distinguish malicious traffic from a trusted-looking process already running inside the perimeter.
-
-### 3. Unrestricted program spawning
-
-The OS function `exec()` allows any running program to launch other programs. Malware uses this to persist on the system, gain higher access rights, and reach other programs and systems. Policy tools attempt to govern this behavior from outside the OS, but the underlying capability is available to every process by default.
-
-## Why layered defenses do not solve this
-
-Each additional security layer treats a symptom without removing the cause. Detection and prevention tools observe the behavior that results from unrestricted OS access and react — after access has already been granted, and only to attacks they already recognize.
-
-## HJFS addresses this differently
-
-HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem at the `open()` call. Each program is confined to its own storage area. Under HJFS, no program can read or write files belonging to another — including when that program runs as root. File access is specific to the program, not inherited from the user.
-
-HJFS addresses the file access dimension. Network connection control and program execution control are outside HJFS scope. Root Lock by HeartSuite handles those dimensions but is not currently compatible with HJFS.
+Execution and network control are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host. See [What HJFS does and does not cover](../limits/).

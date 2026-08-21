@@ -15,11 +15,9 @@ toc: true
 
 ---
 
-**Overview**: By default, every program runs with the user's full file access rights. The OS grants this to any process — including malware and compromised software.
+**Overview**: By default, every program you run gets full access to your files, including malware. HeartSuite Joint File System (HJFS) gives each program its own storage area, including programs running as root.
 
-HJFS changes that at the filesystem layer. Each program is confined to its own storage area. No other program can read or write its files. This holds even for programs running as root.
-
-HJFS works on a standard Linux kernel, so it is available wherever the Root Lock kernel is not deployed. For execution and network blocking, Root Lock by HeartSuite operates at the kernel level. The two products address different layers and can be used together.
+HJFS works on a standard Linux kernel. Execution and network control are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
 
 ## In this section
 

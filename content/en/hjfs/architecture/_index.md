@@ -11,11 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-## Dependencies
+**Overview**: HeartSuite Joint File System (HJFS) isolates files inside the host filesystem on a stock kernel. Enforcement sits in the filesystem `open()` path, not in a custom kernel.
 
-HJFS requires an existing host file system and cannot operate standalone. A compliant system must use a standard kernel that routes all application file access through the improved file system.
-
-The current prototype implements the core file organization without modifying the host file system's code directly.
+HJFS needs an existing host filesystem. It does not boot as its own operating system. The current prototype implements the core file organization without modifying the host filesystem's code directly.
 
 ## Integration and vendor cooperation
 
@@ -23,10 +21,6 @@ HJFS integration involves two steps:
 
 - **FS source code integration**: A minimal amount of HJFS source code is integrated into the file system's `open()` call. The scope of changes is small.
 - **Kernel registration**: The HJFS-modified file system must be registered with the kernel. On Linux, this is a standard operation. On Windows and macOS, it requires cooperation from Microsoft or Apple respectively. Kernel registration is planned for a subsequent release.
-
-## Long-term vision
-
-The long-term goal is for every file system to be HJFS compliant. HJFS can in principle be deployed anywhere the encompassing file system can be deployed — for example, if integrated into FAT32, it would apply to FAT32 volumes.
 
 ## OS support
 
@@ -56,16 +50,16 @@ Containers running on an HJFS-compliant host filesystem benefit from the same pe
 
 ## Network access control
 
-[Root Lock by HeartSuite](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. It is not currently compatible with HJFS and cannot be deployed alongside it.
+[Root Lock by HeartSuite](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. On a Root Lock kernel, both can share the host.
 
-HJFS 1.0 does not include its own network access control; that is planned for a subsequent version. File isolation on a standard kernel still holds without it.
+HJFS 1.0 does not include its own network access control; that is planned. File isolation on a standard kernel still holds without it. See [Roadmap](../roadmap/).
 
-When implemented in HJFS, each new outbound connection will require explicit user approval rather than relying on static configuration. The approval model differs by deployment type:
+When that HJFS path ships, each new outbound connection requires explicit approval rather than a static list:
 
-- **Desktop**: The user approves each new connection through an OS confirmation dialog.
-- **Server**: Access is governed by pre-approved utilities or admin-defined policies, without per-action prompts.
+- **Desktop**: you approve each new connection through an OS confirmation dialog.
+- **Server**: access is governed by pre-approved utilities or admin-defined policies, without per-action prompts.
 
-When network access control is available, the user approves each new connection through an OS dialog:
+Planned desktop path:
 
 ![Diagram 2.5 — Network connection flow: the Chess Client calls connect("chess_online.com"), the OS intercepts and shows a dialog "Confirm or type server name," the user's selection triggers connection creation, and the request is sent via the Internet to the Chess Server.](/images/hjfs/diagram-004.jpg)
 

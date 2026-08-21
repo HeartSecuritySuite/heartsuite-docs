@@ -11,6 +11,8 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
+**Overview**: Root Lock Firewall fits when the workload can live on a closed HeartSuite image and you want a sealed inbound allowlist for this box. It is not a campus NGFW and not a package on a kernel you already run.
+
 ## Where Root Lock Firewall fits
 
 ### A single-purpose workload on a closed image
@@ -51,13 +53,13 @@ Using this image as a FortiGate or Cisco Secure Firewall replacement is a misfit
 
 ### Install-on-my-Ubuntu
 
-You cannot add this product to a general-purpose server the way you add UFW. The customer model is the image.
+You cannot add this product to a general-purpose server the way you add UFW. Delivery is the image.
 
 Root Lock on a server you already own remains the kernel product. Inbound on that server stays the OS or cloud control you already run, unless you move the workload onto this appliance.
 
 ### Dedicated hardware
 
-A hardware appliance (TPM / measured boot) is Phase 2. v1 is the virtual image. Until hardware ships, the hypervisor is part of the trust boundary.
+A hardware appliance (TPM / measured boot) is planned. v1 is the virtual image. Until hardware ships, the hypervisor is part of the trust boundary.
 
 ### Shared-kernel container hosts
 
@@ -69,7 +71,7 @@ Payload inspection, bot scores, and schema validation are out of scope. Put a WA
 
 ## Alongside Root Lock
 
-On the appliance image the two layers are designed to run together.
+On the HeartSuite appliance image the two layers are designed to run together.
 
 | Job | Product |
 |---|---|

@@ -11,11 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: On a standard Linux system, any program can open any file the current user can reach — including programs running as root. That is the root cause of most malware damage.
+**Overview**: On a standard Linux system, any program can open any file you can reach, including programs running as root. HeartSuite Joint File System (HJFS) binds data files to the program version that created them.
 
-HJFS addresses it by binding data files to the program that created them. The modified `open()` call enforces that binding at every file access: no other program can read or write those files, regardless of privilege. Access control is enforced per program and per program version.
-
-Execution control and network connection control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/) for the underlying OS design this corrects.
+No other program can read or write those files, regardless of privilege. Execution and network control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/).
 
 ## File isolation in practice
 
@@ -49,9 +47,7 @@ HJFS enforces isolation at the version level, not just the program level. Each i
 
 HJFS trusts a program only with the storage area that version created. Storage areas belonging to other programs — or to other versions of the same program — are outside that trust boundary, even when the program runs as root.
 
-A program version is uniquely identified by the concatenation of SHA256 cryptographic hashes of the program executable and all its dynamically linked libraries, combined with the last modification date of those files. Two versions are treated as distinct even if only a single library changed.
-
-User-facing utilities display each version with a human-readable install-time identifier (for example, `260208_123022P`). The cryptographic hash is the identity HJFS uses internally to enforce isolation.
+Identity is the executable plus its libraries, hashed. A single library change is a new version. Utilities show a human-readable install-time identifier (for example, `260208_123022P`); the hash is what HJFS enforces.
 
 When a program opens a versioned file, the `open()` call resolves both the program name and the version hash before locating the file:
 
@@ -69,34 +65,19 @@ Because each program is confined to its own storage area, moving data between pr
 
 - **Copy utility**: Copies a file from one program's storage area directly to another's. Every transfer is an explicit, auditable operation.
 - **Transfer area**: A neutral staging location where a file can be deposited once and made available for other programs to read and copy to their own areas. Programs can read from the transfer area but cannot write to other programs' areas directly.
-- **Clipboard**: Standard copy and paste between programs is a user-mediated transfer. It requires manual user action and cannot be performed by a program without the user's knowledge.
+- **Clipboard**: Copy and paste between programs requires your action. A program cannot do it without you.
 
-Programs cannot permanently delete files. The only deletion operation available to a program is moving a file to trash. A separate utility allows users to view trash contents and permanently delete selected files. All deletions are visible and reversible until the user explicitly confirms permanent removal.
+Programs cannot permanently delete files. They can only move a file to trash. A separate utility shows trash contents and permanently deletes selected files after you confirm.
 
 ### Version management
 
-HJFS includes two utilities:
-
-| Utility | Purpose |
-|---|---|
-| `HJFS_update_program` | Install a new version of a program into HJFS |
-| `HJFS_version_manager` | List installed versions, check the current version, set the active version |
-
-`HJFS_version_manager` flags:
-
-| Flag | Action |
-|---|---|
-| `-l` | List all installed versions |
-| `-c` | Show the currently active version |
-| `-s <version-id>` | Set the active version |
+`HJFS_update_program` installs a new version. `HJFS_version_manager` lists installed versions, shows the active one, and sets it. The [Walkthrough](../walkthrough/) runs those commands.
 
 ### Version rollback
 
 Because each version has its own storage area, rolling back is non-destructive. Setting the active version to a prior release makes the original files immediately accessible — no restore process, no backup retrieval. Prior executables, libraries, and data files remain untouched in their own subareas.
 
-If the user created data files under the version being rolled back from — for example, a malicious update installed since the last legitimate version — those files exist only in that version's storage area.
-
-The file transfer utility can copy them to the target version's storage area before or after the rollback, preserving any legitimate work done under the compromised version.
+Data files created under the version you roll back from exist only in that version's storage area. The file transfer utility can copy them to the target version before or after rollback.
 
 The example below shows a program called SimpleEdit after an update on November 12. The May 6 version is preserved in its own subarea; the installer stores the prior executables before overwriting the current ones:
 
@@ -104,7 +85,7 @@ The example below shows a program called SimpleEdit after an update on November 
 
 ### Automatic data file backup
 
-HJFS automatically backs up every version of every data file to a protected storage area. No program can reach that area — including programs running as root. A dedicated restore utility allows users to view all versions of a file and restore any of them.
+HJFS automatically backs up every version of every data file to a protected storage area. No program can reach that area — including programs running as root. A restore utility shows every version of a file and restores any of them.
 
 This is distinct from program version rollback. Program version rollback restores a prior executable and its libraries. Data file backup maintains version history of the data files themselves, independent of which program version created them.
 
@@ -112,26 +93,20 @@ HJFS automatic backup differs from Root Lock by HeartSuite's backup mechanism in
 
 #### The malicious sleeper attack
 
-Program version isolation alone does not close every window of exposure. Consider a patient form of attack: a malicious update that behaves exactly as expected for months before activating.
-
-During those months the user continues working. New data files accumulate inside the malicious version's storage area. By the time the attack activates — encrypting files for ransom — the user has legitimate data that exists only in that version's area.
-
-Rolling back the program version does not help. The affected files were created under the malicious version and were never written to the prior version's area.
+Program version isolation alone does not close every window. A malicious update can behave as expected for months before it activates. New data files accumulate inside that version's storage area. Rolling back the program version does not help: those files were never written to the prior version's area.
 
 #### How the backup defeats it
 
-HJFS backs up every write to every data file continuously. Ransomware targets backup systems first because intact backups eliminate the leverage of encryption. HJFS removes that option.
+HJFS copies every write to a protected area no program can open, including programs running as root. Ransomware targets backup first because intact backups remove the leverage of encryption. HJFS removes that option at the same `open()` boundary that isolates program storage.
 
-The backup area is unreachable to any running program — not through a permission rule that can be changed, but through the same `open()` enforcement that governs all other isolation boundaries.
-
-When the attack activates, the user can:
+When the attack activates:
 
 1. Stop the malicious program.
-2. Use the restore utility to recover every data file to the version that existed before the attack.
+2. Restore every data file to the version that existed before the attack.
 3. Copy those restored files to the prior legitimate program version's storage area.
 4. Roll back the program version to the legitimate one.
 
-Every file created before the attack is recoverable. The window of loss is limited to files written during the active attack phase — a narrow interval compared to the months the sleeper was dormant.
+Every file created before the attack is recoverable. Loss is limited to files written during the active attack, not the months the sleeper was dormant. See [Attack examples](../../examples/) for the XZ pattern.
 
 ## Security guarantees
 
@@ -150,7 +125,7 @@ HJFS is based on innovations patented by HeartSuite:
 
 ## HJFS and Root Lock: what each covers
 
-Root Lock and HJFS are not currently compatible and cannot be deployed together. The table below describes what each product covers for reference.
+On a Root Lock kernel, HJFS and Root Lock can share the host. HJFS also runs on a standard unmodified kernel.
 
 | | Root Lock | HJFS |
 |---|---|---|
@@ -162,9 +137,7 @@ Root Lock and HJFS are not currently compatible and cannot be deployed together.
 | Per-program-version file isolation | No | Yes |
 | Audited cross-program file transfer | No | Yes |
 
-Each product covers dimensions the other does not. They cannot currently be deployed together.
-
-Program execution control and network access control remain outside HJFS scope. Organizations requiring those controls should use a dedicated allowlisting tool alongside HJFS.
+Execution and network control remain outside HJFS scope. See [How HJFS compares](../../how-it-compares/).
 
 ## Status
 

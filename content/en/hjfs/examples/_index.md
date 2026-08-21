@@ -11,11 +11,9 @@ toc: true
 
 > **Prototype**: The protections described on this page reflect HJFS design intent. HJFS is under active development.
 
-HJFS gives every program its own isolated storage area. No program can read or write files belonging to another.
+**Overview**: When a program is compromised, damage usually spreads through every file that user can reach. HeartSuite Joint File System (HJFS) stops that spread at the compromised program's storage area.
 
-The examples below show what that means for real attacks. Damage that would normally cascade across a system stops at the boundary of the program that was compromised.
-
-Where an attack also involves network exfiltration or unauthorized program spawning — beyond HJFS v1.0's file access scope — those dimensions are addressed by [Root Lock by HeartSuite](../../docs/) when deployed alongside HJFS.
+Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host.
 
 ---
 
@@ -37,7 +35,7 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 ## SolarWinds supply chain attack
 
-**Attack**: A tainted software update carried a backdoor that gave attackers persistent access for exfiltration and espionage over months. Roughly 18,000 organisations were affected, including multiple US federal agencies, with losses estimated in the hundreds of billions across government and intellectual property.
+**Attack**: A tainted software update carried a backdoor that gave attackers persistent access for exfiltration and espionage over months. Roughly 18,000 organisations were affected, including multiple US federal agencies.
 
 **HJFS containment**: HJFS identifies program versions by cryptographic hash, so the tainted update gets its own isolated storage area — entirely separate from the legitimate version's data. The company can roll back to a prior verified version with a single utility command. Data written under the legitimate version stays in that version's storage area and is unreachable by the tainted build.
 
@@ -45,11 +43,9 @@ Where an attack also involves network exfiltration or unauthorized program spawn
 
 ## Colonial Pipeline ransomware
 
-**Attack**: Compromised credentials gave attackers the access they needed to deploy ransomware that encrypted operational data and forced a six-day shutdown of the largest fuel pipeline in the United States. The company paid a $4.4 million ransom, with total economic losses exceeding $90 million.
+**Attack**: Compromised credentials gave attackers the access they needed to deploy ransomware that encrypted operational data and forced a six-day shutdown of the largest fuel pipeline in the United States.
 
 **HJFS containment**: Ransomware is confined to its own storage area. It cannot reach or encrypt files belonging to other programs. Operational files stay readable throughout the attack.
-
-Recovery does not require paying a ransom or restoring from backup — the files were never accessible to the ransomware.
 
 ---
 
@@ -73,7 +69,7 @@ When the backdoor is discovered, the affected company rolls back to the prior ve
 
 This is the malicious sleeper pattern HJFS automatic data file backup is designed to defeat. Even if the backdoored version had been dormant for months before activation, every data file written during that period remains recoverable from the protected backup area. No program, including the backdoored version, can access or destroy that area.
 
-Where the attack involves network-level exfiltration or unauthorized program execution, those dimensions are addressed by [Root Lock](../../docs/) when deployed alongside HJFS.
+Where the attack involves network-level exfiltration or unauthorized program execution, those dimensions are [Root Lock](../../docs/)'s domain.
 
 ---
 
@@ -81,10 +77,6 @@ Where the attack involves network-level exfiltration or unauthorized program exe
 
 **Attack**: The ALPHV/BlackCat ransomware group breached Change Healthcare, a clearinghouse processing a large share of US patient healthcare claims. The February 2024 attack disrupted healthcare billing and payment processing across the United States for weeks.
 
-UnitedHealth Group disclosed that approximately 190 million individuals had data affected. The company paid a reported $22 million ransom.
+UnitedHealth Group disclosed that approximately 190 million individuals had data affected.
 
-**HJFS containment**: Ransomware is confined to its own storage area. Patient records, billing files, and payment data belonging to other programs sit in structurally separate storage areas that the ransomware cannot enumerate or encrypt.
-
-The attack cannot cascade across healthcare systems. Billing and payment infrastructure owned by other programs stays intact throughout the attack.
-
-Recovery does not require paying a ransom — the files were never accessible to the ransomware.
+**HJFS containment**: Ransomware is confined to its own storage area. Patient records, billing files, and payment data belonging to other programs sit in structurally separate storage areas that the ransomware cannot enumerate or encrypt. Billing and payment infrastructure owned by other programs stays intact throughout the attack.

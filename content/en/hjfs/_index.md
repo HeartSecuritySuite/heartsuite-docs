@@ -1,6 +1,6 @@
 ---
 title: "HeartSuite Joint File System"
-linkTitle: "HJFS (Preview)"
+linkTitle: "HJFS (Prototype)"
 description: "HJFS gives each program its own files. A word processor can no longer open every document you own. Prototype documentation."
 categories: ["Essentials"]
 tags: ["hjfs", "filesystem", "security", "prototype"]
@@ -16,13 +16,13 @@ type: docs
 
 > **Prototype**: HJFS is under active development. Documentation reflects current design intent and is subject to change.
 
-Every program the user runs gets full access to the user's files by default — including any malware present.
+**Overview**: Every program you run gets full access to your files by default, including malware. HeartSuite Joint File System (HJFS) changes this at the filesystem layer.
 
-HeartSuite Joint File System (HJFS) changes this at the filesystem layer. Each program is confined to its own storage area. No other program can read or write its files, including programs running as root. HJFS controls which files each program can read or write, tracked per program and per version. No custom kernel is required.
+Each program has its own storage area. No other program can read or write its files, including programs running as root. File isolation is per program and per version. No custom kernel is required.
 
-HJFS does not control which programs run or which network connections they open. Those are [Root Lock by HeartSuite](../../docs/)'s domain. HJFS and Root Lock address different problems and can be deployed together.
+HJFS does not control which programs run or which network connections they open. Those are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
 
-If the primary requirement is execution control or network connection control, HJFS is not the right fit on its own. See [Deployment scenarios](deployment-scenarios/) for fit and non-fit by environment.
+If execution or network control is the primary requirement, HJFS is not the right fit on its own. See [Deployment scenarios](deployment-scenarios/) for fit and non-fit by environment.
 
 ## See it in action
 

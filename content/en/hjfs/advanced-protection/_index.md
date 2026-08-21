@@ -11,9 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-Under basic protection, malware is confined to its own program's storage area but can still silently access the user's own documents.
-
-Advanced protection closes this gap. It subdivides each program's storage area into internal files and user files, and requires OS mediation before any user file can be opened.
+**Overview**: Under basic protection, malware stays in its own storage area but can still silently open your documents. Advanced protection holds the file dialog in the OS, not in the program.
 
 HJFS provides two levels of protection:
 
@@ -30,15 +28,15 @@ Advanced protection subdivides each program's per-version storage area into two 
 
 **Internal files** are managed directly by the program using file names. They are hidden from user utilities — they cannot be browsed, copied, or accessed outside the program that owns them. A spell-checker dictionary, a configuration file, or game state data are examples of internal files.
 
-**User files** are the data the user interacts with directly: documents, spreadsheets, images. A program cannot open a user file by specifying its name. Instead, the program invokes a system function that presents a standard OS file-selection dialog. The user makes the selection.
+**User files** are the documents, spreadsheets, and images you work with. A program cannot open a user file by specifying its name. It invokes a system function that presents a standard OS file-selection dialog. You make the selection.
 
 The OS opens the file and passes a file handle to the program — not a path. The program never learns the file's location in the broader filesystem.
 
-Malware cannot open user files without the user's knowledge. It must wait for the user to open a file through the dialog. Even then, the user can restrict the opened file to read-only access for the program — the equivalent of handing the scribe a document without the pen.
+Malware cannot open user files without you. It must wait for you to open a file through the dialog. You can restrict that file to read-only for the program.
 
 ![Diagram 2.6 — Advanced versioned file open (internal): Program A calls open(file2a), the OS determines program name and version, and locates the file in the "internal" subarea of the matched version-hash directory. A separate "user" subarea exists alongside it.](/images/hjfs/diagram-005.jpg)
 
-When the user opens a user file, a file-selection dialog appears. The user picks the file; the OS resolves and opens it, passing only a handle to the program:
+When you open a user file, a file-selection dialog appears. You pick the file; the OS resolves and opens it, passing only a handle to the program:
 
 ![Diagram 2.7 — User file open via dialog: Program A calls user_open(), the OS presents a File Open Dialog Box, the user selects "Chapter1.docx," the OS determines program name and version, locates the file in the "user" subarea, and returns a handle.](/images/hjfs/diagram-006.jpg)
 
@@ -46,18 +44,11 @@ When the user opens a user file, a file-selection dialog appears. The user picks
 
 Because internal files are hidden and user files require OS mediation, HJFS advanced protection provides two explicit system functions for moving data across the boundary:
 
-**Export**: A program can write internal file data to a user file, making it available to the user or to other programs. To prevent data mixing, no other user file may be open by the program during the export operation.
+**Export**: A program can write internal file data to a user file, making it available to you or to other programs. To prevent data mixing, no other user file may be open by the program during the export operation.
 
 **Import**: A program can read from a user file and write the data into its internal files. This is the standard path for a program to accept externally supplied data — a document being opened for editing, for example.
 
 Both functions are explicit, auditable, and user-initiated through the OS dialog.
-
-## Why this matters
-
-The combination of both protection levels means:
-
-- No program can access files belonging to another program.
-- No program can access the user's own files without an OS-mediated dialog in which the user makes the selection.
 
 ## Multiple users
 
@@ -71,6 +62,4 @@ Internal files that contain no user-specific data — shared configuration or re
 
 Programs are restricted to read-only access of such common files. That prevents one user's program session from modifying data visible to another without the other user's knowledge.
 
-## Relationship to basic protection
-
-Advanced protection does not replace basic protection — it adds to it. Version isolation, per-program storage, secure file transfer, automatic data file backup, and all other basic protection features remain active. Advanced protection adds the internal/user file distinction on top.
+Advanced protection adds the internal/user file distinction on top of basic protection. Version isolation, per-program storage, secure file transfer, and automatic data file backup remain active.

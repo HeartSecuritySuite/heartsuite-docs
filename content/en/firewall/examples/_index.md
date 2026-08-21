@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: The protections described on this page reflect Root Lock Firewall design intent. Root Lock Firewall is under active development. Incident facts below are taken from vendor and CISA publications, not from HeartSuite exploitation tests.
 
-Root Lock Firewall is a host-shaped stateful filter on a closed image. It is not Cisco ASA, Cisco FTD, or FortiOS.
+**Overview**: Root Lock Firewall is a host-shaped stateful filter on a closed image. It is not Cisco ASA, Cisco FTD, or FortiOS.
 
 These incidents are here so the residual is visible, not as a claim that this appliance would have stopped another vendor's CVE.
 
@@ -69,7 +69,7 @@ Supported recovery of a sealed box is Maintenance on the console, then a return 
 
 **What Root Lock Firewall does not claim.** Firmware, hypervisor, or ROM below a virtual appliance is not this product. A hostile hypervisor still owns the disk.
 
-Hardware Phase 2 is the honest answer to that residual, and it is not shipped. We do not claim seL4-level assurance of the filter engine.
+A later hardware appliance is the honest answer to that residual, and it is not shipped. We do not claim seL4-level assurance of the filter engine.
 
 ---
 
@@ -99,12 +99,4 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 
 **What Root Lock Firewall does not claim.** A port you approved stays a port you approved. A seal that is too wide stays too wide. Rate-limit extras that ship in the image baseline are not a promise to absorb a volumetric flood; that flood belongs in front of the host. See [What Root Lock Firewall does and does not cover](../introduction/limits/).
 
----
 
-## Reading this page as a kernel reviewer
-
-The useful sentence is not "they had CVEs, we will not." Every large filter will.
-
-The useful sentence is: **the management and remote-access plane of the filter has been the expensive surface**, and this appliance is designed not to have that plane.
-
-If we later add a public administrative listener, a cloud SSO toggle, or vendor-static accounts, this page becomes false and should be rewritten — not footnoted.
