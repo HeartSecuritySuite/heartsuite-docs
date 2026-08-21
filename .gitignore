@@ -21,3 +21,6 @@ raw-achive*/
 raw-archive
 **/notes-vault/
 **/email-vault/
+
+# htmltest binary built on demand by tools/check-links.sh
+tools/bin/
