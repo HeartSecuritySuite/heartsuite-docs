@@ -29,7 +29,7 @@ bash tools/publish_advisories.sh
 
 Set `HS_CORE_SECURE_REPO` and `HS_HEARTSUITE_REPO` if checkouts are not sibling directories.
 
-If the crosswalk gate fails at release time, feeds are **not** updated — fix `tools/hs_config_parity.py` or the [Kernel Security Transparency](../../content/en/docs/security/index.md) page before tagging.
+If the crosswalk gate fails at release time, feeds are **not** updated — fix `tools/hs_config_parity.py` or the [Kernel Security Transparency](../../content/en/docs/security/_index.md) page before tagging.
 
 Customers consume feeds from the public URLs above. They do not need access to private build repositories.
 

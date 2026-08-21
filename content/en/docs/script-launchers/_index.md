@@ -13,7 +13,7 @@ toc: true
 
 ## In this section
 
-- [How Script Launchers Work](how-launchers-work/) — Security rationale and how Secure Script Launchers enforce script permissions.
+- [Each script gets its own allowlist](how-launchers-work/) — Why allowlisting the interpreter is not enough, and how Secure Script Launchers split permissions per script.
 - [Configuring Script Launchers](configuring-launchers/) — Direct use for testing and permanent symbolic link setups.
 - [Included Script Launchers](included-launchers/) — List of available launchers for Python, Perl, PHP, etc.
 

@@ -23,7 +23,7 @@ If your setup differs, check the [Introduction](../../introduction/) for compati
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-installed Root Lock by HeartSuite cloud instance (AWS AMI, GCP image). No download or kernel installation required — you boot directly into Setup Mode and the Dashboard appears on first login.
+Launch a pre-installed Root Lock by HeartSuite instance on AWS, Google Cloud, Azure, DigitalOcean, Linode, or another provider. No download or kernel installation required — you boot directly into Setup Mode and the Dashboard appears on first login.
 
 **Ready?** Launch your instance, then continue to [Verifying Installation](../../verification/).
 {{< /choice-card >}}

@@ -103,8 +103,8 @@ The delayed-activation case is the **malicious sleeper**: an approved program be
 
 Tight allowlisting limits the blast radius. Under Lockdown, the kernel blocks any program (including root) from reaching backup files, so previous versions remain intact and restorable from the Dashboard's Backup.
 
-Under Lockdown the kernel gates execute, files, and outbound network per program. Root does not override those gates. Root cannot change the allowlist while the machine is running.
+Under Lockdown the kernel gates execute, files, and outbound network per program. By design, remote root does not override those gates and has no intended path to change the sealed allowlist while the machine is running.
 
-The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Nothing the attacker ran survives a reboot.
+The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Unapproved programs do not persist across reboot. An already-approved program still has its grants until you change them from a maintenance window. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 For detection and response when an attack stays within approved boundaries, see [How Root Lock Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../security-as-economics/).

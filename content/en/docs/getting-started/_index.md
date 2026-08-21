@@ -26,7 +26,7 @@ Launch a pre-installed Root Lock instance. No download or kernel installation re
 
 1. **Launch the instance** — start a pre-installed image on AWS, Google Cloud, Azure, DigitalOcean, Linode, or another provider.
 2. **Open the Dashboard** — you boot into Setup Mode and the Dashboard appears on first login. Initial setup is already complete.
-3. **[Verifying Installation](../verification/)** — confirm the Dashboard is ready, then follow the Suggested Next Step to begin allowlisting. Use the serial console to inspect `/var/log/heartsuite/install.log` if needed.
+3. **[Verifying Installation](../verification/)** — confirm the Dashboard is ready, then follow the Suggested Next Step to begin allowlisting.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
 Install Root Lock on bare-metal or a custom VM:

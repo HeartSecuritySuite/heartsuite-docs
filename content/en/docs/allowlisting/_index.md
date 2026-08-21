@@ -19,7 +19,7 @@ Two different programs running under the same user get separate allowlist entrie
 
 The Dashboard Lockdown Checklist shows three review queues, then Secure Script Launchers as a separate row (not a queue):
 
-1. **Program Allowlisting** (`[p]`): Approve which programs are permitted to execute.
+1. **Program Allowlisting** (`[p]`): Approve which programs may execute.
 2. **File Access Allowlisting** (`[f]`): Approve which files and directories each program can read or write.
 3. **Internet Access Allowlisting** (`[i]`): Approve which outbound internet destinations each program can reach.
 4. **Secure Script Launchers** (`[s]`): Give each Python, Perl, or PHP script its own allowlist entry. See [Script Launchers](../script-launchers/).

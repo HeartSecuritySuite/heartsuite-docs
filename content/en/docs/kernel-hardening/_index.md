@@ -13,7 +13,7 @@ toc: false
 
 ## For buyers and procurement
 
-Start here if you are evaluating the HS kernel for a regulated or enterprise fleet:
+Start here if you are evaluating the Root Lock kernel for a regulated or enterprise fleet:
 
 - [Procurement Brief](procurement-brief/) — Comparison table and decision guide at a glance.
 - [Enterprise Adoption Guide](enterprise-adoption-guide/) — CISO and procurement guidance: deployment, fleet operations, Secure Boot status, supply chain, recovery, and honest limitations.

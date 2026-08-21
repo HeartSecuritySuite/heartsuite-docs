@@ -39,7 +39,7 @@ See [Kernel Security Transparency](../../security/) for the full CVE status tabl
 
 A kiosk, a point-of-sale terminal, an industrial control gateway, a network appliance, a medical device, a defence endpoint — these systems don't have interactive users. They have a job. The programs that do the job are fixed.
 
-An attacker's first move is usually to introduce a new program. In Lockdown, Root Lock blocks that move before it starts. Root cannot add to the allowlist while the system runs.
+An attacker's first move is usually to introduce a new program. In Lockdown, Root Lock blocks that move before it starts. By design, remote root cannot add to the sealed allowlist while the system runs.
 
 File Backup is the recovery layer. The kernel restricts the backup directory to Root Lock's own backup tooling — no other allowlisted program, however privileged, can read or overwrite it. If an approved program is compromised and corrupts a file, previous versions remain intact and restorable from the Dashboard's Backup.
 
@@ -50,7 +50,7 @@ In financial, legal, healthcare, and defence workplaces, a workstation's toolcha
 > [!NOTE]
 > **Lockdown** seals the allowlist against change. Under Lockdown, root cannot change the allowlist while it is running. The files are immutable (`chattr +i`). The kernel refuses the write. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
 
-In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, the answer is no.
+In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, remote root cannot disable enforcement the way an agent can be killed. Changing the seal takes physical or serial-console access. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 No program or user inside the running Root Lock kernel, including root, can modify the allowlist or disable enforcement. Disabling enforcement requires reaching the boot path: a keyboard and monitor on a physical machine, a serial console, or — on a virtual machine — the hypervisor that owns the guest's disk image and memory.
 

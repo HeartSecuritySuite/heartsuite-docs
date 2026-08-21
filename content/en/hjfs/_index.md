@@ -35,7 +35,7 @@ If execution or network control is the primary requirement, HJFS is not the righ
 - [Advanced protection](advanced-protection/) — An optional level that adds system-managed file dialogs and separates internal from user files, requiring application updates.
 - [Deployment scenarios](deployment-scenarios/) — Where HJFS fits, where it fits alongside Root Lock, and where it does not apply.
 - [How HJFS compares](how-it-compares/) — What HJFS is not, what it complements, and how to decide between HJFS alone or with Root Lock.
-- [Real-world attack containment](examples/) — How HJFS is designed to contain real-world malware, ransomware, and supply chain attacks.
+- [Attack examples](examples/) — How HJFS is designed to confine a separate encryptor or a tainted version — and where isolation does not apply.
 - [Roadmap](roadmap/) — Current prototype scope and planned development.
 
 ## About this documentation
