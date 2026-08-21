@@ -9,9 +9,12 @@ toc: true
 type: docs
 ---
 
+<!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
+<!-- markdownlint-disable MD001 -->
+
 **Overview**: Per-CVE write-ups for paths that exist in a Root Lock kernel. A 0.0 score means the trigger is absent on this deployment (hardware, tool, or config). A non-zero score is a live residual.
 
-Read [How to read the backstop sections](../#how-to-read-the-backstop-sections) on the Kernel Security Transparency landing before the entries. Compiled-out groups are on [Not Affected — Disabled Features](../disabled-features/).
+Read [How to read the backstop sections](/docs/security/#how-to-read-the-backstop-sections) on the Kernel Security Transparency landing before the entries. Compiled-out groups are on [Not Affected — Disabled Features](../disabled-features/).
 
 | CVE | Component | Base Score | Score on Root Lock | Status |
 |-----|-----------|-----------|-----------------|--------|
@@ -432,7 +435,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -597,7 +600,7 @@ A syzbot report identified a misuse of pfmemalloc page status in TCP zerocopy re
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -674,7 +677,7 @@ syzkaller reported infinite recursive calls of `fib6_dump_done()` during netlink
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -818,7 +821,7 @@ In `net/ipv6/ip6_output.c`, `ip6_finish_output2()` saves `idev = ip6_dst_idev(ds
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -841,7 +844,7 @@ In `net/ipv6/ip6_output.c`, `ip6_xmit()` saves `idev = ip6_dst_idev(dst)` at lin
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -864,7 +867,7 @@ In `net/ipv6/ip6_output.c`, `ip6_send_skb()` at line 1943 saves `rt = (struct rt
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -965,7 +968,7 @@ When ext4 searches an inlined directory, `ext4_find_inline_entry()` at `fs/ext4/
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -999,7 +1002,7 @@ In `ext4_ext_try_to_merge_up()` at `fs/ext4/extents.c:1871`, `brelse(path[1].p_b
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1022,7 +1025,7 @@ In `ext4_ext_insert_extent()` at `fs/ext4/extents.c:2094`, the call to `ext4_ext
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1045,7 +1048,7 @@ In `ext4_split_extent_at()` at `fs/ext4/extents.c:3178`, the function saves the 
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1068,7 +1071,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1129,7 +1132,7 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 
 `CONFIG_IPV6=y` is compiled in and HS 5.19.6 falls within the affected range. IPv6 is active on any Debian 11 server that has IPv6 addresses configured; the UDP-over-IPv6 fragmentation path is reachable by any process with a UDP socket. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1212,7 +1215,7 @@ In `blk_mq_exit_hctx()` at `block/blk-mq.c:3440`, the call to `blk_mq_clear_flus
 
 `CONFIG_SCSI=y` is compiled in and HS 5.19.6 falls within the affected range. The SCSI subsystem underpins block storage on Debian 11 via libata; the vulnerable path is triggered during SCSI probe teardown when initialization does not complete successfully. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1315,7 +1318,7 @@ In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1374,7 +1377,7 @@ In `fs/ext4/xattr.c`, `ext4_xattr_inode_dec_ref_all()` at line 1127 iterates ove
 
 **What this means for you as an HS user:**
 
-**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1410,7 +1413,7 @@ In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchr
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1468,7 +1471,7 @@ In `net/ipv6/addrlabel.c`, `ip6addrlbl_putmsg()` (line 438) constructs a `struct
 
 **What this means for you as an HS user:**
 
-**The attacker cannot turn this leak into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**The attacker cannot turn this leak into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1636,7 +1639,7 @@ In `net/ipv6/mcast.c`, `mld_clear_delrec()` releases the `pmc->idev` reference b
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1695,7 +1698,7 @@ syzbot demonstrated that a crafted IPv6 packet with excessively long chained ext
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1743,7 +1746,7 @@ In `net/ipv6/`, a Message Authentication Code comparison used a variable-time fu
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1952,7 +1955,7 @@ In `fs/fs-writeback.c`, `__mark_inode_dirty()` acquires a reference to a `bdi_wr
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -1987,7 +1990,7 @@ Syzkaller triggered concurrent calls to `kernfs_remove_by_name_ns()` for the sam
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2011,7 +2014,7 @@ In `fs/ext4/hash.c`, `__ext4fs_dirhash()` returns `-1` in two cases: when a dire
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2070,7 +2073,7 @@ In `drivers/md/dm-cache-target.c`, `cache_resume()` (line 2971) calls `allow_bac
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2094,7 +2097,7 @@ In `ext4_evict_inode()` (`fs/ext4/inode.c:180`), the function checks `EXT4_I(ino
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2298,7 +2301,7 @@ In `drivers/tty/vt/vc_screen.c`, `vcs_read()` accesses virtual console screen da
 
 **What this means for you as an HS user:**
 
-**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**The attacker cannot turn this UAF into anything that runs new code.** Even if a follow-on memory-corruption bug is chained in to escalate to root, Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2321,7 +2324,7 @@ In `net/unix/garbage.c`, the Unix socket garbage collector frees orphaned socket
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2380,7 +2383,7 @@ In `drivers/net/ethernet/realtek/r8169_main.c`, transmitting small fragmented sc
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2713,7 +2716,7 @@ In `drivers/acpi/acpica/utdelete.c`, `acpi_ut_remove_reference()` is called on a
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2760,7 +2763,7 @@ This CVE was actively exploited in the wild (Google Threat Analysis Group, 2024)
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2783,7 +2786,7 @@ In `kernel/rcu/tasks.h`, `show_rcu_tasks_trace_gp_kthread()` formats diagnostic 
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2874,7 +2877,7 @@ In `drivers/base/bus.c`, `bus_register()` allocates a `subsys_private` struct (`
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2920,7 +2923,7 @@ In `net/ipv6/af_inet6.c`, `sock_init_data()` attaches the newly allocated `sk` p
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -2944,7 +2947,7 @@ In `net/ipv4/af_inet.c`, `sock_init_data()` attaches the newly allocated `sk` po
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3106,7 +3109,7 @@ This CVE describes an out-of-bounds write in `vrealloc_node_align()`. When the h
 
 On 6.18.9-hs the helper is in the running kernel. `vrealloc_node_align_noprof` is present and `kvrealloc_node_align_noprof` is exported. The overflow is a kernel memory-corruption bug in a core allocator. Lockdown does not remove that code path from an already-running process.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3269,7 +3272,7 @@ On 5.19.6 HeartSuite, `# CONFIG_XFS_FS is not set`. The helpers are not compiled
 
 On 6.18.9-hs, `CONFIG_XFS_FS=m` and `CONFIG_MODULES=y`. The unfixed fill helpers are in the 6.18.9 XFS tree. The installer unpacks the full module tarball into `/lib/modules` and, on Amazon Linux, forces `xfs` into the initrd. Amazon Linux 2023, Rocky 9, and RHEL 9 use XFS as the root filesystem. `cp`, `dd`, and `python3` are allowlisted. Creating a new XFS image requires `mkfs.xfs`, which is not in the allowlist, and Lockdown returns `-EPERM` from `mount()`, `fsmount()`, and `move_mount()`. That closes a late mount of an attacker-supplied XFS volume. It does not close the path when XFS is already mounted: aligned `O_DIRECT` writes and reflink clones are ordinary file I/O.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3585,7 +3588,7 @@ PCI is compiled in on both fielded kernels and is present on a standard server. 
 
 **Lockdown.** Even if the use-after-free is turned into kernel execution and a root userspace, the program allowlist refuses every non-allowlisted program at exec. Lockdown returns -EPERM on FS_IOC_SETFLAGS, so immutable flags cannot be cleared, and returns -EPERM on mount, fsmount, and move_mount, so bind-mounts over sealed paths fail. The residual risks are in-memory data exfiltration and availability impact.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at execve, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at execve, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3598,7 +3601,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 `mb_cache_destroy()` tears down the ext4 extended-attribute cache without canceling pending shrink work. If entry creation already scheduled that work, the worker touches the cache after free. The trigger is the last put of a mounted ext4 volume — `umount` of that volume, or teardown at reboot. Both fielded kernels ship the code. `mount` and `umount` are on the HeartSuite allowlist. Lockdown refuses new mounts; it does not refuse `umount`. An already-mounted extra ext4 volume, or the last put of root ext4 at reboot, still reaches destroy.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3679,7 +3682,7 @@ The bug is a double-free in `netdev_nl_bind_rx_doit()`. After a successful dma-b
 
 On 6.18.9-hs `CONFIG_NET_DEVMEM=y` and `netdev_nl_bind_rx_doit` is in the image. The command is `NETDEV_CMD_BIND_RX` on the netdev generic-netlink family (`GENL_ADMIN_PERM`). HeartSuite’s network hook fires at `connect()` and at `sendto()` with a destination address; it does not fire at netlink `sendmsg()`. A process that already holds `CAP_NET_ADMIN` issues the command directly. The bind succeeds only on a NIC that implements queue-management ops (mlx5, bnxt with the queue API, gve) with tcp-data-split enabled and a dma-buf fd (`CONFIG_UDMABUF=y`). Those drivers are compiled as modules and load when the NIC is present. virtio-net in 6.18.9 has no queue-management ops, so a virtio-only guest does not complete the bind; a host with mlx5, gve, or bnxt does.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3873,7 +3876,7 @@ On 6.18.9-hs, `CONFIG_ADFS_FS=m`. The installer unpacks the full module tarball 
 
 Lockdown returns `-EPERM` on `mount`, `fsmount`, and `move_mount`. It does not intercept `fsopen` or `fsconfig`. Creating the superblock (`vfs_get_tree` → `adfs_fill_super` → `adfs_validate_bblk`) still runs. The out-of-bounds write is reached before any attach check.
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](../#how-to-read-the-backstop-sections).)
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/docs/security/#how-to-read-the-backstop-sections).)
 
 A reboot is a clean slate. The attack does not survive it.
 
@@ -3940,4 +3943,3 @@ The network hook at connect() and sendto() does not apply to inbound ASCONF proc
 The trigger cannot be reached on any default Root Lock deployment.
 
 If a 6.18.9-hs deployment loads `sctp.ko` and runs an allowlisted SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
-
