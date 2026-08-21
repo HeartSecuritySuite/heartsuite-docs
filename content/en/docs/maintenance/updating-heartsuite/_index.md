@@ -18,7 +18,7 @@ toc: true
 - The Dashboard files under `/opt/heartsuite/`
 - GRUB configuration, so the new kernel becomes the default boot target
 
-It does not modify user data, the existing allowlist entries, or backup files. After the new kernel boots, new programs appear in the review queues for you to approve.
+It does not wipe user data, existing allowlist entries, or backup files. A complete overwrite still re-runs first-run setup (extra reboots) before the Dashboard returns. After the new kernel is up, new programs appear in the review queues for you to approve.
 
 ## Why the update needs a stock boot
 
