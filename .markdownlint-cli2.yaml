@@ -11,6 +11,7 @@ config:
   MD036: false  # Emphasis as heading — **Label**: pattern used for inline labels
   MD028: false  # Blank line in blockquote — used as separator between callout blocks
   MD060: false  # Table column style — 182 pre-existing cosmetic violations; fix as separate pass
+  MD014: false  # $ prompt before commands — shell examples use prompt-prefixed style
 
   # Configured for project conventions
   MD003:

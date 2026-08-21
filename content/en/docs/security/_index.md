@@ -138,7 +138,6 @@ These compiled-in paths keep a live residual. Full write-ups: [Compiled-in CVEs]
 | [CVE-2025-39702](compiled-in-cves/#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_IPV6=y`; Lockdown reduces MI: High→Low (AC:H base) |
 | [CVE-2023-6531](compiled-in-cves/#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
 
-
 ## How to read the backstop sections
 
 Root Lock runs **two independent kernel-level controls**, and the per-CVE entries reference both. They are not peers in a list — one is load-bearing, one is defense-in-depth, and the distinction matters when reading residual risk:

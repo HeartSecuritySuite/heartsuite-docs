@@ -9,10 +9,12 @@ toc: true
 type: docs
 ---
 
+<!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
+<!-- markdownlint-disable MD001 -->
+
 **Overview**: These CVE groups have no reachable code path on the Root Lock kernel because the feature is not compiled in. Confirm a gate with `grep CONFIG_<GATE> /boot/config-$(uname -r)`.
 
 Compiled-in residuals and write-ups: [Compiled-in CVEs](../compiled-in-cves/). Method: [Kernel Security Transparency](../).
-
 
 Root Lock is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
 
@@ -1654,4 +1656,3 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **CVEs covered**: CVE-2025-71136
 
 `CONFIG_VIDEO_ADV748X` is not compiled into the Root Lock kernel. There is no reachable code path for any CVE in this group.
-

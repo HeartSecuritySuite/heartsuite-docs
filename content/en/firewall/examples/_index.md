@@ -98,5 +98,3 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 **What Root Lock Firewall is designed to do.** During observation those attempts become review events. After Firewall Lockdown, packets to sockets that are not on the sealed allowlist are refused, including when the service runs as root.
 
 **What Root Lock Firewall does not claim.** A port you approved stays a port you approved. A seal that is too wide stays too wide. Rate-limit extras that ship in the image baseline are not a promise to absorb a volumetric flood; that flood belongs in front of the host. See [What Root Lock Firewall does and does not cover](../introduction/limits/).
-
-
