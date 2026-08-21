@@ -11,11 +11,11 @@ toc: true
 
 > **Prototype**: Keys, strip text, and ceremony steps shown here are the intended appliance path and may change. The screenshots are docs mock-ups of that path, not a capture of the shipping Root Lock TUI (`[f]` is still File Access there).
 
-This walkthrough is the intended console path on a Root Lock Firewall appliance image. There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
+There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
 
 ## 1. First boot is observation
 
-The merged system strip reports traffic observation: logging only, rules not fully enforced. That is the honest state: the box is teaching you what is listening and what is arriving.
+The merged system strip reports traffic observation: logging only, rules not fully enforced. That is the honest state: what is listening and what is arriving.
 
 The Suggested Next Step points at pending firewall events, not at a catalog of blades.
 
@@ -67,8 +67,4 @@ To change a sealed rule, open **Maintenance** with `[m]`. Enter reduced posture 
 
 Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot. SSH from a laptop is not the recovery path. Console or serial is.
 
-## What this demonstrates
-
-- Observation is a state, not a hidden log.
-- Approval is per event, with consequence, matching the Root Lock review grammar. See [Root Lock Firewall overview](../firewall-overview/).
-- Firewall Lockdown is earned and reversible only through Maintenance. See [What Root Lock Firewall does and does not cover](../limits/#physical-access-and-the-console).
+See [Root Lock Firewall overview](../firewall-overview/) for the observe → approve → seal grammar, and [What Root Lock Firewall does and does not cover](../limits/#physical-access-and-the-console) for the console recovery path.

@@ -15,7 +15,7 @@ toc: true
 
 Root Lock Firewall currently includes the following as the **prototype contract** on the appliance image.
 
-The intended observe → approve → seal path is Dashboard, Firewall Rules, Firewall Lockdown, and Maintenance. Treat the rows as that contract, not as a GA feature list. This documentation stays Preview until the proud KVM roundtrip exists.
+The intended observe → approve → seal path is Dashboard, Firewall Rules, Firewall Lockdown, and Maintenance. Treat the rows as that contract, not as a GA feature list. This documentation stays Prototype until that path exists on a real KVM image.
 
 | Capability | Notes |
 |---|---|
@@ -34,7 +34,7 @@ See [Architecture and compatibility](../architecture/) for the nft-path constrai
 
 | Item | Notes |
 |---|---|
-| Proud demonstration roundtrip | Observation → review → seal → inventory → maintenance on a real KVM image. This documentation stays Preview until that roundtrip exists. |
+| Demonstration roundtrip | Observation → review → seal → inventory → maintenance on a real KVM image. This documentation stays Prototype until that roundtrip exists. |
 | Image as the only customer path | Laboratory install scripts remain laboratory. |
 
 ### Subsequent

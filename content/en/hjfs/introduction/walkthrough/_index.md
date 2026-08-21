@@ -11,8 +11,6 @@ toc: true
 
 > **Prototype**: Commands and output shown reflect the current prototype and may change.
 
-This walkthrough uses a small demonstration program, `TinyDemo`, to show how HJFS keeps data files tied to the specific program version that created them. The same flow is shown in the [demo video](../../#see-it-in-action).
-
 ## 1. Check the installed program version
 
 ```sh
@@ -75,12 +73,6 @@ $ ./start_TinyDemo r FileA
 The apple was a shiny red color.
 ```
 
-The original data is restored — no backup retrieval, no restore process.
+The original data is restored — no backup retrieval, no restore process. You can switch between versions at will. Per-version storage keeps data intact across every installed version, including versions that turn out to be malicious updates.
 
-The user can switch between versions at will. Per-version storage keeps data intact across every installed version, including versions that turn out to be malicious updates.
-
-## What this demonstrates
-
-- Per-version storage areas (see [HJFS overview](../hjfs-overview/#per-version-storage)).
-- Non-destructive rollback (see [Version rollback](../hjfs-overview/#version-rollback)).
-- The `HJFS_update_program` and `HJFS_version_manager` utilities (see [Version management](../hjfs-overview/#version-management)).
+See [HJFS overview](../hjfs-overview/#per-version-storage) for per-version storage, rollback, and the version utilities.

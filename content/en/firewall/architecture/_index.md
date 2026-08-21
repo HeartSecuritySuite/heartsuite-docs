@@ -11,9 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-## Closed image, not a package
-
-Root Lock Firewall is the stateful packet-filter layer of a HeartSuite appliance image. The customer model is: boot the image, use the Dashboard on the console or serial console, observe, approve, seal.
+**Overview**: Root Lock Firewall is a stateful host filter on a closed HeartSuite image. You boot the image, open the Dashboard on the console or serial console, observe, approve, and seal.
 
 The image already carries a custom kernel, a userspace stateful-inspection engine HeartSuite updates, a console TUI, and host-integrity grants. You do not allowlist those programs.
 
@@ -48,7 +46,7 @@ A userspace stateful-inspection engine drives the filter. The Dashboard writes a
 
 HeartSuite is the update authority for that engine. External reputation and geo downloads are off under seal.
 
-The engine is still userspace software. Root Lock is what constrains which binaries may run and which addresses they may call. That residual is why the two layers ship together on the image. It is also why "we have no bugs" is not a claim this documentation makes.
+The engine is still userspace software. Root Lock is what constrains which binaries may run and which addresses they may call. That residual is why the two layers ship together on the image.
 
 ## What the seal actually is
 
@@ -77,7 +75,7 @@ Those omissions are the architectural answer to the campaign class in [Recent fi
 
 A virtual appliance runs on someone else's hypervisor. Control of that hypervisor is control of the disk and of the serial console. Root Lock Firewall does not claim to survive a hostile hypervisor.
 
-Later marketing names two SKUs without changing inspection class:
+Two deliveries, same inspection class:
 
 - a virtual appliance on a hypervisor you trust
 - a hardware appliance for environments where the hypervisor is not trusted

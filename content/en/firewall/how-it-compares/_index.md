@@ -27,7 +27,7 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 **Root Lock** is production-ready today on a server or a cloud image. You review programs, file paths, and outbound destinations, then enable Lockdown. Anything not on that allowlist is blocked at the kernel, including from root.
 
-**Root Lock Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. It does not replace Root Lock. On the appliance they are designed to run together.
+**Root Lock Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. It does not replace Root Lock. On the HeartSuite appliance image they are designed to run together.
 
 | Aspect | Root Lock | Root Lock Firewall | What this means in practice |
 |---|---|---|---|
@@ -110,13 +110,11 @@ Root Lock Firewall and Root Lock address complementary OS-level defaults. Root L
 
 ---
 
-## Root Lock Firewall alone vs with Root Lock
+## The HeartSuite appliance image, and a Root Lock server you already run
 
-**Root Lock Firewall alone** is not a planned customer shape. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run is a different product, and it is not this one.
+The HeartSuite appliance image is the intended Root Lock Firewall deployment: kernel grants under a sealed host filter. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run is a different product, and it is not this one.
 
-**Root Lock alone** is the shipped shape for servers that need execution and outbound control and already have an inbound filter (OS or cloud). That remains valid.
-
-**Both on the appliance** is the intended Root Lock Firewall deployment: kernel grants under a sealed host filter.
+Root Lock on a server you already run is the shipped shape for hosts that need execution and outbound control and already have an inbound filter (OS or cloud). That remains valid.
 
 ---
 

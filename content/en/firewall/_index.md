@@ -1,6 +1,6 @@
 ---
 title: "Root Lock Firewall"
-linkTitle: "Firewall (Preview)"
+linkTitle: "Firewall (Prototype)"
 description: "A closed appliance that watches real traffic on this box, lets you approve a finite allowlist, and seals it. Prototype documentation."
 categories: ["Essentials"]
 tags: ["firewall", "appliance", "security", "prototype", "host-path"]
@@ -16,21 +16,13 @@ type: docs
 
 > **Prototype**: Root Lock Firewall is under active development. Documentation reflects current design intent and is subject to change.
 
-An inbound port that nobody approved is open by default on a general-purpose server. Scanners find it. Login services see unsolicited attempts.
+**Overview**: An inbound port that nobody approved is open by default. Root Lock Firewall is the host-path packet filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist, seal it.
 
-The operating system will accept a connection on any listening socket unless a packet filter refuses it first.
+The workload runs on the image. Packets are judged by connection state.
 
-Root Lock Firewall is that packet filter, delivered as a closed virtual appliance. It watches real traffic on this box, you approve a finite allowlist, and Firewall Lockdown seals what you approved.
+Root Lock Firewall does not decide which programs may execute, which files they may read or write, or which outbound destinations each program may reach. Those are [Root Lock by HeartSuite](../docs/)'s domain. Root Lock sits under the filter as the hardened operating system. It is not itself a firewall.
 
-Packets are judged by connection state. The workload runs on the image.
-
-The appliance is not an NGFW, not a proxy, not a cloud firewall service, and not an inline box you place in front of another server.
-
-Root Lock Firewall does not decide which programs may execute, which files they may read or write, or which outbound destinations each program may reach. Those are [Root Lock by HeartSuite](../docs/)'s domain.
-
-Packets this box sends and receives are still this filter. Root Lock sits under the firewall as the hardened operating system. It is not itself a firewall.
-
-If the requirement is execution control or per-program outbound allowlisting on an existing server, Root Lock Firewall is not the right fit on its own. See [Deployment scenarios](deployment-scenarios/) for fit and non-fit by environment.
+If execution control or per-program outbound allowlisting on an existing server is the requirement, this appliance is not the right fit on its own. See [Deployment scenarios](deployment-scenarios/) for fit and non-fit by environment.
 
 ## Learn about Root Lock Firewall
 

@@ -11,13 +11,17 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
+**Overview**: HeartSuite Joint File System (HJFS) isolates files per program on a stock kernel, including as root. Execution and network control are Root Lock's domain.
+
+On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
+
 ## Where HJFS fits
 
 ### Desktop and workstation environments
 
 The HJFS isolation model maps directly onto what desktop programs need: each program confined to its own storage area, with no path between them. A word processor cannot touch a browser's files, and neither can reach files belonging to any other program.
 
-With [Advanced protection](../advanced-protection/), user-facing documents are opened only through an OS-mediated dialog, giving the user direct control over which files each program can access.
+With [Advanced protection](../advanced-protection/), user-facing documents are opened only through an OS-mediated dialog, so you choose which files each program can access.
 
 ### Multi-user systems
 
@@ -41,9 +45,7 @@ HJFS runs on a standard kernel — no kernel modification required. This makes i
 
 HJFS and Root Lock address complementary layers. Root Lock controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation.
 
-Together they cover all three OS-level controls — file access, network communication, and program execution.
-
-For production server and regulated deployments, running both closes all three dimensions. See [What HJFS does and does not cover](../introduction/limits/) for the specific gaps each fills.
+On that host they cover all three OS-level controls — file access, network communication, and program execution. See [What HJFS does and does not cover](../introduction/limits/).
 
 ---
 
@@ -65,4 +67,4 @@ HJFS can be added alongside it for filesystem-layer isolation. Per-program file 
 
 HJFS on Linux uses standard kernel filesystem registration — no special permissions or OS modifications required.
 
-On Windows and macOS, registering a filesystem requires cooperation from Microsoft or Apple respectively. That cooperation is the blocking constraint, not a technical limitation of HJFS itself. Linux is the current deployment target. Support for Windows and macOS is planned.
+On Windows and macOS, registering a filesystem requires cooperation from Microsoft or Apple respectively. Linux is the current deployment target because that registration is a standard kernel operation there. Support for Windows and macOS is planned. File isolation on Linux still holds.

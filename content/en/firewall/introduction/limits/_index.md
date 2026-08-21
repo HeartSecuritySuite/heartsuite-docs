@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Root Lock Firewall enforces one thing: inbound and this-host path traffic that is not on the sealed allowlist is refused — including traffic aimed at services running as root.
+**Overview**: A listening service accepts packets from anywhere the routing table can reach, unless a filter refuses them. Root Lock Firewall refuses inbound and this-host path traffic that is not on the sealed allowlist — including traffic aimed at services running as root.
 
 An attacker who uses a port you approved is constrained by that rule, not stopped at the application.
 
@@ -45,7 +45,7 @@ A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (wha
 
 **What Root Lock Firewall enforces.** v1 filters INPUT and OUTPUT of *this* image. The workload is meant to run on the image.
 
-**What Root Lock Firewall does not cover.** Sitting in front of other hosts (FORWARD, NAT as a product surface) is not v1. An edge SKU would change placement. Until then, do not treat this box as a campus or DC inline firewall. See [Deployment scenarios](../../deployment-scenarios/).
+**What Root Lock Firewall does not cover.** Sitting in front of other hosts (FORWARD, NAT as a product surface) is not v1. The sealed allowlist of *this* image still holds. See [Deployment scenarios](../../deployment-scenarios/).
 
 ---
 
@@ -55,7 +55,7 @@ A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (wha
 
 **What Root Lock Firewall enforces.** Connection state and the allowlist you sealed.
 
-**What Root Lock Firewall does not cover.** Those blades are refused as product identity. They are the policy surface Root Lock Firewall is designed not to become. If you need them, keep the specialist tool and do not expect this image to replace it.
+**What Root Lock Firewall does not cover.** Those blades are refused as product identity. They are the policy surface Root Lock Firewall is designed not to become. Keep the specialist tool for App-ID, TLS interception, and URL clouds. The sealed host allowlist on this image still holds.
 
 ---
 
