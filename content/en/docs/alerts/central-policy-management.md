@@ -232,12 +232,18 @@ The Dashboard remains the right surface for one-off investigation, initial setup
 
 Lockdown is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for pending programs while Lockdown stays applied fire on all configured channels.
 
+Central automation drives allowlist policy and first install. It does not lift Lockdown.
+
+- **Similar hosts, first install:** harvest once, package with install-time pre-seed, Ansible installs that package — the order above.
+- **Already in Lockdown:** the official role does not unseal. `hs_state: setup` leaves mode unchanged. Package installs and Root Lock bundle updates wait for Setup Mode — [Protecting During Maintenance](../maintenance/protecting-during-maintenance/) and [Updating Root Lock](../maintenance/updating-heartsuite/).
+- **Many locked hosts:** reprovision from an updated image rather than a console session per node — [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+
 ## Next steps and related documentation
 
 - Configure the base alert channels on a pilot host: [Alert Settings](.)
 - Review the CLI tools available for automation: [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/) and [Appendices](../appendices/).
 - Set up log ingestion: [SIEM and Fleet Integration](siem-integration/).
-- Understand maintenance windows and when policy changes are permitted: [Maintenance](../maintenance/).
+- Understand maintenance windows, unseal, and fleet image reprovision: [Maintenance](../maintenance/).
 - Compliance context for auditors: [SOC 2 Control Mapping](../soc2/) and [Compliance Reference: NIST CSF & ISO 27001](../heartsuite-compliance-nist-iso27001/).
 
 For support with large-scale or custom automation patterns, contact support@heartsecsuite.com.

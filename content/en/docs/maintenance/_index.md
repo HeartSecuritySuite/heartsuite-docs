@@ -23,9 +23,19 @@ Installing packages, applying patches, and editing configuration happen in Setup
 
 The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 
+## Which change is this?
+
+Installing packages, replacing program files, and updating Root Lock itself are different jobs, and they take different paths out of Lockdown.
+
+| Situation | Path |
+|---|---|
+| OS packages, configuration, replacing program files | Unseal, then work in Setup Mode — [Protecting During Maintenance](protecting-during-maintenance/) |
+| Root Lock kernel and Dashboard | Unseal if sealed, then one stock boot — [Updating Root Lock](updating-heartsuite/) |
+| Many hosts already in Lockdown | Reprovision from an updated image rather than opening a console on every node — [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) |
+
 ## In this section
 
-- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown, then install software or edit files in Setup Mode and lock down again.
+- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown, then install software or edit files in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
 - [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.

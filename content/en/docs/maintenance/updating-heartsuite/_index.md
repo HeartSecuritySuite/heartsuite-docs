@@ -66,6 +66,12 @@ On the stock or maintenance boot, Root Lock is not loaded: it does not block pro
 7. The installer applies the update and, by default, reboots into the new Root Lock kernel. You land in Setup Mode.
 8. If new programs appear, they show in the review queues. Approve them through the Dashboard, then re-engage Lockdown (`[l]`) if it was active before the update.
 
+## Many hosts
+
+The in-place bundle is per host. After Lockdown, each sealed host still unseals from the console before the installer can set the next boot — `/boot` is sealed.
+
+For many locked hosts, reprovision from an updated pre-configured image instead of running the bundle on each live machine. That path is equivalent for support when the image contains a published bundle. See [Kernel Support Policy](../../kernel-hardening/kernel-support-policy/#pre-configured-image-alternative) and [Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+
 ## If the update fails
 
 If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step.

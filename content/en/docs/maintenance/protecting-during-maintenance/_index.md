@@ -75,6 +75,14 @@ After that reboot:
 
 This path is for an unfinished or drifted seal, not for a host that already shows **Lockdown applied**.
 
+## After the window is open
+
+Once you are in Setup Mode, SSH and Ansible can install packages and edit files on that host. The console trip is only to lift the seal.
+
+- **One host, many services.** One unseal covers every program on that machine.
+- **Many hosts already in Lockdown.** Ansible cannot lift the seal. The official `heartsecurity.root_lock` role leaves mode unchanged when `hs_state` is unset or `setup`. In-place patches still need the console path on each sealed host. For a fleet, reprovision from an updated image instead — see [Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) and [Central Policy](../../alerts/central-policy-management/).
+- **Detaching the disk.** Stopping a cloud VM and attaching its volume to another instance is hypervisor access, not a supported patch procedure. Treat it as the same class as serial-console access: break-glass, and restrict it in cloud IAM. See [Circumvention and recovery](../../introduction/how-it-compares/#circumvention-and-recovery).
+
 ## Manual recovery outside Maintenance
 
 When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including a reboot that reaches the maintenance kernel.
