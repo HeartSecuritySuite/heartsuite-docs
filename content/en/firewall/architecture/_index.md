@@ -36,7 +36,7 @@ Root Lock Firewall owns the host packet filter. Root Lock owns what may execute 
 
 On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard, not a hardening step.
 
-Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. It is not this product. See [Mode Switching and Lockdown](../../docs/mode-switching/) for that Root Lock path, and do not read it as Root Lock Firewall.
+Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. It is not this product. See [Lockdown](../../docs/lockdown/) for that Root Lock path, and do not read it as Root Lock Firewall.
 
 ## Linux netfilter on the nft path
 

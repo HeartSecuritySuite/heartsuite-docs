@@ -17,7 +17,7 @@ type: docs
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Lockdown](mode-switching/) covers activation.
+In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing takes the maintenance kernel from a physical or serial console. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 On a single host, Root Lock supports two setup paths. Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 
@@ -40,7 +40,7 @@ Root Lock fits production servers, regulated workstations, build and CI infrastr
 - [Deployment Scenarios](introduction/deployment-scenarios/) — Where Root Lock fits best, and where it doesn't.
 - [How Root Lock Compares](introduction/how-it-compares/) — What Root Lock replaces (Falco, AppArmor, gVisor, EDR on the enforcement dimension), what it complements (SIEM, NDR, VA), and how it can be circumvented.
 - [Allowlisting Programs](allowlisting/) — How to approve programs and their file and network permissions using the review queues.
-- [Lockdown](mode-switching/) — Setup Mode and Lockdown.
+- [Lockdown](lockdown/) — Setup Mode and Lockdown.
 
 ## Get started
 

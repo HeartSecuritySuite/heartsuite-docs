@@ -1,6 +1,6 @@
 ---
 title: "One interpreter, many script allowlists"
-linkTitle: "How launchers work"
+linkTitle: "Each script gets its own allowlist"
 weight: 1
 description: "Without launchers, every script shares the interpreter's permissions. Launchers split that so an approved python3 cannot run an unapproved script."
 categories: ["Guides"]

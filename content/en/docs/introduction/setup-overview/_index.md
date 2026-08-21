@@ -55,7 +55,7 @@ Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial
 
 Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).
 
-![Dashboard after setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_phase1_complete.svg)
+![Dashboard after setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_setup_complete.svg)
 
 ## From installation to Lockdown
 
@@ -103,7 +103,7 @@ graph TD
 >
 > Complete remaining allowlisting in Setup Mode before activating Lockdown. Initial setup already added startup and shutdown programs. Anything still waiting in the review queues will be blocked.
 
-Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. That starts a probe reboot; a second reboot applies the seal. See [Lockdown](../../mode-switching/) for the activation flow.
+Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. That starts a probe reboot; a second reboot applies the seal. See [Lockdown](../../lockdown/) for the activation flow.
 
 After Lockdown, the startup script re-engages the seal on every Root Lock kernel boot.
 

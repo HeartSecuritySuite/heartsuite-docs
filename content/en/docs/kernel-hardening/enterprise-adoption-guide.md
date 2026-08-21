@@ -67,7 +67,7 @@ Official pre-built images in the major cloud Marketplaces are in active developm
 
 Deployments that require Secure Boot enabled for the Root Lock kernel entry may need to enroll via MOK during installation. Alternatively, temporarily boot with Secure Boot disabled for the Root Lock kernel while using the provider console or local management for the maintenance kernel.
 
-The original distribution kernel (Non-HS) retains its signing status and can be used for recovery and maintenance regardless of Secure Boot policy.
+The original distribution kernel (maintenance kernel) retains its signing status and can be used for recovery and maintenance regardless of Secure Boot policy.
 
 **Roadmap**: Signed kernel images, streamlined MOK tooling, and cloud-provider-specific runbooks (Azure, GCP, AWS) are prioritized work. Expanded test coverage for UEFI Secure Boot paths is tracked alongside the existing partial e2e validation.
 
@@ -89,7 +89,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 - EDR and observability via log forwarding (no on-host eBPF attachment). Enforcement events flow through syslog. Denial logs cover blocks only.
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
-**Does not run on the HS kernel** (use a kernel that still has these features, a separate host, or alternative controls):
+**Does not run on the Root Lock kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
 - Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is omitted.
 - Dynamic Kubernetes environments with frequent pod creation, HPA scale-out, or rescheduling after Lockdown (mount operations required for new containers are refused).
@@ -148,7 +148,7 @@ Every installation retains a first-class recovery path:
 
 - The original distribution kernel is always present in GRUB (split into Maintenance and vanilla entries during install, with Maintenance labelled as the Setup Mode destination).
 - The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence: reboot to maintenance kernel, remove the immutable seal, make changes, reboot back to the Root Lock kernel, review new activity, and re-engage Lockdown.
-- The Dashboard's Maintenance (`[m]`) handles the common case of quick Non-HS work followed by guided return to the Root Lock kernel and review.
+- The Dashboard's Maintenance (`[m]`) handles the common case of quick maintenance-kernel work followed by guided return to the Root Lock kernel and review.
 - For policy or platform conflicts that make the Root Lock kernel unsuitable for an extended period, teams can remain on the maintenance kernel (the product continues to run and log in non-enforcing mode) or remove Root Lock entirely. Both paths are supported and documented.
 - Physical or console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control. No software on the system can block this path.
 
@@ -159,7 +159,7 @@ This is the documented, supported escape hatch for operational needs, kernel pol
 Nothing on the kernel posture page relies on "trust us."
 
 - Reproduce hardening measurements yourself with the published config SHA-256 and the open-source checker (full commands in [Threat model](../auditor-brief/)).
-- Review every relevant CVE with the exact "Not Affected / Score on HeartSuite 0.0 / bounded impact" rationale on the [Kernel Security Transparency](../../security/) page.
+- Review every relevant CVE with the exact "Not Affected / Score on Root Lock 0.0 / bounded impact" rationale on the [Kernel Security Transparency](../../security/) page.
 - Inspect live state via the status JSON, per-decision syslog events, approval log, and the sealed allowlist files (all readable or harvestable without special privileges beyond normal admin access).
 - For procurement and due-diligence packages: attach the Procurement Brief, threat-model page, comparison matrix, and evidence packs to an RFP or vendor questionnaire. The customer's control testing still has to stand on its own.
 

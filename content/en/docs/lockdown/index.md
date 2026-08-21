@@ -4,13 +4,14 @@ linkTitle: "Lockdown"
 weight: 80
 description: "Setup Mode records; Lockdown blocks and seals. The Dashboard checklist, the YES confirmation, the probe reboot, and how Maintenance unseals from the console."
 categories: ["Advanced"]
-tags: ["heartsuite", "linux", "modes", "security", "switching", "lockdown"]
+tags: ["heartsuite", "linux", "modes", "security", "lockdown"]
 toc: true
 type: docs
-author: Ron Hessing
+aliases:
+  - /docs/mode-switching/
 menu:
   main:
-    identifier: "mode-switching"
+    identifier: "lockdown"
     weight: 30
 ---
 
@@ -125,7 +126,7 @@ From the Dashboard, select Lockdown (`[l]`). The Dashboard shows a precondition 
 
 The commitment summaries and, after Lockdown, the Lockdown Inventory (`[l]`) are read-only. Change grants on the activation view, not on the inventory. When all preconditions are met, type `YES` (case-sensitive) to confirm.
 
-![Lockdown with all preconditions met](test_docs_mode_switch_all_clear.svg)
+![Lockdown with all preconditions met](test_docs_lockdown_all_clear.svg)
 
 (The screenshot shows the checklist and the `YES` field. Grant changes use the keys listed above.)
 

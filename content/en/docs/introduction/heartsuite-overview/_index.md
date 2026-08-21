@@ -71,7 +71,7 @@ File access is approved as **read** or **write**. Write includes read. See [Allo
 
 Activating Lockdown requires empty review queues, configured alerts, and an active subscription. Type `YES` (case-sensitive) to confirm.
 
-Once Lockdown is applied, the allowlist cannot change while the machine is running, including as root. `YES` starts a probe reboot; a second reboot applies the seal. `[m]` Maintenance is the path to make changes. See [Lockdown](../../mode-switching/).
+Once Lockdown is applied, the allowlist cannot change while the machine is running, including as root. `YES` starts a probe reboot; a second reboot applies the seal. `[m]` Maintenance is the path to make changes. See [Lockdown](../../lockdown/).
 
 ### 3. File backup and versioning
 

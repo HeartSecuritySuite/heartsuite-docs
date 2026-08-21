@@ -20,7 +20,7 @@ Single-host setup is on this page (Dashboard → Alerts). For production fleets 
 - [SIEM and Fleet Integration](siem-integration/) — Syslog, webhook, and status JSON for Splunk, Elastic, PagerDuty, and similar tools. The recommended path when you manage many servers without per-host TUI toil.
 - [Central Policy Management and External Control](central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation; consume syslog, JSONL approval logs, status.json, and webhooks for central visibility.
 
-![Alert Settings Email tab, configured — Machine name, SMTP Host, SMTP Port, SMTP Login](test_docs_alert_settings_configured.svg)
+![Alert Settings Email tab, configured — Node ID, SMTP Host, SMTP Port, SMTP Login](test_docs_alert_settings_configured.svg)
 
 ## When alerts fire
 
@@ -36,7 +36,7 @@ From the Dashboard, select Alerts (`[e]`). That opens **Alert Settings**, which 
 
 Configure SMTP credentials to receive email alerts directly. Fields, in the order they appear:
 
-- **Machine name** — defaults to the system hostname; set a recognisable identifier (for example `prod-web-03`) so email subjects identify the source host. The JSON and syslog field for this value is `node_id`.
+- **Node ID** — defaults to the system hostname; set a recognisable identifier (for example `prod-web-03`) so email subjects identify the source host. The JSON and syslog field is `node_id`.
 - **SMTP Host**
 - **SMTP Port** (default 587)
 - **SMTP Login**
@@ -170,4 +170,4 @@ Syslog and webhook emit every alert immediately, without grouping or windowing. 
 
 If a configured channel is silent in Setup Mode, check **Setup Mode Alerts**. Off (the default) means that silence is expected, not a misconfiguration.
 
-With at least one push channel configured, the Dashboard unlocks Lockdown. Follow the Suggested Next Step to [activate Lockdown](../mode-switching/).
+With at least one push channel configured, the Dashboard unlocks Lockdown. Follow the Suggested Next Step to [activate Lockdown](../lockdown/).

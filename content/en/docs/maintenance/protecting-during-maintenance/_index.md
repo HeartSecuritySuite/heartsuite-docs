@@ -44,7 +44,7 @@ After the safety checklist, Maintenance tells you to reboot from the **console**
 1. Open the console and restart the machine there.
 2. At the boot menu, select **Maintenance: unseal and return to Root Lock**. Do not select the branded Root Lock kernel.
 3. The seal lifts automatically (`HS_unlock.sh`). The machine restarts on its own and returns to the Root Lock kernel in Setup Mode.
-4. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Lockdown](../../mode-switching/)).
+4. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Lockdown](../../lockdown/)).
 
 The boot menu appears a second time during that automatic return. Let it be: reboot is already in motion and there is nothing to select.
 
@@ -54,7 +54,7 @@ You are then in Setup Mode on the Root Lock kernel:
 - New activity appears in the review queues.
 - Maintenance (`[m]`) is hidden — you can already install software and edit files.
 
-Make your changes — install packages, edit configuration, update software. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../mode-switching/).
+Make your changes — install packages, edit configuration, update software. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../lockdown/).
 
 If you accidentally select the Root Lock kernel at the first boot menu instead of the Maintenance entry, the Dashboard detects that and sends you back to reboot and select the correct entry.
 

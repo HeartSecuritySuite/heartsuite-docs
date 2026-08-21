@@ -17,7 +17,7 @@ Traditional endpoint security detects threats after they execute. Root Lock by H
 
 In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. Recovery is the maintenance kernel via physical or serial-console access. See [Circumvention and recovery](../introduction/how-it-compares/#circumvention-and-recovery).
 
-Even if malware is downloaded to a Root Lock server, it cannot run **as a new program** unless that program is already on the allowlist. That does not stop a zero-day **inside an already-allowlisted** program (for example `nginx` or `python3`) but limits its power to allowlisted files and internet addresses.
+Even if malware is downloaded to a Root Lock server, it cannot run as a new program unless that program is already on the allowlist. A zero-day inside an already-allowlisted program (`nginx`, `python3`) still runs; it can only use the file paths and outbound addresses that program was approved for.
 
 The core features that make this possible — program allowlist, Setup Mode and Lockdown, File Backup and Versioning, and Secure Script Launchers — were designed together as a single architecture, not assembled from separate tools. This page traces how that architecture was built, validated, and hardened over time.
 

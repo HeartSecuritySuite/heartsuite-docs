@@ -14,7 +14,7 @@ Detailed control mappings are in the [Compliance Reference: NIST CSF & ISO 27001
 
 **What does Root Lock by HeartSuite enforce?**
 
-Three gates: execution (default-deny binary allowlist), file access (per-program path restrictions), and network (per-program outbound IPv4/IPv6 allowlist). All three override root privilege.
+Three gates: execution (default-deny binary allowlist), file access (per-program path restrictions), and network (per-program outbound IPv4/IPv6 allowlist). All three apply including to programs running as root.
 
 ---
 
@@ -24,7 +24,7 @@ Five categories, using `chattr +i`: Root Lock configuration and kernel image dir
 
 File backup snapshots are a separate kernel write-protection of `/.hs/b/`, not a sixth `chattr` category. Under Lockdown, no program except Root Lock backup tooling can write or delete those versions, including root.
 
-These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Mode Switching and Lockdown](../mode-switching/) for the full list and behaviour.
+These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Lockdown](../lockdown/) for the full list and behaviour.
 
 ---
 

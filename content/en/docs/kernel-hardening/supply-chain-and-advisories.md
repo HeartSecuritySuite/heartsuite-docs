@@ -13,19 +13,19 @@ toc: true
 
 **Audience**: Procurement, vendor risk, GRC, and platform security teams mapping HeartSuite deliverables to supply-chain questionnaires, SOC 2 / ISO evidence requests, and enterprise Linux vulnerability-management programs.
 
-**Related reading**: [Kernel Support Policy](kernel-support-policy/), [Enterprise Adoption Guide](enterprise-adoption-guide/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/), [Evidence Status](evidence-status/), [Threat model](auditor-brief/), [Updating HeartSuite](../../maintenance/updating-heartsuite/).
+**Related reading**: [Kernel Support Policy](kernel-support-policy/), [Enterprise Adoption Guide](enterprise-adoption-guide/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/), [Evidence Status](evidence-status/), [Threat model](auditor-brief/), [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
 ---
 
 ## What this page covers
 
-This page states **what HeartSuite publishes today** for HS kernel supply-chain verification and **what is on the roadmap** — without overstating availability.
+This page states **what HeartSuite publishes today** for Root Lock kernel supply-chain verification and **what is on the roadmap** — without overstating availability.
 
 It is the single reference for:
 
 - **Bundle integrity** — SHA-256 checksums now; GPG and cosign signing planned.
 - **Bundle manifests** — version identifiers, addressed CVE list, and checksum references shipped with coordinated releases.
-- **Reproducible configuration evidence** — published `.config` SHA-256 per supported HS kernel stream.
+- **Reproducible configuration evidence** — published `.config` SHA-256 per supported Root Lock kernel stream.
 - **Machine-readable advisories** — Published JSON feeds under [`/advisories/`](/advisories/index.json) (catalogue: `hs-advisory-catalog/v1`). For the current release (`hs-v1.6.4-kernel-6.18.9`, `gate_status: PASS`): CONFIG-gate Not-Affected SBOM, OSV (279 entries at [`/advisories/osv.json`](/advisories/osv.json)), and CycloneDX bundle SBOM. **OVAL XML** for OpenSCAP remains on the roadmap.
 - **SBOM** — CycloneDX bundle SBOM published at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json); SPDX dual-format support will be stated at GA.
 
@@ -41,11 +41,11 @@ For patch targets, notification channels, and support boundaries, see the [Kerne
 | **Bundle manifest** | Version IDs, CVE list addressed in build, checksum reference | Same fields, plus signing key IDs and SBOM reference when SBOM ships |
 | **Kernel `.config` hash** | SHA-256 published per stream on this site and in evidence packs | Continues per stream; referenced from published advisory feeds |
 | **CONFIG-gate SBOM (JSON)** | Published at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json) on each `hs-v*` release (schema `hs-cve-config-sbom/v1`) | Updated with coordinated bundles; gated by CVE↔CONFIG crosswalk in CI |
-| **OSV (HS kernel)** | Published at [`/advisories/osv.json`](/advisories/osv.json) (279 entries; alias of `osv/all.json`) for `hs-v1.6.4-kernel-6.18.9` | Encodes config-gate and transparency-page reachability |
-| **OVAL (HS kernel)** | **Not published** | Planned OpenSCAP definitions; use OSV/CONFIG SBOM and [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) until OVAL ships |
+| **OSV (Root Lock kernel)** | Published at [`/advisories/osv.json`](/advisories/osv.json) (279 entries; alias of `osv/all.json`) for `hs-v1.6.4-kernel-6.18.9` | Encodes config-gate and transparency-page reachability |
+| **OVAL (Root Lock kernel)** | **Not published** | Planned OpenSCAP definitions; use OSV/CONFIG SBOM and [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) until OVAL ships |
 | **SBOM (CycloneDX)** | Published at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json) for `hs-v1.6.4-kernel-6.18.9` | SPDX dual-format at GA if offered |
 | **RHSA-style errata IDs** | **Not offered** | Not planned — advisories remain bundle- and transparency-page-centric |
-| **HS kernel source (GPL)** | On written request via [support@heartsecsuite.com](mailto:support@heartsecsuite.com) | Public kernel source repository not offered at this time |
+| **Root Lock kernel source (GPL)** | On written request via [support@heartsecsuite.com](mailto:support@heartsecsuite.com) | Public kernel source repository not offered at this time |
 
 HeartSuite does **not** commit to delivery dates for roadmap items on this page. When an artefact reaches general availability, this page and the [Kernel Support Policy](kernel-support-policy/) will be updated and customers will be notified through subscription email and release notes.
 
@@ -69,11 +69,11 @@ This is the **only generally available cryptographic integrity check** for bundl
 
 It does **not** by itself prove publisher identity. That is why GPG and cosign are on the roadmap (see below).
 
-Full install procedure and maintenance-window context: [Updating HeartSuite](../../maintenance/updating-heartsuite/).
+Full install procedure and maintenance-window context: [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
 ### Reproducible kernel configuration (SHA-256 per stream)
 
-Every released HS kernel stream publishes the **SHA-256 hash of the exact kernel `.config`** used for that build. This hash is the anchor for independent hardening verification:
+Every released Root Lock kernel stream publishes the **SHA-256 hash of the exact kernel `.config`** used for that build. This hash is the anchor for independent hardening verification:
 
 - Compare the published hash to the **pin payload `.config`**, not guest `/boot/config-$(uname -r)` on 6.18.9-hs. That file is an 11-line initramfs stub (`CONFIG_IKCONFIG` is off). Hashes and commands: [Threat model](auditor-brief/), [Evidence Status](evidence-status/).
 - Re-run the open-source `kernel-hardening-checker` against that pin config to reproduce attack-surface and exploit-resistance scores
@@ -85,7 +85,7 @@ This model is intentionally **reproducible on the customer side** — auditors d
 
 ### Kernel Security Transparency (CVE rationale)
 
-Per-CVE status, config gates, and Score on HeartSuite are published on the [Kernel Security Transparency](../../security/) page. This is the authoritative **human-readable** advisory layer for the HS kernel.
+Per-CVE status, config gates, and Score on Root Lock are published on the [Kernel Security Transparency](../../security/) page. This is the authoritative **human-readable** advisory layer for the Root Lock kernel.
 
 Machine-readable mirrors:
 
@@ -98,11 +98,11 @@ Machine-readable mirrors:
 
 Feeds are published on this documentation site when HeartSuite cuts an annotated `hs-v*` kernel release. Publication is automated from HeartSuite's internal release pipeline; customers do not need access to private build repositories to consume the feeds.
 
-### HS kernel source code (GPL)
+### Root Lock kernel source code (GPL) {#hs-kernel-source-code-gpl}
 
-HeartSuite distributes the HS kernel as binaries in the coordinated `heartsuite-install.sh` bundle. Portions of the HS kernel are subject to the GNU General Public License.
+HeartSuite distributes the Root Lock kernel as binaries in the coordinated `heartsuite-install.sh` bundle. Portions of the Root Lock kernel are subject to the GNU General Public License.
 
-HeartSuite does **not** maintain a public kernel source repository at this time. **Corresponding source code** for the HS kernel build you are running is available on **written request** under GPL obligations.
+HeartSuite does **not** maintain a public kernel source repository at this time. **Corresponding source code** for the Root Lock kernel build you are running is available on **written request** under GPL obligations.
 
 Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
 
@@ -127,7 +127,7 @@ Each coordinated release is accompanied by a **bundle manifest** (shipped with t
 | Field | Purpose | Example / notes |
 |---|---|---|
 | **HeartSuite product version** | Identifies the coordinated stack release | For example, HeartSuite v1.6.4 |
-| **HS kernel version string** | Running kernel identity after install | Fielded pin: `6.18.9-hs` (packaging `6.18.9-HeartSuite-3`, build #37) — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
+| **Root Lock kernel version string** | Running kernel identity after install | Fielded pin: `6.18.9-hs` (packaging `6.18.9-HeartSuite-3`, build #37) — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
 | **Stream** | Supported LTS line | `6.18` (primary) or `5.19` (legacy) |
 | **Bundle checksum** | SHA-256 of `heartsuite-install.sh` | Must match `heartsuite-install.sh.sha256` |
 | **Config SHA-256** | Hash of the kernel `.config` for this build | Links reproducible verification to this release |
@@ -135,7 +135,7 @@ Each coordinated release is accompanied by a **bundle manifest** (shipped with t
 | **Release date** | Publication date of the bundle | For change-control and audit timelines |
 | **Distribution targets** | Validated distro families for this bundle | See [Distro Compatibility Matrix](distro-compatibility-matrix/) |
 
-Manifests do **not** replace the [Kernel Security Transparency](../../security/) page for reachability analysis. A CVE omitted from the "addressed" list may still be **Not Affected** on HS kernels because the vulnerable subsystem was never compiled in.
+Manifests do **not** replace the [Kernel Security Transparency](../../security/) page for reachability analysis. A CVE omitted from the "addressed" list may still be **Not Affected** on Root Lock kernels because the vulnerable subsystem was never compiled in.
 
 ### Planned manifest extensions
 
@@ -164,13 +164,13 @@ Existing SHA-256 verification remains valid for customers who have not yet adopt
 
 - No published GPG public key or cosign policy on this site today.
 - No requirement that customers use signing before install — SHA-256 verification remains the baseline until signing is generally available.
-- Signing addresses **publisher authenticity** and **pipeline integration**; it does not change the HS kernel's CVE reachability model or Lockdown semantics.
+- Signing addresses **publisher authenticity** and **pipeline integration**; it does not change the Root Lock kernel's CVE reachability model or Lockdown semantics.
 
 Teams with mandatory code-signing policies should treat SHA-256 + config-hash verification as the current interim control and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for questionnaire language until GPG/cosign GA.
 
 ---
 
-## Published advisory feeds (HS kernel)
+## Published advisory feeds (Root Lock kernel) {#published-advisory-feeds-hs-kernel}
 
 Enterprise Linux teams often use **OVAL** definitions with OpenSCAP, or **OSV** entries in broader SCA tooling, to reduce false positives from raw NVD version matching.
 
@@ -185,7 +185,7 @@ For release tag **`hs-v1.6.4-kernel-6.18.9`** (`gate_status: PASS` in the catalo
 
 **Not yet published**: **OVAL XML** for OpenSCAP. Teams that require OVAL today should ingest the published CONFIG SBOM and OSV feeds, plus the manual workflow in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
-Scanners that compare `uname -r` to upstream "fixed in" versions will still generate noise on HS kernel boots until your toolchain consumes these feeds or the manual hygiene workflow.
+Scanners that compare `uname -r` to upstream "fixed in" versions will still generate noise on Root Lock kernel boots until your toolchain consumes these feeds or the manual hygiene workflow.
 
 ### What the feeds encode
 
@@ -193,9 +193,9 @@ The feeds encode logic that version strings alone cannot express:
 
 | Data element | Purpose |
 |---|---|
-| **Product / stream scope** | Distinguish HS kernel (`HeartSuite` in `uname -r`) from distribution maintenance-kernel boots on the same host |
+| **Product / stream scope** | Distinguish Root Lock kernel (`HeartSuite` in `uname -r`) from distribution maintenance-kernel boots on the same host |
 | **Config gates** | Map CVEs to `CONFIG_*` options — **Not Affected** when subsystem is compiled out |
-| **Score on HeartSuite** | Environmental applicability (including 0.0 neutralisation) |
+| **Score on Root Lock** | Environmental applicability (including 0.0 neutralisation) |
 | **Reachable / bounded** | Flag CVEs where code path exists and Lockdown bounds post-exploitation |
 | **Fixed-in-bundle boundaries** | Tie remediation to HeartSuite build release and bundle manifest CVE list |
 | **Config SHA-256 reference** | Anchor feed evaluations to the published `.config` hash for the stream |
@@ -207,12 +207,12 @@ The feeds **do not** replicate RHSA numbering or distribution errata semantics. 
 1. Pull the catalogue: `curl -fsS https://docs.heartsecsuite.com/advisories/index.json`
 2. Ingest `hs-cve-config-sbom.json` and `osv.json` into your vulnerability-management platform.
 3. For CVEs not covered by machine-readable entries, use **[CVE Hygiene for Scanners](cve-hygiene-for-scanners/)**:
-   - Confirm boot context: fielded HS kernel is `6.18.9-hs` (see [Evidence Status](evidence-status/)). A missing `HeartSuite` substring still matches that pin.
+   - Confirm boot context: fielded Root Lock kernel is `6.18.9-hs` (see [Evidence Status](evidence-status/)). A missing `HeartSuite` substring still matches that pin.
    - Look up the CVE on [Kernel Security Transparency](../../security/).
    - Verify compiled-out claims against the **pin payload config**. Guest `/boot/config-6.18.9-hs` is a stub.
    - Record exceptions with pin identity, config evidence, and a transparency link.
 
-Continue using **distribution OVAL/errata** for Non-HS kernel maintenance windows and for non-kernel packages.
+Continue using **distribution OVAL/errata** for Non-Root Lock kernel maintenance windows and for non-kernel packages.
 
 OVAL XML general availability will be announced in release notes when ready.
 
@@ -224,7 +224,7 @@ OVAL XML general availability will be announced in release notes when ready.
 
 **Scope** (CycloneDX generator):
 
-- Coordinated bundle contents — HS kernel binary, userspace daemon/Dashboard/tools, and installer dependencies relevant to the enforcement stack.
+- Coordinated bundle contents — Root Lock kernel binary, userspace daemon/Dashboard/tools, and installer dependencies relevant to the enforcement stack.
 - **Linkage**: Bundle manifest references the SBOM URL; catalogue records release tag and HeartSuite version.
 
 **Roadmap**: SPDX and/or dual SPDX+CycloneDX support will be stated at GA if offered.
@@ -236,7 +236,7 @@ OVAL XML general availability will be announced in release notes when ready.
 - Bundle SHA-256 manifests
 - CVE transparency and bundle manifest CVE lists
 
-SBOM publication improves **dependency inventory and procurement automation**; it does not replace config-gate CVE analysis for the HS kernel.
+SBOM publication improves **dependency inventory and procurement automation**; it does not replace config-gate CVE analysis for the Root Lock kernel.
 
 ---
 
@@ -244,9 +244,9 @@ SBOM publication improves **dependency inventory and procurement automation**; i
 
 | Question | Honest answer | Primary reference |
 |---|---|---|
-| How do we verify the installer was not corrupted? | `sha256sum -c heartsuite-install.sh.sha256` before execution | This page; [Updating HeartSuite](../../maintenance/updating-heartsuite/) |
+| How do we verify the installer was not corrupted? | `sha256sum -c heartsuite-install.sh.sha256` before execution | This page; [Updating Root Lock](../../maintenance/updating-heartsuite/) |
 | How do we prove signing authority? | **Not yet** — GPG/cosign roadmap | Roadmap section above |
-| How do we automate CVE false-positive reduction for the HS kernel? | Ingest published [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json) and [`/advisories/osv.json`](/advisories/osv.json) (279 entries); manual workflow for gaps | [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) |
+| How do we automate CVE false-positive reduction for the Root Lock kernel? | Ingest published [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json) and [`/advisories/osv.json`](/advisories/osv.json) (279 entries); manual workflow for gaps | [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) |
 | Where is the SBOM? | CycloneDX at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json) | This page |
 | What identifies a release for audit? | Bundle manifest + `uname -r` + config SHA-256 | [Kernel Support Policy](kernel-support-policy/) |
 | Do you publish RHSA-style errata? | **No** | [Kernel Support Policy](kernel-support-policy/#patch-commitment-tiers) |
@@ -261,13 +261,13 @@ To set expectations for RFPs and vendor-risk assessments:
 |---|---|
 | GPG-signed bundles (GA) | Roadmap — SHA-256 only today |
 | Cosign / sigstore bundle signatures (GA) | Roadmap |
-| OVAL definitions for HS kernel (GA) | Planned — not published |
-| OSV entries for HS kernel | Published at [`/advisories/osv.json`](/advisories/osv.json) — 279 entries for `hs-v1.6.4-kernel-6.18.9` |
+| OVAL definitions for Root Lock kernel (GA) | Planned — not published |
+| OSV entries for Root Lock kernel | Published at [`/advisories/osv.json`](/advisories/osv.json) — 279 entries for `hs-v1.6.4-kernel-6.18.9` |
 | CONFIG-gate Not-Affected SBOM | Published at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json) on `hs-v*` releases |
 | CycloneDX SBOM on docs site | Published at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json) for `hs-v1.6.4-kernel-6.18.9` |
 | SPDX SBOM (GA) | Roadmap — CycloneDX is the published machine-readable format today |
 | RHSA-equivalent advisory numbering | Not planned |
-| kpatch/live-patch provenance | Not applicable — live patching not offered on HS kernel |
+| kpatch/live-patch provenance | Not applicable — live patching not offered on Root Lock kernel |
 
 If a control framework **requires** GA OVAL feeds or GPG/cosign signing before production approval, plan for the interim artefacts in this document. Document compensating controls (published JSON feeds, manual CVE hygiene, config-hash verification, bundle manifest retention) until roadmap items ship.
 
@@ -278,11 +278,11 @@ If a control framework **requires** GA OVAL feeds or GPG/cosign signing before p
 - [Kernel Support Policy](kernel-support-policy/) — Patch targets, bundle delivery, notification, version strings, and "does not provide" boundaries.
 - [Evidence Status](evidence-status/) — 5.19.6 vs 6.18.9 publication status.
 - [Enterprise Adoption Guide](enterprise-adoption-guide/) — Fleet operations, supply-chain summary, Secure Boot status, and honest limitations.
-- [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — HS kernel CVE verification; ingest published OSV/CONFIG SBOM feeds; OVAL interim workflow.
+- [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — Root Lock kernel CVE verification; ingest published OSV/CONFIG SBOM feeds; OVAL interim workflow.
 - [Threat model](auditor-brief/) — Threat model, reproduction commands, evidence packs.
 - [Distro Compatibility Matrix](distro-compatibility-matrix/) — Stream and distribution validation.
 - [Kernel Security Transparency](../../security/) — Per-CVE status and config gates.
-- [Updating HeartSuite](../../maintenance/updating-heartsuite/) — Bundle verification and two-reboot update path.
+- [Updating Root Lock](../../maintenance/updating-heartsuite/) — Bundle verification and update procedure.
 
 ---
 
