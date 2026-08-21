@@ -452,7 +452,7 @@ Updates are delivered as a single self-extracting bundle (`heartsuite-install.sh
 sha256sum -c heartsuite-install.sh.sha256
 ```
 
-The installer aborts if run on the active Root Lock kernel because it cannot overwrite protected files while that kernel is booted. See [Updating Root Lock](../maintenance/updating-heartsuite/).
+The installer will not overwrite protected files while the Root Lock kernel is booted. From a terminal in Setup Mode, type `YES` for one stock boot. See [Updating Root Lock](../maintenance/updating-heartsuite/).
 
 **Allowlist as change record**:
 
