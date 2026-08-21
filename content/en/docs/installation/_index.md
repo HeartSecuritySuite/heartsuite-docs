@@ -12,7 +12,7 @@ menu:
     weight: 20
 ---
 
-**Overview**: Root Lock by HeartSuite installation follows one of two paths depending on your deployment method. Both paths end at the Dashboard after initial setup confirms that the machine is ready for allowlisting.
+**Overview**: On a single host, Root Lock by HeartSuite installation follows Cloud Path or Local Path. Both end at the Dashboard after initial setup confirms that the machine is ready for allowlisting.
 
 ## Choose your path
 
@@ -32,5 +32,7 @@ Run a single install command, then reboot multiple times to build the initial al
 After the final reboot cycle, the Dashboard appears and displays the Suggested Next Step to guide you into allowlisting. On failure or for forensics, use the serial console to `cat /var/log/heartsuite/install.log`.
 {{< /choice-card >}}
 {{< /choice-pane >}}
+
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible installs by running the Local Path installer or launching a Cloud Path image, then applying policy — see [Central Policy](../alerts/central-policy-management/).
 
 When initial setup is complete, continue to [Verifying Installation](../verification/).

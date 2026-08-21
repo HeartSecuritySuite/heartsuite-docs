@@ -19,7 +19,7 @@ type: docs
 
 In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. [Lockdown](mode-switching/) covers activation.
 
-Root Lock supports two setup paths. Both arrive at the Dashboard after initial setup.
+On a single host, Root Lock supports two setup paths. Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
@@ -29,6 +29,8 @@ Pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other provi
 Manual installation with a guided setup across several reboots.
 {{< /choice-card >}}
 {{< /choice-pane >}}
+
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](alerts/central-policy-management/).
 
 Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design: the kernel omits overlay filesystems, user namespaces, and the BPF syscall because those are the features attackers use to hide, shadow directories, and reach root. See [Deployment Scenarios](introduction/deployment-scenarios/).
 
@@ -42,7 +44,7 @@ Root Lock fits production servers, regulated workstations, build and CI infrastr
 
 ## Get started
 
-Start with [Quick Start](getting-started/) — it covers both paths (Cloud and Local) and links each step in order: prerequisites, download, install, verify, and allowlist.
+Start with [Quick Start](getting-started/) — it covers Cloud Path and Local Path and links each step in order: prerequisites, download, install, verify, and allowlist.
 
 The pages below are the individual steps, linked from Quick Start:
 

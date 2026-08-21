@@ -92,9 +92,11 @@ For Python, PHP, and Perl, Secure Script Launchers identify the script being exe
 Pre-installed on AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers. The Dashboard appears on first login.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial setup runs unattended. Once the Dashboard appears, both paths merge.
+Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial setup runs unattended. Once the Dashboard appears, Cloud Path and Local Path merge.
 {{< /choice-card >}}
 {{< /choice-pane >}}
+
+Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).
 
 ## Is Root Lock right for you?
 
