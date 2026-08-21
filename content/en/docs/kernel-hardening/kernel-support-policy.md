@@ -126,15 +126,13 @@ Root Lock kernel updates are delivered only as part of **coordinated HeartSuite 
 
 ### Applying an update
 
-The installer will not run while the Root Lock kernel is booted — it cannot overwrite protected files on that kernel.
+The installer will not overwrite Root Lock while that kernel is booted.
 
 1. If Lockdown is applied, unseal from the console first. That trip is not the install boot.
-2. Reboot to the **maintenance kernel** or the original distro kernel, and stay there.
-3. Run `bash heartsuite-install.sh`. The installer reboots into the new Root Lock kernel.
+2. From a terminal in Setup Mode, run `bash heartsuite-install.sh` and type `YES`. That takes one stock or maintenance boot and continues the update. The default stays Root Lock.
+3. If you are already on the original distro kernel or the maintenance kernel and Lockdown is not applied, run the installer. There is no `YES` step.
 
-If you are already on the original distro kernel or the maintenance kernel and Lockdown is not applied, start at step 3.
-
-Root Lock is **not** loaded on that stay-up boot: it does not block, log, or take backups. Choose a time when that gap is acceptable.
+Root Lock is **not** loaded on that stock or maintenance boot: it does not block, log, or take backups. Choose a time when that gap is acceptable.
 
 Full step-by-step procedures, failure recovery, and Lockdown considerations are in [Updating Root Lock](../../maintenance/updating-heartsuite/).
 

@@ -29,4 +29,4 @@ The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in S
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
 - [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.
-- [Updating Root Lock](updating-heartsuite/) — The installer will not run on the Root Lock kernel. Unseal if Lockdown is applied, stay on the original distro kernel or Maintenance to run the bundle, then return to the new Root Lock kernel.
+- [Updating Root Lock](updating-heartsuite/) — Unseal if Lockdown is applied, then run the bundle from a terminal in Setup Mode. Type `YES` for one stock boot. The default stays Root Lock.
