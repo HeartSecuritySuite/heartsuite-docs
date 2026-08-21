@@ -13,11 +13,11 @@ menu:
     identifier: "setup-overview"
 ---
 
-**Overview**: Immediately after install the allowlist is empty. Root Lock by HeartSuite logs in Setup Mode so you can review and approve programs, file access, and network connections — including as root — before Lockdown blocks everything else.
+**Overview**: Initial setup adds startup and shutdown programs to the allowlist automatically. Root Lock by HeartSuite then logs in Setup Mode so you can review and approve remaining programs, file access, and network connections — including as root — before Lockdown blocks everything else.
 
 ## Why Setup Mode is necessary
 
-If Lockdown engaged with an empty allowlist, boot and shutdown programs would be blocked.
+Lockdown blocks any program that is not on the allowlist, including as root. Initial setup already adds startup and shutdown programs so the host can boot. Setup Mode is how you add the rest of the workload.
 
 In Setup Mode, Root Lock logs activity without blocking it. You review that activity through the Dashboard queues, approve programs and their access, and build an allowlist that matches the workload. Then you activate Lockdown.
 
@@ -101,7 +101,7 @@ graph TD
 
 > [!WARNING]
 >
-> Complete all allowlisting in Setup Mode before activating Lockdown. If boot and shutdown programs have not been approved, the host will fail to start or shut down correctly.
+> Complete remaining allowlisting in Setup Mode before activating Lockdown. Initial setup already added startup and shutdown programs. Anything still waiting in the review queues will be blocked.
 
 Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. That starts a probe reboot; a second reboot applies the seal. See [Lockdown](../../mode-switching/) for the activation flow.
 
