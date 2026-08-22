@@ -2,7 +2,7 @@
 title: "What Cisco and Fortinet incidents needed to exist"
 linkTitle: "Attack examples"
 weight: 30
-description: "2024–2026 Cisco and Fortinet campaigns depended on management planes and extra services. Root Lock Firewall is designed not to ship those."
+description: "2024–2026 Cisco and Fortinet campaigns depended on management planes and extra services. Root Lock Firewall is designed without those surfaces."
 categories: ["Essentials"]
 tags: ["firewall", "cisco", "fortinet", "cve", "examples", "prototype"]
 type: docs
@@ -11,11 +11,11 @@ toc: true
 
 > **Prototype**: The protections described on this page reflect Root Lock Firewall design intent. Root Lock Firewall is under active development. Incident facts below are taken from vendor and CISA publications, not from HeartSuite exploitation tests.
 
-**Overview**: Root Lock Firewall is a host-shaped stateful filter on a closed image. It is not Cisco ASA, Cisco FTD, or FortiOS.
+**Overview**: Root Lock Firewall is a host-shaped stateful filter on a closed image.
 
-These incidents are here so the residual is visible, not as a claim that this appliance would have stopped another vendor's CVE.
+These incidents are here so the residual is visible. Campaign facts stay with the vendor advisories.
 
-Where an attack is application content on a port you approved, or a new binary, or an outbound callback, those dimensions are [Root Lock by HeartSuite](../../docs/) and a WAF, not this filter.
+Where an attack is application content on a port you approved, or a new binary, or an outbound callback, those dimensions belong to [Root Lock by HeartSuite](../../docs/) and a WAF.
 
 ---
 
@@ -33,7 +33,7 @@ Source: [cisco-sa-ftd-statcred-dFC8tXT5](https://sec.cloudapps.cisco.com/securit
 
 **What Root Lock Firewall is designed to do.** No vendor-static administrative accounts as a product feature. You reach the box on the console TUI of an image you control. There is no public administrative SSH by default.
 
-**What Root Lock Firewall does not claim.** A bug in our own console stack, or a hypervisor administrator, is still in scope for whoever holds that path. Hard-coded passwords at a vendor are a class we refuse to ship; they are not a proof we have none.
+**Residual.** Hard-coded passwords at a vendor are a class we refuse to ship. A bug in our own console stack, or a hypervisor administrator, remains in scope for whoever holds that path. Console or serial remains the administrative path.
 
 ---
 
@@ -47,9 +47,9 @@ Source: [cisco-sa-asaftd-webvpn-z5xP8EUB](https://sec.cloudapps.cisco.com/securi
 
 **What the campaign needed.** A TLS web listener on the firewall whose job is remote access, not packet filtering.
 
-**What Root Lock Firewall is designed to do.** SSL-VPN is not product identity. You reach the Dashboard on the console or serial console. Remote access, if you need it, stays a separate decision — not a website on the filter.
+**What Root Lock Firewall is designed to do.** Product identity is a sealed host filter. You reach the Dashboard on the console or serial console. SSL-VPN stays a dedicated concentrator.
 
-**What Root Lock Firewall does not claim.** We do not terminate customer VPNs. If you need AnyConnect-class remote access, keep a dedicated concentrator. This image will not become one by configuration.
+**Residual.** AnyConnect-class remote access stays a dedicated concentrator. Console or serial remains how you reach this image.
 
 ---
 
@@ -65,11 +65,11 @@ Source: [cisco-sa-asaftd-persist-CISAED25-03](https://sec.cloudapps.cisco.com/se
 
 **What Root Lock Firewall is designed to do.** A smaller closed image, HeartSuite as the only update authority, and a custom kernel that already removes a class of in-kernel bypass primitives.
 
-Supported recovery of a sealed box is Maintenance on the console, then a return and re-seal. That cycle unseals policy so you can change it. It is not a reimage, and it does not claim to wipe firmware, ROM, or a hostile hypervisor.
+Supported recovery of a sealed box is Maintenance on the console, then a return and re-seal. That cycle unseals policy so you can change it. Firmware, ROM, and a hostile hypervisor stay outside that recovery.
 
-**What Root Lock Firewall does not claim.** Firmware, hypervisor, or ROM below a virtual appliance is not this product. A hostile hypervisor still owns the disk.
+**Residual.** A hostile hypervisor owns the disk. Firmware and ROM below a virtual appliance stay with whoever holds that path. The sealed allowlist on this image still holds.
 
-A later hardware appliance is the honest answer to that residual, and it is not shipped. We do not claim seL4-level assurance of the filter engine.
+A later hardware appliance is the honest answer to that residual. The filter engine is userspace software under Root Lock. Formal seL4-style assurance of that engine is outside this prototype.
 
 ---
 
@@ -87,7 +87,7 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 
 **What Root Lock Firewall is designed to do.** No cloud SSO into the filter. HeartSuite is the update authority. There is no FortiCare-shaped registration step that opens an administrative identity provider on the box.
 
-**What Root Lock Firewall does not claim.** Email, webhook, and syslog *out* to addresses you approved are still ordinary outbound policy (Root Lock) plus whatever you configured for alerts. That is not an inbound SSO plane. A bug in an update channel we do ship would be our bug, disclosed as such.
+**Residual.** Email, webhook, and syslog *out* to addresses you approved stay ordinary outbound policy (Root Lock) plus whatever you configured for alerts. HeartSuite remains the update authority. A bug in an update channel we ship is our bug, disclosed as such.
 
 ---
 
@@ -97,4 +97,4 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 
 **What Root Lock Firewall is designed to do.** During observation those attempts become review events. After Firewall Lockdown, packets to sockets that are not on the sealed allowlist are refused, including when the service runs as root.
 
-**What Root Lock Firewall does not claim.** A port you approved stays a port you approved. A seal that is too wide stays too wide. Rate-limit extras that ship in the image baseline are not a promise to absorb a volumetric flood; that flood belongs in front of the host. See [What Root Lock Firewall does and does not cover](../introduction/limits/).
+**Residual.** A port you approved stays a port you approved. A seal that is too wide stays too wide. Rate-limit extras in the image baseline are host extras; volumetric flood absorption stays in front of the host. See [Protection limits](../introduction/limits/).

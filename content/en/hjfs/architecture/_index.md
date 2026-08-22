@@ -2,7 +2,7 @@
 title: "HJFS on a stock kernel"
 linkTitle: "Architecture"
 weight: 20
-description: "How HJFS isolates files without replacing the kernel, which operating systems it targets, and what stays out of scope for the prototype."
+description: "How HJFS isolates files without replacing the kernel, which operating systems it targets, and how the prototype sits on the host filesystem."
 categories: ["Essentials"]
 tags: ["hjfs", "architecture", "compatibility", "deployment", "os-support"]
 type: docs
@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: HeartSuite Joint File System (HJFS) isolates files inside the host filesystem on a stock kernel. Enforcement sits in the filesystem `open()` path, not in a custom kernel.
 
-HJFS needs an existing host filesystem. It does not boot as its own operating system. The current prototype implements the core file organization without modifying the host filesystem's code directly.
+HJFS sits on an existing host filesystem. The current prototype implements the core file organization without modifying the host filesystem's code directly.
 
 ## Integration and vendor cooperation
 
@@ -34,7 +34,7 @@ HJFS is designed to work on Linux, Windows, and macOS.
 
 ### Partial deployment: portable HJFS drive
 
-Adding an HJFS-formatted disk or USB drive to a Windows computer isolates programs installed on that drive. Programs on the rest of the computer, running on NTFS, are not protected unless NTFS itself is made HJFS compliant. Files on the HJFS volume still stay isolated per program.
+Adding an HJFS-formatted disk or USB drive to a Windows computer isolates programs installed on that drive. Files on the HJFS volume stay isolated per program. Programs on the rest of the computer stay on NTFS until NTFS itself is made HJFS compliant.
 
 ## Application compatibility
 
@@ -52,7 +52,7 @@ Containers running on an HJFS-compliant host filesystem benefit from the same pe
 
 [Root Lock by HeartSuite](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. On a Root Lock kernel, both can share the host.
 
-HJFS 1.0 does not include its own network access control; that is planned. File isolation on a standard kernel still holds without it. See [Roadmap](../roadmap/).
+HJFS network mediation is planned. File isolation on a standard kernel still holds without it. See [Roadmap](../roadmap/).
 
 When that HJFS path ships, each new outbound connection requires explicit approval rather than a static list:
 
@@ -69,6 +69,6 @@ HJFS-compliant OS distributions disable the ability for a program to simulate us
 
 ## Local deployment requirement
 
-HJFS must run locally on every machine it protects. Remote or cloud storage alone does not protect the client program.
+HJFS must run locally on every machine it protects. Remote or cloud storage alone leaves the client program on whatever filesystem that host uses.
 
-HJFS applies file isolation at the filesystem layer on the local host. A program running on a machine without HJFS is not subject to HJFS file isolation, regardless of where its data is stored. On a host where HJFS is present, that host's local files stay isolated per program.
+HJFS applies file isolation at the filesystem layer on the local host. A program running on a machine without HJFS stays on that host's native filesystem, regardless of where its data is stored. On a host where HJFS is present, that host's local files stay isolated per program.

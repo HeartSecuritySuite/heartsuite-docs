@@ -15,15 +15,13 @@ toc: true
 
 ---
 
-**Overview**: A listening service on a Linux host accepts inbound connections unless a packet filter refuses them. Root Lock by HeartSuite does not provide that filter.
+**Overview**: A listening service on a Linux host accepts inbound connections unless a packet filter refuses them. Root Lock Firewall is that filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist, seal it.
 
-Root Lock controls outbound destinations per program, at the kernel, using literal IP addresses. Root Lock Firewall is the inbound and host-path stateful filter for a closed HeartSuite appliance: observe real traffic, approve a finite allowlist, seal it.
-
-The two products address different layers and are designed to be used together on the appliance image.
+Root Lock controls outbound destinations per program, at the kernel, using literal IP addresses. The two products address different layers and are designed to be used together on the appliance image.
 
 ## In this section
 
 - [The security problem Root Lock Firewall solves](security-problem/) — Why inbound default-accept is a different OS assumption from Root Lock's outbound allowlist.
-- [Root Lock Firewall overview](firewall-overview/) — Closed appliance, stateful inspection, observation through Firewall Lockdown, and what stays out of scope.
+- [Root Lock Firewall overview](firewall-overview/) — Closed appliance, stateful inspection, observation through Firewall Lockdown, and what stays with Root Lock.
 - [Walkthrough](walkthrough/) — The intended Dashboard journey from first boot to a sealed ruleset.
-- [What Root Lock Firewall does and does not cover](limits/) — Where the packet boundary holds, where it does not, and what to use alongside it.
+- [Protection limits](limits/) — Where the packet boundary holds, and what to use alongside it.
