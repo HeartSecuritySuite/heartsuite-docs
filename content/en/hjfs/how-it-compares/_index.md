@@ -50,7 +50,7 @@ Network access mediation and execution control are planned for subsequent releas
 
 ## What HJFS is
 
-HJFS is per-program file isolation on a standard unmodified kernel. Each program has its own storage area, including as root. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/).
+HJFS is per-program file isolation on a standard unmodified kernel. Each program has its own storage area, including as root. Which programs run and which network connections they open stay with [Root Lock](../../docs/).
 
 **Network.** Which connections a program can open is Root Lock's domain. Isolation still limits what data is reachable — a confined program can only read its own files. See [Network exfiltration](../introduction/limits/#network-exfiltration).
 

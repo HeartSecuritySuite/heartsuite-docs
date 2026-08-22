@@ -89,7 +89,7 @@ HJFS automatically backs up every version of every data file to a protected stor
 
 This is distinct from program version rollback. Program version rollback restores a prior executable and its libraries. Data file backup maintains version history of the data files themselves, independent of which program version created them.
 
-HJFS automatic backup differs from Root Lock by HeartSuite's backup mechanism in two ways. Root Lock backs up admin-configured directories on every write — an administrator selects which directories are protected. HJFS backup requires no configuration: every data file written by any program is backed up automatically by the filesystem, covering every program's storage area from first use.
+HJFS automatic backup differs from Root Lock's backup mechanism in two ways. Root Lock backs up admin-configured directories on every write — an administrator selects which directories are protected. HJFS backup requires no configuration: every data file written by any program is backed up automatically by the filesystem, covering every program's storage area from first use.
 
 #### The malicious sleeper attack
 
