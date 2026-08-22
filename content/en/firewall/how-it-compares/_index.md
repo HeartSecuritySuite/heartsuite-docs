@@ -1,8 +1,8 @@
 ---
-title: "This is not a campus NGFW"
+title: "A sealed host filter beside a campus NGFW"
 linkTitle: "How it compares"
 weight: 35
-description: "What Root Lock Firewall is, what it is not, what it complements, and why it sits beside a campus NGFW rather than replacing one."
+description: "What Root Lock Firewall is, what it complements, and why it sits beside a campus NGFW rather than replacing one."
 categories: ["Essentials"]
 tags: ["firewall", "comparison", "ngfw", "cisco", "fortinet", "prototype"]
 type: docs
@@ -13,9 +13,9 @@ toc: true
 
 **Overview**: A listening service on a Linux host accepts inbound packets unless a filter refuses them. Root Lock Firewall is that host-path filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist for this box, seal it.
 
-The question it answers is not "which application catalog matches this flow?" It is "did a human approve this socket on this box, and is that set sealed?"
+The question it answers is: did a human approve this socket on this box, and is that set sealed?
 
-Application identification, TLS interception, and fleet NGFW management are outside its scope. [Root Lock by HeartSuite](../../docs/) handles execution, files, and per-program outbound destinations on the same image.
+Application identification, TLS interception, and fleet NGFW management stay with the campus tool. [Root Lock by HeartSuite](../../docs/) handles execution, files, and per-program outbound destinations on the same image.
 
 ---
 
@@ -27,14 +27,14 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 **Root Lock** is production-ready today on a server or a cloud image. You review programs, file paths, and outbound destinations, then enable Lockdown. Anything not on that allowlist is blocked at the kernel, including from root.
 
-**Root Lock Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. It does not replace Root Lock. On the HeartSuite appliance image they are designed to run together.
+**Root Lock Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. On the HeartSuite appliance image they are designed to run together.
 
 | Aspect | Root Lock | Root Lock Firewall | What this means in practice |
 |---|---|---|---|
 | Default it closes | A program inherits the user's right to execute, read, write, and connect out | A listener accepts inbound packets from anywhere that can route to it | Approving `curl` to one IP does not close port 22. Closing port 22 does not constrain `curl`. |
-| Placement | Kernel on the host you install | Filter on the appliance image; workload on that image | v1 is not a box you put in front of another server. |
-| Inspection | Kernel grants (program, path, literal outbound IP) | Stateful packet filter (connection state + sealed allowlist) | Neither product is an NGFW. |
-| How you reach it | Dashboard on the host | Dashboard on the console or serial console of the image | No public administrative VPN as product identity. |
+| Placement | Kernel on the host you install | Filter on the appliance image; workload on that image | v1 is host-shaped: the workload runs on the image. |
+| Inspection | Kernel grants (program, path, literal outbound IP) | Stateful packet filter (connection state + sealed allowlist) | Inspection stays kernel grants and a stateful packet filter. |
+| How you reach it | Dashboard on the host | Dashboard on the console or serial console of the image | Console or serial is the administrative path. |
 | Seal | Lockdown on the kernel allowlist | Firewall Lockdown on the packet allowlist, paired with Lockdown | Two seals, one maintenance path. |
 | Production status | Shipped | Prototype | Do not treat this section as a GA install guide. |
 
@@ -44,29 +44,29 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 **Root Lock Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets.
 
-Do not use it as a silent rename of Root Lock Lockdown.
+Firewall Lockdown seals the packet allowlist. Root Lock Lockdown seals the kernel allowlist.
 
 ---
 
-## What Root Lock Firewall is not
+## A finite observed sealed allowlist
 
-**Root Lock Firewall is not an NGFW.** It has no application catalog, no TLS interception, no URL cloud, no sandbox blade, no SD-WAN, and no SASE fabric. Enterprise NGFWs sell infinite policy surface and paid inspection. This appliance sells a finite, observed, reviewed, sealed allowlist.
+This appliance is a finite, observed, reviewed, sealed allowlist for this host. Campus NGFW blades — application catalogs, TLS interception, URL clouds, sandbox, SD-WAN, SASE — stay the specialist tool. Enterprise NGFWs sell infinite policy surface and paid inspection.
 
-**Root Lock Firewall is not a proxy or a WAF.** It does not terminate or interpret application payloads. Put a WAF in front of an allowed HTTPS port if that is the requirement.
+Payload interpretation stays with a WAF in front of an allowed HTTPS port.
 
-**Root Lock Firewall is not a cloud firewall service.** A virtual appliance that boots on AWS, Google Cloud, or Azure is not AWS Network Firewall, Azure Firewall, or Cloudflare. Keep provider controls as an outer layer.
+A virtual appliance that boots on AWS, Google Cloud, or Azure stays a host filter on that image. Provider controls (AWS Network Firewall, Azure Firewall, Cloudflare) stay the outer layer.
 
-**Root Lock Firewall is not an inline perimeter box in v1.** It filters this host. FORWARD and NAT are not a product surface yet. Do not place it in front of other machines.
+v1 filters this host. FORWARD and NAT stay later. Keep the existing edge box in front of other machines.
 
-**Root Lock Firewall is not UFW, firewalld, or a second filter beside itself.** One owner of the host filter. A second manager on the same image is a composition hazard.
+One owner of the host filter. UFW, firewalld, or a second manager on the same image is a composition hazard.
 
-**Root Lock Firewall is not a drop-in replacement for a vendor web panel.** There is no configuration mall and no cluster GUI. The Dashboard writes allowlist entries. Engine internals stay off the glass.
+The Dashboard writes allowlist entries. Engine internals stay off the glass. There is no configuration mall and no cluster GUI as a drop-in vendor-panel replacement.
 
-**Root Lock Firewall is not Root Lock.** Root Lock inbound permits at Lockdown are a thin accept path for SSH and named services. They are not this product.
+Execution, files, and per-program outbound destinations stay [Root Lock by HeartSuite](../../docs/). Root Lock inbound permits at Lockdown remain a thin accept path for SSH and named services.
 
 ---
 
-## Why not "the same as Cisco or Fortinet, smaller"
+## A smaller remote plane is a different tool
 
 Campus firewalls earned a second job: they became the remote-access concentrator and the administrative website. The packet filter then has to survive bugs in its own VPN web server, cloud SSO, and static accounts. That is a different tool shape from a sealed host filter with a console TUI.
 
@@ -88,7 +88,7 @@ Root Lock Firewall is designed without those surfaces:
 - HeartSuite as the update authority
 - seal plus a custom kernel under the filter
 
-That is a smaller remote attack surface. It is not a claim that this prototype has no bugs. It is not a claim that it replaces a FortiGate or a Cisco Secure Firewall in a campus or inline role.
+That is a smaller remote attack surface. A bug in this prototype remains in scope. Campus and inline FortiGate / Cisco Secure Firewall roles stay with those boxes.
 
 See [Recent firewall campaigns](../examples/) for the honest residual on each incident.
 
@@ -101,7 +101,7 @@ See [Recent firewall campaigns](../examples/) for the honest residual on each in
 | Program execution, file access, per-program outbound IPs | [Root Lock](../../docs/) |
 | Application content on an allowed port | WAF / application hardening |
 | Ports the image left open to any source | Not produced by observation. Seal keeps them. Narrow through Maintenance. |
-| Detection, correlation, incident response | SIEM, NDR, EDR hunting — forward events; do not expect a SOC console here |
+| Detection, correlation, incident response | SIEM, NDR, EDR hunting — forward events; the SOC console stays there |
 | Volumetric DDoS and provider edge | Cloud security groups, provider DDoS, CDN |
 | Inline NAT, HA pairs, SD-WAN, site-to-site VPN | The existing campus or DC firewall |
 | Who may open the serial or hypervisor console | Cloud IAM, hypervisor ACL, locked rack |
@@ -112,7 +112,7 @@ Root Lock Firewall and Root Lock address complementary OS-level defaults. Root L
 
 ## The HeartSuite appliance image, and a Root Lock server you already run
 
-The HeartSuite appliance image is the intended Root Lock Firewall deployment: kernel grants under a sealed host filter. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run is a different product, and it is not this one.
+The HeartSuite appliance image is the intended Root Lock Firewall deployment: kernel grants under a sealed host filter. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run stays a different product.
 
 Root Lock on a server you already run is the shipped shape for hosts that need execution and outbound control and already have an inbound filter (OS or cloud). That remains valid.
 
@@ -127,14 +127,14 @@ Root Lock on a server you already run is the shipped shape for hosts that need e
 | Virtual appliance delivery | Yes (v1) | QCOW2 / OVA; hardware later |
 | NGFW / App-ID / TLS MITM | No | Refused as identity |
 | WAF / proxy | No | No payload interpretation |
-| Cloud FWaaS | No | May run on IaaS; is not the provider's policy plane |
+| Cloud FWaaS | No | May run on IaaS; the provider's policy plane stays there |
 | Inline DC / branch edge (v1) | No | Host-shaped; no FORWARD/NAT surface |
 | UFW-on-Ubuntu replacement | No | Image, not a package |
-| SIEM / NDR / EDR | Complements | Forward events; do not replace the SOC |
+| SIEM / NDR / EDR | Complements | Forward events; the SOC stays the SOC |
 
 **How Root Lock Firewall can be circumvented.** Under Firewall Lockdown paired with Root Lock Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Changing it takes Maintenance on the console or serial console. SSH is not enough.
 
-The question is no longer whether they can turn the filter off. It is whether you approved too wide a rule, whether an allowed port is still a hole in the application, whether the filter program can be killed, and whether someone who holds the hypervisor owns the disk.
+What remains is whether you approved too wide a rule, whether an allowed port is still a hole in the application, whether the filter program can be killed, and whether someone who holds the hypervisor owns the disk.
 
 Physical presence, cloud serial, or hypervisor control returns the box to whoever holds it.
 

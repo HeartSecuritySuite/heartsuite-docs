@@ -20,9 +20,9 @@ type: docs
 
 Each program has its own storage area. No other program can read or write its files, including programs running as root. File isolation is per program and per version. No custom kernel is required.
 
-HJFS does not control which programs run or which network connections they open. Those are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
 
-If execution or network control is the primary requirement, HJFS is not the right fit on its own. See [Deployment scenarios](deployment-scenarios/) for fit and non-fit by environment.
+If execution or network control is the primary requirement, see [Deployment scenarios](deployment-scenarios/) — that job is Root Lock (or existing host controls on a stock kernel).
 
 ## See it in action
 
@@ -33,9 +33,9 @@ If execution or network control is the primary requirement, HJFS is not the righ
 - [Introduction and overview](introduction/) — Core concepts, design goals, and how HJFS differs from traditional file permission models.
 - [Architecture and compatibility](architecture/) — Technical implementation, OS support, and application compatibility notes.
 - [Advanced protection](advanced-protection/) — An optional level that adds system-managed file dialogs and separates internal from user files, requiring application updates.
-- [Deployment scenarios](deployment-scenarios/) — Where HJFS fits, where it fits alongside Root Lock, and where it does not apply.
-- [How HJFS compares](how-it-compares/) — What HJFS is not, what it complements, and how to decide between HJFS alone or with Root Lock.
-- [Attack examples](examples/) — How HJFS is designed to confine a separate encryptor or a tainted version — and where isolation does not apply.
+- [Deployment scenarios](deployment-scenarios/) — Where HJFS fits, where it sits beside Root Lock, and where another control owns the workload.
+- [How HJFS compares](how-it-compares/) — What HJFS isolates, what it complements, and when to run it alone versus beside Root Lock.
+- [Attack examples](examples/) — How HJFS is designed to confine a separate encryptor or a tainted version, and the residual when a program hurts files it already owns.
 - [Roadmap](roadmap/) — Current prototype scope and planned development.
 
 ## About this documentation

@@ -25,4 +25,4 @@ Ransomware opens your files using the same system call as any legitimate program
 
 HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem. Each program has its own storage area. No other program can read or write those files, including programs running as root.
 
-Execution and network control are [Root Lock by HeartSuite](../../../docs/)'s domain. On a Root Lock kernel, both can share the host. See [What HJFS does and does not cover](../limits/).
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../docs/). On a Root Lock kernel, both can share the host. See [Protection limits](../limits/).

@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: On a standard Linux system, any program can open any file you can reach, including programs running as root. HeartSuite Joint File System (HJFS) binds data files to the program version that created them.
 
-No other program can read or write those files, regardless of privilege. Execution and network control are outside HJFS scope. See [The security problem HJFS solves](../security-problem/).
+No other program can read or write those files, regardless of privilege. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../docs/). See [The security problem HJFS solves](../security-problem/).
 
 ## File isolation in practice
 
@@ -93,7 +93,7 @@ HJFS automatic backup differs from Root Lock by HeartSuite's backup mechanism in
 
 #### The malicious sleeper attack
 
-Program version isolation alone does not close every window. A malicious update can behave as expected for months before it activates. New data files accumulate inside that version's storage area. Rolling back the program version does not help: those files were never written to the prior version's area.
+Program version isolation leaves a window. A malicious update can behave as expected for months before it activates. New data files accumulate inside that version's storage area. Rolling back the program version leaves those files where they were written: they were never in the prior version's area.
 
 #### How the backup defeats it
 
@@ -110,7 +110,7 @@ Every file created before the attack is recoverable. Loss is limited to files wr
 
 ## Security guarantees
 
-HJFS trusts each program only with the storage area that program version created. It does not trust privilege level: root access does not expand what a program can open.
+HJFS trusts each program only with the storage area that program version created. Root access stays inside the same storage area: privilege level does not expand what a program can open.
 
 The trust boundary is enforced at the filesystem layer, below all running software. The only path around it is physical: removing the HJFS drive bypasses the enforcement entirely.
 
@@ -133,11 +133,11 @@ On a Root Lock kernel, HJFS and Root Lock can share the host. HJFS also runs on 
 | Kernel requirement | Modified Root Lock kernel | Standard kernel |
 | Program execution control | Yes | No |
 | Filesystem path control | Yes | Yes |
-| Network access control | Yes | Not in v1.0 scope |
+| Network access control | Yes | Planned |
 | Per-program-version file isolation | No | Yes |
 | Audited cross-program file transfer | No | Yes |
 
-Execution and network control remain outside HJFS scope. See [How HJFS compares](../../how-it-compares/).
+Which programs run and which network connections they open stay Root Lock's domain. See [How HJFS compares](../../how-it-compares/).
 
 ## Status
 

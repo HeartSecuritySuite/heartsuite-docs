@@ -2,7 +2,7 @@
 title: "When ransomware cannot reach another program's files"
 linkTitle: "Attack examples"
 weight: 30
-description: "How HJFS is designed to contain a separate ransomware binary or a tainted update's files — and where isolation does not apply."
+description: "How HJFS is designed to contain a separate ransomware binary or a tainted update's files, and the residual when a program hurts files it already owns."
 categories: ["Essentials"]
 tags: ["hjfs", "security", "malware", "ransomware", "cve", "examples"]
 type: docs
@@ -13,9 +13,9 @@ toc: true
 
 **Overview**: When a program is compromised, damage usually spreads through every file that user can reach. HeartSuite Joint File System (HJFS) is designed to stop that spread at the compromised program's storage area.
 
-These incidents are here so the residual is visible, not as a claim that HJFS would have stopped another vendor's CVE.
+These incidents are here so the residual is visible.
 
-Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host. A program can still hurt files it already owns — see [What HJFS does and does not cover](../introduction/limits/).
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host. A program can still hurt files it already owns — see [Protection limits](../introduction/limits/).
 
 ---
 
@@ -27,7 +27,7 @@ Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s do
 
 **What HJFS is designed to do.** Confine that encryptor to its own storage area. It cannot read or write files belonging to other programs, so encryption of *those* files stops at that boundary.
 
-**What HJFS does not claim.** Network spread is Root Lock's domain. Files the encryptor already owns in its own area can still be encrypted. Recovery of those files is the automatic backup, not isolation.
+**Residual.** Network spread stays with [Root Lock](../../docs/). Files the encryptor already owns in its own area can still be encrypted. Automatic backup recovers those files. Isolation still stops that process from opening another program's files.
 
 ---
 
@@ -39,7 +39,7 @@ Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s do
 
 **What HJFS is designed to do.** Keep injected code inside the exploited process's storage area. No other program's files are reachable from there. Version isolation lets the vulnerable library be identified and rolled back without touching data from other versions.
 
-**What HJFS does not claim.** HJFS does not stop the RCE. Outbound callbacks from the compromised process are Root Lock's domain. Secrets already in that process's own files remain readable by it.
+**Residual.** The RCE still happens inside the exploited process. Outbound callbacks stay with [Root Lock](../../docs/). Secrets already in that process's own files remain readable by it. Isolation still stops that process from opening another program's files.
 
 ---
 
@@ -51,7 +51,7 @@ Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s do
 
 **What HJFS is designed to do.** Identify program versions by cryptographic hash, so the tainted update gets its own isolated storage area — separate from the legitimate version's data. Roll back to a prior verified version. Data written under the legitimate version stays in that version's storage area.
 
-**What HJFS does not claim.** Data written *while the tainted version was active* lives in the tainted version's area. Isolation does not pull those files back. Automatic backup is the path for that window — see [The malicious sleeper](../introduction/hjfs-overview/#the-malicious-sleeper-attack). Network exfiltration from the backdoor's own files is Root Lock's domain.
+**Residual.** Data written *while the tainted version was active* lives in the tainted version's area. Automatic backup is the path for that window — see [The malicious sleeper](../introduction/hjfs-overview/#the-malicious-sleeper-attack). Network exfiltration from the backdoor's own files stays with [Root Lock](../../docs/). Isolation still keeps that version out of the legitimate version's files.
 
 ---
 
@@ -63,7 +63,7 @@ Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s do
 
 **What HJFS is designed to do.** If the encryptor is a separate program, it cannot reach files belonging to other programs.
 
-**What HJFS does not claim.** If encryption ran inside the operational software that already owned those files, isolation does not apply — that is [a program hurting files it already owns](../introduction/limits/#an-attacker-uses-a-compromised-program-within-its-own-storage-area). Credential theft and lateral movement are outside HJFS.
+**Residual.** If encryption ran inside the operational software that already owned those files, that is [a program hurting files it already owns](../introduction/limits/#an-attacker-uses-a-compromised-program-within-its-own-storage-area). Credential theft and lateral movement stay with [Root Lock](../../docs/). Isolation still stops a separate encryptor from opening those files.
 
 ---
 
@@ -75,7 +75,7 @@ Execution and network dimensions are [Root Lock by HeartSuite](../../docs/)'s do
 
 **What HJFS is designed to do.** A *secondary* encryptor spawned as a different program still cannot open files it does not own.
 
-**What HJFS does not claim.** Theft from inside MOVEit itself is in-process access to that program's own storage area. HJFS does not hide a program's files from itself. See [Sensitive data within a program's own storage area](../introduction/limits/#sensitive-data-within-a-programs-own-storage-area).
+**Residual.** Theft from inside MOVEit itself is in-process access to that program's own storage area. Isolation is between programs, not between a program and its own data. See [Sensitive data within a program's own storage area](../introduction/limits/#sensitive-data-within-a-programs-own-storage-area). A secondary encryptor still cannot open files it does not own.
 
 ---
 
@@ -91,7 +91,7 @@ The backdoor was designed to allow unauthorized SSH authentication on affected s
 
 This is the malicious sleeper pattern HJFS automatic data-file backup is designed to close for files written *during* the backdoored version's life. Even if that version had been dormant for months, writes from that period remain in the protected backup area. No program, including the backdoored version, can open that area.
 
-**What HJFS does not claim.** Unauthorized SSH authentication is execution and network, not file isolation. Those dimensions are [Root Lock](../../docs/)'s domain.
+**Residual.** Unauthorized SSH authentication stays with [Root Lock](../../docs/). Isolation still keeps the backdoored version out of the legitimate version's files.
 
 ---
 
@@ -105,4 +105,4 @@ UnitedHealth Group disclosed that approximately 190 million individuals had data
 
 **What HJFS is designed to do.** A separate ransomware binary cannot enumerate or encrypt files belonging to other programs.
 
-**What HJFS does not claim.** Patient records stored by the billing stack itself remain that stack's files. Isolation does not hide them from a compromised billing program. See [What HJFS does and does not cover](../introduction/limits/).
+**Residual.** Patient records stored by the billing stack itself remain that stack's files. A compromised billing program can still hurt files it already owns. Isolation still stops a separate ransomware binary from opening those files. See [Protection limits](../introduction/limits/).

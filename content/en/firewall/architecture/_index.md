@@ -2,7 +2,7 @@
 title: "What sits under a closed firewall image"
 linkTitle: "Architecture"
 weight: 20
-description: "Root Lock Firewall is a closed image: a stateful host filter on Linux netfilter (nft). What is in the box, and what you do not get to reconfigure."
+description: "Root Lock Firewall is a closed image: a stateful host filter on Linux netfilter (nft). What is in the box."
 categories: ["Essentials"]
 tags: ["firewall", "architecture", "netfilter", "nftables", "kernel", "prototype"]
 type: docs
@@ -15,9 +15,9 @@ toc: true
 
 The image already carries a custom kernel, a userspace stateful-inspection engine HeartSuite updates, a console TUI, and host-integrity grants. You do not allowlist those programs.
 
-That shape is required by the kernel underneath. Root Lock by HeartSuite is a custom Linux kernel. You cannot treat this product as software you drop onto a distribution kernel you already run.
+That shape is required by the kernel underneath. Root Lock by HeartSuite is a custom Linux kernel. Delivery is the closed image on that kernel.
 
-Laboratory install scripts exist for layer-installing the prototype on a throwaway guest. They are not the product.
+Laboratory install scripts exist for layer-installing the prototype on a throwaway guest. They remain laboratory.
 
 ## Two layers, one box
 
@@ -34,15 +34,15 @@ Root Lock programs, files, per-program outbound IPs
 
 Root Lock Firewall owns the host packet filter. Root Lock owns what may execute and which literal outbound addresses each program may use.
 
-On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard, not a hardening step.
+On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard.
 
-Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. It is not this product. See [Lockdown](../../docs/lockdown/) for that Root Lock path, and do not read it as Root Lock Firewall.
+Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. See [Lockdown](../../docs/lockdown/) for that Root Lock path.
 
 ## Linux netfilter on the nft path
 
-The Root Lock kernel carries nftables and does not carry the older iptables table. Public documentation therefore describes the data path as **Linux netfilter, nft path**. Older iptables tools on this image load no table, so a rule you thought you applied does nothing.
+The Root Lock kernel carries nftables. The older iptables table is absent. Public documentation therefore describes the data path as **Linux netfilter, nft path**. Older iptables tools on this image load no table, so a rule you thought you applied does nothing.
 
-A userspace stateful-inspection engine drives the filter. The Dashboard writes allowlist entries. It does not expose an engine configuration mall, a vendor web panel, or a cluster GUI.
+A userspace stateful-inspection engine drives the filter. The Dashboard writes allowlist entries. Engine internals, a vendor web panel, and a cluster GUI stay off the glass.
 
 HeartSuite is the update authority for that engine. External reputation and geo downloads are off under seal.
 
@@ -52,9 +52,9 @@ The engine is still userspace software. Root Lock is what constrains which binar
 
 Firewall Lockdown makes the chosen allowlist immutable on the running appliance and is applied together with Root Lock Lockdown. After reboot, the Dashboard treats the ruleset as read-only.
 
-The seal is immutability of a set you already chose. It is not a cryptographic proof that the live filter table equals the review queue you clicked through.
+The seal is immutability of the set you chose. Reduce through Maintenance.
 
-Completeness of that correspondence is an engineering property under test, not a slogan. If a later engine can make the seal hashable, the product class does not change: it is still a stateful host filter.
+Completeness of correspondence between the live filter table and the review queue is an engineering property under test. If a later engine can make the seal hashable, the product class stays a stateful host filter.
 
 ## No administrative web plane
 
@@ -67,29 +67,29 @@ You administer the box from the console TUI. The appliance is designed without:
 
 The host filter's image baseline can still include the SSH port and the usual workload ports, open to any source. That is a port shape, not a running listener.
 
-Starting a listener on those ports is reachable from any source until you narrow the baseline through Maintenance. See [What Root Lock Firewall does and does not cover](../introduction/limits/).
+Starting a listener on those ports is reachable from any source until you narrow the baseline through Maintenance. See [Protection limits](../introduction/limits/).
 
-Those omissions are the architectural answer to the campaign class in [Recent firewall campaigns](../examples/). They shrink the remote attack surface of the filter. They do not make the box unreachable to someone who holds the hypervisor console or the rack key.
+Those omissions are the architectural answer to the campaign class in [Recent firewall campaigns](../examples/). They shrink the remote attack surface of the filter. Someone who holds the hypervisor console or the rack key still reaches the box.
 
 ## The virtual appliance residual
 
-A virtual appliance runs on someone else's hypervisor. Control of that hypervisor is control of the disk and of the serial console. Root Lock Firewall does not claim to survive a hostile hypervisor.
+A virtual appliance runs on someone else's hypervisor. Control of that hypervisor is control of the disk and of the serial console. A hostile hypervisor owns the disk.
 
 Two deliveries, same inspection class:
 
 - a virtual appliance on a hypervisor you trust
 - a hardware appliance for environments where the hypervisor is not trusted
 
-Until hardware ships, treat hypervisor and cloud serial-console IAM as part of the product's trust boundary.
+Until hardware ships, treat hypervisor and cloud serial-console IAM as part of the product's trust boundary. The sealed allowlist on this image still holds.
 
 ## Compatibility notes
 
 | Environment | Notes |
 |---|---|
 | HeartSuite appliance image (QCOW2, OVA) | The supported delivery. Console or serial first. |
-| Root Lock kernel on a general-purpose server you built | That is Root Lock. It does not become Root Lock Firewall because the kernel is present. |
-| Stock Debian or Ubuntu kernel | Not a supported host for this product. The nft-only constraint and the closed image assume the Root Lock kernel. |
-| Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. It is not the provider's managed firewall (security groups, Network Firewall, Azure Firewall). Keep those as an outer layer if you use them. |
-| Inline / NAT / HA pair | Not v1. See [Deployment scenarios](../deployment-scenarios/). |
-| Shared-kernel containers on this image | This image is a closed appliance, not a Docker host. It does not ship a container engine. See [Deployment Scenarios](../../docs/introduction/deployment-scenarios/) on Root Lock for the separate container-host kernel product. |
-| Windows or macOS | Not a target. The filter and the kernel are Linux. |
+| Root Lock kernel on a general-purpose server you built | That is Root Lock. Root Lock Firewall is the closed appliance image. |
+| Stock Debian or Ubuntu kernel | Delivery is the closed image. The nft-only constraint and the closed image assume the Root Lock kernel. |
+| Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. Provider controls (security groups, Network Firewall, Azure Firewall) stay the outer layer if you use them. |
+| Inline / NAT / HA pair | Later. See [Deployment scenarios](../deployment-scenarios/). |
+| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. See [Deployment Scenarios](../../docs/introduction/deployment-scenarios/) on Root Lock for the separate container-host kernel product. |
+| Windows or macOS | The filter and the kernel are Linux. |

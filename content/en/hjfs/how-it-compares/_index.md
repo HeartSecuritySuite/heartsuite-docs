@@ -1,8 +1,8 @@
 ---
-title: "What HJFS is — and what it is not"
+title: "What HJFS isolates — and what it complements"
 linkTitle: "How it compares"
 weight: 35
-description: "What HJFS is, what it is not, what it complements, and when to run it alone versus beside Root Lock by HeartSuite."
+description: "Per-program file isolation on a stock kernel, the tools that own execution and network, and when to run HJFS alone versus beside Root Lock by HeartSuite."
 categories: ["Essentials"]
 tags: ["hjfs", "comparison", "heartsuite", "deployment", "security"]
 type: docs
@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: Every program on a Linux system can, by default, read any file you own, execute any binary it can reach, and open any network connection — and so can any malware running under that user.
 
-HeartSuite Joint File System (HJFS) addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including as root. Execution and network control are [Root Lock by HeartSuite](../../docs/)'s domain. On a Root Lock kernel, both can share the host.
+HeartSuite Joint File System (HJFS) addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including as root. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host.
 
 ---
 
@@ -33,7 +33,7 @@ Network access mediation and OS-mediated user-file access are planned for subseq
 |---|---|---|---|
 | File isolation | Global filesystem; you add allowlist entries for directories and paths (commonly `/usr/lib`, `/etc`, `/home`) | Per-program isolated storage area; the filesystem blocks any overlap | An allowlist entry that is too wide can share files across programs. HJFS has no overlap path. |
 | Handling malicious updates | No automatic program versioning. Data backup applies only to admin-configured directories (default: `/home`) | Per-version isolation: prior executable and libraries are preserved automatically before any update overwrites them | HJFS keeps the clean version of a program (for example, a tainted `sshd`) in its own area. Root Lock restores a prior binary if it was backed up. |
-| Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: approval on desktops, policy rules on servers (not in v1.0 scope) | Root Lock handles network and user-file access today via static allowlist entries. HJFS v1.0 does not. |
+| Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: approval on desktops, policy rules on servers (v1.0 ships file isolation) | Root Lock handles network and user-file access today via static allowlist entries. HJFS v1.0 isolates files; OS-mediated network and user-file access is on the [roadmap](../roadmap/). |
 | Executables and updates | Standard Linux paths; updates often require switching to Setup Mode | Separate read-only area for executables; only the official HJFS installer can write to it | HJFS keeps executables in a read-only area. Root Lock uses Setup Mode for updates. |
 | Data sharing and deletion | Any program can read, write, or delete anything its allowlist entry permits | Cross-program transfers require an explicit copy utility; programs can only move files to trash, not permanently delete them | HJFS makes cross-program copies explicit. Root Lock permits whatever the allowlist entry names. |
 | Lockdown | Enabled via `HS_lockdown.sh`; immutable flags seal key files | Enforced by the filesystem structure — no separate Lockdown step required | Root Lock seals the allowlist. HJFS isolation is the filesystem layout. |
@@ -48,33 +48,27 @@ Network access mediation and execution control are planned for subsequent releas
 
 ---
 
-## What HJFS is not
+## What HJFS is
 
-**HJFS is not network security.** HJFS does not control which network connections a program can open. A confined program can still reach any network destination.
+HJFS is per-program file isolation on a standard unmodified kernel. Each program has its own storage area, including as root. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/).
 
-Isolation still limits what data is reachable — a confined program can only read its own files. See [Network exfiltration](../introduction/limits/#network-exfiltration).
+**Network.** Which connections a program can open is Root Lock's domain. Isolation still limits what data is reachable — a confined program can only read its own files. See [Network exfiltration](../introduction/limits/#network-exfiltration).
 
-**HJFS is not program execution control.** HJFS does not gate which programs can run. A binary placed on the system can be executed.
+**Execution.** Which programs may start is Root Lock's domain. A binary placed on the system can be launched. HJFS still confines what running programs can access. See [Unauthorized program execution](../introduction/limits/#unauthorized-program-execution).
 
-HJFS still confines what running programs can access. See [Unauthorized program execution](../introduction/limits/#unauthorized-program-execution).
+**Encryption.** Files within a program's storage area are readable by that program in plaintext. Isolation controls which programs can reach a file. Use standard disk or volume encryption alongside HJFS for encryption at rest. Per-program isolation still holds on the plaintext files.
 
-**HJFS is not filesystem encryption.** Files within a program's storage area are readable by that program in plaintext. Isolation controls which programs can reach a file — it does not protect the file's contents from a program that legitimately owns it.
+**Permissions.** Standard OS permissions are user-based: they answer "can this user read this file?" HJFS is program-based: it answers "did this program create this file?" The two operate at different levels and are complementary.
 
-Use standard disk or volume encryption alongside HJFS for encryption at rest. Per-program isolation still holds on the plaintext files.
+**Backup.** HJFS automatically backs up every data file each time it is written, to a protected area no program can access. This provides fine-grained version history for ransomware recovery and rollback. Off-site backup, disaster recovery, and compliance-driven backup management stay with dedicated backup infrastructure. The per-write history still holds for files HJFS itself stores.
 
-**HJFS is not a traditional permissions system.** Standard OS permissions are user-based: they answer "can this user read this file?" HJFS is program-based: it answers "did this program create this file?" The two operate at different levels and are complementary.
-
-**HJFS is not a general-purpose backup system.** HJFS automatically backs up every data file each time it is written, to a protected area no program can access. This provides fine-grained version history for ransomware recovery and rollback.
-
-It is not a substitute for off-site backup, disaster recovery, or compliance-driven backup management. The per-write history still holds for files HJFS itself stores.
-
-**HJFS is not a detection system.** HJFS does not alert on suspicious behaviour. For behavioural detection, fleet correlation, and incident response, SIEM and NDR tools remain the right answer and should run alongside HJFS.
+**Detection.** For behavioural detection, fleet correlation, and incident response, SIEM and NDR tools remain the right answer and should run alongside HJFS.
 
 ---
 
 ## What HJFS complements
 
-| Gap HJFS leaves open | Complementary control |
+| Adjacent domain | Complementary control |
 |---|---|
 | Network connections — which destinations a program can reach | [Root Lock](../../docs/network/) on a Root Lock kernel, or network-layer egress controls on a stock kernel |
 | Program execution — which binaries are permitted to run | [Root Lock](../../docs/) on a Root Lock kernel, or existing host execution controls on a stock kernel |
@@ -89,7 +83,7 @@ HJFS covers file read and write access at the filesystem layer, per program and 
 
 ## HJFS alone, and on a Root Lock kernel
 
-**HJFS alone** fits deployments where the primary risk is lateral file access across programs, data destruction by ransomware, or supply chain updates that taint data created by prior versions. It runs on a standard kernel — cloud instances with a provider-managed kernel, systems under kernel certification, or organisations that do not replace the kernel.
+**HJFS alone** fits deployments where the primary risk is lateral file access across programs, data destruction by ransomware, or supply chain updates that taint data created by prior versions. It runs on a standard kernel — cloud instances with a provider-managed kernel, systems under kernel certification, or organisations that keep a stock kernel.
 
 Network and execution control on that host stay with existing tooling: egress filtering, separate allowlisting, or whatever is already in place.
 
@@ -104,11 +98,11 @@ Network and execution control on that host stay with existing tooling: egress fi
 | Ransomware containment | Yes — primary use case | Ransomware confined to its own area cannot touch files belonging to other programs |
 | Supply chain / tainted update | Yes — primary use case | Tainted update receives isolated storage; rollback is a single command |
 | Lateral file access between programs | Yes | Structural isolation, not policy-based |
-| Network exfiltration | Partial | Limits what data is reachable; does not block the connection |
-| Unauthorized program execution | No | Not in scope for v1.0. File isolation still holds for whatever runs. |
-| Privilege escalation | No | Not a filesystem-layer concern. Program storage boundaries still hold. |
-| Detection and alerting | No | Use SIEM/NDR alongside |
-| Data encryption at rest | No | Use standard disk encryption |
+| Network exfiltration | Partial | Limits what data is reachable. Which connections a program can open is Root Lock's domain. |
+| Unauthorized program execution | Complementary | Which programs may start is Root Lock's domain. File isolation still holds for whatever runs. |
+| Privilege escalation | Complementary | Privilege stays Root Lock's domain. Program storage boundaries still hold. |
+| Detection and alerting | Complementary | Use SIEM/NDR alongside |
+| Data encryption at rest | Complementary | Use standard disk encryption |
 
 **How HJFS can be circumvented.** HJFS file isolation operates at the filesystem layer, below any running software. No program — regardless of privilege — can cross program storage boundaries while HJFS is present.
 

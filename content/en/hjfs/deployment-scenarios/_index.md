@@ -1,5 +1,5 @@
 ---
-title: "Where file isolation is enough — and where it is not"
+title: "Where per-program file isolation fits"
 linkTitle: "Deployment scenarios"
 weight: 15
 description: "When HJFS alone is enough, when it should sit beside Root Lock, and when a different control is the right one for the workload."
@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: HeartSuite Joint File System (HJFS) isolates files per program on a stock kernel, including as root. Execution and network control are Root Lock's domain.
+**Overview**: HeartSuite Joint File System (HJFS) isolates files per program on a stock kernel, including as root. Which programs run and which network connections they open stay Root Lock's domain.
 
 On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
 
@@ -45,21 +45,21 @@ HJFS runs on a standard kernel — no kernel modification required. This makes i
 
 HJFS and Root Lock address complementary layers. Root Lock controls program execution and network access at the kernel level. HJFS controls file read and write access at the filesystem level and adds per-version data isolation.
 
-On that host they cover all three OS-level controls — file access, network communication, and program execution. See [What HJFS does and does not cover](../introduction/limits/).
+On that host they cover all three OS-level controls — file access, network communication, and program execution. See [Protection limits](../introduction/limits/).
 
 ---
 
-## Where HJFS does not apply
+## Where another control owns the workload
 
 ### Remote or cloud-only storage
 
-HJFS isolates files at the local filesystem layer. Data stored on remote or cloud-hosted filesystems is not protected by HJFS unless HJFS is running on the host where that data resides.
+HJFS isolates files at the local filesystem layer. Isolation on remote or cloud-hosted filesystems holds only where HJFS is running on the host that stores the data.
 
-A client program accessing remote storage over a network connection is outside HJFS's scope on the remote side. On the local host, per-program file isolation still holds. Network-level connection control for those programs is handled by Root Lock.
+A client program accessing remote storage over a network connection is isolated on the local host. On the remote side, isolation holds only where HJFS is running. Network-level connection control for those programs is handled by Root Lock.
 
 ### Environments needing execution or network control
 
-HJFS v1.0 does not control which programs can execute or which network connections programs can open. Where these controls are the primary requirement, use Root Lock, which enforces both at the kernel level.
+Which programs can execute and which network connections they can open stay Root Lock's domain. Where those controls are the primary requirement, use Root Lock, which enforces both at the kernel level.
 
 HJFS can be added alongside it for filesystem-layer isolation. Per-program file isolation on a standard kernel still holds.
 

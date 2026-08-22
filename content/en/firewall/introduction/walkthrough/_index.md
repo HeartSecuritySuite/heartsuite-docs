@@ -11,13 +11,13 @@ toc: true
 
 > **Prototype**: Keys, strip text, and ceremony steps shown here are the intended appliance path and may change. The screenshots are docs mock-ups of that path, not a capture of the shipping Root Lock TUI (`[f]` is still File Access there).
 
-There is no package to install on a foreign kernel. You boot the image, open the serial or local console, and the Dashboard is the interface.
+Root Lock Firewall ships as the closed image. You boot it, open the serial or local console, and the Dashboard is the interface.
 
 ## 1. First boot is observation
 
 The merged system strip reports traffic observation: logging only, rules not fully enforced. That is the honest state: what is listening and what is arriving.
 
-The Suggested Next Step points at pending firewall events, not at a catalog of blades.
+The Suggested Next Step points at pending firewall events.
 
 ![Dashboard at first-boot observation: strip reports logging only, Suggested Next Step points at 14 pending firewall events, pending counts are listeners and inbound attempts](test_docs_firewall_dashboard_observation.svg)
 
@@ -37,7 +37,7 @@ An approval is a decision you make. The Dashboard does not confirm a suggestion 
 
 ## 3. Empty the queue before you seal
 
-An empty queue is required. It is not enough. The Suggested Next Step offers **Seal Firewall** with `[l]` only when the precondition checklist also passes.
+An empty queue is required. The Suggested Next Step offers **Seal Firewall** with `[l]` only when the precondition checklist also passes.
 
 Most appliances need several days of representative traffic before that offer is earned. A development host that never saw production clients will under-teach the allowlist.
 
@@ -59,7 +59,7 @@ After reboot the strip is quiet when both seals are in place. Mutate keys are ab
 
 After reboot, `[l]` opens the same Firewall Lockdown surface as inventory. It shows the allowlist that is in effect, and whether Root Lock Lockdown is present.
 
-Advisories can flag a rule that is broader than the traffic that earned it. They are not editable here.
+Advisories can flag a rule that is broader than the traffic that earned it. Edit through Maintenance.
 
 ## 6. Change only through Maintenance
 
@@ -67,4 +67,4 @@ To change a sealed rule, open **Maintenance** with `[m]`. Enter reduced posture 
 
 Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot. SSH from a laptop is not the recovery path. Console or serial is.
 
-See [Root Lock Firewall overview](../firewall-overview/) for the observe → approve → seal grammar, and [What Root Lock Firewall does and does not cover](../limits/#physical-access-and-the-console) for the console recovery path.
+See [Root Lock Firewall overview](../firewall-overview/) for the observe → approve → seal grammar, and [Protection limits](../limits/#physical-access-and-the-console) for the console recovery path.
