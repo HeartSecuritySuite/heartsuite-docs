@@ -21,13 +21,11 @@ No program can read or write files belonging to another. This page states where 
 
 **The scenario.** An attacker gains control of a running program — through a vulnerability, a malicious update, or a backdoor compiled into an approved binary. The program is already running and has legitimate access to its own storage area.
 
-**What HJFS enforces.** Files belonging to other programs are not reachable — not by name, not by path enumeration, not by any program. Damage stops at the compromised program's own area.
+**What HJFS does.** Files belonging to other programs are not reachable — not by name, not by path enumeration, not by any program. Damage stops at the compromised program's own area.
 
 Within that area, every write is automatically backed up to a protected location no program can access. Recovery is always available: the restore utility returns any file to any prior version, including versions created before the compromise.
 
-**What it does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, the outbound connection is Root Lock's domain. Once data is in memory, the network path is open.
-
-The file isolation still holds. Root Lock by HeartSuite closes the network gap. See [Network exfiltration](#network-exfiltration) below.
+**What it does not cover.** If the attacker reads sensitive data from the program's own files and exfiltrates it over the network, this particular gate does not apply to the outbound connection. File isolation still holds: other programs' files stay unreachable. [Root Lock by HeartSuite](../../../docs/) closes the network gap. See [Network exfiltration](#network-exfiltration) below.
 
 ---
 
@@ -35,11 +33,9 @@ The file isolation still holds. Root Lock by HeartSuite closes the network gap. 
 
 **The scenario.** A compromised program reads data from its own storage area, then opens an outbound connection to an attacker-controlled server.
 
-**What HJFS enforces.** The program can only reach files within its own storage area. Credentials, documents, and configuration files belonging to other programs are inaccessible. The data available for exfiltration is bounded by isolation.
+**What HJFS does.** The program can only reach files within its own storage area. Credentials, documents, and configuration files belonging to other programs are inaccessible. The data available for exfiltration is bounded by isolation.
 
-**What it does not cover.** A program that holds data in its own storage area and has an open network path can exfiltrate that data. Which connections a program can open is Root Lock's domain.
-
-The reachable set is still that program's own files. Root Lock provides kernel-level gating of outbound connections, with per-program control over which destinations a program can reach. Used alongside HJFS, it closes this gap. See [Root Lock](../../../docs/network/).
+**What it does not cover.** If a program holds data in its own storage area and has an open network path, this particular gate does not apply to that connection. The reachable set is still that program's own files. Root Lock gates outbound destinations per program. See [Root Lock](../../../docs/network/).
 
 ---
 
@@ -47,11 +43,9 @@ The reachable set is still that program's own files. Root Lock provides kernel-l
 
 **The scenario.** An attacker downloads a tool — a privilege escalation script, a credential dumper, a reverse shell — and attempts to run it.
 
-**What HJFS enforces.** HJFS confines what a running program can open. Files belonging to other programs stay unreachable even if a new binary starts.
+**What HJFS does.** HJFS confines what a running program can open. Files belonging to other programs stay unreachable even if a new binary starts.
 
-**What it does not cover.** A binary placed on the system can be launched. Which programs may start is Root Lock's domain.
-
-Once it is running, HJFS still confines it to its own storage area. Root Lock requires any new binary to have an allowlist entry before it can execute. See [Root Lock](../../../docs/).
+**What it does not cover.** If an attacker downloads a new binary and launches it, this particular gate does not apply to execution. Once it is running, HJFS still confines it to its own storage area. Root Lock requires any new binary to have an allowlist entry before it can execute. See [Root Lock](../../../docs/).
 
 ---
 
@@ -59,11 +53,9 @@ Once it is running, HJFS still confines it to its own storage area. Root Lock re
 
 **The scenario.** A program stores credentials, API keys, or other secrets in its own data files. A malicious update to that program — or an attacker who has compromised it — reads those files.
 
-**What HJFS enforces.** No other program can reach those files. The isolation is between programs, not between a program and its own data.
+**What HJFS does.** No other program can reach those files. The isolation is between programs, not between a program and its own data.
 
-**What it does not cover.** A malicious version of a program has the same access to that program's storage area as the legitimate version. Secrets stored in a program's own files are accessible to any version of that program, including a compromised one.
-
-Files belonging to other programs remain unreachable. Advanced protection further limits silent reads of user-facing files: those open only through an OS-mediated dialog. Internal files remain accessible to the program by name. See [Advanced protection](../../advanced-protection/).
+**What it does not cover.** If a malicious version of a program reads secrets stored in that program's own files, this particular gate does not apply inside that area. Files belonging to other programs remain unreachable. Advanced protection further limits silent reads of user-facing files: those open only through an OS-mediated dialog. Internal files remain accessible to the program by name. See [Advanced protection](../../advanced-protection/).
 
 ---
 
