@@ -31,9 +31,9 @@ Source: [cisco-sa-ftd-statcred-dFC8tXT5](https://sec.cloudapps.cisco.com/securit
 
 **What the campaign needed.** A management CLI that accepted vendor-static credentials, reachable from serial or from SSH that ships enabled.
 
-**What Root Lock Firewall is designed to do.** No vendor-static administrative accounts as a product feature. You reach the box on the console TUI of an image you control. There is no public administrative SSH by default.
+**What Root Lock Firewall does.** No vendor-static administrative accounts as a product feature. You reach the box on the console TUI of an image you control. There is no public administrative SSH by default.
 
-**Residual.** Hard-coded passwords at a vendor are a class we refuse to ship. A bug in our own console stack, or a hypervisor administrator, remains in scope for whoever holds that path. Console or serial remains the administrative path.
+**What it does not cover.** If the attacker holds a hypervisor console, or a bug in our own console stack, this particular path still belongs to whoever holds it. Console or serial remains the administrative path. Hard-coded vendor-static accounts stay off the image.
 
 ---
 
@@ -47,9 +47,9 @@ Source: [cisco-sa-asaftd-webvpn-z5xP8EUB](https://sec.cloudapps.cisco.com/securi
 
 **What the campaign needed.** A TLS web listener on the firewall whose job is remote access, not packet filtering.
 
-**What Root Lock Firewall is designed to do.** Product identity is a sealed host filter. You reach the Dashboard on the console or serial console. SSL-VPN stays a dedicated concentrator.
+**What Root Lock Firewall does.** Product identity is a sealed host filter. You reach the Dashboard on the console or serial console. SSL-VPN stays a dedicated concentrator.
 
-**Residual.** AnyConnect-class remote access stays a dedicated concentrator. Console or serial remains how you reach this image.
+**What it does not cover.** If the requirement is AnyConnect-class remote access, this particular gate does not apply — that stays a dedicated concentrator. Console or serial remains how you reach this image.
 
 ---
 
@@ -63,11 +63,11 @@ Source: [cisco-sa-asaftd-persist-CISAED25-03](https://sec.cloudapps.cisco.com/se
 
 **What the campaign needed.** A large, long-lived appliance OS under the filter, plus a first foothold (the VPN web server class above), plus persistence below the patch you thought you installed.
 
-**What Root Lock Firewall is designed to do.** A smaller closed image, HeartSuite as the only update authority, and a custom kernel that already removes a class of in-kernel bypass primitives.
+**What Root Lock Firewall does.** A smaller closed image, HeartSuite as the only update authority, and a custom kernel that already removes a class of in-kernel bypass primitives.
 
 Supported recovery of a sealed box is Maintenance on the console, then a return and re-seal. That cycle unseals policy so you can change it. Firmware, ROM, and a hostile hypervisor stay outside that recovery.
 
-**Residual.** A hostile hypervisor owns the disk. Firmware and ROM below a virtual appliance stay with whoever holds that path. The sealed allowlist on this image still holds.
+**What it does not cover.** If the hypervisor is hostile, this particular gate does not apply below the image. The sealed allowlist on this image still holds. Firmware and ROM stay with whoever holds that path.
 
 A later hardware appliance is the honest answer to that residual. The filter engine is userspace software under Root Lock. Formal seL4-style assurance of that engine is outside this prototype.
 
@@ -85,9 +85,9 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 
 **What the campaign needed.** A cloud identity plane that can administer the filter, turned on as a side effect of "register this device."
 
-**What Root Lock Firewall is designed to do.** No cloud SSO into the filter. HeartSuite is the update authority. There is no FortiCare-shaped registration step that opens an administrative identity provider on the box.
+**What Root Lock Firewall does.** No cloud SSO into the filter. HeartSuite is the update authority. There is no FortiCare-shaped registration step that opens an administrative identity provider on the box.
 
-**Residual.** Email, webhook, and syslog *out* to addresses you approved stay ordinary outbound policy (Root Lock) plus whatever you configured for alerts. HeartSuite remains the update authority. A bug in an update channel we ship is our bug, disclosed as such.
+**What it does not cover.** If email, webhook, or syslog go out to addresses you approved, this particular gate does not apply to those outbound channels. They stay ordinary outbound policy (Root Lock) plus whatever you configured for alerts. There is still no inbound SSO plane. A bug in an update channel we ship is our bug, disclosed as such.
 
 ---
 
@@ -95,6 +95,6 @@ Source: [FG-IR-26-060](https://www.fortiguard.com/psirt/FG-IR-26-060) (CVE-2026-
 
 **What happens on a general-purpose server.** A forgotten listener or a default service is reachable from the internet. Scanners find it. Credential stuffing follows.
 
-**What Root Lock Firewall is designed to do.** During observation those attempts become review events. After Firewall Lockdown, packets to sockets that are not on the sealed allowlist are refused, including when the service runs as root.
+**What Root Lock Firewall does.** During observation those attempts become review events. After Firewall Lockdown, packets to sockets that are not on the sealed allowlist are refused, including when the service runs as root.
 
-**Residual.** A port you approved stays a port you approved. A seal that is too wide stays too wide. Rate-limit extras in the image baseline are host extras; volumetric flood absorption stays in front of the host. See [Protection limits](../introduction/limits/).
+**What it does not cover.** If you approved the port, this particular gate does not unsay that approval. A seal that is too wide stays too wide. Packets to sockets off the sealed allowlist still fail. Volumetric flood absorption stays in front of the host. See [Protection limits](../introduction/limits/).
