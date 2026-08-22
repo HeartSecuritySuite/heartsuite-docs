@@ -62,7 +62,7 @@ One owner of the host filter. UFW, firewalld, or a second manager on the same im
 
 The Dashboard writes allowlist entries. Engine internals stay off the glass. There is no configuration mall and no cluster GUI as a drop-in vendor-panel replacement.
 
-Execution, files, and per-program outbound destinations stay [Root Lock by HeartSuite](../../docs/). Root Lock inbound permits at Lockdown remain a thin accept path for SSH and named services.
+Execution, files, and per-program outbound destinations stay [Root Lock](../../docs/). Root Lock inbound permits at Lockdown remain a thin accept path for SSH and named services.
 
 ---
 
