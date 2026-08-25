@@ -24,7 +24,7 @@ The intended observe → approve → seal path is Dashboard, Firewall Rules, Fir
 | Observation → approve → seal | Dashboard Firewall Rules queue. Typed `YES`. Firewall Lockdown is a paired commitment with Root Lock Lockdown; the Dashboard does not run both. |
 | Read-only inventory after seal | Mutate keys absent. Maintenance is the change path. |
 | HeartSuite as update authority | No public CDN or reputation fetch under seal. |
-| Root Lock underneath | Execution, files, and per-program outbound IPs remain [Root Lock by HeartSuite](../../docs/) — the kernel product. |
+| Root Lock underneath | Execution, files, and per-program outbound IPs remain [Root Lock by HeartSuite](../../rootlock/) — the kernel product. |
 
 See [Architecture and compatibility](../architecture/) for the nft-path constraint and the virtual-appliance residual.
 

@@ -29,7 +29,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
-PAGE = REPO / "content/en/docs/security/index.md"
+PAGE = REPO / "content/en/rootlock/security/_index.md"
 NVD = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 UA = "heartsuite-cve-discovery/1.0"
 

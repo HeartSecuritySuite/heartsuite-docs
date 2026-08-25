@@ -51,7 +51,7 @@ Root Lock Firewall addresses the first question and refuses the second as produc
 
 ## What Root Lock already covers
 
-[Root Lock](../../../docs/network/) already blocks outbound connections to destinations that are not on a program's allowlist, including from processes running as root. That is kernel grant policy. Inbound port policy is Root Lock Firewall.
+[Root Lock](../../../rootlock/network/) already blocks outbound connections to destinations that are not on a program's allowlist, including from processes running as root. That is kernel grant policy. Inbound port policy is Root Lock Firewall.
 
 Root Lock Lockdown can record a thin inbound permit for SSH scope and named services. That path is accept-only. Observation of real traffic, a reviewed allowlist of this box, and Firewall Lockdown are Root Lock Firewall.
 

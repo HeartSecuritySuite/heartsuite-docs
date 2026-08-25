@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: Every program on a Linux system can, by default, read any file you own, execute any binary it can reach, and open any network connection — and so can any malware running under that user.
 
-HeartSuite Joint File System (HJFS) addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including as root. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host.
+HeartSuite Joint File System (HJFS) addresses one of these three OS-level controls: file read and write access is restricted per program and per version, including as root. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../rootlock/). On a Root Lock kernel, both can share the host.
 
 ---
 
@@ -50,7 +50,7 @@ Network access mediation and execution control are planned for subsequent releas
 
 ## What HJFS is
 
-HJFS is per-program file isolation on a standard unmodified kernel. Each program has its own storage area, including as root. Which programs run and which network connections they open stay with [Root Lock](../../docs/).
+HJFS is per-program file isolation on a standard unmodified kernel. Each program has its own storage area, including as root. Which programs run and which network connections they open stay with [Root Lock](../../rootlock/).
 
 **Network.** Which connections a program can open is Root Lock's domain. Isolation still limits what data is reachable — a confined program can only read its own files. See [Network exfiltration](../introduction/limits/#network-exfiltration).
 
@@ -70,8 +70,8 @@ HJFS is per-program file isolation on a standard unmodified kernel. Each program
 
 | Adjacent domain | Complementary control |
 |---|---|
-| Network connections — which destinations a program can reach | [Root Lock](../../docs/network/) on a Root Lock kernel, or network-layer egress controls on a stock kernel |
-| Program execution — which binaries are permitted to run | [Root Lock](../../docs/) on a Root Lock kernel, or existing host execution controls on a stock kernel |
+| Network connections — which destinations a program can reach | [Root Lock](../../rootlock/network/) on a Root Lock kernel, or network-layer egress controls on a stock kernel |
+| Program execution — which binaries are permitted to run | [Root Lock](../../rootlock/) on a Root Lock kernel, or existing host execution controls on a stock kernel |
 | Detection and alerting on suspicious behaviour | SIEM, NDR, endpoint detection tools |
 | Secrets isolation within a single program's own storage area | Secrets management tools; [Advanced protection](../advanced-protection/) for user files |
 | Encryption of data at rest | Standard disk or volume encryption |

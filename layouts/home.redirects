@@ -15,3 +15,5 @@ cSpell:ignore hugo
     {{ end -}}
   {{ end -}}
 {{ end -}}
+{{ printf "/docs /rootlock/ 301\n" -}}
+{{ printf "/docs/* /rootlock/:splat 301\n" -}}

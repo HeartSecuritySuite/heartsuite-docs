@@ -25,7 +25,7 @@ An attacker who uses a port you approved is constrained by that rule. Applicatio
 
 **What it does not cover.** If the attacker uses a port you already approved, this particular gate does not apply to application content on that port. Packets to ports off the allowlist still fail. A listener that binds a port the image already left open (including baseline ports open to any source) is still that approved path.
 
-A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (what that process may execute, read, write, and call outbound) address the blast radius inside the approved service.
+A WAF, application hardening, and [Root Lock by HeartSuite](../../../rootlock/) (what that process may execute, read, write, and call outbound) address the blast radius inside the approved service.
 
 ---
 
@@ -35,7 +35,7 @@ A WAF, application hardening, and [Root Lock by HeartSuite](../../../docs/) (wha
 
 **What Root Lock Firewall does.** The host path is still subject to the sealed host filter. That is independent of per-program outbound policy.
 
-**What it does not cover.** If a compromised approved program opens an outbound connection to an address you never reviewed, this particular gate does not apply to per-program destinations. The sealed host filter on this image still holds. Which *program* may reach which *literal IP* stays [Root Lock](../../../docs/network/).
+**What it does not cover.** If a compromised approved program opens an outbound connection to an address you never reviewed, this particular gate does not apply to per-program destinations. The sealed host filter on this image still holds. Which *program* may reach which *literal IP* stays [Root Lock](../../../rootlock/network/).
 
 ---
 
@@ -85,7 +85,7 @@ A later hardware appliance removes the hypervisor residual. Physical presence st
 
 | Gap | Complementary control |
 |---|---|
-| Per-program execution, files, and outbound IPs | [Root Lock](../../../docs/) |
+| Per-program execution, files, and outbound IPs | [Root Lock](../../../rootlock/) |
 | Application payloads on an allowed port | WAF or application hardening |
 | Ports the image left open to any source | Not produced by observation. Seal keeps them. Narrow through Maintenance. |
 | Hostnames in a rule | Use literal IP addresses. DNS stays out of enforcement. |

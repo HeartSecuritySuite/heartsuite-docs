@@ -15,7 +15,7 @@ toc: true
 
 These incidents are here so the residual is visible. Campaign facts stay with the vendor advisories.
 
-Where an attack is application content on a port you approved, or a new binary, or an outbound callback, those dimensions belong to [Root Lock by HeartSuite](../../docs/) and a WAF.
+Where an attack is application content on a port you approved, or a new binary, or an outbound callback, those dimensions belong to [Root Lock by HeartSuite](../../rootlock/) and a WAF.
 
 ---
 

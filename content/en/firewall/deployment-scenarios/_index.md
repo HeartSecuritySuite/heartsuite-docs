@@ -61,7 +61,7 @@ A hardware appliance (TPM / measured boot) is planned. v1 is the virtual image. 
 
 ### Shared-kernel container hosts
 
-This appliance is a closed image. Container hosts stay the separate Root Lock container-host kernel product. See Root Lock [Deployment Scenarios](../../docs/introduction/deployment-scenarios/).
+This appliance is a closed image. Container hosts stay the separate Root Lock container-host kernel product. See Root Lock [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/).
 
 ### A WAF or API gateway requirement
 

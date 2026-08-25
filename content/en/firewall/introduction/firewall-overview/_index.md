@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: A listening service on a general-purpose host accepts inbound packets unless a filter refuses them. That is the Unix default this product closes.
 
-Root Lock Firewall is the host-shaped stateful packet filter on a closed HeartSuite appliance. [Root Lock by HeartSuite](../../../docs/) is the hardened OS under it. You receive an image.
+Root Lock Firewall is the host-shaped stateful packet filter on a closed HeartSuite appliance. [Root Lock by HeartSuite](../../../rootlock/) is the hardened OS under it. You receive an image.
 
 The Dashboard shows traffic as it happens. You approve a finite allowlist for this box's inbound and outbound path. Firewall Lockdown seals that set.
 
@@ -71,4 +71,4 @@ Changing either after seal requires the maintenance path.
 | Which packets may this box accept or send? | Root Lock Firewall |
 | Is the chosen packet allowlist sealed? | Root Lock Firewall (Firewall Lockdown) |
 
-See [Network and Remote Access](../../../docs/network/) for Root Lock's outbound queue, and [Protection limits](../limits/) for residuals.
+See [Network and Remote Access](../../../rootlock/network/) for Root Lock's outbound queue, and [Protection limits](../limits/) for residuals.

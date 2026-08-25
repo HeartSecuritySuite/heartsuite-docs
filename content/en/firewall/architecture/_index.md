@@ -36,7 +36,7 @@ Root Lock Firewall owns the host packet filter. Root Lock owns what may execute 
 
 On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard.
 
-Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. See [Lockdown](../../docs/lockdown/) for that Root Lock path.
+Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. See [Lockdown](../../rootlock/lockdown/) for that Root Lock path.
 
 ## Linux netfilter on the nft path
 
@@ -91,5 +91,5 @@ Until hardware ships, treat hypervisor and cloud serial-console IAM as part of t
 | Stock Debian or Ubuntu kernel | Delivery is the closed image. The nft-only constraint and the closed image assume the Root Lock kernel. |
 | Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. Provider controls (security groups, Network Firewall, Azure Firewall) stay the outer layer if you use them. |
 | Inline / NAT / HA pair | Later. See [Deployment scenarios](../deployment-scenarios/). |
-| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. See [Deployment Scenarios](../../docs/introduction/deployment-scenarios/) on Root Lock for the separate container-host kernel product. |
+| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. See [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/) on Root Lock for the separate container-host kernel product. |
 | Windows or macOS | The filter and the kernel are Linux. |

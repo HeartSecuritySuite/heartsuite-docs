@@ -13,7 +13,7 @@
     "osv_bundle": "https://docs.heartsecsuite.com/advisories/osv/all.json",
     "osv_per_cve_pattern": "https://docs.heartsecsuite.com/advisories/osv/{cve_id}.json",
     "manifest": "https://docs.heartsecsuite.com/advisories/manifest.json",
-    "security_page": "https://docs.heartsecsuite.com/docs/security/"
+    "security_page": "https://docs.heartsecsuite.com/rootlock/security/"
   },
   "scanner_note": "This is a custom OSV ecosystem. Configure your scanner or vulnerability platform to ingest the osv/all.json URL; native OSV.dev / distro feeds do not include HeartSuite automatically."
 }

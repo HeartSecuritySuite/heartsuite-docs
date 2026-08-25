@@ -15,7 +15,7 @@ toc: true
 
 These incidents are here so the residual is visible.
 
-Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host. A program can still hurt files it already owns — see [Protection limits](../introduction/limits/).
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../rootlock/). On a Root Lock kernel, both can share the host. A program can still hurt files it already owns — see [Protection limits](../introduction/limits/).
 
 ---
 
@@ -27,7 +27,7 @@ Which programs run and which network connections they open stay with [Root Lock 
 
 **What HJFS does.** Confine that encryptor to its own storage area. It cannot read or write files belonging to other programs, so encryption of *those* files stops at that boundary.
 
-**What it does not cover.** If the encryptor already owns files in its own area, this particular gate does not apply to those files. Isolation still stops that process from opening another program's files. Network spread stays with [Root Lock](../../docs/). Automatic backup recovers files in the encryptor's own area.
+**What it does not cover.** If the encryptor already owns files in its own area, this particular gate does not apply to those files. Isolation still stops that process from opening another program's files. Network spread stays with [Root Lock](../../rootlock/). Automatic backup recovers files in the encryptor's own area.
 
 ---
 
@@ -39,7 +39,7 @@ Which programs run and which network connections they open stay with [Root Lock 
 
 **What HJFS does.** Keep injected code inside the exploited process's storage area. No other program's files are reachable from there. Version isolation lets the vulnerable library be identified and rolled back without touching data from other versions.
 
-**What it does not cover.** If the RCE runs inside an already-trusted process, this particular gate does not stop the RCE. Isolation still stops that process from opening another program's files. Outbound callbacks stay with [Root Lock](../../docs/). Secrets already in that process's own files remain readable by it.
+**What it does not cover.** If the RCE runs inside an already-trusted process, this particular gate does not stop the RCE. Isolation still stops that process from opening another program's files. Outbound callbacks stay with [Root Lock](../../rootlock/). Secrets already in that process's own files remain readable by it.
 
 ---
 
@@ -51,7 +51,7 @@ Which programs run and which network connections they open stay with [Root Lock 
 
 **What HJFS does.** Identify program versions by cryptographic hash, so the tainted update gets its own isolated storage area — separate from the legitimate version's data. Roll back to a prior verified version. Data written under the legitimate version stays in that version's storage area.
 
-**What it does not cover.** If data was written while the tainted version was active, this particular gate does not pull those files back. Isolation still keeps that version out of the legitimate version's files. Automatic backup is the path for that window — see [The malicious sleeper](../introduction/hjfs-overview/#the-malicious-sleeper-attack). Network exfiltration from the backdoor's own files stays with [Root Lock](../../docs/).
+**What it does not cover.** If data was written while the tainted version was active, this particular gate does not pull those files back. Isolation still keeps that version out of the legitimate version's files. Automatic backup is the path for that window — see [The malicious sleeper](../introduction/hjfs-overview/#the-malicious-sleeper-attack). Network exfiltration from the backdoor's own files stays with [Root Lock](../../rootlock/).
 
 ---
 
@@ -63,7 +63,7 @@ Which programs run and which network connections they open stay with [Root Lock 
 
 **What HJFS does.** If the encryptor is a separate program, it cannot reach files belonging to other programs.
 
-**What it does not cover.** If encryption ran inside the operational software that already owned those files, this particular gate does not apply — that is [a program hurting files it already owns](../introduction/limits/#an-attacker-uses-a-compromised-program-within-its-own-storage-area). Isolation still stops a separate encryptor from opening those files. Credential theft and lateral movement stay with [Root Lock](../../docs/).
+**What it does not cover.** If encryption ran inside the operational software that already owned those files, this particular gate does not apply — that is [a program hurting files it already owns](../introduction/limits/#an-attacker-uses-a-compromised-program-within-its-own-storage-area). Isolation still stops a separate encryptor from opening those files. Credential theft and lateral movement stay with [Root Lock](../../rootlock/).
 
 ---
 
@@ -91,7 +91,7 @@ The backdoor was designed to allow unauthorized SSH authentication on affected s
 
 This is the malicious sleeper pattern HJFS automatic data-file backup is designed to close for files written *during* the backdoored version's life. Even if that version had been dormant for months, writes from that period remain in the protected backup area. No program, including the backdoored version, can open that area.
 
-**What it does not cover.** If the backdoor's job is unauthorized SSH authentication, this particular gate does not apply to execution and network. Isolation still keeps the backdoored version out of the legitimate version's files. Those dimensions stay with [Root Lock](../../docs/).
+**What it does not cover.** If the backdoor's job is unauthorized SSH authentication, this particular gate does not apply to execution and network. Isolation still keeps the backdoored version out of the legitimate version's files. Those dimensions stay with [Root Lock](../../rootlock/).
 
 ---
 

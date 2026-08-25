@@ -22,7 +22,7 @@ The official tools for that area today are `HJFS_update_program` (install a new 
 
 HeartSuite Exec is the planned UI for those program tools: install, update, and version selection against the HJFS Executables area. File isolation stays with HJFS, including the OS file-selection dialog already specified under [Advanced Protection](../hjfs/advanced-protection/).
 
-HeartSuite Exec does not add kernel execution gates. It does not add kernel network gates. [Root Lock network controls](../docs/network/) are not compatible with HJFS today; later network mediation is planned inside HJFS, not as a companion product.
+HeartSuite Exec does not add kernel execution gates. It does not add kernel network gates. [Root Lock network controls](../rootlock/network/) are not compatible with HJFS today; later network mediation is planned inside HJFS, not as a companion product.
 
 ## Who uses which product
 
@@ -39,4 +39,4 @@ This product is a proposal. No engineering work has begun and no release timelin
 
 - [HJFS overview](../hjfs/introduction/hjfs-overview/)
 - [HJFS architecture](../hjfs/architecture/)
-- [Root Lock overview](../docs/introduction/heartsuite-overview/)
+- [Root Lock overview](../rootlock/introduction/heartsuite-overview/)
