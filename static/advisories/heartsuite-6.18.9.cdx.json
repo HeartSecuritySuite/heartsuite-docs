@@ -24,12 +24,12 @@
       "externalReferences": [
         {
           "type": "documentation",
-          "url": "https://docs.heartsecsuite.com/docs/security/",
+          "url": "https://docs.heartsecsuite.com/rootlock/security/",
           "comment": "Kernel Security Transparency \u2014 per-CVE status and Score on HeartSuite"
         },
         {
           "type": "documentation",
-          "url": "https://docs.heartsecsuite.com/docs/kernel-hardening/kernel-support-policy/",
+          "url": "https://docs.heartsecsuite.com/rootlock/kernel-hardening/kernel-support-policy/",
           "comment": "HS kernel support policy \u2014 streams, patch targets, bundle delivery"
         }
       ],
@@ -98,12 +98,12 @@
       "externalReferences": [
         {
           "type": "documentation",
-          "url": "https://docs.heartsecsuite.com/docs/security/",
+          "url": "https://docs.heartsecsuite.com/rootlock/security/",
           "comment": "Kernel Security Transparency \u2014 per-CVE status and Score on HeartSuite"
         },
         {
           "type": "documentation",
-          "url": "https://docs.heartsecsuite.com/docs/kernel-hardening/kernel-support-policy/",
+          "url": "https://docs.heartsecsuite.com/rootlock/kernel-hardening/kernel-support-policy/",
           "comment": "HS kernel support policy \u2014 streams, patch targets, bundle delivery"
         }
       ]

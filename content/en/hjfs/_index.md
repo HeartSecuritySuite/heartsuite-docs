@@ -20,7 +20,7 @@ type: docs
 
 Each program has its own storage area. No other program can read or write its files, including programs running as root. File isolation is per program and per version. No custom kernel is required.
 
-Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../docs/). On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../rootlock/). On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
 
 If execution or network control is the primary requirement, see [Deployment scenarios](deployment-scenarios/) — that job is Root Lock (or existing host controls on a stock kernel).
 

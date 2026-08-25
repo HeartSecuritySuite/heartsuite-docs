@@ -50,7 +50,7 @@ Containers running on an HJFS-compliant host filesystem benefit from the same pe
 
 ## Network access control
 
-[Root Lock by HeartSuite](../../docs/network/) provides network access control today with kernel-level gating of outbound connections. On a Root Lock kernel, both can share the host.
+[Root Lock by HeartSuite](../../rootlock/network/) provides network access control today with kernel-level gating of outbound connections. On a Root Lock kernel, both can share the host.
 
 HJFS network mediation is planned. File isolation on a standard kernel still holds without it. See [Roadmap](../roadmap/).
 

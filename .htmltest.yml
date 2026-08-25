@@ -30,7 +30,7 @@ IgnoreEmptyHref: true
 IgnoreInternalEmptyHash: true
 
 # Skip Docsy's print-friendly variant. Its relative paths resolve from
-# _print/docs/index.html and don't match the regular page layout, so
+# _print/rootlock/index.html and don't match the regular page layout, so
 # checking it produces noise about "../alerts/" not existing.
 IgnoreDirs:
   - "_print"

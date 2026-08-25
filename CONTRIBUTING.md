@@ -103,7 +103,7 @@ Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on 
 
 ## Resources
 
-- **Product support**: support@heartsecsuite.com (kernel source on GPL request — see [Supply Chain and Advisory Feeds](https://docs.heartsecsuite.com/docs/kernel-hardening/supply-chain-and-advisories/#hs-kernel-source-code-gpl))
+- **Product support**: support@heartsecsuite.com (kernel source on GPL request — see [Supply Chain and Advisory Feeds](https://docs.heartsecsuite.com/rootlock/kernel-hardening/supply-chain-and-advisories/#hs-kernel-source-code-gpl))
 - **Live Docs**: [docs.heartsecsuite.com](https://HeartSecuritySuite.github.io/heartsuite-docs/)
 - **Hugo Docs**: [Hugo docs](https://gohugo.io/documentation/)
 - **Docsy Guide**: [Docsy user guide](https://www.docsy.dev/docs/)

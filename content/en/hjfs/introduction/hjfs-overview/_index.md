@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: On a standard Linux system, any program can open any file you can reach, including programs running as root. HeartSuite Joint File System (HJFS) binds data files to the program version that created them.
 
-No other program can read or write those files, regardless of privilege. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../docs/). See [The security problem HJFS solves](../security-problem/).
+No other program can read or write those files, regardless of privilege. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../rootlock/). See [The security problem HJFS solves](../security-problem/).
 
 ## File isolation in practice
 

@@ -29,7 +29,7 @@ bash tools/publish_advisories.sh
 
 Set `HS_CORE_SECURE_REPO` and `HS_HEARTSUITE_REPO` if checkouts are not sibling directories.
 
-If the crosswalk gate fails at release time, feeds are **not** updated — fix `tools/hs_config_parity.py` or the [Kernel Security Transparency](../../content/en/docs/security/_index.md) page before tagging.
+If the crosswalk gate fails at release time, feeds are **not** updated — fix `tools/hs_config_parity.py` or the [Kernel Security Transparency](../../content/en/rootlock/security/_index.md) page before tagging.
 
 Customers consume feeds from the public URLs above. They do not need access to private build repositories.
 
@@ -40,6 +40,6 @@ Customers consume feeds from the public URLs above. They do not need access to p
 - **`sbom.cyclonedx.json`** — CycloneDX bill of materials for the coordinated release bundle.
 - **`index.json`** — Feed catalogue with release tag, HeartSuite version, kernel base, and per-feed publication flags.
 
-OVAL XML definitions for OpenSCAP are **not** in this directory yet; see [Supply Chain and Advisory Feeds](https://docs.heartsecsuite.com/docs/kernel-hardening/supply-chain-and-advisories/).
+OVAL XML definitions for OpenSCAP are **not** in this directory yet; see [Supply Chain and Advisory Feeds](https://docs.heartsecsuite.com/rootlock/kernel-hardening/supply-chain-and-advisories/).
 
-Human-readable CVE status remains authoritative on the [Kernel Security Transparency](https://docs.heartsecsuite.com/docs/security/) page.
+Human-readable CVE status remains authoritative on the [Kernel Security Transparency](https://docs.heartsecsuite.com/rootlock/security/) page.

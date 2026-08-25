@@ -15,7 +15,7 @@ toc: true
 
 The question it answers is: did a human approve this socket on this box, and is that set sealed?
 
-Application identification, TLS interception, and fleet NGFW management stay with the campus tool. [Root Lock by HeartSuite](../../docs/) handles execution, files, and per-program outbound destinations on the same image.
+Application identification, TLS interception, and fleet NGFW management stay with the campus tool. [Root Lock by HeartSuite](../../rootlock/) handles execution, files, and per-program outbound destinations on the same image.
 
 ---
 
@@ -40,7 +40,7 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 ### For production deployments today
 
-**Root Lock** is the shipped product for execution, files, and outbound destinations. Inbound on that deployment remains an OS packet filter or a cloud security group, as the [Network](../../docs/network/) page states.
+**Root Lock** is the shipped product for execution, files, and outbound destinations. Inbound on that deployment remains an OS packet filter or a cloud security group, as the [Network](../../rootlock/network/) page states.
 
 **Root Lock Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets.
 
@@ -62,7 +62,7 @@ One owner of the host filter. UFW, firewalld, or a second manager on the same im
 
 The Dashboard writes allowlist entries. Engine internals stay off the glass. There is no configuration mall and no cluster GUI as a drop-in vendor-panel replacement.
 
-Execution, files, and per-program outbound destinations stay [Root Lock](../../docs/). Root Lock inbound permits at Lockdown remain a thin accept path for SSH and named services.
+Execution, files, and per-program outbound destinations stay [Root Lock](../../rootlock/). Root Lock inbound permits at Lockdown remain a thin accept path for SSH and named services.
 
 ---
 
@@ -98,7 +98,7 @@ See [Recent firewall campaigns](../examples/) for the honest residual on each in
 
 | Gap Root Lock Firewall leaves open | Complementary control |
 |---|---|
-| Program execution, file access, per-program outbound IPs | [Root Lock](../../docs/) |
+| Program execution, file access, per-program outbound IPs | [Root Lock](../../rootlock/) |
 | Application content on an allowed port | WAF / application hardening |
 | Ports the image left open to any source | Not produced by observation. Seal keeps them. Narrow through Maintenance. |
 | Detection, correlation, incident response | SIEM, NDR, EDR hunting — forward events; the SOC console stays there |

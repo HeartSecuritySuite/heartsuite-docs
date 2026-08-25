@@ -43,7 +43,7 @@
 
 {{/* Doc Sections ------------------------------------------------------ */ -}}
 
-{{ with .Site.GetPage "docs" -}}
+{{ with .Site.GetPage "rootlock" -}}
   {{- if .Sections -}}
     {{ "\n" -}}
 

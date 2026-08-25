@@ -20,9 +20,9 @@ type: docs
 
 The workload runs on the image. Packets are judged by connection state.
 
-Execution, files, and per-program outbound destinations stay [Root Lock by HeartSuite](../docs/). Root Lock is the hardened operating system under the filter.
+Execution, files, and per-program outbound destinations stay [Root Lock by HeartSuite](../rootlock/). Root Lock is the hardened operating system under the filter.
 
-If execution control or per-program outbound allowlisting on an existing server is the requirement, stay with [Root Lock](../docs/) and the OS or cloud inbound control already on that host. See [Deployment scenarios](deployment-scenarios/) for fit by environment.
+If execution control or per-program outbound allowlisting on an existing server is the requirement, stay with [Root Lock](../rootlock/) and the OS or cloud inbound control already on that host. See [Deployment scenarios](deployment-scenarios/) for fit by environment.
 
 ## Learn about Root Lock Firewall
 
