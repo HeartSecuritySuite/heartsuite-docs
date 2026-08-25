@@ -50,7 +50,7 @@ The Root Lock kernel is installed alongside your existing kernel via GRUB — it
 
 ## Bare metal, virtual machines, and nested VMs
 
-Cloud Path versus Local Path is how you obtain Root Lock on a host. The Local Path install command is the same on a physical machine and on a full virtual machine. Cloud Path is a pre-built image of that same install.
+The Local Path install command is the same on a physical machine and on a full virtual machine. Cloud Path is a pre-built image of that same install.
 
 What differs is the machine you run it on: firmware and real devices on metal; virtio and a hypervisor serial console on a VM.
 
