@@ -39,4 +39,4 @@ sudo bash get-heartsuite.sh
 
 The script downloads and installs the Root Lock kernel, tools, and Dashboard, then reboots automatically. Proceed to [Installation Part 1](../installation-part1/) after the reboot.
 
-The installer itself is also published at `https://heartsecsuite.com/releases/v1.7.0-beta/` (`heartsuite-install.sh` plus `.sha256`). That path is the beta channel; it is not the numbered 1.7.0 release ritual.
+The installer itself is also published at the [v1.7.0-beta GitHub Release](https://github.com/HeartSecuritySuite/heartsuite-get/releases/tag/v1.7.0-beta) (`heartsuite-install.sh` plus `.sha256`). That drop is the beta channel; it is not the numbered 1.7.0 release ritual.
