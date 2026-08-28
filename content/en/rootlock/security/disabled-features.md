@@ -211,7 +211,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 The BPF syscall interface is the kernel entry point through which user-space programs load and run BPF programs in kernel context. CVE-2021-20194 describes a heap overflow in the BPF verifier reachable by a local user who submits a crafted BPF program, gaining elevated privilege.
 
-`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on the 6.18 pin (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program store, and no reachable code path for this CVE.
+`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on derived 6.18 (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program store, and no reachable code path for this CVE. Fielded `6.18.9-hs` still compiles `CONFIG_BPF_SYSCALL=y`.
 
 ### Netfilter nftables
 
