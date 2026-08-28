@@ -28,9 +28,9 @@ The installer will not overwrite Root Lock while that kernel is booted. It check
 
 You can also **start** `bash heartsuite-install.sh` there from a terminal. The installer asks you to type `YES` (case-sensitive). That sets the **next boot only** to the original distro kernel (stock) or Maintenance, keeps Root Lock as the default, and continues the update after that boot. You do not pick a menu entry, and you do not run the installer a second time.
 
-If the session is not a terminal — for example `curl … | sudo sh` — the installer prints a one-shot command such as `grub-reboot '…' && reboot` for **this** machine instead of asking `YES`. Copy that command; do not invent a number. After that boot, run `bash heartsuite-install.sh` again. If the installer cannot name an entry, it tells you to open the console and choose stock or Maintenance at the boot menu.
+If the session is not a terminal — for example `curl … | sudo bash` — the installer prints a one-shot command such as `grub-reboot '…' && reboot` for **this** machine instead of asking `YES`. Copy that command; do not invent a number. After that boot, run `bash heartsuite-install.sh` again. If the installer cannot name an entry, it tells you to open the console and choose stock or Maintenance at the boot menu.
 
-The first-install command `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo sh` is for a host that does not yet have Root Lock. On a host already running the Root Lock kernel it downloads the bundle and then follows the non-terminal path above.
+The first-install command `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash` is for a host that does not yet have Root Lock. On a host already running the Root Lock kernel it downloads the bundle and then follows the non-terminal path above.
 
 If Lockdown is applied (the strip says **Lockdown applied**), unseal first. The installer cannot set the next boot while `/boot` is sealed.
 

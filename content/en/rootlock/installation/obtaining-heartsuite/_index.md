@@ -26,7 +26,7 @@ menu:
 Run the following command on the target system:
 
 ```bash
-curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo sh
+curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash
 ```
 
 Prefer to inspect first:
