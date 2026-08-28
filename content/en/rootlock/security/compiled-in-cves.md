@@ -433,7 +433,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6. The public 6.18 pin does not compile `CONFIG_IO_URING` (`io_uring_setup` returns `ENOSYS`); those two CVEs are Not Affected on derived 6.18. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6. Derived 6.18 does not compile `CONFIG_IO_URING` (`io_uring_setup` returns `ENOSYS`); those two CVEs are Not Affected on derived 6.18. Fielded `6.18.9-hs` still compiles `CONFIG_IO_URING=y`. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
