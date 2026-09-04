@@ -20,12 +20,12 @@ menu:
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-configured cloud instance (AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers). The Dashboard confirms initial setup is complete on first boot — skip ahead to the allowlisting queues.
+Launch a pre-configured cloud instance (AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers). The Dashboard confirms initial setup is complete on first boot — skip ahead to the allowlisting queues. First-boot leftovers (cloud-init, provisioning helpers) can still appear there; do not approve them if they are not runtime.
 
 Installer and initial setup logs from the image build are in `/var/log/heartsuite/`. Use the provider serial console if you need them.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Run a single install command on bare metal or a full virtual machine with hardware virtualization, then reboot multiple times to build the initial allowlist of startup and shutdown programs. Nesting a second guest without `/dev/kvm` causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
+Finish distribution updates and install the packages and services this host will actually run, then run a single install command on bare metal or a full virtual machine with hardware virtualization. Reboot multiple times to build the initial allowlist of startup and shutdown programs. Nesting a second guest without `/dev/kvm` causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
 
 1. [Obtaining Root Lock](obtaining-heartsuite/) — Run the install command.
 2. [Installation Part 1](installation-part1/) — Run the installer and reboot to load the kernel.

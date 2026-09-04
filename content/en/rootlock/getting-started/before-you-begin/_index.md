@@ -10,7 +10,7 @@ aliases:
   - /docs/getting-started/before-you-begin/
 ---
 
-**Overview**: Confirm the requirements below match your system, then follow Cloud Path or Local Path on that host.
+**Overview**: Confirm the requirements below match your system, then follow Cloud Path or Local Path on that host. On Local Path, finish distribution updates and the packages this host will run before you install.
 
 ## System requirements
 
@@ -21,6 +21,12 @@ aliases:
 
 If your setup differs, check the [Introduction](../../introduction/) for compatibility details.
 
+## Finish the OS first
+
+On Local Path, complete distribution updates and install the packages and services this host will actually run. Then install Root Lock. During initial setup, Root Lock records startup and shutdown programs from those boots. Package-install helpers, compilers, and one-shot probes that execute in that window become allowlist entries even if they never execute again.
+
+After the Dashboard appears, run the workload you will keep — not compilers, probes, or other one-shot tools. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+
 ## Choosing your setup path
 
 {{< choice-pane >}}
@@ -30,7 +36,7 @@ Launch a pre-installed Root Lock by HeartSuite instance on AWS, Google Cloud, Az
 **Ready?** Launch your instance, then continue to [Verifying Installation](../../verification/).
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Download the installation package from [heartsecsuite.com](https://heartsecsuite.com), extract, install the Root Lock kernel, and complete the Installation setup through multiple reboot cycles before reaching the Dashboard.
+Finish distribution updates and the packages this host will actually run, then download the installation package from [heartsecsuite.com](https://heartsecsuite.com), extract, install the Root Lock kernel, and complete the Installation setup through multiple reboot cycles before reaching the Dashboard.
 
 **Ready?** Continue to [Obtaining Root Lock](../../installation/obtaining-heartsuite/).
 {{< /choice-card >}}

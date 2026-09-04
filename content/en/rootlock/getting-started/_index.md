@@ -31,7 +31,7 @@ Launch a pre-installed Root Lock instance. No download or kernel installation re
 3. **[Verifying Installation](../verification/)** — confirm the Dashboard is ready, then follow the Suggested Next Step to begin allowlisting.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Install Root Lock on bare metal or a full virtual machine with hardware virtualization:
+Install Root Lock on bare metal or a full virtual machine with hardware virtualization. Finish distribution updates and the packages this host will actually run, then:
 
 <!-- markdownlint-disable MD029 -->
 1. **[Obtaining Root Lock](../installation/obtaining-heartsuite/)** — download the installer from heartsecsuite.com.
