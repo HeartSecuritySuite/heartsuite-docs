@@ -25,9 +25,23 @@ See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-rec
 
 {{< /details >}}
 
+{{< details summary="Is Root Lock a kernel module? How is that different from eBPF or SELinux?" >}}
+
+A: No. Root Lock is compiled into the kernel binary. You do not load it with `insmod`, and you cannot unload it with `rmmod`. When the Root Lock kernel is running, the checks are part of exec, file access, and outbound connect.
+
+eBPF tools (Falco, Tetragon, BPF LSM, eBPF Jailer) attach programs to a running kernel. That needs the BPF syscall. Root can unload those programs or kill the agent that loaded them. SELinux and AppArmor are LSM policy: on a typical distro, root can set them permissive or edit the policy file.
+
+Root Lock is not an LSM and not eBPF. The supported way off the Root Lock kernel is a reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, into the maintenance kernel. SSH is not enough.
+
+See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis](introduction/layer-analysis/).
+
+{{< /details >}}
+
 {{< details summary="Who is Root Lock for?" >}}
 
-A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines.
+A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. It is for operators who need a kernel allowlist they can build without custom MAC policy, then seal so root cannot unload it.
+
+Autoscaling work after you profile a **reference** host of that class and bake the allowlist into the image.
 
 Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts).
 
