@@ -263,11 +263,59 @@ A: Initial setup is still running. It is unattended: the host reboots on its own
 
 ## Allowlisting
 
+{{< details summary="How does Root Lock know which program is running? What if someone replaces the file?" >}}
+
+A: Root Lock identifies a program by its **resolved absolute path** (what `execve` actually opened). Approving `/usr/bin/sshd` allows whatever file that path names at the next exec.
+
+Under Lockdown, replacing that file is blocked: the allowlist is immutable, many system trees are immutable, and a program can write a path only if its allowlist entry grants that write. That is write containment.
+
+A compromised program that is already allowed still only gets the files and destinations on its entry. In-memory patching of an already-running allowed process is outside the exec gate.
+
+See [How Root Lock Compares](introduction/how-it-compares/) (Fuchsia hashes every executable; Root Lock does not).
+
+{{< /details >}}
+
+{{< details summary="I approved /tmp or /usr in File Access — does Lockdown keep that?" >}}
+
+A: Not by default. Before Lockdown finalizes, HeartSuite shows caution panels and **strips** several risky grants unless you opt out: kmod directory reads, unexpected writes into OS trees (including `/tmp` and `/usr`), GTFOBins-style file-write tools, install-tree writes, and bare `/` grants. `rm`/`cp`/`mv` can be restricted to the directories they used in Setup.
+
+If you do nothing, YES still narrows those grants. The keys on the Lockdown activation view keep the risk. Approving everything that appeared in Setup, then opting out of every panel, is how the protection thins.
+
+See [Lockdown](lockdown/).
+
+{{< /details >}}
+
+{{< details summary="Are kernel drivers on the allowlist? What about /dev/sda?" >}}
+
+A: No. Video, network, and block drivers are kernel code. They are not programs and they do not appear in the Programs queue.
+
+`/dev/sda` (or `/dev/vda`, `/dev/nvme0n1`) is a device node. Write access to it is a **file grant** on some userspace program — often a directory write to `/dev`. That is raw disk and skips the filesystem. HeartSuite gates that open.
+
+`kmod` is the loader, not the driver. What kmod may load is what it may **read**. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
+
+{{< /details >}}
+
+{{< details summary="A program only ran once during install — should I approve it?" >}}
+
+A: Do not approve it if it will not execute in production. Approving it grants that program under Lockdown. Press `[s]` Skip for now to defer the item without granting it.
+
+Install-time compilers, probes, and extra shells belong off the allowlist unless this host must keep them. See [Allowlisting Basics](allowlisting/allowlisting-basics/).
+
+{{< /details >}}
+
 {{< details summary="A new program is being blocked in Lockdown — what should I do?" >}}
 
 A: In Lockdown, any program not on the allowlist is blocked. This typically happens after installing new software or a system update.
 
-Select Maintenance (`[m]`) from the Dashboard. It guides you through switching to Setup Mode, where the new program appears in the review queue. Approve it from there, then re-engage Lockdown.
+Select Maintenance (`[m]`) from the Dashboard. It guides you through switching to Setup Mode, where the new program appears in the review queue. Approve the programs you will keep. Do not approve install-only helpers. Then lock down again. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+
+{{< /details >}}
+
+{{< details summary="How do I add software after Lockdown?" >}}
+
+A: Open Maintenance (`[m]`). After the seal lifts you are in Setup Mode: install what you will keep, review the queues, then lock down again. Do not approve compilers and package-install helpers that executed only for that window unless they must stay.
+
+The procedure is in [Protecting During Maintenance](maintenance/protecting-during-maintenance/). Do not leave the host in Setup Mode to install tools you will not keep.
 
 {{< /details >}}
 
