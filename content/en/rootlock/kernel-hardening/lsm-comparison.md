@@ -32,7 +32,7 @@ For **single-purpose containment appliances**, removing bypass primitives from t
 
 | Dimension | HeartSuite 5.19.6 | SELinux | AppArmor | TOMOYO |
 |---|---|---|---|---|
-| **Enforcement model** | VFS-hook enforcement by purpose-built kernel module; structural (removes capabilities) | Type enforcement + MLS; label-based; process and object contexts | Path-based MAC; per-program profiles | Path-based MAC; learning-mode profiles |
+| **Enforcement model** | VFS-hook enforcement compiled into the kernel binary (not a loadable module); structural (removes capabilities) | Type enforcement + MLS; label-based; process and object contexts | Path-based MAC; per-program profiles | Path-based MAC; learning-mode profiles |
 | **Policy language** | None — enforcement is structural | Type Enforcement (.te), policy modules, audit2allow | Profile language, `aa-genprof` | Pathname-based domain rules; built-in learning mode |
 | **Policy complexity** | None required | High — thousands of rules for a minimal deployment | Moderate | Low–Moderate |
 | **Bypass-primitive removal** | **Yes** — BPF, FUSE, overlayfs, USER_NS, AppArmor, TOMOYO all disabled in kernel | No — BPF, FUSE, overlayfs, USER_NS present | No — BPF, FUSE, overlayfs, USER_NS present | No — BPF, FUSE, overlayfs, USER_NS present |

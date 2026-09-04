@@ -87,6 +87,12 @@ Once you are in Setup Mode, SSH and Ansible can install packages and edit files 
 - **Many hosts already in Lockdown.** Ansible cannot lift the seal. The official `heartsecurity.root_lock` role leaves mode unchanged when `hs_state` is unset or `setup`. In-place patches still need the console path on each sealed host. For a fleet, reprovision from an updated image instead — see [Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) and [Central Policy](../../alerts/central-policy-management/).
 - **Detaching the disk.** Stopping a cloud VM and attaching its volume to another instance is hypervisor access, not a supported patch procedure. Treat it as the same class as serial-console access: break-glass, and restrict it in cloud IAM. See [Circumvention and recovery](../../introduction/how-it-compares/#circumvention-and-recovery).
 
+## What to install
+
+The maintenance window is how you add new software after Lockdown. Install the packages you will keep. Compilers and package-install helpers that executed only for this window do not belong on the allowlist unless they must stay on the host — do not approve them. See [Allowlisting Basics](../../allowlisting/allowlisting-basics/).
+
+When the change is done, review the new queue items, then lock down again from Lockdown (`[l]`). Do not leave the host in Setup Mode to install tools you will not keep.
+
 ## Manual recovery outside Maintenance
 
 When Lockdown makes files immutable using `chattr +i`, those flags are stored at the filesystem level and persist across reboots — including a reboot that reaches the maintenance kernel.

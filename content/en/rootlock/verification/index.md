@@ -11,7 +11,7 @@ aliases:
   - /docs/verification/
 ---
 
-**Overview**: Initial setup confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. Installer and initial setup logs are in `/var/log/heartsuite/` and accessible via provider serial console (AWS, Linode, Hetzner, and others).
+**Overview**: Initial setup confirms that Root Lock by HeartSuite is active and the machine is ready for allowlisting. Auto-added allowlist entries are the programs that executed at boot and shutdown; the queues hold the rest. Installer and initial setup logs are in `/var/log/heartsuite/` and accessible via provider serial console (AWS, Linode, Hetzner, and others).
 
 ## What complete looks like
 
@@ -20,7 +20,7 @@ aliases:
 When you launch a pre-installed Root Lock cloud instance, the Dashboard confirms initial setup is complete on first boot and suggests the next step. Use the serial console to `cat /var/log/heartsuite/install.log` if you need the installer or initial setup logs from the image build.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-After completing the local installation process (download, GRUB preparation, kernel install, and unattended initial setup), the Dashboard appears. From here, Cloud Path and Local Path proceed identically.
+After completing the local installation process (download, GRUB preparation, kernel install, and unattended initial setup), the Dashboard appears. The already-added entries are boot and shutdown programs. From here, Cloud Path and Local Path proceed identically.
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
@@ -34,6 +34,12 @@ When initial setup is complete, the Dashboard confirms:
 - **Checklist**: Starts at Program Allowlisting (initial setup is already done; it is not a Dashboard row)
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode, time in mode, and lockdown status
 - **Suggested Next Step**: Directs you to begin program allowlisting
+
+## What is already on the allowlist
+
+When initial setup is complete, the auto-added entries are the programs that executed at boot and shutdown. The review queues hold the rest. Do not approve one-shot tests you do, install helpers you run, or other programs you will not keep. [Allowlisting Basics](../allowlisting/allowlisting-basics/) covers **approve** and **skip**.
+
+After Lockdown, add software through [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
 
 ## Protection state
 

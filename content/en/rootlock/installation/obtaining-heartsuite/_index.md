@@ -23,6 +23,8 @@ menu:
 > [!NOTE]
 > Cloud users who launched a pre-configured instance (AWS AMI, GCP image) already have Root Lock installed. Skip this step and proceed directly to the Dashboard.
 
+Run this command after distribution updates are finished and the packages and services this host will actually run are installed. During initial setup, Root Lock records startup and shutdown programs from those boots. Package-install helpers, compilers, and one-shot probes that execute in that window become allowlist entries even if they never execute again.
+
 Run the following command on the target system:
 
 ```bash

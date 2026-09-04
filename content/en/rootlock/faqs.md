@@ -19,7 +19,7 @@ A: Every attack does three things: run a program, access files, make a network c
 
 Unlike anti-malware tools that look for signatures or suspicious behavior, every execution, file access, and network connection must be approved through the Dashboard review queues. In Lockdown, anything not approved is blocked.
 
-There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Changing it takes physical or serial-console access. SSH is not enough.
+There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Changing it takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console. Those are the same class as sitting at the rack. SSH is not enough.
 
 See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 

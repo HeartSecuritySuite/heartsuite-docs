@@ -329,7 +329,7 @@ Every security system has a known way to be taken out of the picture. Being expl
 Root Lock's sealed allowlist is intended to change through these operator paths:
 
 1. **Maintenance window.** You switch to Setup Mode, make changes, and re-engage Lockdown. Logged and intentional.
-2. **Lockdown recovery.** When Lockdown is active, the allowlist is sealed. Remote root cannot edit it. Recovery requires booting the maintenance kernel, using the Dashboard's Maintenance (`[m]`) to remove the seal, and rebooting back. Booting the maintenance kernel requires **physical or serial-console access**: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. An attacker without that console path cannot take this route.
+2. **Lockdown recovery.** When Lockdown is active, the allowlist is sealed. Remote root cannot edit it. Recovery requires booting the maintenance kernel, using the Dashboard's Maintenance (`[m]`) to remove the seal, and rebooting back. Booting the maintenance kernel requires **physical or serial-console access**: a keyboard and monitor at the machine, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), a hypervisor serial console, or your cloud provider's serial console. An attacker without that console path cannot take this route. On a VM, the hypervisor that owns the guest disk and memory is that outer path. The guest kernel cannot police it.
 
 What this means for security:
 

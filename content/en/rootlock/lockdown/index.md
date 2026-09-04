@@ -127,6 +127,8 @@ From the Dashboard, select Lockdown (`[l]`). The Dashboard shows a precondition 
 - SSH hardening (`[h]`) and SSH during Lockdown (`[r]` / `[j]`)
 - inbound permit selection (`[o]` / `[a]`); `[k]` removes recorded permits
 
+If you do nothing, HeartSuite narrows those grants when Lockdown finalizes.
+
 The commitment summaries and, after Lockdown, the Lockdown Inventory (`[l]`) are read-only. Change grants on the activation view, not on the inventory. When all preconditions are met, type `YES` (case-sensitive) to confirm.
 
 ![Lockdown with all preconditions met](test_docs_lockdown_all_clear.svg)
