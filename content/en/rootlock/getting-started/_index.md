@@ -24,7 +24,7 @@ Check [Before You Begin](before-you-begin/) for system requirements and prerequi
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-installed Root Lock instance. No download or kernel installation required.
+Launch a pre-installed Root Lock instance. No download or kernel installation required. First-boot leftovers can still appear in the queues — dismiss them if they are not runtime.
 
 1. **Launch the instance** — start a pre-installed image on AWS, Google Cloud, Azure, DigitalOcean, Linode, or another provider.
 2. **Open the Dashboard** — you boot into Setup Mode and the Dashboard appears on first login. Initial setup is already complete.

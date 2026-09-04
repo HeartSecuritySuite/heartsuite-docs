@@ -36,6 +36,28 @@ Root Lock reads the startup and shutdown logs, adds the programs it finds to the
 
 The first time you connect and the Dashboard appears, initial setup is complete. The Dashboard shows the reboot history.
 
+## Leave the host quiet
+
+After the first reboot into the Root Lock kernel, leave the machine alone until the Dashboard appears. Each SSH reconnect shows a status line and a shell. Root Lock is still adding startup and shutdown programs from those boots.
+
+## What already landed on the allowlist
+
+When the Dashboard appears, Root Lock has already added the programs that executed at boot and shutdown. The Dashboard checklist starts at Program Allowlisting. In Setup Mode, Root Lock then logs the rest of the workload.
+
+Package-install helpers, compilers, and one-shot probes that executed during those unattended boots are already allowlist entries even if they never execute again.
+
+## Run the services you will keep
+
+Start the services this host will keep. Do not run throwaway tests, compilers, or extra shells. In the review queues, approve programs that belong on this host. Dismiss the one-shots as approving them grants them under Lockdown. [Allowlisting Basics](../../allowlisting/allowlisting-basics/) covers **approve** and **skip**.
+
+Setup Mode after the Dashboard is for that kept workload. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+
+## Cloud leftovers
+
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers (cloud-init, provisioning helpers) may still appear in the queues. Do not approve them if they are not runtime.
+
+Cloud images often ship a first-boot SSH policy that allows password login so you can reach the guest. After first boot, running sshd is typically key-only. Check the live sshd configuration, for leftover cloud-init snippets.
+
 ## If the Dashboard does not appear
 
 If initial setup is still running, SSH reconnects show the status line above instead of the Dashboard. Wait a few minutes and reconnect.
