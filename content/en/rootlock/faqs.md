@@ -47,7 +47,17 @@ Containers fit as OCI images built and run on a separate host, with Root Lock pr
 
 Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a Root Lock kernel host is not a fit by design. The kernel omits overlay filesystems and user namespaces because those are how attackers hide, shadow directories, and reach root.
 
-Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon are not a fit for the same reason: the BPF syscall is omitted. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit: Root Lock does not enforce through eBPF, and those tools need the BPF syscall. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+
+{{< /details >}}
+
+{{< details summary="Is Root Lock just easier SELinux?" >}}
+
+A: No. You build a per-program allowlist in Setup Mode. The Dashboard records what actually ran, what it read or wrote, and where it connected. You approve that.
+
+Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Changing the sealed allowlist takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console. SSH is not enough.
+
+SELinux still has policy depth Root Lock does not replicate (domain transitions, distribution-shipped profiles). See [How Root Lock Compares](introduction/how-it-compares/), [The Setup Journey](introduction/setup-overview/), and [Central Policy](alerts/central-policy-management/).
 
 {{< /details >}}
 

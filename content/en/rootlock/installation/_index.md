@@ -14,7 +14,13 @@ menu:
     weight: 20
 ---
 
-**Overview**: On a single host, Root Lock by HeartSuite installation follows Cloud Path or Local Path. Both end at the Dashboard after initial setup confirms that the machine is ready for allowlisting.
+**Overview**: On a single host, Root Lock by HeartSuite installation follows Cloud Path or Local Path. Both end at the Dashboard after initial setup confirms that the machine is ready for allowlisting. On Local Path, finish the OS and the services this host will run before you install.
+
+## Finish the OS first
+
+On Local Path, complete distribution updates and install the packages and services this host will actually run. Then run the installer. During initial setup, Root Lock records startup and shutdown programs from those boots. Package-install helpers, compilers, and one-shot probes that execute in that window become allowlist entries even if they never execute again.
+
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues — dismiss them if they are not runtime. Details are in [Installation Part 2](installation-part2/).
 
 ## Choose your path
 
