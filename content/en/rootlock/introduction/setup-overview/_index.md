@@ -59,6 +59,14 @@ Many hosts still install through Cloud Path or Local Path on each machine. Ansib
 
 ![Dashboard after setup: Program Allowlisting active, 3 programs pending review](test_docs_dashboard_setup_complete.svg)
 
+## After the Dashboard appears
+
+Initial setup already recorded boot and shutdown. Setup Mode logs every program that executes, every file it reads or writes, and every outbound connection.
+
+Start the services you will keep. Compilers, probes, and extra shells that execute now become items in the review queues. If you approve them, Lockdown grants them. Do not approve programs that should not execute in production — they do not belong on the allowlist.
+
+After Lockdown, new packages go through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/). Approve and skip in [Allowlisting Basics](../../allowlisting/allowlisting-basics/).
+
 ## From installation to Lockdown
 
 The following diagram shows installation to Lockdown on one host, including the maintenance cycle.
