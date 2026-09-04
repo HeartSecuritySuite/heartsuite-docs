@@ -71,9 +71,9 @@ See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side t
 
 A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock does not replicate. SELinux's domain transitions and per-service profiles are deliberate capabilities, not gaps.
 
-The limitation is the trust boundary. Root with the right capability can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly. If the system is compromised before SELinux policy is fully hardened, the attacker has the same access as any root process and can dismantle the policy from there.
+The limitation on a typical distro is the trust boundary. Root can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly.
 
-Root Lock anchors blocking in the kernel. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Changing the allowlist takes booting the maintenance kernel from a keyboard and monitor, a serial port, or your cloud provider's serial console. SSH is not enough.
+Root Lock is not an LSM. Setup Mode learns a per-program allowlist; Lockdown seals it. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Changing the allowlist takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side.
 
@@ -129,6 +129,14 @@ To make changes, open Maintenance (`[m]`). After the seal is applied, reboot fro
 {{< details summary="What are the system requirements for Root Lock?" >}}
 
 A: x86 (64-bit) Linux. **Validated** in release testing: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21. **Supported** without a specific gate run: Debian 11, Ubuntu-derived, Alpine 3.x. **RPM enterprise** (RHEL, AlmaLinux, SLES): RHEL-compatible — validate on your subscribed minor before production. Root Lock ships two Root Lock kernel lines: **6.18** (primary) and **5.19** (legacy). Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
+
+{{< /details >}}
+
+{{< details summary="Which Linux kernels does Root Lock ship? Is Linux 7 supported?" >}}
+
+A: Two custom kernels on mainline LTS: **6.18** for new installs (`uname -r` is `6.18.9-hs`) and **5.19** only on Debian 11 / Ubuntu 20.04 through end of 2026.
+
+See [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
 
 {{< /details >}}
 
@@ -219,6 +227,32 @@ If the outer machine has no `/dev/kvm`, install there. Nesting a second guest ca
 
 {{< /details >}}
 
+{{< details summary="If Root Lock runs in a VM, can a hypervisor jailbreak bypass it?" >}}
+
+A: A full VM (KVM, VMware, AWS, Firecracker, Kata) is a supported install. Root Lock is the **guest** kernel. It blocks unapproved programs, files, and outbound network inside that guest, including as root. Remote root in the guest cannot unseal Lockdown.
+
+What Root Lock does **not** police is the **hypervisor**: serial console, pause/snapshot, and attaching the disk to another machine. Those are the same class as a keyboard on metal. Restrict them in hypervisor or cloud IAM.
+
+A guest-to-host escape is an attack on **that** hypervisor, not on Root Lock. If it succeeds, the attacker has left the guest kernel. No guest kernel can close that.
+
+Shared-kernel containers (Docker/LXC as the *install target*) are not a fit: Root Lock must boot its own kernel. Root Lock as a hypervisor host is not a supported product role.
+
+See [Containers and microVMs](introduction/containers-and-microvms/) and [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery).
+
+{{< /details >}}
+
+{{< details summary="Does Dell iDRAC (or iLO, or a cloud serial console) bypass Lockdown?" >}}
+
+A: It **is** the supported leave path.
+
+Lockdown is built so remote root over SSH cannot unseal the allowlist or boot another kernel. The path out is the maintenance kernel, selected at the boot menu from a console. A console here means a keyboard to firmware, not an SSH session: a rack keyboard, a serial port, a BMC virtual console or serial-over-LAN (Dell iDRAC, HPE iLO, Lenovo XCC, IPMI SOL), a hypervisor serial console, or a cloud serial console.
+
+If you can reach that console, you can select **Maintenance: unseal and return to Root Lock**. An attacker with the same BMC or cloud-console credentials can too. Restricting who can reach the BMC and the cloud serial console is a customer control.
+
+See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery).
+
+{{< /details >}}
+
 {{< details summary="Will installing the Root Lock kernel break my existing software?" >}}
 
 A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot back to the maintenance kernel at any time from the GRUB menu, and the Dashboard remains accessible on both. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
@@ -258,6 +292,22 @@ If the installer stopped before reboot on a nested guest, install on the outer m
 {{< details summary="The Dashboard has not appeared after install — what next?" >}}
 
 A: Initial setup is still running. It is unattended: the host reboots on its own between passes. Watch the serial console for the finishing-install banner, or `cat /var/log/heartsuite/install.log`. The Dashboard appears when initial setup is complete. There is no System Setup screen and no `[a]` to press.
+
+{{< /details >}}
+
+{{< details summary="Should other software be installed before or after Root Lock?" >}}
+
+A: Install the OS and the runtime packages this host will keep, then install Root Lock. Initial setup records boot and shutdown. After the Dashboard appears, Setup Mode logs the rest of the workload you will keep.
+
+After Lockdown, add software through Maintenance — see [Protecting During Maintenance](maintenance/protecting-during-maintenance/). If you install compilers, probes, or other one-shot tools they become queue items, and approving them grants them under Lockdown.
+
+{{< /details >}}
+
+{{< details summary="Why do cloud-init or first-boot helpers appear?" >}}
+
+A: Cloud images and first-boot provisioning often leave helpers that executed once to configure the instance. They appear in the Programs queue because they executed during Setup Mode.
+
+Do not approve them if they are not part of the runtime workload. Approving them grants them under Lockdown.
 
 {{< /details >}}
 
