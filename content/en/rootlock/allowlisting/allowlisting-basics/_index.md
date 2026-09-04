@@ -58,6 +58,10 @@ Two additional keys appear contextually, not in the footer:
 |-----|---------------|
 | `[u]` | Undo — available until the next approve or skip; cancels the last approval and returns the item to the queue |
 
+### When to skip
+
+Do not approve a program that executed only to install, compile, or probe and will not execute in production. Approving it grants that program under Lockdown. Press `[s]` Skip for now to defer the item without granting it.
+
 ### Metadata shown in review
 
 Every review item displays metadata directly in the primary prompt — you do not need to press a key to see it. The fields shown include:
@@ -125,6 +129,10 @@ From the Dashboard, select the Programs queue (`[p]`). Each program is presented
 
 ![Programs queue review item with package metadata and action keys](test_docs_programs_queue_review.svg)
 
+### python3 is one program
+
+Approving `/usr/bin/python3` grants the interpreter. Scripts that interpreter executed do not each become a separate program. Per-script grants start at [Secure Script Launchers](../../script-launchers/).
+
 ## File Access queue
 
 Once you approve a program's execution, Root Lock begins logging every file it accesses. Programs typically access shared libraries, configuration files, and data files. The File Access queue presents them with two distinct permission levels:
@@ -174,6 +182,8 @@ From the Dashboard, select the File Access queue (`[f]`).
 > [!NOTE]
 > Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 still exist; 34 have been removed since".
 
+Do not approve directory grants for install-time trees — package-manager caches, build directories, and similar — unless that program needs those paths at runtime.
+
 ## Internet Access queue
 
 Programs that make outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.
@@ -217,6 +227,8 @@ Suggested: Review pending File Access events
 ```
 
 Allow several days to a week of observation in Setup Mode so systemd timers, cron jobs, and infrequent services appear in the queues before you activate Lockdown.
+
+Software you add after Lockdown goes through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
 
 ## Review queues in Lockdown
 
