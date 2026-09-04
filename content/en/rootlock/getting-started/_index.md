@@ -20,6 +20,14 @@ menu:
 
 Check [Before You Begin](before-you-begin/) for system requirements and prerequisites, then follow Cloud Path or Local Path below.
 
+## Order of work
+
+On Local Path, finish distribution updates and install the packages and services this host will actually run. Then run the installer. After the first reboot into the Root Lock kernel, leave the host quiet until the Dashboard appears.
+
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues — do not approve them if they are not runtime.
+
+When the Dashboard appears, Root Lock has already added the programs that executed at boot and shutdown. In Setup Mode, Root Lock logs the rest of the workload. [Allowlisting Basics](../allowlisting/allowlisting-basics/) covers **approve** and **skip**. After Lockdown, add software through [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+
 ## Choose your path
 
 {{< choice-pane >}}
