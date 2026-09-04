@@ -26,7 +26,7 @@ The Dashboard Lockdown Checklist shows three review queues, then Secure Script L
 3. **Internet Access Allowlisting** (`[i]`): Approve which outbound internet destinations each program can reach.
 4. **Secure Script Launchers** (`[s]`): Give each Python, Perl, or PHP script its own allowlist entry. See [Script Launchers](../script-launchers/).
 
-Start from the Dashboard — it shows how many items are waiting in each queue and the Suggested Next Step directs you to whichever needs attention. The review queues manage volume through intelligent grouping, not blind bulk approval.
+Start from the Dashboard — it shows how many items are waiting in each queue and the Suggested Next Step directs you to whichever needs attention. The review queues manage volume through intelligent grouping. There is no Approve All.
 
 ## In this section
 
