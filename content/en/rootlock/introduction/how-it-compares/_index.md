@@ -74,7 +74,7 @@ Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArm
 
 An attacker who already has remote root can turn those tools off. They kill the program, unload the module, or set the LSM policy permissive. Sitting at Layer 2 leaves nothing to turn off.
 
-Changing the sealed allowlist takes physical presence or the cloud serial console. SSH is not enough, even as root. What remains is whether Setup Mode approved too much, and whether someone at the console can unseal it.
+Unsealing the allowlist takes physical presence or the cloud serial console. SSH is not enough to unseal, even as root. SSH remains the day-to-day admin path. What remains is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
 See [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
 
@@ -334,7 +334,7 @@ Root Lock's sealed allowlist is intended to change through these operator paths:
 What this means for security:
 
 - Under Lockdown, an attacker who already has remote root cannot defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access.
-- Supported recovery requires physical or serial-console access: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the recovery path.
+- Supported recovery (unseal) requires physical or serial-console access: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the unseal path. After unseal, SSH is how you work in Setup Mode.
 - Physical or serial-console access always returns control to you. No software applied to the host can prevent console recovery.
 - **What can still go wrong (beyond physical or serial-console access).** On a large kernel, whether every path is actually gated is still an engineering job. That includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
 - Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. This is a different question than whether an agent is still running.

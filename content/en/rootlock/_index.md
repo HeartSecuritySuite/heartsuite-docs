@@ -19,7 +19,7 @@ aliases:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing takes the maintenance kernel from a physical or serial console. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
+In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing takes the maintenance kernel from a physical or serial console. SSH remains how you log in and run the Dashboard; after unseal, it is how you make changes. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 On a single host, Root Lock supports two setup paths. Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 

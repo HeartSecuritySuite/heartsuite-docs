@@ -19,7 +19,7 @@ A: Every attack does three things: run a program, access files, make a network c
 
 Unlike anti-malware tools that look for signatures or suspicious behavior, every execution, file access, and network connection must be approved through the Dashboard review queues. In Lockdown, anything not approved is blocked.
 
-There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Changing it takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console. Those are the same class as sitting at the rack. SSH is not enough.
+There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Unsealing takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console. Those are the same class as sitting at the rack. SSH is not enough to unseal. SSH remains how you log in and run the Dashboard; after unseal, it is how you make changes.
 
 See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 
@@ -31,7 +31,7 @@ A: No. Root Lock is compiled into the kernel binary. You do not load it with `in
 
 eBPF tools (Falco, Tetragon, BPF LSM, eBPF Jailer) attach programs to a running kernel. That needs the BPF syscall. Root can unload those programs or kill the agent that loaded them. SELinux and AppArmor are LSM policy: on a typical distro, root can set them permissive or edit the policy file.
 
-Root Lock is not an LSM and not eBPF. The supported way off the Root Lock kernel is a reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, into the maintenance kernel. SSH is not enough.
+Root Lock is not an LSM and not eBPF. The supported way off the Root Lock kernel is a reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, into the maintenance kernel. SSH is not enough to select that kernel. SSH still works while the Root Lock kernel is running.
 
 See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis](introduction/layer-analysis/).
 
@@ -55,7 +55,7 @@ Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforce
 
 A: No. You build a per-program allowlist in Setup Mode. The Dashboard records what actually ran, what it read or wrote, and where it connected. You approve that.
 
-Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Changing the sealed allowlist takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console. SSH is not enough.
+Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Unsealing takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console. SSH is not enough to unseal. Day-to-day SSH still works.
 
 SELinux still has policy depth Root Lock does not replicate (domain transitions, distribution-shipped profiles). See [How Root Lock Compares](introduction/how-it-compares/), [The Setup Journey](introduction/setup-overview/), and [Central Policy](alerts/central-policy-management/).
 
@@ -97,7 +97,7 @@ A: SELinux is a strong MAC framework — it confines processes using labels, enf
 
 The limitation on a typical distro is the trust boundary. Root can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly.
 
-Root Lock is not an LSM. Setup Mode learns a per-program allowlist; Lockdown seals it. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Changing the allowlist takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough.
+Root Lock is not an LSM. Setup Mode learns a per-program allowlist; Lockdown seals it. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough to unseal. After unseal, you work over SSH in Setup Mode.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side.
 
@@ -217,9 +217,11 @@ Internet Access (`[i]`) is outbound destinations only. Adding the address you co
 Root Lock still has SSH posture controls:
 
 - **Lockdown** — Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off). Inbound permits (`[o]` / `[a]`) record which source addresses may reach sshd while sealed. `[r]` / `[j]` choose whether SSH stays up under Lockdown.
-- **Maintenance** — console-only (network down), a restricted SSH route, or leave SSH open. You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+- **Maintenance** — unseal is a console GRUB pick (SSH is not enough for that step). Once the seal is lifted, keep a restricted SSH route, leave SSH open, or take the network down (console only). You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
 sshd's own config, an OS packet filter, and cloud security groups still apply. If you SSH *from* the Root Lock host *to* other hosts, those destination IPs appear in Internet Access for the SSH client. See [Network and Remote Access](network/).
+
+Unsealing Lockdown is the exception: that boot-menu pick needs the console.
 
 {{< /details >}}
 
@@ -441,15 +443,15 @@ A: The seal is applied as part of Lockdown activation (see the "How do I activat
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land in Setup Mode. Review new activity in the queues, then re-engage Lockdown (`[l]`).
+A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. The seal lifts automatically and you land in Setup Mode, then log in over SSH to make the changes. Review new activity in the queues, then re-engage Lockdown (`[l]`).
 
 {{< /details >}}
 
 {{< details summary="How do I maintain or update in Lockdown?" >}}
 
-A: Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path — a `YES` switch to Setup Mode on the Root Lock kernel, or the console GRUB entry **Maintenance: unseal and return to Root Lock** when the seal is applied.
+A: Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path — a `YES` switch to Setup Mode on the Root Lock kernel, or the console GRUB entry **Maintenance: unseal and return to Root Lock** when the seal is applied. SSH is not enough for that GRUB pick. After unseal, SSH is how you install packages, edit files, and run the installer.
 
-A product update will not overwrite Root Lock while that kernel is booted. Setup Mode is still the Root Lock kernel. If Lockdown is applied, unseal first. From a terminal in Setup Mode, run `bash heartsuite-install.sh` and type `YES` for one stock boot. The default stays Root Lock. See [Updating Root Lock](maintenance/updating-heartsuite/).
+A product update will not overwrite Root Lock while that kernel is booted. Setup Mode is still the Root Lock kernel. If Lockdown is applied, unseal first. From a terminal in Setup Mode (SSH is fine), run `bash heartsuite-install.sh` and type `YES` for one stock boot. The default stays Root Lock. See [Updating Root Lock](maintenance/updating-heartsuite/).
 
 Many locked hosts reprovision from an updated image instead (see the "How do I patch many hosts that are already in Lockdown?" entry above).
 

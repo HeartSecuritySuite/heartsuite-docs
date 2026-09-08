@@ -45,7 +45,7 @@ In Setup Mode, you are trusted to teach the allowlist — anything not on the al
 In Lockdown, trust is withdrawn from running programs regardless of which user runs them. Any program, including one running as root, must be on the allowlist. Your ability to change that allowlist at runtime is also withdrawn — configuration is sealed until Maintenance unseals it so you can install software or edit files.
 
 > [!NOTE]
-> Removing Lockdown takes physical or serial-console access. SSH is not enough.
+> Unsealing Lockdown takes physical or serial-console access: pick **Maintenance: unseal and return to Root Lock** at the boot menu. SSH is not enough for that step. SSH remains how you log in, run the Dashboard, and do the work after the seal lifts.
 
 ### Protection state
 
@@ -82,7 +82,7 @@ graph TD
     D --> E["Seal reboot — at the boot menu, do nothing"]
     E --> F["Lockdown applied"]
     F --> G{Maintenance needed?}
-    G -->|"Yes"| H["Maintenance [m] — console, pick Maintenance: unseal and return to Root Lock"]
+    G -->|"Yes"| H["Maintenance [m] — console unseal, then SSH in Setup"]
     H --> I["Setup Mode — make changes, review new activity"]
     I --> C
     G -->|"No"| J["Stay in Lockdown"]
@@ -154,12 +154,12 @@ Once Lockdown is applied, Lockdown (`[l]`) opens the **Lockdown Inventory**. It 
 
 ### Making changes after Lockdown
 
-From the Dashboard, open Maintenance (`[m]`). After Lockdown, that path requires physical or serial-console access.
+From the Dashboard, open Maintenance (`[m]`). After Lockdown, **unsealing** requires physical or serial-console access. SSH is not enough to pick the boot-menu entry. After that reboot, you work over SSH again.
 
-1. Reboot from the **console**, not over SSH.
+1. Reboot from the **console**, not over SSH — only this GRUB pick needs the console.
 2. At the boot menu, select **Maintenance: unseal and return to Root Lock**.
 3. The seal lifts automatically. The machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel, and you do not press a key to remove flags.
-4. Make your changes. New activity appears in the review queues.
+4. Log in over SSH (or stay on the console). Make your changes. New activity appears in the review queues.
 5. Lock down again from Lockdown (`[l]`).
 
 See [Protecting During Maintenance](../maintenance/protecting-during-maintenance/) for the safety checklist and isolation choices.
@@ -178,7 +178,7 @@ Lockdown seals Root Lock's configuration with filesystem immutability, so a comp
 | Can root edit allowlist entries or Root Lock config files? | Yes | **No** — immutable; writes are blocked until Maintenance removes the seal |
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes**. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored when Maintenance unseals. |
 | How long does the seal last? | N/A | Until Maintenance unseals. The seal persists across reboots and re-engages automatically on every Root Lock kernel boot. |
-| How do you remove Lockdown? | N/A | Maintenance (`[m]`) — console, then **Maintenance: unseal and return to Root Lock**. Physical or serial-console access is required. |
+| How do you remove Lockdown? | N/A | Maintenance (`[m]`) — console GRUB pick **Maintenance: unseal and return to Root Lock**. Physical or serial-console access is required for that step. Then SSH for the work. |
 
 ### What Lockdown seals
 
@@ -218,7 +218,7 @@ Without sealing cron, anacron, environment defaults, and root's shell profiles, 
 
 By default, the startup script re-engages Lockdown automatically on every Root Lock kernel boot. Once active, rebooting the Root Lock kernel will engage Lockdown before you can prevent it.
 
-To install software or edit sealed files, boot the Maintenance entry from the console as described above. That procedure is in [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+To install software or edit sealed files, unseal from the console as described above, then work over SSH in Setup Mode. That procedure is in [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
 
 ### Restoring mutability after Lockdown
 
