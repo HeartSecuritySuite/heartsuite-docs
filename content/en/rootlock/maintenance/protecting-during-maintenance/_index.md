@@ -15,7 +15,7 @@ toc: true
 
 Maintenance is the period when you temporarily reduce Root Lock by HeartSuite's protection to install packages or edit files. The Dashboard's Maintenance (`[m]`) guides you from the safety checklist through re-engaging Lockdown. Replacing the Root Lock kernel is a different path: [Updating Root Lock](../updating-heartsuite/).
 
-After Lockdown, the path is the console. You select **Maintenance: unseal and return to Root Lock** at the boot menu. The seal lifts automatically, and the machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel to remove flags by hand.
+After Lockdown, **unsealing** is the console step. You select **Maintenance: unseal and return to Root Lock** at the boot menu. The seal lifts automatically, and the machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel to remove flags by hand. Package installs, configuration edits, and Ansible stay on SSH once you are back in Setup Mode.
 
 A one-reboot switch that stays on the Root Lock kernel applies only when the strip already says **Lockdown not applied** — the seal is missing. That is not the usual path after a completed Lockdown.
 
@@ -39,7 +39,7 @@ The safety checklist matters most when you are about to lift the seal. While you
 
 ## After Lockdown: unseal from the console
 
-This is the path when Lockdown is applied. Physical or serial-console access is required (keyboard and monitor, a serial port, or your cloud provider's serial console — AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start. You cannot do this from SSH.
+This is the path when Lockdown is applied. Physical or serial-console access is required to pick the boot-menu entry (keyboard and monitor, a serial port, or your cloud provider's serial console — AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console). Confirm that access before you start. You cannot unseal from SSH. After the seal lifts, SSH and Ansible are how you install packages and edit files.
 
 After the safety checklist, Maintenance tells you to reboot from the **console**. It does not offer `[r]` Reboot on this path — the boot-menu choice has to happen at the console.
 

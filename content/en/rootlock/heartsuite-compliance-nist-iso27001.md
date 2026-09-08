@@ -71,7 +71,7 @@ These are CSF 1.1 **subcategories**, not categories. Rows that were previously m
 - **PR.AC-5** network integrity / segmentation — host socket allowlisting is not network segregation.
 - **PR.DS-1** data-at-rest — backups and config are **not** encrypted at the Root Lock layer; LUKS is the complementary control (see A.8.13 / A.8.24).
 - **PR.IP-12** vulnerability management plan — same idea as ISO **A.8.8**, which is **not covered**. Blast-radius reduction is not a VM plan.
-- **PR.MA-2** remote maintenance — Root Lock maintenance is local/serial two-reboot. That is the opposite of remote maintenance.
+- **PR.MA-2** remote maintenance — unsealing Lockdown is a local/serial two-reboot (console GRUB pick). Package work after unseal is still over SSH. The control is that remote root cannot lift the seal; it is not a ban on remote admin.
 - **PR.PT-1** audit/log records determined, documented, implemented, and reviewed — a logging **program**, not `chattr` on a buffer that is cleared on maintenance.
 
 ### Function: Detect

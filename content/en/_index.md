@@ -1,7 +1,7 @@
 ---
 title: "HeartSuite product documentation"
 linkTitle: "Home"
-description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. Recovery is the maintenance kernel via physical or serial console."
+description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. Unsealing Lockdown uses the maintenance kernel via physical or serial console. SSH is the admin path."
 ---
 
 *Root Lock by HeartSuite | Humans in Command*

@@ -86,7 +86,7 @@ graph TD
     J --> K["Activate Lockdown"]
     K --> L["YES — probe reboot, then seal reboot"]
     L --> M{Maintenance needed?}
-    M -- Yes --> N["Maintenance [m] — console unseal, return to Setup"]
+    M -- Yes --> N["Maintenance [m] — console unseal, then SSH in Setup"]
     N --> K
     M -- No --> O[System secured]
 
@@ -119,6 +119,6 @@ After Lockdown, the startup script re-engages the seal on every Root Lock kernel
 
 ## Maintenance in Lockdown
 
-To change a sealed allowlist, open Maintenance (`[m]`) from the Dashboard. After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you return to Setup Mode. Review new activity, then lock down again.
+To unseal a locked allowlist, open Maintenance (`[m]`) from the Dashboard. After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. The seal lifts automatically and you return to Setup Mode, then log in over SSH to install packages, edit files, and review new activity. Lock down again when the change is done.
 
 See [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).

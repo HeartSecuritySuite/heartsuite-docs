@@ -21,7 +21,7 @@ During maintenance you either switch to Setup Mode (the kernel logs but stops bl
 Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch with no GRUB is only when the strip already says Lockdown not applied.
 
 - **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
-- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required. Reboot and select **Maintenance: unseal and return to Root Lock**. That is two reboots before you can install software or edit sealed files.
+- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required to unseal. Reboot and select **Maintenance: unseal and return to Root Lock**. That is two reboots before the window is open. Installs and edits after that are over SSH in Setup Mode.
 
 The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 
@@ -37,7 +37,7 @@ Installing packages, replacing program files, and updating Root Lock itself are 
 
 ## In this section
 
-- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown, then install software or edit files in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
+- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown (SSH is not enough for the GRUB pick). Then install or edit over SSH in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
 - [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.
