@@ -86,6 +86,25 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-64186](#cve-2026-64186) | AMD IOMMU debugfs (`CONFIG_IOMMU_DEBUGFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
 | [CVE-2026-64237](#cve-2026-64237) | Elan I2C touchpad (`CONFIG_MOUSE_ELAN_I2C`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-64245](#cve-2026-64245) | fbdev mode database (`CONFIG_FB`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-63797](#cve-2026-63797) | rpmsg char (`CONFIG_RPMSG` / `CONFIG_RPMSG_VIRTIO`) | <span class="badge badge-cve-high">8.4 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64054](#cve-2026-64054) | net shaper (`CONFIG_NET_SHAPER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-64063](#cve-2026-64063) | netfslib streaming write (`CONFIG_NETFS_SUPPORT`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-64075](#cve-2026-64075) | fprobe (`CONFIG_FPROBE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-64085](#cve-2026-64085) | hwmon ADM1266 PMBUS (`CONFIG_SENSORS_ADM1266`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64103](#cve-2026-64103) | SCSI ISCI (`CONFIG_SCSI_ISCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64145](#cve-2026-64145) | wilc1000 WiFi (`CONFIG_WILC1000_SDIO` / `CONFIG_WILC1000_SPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64209](#cve-2026-64209) | Qualcomm QMP USBC PHY (`CONFIG_PHY_QCOM_QMP_USB` / qmp-usbc) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64224](#cve-2026-64224) | OcteonTX2 PF (`CONFIG_OCTEONTX2_PF` / RVU) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64225](#cve-2026-64225) | OcteonTX2 AF CGX (`CONFIG_OCTEONTX2_AF`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64242](#cve-2026-64242) | USB gadget NET2280 (`CONFIG_USB_NET2280`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64246](#cve-2026-64246) | LinkStation poweroff (`CONFIG_POWER_RESET` / linkstation-poweroff) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64249](#cve-2026-64249) | FPGA region (`CONFIG_FPGA`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64270](#cve-2026-64270) | MMS114 touchscreen (`CONFIG_TOUCHSCREEN_MMS114`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64271](#cve-2026-64271) | Touchwin touchscreen (`CONFIG_TOUCHSCREEN_TOUCHWIN`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64272](#cve-2026-64272) | MMS114 touchscreen (`CONFIG_TOUCHSCREEN_MMS114`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-64273](#cve-2026-64273) | I-Force joystick (`CONFIG_JOYSTICK_IFORCE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64274](#cve-2026-64274) | Goodix touchscreen (`CONFIG_TOUCHSCREEN_GOODIX`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
+| [CVE-2026-64305](#cve-2026-64305) | Intel QAT (`CONFIG_CRYPTO_DEV_QAT`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2025-71306](#cve-2025-71306) | IMA exec appraisal (`CONFIG_IMA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-45998](#cve-2026-45998) | RxRPC (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-46191](#cve-2026-46191) | framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
@@ -3945,3 +3964,200 @@ The network hook at connect() and sendto() does not apply to inbound ASCONF proc
 The trigger cannot be reached on any default Root Lock deployment.
 
 If a 6.18.9-hs deployment loads `sctp.ko` and runs an allowlisted SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
+
+### CVE-2026-63797
+
+**Status**: Not exploitable — feature not compiled
+**Component**: rpmsg char (`CONFIG_RPMSG` / `CONFIG_RPMSG_VIRTIO`)
+**Base Score**: 8.4 HIGH
+**Score on Root Lock**: 0.0 — rpmsg drivers are not compiled on either fielded pin
+
+Both fielded configs leave the Rpmsg drivers section with only `# CONFIG_RPMSG_QCOM_GLINK_RPM is not set` and `# CONFIG_RPMSG_VIRTIO is not set`. There is no `CONFIG_RPMSG_CHAR`. `rpmsg_chrdev_probe()` is not in the image.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64054
+
+**Status**: Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
+**Component**: net shaper (`CONFIG_NET_SHAPER`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — no NET_SHAPER on 5.19.6; on 6.18.9-hs the netlink GROUP path is not reachable without allowlisted shaper tooling
+
+`net_shaper_nl_group_doit()` fails to deduplicate NET_SHAPER GROUP leaves. 5.19.6 has no `CONFIG_NET_SHAPER` symbol. 6.18.9-hs has `CONFIG_NET_SHAPER=y` and `net_shaper_nl_group_doit` in System.map. The trigger is a netlink GROUP request from userspace (`ip` / equivalent). Exact matches for `ip` and `tc` are absent from the program allowlist. Under Lockdown, root cannot add them.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64063
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: netfslib streaming write (`CONFIG_NETFS_SUPPORT`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — standard Root Lock deployments do not run netfs streaming writes; attaching a netfs mount is blocked
+
+Netfslib can overwrite a streaming write when avoiding read-while-write. Both pins compile netfs support (5.19.6 `=y` with `CONFIG_9P_FS=y`; 6.18.9-hs `=m` with ceph/cifs/afs/9p modules). The path needs a mounted network filesystem. Root Lock root is not netfs. `modprobe`/`insmod`/`kmod` and netfs mkfs/mount helpers are absent from the program allowlist. Under Lockdown, `mount()` / `fsmount()` / `move_mount()` return `-EPERM`.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64075
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
+**Component**: fprobe (`CONFIG_FPROBE`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — no FPROBE on 5.19.6; on 6.18 the unregister path is not reachable from the program allowlist
+
+`unregister_fprobe()` must wait for an RCU grace period after the fprobe rewrite. 5.19.6 has no `CONFIG_FPROBE` symbol. 6.18.9-hs has `CONFIG_FPROBE=y` and `unregister_fprobe` in System.map. Reaching it needs perf/fprobe or BPF fprobe userspace. `perf` and `bpftool` are absent from the program allowlist. Public derived 6.18 also sets `CONFIG_BPF_SYSCALL=n`.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64085
+
+**Status**: Not exploitable — feature not compiled
+**Component**: hwmon ADM1266 PMBUS (`CONFIG_SENSORS_ADM1266`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_SENSORS_ADM1266` is not set on either fielded pin
+
+`adm1266_pmbus_block_xfer()` is not compiled. 5.19.6 has `# CONFIG_PMBUS is not set`. 6.18.9-hs has PMBUS modules but `# CONFIG_SENSORS_ADM1266 is not set`.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64103
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: SCSI ISCI (`CONFIG_SCSI_ISCI`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — ISCI not compiled on 5.19.6; Intel C600 SAS hardware absent on standard 6.18 deployments
+
+The ISCI completion tasklet UAF needs an isci-bound host. 5.19.6 has `# CONFIG_SCSI_ISCI is not set`. 6.18.9-hs has `CONFIG_SCSI_ISCI=m`. Standard Root Lock deployments have no Intel C600 SAS HBA, so the module does not bind.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64145
+
+**Status**: Not exploitable — feature not compiled
+**Component**: wilc1000 WiFi (`CONFIG_WILC1000_SDIO` / `CONFIG_WILC1000_SPI`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — WILC1000 drivers are not compiled on either fielded pin
+
+Both pins leave Microchip WLAN vendor enabled but do not build WILC1000 SDIO/SPI. `wilc_wlan_firmware_download()` is not in the image.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64209
+
+**Status**: Not exploitable — feature not compiled
+**Component**: Qualcomm QMP USBC PHY (`CONFIG_PHY_QCOM_QMP_USB` / qmp-usbc)
+**Base Score**: 7.1 HIGH
+**Score on Root Lock**: 0.0 — no PHY_QCOM QMP USBC symbols on either fielded pin
+
+The DP swing table OOB lives in the Qualcomm qmp-usbc PHY driver. Neither Root Lock pin compiles that driver.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64224
+
+**Status**: Not exploitable — feature not compiled
+**Component**: OcteonTX2 PF (`CONFIG_OCTEONTX2_PF` / RVU)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — OcteonTX2/RVU drivers are not compiled on either fielded pin
+
+`rvu_rep_rsrc_init()` is not in the image. Related Thunder/Octeon EP options are `# is not set` on both pins.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64225
+
+**Status**: Not exploitable — feature not compiled
+**Component**: OcteonTX2 AF CGX (`CONFIG_OCTEONTX2_AF`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — OcteonTX2 AF/CGX is not compiled on either fielded pin
+
+`cgx_speed_mbps` indexing code is absent from both images.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64242
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: USB gadget NET2280 (`CONFIG_USB_NET2280`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — USB gadget not compiled on 5.19.6; NET2280 hardware absent on standard 6.18 deployments
+
+The probe error-path double free needs a NET2280 UDC. That hardware is not present on Root Lock servers.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64246
+
+**Status**: Not exploitable — feature not compiled
+**Component**: LinkStation poweroff (`CONFIG_POWER_RESET` / linkstation-poweroff)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_POWER_RESET` is not set on either fielded pin
+
+`linkstation_poweroff_init()` is not compiled.
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64249
+
+**Status**: Not exploitable — feature not compiled
+**Component**: FPGA region (`CONFIG_FPGA`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_FPGA` is not set on either fielded pin
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64270
+
+**Status**: Not exploitable — feature not compiled
+**Component**: MMS114 touchscreen (`CONFIG_TOUCHSCREEN_MMS114`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_TOUCHSCREEN_MMS114` is not set on either fielded pin
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64271
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: Touchwin touchscreen (`CONFIG_TOUCHSCREEN_TOUCHWIN`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — not compiled on 5.19.6; Touchwin hardware absent on standard 6.18 deployments
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64272
+
+**Status**: Not exploitable — feature not compiled
+**Component**: MMS114 touchscreen (`CONFIG_TOUCHSCREEN_MMS114`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_TOUCHSCREEN_MMS114` is not set on either fielded pin
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64273
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: I-Force joystick (`CONFIG_JOYSTICK_IFORCE`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — not compiled on 5.19.6; I-Force hardware absent on standard 6.18 deployments
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64274
+
+**Status**: Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: Goodix touchscreen (`CONFIG_TOUCHSCREEN_GOODIX`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — no Goodix driver on 5.19.6; Goodix hardware absent on standard 6.18 deployments
+
+The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-64305
+
+**Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs
+**Component**: Intel QAT (`CONFIG_CRYPTO_DEV_QAT`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — QAT devices not compiled on 5.19.6; QAT hardware absent on standard 6.18 deployments
+
+`service_table` iteration needs a bound QAT device. Root Lock servers without Intel QAT hardware never load those modules.
+
+The trigger cannot be reached on any Root Lock deployment.
