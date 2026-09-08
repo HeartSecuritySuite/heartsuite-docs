@@ -13,7 +13,6 @@ menu:
   main:
     parent: "allowlisting"
     identifier: "batch-allowlisting-tools"
-
 ---
 
 **Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.

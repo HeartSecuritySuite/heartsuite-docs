@@ -9,7 +9,6 @@ type: docs
 aliases:
   - /docs/allowlisting/allowlisting-basics/
 toc: true
-
 menu:
   main:
     parent: "allowlisting"

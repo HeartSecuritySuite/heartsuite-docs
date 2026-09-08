@@ -1,6 +1,5 @@
 # HeartSuite Documentation
 
-
 Welcome to the official documentation for **Root Lock by HeartSuite** — the enterprise-grade security suite built on a hardened Linux kernel.
 
 *Root Lock by HeartSuite | Humans in Command*

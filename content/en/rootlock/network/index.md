@@ -9,7 +9,6 @@ aliases:
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "network", "permissions", "security", "remote-access"]
 toc: true
-
 ---
 
 **Overview**: Programs make outbound connections you never approved (telemetry, update beacons, C2 callbacks). Root Lock by HeartSuite requires an allowlist entry for every outbound destination — per program, at the kernel.

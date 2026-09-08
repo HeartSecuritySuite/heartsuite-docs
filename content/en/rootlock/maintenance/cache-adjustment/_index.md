@@ -9,7 +9,6 @@ type: docs
 aliases:
   - /docs/maintenance/cache-adjustment/
 toc: true
-
 ---
 
 **Overview**: Root Lock by HeartSuite caches allowlist entries in kernel memory for lookup speed. The cache is an LRU window, not a limit on how many programs you may approve. The Dashboard expands that window toward your allowlist size, up to 255 entries. Allowlists larger than 255 stay valid; the kernel evicts the least recently used cache slots.

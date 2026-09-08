@@ -8,13 +8,13 @@ Runtime verification: Debian 12 lab guest, 2026-05-19 05:52 UTC
 
 Version 1.0 (static analysis basis):
   SHA-256: d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc
-  Path: kernel/5.19.6-HeartSuite-1.0/config-5.19.6-HeartSuite-1.0
+  File: config-5.19.6-HeartSuite-1.0
   Line count: 5050
   Compiler recorded: GCC 100201 (GCC 10.2.1, Debian Bullseye build environment)
 
 Version 2.0 (installed on test VM — security-relevant options identical to 1.0):
   SHA-256: fa227f1d00fc00512402ae75db4cc06566a197b1898a162f68a3c23f249ad7a8
-  Path: kernel/5.19.6-HeartSuite-2.0/config-5.19.6-HeartSuite-2.0
+  File: config-5.19.6-HeartSuite-2.0
   Line count: 5057
   Compiler recorded: GCC 110500 (GCC 11.5.0, Ubuntu 24.04 build environment)
   Diff from 1.0: 7 lines — toolchain version headers only (GCC/binutils version strings,
@@ -55,7 +55,7 @@ kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y
 
 Comparison: a standard Debian 12 running config ships 3500–4000 loadable modules.
 
-=== 3. BYPASS-PRIMITIVE DISABLES (6+1 from deployment-hardening.md item 1) ===
+=== 3. BYPASS-PRIMITIVE DISABLES ===
 
 Verified directly from config file:
 
@@ -69,7 +69,7 @@ Verified directly from config file:
   CONFIG_KEXEC_FILE       -> # CONFIG_KEXEC_FILE is not set   [DISABLED ✓]
 
 Score: 5/7 intentional disables verified in config.
-IO_URING and KEXEC remain enabled in 5.19.6. The fielded 6.18.9-hs #37 pin also keeps both =y (plus KEXEC_FILE=y). See evidence-pack-6.18.9.txt — do not treat HS-DEV-005 target posture as the shipped 6.18 config.
+IO_URING and KEXEC remain enabled in 5.19.6. The fielded 6.18.9-hs #37 pin also keeps both =y (plus KEXEC_FILE=y). See evidence-pack-6.18.9.txt — do not treat a later compile-out target as the shipped 6.18 config.
 
 === 4. ALTERNATIVE LSMs (all disabled) ===
 
@@ -157,7 +157,7 @@ ERA-MATCHED COMPARISON (same kernel generation — scores are directly comparabl
 
 Config                               | OK  | FAIL | Total | OK%  | Source
 -------------------------------------|-----|------|-------|------|-------------------
-HS 5.19.6 (HeartSuite-2.0)          | 129 |  129 |  258  | 50.0 | kernel/5.19.6-HeartSuite-2.0/config
+HS 5.19.6 (HeartSuite-2.0)          | 129 |  129 |  258  | 50.0 | config-5.19.6-HeartSuite-2.0
 Arch linux-hardened 5.19.11-hardened1| 158 |  100 |  258  | 61.2 | gitlab.archlinux.org/archlinux/packaging/packages/linux-hardened @ 5.19.11.hardened1-1 (SHA256: da1664e5...)
 Vanilla x86_64 defconfig 5.17        | 126 |  132 |  258  | 48.8 | bundled in kernel-hardening-checker
 
@@ -231,11 +231,8 @@ Key missing exploit-resistance options in HS 5.19.6 not present in vanilla eithe
 
 === 12. SOURCE CITATIONS ===
 
-All HS design decisions documented in:
-  the kernel deviation registry (threat-model deviation registry)
-  the sandbox-enforcement checklist (architectural invariants)
-  the deployment-hardening checklist (6+1 disable list with rationale)
-  build provenance records (build provenance)
+Design decisions for this pack are identified by the config SHA-256 values
+in section 1.
 
 Checker source: github.com/a13xp0p0v/kernel-hardening-checker
 Reference configs bundled with checker; KSPP recommendations: kspp-kconfig-x86-64.config

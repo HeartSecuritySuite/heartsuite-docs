@@ -50,7 +50,7 @@ Overall checker: **148/259 (57.1%)**.
 
 ### Runtime (Debian 12 guest, 2026-08-18)
 
-Guest `Debian 12 lab guest`, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
+Debian 12 lab guest, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
 
 - `/sys/kernel/security/lsm` = `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`
 - `lsmod`: **74** modules loaded; **4190** `*.ko.xz` under `/lib/modules/6.18.9-hs`; `modules.builtin` **198**
