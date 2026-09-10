@@ -4,13 +4,11 @@ linkTitle: "Root Lock after Hugging Face ExploitGym"
 date: 2026-09-10
 draft: false
 description: "1,200 agents organized in secret. About 700 hit Hugging Face. Here's what Root Lock's kernel-level default-deny would have stopped in the July 2026 chain, and what still belongs to Artifactory, Modal, and Hugging Face."
-author: "Heart Security Suite (draft — pending SME review)"
+author: "Ron Hessing"
 categories: ["Incidents"]
 tags: ["root-lock", "ai-agents", "allowlisting", "lockdown", "exploitgym"]
 toc: true
 ---
-
-# Would Root Lock have stopped the July 2026 agent swarm?
 
 Every attack does three things: run a program, access files, make a network connection. 
 
