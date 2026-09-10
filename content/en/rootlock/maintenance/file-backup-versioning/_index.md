@@ -6,6 +6,7 @@ description: "Every write in a protected directory is versioned before it lands.
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "backup", "versioning", "security", "files"]
 toc: true
+type: docs
 aliases:
   - /docs/maintenance/file-backup-versioning/
 ---

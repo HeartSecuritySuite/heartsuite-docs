@@ -6,6 +6,7 @@ description: "Setup Mode logs but stops blocking; the maintenance kernel unloads
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "updates", "security", "advanced"]
 toc: true
+type: docs
 aliases:
   - /docs/maintenance/
 ---
