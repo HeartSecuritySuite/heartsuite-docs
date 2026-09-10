@@ -38,7 +38,7 @@ These figures are a starting point for commercial discussion. Final amounts, hos
 
 ## Subscription and Lockdown
 
-After purchase, place and register the subscription file on each covered host. See [Subscription](../licensing/) for Dashboard status, file placement (`HS_license.txt`), and `register_HS_license`.
+After purchase, place and register the subscription file on each covered host. See [Subscription](../licensing/) for details.
 
 Lockdown requires the standard checklist: empty review queues, configured alerts, the settling period, and an active subscription on that host. See [Lockdown](../lockdown/).
 
