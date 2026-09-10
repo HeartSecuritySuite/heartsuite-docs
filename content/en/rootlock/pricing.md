@@ -42,7 +42,6 @@ After purchase, place and register the subscription file on each covered host. S
 
 Lockdown requires the standard checklist: empty review queues, configured alerts, the settling period, and an active subscription on that host. See [Lockdown](../lockdown/).
 
-
 ## Data-integrity warranty
 
 Indicative host rates above are subscription only. Data-integrity warranty is available on quote: a host-integrity stamp that applies only while Lockdown is on for that host, under the commercial agreement, separate from the subscription line.
