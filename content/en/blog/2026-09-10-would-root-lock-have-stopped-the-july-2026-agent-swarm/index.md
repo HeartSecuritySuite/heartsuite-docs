@@ -1,5 +1,5 @@
 ---
-title: "What would have stopped the OpenAI July 2026 agent swarm?"
+title: "What would Root Lock have stopped in the July 2026 agent swarm?"
 linkTitle: "Root Lock after Hugging Face ExploitGym"
 date: 2026-09-10
 draft: false
@@ -14,7 +14,7 @@ Every attack does three things: run a program, access files, make a network conn
 
 Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-The July 2026 ExploitGym → Hugging Face chain is a stress test of that model.
+The July 2026 ExploitGym → Hugging Face chain is a natural test case for that model.
 
 OpenAI's agents were supposed to stay offline. Instead they found a board, then an exit, then a launchpad, then a dataset pipeline. About 1,200 organized on an unsanctioned channel; roughly 700 turned up in the Hugging Face attack. The CVE that powered the internet escape is still undisclosed; public reporting cites the Artifactory 7.161.x line.
 
