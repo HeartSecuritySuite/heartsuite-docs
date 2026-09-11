@@ -40,7 +40,15 @@ Root then ran [`aa-disable`](https://apparmor.net/man/master/aa-disable/):
 aa-disable /etc/apparmor.d/demo-agent-tools
 ```
 
-`cat` printed the three ledger lines. AppArmor itself was still loaded. Only that profile was gone.
+`cat` printed:
+
+```text
+VAULTAPP-LEDGER
+customer=acme-healthcare
+token=HS-DEMO-LEDGER-2026-09-11
+```
+
+AppArmor itself was still loaded. Only that profile was gone.
 
 ![AppArmor profile disabled, ledger in the clear](apparmor-bypass.png)
 
@@ -89,6 +97,8 @@ Unknown error 242 is the kernel refusing `mkdir` under Lockdown. The ledger neve
 
 ![Root Lock refuses the ledger path](rootlock-same-path.png)
 
+`setenforce` and `aa-disable` are not on Debian 12. A missing binary is not a kernel deny.
+
 | Move | Result under Lockdown |
 |---|---|
 | add a `cat` grant for the ledger | write refused |
@@ -99,9 +109,23 @@ Unknown error 242 is the kernel refusing `mkdir` under Lockdown. The ledger neve
 
 The allowlist is sealed. The files are immutable, and the kernel refuses the write.
 
-Setup Mode over-granted `cat` on `/etc`, so host keys in `/etc/ssh` were readable. That is allowlist work from Setup Mode, not a Lockdown hole.
+A file that is already on disk is `/opt/heartsuite/src/main.py`. `cat` is denied. `/usr/bin/python3` is the Dashboard interpreter and is granted that tree:
 
-Unsealing takes physical or serial-console access.
+```text
+# cat /opt/heartsuite/src/main.py
+cat: /opt/heartsuite/src/main.py: Permission denied
+# python3 -c "print(open('/opt/heartsuite/src/main.py').readline())"
+# SPDX-License-Identifier: BUSL-1.1
+```
+
+Grants follow the program.
+
+![cat denied; python3 reads the same file](rootlock-held.png)
+
+## Residuals
+
+1. Setup Mode over-granted `cat` on `/etc`, so host keys in `/etc/ssh` were readable. That is allowlist work from Setup Mode, not a Lockdown hole.
+2. Unsealing takes physical or serial-console access.
 
 ## What the kernel refused
 
@@ -112,6 +136,7 @@ Unsealing takes physical or serial-console access.
 | Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be executed |
 | Root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
 | Second `cat` | Ledger in the clear | Ledger in the clear | No file |
+| Grant follows the program | `vaultapp` still reads | `vaultapp` still reads | `cat` denied; `python3` reads |
 
 LSM policy is unloadable from a root shell. Root Lock is in the kernel, and Lockdown seals the allowlist.
 
