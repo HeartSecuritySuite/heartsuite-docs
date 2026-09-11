@@ -1,16 +1,16 @@
 ---
 title: "What Lockdown refused after root already had a shell"
-linkTitle: "Lockdown after a root shell"
+linkTitle: "What Lockdown refused"
 date: 2026-09-11
 slug: lockdown-after-a-root-shell
 draft: false
-description: "On stock AppArmor and targeted SELinux, unconfined root read another application's file until extra policy was added, then turned that policy off without a reboot. Under Lockdown the same ledger path could not be created, and the allowlist write was refused."
+description: "On Ubuntu AppArmor and Rocky SELinux, root read another application's file until extra policy was added, then turned that policy off without a reboot. Under Lockdown the same ledger path could not be created, and the allowlist write was refused."
 author: "Ron Hessing"
 tags: ["root-lock", "selinux", "apparmor", "lockdown", "allowlisting"]
 toc: true
 ---
 
-SSH as root. Three hosts: Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux targeted Enforcing, Debian 12 running Root Lock by HeartSuite with Lockdown on.
+SSH as root. Three hosts: Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, Debian 12 running Root Lock by HeartSuite with Lockdown on.
 
 The job is the same: read a file that belongs to another program.
 
@@ -20,11 +20,11 @@ The job is the same: read a file that belongs to another program.
 
 `vaultapp` is a demo program. Its ledger is the file the other tools should not read.
 
-On the AppArmor and SELinux hosts the file was already on disk. Stock policy left unconfined root `cat` of it allowed. Those hosts then got a deny for that path: a profile on `cat` that still lets `vaultapp` read its own ledger, and a `vaultapp_secret_t` type that still lets a confined `vaultapp_t` read it.
+On the AppArmor and SELinux hosts the file was already on disk. Default policy left root `cat` of it allowed. Those hosts then got extra policy that denied `cat` and still let `vaultapp` read the ledger.
 
 ## AppArmor
 
-Stock Ubuntu AppArmor does not confine `cat`. After that profile, root `cat` failed. `vaultapp` still printed the ledger.
+Ubuntu AppArmor does not confine `cat`. After that profile, root `cat` failed. `vaultapp` still printed the ledger.
 
 ```text
 cat: /var/lib/vaultapp/customer-ledger.secret: Permission denied
@@ -56,7 +56,7 @@ Root can unload an AppArmor profile without rebooting.
 
 ## SELinux
 
-Stock Rocky targeted maps root to `unconfined_u`. [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted.
+Rocky maps root to `unconfined_u`. [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted.
 
 After the custom type, the same `cat` failed under Enforcing. `vaultapp` still printed the ledger.
 
@@ -68,7 +68,7 @@ avc: denied { read } for comm="cat" name="customer-ledger.secret"
  tclass=file permissive=0
 ```
 
-![SELinux AVC denies unconfined cat; vaultapp still reads](selinux-denied.png)
+![SELinux denies cat; vaultapp still reads](selinux-denied.png)
 
 Root then set SELinux to permissive ([`setenforce 0`](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/changing-selinux-states-and-modes_using-selinux)):
 
@@ -76,7 +76,7 @@ Root then set SELinux to permissive ([`setenforce 0`](https://docs.redhat.com/en
 setenforce 0
 ```
 
-`getenforce` showed Enforcing. After `setenforce 0`, Permissive. The config file still said enforcing (runtime-only). `cat` printed the same three ledger lines. Policy stayed on disk.
+`getenforce` showed Enforcing. After `setenforce 0`, Permissive. The config file still said enforcing. `cat` printed the same three ledger lines. Policy stayed on disk.
 
 ![SELinux set permissive from Enforcing, ledger in the clear](selinux-bypass.png)
 
@@ -122,8 +122,6 @@ Grants follow the program.
 
 ![cat denied; python3 reads the same file](rootlock-held.png)
 
-## Residuals
-
 1. Setup Mode over-granted `cat` on `/etc`, so host keys in `/etc/ssh` were readable. That is allowlist work from Setup Mode, not a Lockdown hole.
 2. Unsealing takes physical or serial-console access.
 
@@ -131,13 +129,13 @@ Grants follow the program.
 
 | Step | AppArmor | SELinux | Root Lock in Lockdown |
 |---|---|---|---|
-| Default distro policy vs unconfined root `cat` of the ledger | Allowed | Allowed | `mkdir /var/lib/vaultapp` refused |
+| Default policy vs root `cat` of the ledger | Allowed | Allowed | `mkdir /var/lib/vaultapp` refused |
 | After a deny for `cat` on that path | Denied | Denied | Create already refused |
-| Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be executed |
+| `vaultapp` | still reads | still reads | could not be executed |
 | Root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
 | Second `cat` | Ledger in the clear | Ledger in the clear | No file |
-| Grant follows the program | `vaultapp` still reads | `vaultapp` still reads | `cat` denied; `python3` reads |
+| Same file, different program | `vaultapp` still reads | `vaultapp` still reads | `cat` denied; `python3` reads |
 
-LSM policy is unloadable from a root shell. Root Lock is in the kernel, and Lockdown seals the allowlist.
+AppArmor and SELinux can be unloaded from a root shell. Root Lock is in the kernel, and Lockdown seals the allowlist.
 
 See [Lockdown](https://docs.heartsecsuite.com/rootlock/lockdown/).
