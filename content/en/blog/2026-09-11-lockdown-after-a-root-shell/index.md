@@ -118,6 +118,5 @@ SELinux and AppArmor are LSM policy root can set permissive or unload. Root Lock
 1. Default LSM left unconfined root `cat` of the ledger allowed. The deny for that path is extra policy.
 2. Setup Mode harvested a wide `/etc` grant for `cat`, so host keys in `/etc/ssh` were readable. See [circumvention and recovery](https://docs.heartsecsuite.com/rootlock/introduction/how-it-compares/#circumvention-and-recovery).
 3. Unsealing takes physical or serial-console access.
-4. SELinux still has policy depth this lab does not.
 
 See [Lockdown](https://docs.heartsecsuite.com/rootlock/lockdown/) and [Allowlisting basics](https://docs.heartsecsuite.com/rootlock/allowlisting/allowlisting-basics/).
