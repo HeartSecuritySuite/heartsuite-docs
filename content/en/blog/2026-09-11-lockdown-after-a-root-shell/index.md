@@ -4,7 +4,7 @@ linkTitle: "Lockdown after a root shell"
 date: 2026-09-11
 slug: lockdown-after-a-root-shell
 draft: false
-description: "On stock AppArmor and targeted SELinux, unconfined root read another application's file until extra policy was added, then turned that policy off without a reboot. Under Lockdown the same ledger path could not be created, the allowlist write was refused, and cat stayed denied."
+description: "On stock AppArmor and targeted SELinux, unconfined root read another application's file until extra policy was added, then turned that policy off without a reboot. Under Lockdown the same ledger path could not be created, and the allowlist write was refused."
 author: "Ron Hessing"
 tags: ["root-lock", "selinux", "apparmor", "lockdown", "allowlisting"]
 toc: true
@@ -85,47 +85,31 @@ mkdir: cannot create directory '/var/lib/vaultapp': Unknown error 242
 bash: /usr/local/bin/vaultapp: Permission denied
 ```
 
-The kernel refused the create. An empty `vaultapp` leftover from an earlier attempt could not be rewritten or executed.
+The kernel refused the create.
 
-![Root Lock refuses the ledger path; python3 still reads its own tree](rootlock-same-path.png)
-
-What is already on disk is a file the Dashboard interpreter is granted: `/opt/heartsuite/src/main.py`. `/usr/bin/cat` is allowlisted for `/.hs/sys`, `/etc`, `/run`, `/proc`, `/usr/lib`.
-
-```text
-# cat /opt/heartsuite/src/main.py
-cat: /opt/heartsuite/src/main.py: Permission denied
-```
+![Root Lock refuses the ledger path](rootlock-same-path.png)
 
 `setenforce` and `aa-disable` are not installed on this Debian guest.
 
 | Move | Result under Lockdown |
 |---|---|
-| add a `cat` grant for that path | `Record could not be stored in APO database` |
+| add a `cat` grant for the ledger | `Record could not be stored in APO database` |
 | `chattr -i` on the allowlist | `Permission denied while reading flags` |
-| `cat` again | still Permission denied |
+| `cat` of the ledger | No such file or directory |
 
-![Root Lock denies cat and refuses the allowlist write](rootlock-denied.png)
+![Root Lock refuses the allowlist write](rootlock-denied.png)
 
 The allowlist is sealed. The files are immutable, and the kernel refuses the write.
-
-`/usr/bin/python3` is the Dashboard interpreter and is granted `/opt/heartsuite`. A root shell can invoke that same binary:
-
-```text
-# python3 -c "print(open('/opt/heartsuite/src/main.py').readline())"
-# SPDX-License-Identifier: BUSL-1.1
-```
-
-Grants follow the program. If the interpreter at the keyboard is the program granted that tree, the tree is readable. A guest image for a tool-using agent would grant that interpreter its own tree. The same residual is in the [ExploitGym write-up](/blog/2026-09-10-would-root-lock-have-stopped-the-july-2026-agent-swarm/).
 
 ## What the kernel refused
 
 | Step | AppArmor | SELinux | Root Lock in Lockdown |
 |---|---|---|---|
 | Default distro policy vs unconfined root `cat` of the ledger | Allowed | Allowed | `mkdir /var/lib/vaultapp` refused |
-| After a deny for `cat` on that path | Denied | Denied | Already denied |
-| Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be written or executed |
+| After a deny for `cat` on that path | Denied | Denied | Already refused |
+| Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be executed |
 | Documented root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
-| Second `cat` | Ledger in the clear | Ledger in the clear | Still denied |
+| Second `cat` | Ledger in the clear | Ledger in the clear | No such file or directory |
 
 SELinux and AppArmor are LSM policy root can set permissive or unload. Root Lock is compiled into the kernel; Lockdown seals the allowlist.
 
