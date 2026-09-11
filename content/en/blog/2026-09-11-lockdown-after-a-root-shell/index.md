@@ -20,9 +20,9 @@ Ubuntu 24.04 with AppArmor. Rocky Linux 9 with SELinux targeted Enforcing. Debia
 
 Stock Ubuntu AppArmor does not confine `cat`. Stock Rocky targeted policy maps root to `unconfined_u`, and [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted. On both of those hosts, unconfined root `cat` of the ledger succeeded while the LSM was loaded.
 
-That is the hole [How it compares](https://docs.heartsecsuite.com/rootlock/introduction/how-it-compares/) already names: LSM policy is applied to a running kernel from userspace, and unconfined root is the common SSH case.
+LSM policy is applied to a running kernel from userspace, and unconfined root is the common SSH case.
 
-The AppArmor and SELinux hosts then got a deny for that path: a profile on `cat` that still lets `vaultapp` read its own ledger, and a `vaultapp_secret_t` type that still lets a confined `vaultapp_t` read it. Root still had the documented admin APIs.
+The AppArmor and SELinux hosts then got a deny for that path: a profile on `cat` that still lets `vaultapp` read its own ledger, and a `vaultapp_secret_t` type that still lets a confined `vaultapp_t` read it.
 
 ## AppArmor
 
@@ -36,7 +36,7 @@ apparmor="DENIED" operation="open" profile="demo-agent-cat"
 
 ![AppArmor denies cat; vaultapp still reads](apparmor-denied.png)
 
-Root then ran the documented unload ([`aa-disable`](https://apparmor.net/man/master/aa-disable/)):
+Root then ran [`aa-disable`](https://apparmor.net/man/master/aa-disable/):
 
 ```bash
 aa-disable /etc/apparmor.d/demo-agent-tools
@@ -62,7 +62,7 @@ avc: denied { read } for comm="cat" name="customer-ledger.secret"
 
 ![SELinux AVC denies unconfined cat; vaultapp still reads](selinux-denied.png)
 
-Root then ran the documented switch ([Red Hat: permissive mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/changing-selinux-states-and-modes_using-selinux)):
+Root then ran [Red Hat: permissive mode](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/changing-selinux-states-and-modes_using-selinux):
 
 ```bash
 setenforce 0
@@ -89,11 +89,9 @@ The kernel refused the create.
 
 ![Root Lock refuses the ledger path](rootlock-same-path.png)
 
-`setenforce` and `aa-disable` are not installed on this Debian guest.
-
 | Move | Result under Lockdown |
 |---|---|
-| add a `cat` grant for the ledger | `Record could not be stored in APO database` |
+| add a `cat` grant for the ledger | write refused |
 | `chattr -i` on the allowlist | `Permission denied while reading flags` |
 | `cat` of the ledger | No such file or directory |
 
@@ -101,22 +99,16 @@ The kernel refused the create.
 
 The allowlist is sealed. The files are immutable, and the kernel refuses the write.
 
+Setup Mode harvested a wide `/etc` grant for `cat`, so host keys in `/etc/ssh` were readable. Unsealing takes physical or serial-console access.
+
 ## What the kernel refused
 
 | Step | AppArmor | SELinux | Root Lock in Lockdown |
 |---|---|---|---|
 | Default distro policy vs unconfined root `cat` of the ledger | Allowed | Allowed | `mkdir /var/lib/vaultapp` refused |
-| After a deny for `cat` on that path | Denied | Denied | Already refused |
+| After a deny for `cat` on that path | Denied | Denied | `mkdir` already failed |
 | Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be executed |
-| Documented root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
+| Root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
 | Second `cat` | Ledger in the clear | Ledger in the clear | No such file or directory |
 
 SELinux and AppArmor are LSM policy root can set permissive or unload. Root Lock is compiled into the kernel; Lockdown seals the allowlist.
-
-## What Setup Mode still decides
-
-1. Default LSM left unconfined root `cat` of the ledger allowed. The deny for that path is extra policy.
-2. Setup Mode harvested a wide `/etc` grant for `cat`, so host keys in `/etc/ssh` were readable. See [circumvention and recovery](https://docs.heartsecsuite.com/rootlock/introduction/how-it-compares/#circumvention-and-recovery).
-3. Unsealing takes physical or serial-console access.
-
-See [Lockdown](https://docs.heartsecsuite.com/rootlock/lockdown/) and [Allowlisting basics](https://docs.heartsecsuite.com/rootlock/allowlisting/allowlisting-basics/).
