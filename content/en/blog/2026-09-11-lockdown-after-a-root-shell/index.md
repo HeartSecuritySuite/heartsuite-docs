@@ -2,6 +2,7 @@
 title: "What Lockdown refused after root already had a shell"
 linkTitle: "Lockdown after a root shell"
 date: 2026-09-11
+slug: lockdown-after-a-root-shell
 draft: false
 description: "On stock AppArmor and targeted SELinux, unconfined root read another application's file until extra policy was added, then turned that policy off without a reboot. Under Lockdown the same ledger path could not be created, the allowlist write was refused, and cat stayed denied."
 author: "Ron Hessing"
