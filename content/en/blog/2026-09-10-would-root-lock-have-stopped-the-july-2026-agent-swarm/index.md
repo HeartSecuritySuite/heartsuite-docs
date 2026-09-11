@@ -1,5 +1,5 @@
 ---
-title: "Would Root Lock have stopped the July 2026 agent swarm?"
+title: "What would have stopped the OpenAI July 2026 agent swarm?"
 linkTitle: "Root Lock after Hugging Face ExploitGym"
 date: 2026-09-10
 draft: false
