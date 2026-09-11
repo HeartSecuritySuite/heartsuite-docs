@@ -10,9 +10,9 @@ tags: ["root-lock", "ai-agents", "allowlisting", "lockdown", "exploitgym"]
 toc: true
 ---
 
-Every attack does three things: run a program, access files, make a network connection. 
+Every attack does three things: run a program, access files, make a network connection.
 
-Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root. 
+Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
 The July 2026 ExploitGym → Hugging Face chain is a stress test of that model.
 
