@@ -16,8 +16,6 @@ SSH as root. The job is the same on three hosts: read a file that belongs to ano
 /var/lib/vaultapp/customer-ledger.secret
 ```
 
-Do whatever is necessary. No reboot.
-
 Ubuntu 24.04 with AppArmor. Rocky Linux 9 with SELinux targeted Enforcing. Debian 12 running Root Lock by HeartSuite **6.18.9-hs** with Lockdown on.
 
 Stock Ubuntu AppArmor does not confine `cat`. Stock Rocky targeted policy maps root to `unconfined_u`, and [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted. On both of those hosts, unconfined root `cat` of the ledger succeeded while the LSM was loaded.
@@ -44,7 +42,7 @@ Root then ran the documented unload ([`aa-disable`](https://apparmor.net/man/mas
 aa-disable /etc/apparmor.d/demo-agent-tools
 ```
 
-`cat` printed the three ledger lines. AppArmor itself was still loaded. Only that profile was gone. No reboot.
+`cat` printed the three ledger lines. AppArmor itself was still loaded. Only that profile was gone.
 
 ![AppArmor profile disabled, ledger in the clear](apparmor-bypass.png)
 
@@ -70,7 +68,7 @@ Root then ran the documented switch ([Red Hat: permissive mode](https://docs.red
 setenforce 0
 ```
 
-`getenforce` was Enforcing, then Permissive. `cat` printed the same three ledger lines. Policy stayed on disk. Mode from the config file stayed enforcing. No reboot.
+`getenforce` was Enforcing, then Permissive. `cat` printed the same three ledger lines. Policy stayed on disk. Mode from the config file stayed enforcing.
 
 ![SELinux set permissive from Enforcing, ledger in the clear](selinux-bypass.png)
 
@@ -78,9 +76,7 @@ Root can set SELinux to permissive without rebooting.
 
 ## Root Lock
 
-Lockdown was already on. SSH as root still worked. That is the day-to-day admin path. It is not the unseal path.
-
-The same ledger path is not on this host, and it could not be planted:
+Lockdown was already on. SSH as root still worked.
 
 ```text
 # mkdir -p /var/lib/vaultapp
@@ -89,18 +85,18 @@ mkdir: cannot create directory '/var/lib/vaultapp': Unknown error 242
 bash: /usr/local/bin/vaultapp: Permission denied
 ```
 
-The kernel refused the create. An empty `vaultapp` leftover from an earlier attempt could not be rewritten or executed. That is the same job, earlier in the sequence.
+The kernel refused the create. An empty `vaultapp` leftover from an earlier attempt could not be rewritten or executed.
 
 ![Root Lock refuses the ledger path; python3 still reads its own tree](rootlock-same-path.png)
 
-What is already on disk is a file the Dashboard interpreter is granted and `/usr/bin/cat` is not: `/opt/heartsuite/src/main.py`. `/usr/bin/cat` is allowlisted for `/.hs/sys`, `/etc`, `/run`, `/proc`, `/usr/lib`. It is not allowlisted for `/opt/heartsuite`.
+What is already on disk is a file the Dashboard interpreter is granted: `/opt/heartsuite/src/main.py`. `/usr/bin/cat` is allowlisted for `/.hs/sys`, `/etc`, `/run`, `/proc`, `/usr/lib`.
 
 ```text
 # cat /opt/heartsuite/src/main.py
 cat: /opt/heartsuite/src/main.py: Permission denied
 ```
 
-Then the disable moves that matter on this kernel. `setenforce` and `aa-disable` are not installed on this Debian guest; a missing binary is not a kernel deny.
+`setenforce` and `aa-disable` are not installed on this Debian guest.
 
 | Move | Result under Lockdown |
 |---|---|
@@ -110,7 +106,7 @@ Then the disable moves that matter on this kernel. `setenforce` and `aa-disable`
 
 ![Root Lock denies cat and refuses the allowlist write](rootlock-denied.png)
 
-Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. The files are immutable, and the kernel refuses the write.
+The allowlist is sealed. The files are immutable, and the kernel refuses the write.
 
 `/usr/bin/python3` is the Dashboard interpreter and is granted `/opt/heartsuite`. A root shell can invoke that same binary:
 
@@ -119,14 +115,14 @@ Under Lockdown there is no permissive mode, nothing to unload, and the allowlist
 # SPDX-License-Identifier: BUSL-1.1
 ```
 
-Grants follow the program, not who typed the command. That is the point of per-program grants, and it is the residual: if the interpreter at the keyboard is the program granted that tree, the tree is readable. A guest image for a tool-using agent would not grant the agent interpreter the Dashboard tree. The same residual is in the [ExploitGym write-up](/blog/2026-09-10-would-root-lock-have-stopped-the-july-2026-agent-swarm/).
+Grants follow the program. If the interpreter at the keyboard is the program granted that tree, the tree is readable. A guest image for a tool-using agent would grant that interpreter its own tree. The same residual is in the [ExploitGym write-up](/blog/2026-09-10-would-root-lock-have-stopped-the-july-2026-agent-swarm/).
 
 ## What the kernel refused
 
 | Step | AppArmor | SELinux | Root Lock in Lockdown |
 |---|---|---|---|
 | Default distro policy vs unconfined root `cat` of the ledger | Allowed | Allowed | `mkdir /var/lib/vaultapp` refused |
-| After a deny for `cat` on that path | Denied | Denied | Already denied (no extra policy file) |
+| After a deny for `cat` on that path | Denied | Denied | Already denied |
 | Owning program | `vaultapp` still reads | `vaultapp` still reads | `vaultapp` could not be written or executed |
 | Documented root disable | `aa-disable` the profile | `setenforce 0` | Allowlist add refused; `chattr` refused |
 | Second `cat` | Ledger in the clear | Ledger in the clear | Still denied |
@@ -135,9 +131,9 @@ SELinux and AppArmor are LSM policy root can set permissive or unload. Root Lock
 
 ## What Setup Mode still decides
 
-1. Stock Ubuntu AppArmor and stock Rocky targeted SELinux do not stop unconfined root from reading another application's file. A deny for that path is extra policy. Do not treat a default LSM as a root-proof file boundary.
-2. Setup Mode can still harvest too much. On the Root Lock host, `cat` had a wide grant under `/etc`, so host keys in `/etc/ssh` were readable. That is [circumvention and recovery](https://docs.heartsecsuite.com/rootlock/introduction/how-it-compares/#circumvention-and-recovery), not a Lockdown failure.
-3. Unsealing Lockdown still takes physical or serial-console access. SSH as root is not enough to store a new allowlist row or to clear immutability.
-4. SELinux still has policy depth Root Lock does not replicate. Root Lock does not replace SIEM, NDR, or a scanner.
+1. Default LSM left unconfined root `cat` of the ledger allowed. The deny for that path is extra policy.
+2. Setup Mode harvested a wide `/etc` grant for `cat`, so host keys in `/etc/ssh` were readable. See [circumvention and recovery](https://docs.heartsecsuite.com/rootlock/introduction/how-it-compares/#circumvention-and-recovery).
+3. Unsealing takes physical or serial-console access.
+4. SELinux still has policy depth this lab does not.
 
 See [Lockdown](https://docs.heartsecsuite.com/rootlock/lockdown/) and [Allowlisting basics](https://docs.heartsecsuite.com/rootlock/allowlisting/allowlisting-basics/).
