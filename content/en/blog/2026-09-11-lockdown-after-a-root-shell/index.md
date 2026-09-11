@@ -10,9 +10,7 @@ tags: ["root-lock", "selinux", "apparmor", "lockdown", "allowlisting"]
 toc: true
 ---
 
-SSH as root. Three hosts: Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, Debian 12 running Root Lock by HeartSuite with Lockdown on.
-
-The job is the same: read a file that belongs to another program.
+SSH as root. The job is to read a file that belongs to another program.
 
 ```text
 /var/lib/vaultapp/customer-ledger.secret
@@ -20,9 +18,13 @@ The job is the same: read a file that belongs to another program.
 
 `vaultapp` is a demo program. Its ledger is the file the other tools should not read.
 
-On the AppArmor and SELinux hosts the file was already on disk. Default policy left root `cat` of it allowed. Those hosts then got extra policy that denied `cat` and still let `vaultapp` read the ledger.
+Three hosts: Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, Debian 12 running Root Lock by HeartSuite with Lockdown on. No reboot.
 
-## AppArmor
+On Ubuntu and Rocky the file was already on disk. Default policy left root `cat` of it allowed. Those hosts then got extra policy that denied `cat` and still let `vaultapp` read the ledger. The same root shell then tried to turn that policy off.
+
+## The same job, in order
+
+### AppArmor
 
 Ubuntu AppArmor does not confine `cat`. After that profile, root `cat` failed. `vaultapp` still printed the ledger.
 
@@ -54,9 +56,9 @@ AppArmor itself was still loaded. Only that profile was gone.
 
 Root can unload an AppArmor profile without rebooting.
 
-## SELinux
+### SELinux
 
-Rocky maps root to `unconfined_u`. [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted.
+Rocky followed the same steps. Root maps to `unconfined_u`. [Red Hat documents](https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/using_selinux/managing-confined-and-unconfined-users_using-selinux) that unconfined users, including administrators, are only minimally restricted.
 
 After the custom type, the same `cat` failed under Enforcing. `vaultapp` still printed the ledger.
 
@@ -82,9 +84,11 @@ setenforce 0
 
 Root can set SELinux to permissive without rebooting.
 
-## Root Lock
+### Root Lock
 
-Lockdown was already on. SSH as root still worked.
+The same job on the third host. Lockdown was already on. SSH as root still worked.
+
+The ledger is not on disk here. The first move is to create the path:
 
 ```text
 # mkdir -p /var/lib/vaultapp
@@ -97,7 +101,7 @@ Unknown error 242 is the kernel refusing `mkdir` under Lockdown. The ledger neve
 
 ![Root Lock refuses the ledger path](rootlock-same-path.png)
 
-`setenforce` and `aa-disable` are not on Debian 12. A missing binary is not a kernel deny.
+`setenforce` and `aa-disable` are not on Debian 12. A missing binary is not a kernel deny. The disable that exists here is a write to the allowlist:
 
 | Move | Result under Lockdown |
 |---|---|
@@ -122,9 +126,6 @@ Grants follow the program.
 
 ![cat denied; python3 reads the same file](rootlock-held.png)
 
-1. Setup Mode over-granted `cat` on `/etc`, so host keys in `/etc/ssh` were readable. That is allowlist work from Setup Mode, not a Lockdown hole.
-2. Unsealing takes physical or serial-console access.
-
 ## What the kernel refused
 
 | Step | AppArmor | SELinux | Root Lock in Lockdown |
@@ -137,5 +138,10 @@ Grants follow the program.
 | Same file, different program | `vaultapp` still reads | `vaultapp` still reads | `cat` denied; `python3` reads |
 
 AppArmor and SELinux can be unloaded from a root shell. Root Lock is in the kernel, and Lockdown seals the allowlist.
+
+Setup Mode and the console are still the remaining paths:
+
+1. Setup Mode over-granted `cat` on `/etc`, so host keys in `/etc/ssh` were readable. That is allowlist work from Setup Mode, not a Lockdown hole.
+2. Unsealing takes physical or serial-console access.
 
 See [Lockdown](https://docs.heartsecsuite.com/rootlock/lockdown/).
