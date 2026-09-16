@@ -2,7 +2,7 @@
 title: "Every maintenance window is an attack window"
 linkTitle: "Maintenance"
 weight: 90
-description: "Setup Mode logs but stops blocking; the maintenance kernel unloads Root Lock. How to make changes without leaving a hole."
+description: "Setup Mode logs but stops blocking; the maintenance kernel unloads Root Lock. How to patch after Lockdown without leaving a hole."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "updates", "security", "advanced"]
 toc: true
@@ -21,8 +21,10 @@ During maintenance you either switch to Setup Mode (the kernel logs but stops bl
 
 Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch with no GRUB is only when the strip already says Lockdown not applied.
 
+You still patch. Lockdown does not replace distro errata or application updates. Compiled-out kernel CVEs are a HeartSuite kernel-rebuild question, not a reason to skip `apt` or `dnf`. After packages land in Setup Mode, review the queues, then Lockdown again. Leaving Setup Mode open is the hole.
+
 - **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
-- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required to unseal. Reboot and select **Maintenance: unseal and return to Root Lock**. That is two reboots before the window is open. Installs and edits after that are over SSH in Setup Mode.
+- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required to unseal. Reboot and select **Maintenance: unseal and return to Root Lock**. That boot is the maintenance kernel; it runs `HS_unlock.sh`. sshd up or down on the Root Lock kernel does not clear the seal. That is two reboots before the window is open. Installs and edits after that are over SSH in Setup Mode. A host left on stock returns to Root Lock by reboot — GRUB default stays Root Lock.
 
 The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 

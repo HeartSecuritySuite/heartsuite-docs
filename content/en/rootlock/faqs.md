@@ -51,6 +51,12 @@ Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforce
 
 {{< /details >}}
 
+{{< details summary="How does Root Lock treat AI agents?" >}}
+
+A: An agent is another program on the allowlist. Blocked events today go to the journal under ident `heartsuite`. MCP is **not shipped**.
+
+{{< /details >}}
+
 {{< details summary="Is Root Lock just easier SELinux?" >}}
 
 A: No. You build a per-program allowlist in Setup Mode. The Dashboard records what actually ran, what it read or wrote, and where it connected. You approve that.
@@ -99,7 +105,7 @@ The limitation on a typical distro is the trust boundary. Root can set SELinux t
 
 Root Lock is not an LSM. Setup Mode learns a per-program allowlist; Lockdown seals it. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough to unseal. After unseal, you work over SSH in Setup Mode.
 
-The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side.
+The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side. A lab of the same root-shell path is in [What Lockdown refused after a root shell](../../blog/2026/09/11/lockdown-after-a-root-shell/).
 
 {{< /details >}}
 
@@ -129,6 +135,34 @@ The same allowlist can still be distributed by your automation; see "Can I use t
 SIEM (Splunk, Sentinel, Elastic), NDR (Darktrace, ExtraHop), vulnerability management (Nessus, Qualys, Wiz), and HIDS/FIM (OSSEC, Wazuh, AIDE) answer fleet-wide, telemetry, and compliance questions that Root Lock does not. Run them alongside. Root Lock's syslog streams, JSONL approval log, status.json, and webhook are designed inputs for those tools.
 
 See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy Management and External Control](alerts/central-policy-management/).
+
+{{< /details >}}
+
+{{< details summary="Does Lockdown cancel vulnerability SLAs or scanner findings?" >}}
+
+A: No. Root Lock does not cancel vulnerability audits, SAST, SCA, host scanners, dependency bumps, or contractual resolve-critical clocks.
+
+Under Lockdown the kernel-sealed allowlist can **contain** a hole (no new program, no extra files, no extra destinations). That does **not** make the hole "not found," empty the scanner report, or let GRC hear "this doesn't apply."
+
+HeartSuite is **not** a certified scanning vendor. An exception or "doesn't apply" is only real if **their** certified scanner / customer contract accepts a different residual.
+
+Residual: we do not protect the vulnerable app's own files.
+
+Kernel CVE false positives (compiled-out features) are a **different** workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
+
+ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quick-reference/).
+
+{{< /details >}}
+
+{{< details summary="Do I still have to patch after Lockdown?" >}}
+
+A: Yes. Lockdown does not replace distro errata or app patches. You still install OS and application updates.
+
+**One host already in Lockdown:** Dashboard Maintenance `[m]`, console GRUB **Maintenance: unseal and return to Root Lock**, work in Setup Mode over SSH, review queues (re-allowlist), Lockdown `[l]` again. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+
+**Many locked hosts:** bake the patched OS and the current Root Lock bundle into a new image and **reprovision**. Ansible distributes allowlists; it does **not** lift the seal. See "How do I patch many hosts that are already in Lockdown?" above and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+
+Compiled-out kernel CVEs are "no HeartSuite kernel rebuild for that CVE," not "skip apt."
 
 {{< /details >}}
 
@@ -281,7 +315,7 @@ See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and
 
 {{< details summary="Will installing the Root Lock kernel break my existing software?" >}}
 
-A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot back to the maintenance kernel at any time from the GRUB menu, and the Dashboard remains accessible on both. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
+A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot the maintenance kernel from the GRUB menu. The Dashboard runs on the Root Lock kernel (serial console, and SSH when sshd is up). It is not a second unseal control on the maintenance kernel. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
 
 Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the kernel logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues. You see what is affected before anything is blocked.
 
@@ -389,7 +423,7 @@ Select Maintenance (`[m]`) from the Dashboard. It guides you through switching t
 
 {{< details summary="How do I add software after Lockdown?" >}}
 
-A: Open Maintenance (`[m]`). After the seal lifts you are in Setup Mode: install what you will keep, review the queues, then lock down again. Do not approve compilers and package-install helpers that executed only for that window unless they must stay.
+A: Open Maintenance (`[m]`). If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. That boot runs `HS_unlock.sh`. After the seal lifts you are in Setup Mode: install what you will keep, review the queues, then lock down again. Do not approve compilers and package-install helpers that executed only for that window unless they must stay.
 
 The procedure is in [Protecting During Maintenance](maintenance/protecting-during-maintenance/). Do not leave the host in Setup Mode to install tools you will not keep.
 
@@ -443,7 +477,13 @@ A: The seal is applied as part of Lockdown activation (see the "How do I activat
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. The seal lifts automatically and you land in Setup Mode, then log in over SSH to make the changes. Review new activity in the queues, then re-engage Lockdown (`[l]`).
+A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. The seal lifts automatically (`HS_unlock.sh`) and you land in Setup Mode, then log in over SSH to make the changes. Review new activity in the queues, then re-engage Lockdown (`[l]`).
+
+{{< /details >}}
+
+{{< details summary="Does sshd, or a Dashboard key, lift the seal?" >}}
+
+A: No. Leave Lockdown from a physical or serial console: GRUB **Maintenance: unseal and return to Root Lock**. That boot runs `HS_unlock.sh`. sshd running or stopped on the Root Lock kernel does not clear the seal. There is no second remove-the-seal control. After express return you are in Setup Mode; Lockdown (`[l]`) seals again. From stock, reboot — GRUB default stays Root Lock. Approving an allowlist grant is not a remote Lockdown off-switch.
 
 {{< /details >}}
 

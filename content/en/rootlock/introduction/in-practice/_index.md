@@ -107,6 +107,8 @@ Tight allowlisting limits the blast radius. Under Lockdown, the kernel blocks an
 
 Under Lockdown the kernel gates execute, files, and outbound network per program. By design, remote root does not override those gates and has no intended path to change the sealed allowlist while the machine is running.
 
-The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Unapproved programs do not persist across reboot. An already-approved program still has its grants until you change them from a maintenance window. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
+The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Unapproved programs do not persist across reboot. An already-approved program still has its grants until you change them from a maintenance window.
+
+Lockdown also sets `chattr +i` on `/root` itself (directory inode), not only on allowlist files. `curl` blocked from `/root/credentials.txt` is the per-program layer. The directory flag is the seal. Neither layer is a remote Lockdown off-switch; unseal is the console GRUB pick **Maintenance: unseal and return to Root Lock**. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 For detection and response when an attack stays within approved boundaries, see [How Root Lock Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../security-as-economics/).

@@ -158,7 +158,7 @@ From the Dashboard, open Maintenance (`[m]`). After Lockdown, **unsealing** requ
 
 1. Reboot from the **console**, not over SSH — only this GRUB pick needs the console.
 2. At the boot menu, select **Maintenance: unseal and return to Root Lock**.
-3. The seal lifts automatically. The machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel, and you do not press a key to remove flags.
+3. The seal lifts automatically (`HS_unlock.sh` on that maintenance-kernel boot). The machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel, and you do not press a key to remove flags. sshd running or stopped on the Root Lock kernel does not clear the seal.
 4. Log in over SSH (or stay on the console). Make your changes. New activity appears in the review queues.
 5. Lock down again from Lockdown (`[l]`).
 
@@ -188,6 +188,7 @@ Once Lockdown is engaged, Root Lock seals these categories at once, using `chatt
 - **System integrity** — shared libraries (`/usr/lib/`), `/boot`, systemd unit directories, the SSH server config, and sudo policy. Defends against shared-library injection, malicious systemd units, and SSH or sudo policy weakened by a brief root compromise.
 - **Authentication** — the account database (`/etc/passwd`, `/etc/shadow`, `/etc/group`) and no-login shells. Defends against an attacker who already has root creating accounts, changing passwords, or converting service accounts into interactive logins.
 - **Boot-window persistence** — cron and anacron configuration, environment defaults, and root's shell profiles. Defends against an attacker scheduling a script to run after a reboot but before Lockdown re-engages, and against bash-profile backdoors that run on the next root login.
+- **`/root` directory inode** — `HS_lockdown.sh` sets `chattr +i` on `/root` itself, not only on those profiles. That flag is on disk. It is a separate layer from per-program default-deny. Approving an allowlist grant does not lift it.
 - **Maintenance tools** — file editors (`nano`, `vim`, `sed`, `ed`) made non-executable, and `rm`/`cp`/`mv` replaced with restricted copies whose write access is limited to the paths Root Lock saw those tools used for during Setup Mode. Defends against a compromised approved program leveraging admin tools that run with their own broad scope, not the caller's.
 
 Lockdown also seals every program on the allowlist, so those binaries cannot be swapped while the machine is running.

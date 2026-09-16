@@ -38,7 +38,7 @@ If Lockdown is applied (the strip says **Lockdown applied**), unseal first. The 
 - **Already on the original distro kernel or the maintenance kernel, and the strip does not say Lockdown applied.** Skip Unseal and skip `YES`. Run the installer.
 - **On the maintenance kernel but the strip still says Lockdown applied.** The immutable flags are still on the files. Unseal first.
 
-On the stock or maintenance boot, Root Lock is not loaded: it does not block programs, does not log, and does not take backups. Choose a time when that gap is acceptable.
+On the stock or maintenance boot, Root Lock is not loaded: it does not block programs, does not log, and does not take backups. That stock boot is ordinary Linux. Default console-dark is NIC down unless Maintenance already chose a live or firewall route — this update path is that live route, over SSH, after the console GRUB pick **Maintenance: unseal and return to Root Lock**. Choose a time when that gap is acceptable.
 
 ## Before you begin
 
@@ -48,7 +48,7 @@ On the stock or maintenance boot, Root Lock is not loaded: it does not block pro
 
 ## Update procedure
 
-1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`. In Setup Mode that copy is allowed. Under Lockdown it may be denied — unseal first.
+1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`. In Setup Mode that copy is allowed. Under Lockdown it may be denied — `HS_lockdown.sh` sets `chattr +i` on `/root`, not only because of the allowlist. Unseal first.
 2. If Lockdown is applied, open Maintenance (`[m]`) and complete the unseal path. You should be in Setup Mode on the Root Lock kernel before the next step.
 3. Verify integrity:
 

@@ -19,6 +19,16 @@ After Lockdown, **unsealing** is the console step. You select **Maintenance: uns
 
 A one-reboot switch that stays on the Root Lock kernel applies only when the strip already says **Lockdown not applied** — the seal is missing. That is not the usual path after a completed Lockdown.
 
+**Patch one host already in Lockdown**
+
+1. Maintenance `[m]` from the Dashboard (Lockdown applied).
+2. Console: reboot and pick **Maintenance: unseal and return to Root Lock**. SSH cannot do this pick.
+3. Land in Setup Mode on the Root Lock kernel. Install OS/app patches over SSH.
+4. Review the new queue items. Approve only what you will keep.
+5. Lockdown `[l]`, type `YES`.
+
+**Many hosts:** do not open a console on every node — reprovision from an updated image. See [Enterprise Adoption Guide — Operational model for fleets](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) and [How do I patch many hosts that are already in Lockdown?](../../faqs/).
+
 ## Starting maintenance
 
 From the Dashboard in Lockdown, select Maintenance (`[m]`). The Dashboard detects whether the immutable seal is active and presents the correct path.
@@ -64,6 +74,8 @@ If you accidentally select the Root Lock kernel at the first boot menu instead o
 
 > [!WARNING]
 > Between selecting the Maintenance entry and the automatic return, Root Lock is not loaded. The safety checklist is the gate for that interval.
+
+Until express return, this is a normal host: ordinary attacks work. Default is console-dark: the NIC stays down on that kernel unless a live or firewall route was chosen on Maintenance. sshd on the Root Lock kernel never clears `chattr +i`. The GRUB pick is the unseal; `HS_unlock.sh` runs on that boot.
 
 ## When the seal is not applied
 
