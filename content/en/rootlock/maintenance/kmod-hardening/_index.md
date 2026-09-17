@@ -52,4 +52,4 @@ Lockdown does not independently refuse `init_module`. The restriction is the pro
 
 Lockdown seals system-wide shell configuration — `/etc/profile`, environment defaults, and cron — preventing an attacker from planting scripts that run at the next boot and expand kmod's permissions before Lockdown re-engages. Per-user profile files (`~/.bash_profile`, `~/.bash_login`, `~/.profile`, `~/.bashrc`, `~/.inputrc`) are not covered automatically because the correct set depends on your user configuration.
 
-If specific user accounts need that coverage, enable the commented-out entries for those users in `HS_lockdown.sh` before engaging Lockdown.
+If specific user accounts need that coverage, do it in Setup Mode (before the first Lockdown, or after unseal). Uncomment those users' profile lines in `HS_lockdown.sh` and the matching reverse lines in `HS_unlock.sh`. The Dashboard has no per-user profile picker. Then Lockdown (`[l]`).

@@ -182,7 +182,7 @@ Lockdown seals Root Lock's configuration with filesystem immutability, so a comp
 
 ### What Lockdown seals
 
-Once Lockdown is engaged, Root Lock seals these categories at once, using `chattr +i`. Before you confirm, the Dashboard shows the paths that will be sealed, grouped by category with counts. The list is for review only.
+Once Lockdown is engaged, Root Lock seals these categories at once, using `chattr +i`. Before you confirm, the Dashboard shows the paths that will be sealed, grouped by category with counts. The list is for review only. There is no field to type an extra directory onto the seal. Allowlist queues approve grants; they do not add `chattr` lines. Extra paths: unseal, edit the lockdown script and the reverse in the unlock script, then Lockdown (`[l]`) again — see [Appendices](../appendices/#lockdown-scripts).
 
 - **Installation integrity** — HeartSuite install paths under `/opt/heartsuite`, plus allowlist files and the mode state. Defends against allowlist tampering and replacing Root Lock code that runs as root at login.
 - **System integrity** — shared libraries (`/usr/lib/`), `/boot`, systemd unit directories, the SSH server config, and sudo policy. Defends against shared-library injection, malicious systemd units, and SSH or sudo policy weakened by a brief root compromise.

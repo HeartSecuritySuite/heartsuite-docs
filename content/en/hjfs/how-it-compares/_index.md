@@ -36,7 +36,7 @@ Network access mediation and OS-mediated user-file access are planned for subseq
 | Network and user-file access | Allowlist entries set once; no per-action prompts | OS-mediated access planned: approval on desktops, policy rules on servers (v1.0 ships file isolation) | Root Lock handles network and user-file access today via static allowlist entries. HJFS v1.0 isolates files; OS-mediated network and user-file access is on the [roadmap](../roadmap/). |
 | Executables and updates | Standard Linux paths; updates often require switching to Setup Mode | Separate read-only area for executables; only the official HJFS installer can write to it | HJFS keeps executables in a read-only area. Root Lock uses Setup Mode for updates. |
 | Data sharing and deletion | Any program can read, write, or delete anything its allowlist entry permits | Cross-program transfers require an explicit copy utility; programs can only move files to trash, not permanently delete them | HJFS makes cross-program copies explicit. Root Lock permits whatever the allowlist entry names. |
-| Lockdown | Enabled via `HS_lockdown.sh`; immutable flags seal key files | Enforced by the filesystem structure — no separate Lockdown step required | Root Lock seals the allowlist. HJFS isolation is the filesystem layout. |
+| Lockdown | Dashboard Lockdown (`[l]`); `chattr +i` seals key files | Enforced by the filesystem structure — no separate Lockdown step required | Root Lock seals the allowlist. HJFS isolation is the filesystem layout. |
 
 ### For production deployments today
 
