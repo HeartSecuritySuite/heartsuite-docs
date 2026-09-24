@@ -11,7 +11,7 @@ aliases:
 toc: true
 ---
 
-**Overview**: Which Linux distributions Root Lock by HeartSuite currently tests, which kernel line each row uses, and what you still own before production Lockdown. This page follows the live-matrix catalog as of 2026-08-18. It replaces the April 2026 v1.6.4 “Validated” table (Fedora 41, Alpine 3.21 as validated, Ubuntu 22.04 omitted).
+**Overview**: Which Linux distributions Root Lock by HeartSuite currently tests, which kernel line each row uses, and what you still own before production Lockdown. This page follows the live-matrix catalog and the installer floors as of 2026-09-24. The April 2026 v1.6.4 “Validated” table (Fedora 41, Alpine 3.21 as validated, Ubuntu 22.04 omitted) stays retired.
 
 **Audience**: Procurement, security architects, and platform engineers selecting a base OS.
 
@@ -25,21 +25,21 @@ Each row assigns a **tier** that says what HeartSuite has run recently and what 
 
 | Tier | Meaning for buyers |
 |------|-------------------|
-| **Supported** | In the current k6 `release-core` lab set (Debian 12/13, Ubuntu 22.04/24.04). Install and initial setup have recent matrix coverage. Lockdown (M2) was **not** release-certified on 2026-08-18 — validate Lockdown on your gold image. |
+| **Supported** | In the current k6 `release-core` lab set (Debian 12, Debian 13, Ubuntu 24.04, Ubuntu 26.04). Install and initial setup are what that set covers. Lockdown on that set is not a published green sign-off. Validate Lockdown on your gold image. |
 | **In lab** | In the current catalog (`release-plus` or equivalent) with a named caveat. Not certified. |
 | **Experimental** | Catalog `experimental` set, or explicitly not certified. Useful for CI; not a procurement baseline. |
 | **Legacy (5.19 only)** | Old-glibc hosts. They take the k5 installer and the 5.19 Root Lock kernel only. A 6.18 install is refused. |
 | **Compatible (customer validation)** | Same RPM or Debian family as a tested row, but HeartSuite has not published branded testing for your exact minor or vendor image. You run install and Lockdown on your gold image before production. |
 | **Not supported** | Outside architecture or distribution scope. Use HJFS on a standard kernel or a supported base OS. |
 
-Do **not** read “Supported” as “Lockdown certified on this date.” The latest completed M2 `release-core` campaign (2026-08-18) finished **PARTIAL** on all four core guests (`Release eligible: no`).
+Do **not** read “Supported” as “Lockdown certified on this date.” On 2026-08-18 the release-core campaign finished **PARTIAL** (`Release eligible: no`). That campaign’s guest list is not today’s release-core set.
 
 **Columns**
 
-- **Kernel line** — Which Root Lock kernel the current installer for that row ships. New Debian 12/13 and Ubuntu 22.04/24.04 images use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only. You do not pick both lines at install on a given row.
+- **Kernel line** — Which Root Lock kernel the current installer for that row ships. Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only. Ubuntu 22.04 is not offered on this installer. You do not pick both lines at install on a given row.
 - **Boot** — How the installer sets the default kernel entry. UEFI Secure Boot for the Root Lock kernel entry remains [incomplete](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap). The original distribution kernel (maintenance kernel) keeps its signing status for recovery.
 
-Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.yaml` (2026-08-18).
+Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.yaml`, plus the installer floors (glibc 2.34, Python 3.11), as of 2026-09-24.
 
 ---
 
@@ -50,24 +50,30 @@ Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.
 | **Debian** | 13 (Trixie) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Seedless initial setup can stress OpenSSH split paths. |
 | **Debian** | 12 (Bookworm) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Primary lab reference. |
 | **Debian** | 11 (Bullseye) | **Legacy (5.19 only)** | 5.19 | GRUB | glibc &lt; 2.34. k6 / 6.18 install is not offered. |
+| **Ubuntu** | 26.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud default with Debian 13. UEFI/OVMF pflash, same class as 24.04. Not a Lockdown sign-off. |
 | **Ubuntu** | 24.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud images are UEFI/OVMF pflash; remaining lab PARTIAL is post-seal SSH or kernel ledger, not snapshot create. |
-| **Ubuntu** | 22.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Pair with 24.04. Omitted from the April 2026 public table. |
-| **Ubuntu** | 26.04 LTS | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. First matrix inclusion 2026-08-15. **Not certified.** |
+| **Ubuntu** | 22.04 LTS | **Not supported** | — | — | glibc 2.35 meets the floor. Stock Python 3.10 is below the installer floor of 3.11. The installer refuses the host. |
 | **Ubuntu** | 20.04 LTS | **Legacy (5.19 only)** | 5.19 | GRUB | Same glibc floor as Debian 11. k6 / 6.18 install is not offered. |
-| **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same as the Ubuntu LTS you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives. Staging validation required. AppArmor is compiled in on the current 6.18 pin — see [Workload fit](#workload-fit-not-distro-specific). |
-| **Rocky Linux** | 9 | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. Last full green BLS path ~2026-07-11; re-validate on the current k6 bundle. Not “Rocky 9.7 always green.” |
+| **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same rule as the Ubuntu release you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives of 24.04 or 26.04. A 22.04 or 20.04 derivative follows that row. Staging validation is still required. AppArmor is compiled in on the current 6.18 pin — see [Workload fit](#workload-fit-not-distro-specific). |
+| **Rocky Linux** | 10 | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Stock Python 3.12 meets the installer floor. A 2026-08-26 install-and-setup pass does not certify the row and is not Lockdown. |
+| **Rocky Linux** | 9 | **Not supported** | — | — | glibc 2.34 meets the floor. Stock Python 3.9 is below 3.11. The installer refuses the host. Not “Rocky 9.7 validated.” |
 | **Fedora** | 42 | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. Cloud root is often btrfs. Install preflight can refuse until a btrfs-capable module set is present. Not Fedora 41. Not certified. |
-| **CentOS Stream** | 9 | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Catalog `expected: experimental`. OpenSSH 9.8 can split SSH into two programs; first-run setup may need extra reboots. Faster churn than Rocky. |
-| **RHEL** | 8.x, 9.x | **Compatible (customer validation)** | 6.18 unless your image is old-glibc | GRUB | Branded RHEL minor testing is not published. Validate on **your** subscribed minor and gold image. |
-| **AlmaLinux** | 8.x, 9.x | **Compatible (customer validation)** | 6.18 unless your image is old-glibc | GRUB | Treat as structurally close to Rocky on the same major; validate on your minor. |
+| **CentOS Stream** | 10 | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Stock Python 3.12 meets the installer floor. Same 2026-08-26 install-and-setup note as Rocky Linux 10. Not Lockdown. |
+| **CentOS Stream** | 9 | **Not supported** | — | — | Same Python floor as Rocky Linux 9. Stock Python 3.9. The installer refuses the host. |
+| **RHEL** | 9 | **Not supported** | — | — | Same userspace class as Rocky Linux 9. Stock Python 3.9 is below 3.11. |
+| **RHEL** | 8 | **Not supported** | — | — | glibc 2.28 is below 2.34. No current installer. |
+| **AlmaLinux** | 9 | **Not supported** | — | — | Same Python floor as Rocky Linux 9. |
+| **AlmaLinux** | 8 | **Not supported** | — | — | Same glibc floor as RHEL 8. |
 | **Alpine Linux** | 3.21.x (tester pin 3.21.6) | **Experimental** | 6.18 (`6.18.9-hs`) | extlinux (GRUB where present) | Catalog set `experimental`. OpenRC units ship alongside systemd. Installer prints **console instructions** when extlinux automation cannot set the default entry. Lab path is the real-glibc runtime, not a musl-only claim. |
 | **Alpine Linux** | Other 3.x | **Compatible (customer validation)** | 6.18 (`6.18.9-hs`) | extlinux | Same OpenRC / extlinux behaviour; staging validation required. |
 | **openSUSE** | Tumbleweed | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Rolling release. GRUB `saved_entry` and SELinux `bin_t` labeling are load-bearing. Development and CI only — not a regulated production baseline. |
-| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 6.18 (`6.18.9-hs`) | GRUB | SP level and partner images vary. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before committing a SLES gold image. |
+| **SUSE Linux Enterprise (SLES)** | Any | **Compatible (customer validation)** | 6.18 only if the image clears the floors | GRUB | The glibc 2.34 and Python 3.11 floors apply. SP level and partner images vary. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before committing a SLES gold image. |
 | **Other Linux** | — | **Not supported** | — | — | Contact [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for roadmap or HJFS alternatives. |
 | **Non-x86** | ARM, RISC-V, etc. | **Not supported** | — | — | x86_64 only. |
 
 **Architecture:** x86_64 (64-bit) only. No ARM or other ISA builds are offered for the Root Lock kernel.
+
+**Installer floors (current 6.18 bundle):** glibc 2.34 or newer, and Python 3.11 or newer. A host that misses either floor is not a gold-image trial. Debian 11 and Ubuntu 20.04 stay on the 5.19 installer. There is no compat package that puts the 6.18 helpers on an older userland.
 
 **Secure Boot (all distributions):** Root Lock kernel UEFI Secure Boot support is incomplete.
 
@@ -79,7 +85,7 @@ Deployments that require Secure Boot for the Root Lock entry may need MOK enroll
 
 ### Supported
 
-The distribution is in the current k6 `release-core` set. HeartSuite runs install, first boot, and initial setup against it in the live matrix. As of 2026-08-18, Lockdown M2 on that set is **not** a published green sign-off. Your staging Lockdown run is the last gate before fleet rollout.
+The distribution is in the current k6 `release-core` set (Debian 12, Debian 13, Ubuntu 24.04, Ubuntu 26.04). HeartSuite runs install, first boot, and initial setup against it in the live matrix. Lockdown on that set is not a published green sign-off. Your staging Lockdown run is the last gate before fleet rollout.
 
 ### In lab
 
@@ -95,27 +101,29 @@ Debian 11 and Ubuntu 20.04 use the k5 installer and the 5.19 Root Lock kernel. T
 
 ### Compatible (customer validation)
 
-Same packaging family as a tested row. HeartSuite has not published results for your exact vendor branding, minor, or gold image.
-
-Rocky 9 lab coverage does **not** certify every Rocky 9.x or AlmaLinux 9.x minor. RHEL 8/9 require validation on the customer's subscribed minor.
+Same packaging family as a tested row. HeartSuite has not published results for your exact vendor branding, minor, or gold image. The glibc 2.34 floor and the Python 3.11 floor still apply. RHEL 8, RHEL 9, AlmaLinux 8, and AlmaLinux 9 are not a customer-validation exercise on this installer.
 
 ### Not supported
 
-Outside current product scope. Use a supported distribution, the maintenance kernel on a separate host for incompatible workloads, or [HJFS](../../hjfs/) on a standard kernel where custom kernels are prohibited.
+Outside current product scope. That includes Ubuntu 22.04 and the EL9 family (Rocky Linux 9, AlmaLinux 9, RHEL 9, CentOS Stream 9), which miss the Python floor, and releases below glibc 2.34 (RHEL 8, AlmaLinux 8, CentOS 7, RHEL 7, CentOS Stream 8, Debian 9, Debian 10, Ubuntu 18.04). Use a distribution this installer accepts, or [HJFS](../../hjfs/) on a standard kernel where custom kernels are prohibited.
 
 ---
 
 ## RPM / RHEL family
 
-Lead with **Rocky 9 (in lab)** for RHEL-compatible userspace. Re-run install and Lockdown on the current k6 bundle; do not treat a 2026-07 BLS path as a standing certificate.
+The current installer needs glibc 2.34 or newer and Python 3.11 or newer. Rocky Linux 10 and CentOS Stream 10 clear both and stay experimental. Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 clear glibc and fail the Python floor, so the installer refuses them. RHEL 8 and AlmaLinux 8 ship glibc 2.28.
 
 | Distribution | Guidance |
 |--------------|----------|
-| **Rocky Linux 9** | In lab — default RPM choice to *start* validation. Re-validate on your minor. |
-| **Fedora 42** | In lab — engineering and pre-production. btrfs-root cloud images can fail install preflight. Shorter support window than Rocky or RHEL. |
-| **CentOS Stream 9** | Experimental — Stream tracks RHEL development; retest after `dnf` upgrades that change the boot stack or OpenSSH layout. |
-| **RHEL 8 / RHEL 9** | Compatible — customer validation on the subscribed minor. |
-| **AlmaLinux 8 / 9** | Compatible — expect similar installer behaviour to Rocky on the same major; validate on your minor. |
+| **Rocky Linux 10** | Experimental. Stock Python 3.12. A 2026-08-26 install-and-setup pass is not certification and is not Lockdown. |
+| **Rocky Linux 9** | Not supported. Stock Python 3.9 is below 3.11. |
+| **Fedora 42** | In lab — engineering and pre-production. btrfs-root cloud images can fail install preflight. Not Fedora 41. |
+| **CentOS Stream 10** | Experimental. Stock Python 3.12. Same 2026-08-26 note as Rocky Linux 10. |
+| **CentOS Stream 9** | Not supported. Stock Python 3.9. |
+| **RHEL 9** | Not supported. Same Python floor as Rocky Linux 9. |
+| **RHEL 8** | Not supported. glibc 2.28. |
+| **AlmaLinux 9** | Not supported. Same Python floor as Rocky Linux 9. |
+| **AlmaLinux 8** | Not supported. Same glibc floor as RHEL 8. |
 
 **SELinux on RHEL-family systems:** On RHEL and Fedora, SELinux is Enforcing by default. Root Lock VFS hooks are designed to run before the LSM chain, so SELinux can add restrictions after Root Lock allows an operation and cannot lift a Root Lock denial. A targeted SELinux policy module may still be needed for product paths. If AVC denials appear, use `ausearch` and `audit2allow`. Hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence). That LSM page is still written against the **5.19.6** measured pack — do not treat it as the 6.18.9-hs LSM list.
 
@@ -123,17 +131,17 @@ Lead with **Rocky 9 (in lab)** for RHEL-compatible userspace. Re-run install and
 
 ## Debian and Ubuntu family
 
-Debian 12/13 and Ubuntu 22.04/24.04 are the current k6 `release-core` set and the majority of documentation examples.
+Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 are the current k6 `release-core` set and the majority of documentation examples.
 
 | Distribution | Guidance |
 |--------------|----------|
 | **Debian 12 / 13** | Supported (lab). Preferred for new Debian-based gold images. |
-| **Debian 11** | Legacy — 5.19 / k5 only. |
+| **Debian 11** | Legacy — 5.19 / k5 only. glibc 2.31. |
+| **Ubuntu 26.04 LTS** | Supported (lab). Cloud default with Debian 13. Not a Lockdown sign-off. |
 | **Ubuntu 24.04 LTS** | Supported (lab). UEFI/pflash on cloud images. |
-| **Ubuntu 22.04 LTS** | Supported (lab). |
-| **Ubuntu 26.04 LTS** | In lab — not certified. |
-| **Ubuntu 20.04 LTS** | Legacy — 5.19 / k5 only. |
-| **Other Ubuntu-derived** | Compatible — `.deb` + GRUB. Validate Snap/LXD on the **running** kernel; the current 6.18 pin compiles AppArmor in. |
+| **Ubuntu 22.04 LTS** | Not supported. Stock Python 3.10 is below 3.11. |
+| **Ubuntu 20.04 LTS** | Legacy — 5.19 / k5 only. glibc 2.31. |
+| **Other Ubuntu-derived** | Same rule as the Ubuntu release they track. A 22.04 derivative is not offered. On 24.04 and 26.04, validate Snap/LXD on the **running** kernel; the current 6.18 pin compiles AppArmor in. |
 
 On Debian/Ubuntu the installer sets the Root Lock kernel as the GRUB default and reboots when GRUB automation succeeds. The original distribution kernel remains in GRUB as Maintenance and vanilla entries for recovery.
 
@@ -144,9 +152,11 @@ On Debian/Ubuntu the installer sets the Root Lock kernel as the GRUB default and
 | Topic | Detail |
 |-------|--------|
 | **Current tester pin** | Alpine 3.21.6 (`experimental` catalog set). |
+| **glibc runtime** | The bundled glibc under `/usr/glibc-compat` is how the helpers run on Alpine’s musl userland. It does not install this product on an older glibc distribution. |
 | **Init system** | **OpenRC** — OpenRC service unit variants ship alongside systemd oneshots. |
 | **Boot loader** | Many images use **extlinux**. When automation cannot update the default entry, the installer prints **console instructions**. |
 | **Other 3.x** | Compatible — same packaging model; validate before production. |
+
 
 ---
 
@@ -155,7 +165,7 @@ On Debian/Ubuntu the installer sets the Root Lock kernel as the GRUB default and
 | Distribution | Guidance |
 |--------------|----------|
 | **openSUSE Tumbleweed** | **Experimental** — development and CI only. Rolling updates make it unsuitable as a fixed procurement baseline. |
-| **SUSE Linux Enterprise (SLES)** | **Compatible — contact support.** SP level, BCI vs full SLES, and partner images affect the boot stack. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before standardizing a SLES gold image. |
+| **SUSE Linux Enterprise (SLES)** | **Compatible — contact support.** The glibc 2.34 and Python 3.11 floors apply. SP level, BCI vs full SLES, and partner images affect the boot stack. Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) before standardizing a SLES gold image. |
 
 ---
 
@@ -258,4 +268,4 @@ Kernel update recovery if a new Root Lock kernel fails to boot: [Updating Root L
 
 ---
 
-*Last updated: 2026-08-18. Rows follow `distro_catalog.yaml`. Workload Kconfig values are from the fielded 6.18.9-hs `#37` config and the published 5.19.6-HeartSuite-1.0 pack. No complete Lockdown M2 release-core gate exists for this date.*
+*Last updated: 2026-09-24. Rows follow `distro_catalog.yaml` and the installer floors (glibc 2.34, Python 3.11). Workload Kconfig values are from the fielded 6.18.9-hs `#37` config and the published 5.19.6-HeartSuite-1.0 pack. No complete Lockdown M2 release-core gate is claimed for this date.*

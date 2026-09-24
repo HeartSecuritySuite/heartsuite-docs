@@ -186,7 +186,7 @@ To make changes, open Maintenance (`[m]`). After the seal is applied, reboot fro
 
 {{< details summary="What are the system requirements for Root Lock?" >}}
 
-A: x86 (64-bit) Linux. **Validated** in release testing: Debian 12/13, Ubuntu 24.04, Rocky 9.7, Fedora 41, CentOS Stream 9, Alpine 3.21. **Supported** without a specific gate run: Debian 11, Ubuntu-derived, Alpine 3.x. **RPM enterprise** (RHEL, AlmaLinux, SLES): RHEL-compatible — validate on your subscribed minor before production. Root Lock ships two Root Lock kernel lines: **6.18** (primary) and **5.19** (legacy). Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
+A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Fedora 42 is in lab. Rocky Linux 10, CentOS Stream 10, Alpine, and openSUSE Tumbleweed are experimental. Debian 11 and Ubuntu 20.04 use the 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 meet the glibc floor and fail the Python floor, so the installer refuses them. RHEL 8, AlmaLinux 8, and older extended-support releases (CentOS 7, Ubuntu 18.04, Debian 10 and earlier) are below the glibc floor. There is no compat package that puts this installer on those releases. Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
 
 {{< /details >}}
 

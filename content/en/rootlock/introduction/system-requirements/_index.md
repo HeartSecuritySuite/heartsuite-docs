@@ -24,14 +24,14 @@ See the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibilit
 | Component | Supported |
 |-----------|-----------|
 | Architecture | x86 (64-bit) |
-| Distributions | Current k6 lab set: Debian 12/13, Ubuntu 22.04/24.04 (**Supported**). Ubuntu 26.04, Rocky 9, Fedora 42 (**In lab**). Alpine 3.21, CentOS Stream 9, openSUSE Tumbleweed (**Experimental**). Debian 11 and Ubuntu 20.04 (**Legacy, 5.19 only**). RHEL, AlmaLinux, SLES, and other Ubuntu-derived images: customer validation. Full notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/). |
+| Distributions | Current k6 lab set: Debian 12/13, Ubuntu 24.04/26.04 (**Supported**). Fedora 42 (**In lab**). Rocky Linux 10, CentOS Stream 10, Alpine 3.21, openSUSE Tumbleweed (**Experimental**). Debian 11 and Ubuntu 20.04 (**Legacy, 5.19 only**). Ubuntu 22.04, Rocky Linux 9, RHEL 9, AlmaLinux 9, and CentOS Stream 9 miss the Python 3.11 floor. RHEL 8 and AlmaLinux 8 miss the glibc 2.34 floor. SLES: contact support; the same floors apply. Full notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/). |
 | Kernels | 6.18 for new installs (`6.18.9-hs`). 5.19 only on Debian 11 / Ubuntu 20.04. |
 
 Do not use the April 2026 v1.6.4 list (Fedora 41, Rocky 9.7, Alpine 3.21 as “validated,” Ubuntu 22.04 omitted). That table is retired.
 
 ## Kernel
 
-New Debian 12/13 and Ubuntu 22.04/24.04 installs boot the 6.18 Root Lock kernel. Debian 11 and Ubuntu 20.04 take the k5 installer and 5.19 only — they must not consume the 6.18 bundle. The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
+New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel. Debian 11 and Ubuntu 20.04 take the k5 installer and 5.19 only — they must not consume the 6.18 bundle. Ubuntu 22.04 is not offered on this installer (Python 3.10). The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
 
 ## Software compatibility notes
 

@@ -14,7 +14,7 @@ aliases:
 
 ## System requirements
 
-- **Operating System**: x86 (64-bit) Linux — Debian 11–13, Ubuntu-derived, Alpine, or RPM-based (Rocky 9.7 validated; Fedora 41, CentOS Stream 9 validated; RHEL/AlmaLinux/SLES: customer validation). See [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/).
+- **Operating System**: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Debian 11 and Ubuntu 20.04 use the 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, and the rest of the EL9 family are not offered (Python below 3.11). RHEL 8 and older extended-support releases are below the glibc floor. See [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/).
 - **Execution environment**: bare metal or a full virtual machine with hardware virtualization (KVM, cloud hypervisors, VMware). The Local Path command is the same on both. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests sharing the provider kernel) are not a fit by design. If a VPS or cloud guest has no `/dev/kvm`, install there; nesting a second guest causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms) and [Deployment Scenarios](../../introduction/deployment-scenarios/).
 - **Access Level**: Root access (sudo privileges).
 - **Skills**: Basic familiarity with the Linux command line.
