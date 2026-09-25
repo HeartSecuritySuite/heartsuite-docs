@@ -21,7 +21,7 @@ During maintenance you either switch to Setup Mode (the kernel logs but stops bl
 
 Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch with no GRUB is only when the strip already says Lockdown not applied.
 
-Distro errata and application updates install in Setup Mode, on the remediation SLA in your policy or contract. For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages. After the packages land, review the queues, then Lockdown again. Leaving Setup Mode open is the hole. The exception expiry is a different date, filed in the scanner. See [Scanner deadlines](scanner-deadlines/).
+Distro errata and application updates install in Setup Mode, on the remediation SLA in your policy or contract. For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages. After the packages land, review the queues, then Lockdown again. Leaving Setup Mode open is the hole. File the exception in the scanner on its own expiry. See [Scanner deadlines](scanner-deadlines/).
 
 - **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
 - **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required to unseal. Reboot and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set before Lockdown, that entry asks for it. Everyday Root Lock boot does not. That boot is the maintenance kernel; it runs `HS_unlock.sh`. sshd up or down on the Root Lock kernel does not clear the seal. That is two reboots before the window is open. Installs and edits after that are over SSH in Setup Mode. A host left on stock returns to Root Lock by reboot — GRUB default stays Root Lock.
@@ -37,7 +37,7 @@ Installing packages, replacing program files, and updating Root Lock itself are 
 | OS packages, configuration, replacing program files | Unseal, then work in Setup Mode — [Protecting During Maintenance](protecting-during-maintenance/) |
 | Root Lock kernel and Dashboard | Unseal if sealed, then one stock boot — [Updating Root Lock](updating-heartsuite/) |
 | Many hosts already in Lockdown | Reprovision from an updated image rather than opening a console on every node — [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) |
-| A scanner finding with a deadline | File one rule in the scanner you already run, when your policy allows it. The remediation SLA stays the date in the policy or contract. [Scanner deadlines](scanner-deadlines/). |
+| A scanner finding with a deadline | File one rule in the scanner you already run, on that rule's own expiry. The patch date in the policy or contract is unchanged. [Scanner deadlines](scanner-deadlines/). |
 
 ## In this section
 

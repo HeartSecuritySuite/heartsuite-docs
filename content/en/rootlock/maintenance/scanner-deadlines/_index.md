@@ -1,8 +1,8 @@
 ---
-title: "The remediation SLA and the exception expiry are different dates"
+title: "File the scanner exception on its own date"
 linkTitle: "Scanner deadlines"
 weight: 7
-description: "Your remediation SLA is the patch date in your policy or contract. The exception expiry is a different date, on the rule you file in the scanner."
+description: "How to record an expiry in the scanner you already run. The patch date in your policy or contract is unchanged."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "scanner"]
 type: docs
@@ -11,22 +11,17 @@ aliases:
 toc: true
 ---
 
-**Overview**: Your remediation SLA is the patch date in your policy or contract. The exception expiry is a different date, on the rule you file in the scanner. That rule changes the tool's score, its report, and its remediation queue until it expires. Under Lockdown, Root Lock by HeartSuite confines an allowlisted program to its allowlist. A bug in that program reads the files on its allowlist.
+**Overview**: Your policy or contract names when the patch goes in. When it allows an exception, you file one rule in the scanner you already run, and the expiry on that rule changes the tool's score, its report, and its remediation queue without moving the patch date. Under Lockdown, a bug in a program that is already allowlisted can read and write only the files that program was granted.
 
 ## When your policy allows an exception
 
-You file one rule in the scanner you already run, on the asset group, tag, or range. The reason, the comment, and the expiry are on that rule. Where the tool asks, record the approver and the review date there too. A written seven-day install rule stays seven days. An exception exists when that rule allows one.
+File the rule on the asset group, tag, or range those hosts already belong to. Put the reason and the comment on the rule, and set the expiry there. If the screen asks for an approver or a review date, record those on the same rule. A written seven-day install rule stays seven days — the exception is the scanner rule that allows a longer wait.
 
-Turn on Fleet syslog before the dates on the rule, so identifier `heartsuite` is already in the SIEM. On the Fleet tab in Alert Settings, the switch is **Send alerts to /dev/log (LOG_AUTH facility)**. Keep journald on persistent storage (`Storage=persistent`). See [SIEM Integration](../../alerts/siem-integration/).
-
-1. In that SIEM, save a search on identifier `heartsuite` for the exception's dates. Keep the export with the rule.
-2. The search returns denials and alerts. Allowlisted work is absent from the count.
-3. Where a monitor already polls `status.json`, use that monitor's history for `lockdown` and `daemon_ok` across the same dates. Root Lock rewrites `~/.cache/heartsuite/status.json` every 60 seconds (root daemon: `/root/.cache/heartsuite/status.json`).
-4. On one host, when the shipper is down, `journalctl -t heartsuite --since` and `--until` cover the exception dates.
+If those hosts already ship syslog, save a search on identifier `heartsuite` for the dates on the rule and keep it with the rule — the search shows denials and alerts. A monitor that already polls `status.json` covers the same dates in its history for `lockdown` and `daemon_ok`. On one host, when the shipper is down, `journalctl -t heartsuite --since` and `--until` cover those dates. See [SIEM Integration](../../alerts/siem-integration/).
 
 ## Record the reason in that scanner
 
-Each link is that tool's own article. Menu labels come from that tool. They can move. A 30-day or 90-day field in the article is the exception expiry. The remediation SLA stays the date in the policy or contract.
+Each link is that tool's own article, and the menu labels come from the article — they can move. A 30-day or 90-day field in the article is the exception expiry. The patch date in your policy or contract stays the remediation SLA.
 
 | Scanner | Reason | What changes | Documentation |
 |---|---|---|---|
@@ -41,7 +36,7 @@ Each link is that tool's own article. Menu labels come from that tool. They can 
 
 ## Image and dependency scanners
 
-An ignore in these tools changes that tool's report. The remediation SLA stays the date in the policy or contract.
+An ignore in these tools changes that tool's report. Package installs follow the date in your policy or contract.
 
 | Scanner | What you record | Documentation |
 |---|---|---|
@@ -53,7 +48,7 @@ An ignore in these tools changes that tool's report. The remediation SLA stays t
 
 ## Backports, tailoring, and intrusion prevention
 
-You file the exception in the scanner. These documents cover a backported fix, OpenSCAP tailoring, or intrusion prevention.
+These documents cover a backported fix, OpenSCAP tailoring, or intrusion prevention beside the scanner rule.
 
 | Source | What it is | Documentation |
 |---|---|---|
@@ -61,9 +56,9 @@ You file the exception in the scanner. These documents cover a backported fix, O
 | OpenSCAP | Tailoring removes a rule from a profile before the scan. | [OpenSCAP User Manual, Tailoring](https://static.open-scap.org/openscap-1.4.1/oscap_user_manual.html) |
 | Trend Micro Deep Security | Intrusion Prevention can block exploit traffic until the vendor patch is released, tested, and deployed. The vendor patch lands on the remediation SLA. | [About Intrusion Prevention](https://help.deepsecurity.trendmicro.com/aws/intrusion-prevention.html) |
 
-## Findings that stay on the remediation SLA
+## Findings that stay on the patch date
 
-These stay on the remediation SLA. Lockdown leaves each one there. You file an exception for one of these from your own policy:
+These keep the patch date in your policy or contract. Lockdown does not clear them, and an exception for one of them is a rule you file from your own policy:
 
 - In-process bugs, on data the program already reads
 - Kernel CVEs
@@ -74,6 +69,6 @@ These stay on the remediation SLA. Lockdown leaves each one there. You file an e
 
 In the scanner comment, describe a dropped binary, a new destination, or a process that already has root and obeys the allowlist.
 
-Matching uses the path. Two copies with the same bytes at different paths are different entries. In Setup Mode the kernel logs but stops blocking until you return to Lockdown. See [Protecting During Maintenance](../protecting-during-maintenance/).
+The kernel matches the path, so two copies with the same bytes at different paths are different entries. In Setup Mode the kernel logs but stops blocking until you return to Lockdown. See [Protecting During Maintenance](../protecting-during-maintenance/).
 
 Kernel version-string false positives follow [CVE Hygiene for Scanners](../../kernel-hardening/cve-hygiene-for-scanners/).
