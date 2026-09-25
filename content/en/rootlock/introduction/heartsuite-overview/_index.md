@@ -102,7 +102,7 @@ Many hosts still install through Cloud Path or Local Path on each machine. Ansib
 
 ## Is Root Lock right for you?
 
-Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design: the kernel omits overlay filesystems, user namespaces, and the BPF syscall because those are the features attackers use to hide, shadow directories, and reach root. See [Deployment Scenarios](../deployment-scenarios/).
+Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design. Overlay filesystems and user namespaces are how attackers shadow directories and reach root. See [Deployment Scenarios](../deployment-scenarios/#container-hosts).
 
 If you already run Falco, AppArmor, gVisor, a Linux EDR agent, a SIEM, NDR, or a scanner, see [How Root Lock Compares](../how-it-compares/) and [Security as economics](../security-as-economics/).
 

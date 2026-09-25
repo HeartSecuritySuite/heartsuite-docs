@@ -50,6 +50,12 @@ A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.1
 
 ---
 
+**Does Root Lock stop the vulnerability SLA clock?**
+
+The remediation SLA is the patch date in your policy or contract. Lockdown bounds the blast radius of a finding on that list. The exception expiry is a different date, on the rule you file in the scanner. That rule changes the tool's score, its report, and its remediation queue until it expires. A bug in an allowlisted program reads the files on its allowlist. See [Scanner deadlines](../maintenance/scanner-deadlines/). Kernel scanner workflow: [CVE Hygiene](../kernel-hardening/cve-hygiene-for-scanners/). Comparison: [How Root Lock Compares](../introduction/how-it-compares/).
+
+---
+
 **What is the cloud serial-console bypass risk?**
 
 Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same path as a keyboard. Both hit a GRUB password only if one was set. The normal Root Lock boot does not ask. Default is off.

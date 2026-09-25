@@ -311,7 +311,7 @@ Agent-based scanners (Tenable Nessus Agent, Qualys Cloud Agent) run as allowlist
 
 ## Where a separate kernel is required
 
-Root Lock deliberately omits overlay filesystems, user namespaces, and the BPF syscall because they are the features attackers use to hide, shadow directories, and reach root. Those workloads are not a fit by design. Run them on a separate system, or use the shipped paths below:
+Shared-kernel container engines, rootless containers, on-host eBPF tooling, and a KVM hypervisor host are not a fit. Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root. Run those workloads on a separate system. Root Lock runs as the guest kernel inside a virtual machine.
 
 - **Kubernetes nodes with dynamic container scheduling after Lockdown.** Many instances of the same binary are supported, but new mounts for HPA scale-out or rescheduling are refused. Fixed pod sets before Lockdown work via the Container-host install; see [Deployment Scenarios](../deployment-scenarios/#container-hosts).
 - **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.

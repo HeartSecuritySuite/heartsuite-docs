@@ -102,9 +102,9 @@ An attacker who already has root inside the VM cannot turn this off. There is no
 
 ## Shared-kernel containers {#container-hosts}
 
-Docker, containerd, Kubernetes, and CRI-O all run on a Root Lock host. The installer detects which container engine is present and asks you to choose a **Container host** or **Standard host** install.
+Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload on a Root Lock host. The installer can notice that one of those engines is present. It records the host as a standard host. It does not turn on overlay filesystem support, and it does not adapt Setup Mode for container images.
 
-Container host installs include overlay filesystem support and Setup Mode behavior adapted for container runtimes. Setup Mode logs container-runtime programs, overlay mounts, and each container image intended to run under Lockdown so you can review and approve them in the Dashboard queues before activating Lockdown.
+Build and run OCI images on another host. Root Lock protects the fixed-workload machines around that runtime. For a task that should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
 Lockdown seals the running container set — the kernel stops accepting new mount operations, including the overlay mounts and bind-mounts every container start requires. The same protection blocks attackers from constructing paths to shadow protected files.
 
