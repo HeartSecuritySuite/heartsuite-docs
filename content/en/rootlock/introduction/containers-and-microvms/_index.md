@@ -23,7 +23,7 @@ The install is a sealed appliance — a backup receiver, a fixed server, a close
 
 Docker, containerd, Podman, and runc isolate processes on the **host** kernel. That stack needs OverlayFS and user namespaces. On a Standard-host install those primitives are compiled out — they are the attack surface, path to root, and bypass the allowlist model removes. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
-A backup receiver that only accepts Restic over SFTP does not need Docker. The Container-host install and microVMs matter when a second job would otherwise force a shared-kernel runtime onto a sealed host.
+A backup receiver that only accepts Restic over SFTP does not need Docker. Run the container engine on another host, and let Root Lock protect the machines around it.
 
 ## What Firecracker and Kata are
 
