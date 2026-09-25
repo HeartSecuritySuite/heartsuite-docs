@@ -25,15 +25,15 @@ Root Lock operates standalone — no SaaS policy server, no agent-to-console cha
 
 A web server serves pages. A database answers queries. A reverse proxy forwards traffic. Each has a shape you review and approve in the Dashboard queues after a few days of Setup Mode logging, then you activate Lockdown.
 
-On a homogeneous fleet of these servers, you still install through Cloud Path or Local Path on each host. Harvest a baseline from one reference host, then apply it with Ansible — see [Central Policy](../../alerts/central-policy-management/).
+On a homogeneous fleet of these servers, install each host through Cloud Path or Local Path. Harvest a baseline from one reference host, then apply it with Ansible — see [Central Policy](../../alerts/central-policy-management/).
 
 Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Lockdown.
 
-Under Lockdown, even root can no longer change the allowlist while the server runs. An attacker who already has remote root is left with nowhere to go.
+Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off.
 
 CVE-2026-31431 — privilege escalation via AF_ALG — shows what that means. An attacker who exploits it already has root. On a Root Lock kernel AF_ALG is not compiled in. That path is gone.
 
-Even if it had been, Lockdown closes every path from there. The kernel refuses to clear immutable flags. Mount operations are blocked. Writes to the audit log are blocked. Root cannot modify configuration, cannot add a backdoor, and cannot survive a reboot.
+Even if it had been, Lockdown closes that path: the kernel refuses to clear immutable flags, blocks the mount, and blocks writes to the audit log, so a program added from that shell is gone after reboot.
 
 See [Kernel Security Transparency](../../security/) for the full CVE status table and scanner guidance.
 

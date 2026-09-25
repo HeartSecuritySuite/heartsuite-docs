@@ -11,7 +11,7 @@ aliases:
 toc: true
 ---
 
-**Overview**: Side-by-side comparison of Root Lock by HeartSuite kernel configuration choices against community hardened kernels and the KSPP benchmark.
+**Overview**: Side-by-side comparison of Root Lock kernel configuration choices against community hardened kernels and the KSPP benchmark.
 
 **Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**). **5.19.6** is the legacy measured stream.  
 **Evidence:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18, checker `e870d01`). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).

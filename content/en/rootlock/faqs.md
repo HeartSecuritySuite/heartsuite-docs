@@ -91,7 +91,7 @@ In-place package installs still work on a **single** host after unseal — [Prot
 
 A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown).
 
-An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, remote root has no intended path to lift the Root Lock seal. That is the comparison on the disable path.
+An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, that attacker cannot lift the seal. That is the comparison on the disable path.
 
 See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table. Recovery takes physical or serial-console access: keyboard and monitor, serial port, or cloud serial console. For SELinux specifically, see the next question.
 
@@ -103,7 +103,7 @@ A: SELinux is a strong MAC framework — it confines processes using labels, enf
 
 The limitation on a typical distro is the trust boundary. Root can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly.
 
-Root Lock is not an LSM. Setup Mode learns a per-program allowlist; Lockdown seals it. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough to unseal. After unseal, you work over SSH in Setup Mode.
+Root Lock is not an LSM. Setup Mode logs what each program did, and you approve it in the queues. Lockdown seals that allowlist. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough to unseal. After unseal, you work over SSH in Setup Mode.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side. A lab of the same root-shell path is in [What Lockdown refused after a root shell](../../blog/2026/09/11/lockdown-after-a-root-shell/).
 

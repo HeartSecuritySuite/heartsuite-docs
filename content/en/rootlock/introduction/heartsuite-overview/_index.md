@@ -44,7 +44,7 @@ The security industry patches vulnerabilities one at a time. Root Lock removes t
 
 Most malware escalates privilege by reaching for the same handful of kernel features: eBPF to hide processes, FUSE to redirect reads, overlay filesystems to shadow directories, userspace LSM frameworks (AppArmor, SMACK, Landlock) to pivot through, and unprivileged user namespaces to gain root without credentials.
 
-The Root Lock kernel is deliberately compiled without them. These primitives are the attack surface, path to root, and bypass vectors the allowlist model exists to close.
+The Root Lock kernel is deliberately compiled without them. Those are the features an attacker uses to become root and to get around an allowlist.
 
 A stock Ubuntu kernel ships with over 6,600 loadable modules. The Root Lock kernel ships with 13.
 

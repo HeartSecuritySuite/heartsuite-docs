@@ -96,13 +96,13 @@ The comparison below is scoped to preventive enforcement. Telemetry, behavioural
 
 **The common pattern.** Every tool in this table can be disabled by an attacker who already has remote root. They can kill the security agent, unload the BPF program, or set the LSM permissive.
 
-Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. By design, root has no path to disable enforcement or rewrite the sealed allowlist. See [Circumvention and recovery](#circumvention-and-recovery).
+Root Lock removes that possibility: enforcement is compiled into the kernel and the allowlist is sealed under Lockdown. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. See [Circumvention and recovery](#circumvention-and-recovery).
 
 **Industry pattern (impair defenses).** In many ransomware and post-compromise campaigns, attackers disable or impair security tools early. They stop the EDR agent, unload sensors, or weaken host policy first. Then they encrypt the files, or they move to the next machine.
 
 Root Lock is designed so it has no agent process, no BPF program, and no unloadable module to target. The question is no longer whether the agent is still running. It is whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
-**Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
+**Related designs.** Sealing the running policy against root is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes a physical or serial console.
 
 **Linux kernel lockdown LSM.** Linux ships a separate lockdown LSM ([`kernel_lockdown(7)`](https://man7.org/linux/man-pages/man7/kernel_lockdown.7.html)). `lockdown=integrity` refuses changes to the running kernel image, including unsigned modules, unsigned `kexec`, and `/dev/mem`. `lockdown=confidentiality` also refuses kernel-memory reads. Root Lock's Lockdown seals the allowlist with `chattr +i`. Under that seal every execution, file access, and outbound connection needs a grant, including when the caller is root, and the grant list stays sealed until Maintenance unseal from a physical or serial console. The Linux LSM stops at the kernel image, so root can still read another program's files and install a userspace program.
 

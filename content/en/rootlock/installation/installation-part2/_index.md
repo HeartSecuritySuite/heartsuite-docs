@@ -1,7 +1,7 @@
 ---
 title: "Installing Root Lock by HeartSuite – Part 2"
 weight: 4
-description: "Root Lock by HeartSuite builds the initial allowlist automatically after the first boot. On serial the Dashboard can open by itself. On a graphical VM window, log in as root and type hs."
+description: "After the first boot, Root Lock reads the startup and shutdown logs and adds the programs it finds. On serial the Dashboard can open by itself. On a graphical VM window, log in as root and type hs."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "allowlisting", "script"]
 type: docs
@@ -14,7 +14,7 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist. When that is complete, the Dashboard opens on the serial console. A graphical VM window (hypervisor VNC, virt-manager, and similar) stays a normal login: log in as root and type `hs` or `heartsuite`.
+**Overview**: No commands are needed after the first boot into the Root Lock kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist. When that is complete, the Dashboard opens on the serial console. A graphical VM window (hypervisor VNC, virt-manager, and similar) stays a normal login: log in as root and type `hs` or `heartsuite`.
 
 > [!NOTE]
 > Cloud users skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Installer and initial setup logs from the image build are in `/var/log/heartsuite/` and accessible via the provider's serial console.

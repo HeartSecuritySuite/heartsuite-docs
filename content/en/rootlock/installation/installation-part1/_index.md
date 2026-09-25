@@ -1,7 +1,7 @@
 ---
 title: "Installing Root Lock by HeartSuite – Part 1"
 weight: 3
-description: "Install the Root Lock by HeartSuite kernel and boot into it for the first time."
+description: "Install the Root Lock kernel and boot into it for the first time."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "kernel", "installer", "reboot"]
 type: docs
@@ -14,7 +14,7 @@ menu:
     identifier: "installation-part1"
 ---
 
-**Overview**: After running the install command, the machine reboots into the Root Lock by HeartSuite kernel.
+**Overview**: After running the install command, the machine reboots into the Root Lock kernel.
 
 > [!NOTE]
 > Cloud users skip this step entirely. The Root Lock kernel is pre-installed and on first boot the Dashboard confirms initial setup is complete. The Dashboard appears automatically on first boot.

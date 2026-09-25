@@ -1,6 +1,6 @@
 # Contributing to HeartSuite Documentation
 
-Welcome! Root Lock by HeartSuite is an enterprise-grade security suite built on a hardened Linux kernel. We greatly appreciate your help in improving our documentation. This guide explains how to contribute effectively to the HeartSuite docs.
+Welcome! Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. We greatly appreciate your help in improving our documentation. This guide explains how to contribute effectively to the HeartSuite docs.
 
 ## Ways to Contribute
 

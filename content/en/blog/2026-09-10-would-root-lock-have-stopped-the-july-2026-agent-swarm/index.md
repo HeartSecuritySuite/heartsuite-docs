@@ -53,7 +53,7 @@ That boundary is the same one on a build host. CVE-2024-27198 - JetBrains TeamCi
 
 Root Lock is strongest on egress of the agent process and on post-shell containment. An allowlisted application zero-day still belongs to that application.
 
-## What still belongs to the operator
+## What still belongs to you
 
 With or without Root Lock:
 

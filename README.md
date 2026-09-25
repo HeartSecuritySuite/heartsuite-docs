@@ -1,6 +1,6 @@
 # HeartSuite Documentation
 
-Welcome to the official documentation for **Root Lock by HeartSuite** — the enterprise-grade security suite built on a hardened Linux kernel.
+Welcome to the official documentation for **Root Lock by HeartSuite** — kernel default-deny for programs, files, and outbound network, including as root.
 
 *Root Lock by HeartSuite | Humans in Command*
 

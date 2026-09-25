@@ -136,7 +136,7 @@ A commercial subscription for Root Lock covers the delivered stack, including th
 
 The kernel does not carry a separate support contract. It is part of the integrated product under the same subscription that enables Lockdown.
 
-Indemnity, limitation of liability, and SLA credits are contract terms. Residual kernel CVE risk stays with the operator. See the [Subscription](../../licensing/) page for activation mechanics and your agreement for the binding text.
+Indemnity, limitation of liability, and SLA credits are contract terms. Residual kernel CVE risk stays with you. See the [Subscription](../../licensing/) page for activation mechanics and your agreement for the binding text.
 
 ## Supply chain transparency and integrity
 

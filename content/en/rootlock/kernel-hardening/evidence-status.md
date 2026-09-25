@@ -11,7 +11,7 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite kernel evidence  
+**Subject:** Root Lock kernel evidence  
 **Fielded 6.18 pin:** `6.18.9-hs` / packaging `6.18.9-HeartSuite-3` / build **#37**  
 **Legacy stream:** kernel **5.19.6** (maintenance-only; see [Kernel Support Policy](kernel-support-policy/#519-stream-deprecation))
 
