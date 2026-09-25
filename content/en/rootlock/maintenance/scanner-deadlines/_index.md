@@ -11,7 +11,19 @@ aliases:
 toc: true
 ---
 
-**Overview**: Your policy or contract names when the patch goes in. When it allows an exception, you file one rule in the scanner you already run, and the expiry on that rule changes the tool's score, its report, and its remediation queue without moving the patch date. Under Lockdown, a bug in a program that is already allowlisted can read and write only the files that program was granted.
+**Overview**: A critical row is this week's work when the bug can finish with what the program already has. When the next step is a program with no allowlist entry, a file the program was not granted, or a destination the program was not granted, that row can leave the active queue for the standard change window. You file one rule in the scanner you already run. The expiry on that rule changes the tool's score, its report, and its remediation queue. The date your policy or contract names for the patch does not move.
+
+## What leaves the active queue
+
+Use the reason in the table below, not a false-positive reason, when the next step is something Lockdown already stops:
+
+- The next step is a program with no allowlist entry
+- The next step is a file the program was not granted
+- The next step is a destination the program was not granted
+
+In the comment, name that step: a dropped binary, a new destination, or a process that already has root and obeys the allowlist. Where your policy sets the standard change window at 60 days or 90 days for work it does not rank critical, set the expiry to that window. A known-exploited finding stays on the patch date. So does anything the policy ranks critical. The list is [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities).
+
+A kernel CVE is a false positive on this host only when that code is absent from the kernel you boot. Use that scanner's false-positive or not-affected reason, and record the gate on the rule. The Root Lock kernel stays as shipped, and `apt` and `dnf` install the OS packages. The BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in the 6.18 kernel, so those CVEs stay on the patch date. The catalog is [Kernel Security Transparency](../../security/).
 
 ## When your policy allows an exception
 

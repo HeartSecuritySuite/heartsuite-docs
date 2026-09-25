@@ -31,5 +31,6 @@ In Lockdown, anything not on the allowlist is blocked before it can act. By desi
 - [System Requirements](system-requirements/) — Compatible systems, kernel versions, and prerequisites.
 - [Deployment Scenarios](deployment-scenarios/) — Environments and workloads where Root Lock fits best, plus notes on incompatible stacks.
 - [How Root Lock Compares](how-it-compares/) — What Root Lock replaces, what it complements, and how it can be circumvented.
+- [Security as Economics](security-as-economics/) — Which scanner findings can wait for the standard change window, and what that does to attacker cost.
 
 For detailed installation steps, see [Installation](../installation/). [Getting Started](../getting-started/) covers Cloud Path and Local Path. On a single host they converge at the Dashboard after initial setup. Many hosts still install through Cloud Path or Local Path on each machine — see [Central Policy](../alerts/central-policy-management/).

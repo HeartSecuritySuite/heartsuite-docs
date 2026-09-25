@@ -61,6 +61,7 @@ The pages below are the individual steps, linked from Quick Start:
 - [SIEM and Fleet Integration](alerts/siem-integration/) — Connect to Splunk, Elastic, PagerDuty, and other tools at fleet scale (syslog, webhook, status JSON).
 - [Central Policy Management and External Control](alerts/central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation.
 - [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, cache adjustment, kmod file-access narrowing, updating Root Lock, and reprovisioning locked fleets from an updated image.
+- [Scanner deadlines](maintenance/scanner-deadlines/) — Which findings can leave this week's queue for the standard change window your policy already names.
 
 ## Troubleshoot and reference
 

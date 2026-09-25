@@ -2,7 +2,7 @@
 title: "Security as Economics"
 linkTitle: "Security as Economics"
 weight: 6
-description: "No scan, no score, no guess: the allowlist entry exists or it does not. What that does to attacker cost, patching urgency, and alert volume."
+description: "A high scanner score can wait for the standard change window when Lockdown already stops the next step. Attacker cost, operating cost, and alert volume."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "economics", "roi", "edr", "selinux", "zafran", "ctem", "patching", "alerts"]
 type: docs
@@ -11,7 +11,21 @@ aliases:
 toc: true
 ---
 
-**Overview**: Defeating a host control has a cost, and so does operating one. Root Lock by HeartSuite does not scan, score, or guess — in Lockdown the allowlist entry exists or it does not.
+**Overview**: Defeating a host control has a cost, and so does operating one. Root Lock by HeartSuite does not scan, score, or guess — in Lockdown the allowlist entry exists or it does not. A high scanner score can wait for the standard change window when the next step is a program with no allowlist entry, a file that program was not granted, or a destination it was not granted.
+
+## Patching urgency
+
+The scanner starts a short clock on a high score. Read the next step. When it is a program with no allowlist entry, a file the program was not granted, or a destination the program was not granted, Lockdown stops that step, and the patch goes in at the standard change window.
+
+Where your policy sets that window at 60 days or 90 days for work it does not rank critical, file the exception with the expiry set to that window. The expiry on the scanner rule is what takes the row off the active queue, and what changes the tool's score, report, and remediation queue until the rule expires. The date in your policy or contract stays the remediation SLA.
+
+A bug that can finish on data the program already reads, on a file it was granted, or on a destination already permitted keeps the policy date. So does a kernel CVE whose code is in the Root Lock kernel you boot, and any finding your policy treats as immediate, including one known to be exploited. See [Scanner deadlines](../../maintenance/scanner-deadlines/).
+
+For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. Record that status from [Kernel Security Transparency](../../security/) on the rule. `apt` and `dnf` install the OS packages.
+
+A cheaper commodity zero-day runs a program, touches files, and phones home. Lockdown bounds those three. A zero-day inside an allowlisted program reads the files on its allowlist.
+
+## What defeating it costs
 
 No security control is unconditionally unbreakable. The right question is not "can this be defeated?" but "what does defeating it cost the attacker — and what does operating it cost the defender?"
 
@@ -28,16 +42,6 @@ Each additional step the attacker takes requires a new custom exploit targeted a
 **Cost to implement.** A finite window: run the programs you want to allow, review and approve through the Dashboard queues, engage Lockdown. Most customers complete it during a standard change window.
 
 ## Operational cost
-
-**Patching urgency.** The scanner starts a short clock on a high score. Read the next step. When it is a program with no allowlist entry, a file the program was not granted, or a destination the program was not granted, Lockdown stops that step, and the patch goes in at the standard change window.
-
-Where your policy sets that window at 60 days or 90 days for work it does not rank critical, file the exception with the expiry set to that window. The expiry on the scanner rule is what takes the row off the active queue, and what changes the tool's score, report, and remediation queue until the rule expires. The date in your policy or contract stays the remediation SLA.
-
-A bug that can finish on data the program already reads, on a file it was granted, or on a destination already permitted keeps the policy date. So does a kernel CVE whose code is in the Root Lock kernel you boot, and any finding your policy treats as immediate, including one known to be exploited. See [Scanner deadlines](../../maintenance/scanner-deadlines/).
-
-For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. Record that status from [Kernel Security Transparency](../../security/) on the rule. `apt` and `dnf` install the OS packages.
-
-A cheaper commodity zero-day runs a program, touches files, and phones home. Lockdown bounds those three. A zero-day inside an allowlisted program reads the files on its allowlist.
 
 **Alert reduction.** An attack that cannot progress past the kernel gate does not generate a SIEM or EDR alert. A binary that cannot execute never triggers a process-execution event. An outbound connection refused at the kernel never appears in NDR telemetry as a beacon or data-loss event.
 

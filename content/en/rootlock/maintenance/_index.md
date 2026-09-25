@@ -37,10 +37,11 @@ Installing packages, replacing program files, and updating Root Lock itself are 
 | OS packages, configuration, replacing program files | Unseal, then work in Setup Mode — [Protecting During Maintenance](protecting-during-maintenance/) |
 | Root Lock kernel and Dashboard | Unseal if sealed, then one stock boot — [Updating Root Lock](updating-heartsuite/) |
 | Many hosts already in Lockdown | Reprovision from an updated image rather than opening a console on every node — [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) |
-| A scanner finding with a deadline | File one rule in the scanner you already run, on that rule's own expiry. The patch date in the policy or contract is unchanged. [Scanner deadlines](scanner-deadlines/). |
+| A scanner finding with a deadline | When Lockdown already stops the next step, file the exception and use the standard change window. [Scanner deadlines](scanner-deadlines/). |
 
 ## In this section
 
+- [Scanner deadlines](scanner-deadlines/) — Which findings can leave the active queue for the standard change window, and how to file the exception on its own date.
 - [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown (SSH is not enough for the GRUB pick). Then install or edit over SSH in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
