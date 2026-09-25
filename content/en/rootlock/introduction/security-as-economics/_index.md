@@ -29,7 +29,7 @@ Each additional step the attacker takes requires a new custom exploit targeted a
 
 ## Operational cost
 
-**Patching urgency.** CVE classes that correspond to compiled-out kernel features do not generate emergency patch windows — the feature is absent, and no CVE in that class applies regardless of when the patch ships.
+**Patching urgency.** Distro errata and application updates install on the remediation SLA in your policy or contract. Lockdown bounds the blast radius of a finding on that list. The exception expiry is a different date, on the rule you file in the scanner. That rule changes the tool's score, its report, and its remediation queue until it expires. An accepted exception waits for the standard change window. See [Scanner deadlines](../../maintenance/scanner-deadlines/).
 
 For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. Record that status from [Kernel Security Transparency](../../security/) on the rule. `apt` and `dnf` install the OS packages.
 

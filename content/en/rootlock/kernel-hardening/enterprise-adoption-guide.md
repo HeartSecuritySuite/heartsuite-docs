@@ -89,14 +89,13 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 - Standard networking stacks and cloud provider vNICs / security groups (Root Lock controls only outbound per-program destinations; inbound remains the responsibility of the OS firewall or cloud controls).
 - SIEM / SOAR ingestion via the two syslog streams and webhook (see [Alert Settings](../../alerts/)).
 - Monitoring and status collection via `~/.cache/heartsuite/status.json` (Ansible facts, Nagios, Zabbix, custom collectors).
-- Container workloads with fixed pod sets established before Lockdown engages (see deployment notes in [How Root Lock Compares](../../introduction/how-it-compares/)).
 - EDR and observability via log forwarding (no on-host eBPF attachment). Enforcement events flow through syslog. Denial logs cover blocks only.
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
 **Does not run on the Root Lock kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
 - Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is omitted.
-- Dynamic Kubernetes environments with frequent pod creation, HPA scale-out, or rescheduling after Lockdown (mount operations required for new containers are refused).
+- Shared-kernel container engines on this host (Docker, containerd, CRI-O, Kubernetes, Podman), including a fixed pod set. Build and run OCI images on another host.
 - KVM hypervisor hosts. Root Lock runs as a guest.
 - Rootless / unprivileged user-namespace containers.
 - Any workload that needs a compiled-out kernel feature for its core function.
