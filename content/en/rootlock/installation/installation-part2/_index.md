@@ -37,6 +37,7 @@ Root Lock reads the startup and shutdown logs, adds the programs it finds to the
 - **On a graphical console** (the VM window, hypervisor VNC, virt-manager, Proxmox, and similar): that is a normal login. The Dashboard does not start by itself. During setup you may see kernel lines and a login prompt. When setup is finished, log in as root and type `hs` or `heartsuite`. **Press Enter to start** is serial-only.
 
 The first time the Dashboard is in front of you, initial setup is complete.
+
 ## Leave the host quiet
 
 After the first reboot into the Root Lock kernel, leave the machine alone until setup finishes. Each SSH reconnect shows a status line and a shell. Root Lock is still adding startup and shutdown programs from those boots. On a graphical VM window, do not wait for the Dashboard to replace the login prompt.
