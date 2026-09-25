@@ -35,9 +35,9 @@ A backup receiver that only accepts Restic over SFTP does not need Docker. The C
 
 Industry pattern: platforms that run untrusted or multi-tenant code put Firecracker or Kata **under** the workload. Everyday microservices still ship Docker/OCI images on a shared-kernel runtime. Firecracker is a trust badge for isolation, not a mass-market brand that replaces Docker.
 
-## Two shipped shapes
+## Where the containers go
 
-### Container host — a long-lived set on this kernel
+### On another host
 
 The installer detects Docker, containerd, Kubernetes, or CRI-O and offers a **Container host** or **Standard host** install. Container-host installs enable overlay filesystem support and adapt Setup Mode for container runtimes.
 
@@ -113,7 +113,7 @@ A: No. Root Lock protects workloads running inside a kernel. A hypervisor host g
 
 ## Related pages
 
-- [Deployment Scenarios](../deployment-scenarios/) — fit / not-fit, AI guest VMs, container hosts
-- [System Requirements](../system-requirements/) — deliberate omissions (eBPF, FUSE, overlay, KVM host)
+- [Deployment Scenarios](../deployment-scenarios/) — fit / not-fit, AI guest VMs, shared-kernel containers
+- [System Requirements](../system-requirements/) — kernel line differences, including OverlayFS and KVM host
 - [How Root Lock Compares](../how-it-compares/) — gVisor and enforcement peers
-- [FAQs](../../faqs/) — who it is for; container reference architecture
+- [FAQs](../../faqs/) — who it is for; shared-kernel containers

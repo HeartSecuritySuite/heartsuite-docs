@@ -100,7 +100,7 @@ An attacker who already has root inside the VM cannot turn this off. There is no
 > [!NOTE]
 > Setup Mode logs the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
-## Container hosts {#container-hosts}
+## Shared-kernel containers {#container-hosts}
 
 Docker, containerd, Kubernetes, and CRI-O all run on a Root Lock host. The installer detects which container engine is present and asks you to choose a **Container host** or **Standard host** install.
 
@@ -117,11 +117,11 @@ This is the right pattern for long-lived service containers, Kubernetes nodes wi
 A few workloads are incompatible with the Root Lock kernel as shipped — **not a fit by design**. The kernel omits overlay filesystems, user namespaces, and the BPF syscall because they are the features attackers use to hide, shadow directories, and reach root.
 
 - **Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests on a provider kernel, systemd-nspawn)** — Root Lock must boot its own kernel by design. Full VMs under KVM or cloud hypervisors are supported; Root Lock runs as a guest kernel inside them.
-- **Hosts requiring continuous container scheduling** — dynamic deployments, autoscaling, and pod rescheduling after node loss each require new mount operations that Lockdown refuses. Container hosts with a steady-state workload are supported via the Container-host install above.
+- **Shared-kernel container engines on this host (Docker, containerd, CRI-O, Kubernetes, Podman)** — not a fit, including a long-lived or fixed set of containers. Build and run those images on another host. See [Shared-kernel containers](#container-hosts) above.
 - **Hosts where eBPF-based tooling must run locally** — Falco, Cilium, Tetragon, bpftrace, and similar tools require the BPF syscall, which is deliberately absent. These tools can still observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and /proc inspection.
 - **Hypervisor hosts running virtual machines** — Root Lock protects workloads running *inside* a kernel. A hypervisor host grants trusted access to guest workloads it does not control — the inverse model. KVM host mode is not a supported configuration; those kernel features are compiled out. Root Lock runs as a VM guest on KVM, cloud hypervisors, and other platforms.
 - **A VM nested inside another VM without hardware virtualization** — a VPS or cloud guest is already a virtual machine. Install Root Lock there, or on a host that exposes `/dev/kvm`. Nesting a second guest without hardware virtualization causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../system-requirements/#bare-metal-virtual-machines-and-nested-vms).
-- **Systems that require rootless containers** — unprivileged user-namespace creation is disabled by policy on the Root Lock kernel; it is a common path to privilege escalation without credentials. Workloads requiring rootless containers should run on a separate host.
+- **Rootless containers** — not a fit. Unprivileged user namespaces are a path to root without credentials. Run them on a separate host.
 - **Applications that update daily or on an unpredictable schedule** — each update that adds a new binary, dependency, or network destination requires a maintenance window: open Setup Mode, run the update, approve the new allowlist entries, and re-engage Lockdown. That process fits controlled patch schedules. At daily cadence the overhead is daily. Applications with a predictable update cycle are a better fit.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.

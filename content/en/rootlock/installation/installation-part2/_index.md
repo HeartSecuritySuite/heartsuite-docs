@@ -1,7 +1,7 @@
 ---
 title: "Installing Root Lock by HeartSuite – Part 2"
 weight: 4
-description: "Root Lock by HeartSuite builds the initial allowlist automatically after the first boot. The Dashboard appears when setup is complete."
+description: "Root Lock by HeartSuite builds the initial allowlist automatically after the first boot. On serial the Dashboard can open by itself. On a graphical VM window, log in as root and type hs."
 categories: ["Installation"]
 tags: ["heartsuite", "linux", "setup", "allowlisting", "script"]
 type: docs
@@ -14,7 +14,7 @@ menu:
     identifier: "installation-part2"
 ---
 
-**Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist — the Dashboard appears when this is complete and directs you into allowlisting.
+**Overview**: No commands are needed after the first boot into the Root Lock by HeartSuite kernel. Root Lock reads the startup and shutdown logs and adds the programs it finds to the allowlist. When that is complete, the Dashboard opens on the serial console. A graphical VM window (hypervisor VNC, virt-manager, and similar) stays a normal login: log in as root and type `hs` or `heartsuite`.
 
 > [!NOTE]
 > Cloud users skip live initial setup. On a pre-configured cloud instance, the Dashboard confirms initial setup completed during image build. Installer and initial setup logs from the image build are in `/var/log/heartsuite/` and accessible via the provider's serial console.
@@ -32,7 +32,7 @@ Root Lock reads the startup and shutdown logs, adds the programs it finds to the
   The system reboots automatically. Reconnect in a few minutes.
   ```
 
-- **On the serial console** (virsh console, AWS EC2 Serial Console or Get system log, Linode LISH, Azure Serial Console, GCP serial, Hetzner console, etc.): attach and press Enter — the console autologs in as root and shows the current step or banner. No action needed. To inspect logs: `cat /var/log/heartsuite/install.log` (installer) or `cat /var/log/heartsuite/initial-setup-latest.log`.
+- **On the serial console** (`virsh console`, AWS EC2 Serial Console or Get system log, Linode LISH, Azure Serial Console, GCP serial, IPMI serial-over-LAN): attach and press Enter once when you see **Press Enter to start.** Serial autologs in as root. During setup it shows the current step; when setup is finished the Dashboard can open there. To inspect logs: `cat /var/log/heartsuite/install.log` (installer) or `cat /var/log/heartsuite/initial-setup-latest.log`.
 
 The first time you connect and the Dashboard appears, initial setup is complete. The Dashboard shows the reboot history.
 
@@ -60,7 +60,7 @@ Cloud images often ship a first-boot SSH policy that allows password login so yo
 
 ## If the Dashboard does not appear
 
-If initial setup is still running, SSH reconnects show the status line above instead of the Dashboard. Wait a few minutes and reconnect.
+If initial setup is still running, SSH reconnects show the status line above instead of the Dashboard. Wait a few minutes and reconnect. On a graphical VM window, a login prompt is normal; log in as root and type `hs` after setup finishes.
 
 If repeated reconnects still show the status line rather than the Dashboard:
 

@@ -91,5 +91,5 @@ Until hardware ships, treat hypervisor and cloud serial-console IAM as part of t
 | Stock Debian or Ubuntu kernel | Delivery is the closed image. The nft-only constraint and the closed image assume the Root Lock kernel. |
 | Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. Provider controls (security groups, Network Firewall, Azure Firewall) stay the outer layer if you use them. |
 | Inline / NAT / HA pair | Later. See [Deployment scenarios](../deployment-scenarios/). |
-| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. See [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/) on Root Lock for the separate container-host kernel product. |
+| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either. Use Firecracker and kata instead. See [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts). |
 | Windows or macOS | The filter and the kernel are Linux. |
