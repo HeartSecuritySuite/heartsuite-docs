@@ -93,26 +93,20 @@ if [[ -n "$title_case" ]]; then
   found=1
 fi
 
-# §5.1: "HeartSuite kernel" is retired, but the substring appears inside the
-# allowed first-mention form "Root Lock by HeartSuite kernel".
+# §5.1: category noun takes the short name. "HeartSuite kernel" and
+# "Root Lock by HeartSuite kernel" are both retired. uname strings such as
+# 6.18.9-HeartSuite-3 do not contain the word "kernel" beside the token.
 hs_kernel=$(python3 - <<'PY'
 from pathlib import Path
 needle = "HeartSuite kernel"
-ok_prefix = "Root Lock by "
 for path in sorted(Path("content").rglob("*.md")):
     for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        start = 0
-        while True:
-            idx = line.find(needle, start)
-            if idx == -1:
-                break
-            if not line[:idx].endswith(ok_prefix):
-                print(f"{path}:{i}:{line}")
-            start = idx + len(needle)
+        if needle in line:
+            print(f"{path}:{i}:{line}")
 PY
 )
 if [[ -n "$hs_kernel" ]]; then
-  echo "BANNED TERM: \"HeartSuite kernel\" (use Root Lock kernel; first-mention \"Root Lock by HeartSuite kernel\" is allowed)"
+  echo "BANNED TERM: \"HeartSuite kernel\" (use Root Lock kernel, including after the full product name)"
   echo "$hs_kernel"
   found=1
 fi
