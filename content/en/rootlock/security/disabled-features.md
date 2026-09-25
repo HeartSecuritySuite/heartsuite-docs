@@ -2,7 +2,7 @@
 title: "Not Affected — disabled features"
 linkTitle: "Disabled features"
 weight: 20
-description: "CVE groups whose kernel code path is not compiled into Root Lock. Config gate proof for scanners."
+description: "Config gates for kernel CVEs. Not Affected only where that option is unset on the kernel you boot."
 categories: ["Reference"]
 tags: ["heartsuite", "linux", "security", "cve", "kernel", "vulnerability"]
 toc: true
@@ -14,24 +14,25 @@ aliases:
 <!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
 <!-- markdownlint-disable MD001 -->
 
-**Overview**: These CVE groups have no reachable code path on the Root Lock kernel because the feature is not compiled in. Confirm a gate with `grep CONFIG_<GATE> /boot/config-$(uname -r)`.
+**Overview**: A row is Not Affected on the kernel you boot only when that option is unset. On the 6.18.9-hs kernel that ships, `CONFIG_BPF_SYSCALL` is unset. `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_USER_NS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_NF_TABLES=m`, `CONFIG_KVM=m` (Intel and AMD), and `CONFIG_SECURITY_APPARMOR=y` are in that kernel. Those CVEs stay on the patch date. The guest file `/boot/config-6.18.9-hs` is a stub, so `grep` of that file is not the proof. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 Compiled-in residuals and write-ups: [Compiled-in CVEs](../compiled-in-cves/). Method: [Kernel Security Transparency](../).
 
-Root Lock is built for production servers, regulated workstations, build infrastructure, and AI agent sandboxes. The kernel does not include subsystems these workloads do not require. Each absent subsystem eliminates the full class of vulnerabilities that subsystem carries, without requiring per-CVE evaluation.
+Where an option below is unset, that subsystem is absent and the group is Not Affected without a per-CVE review. Where the 6.18.9-hs pin builds the option, the row says so and the Not Affected badge is not used.
 
 Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](../compiled-in-cves/#cve-2026-31431). An attacker who already has root still cannot persist and still cannot edit the allowlist. The files are immutable. The kernel refuses the write.
 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|
 | [`CONFIG_BPF_SYSCALL` not set](#bpf-syscall-interface) | CVE-2021-20194, CVE-2023-2163, CVE-2023-39191, CVE-2023-52452, CVE-2024-26589, CVE-2023-52621, CVE-2023-52642, CVE-2024-26883, CVE-2024-26884, CVE-2024-26885, CVE-2024-38538, CVE-2024-40954, CVE-2024-41045, CVE-2024-49861, CVE-2022-49030, CVE-2024-50063, CVE-2024-50067, CVE-2024-50164, CVE-2024-50262, CVE-2024-53099, CVE-2024-56614, CVE-2024-56615, CVE-2024-56633, CVE-2024-56664, CVE-2023-53024, CVE-2022-49840, CVE-2025-37822, CVE-2022-49961, CVE-2022-49970, CVE-2022-49975, CVE-2025-38280, CVE-2025-38502, CVE-2025-38538, CVE-2025-39744, CVE-2023-53192, CVE-2023-53338, CVE-2025-39913, CVE-2022-50490, CVE-2022-50536, CVE-2026-23343, CVE-2026-23359  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_NF_TABLES` module (`m`)](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_NF_TABLES=m` on 6.18.9-hs](#netfilter-nftables) | CVE-2023-32233, CVE-2023-0179, CVE-2023-3390, CVE-2023-31248, CVE-2023-35001, CVE-2023-3610, CVE-2023-4004, CVE-2023-3777, CVE-2023-4015, CVE-2023-4244, CVE-2023-6817, CVE-2024-1085, CVE-2023-52628, CVE-2024-26673, CVE-2024-27020, CVE-2024-27065, CVE-2024-27397, CVE-2024-35896, CVE-2024-41042, CVE-2024-44983, CVE-2024-50257, CVE-2024-53141, CVE-2024-56650, CVE-2023-52927, CVE-2025-22056, CVE-2022-49919, CVE-2025-38201, CVE-2023-53179, CVE-2023-53492, CVE-2023-53619, CVE-2026-23231, CVE-2023-4147  | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_NET_SCH_QFQ`, `CONFIG_NET_CLS_TCINDEX` not set](#network-traffic-control-schedulers) | CVE-2023-31436, CVE-2023-1829, CVE-2023-1281 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_BT` not set](#bluetooth-stack) | CVE-2022-42896, CVE-2022-45934, CVE-2022-3564, CVE-2022-3640, CVE-2023-1989, and 3 additional, CVE-2023-40283, CVE-2024-21803, CVE-2024-27000, CVE-2024-27398, CVE-2024-35963, CVE-2024-35965, CVE-2024-35966, CVE-2024-35967, CVE-2023-52766, CVE-2024-36012, CVE-2024-36032, CVE-2024-36880, CVE-2024-40927, CVE-2024-41087, CVE-2022-48871, CVE-2022-48878, CVE-2024-43883, CVE-2024-49950, CVE-2024-50125, CVE-2024-50234, CVE-2024-53208, CVE-2024-56604, CVE-2024-56605, CVE-2025-21969, CVE-2025-22022, CVE-2022-49826, CVE-2022-49910, CVE-2023-53057, CVE-2025-37882, CVE-2023-53145, CVE-2025-38117, CVE-2025-38118, CVE-2025-38250, CVE-2025-38593, CVE-2022-50315, CVE-2023-53252, CVE-2023-53305, CVE-2022-50386, CVE-2023-53386, CVE-2022-50419, CVE-2022-50470, CVE-2023-53673, CVE-2025-71082, CVE-2026-23395, CVE-2026-31500  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_TLS`, `CONFIG_RDS`, `CONFIG_ROSE`, `CONFIG_MCTP`, `CONFIG_AF_RXRPC` not set](#protocol-families-tls-rds-rose-mctp-and-af_rxrpc) | CVE-2023-28466, CVE-2023-1078, CVE-2022-2961, CVE-2022-3977, CVE-2023-2006 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NFSD` not set](#nfs-server) | CVE-2022-43945, CVE-2022-4379, CVE-2023-1652, CVE-2024-26907, CVE-2023-52885, CVE-2024-50106, CVE-2024-50121, CVE-2024-53168, CVE-2025-38724, CVE-2022-50235, CVE-2022-50241, CVE-2022-50401, CVE-2022-50410, CVE-2023-53680, CVE-2026-22980  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NTFS3_FS`, `CONFIG_NTFS_FS`, `CONFIG_JFS_FS`, `CONFIG_NILFS2_FS` not set](#filesystem-drivers) | CVE-2022-48423, CVE-2022-48424, CVE-2022-48425, CVE-2023-26544, CVE-2023-26506, CVE-2023-26507, CVE-2023-2124, CVE-2020-27815, CVE-2022-2978 | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set](#hardware-specific-and-virtualization-drivers) | CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196 | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_FPGA` not set; GRU symbol absent on 6.18.9-hs](#hardware-specific-and-virtualization-drivers) | CVE-2022-3424, CVE-2023-26242 | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_DVB_CORE=m` on 6.18.9-hs](#hardware-specific-and-virtualization-drivers) | CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919 | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_USB_NET_RNDIS_WLAN`, `CONFIG_SMB_SERVER` not set](#usb-network-adapter-and-smb-server) | CVE-2023-23559, CVE-2023-0210 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_VIDEO_ADV748X` not set](#config-video-adv748x) | CVE-2025-71136 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_MD_RAID10` not set](#config-md-raid10) | CVE-2023-53357 | <span class="badge badge-erased">Not Affected</span> |
@@ -56,7 +57,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_STM` not set](#config-stm) | CVE-2024-38627 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_DEBUG_MUTEXES` not set](#config-debug-mutexes) | CVE-2023-52836 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_RCU_NOCB_CPU` not set](#config-rcu-nocb-cpu) | CVE-2024-35929, CVE-2025-38704 | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_SECURITY_APPARMOR` not set](#config-security-apparmor) | CVE-2026-23408 | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_SECURITY_APPARMOR=y` on 6.18.9-hs](#config-security-apparmor) | CVE-2026-23408 | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_MACVLAN` not set](#config-macvlan) | CVE-2026-23001 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NET_TEAM` not set](#config-net-team) | CVE-2025-71091 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_DLM` not set](#config-dlm) | CVE-2023-53629 | <span class="badge badge-erased">Not Affected</span> |
@@ -136,7 +137,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_VIDEO_BT848` not set](#bttv-driver) | CVE-2023-52847 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_RMI4_CORE` not set](#rmi4-driver) | CVE-2023-52840 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_BLK_DEV_NBD` not set](#nbd-driver) | CVE-2023-52837, CVE-2024-49855, CVE-2025-38443  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_KVM_AMD` not set](#kvm-amd) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_KVM_AMD=m` on 6.18.9-hs](#kvm-amd) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_HNS3` not set](#hns3-driver) | CVE-2023-52807, CVE-2024-46833, CVE-2025-71112  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_IPVLAN` not set](#ipvlan) | CVE-2023-52796 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_SMC` not set](#smc-driver) | CVE-2023-52775, CVE-2024-56640, CVE-2024-57791, CVE-2025-38734  | <span class="badge badge-erased">Not Affected</span> |
@@ -147,7 +148,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_AX25` not set](#ax25-hamradio) | CVE-2024-35887, CVE-2026-23098  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_MLX5_CORE` not set](#mlx5-driver) | CVE-2023-52667, CVE-2024-38555, CVE-2024-38556, CVE-2024-40940, CVE-2022-48883, CVE-2022-49025, CVE-2023-53340  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_ATLANTIC` not set](#atlantic-driver) | CVE-2023-52664 | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_KVM` not set](#config-kvm) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_KVM=m` on 6.18.9-hs](#config-kvm) | CVE-2024-35791, CVE-2024-41070, CVE-2024-46830, CVE-2024-50115, CVE-2022-49882, CVE-2025-37885, CVE-2025-39823  | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_FIREWIRE` not set](#firewire) | CVE-2024-27401, CVE-2023-53432  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_OPENVSWITCH` not set](#openvswitch) | CVE-2024-27395, CVE-2025-37789, CVE-2025-38146  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_EROFS_FS` not set](#erofs-filesystem) | CVE-2022-48674, CVE-2024-41058  | <span class="badge badge-erased">Not Affected</span> |
@@ -185,7 +186,7 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 | [`CONFIG_IEEE802154` not set](#ieee802154-wpan) | CVE-2023-52510, CVE-2024-56602  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_RAVB` not set](#ravb-driver) | CVE-2023-52509, CVE-2022-48964, CVE-2023-35827  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_NFC` not set](#nfc) | CVE-2023-52507, CVE-2024-36915, CVE-2022-48967, CVE-2025-21735, CVE-2023-53106, CVE-2025-38416, CVE-2023-53495  | <span class="badge badge-erased">Not Affected</span> |
-| [`CONFIG_FUSE_FS` not set](#fuse-filesystem) | CVE-2023-52504, CVE-2024-35932, CVE-2024-41090, CVE-2024-41091, CVE-2024-58054, CVE-2022-49945, CVE-2025-38385, CVE-2023-53286, CVE-2023-53577  | <span class="badge badge-erased">Not Affected</span> |
+| [`CONFIG_FUSE_FS=y` on 6.18.9-hs](#fuse-filesystem) | CVE-2023-52504, CVE-2024-35932, CVE-2024-41090, CVE-2024-41091, CVE-2024-58054, CVE-2022-49945, CVE-2025-38385, CVE-2023-53286, CVE-2023-53577  | In the 6.18.9-hs kernel. Stays on the patch date. |
 | [`CONFIG_MCTP` not set](#config-mctp) | CVE-2023-52483 | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_ATH` not set](#ath-wireless-driver) | CVE-2023-52464, CVE-2023-52594, CVE-2023-52491, CVE-2024-26958, CVE-2024-26983, CVE-2024-26988, CVE-2024-27043, CVE-2023-52679, CVE-2024-35847, CVE-2023-52777, CVE-2023-52827, CVE-2024-36906, CVE-2024-36979, CVE-2024-38578, CVE-2024-38621, CVE-2024-41096, CVE-2024-42271, CVE-2024-43830, CVE-2022-48873, CVE-2022-48881, CVE-2024-46674, CVE-2024-47695, CVE-2024-47742, CVE-2024-49930, CVE-2024-49931, CVE-2022-48980, CVE-2022-48981, CVE-2022-48999, CVE-2024-53142, CVE-2024-53156, CVE-2024-56672, CVE-2024-57887, CVE-2024-57980, CVE-2025-21934, CVE-2025-37780, CVE-2023-53084, CVE-2023-53090, CVE-2025-37840, CVE-2025-38022, CVE-2025-38069, CVE-2025-38157, CVE-2025-38259, CVE-2025-38313, CVE-2025-38456, CVE-2025-38708, CVE-2025-39701, CVE-2025-39749, CVE-2022-50234, CVE-2025-39810, CVE-2022-50384, CVE-2022-50411, CVE-2025-39905, CVE-2025-39911, CVE-2023-53454, CVE-2023-53500, CVE-2023-53556, CVE-2023-53559, CVE-2023-53604, CVE-2022-50543, CVE-2023-53659, CVE-2023-53668, CVE-2023-54207, CVE-2026-23068, CVE-2026-23209, CVE-2026-23397, CVE-2026-31489, CVE-2026-31576, CVE-2026-31583  | <span class="badge badge-erased">Not Affected</span> |
 | [`CONFIG_F2FS_FS` not set](#f2fs-filesystem) | CVE-2023-52436, CVE-2023-52444, CVE-2023-52588, CVE-2023-52682, CVE-2023-52748, CVE-2023-52852, CVE-2024-39467, CVE-2024-42160, CVE-2024-44942, CVE-2024-47691, CVE-2024-41935, CVE-2022-49738, CVE-2025-37739, CVE-2025-38579, CVE-2025-38652, CVE-2025-38677, CVE-2022-50270, CVE-2023-53214, CVE-2023-53301, CVE-2023-53537, CVE-2026-23234, CVE-2026-23235  | <span class="badge badge-erased">Not Affected</span> |
@@ -211,17 +212,17 @@ Where a CVE in this section achieves root privilege, Lockdown provides the same 
 
 The BPF syscall interface is the kernel entry point through which user-space programs load and run BPF programs in kernel context. CVE-2021-20194 describes a heap overflow in the BPF verifier reachable by a local user who submits a crafted BPF program, gaining elevated privilege.
 
-`CONFIG_BPF_SYSCALL` is not compiled on 5.19.6 and is not compiled on derived 6.18 (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program store, and no reachable code path for this CVE. Fielded `6.18.9-hs` still compiles `CONFIG_BPF_SYSCALL=y`.
+`CONFIG_BPF_SYSCALL` is not set on 5.19.6 and is not set on the 6.18.9-hs kernel that ships (`bpf()` returns `ENOSYS`). There is no verifier, no BPF program store, and no reachable code path for this CVE. `CONFIG_BPF=y` stays built in on that pin. This row covers the syscall entry point.
 
 ### Netfilter nftables
 
-**Status**: Not Affected  
-**Component**: `CONFIG_NF_TABLES` built as kernel module (`m`) per HS-DEV-004 Docker capability stack  
+**Status**: In the 6.18.9-hs kernel (`CONFIG_NF_TABLES=m`). Stays on the patch date.  
+**Component**: `CONFIG_NF_TABLES` built as kernel module (`m`)  
 **CVEs covered**: CVE-2023-32233, CVE-2023-0179
 
 nftables is the in-kernel packet classification and filtering framework. CVE-2023-32233 describes a use-after-free in anonymous set handling reachable via crafted netlink messages by a local user with `CAP_NET_ADMIN`. CVE-2023-0179 describes a stack-based buffer overflow in the nftables netlink implementation reachable from a user namespace.
 
-`CONFIG_NF_TABLES` is built as a loadable module for container networking (HS-DEV-004). It is not loaded at boot on a default Root Lock install — nftables netlink handlers and rule objects are absent until the module is explicitly loaded (for example when Docker or container networking is enabled). Root Lock install scripts ship no nftables rules. If you load the module and configure nftables rules, the relevant code paths become reachable.
+`CONFIG_NF_TABLES=m` on the 6.18.9-hs kernel that ships. Loading the module makes the code reachable. These CVEs are not a false positive on that pin.
 
 ### Network Traffic Control Schedulers
 
@@ -281,18 +282,16 @@ None of these four filesystems is compiled into the Root Lock kernel. Mounting a
 
 ### Hardware-Specific and Virtualization Drivers
 
-**Status**: Not Affected  
-**Config gate**: `CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, `CONFIG_FPGA`, `CONFIG_KVM_INTEL` not set  
+**Status**: Split by option on 6.18.9-hs  
+**Config gate**: `CONFIG_FPGA` is not set. The GRU symbol is absent from the pin. `CONFIG_DVB_CORE=m`. `CONFIG_KVM_INTEL=m` (see [Kvm](#config-kvm)).  
 **CVEs covered**: CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196
 
-These CVEs cover four hardware-specific drivers absent from the Root Lock kernel:
+- **DVB Core** (CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919) — `CONFIG_DVB_CORE=m` on the 6.18.9-hs kernel that ships. These stay on the patch date.
+- **SGI GRU** (CVE-2022-3424) — the GRU symbol is absent from the 6.18.9-hs pin. Not Affected on that pin.
+- **Intel FPGA** (CVE-2023-26242) — `CONFIG_FPGA` is not set. Not Affected on that pin.
+- **KVM Intel** (CVE-2022-2196) — `CONFIG_KVM_INTEL=m`. Covered under [Kvm](#config-kvm). Stays on the patch date.
 
-- **DVB Core** (CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919) — use-after-free conditions in the Digital Video Broadcast core driver, reachable by a local user with access to a DVB device
-- **SGI GRU** (CVE-2022-3424) — a use-after-free in the SGI UV coprocessor driver triggered via `ioctl` on the GRU device
-- **Intel FPGA** (CVE-2023-26242) — a memory safety issue in the Intel FPGA BMC secure update driver
-- **KVM Intel** (CVE-2022-2196) — a guest-to-host isolation bypass in nested VMX (nVMX) handling, reachable from inside a guest VM
-
-`CONFIG_DVB_CORE`, `CONFIG_SGI_GRU`, the Intel FPGA driver, and `CONFIG_KVM_INTEL` are not compiled into the Root Lock kernel. Root Lock runs as a guest under other hypervisors — it does not host virtual machines. None of the hardware interfaces these drivers expose is available, and there is no reachable code path for any CVE in this group.
+Root Lock runs as a guest. Hosting virtual machines is not a supported product role. KVM is still built as a module on this pin.
 
 ### USB Network Adapter and SMB Server
 
@@ -435,11 +434,11 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 ### FUSE Filesystem
 
-**Status**: Not Affected
-**Config gate**: `CONFIG_FUSE_FS` not set
+**Status**: In the 6.18.9-hs kernel (`CONFIG_FUSE_FS=y`). Stays on the patch date.
+**Config gate**: `CONFIG_FUSE_FS=y` on 6.18.9-hs
 **CVEs covered**: CVE-2023-52504
 
-`CONFIG_FUSE_FS` is not compiled into the Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_FUSE_FS=y` on the 6.18.9-hs kernel that ships. These CVEs are not a false positive on that pin.
 
 ### NFC
 
@@ -739,11 +738,11 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 ### Kvm {#config-kvm}
 
-**Status**: Not Affected
-**Config gate**: `CONFIG_KVM` not set
-**CVEs covered**: CVE-2024-35791
+**Status**: In the 6.18.9-hs kernel (`CONFIG_KVM=m`, `CONFIG_KVM_INTEL=m`). Stays on the patch date.
+**Config gate**: `CONFIG_KVM=m` on 6.18.9-hs
+**CVEs covered**: CVE-2024-35791, CVE-2022-2196
 
-`CONFIG_KVM` is not compiled into the Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_KVM=m` and `CONFIG_KVM_INTEL=m` on the 6.18.9-hs kernel that ships. CVE-2022-2196 is the Intel nested-VMX case. These CVEs are not a false positive on that pin. Root Lock runs as a guest. Hosting virtual machines on this kernel is not a supported product role. The module is still in the kernel.
 
 ### Aquantia Atlantic Driver {#atlantic-driver}
 
@@ -827,11 +826,11 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 
 ### KVM AMD
 
-**Status**: Not Affected
-**Config gate**: `CONFIG_KVM_AMD` not set
+**Status**: In the 6.18.9-hs kernel (`CONFIG_KVM_AMD=m`). Stays on the patch date.
+**Config gate**: `CONFIG_KVM_AMD=m` on 6.18.9-hs
 **CVEs covered**: CVE-2023-52816
 
-`CONFIG_KVM_AMD` is not compiled into the Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_KVM_AMD=m` on the 6.18.9-hs kernel that ships. These CVEs are not a false positive on that pin.
 
 ### Network Block Device (NBD) {#nbd-driver}
 
@@ -1469,11 +1468,11 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 
 ### Security Apparmor {#config-security-apparmor}
 
-**Status**: Not Affected
-**Config gate**: `CONFIG_SECURITY_APPARMOR` not set
+**Status**: In the 6.18.9-hs kernel (`CONFIG_SECURITY_APPARMOR=y`). Stays on the patch date.
+**Config gate**: `CONFIG_SECURITY_APPARMOR=y` on 6.18.9-hs
 **CVEs covered**: CVE-2026-23408
 
-`CONFIG_SECURITY_APPARMOR` is not compiled into the Root Lock kernel. There is no reachable code path for any CVE in this group.
+`CONFIG_SECURITY_APPARMOR=y` on the 6.18.9-hs kernel that ships. This CVE is not a false positive on that pin.
 
 ### Rcu Nocb Cpu {#config-rcu-nocb-cpu}
 

@@ -60,7 +60,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ### Which kernel these scores apply to
 
-Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18**. Compiled-out rows (BPF, FUSE, and similar gates) are the product claim. Where the two lines differ, the entry states both.
+Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A row is Not Affected only where that option is unset on the kernel you boot. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so those CVEs stay on the patch date. Where the two lines differ, the entry states both.
 
 **Score on Root Lock** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. Reachable + Lockdown bounds maps to **Affected, mitigated**.
 
@@ -105,7 +105,7 @@ These compiled-in paths keep a live residual. Full write-ups: [Compiled-in CVEs]
 | [CVE-2026-53129](compiled-in-cves/#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> | Affected — Lockdown limits post-exploitation |
 | [CVE-2026-53233](compiled-in-cves/#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
 | [CVE-2026-52992](compiled-in-cves/#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
-| [CVE-2023-2236, CVE-2022-3910](compiled-in-cves/#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
+| [CVE-2023-2236, CVE-2022-3910](compiled-in-cves/#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
 | [CVE-2024-35886](compiled-in-cves/#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44985](compiled-in-cves/#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-44986](compiled-in-cves/#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
@@ -117,8 +117,8 @@ These compiled-in paths keep a live residual. Full write-ups: [Compiled-in CVEs]
 | [CVE-2024-49889](compiled-in-cves/#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
 | [CVE-2022-48956](compiled-in-cves/#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2024-53170](compiled-in-cves/#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
-| [CVE-2025-21863](compiled-in-cves/#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
-| [CVE-2025-40364](compiled-in-cves/#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
+| [CVE-2025-21863](compiled-in-cves/#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
+| [CVE-2025-40364](compiled-in-cves/#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
 | [CVE-2025-38550](compiled-in-cves/#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-38572](compiled-in-cves/#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
 | [CVE-2025-39866](compiled-in-cves/#cve-2025-39866) | VFS writeback subsystem | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — writeback always active; Lockdown limits post-exploitation |
@@ -185,13 +185,7 @@ When a scanner flags Root Lock for a CVE listed as Not Affected, the result is a
 
 For the full verification workflow (maintenance-kernel exceptions, scanner configuration, audit evidence, and published OSV feeds), see [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
 
-Share this section and the [disabled-features](disabled-features/) catalog with your scanner vendor as the reference for any disputed CVE entry. For a configuration-level proof, confirm the config gate on the Root Lock host:
-
-```bash
-grep CONFIG_<GATE> /boot/config-$(uname -r)
-```
-
-Replace `CONFIG_<GATE>` with the config gate listed in the relevant section. An `=n` result confirms that gate is not compiled into the running kernel.
+Share this section and the [disabled-features](disabled-features/) catalog with your scanner vendor as the reference for any disputed CVE entry. The proof is the pin config for the kernel you boot, not a version string. On 6.18.9-hs the guest file `/boot/config-6.18.9-hs` is a stub, so `grep` of that file does not confirm the gate. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 ## The Four Assessment Gates
 

@@ -110,7 +110,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-46191](#cve-2026-46191) | framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
-| [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
+| [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework — scomp interface (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `CONFIG_INET_IPCOMP` not compiled; no compression algorithm registered; `scomp_acomp_comp_decomp()` unreachable |
 | [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `EXT4_IOC_MOVE_EXT` ioctl only reached by defrag tools; none in Root Lock allowlist |
@@ -156,11 +156,11 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2024-56609](#cve-2024-56609) | Realtek rtw88 WiFi driver (`CONFIG_RTW88`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_RTW88` not compiled |
 | [CVE-2024-56631](#cve-2024-56631) | SCSI generic driver (`CONFIG_CHR_DEV_SG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `/dev/sg*` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — 32-bit-specific vulnerability; Root Lock kernel is x86_64 |
-| [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
+| [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
 | [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2023-52988](#cve-2023-52988) | Intel HDA audio driver (`CONFIG_SND_HDA_INTEL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — no audio hardware present |
 | [CVE-2025-22083](#cve-2025-22083) | vhost-SCSI driver (`CONFIG_VHOST_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_VHOST_SCSI` not compiled |
-| [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 (`CONFIG_IO_URING=y`); Not Affected on derived 6.18 (`CONFIG_IO_URING` not compiled) |
+| [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
 | [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown; crafted xattr image cannot be mounted |
 | [CVE-2022-49789](#cve-2022-49789) | IBM Z Fibre Channel driver (`CONFIG_ZFCP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ZFCP` not compiled |
 | [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
@@ -436,7 +436,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 
 ### CVE-2023-2236, CVE-2022-3910
 
-**Status**: Affected on 5.19.6; Not Affected on derived 6.18  
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.  
 **Component**: io_uring — asynchronous I/O subsystem (`CONFIG_IO_URING`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Score on Root Lock**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
@@ -452,7 +452,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6. Derived 6.18 does not compile `CONFIG_IO_URING` (`io_uring_setup` returns `ENOSYS`); those two CVEs are Not Affected on derived 6.18. Fielded `6.18.9-hs` still compiles `CONFIG_IO_URING=y`. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear these CVEs on that kernel. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1322,7 +1322,7 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 
 ### CVE-2025-21863
 
-**Status**: Affected on 5.19.6; Not Affected on derived 6.18
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1335,7 +1335,7 @@ In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6, which falls within the affected range. Derived 6.18 does not compile `CONFIG_IO_URING`; this CVE is Not Affected on that pin. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear this CVE. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1417,7 +1417,7 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 
 ### CVE-2025-40364
 
-**Status**: Affected on 5.19.6; Not Affected on derived 6.18
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1430,7 +1430,7 @@ In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchr
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6, which falls within the affected range. Derived 6.18 does not compile `CONFIG_IO_URING`; this CVE is Not Affected on that pin. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear this CVE. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -4005,7 +4005,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Base Score**: 7.8 HIGH
 **Score on Root Lock**: 0.0 — no FPROBE on 5.19.6; on 6.18 the unregister path is not reachable from the program allowlist
 
-`unregister_fprobe()` must wait for an RCU grace period after the fprobe rewrite. 5.19.6 has no `CONFIG_FPROBE` symbol. 6.18.9-hs has `CONFIG_FPROBE=y` and `unregister_fprobe` in System.map. Reaching it needs perf/fprobe or BPF fprobe userspace. `perf` and `bpftool` are absent from the program allowlist. Public derived 6.18 also sets `CONFIG_BPF_SYSCALL=n`.
+`unregister_fprobe()` must wait for an RCU grace period after the fprobe rewrite. 5.19.6 has no `CONFIG_FPROBE` symbol. 6.18.9-hs has `CONFIG_FPROBE=y` and `unregister_fprobe` in System.map. Reaching it needs perf/fprobe or BPF fprobe userspace. `perf` and `bpftool` are absent from the program allowlist. The 6.18.9-hs kernel that ships also leaves `CONFIG_BPF_SYSCALL` unset.
 
 The trigger cannot be reached on any Root Lock deployment.
 
