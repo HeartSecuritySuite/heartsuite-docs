@@ -106,11 +106,7 @@ Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload o
 
 Build and run OCI images on another host. Root Lock protects the fixed-workload machines around that runtime. For a task that should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
-Lockdown seals the running container set — the kernel stops accepting new mount operations, including the overlay mounts and bind-mounts every container start requires. The same protection blocks attackers from constructing paths to shadow protected files.
-
-Containers running at the moment Lockdown engages continue running. New containers, image pulls, and restarts after exit each require a maintenance window — reboot to Setup Mode, start the containers, return to steady state, and re-engage Lockdown. The Dashboard shows mount-refusal messages from the kernel when a container engine tries to start a new container after Lockdown.
-
-This is the right pattern for long-lived service containers, Kubernetes nodes with a stable pod set, and batch jobs that complete before Lockdown engages.
+Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root. The 5.19 kernel is built without them. The fielded 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces compiled in. That configuration is not a container-host product. See [How Root Lock Compares](../how-it-compares/#kernel-architecture).
 
 ## Where Root Lock is not a fit
 
