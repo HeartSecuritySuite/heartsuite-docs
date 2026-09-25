@@ -140,9 +140,9 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy 
 
 {{< details summary="Does Lockdown cancel vulnerability SLAs or scanner findings?" >}}
 
-A: Lockdown bounds the blast radius: no new program, no extra files, no extra destinations. When your policy allows an exception, file it in the scanner you already run: [Scanner deadlines](maintenance/scanner-deadlines/).
+A: Lockdown bounds the blast radius: no new program, no extra files, no extra destinations. When the finding needs one of those three, and your policy allows an exception, file it in the scanner you already run. The row leaves the active queue until the expiry on that rule: [Scanner deadlines](maintenance/scanner-deadlines/).
 
-The scanning and resolve-critical contract stays yours. The ticket closes when that scanner or your contract accepts the exception. The vulnerable app's own files stay in scope.
+The scanning and resolve-critical contract stays yours. The finding remains until the patch goes in. The vulnerable app's own files stay in scope.
 
 Kernel version-string findings are a separate workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
 
@@ -158,7 +158,7 @@ A: Distro errata and application updates install on the remediation SLA in your 
 
 **Many locked hosts:** bake the patched OS and the current Root Lock bundle into a new image and **reprovision**. Ansible distributes allowlists; it does **not** lift the seal. See "How do I patch many hosts that are already in Lockdown?" above and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
-The expiry you file in the scanner is separate from that date. See [Scanner deadlines](maintenance/scanner-deadlines/).
+The expiry you file in the scanner is separate from that date. Where the policy sets the standard change window at 60 days or 90 days for work it does not rank critical, a finding whose next step Lockdown stops can use that window: set the expiry to it. See [Scanner deadlines](maintenance/scanner-deadlines/).
 
 For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages.
 

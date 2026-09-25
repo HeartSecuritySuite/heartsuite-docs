@@ -29,7 +29,11 @@ Each additional step the attacker takes requires a new custom exploit targeted a
 
 ## Operational cost
 
-**Patching urgency.** Distro errata and application updates install on the remediation SLA in your policy or contract. Lockdown bounds the blast radius of a finding on that list. When your policy allows an exception, the expiry on the scanner rule is what changes the tool's score, report, and remediation queue until the rule expires. An accepted exception waits for the standard change window. See [Scanner deadlines](../../maintenance/scanner-deadlines/).
+**Patching urgency.** The scanner starts a short clock on a high score. Read the next step. When it is a program with no allowlist entry, a file the program was not granted, or a destination the program was not granted, Lockdown stops that step, and the patch goes in at the standard change window.
+
+Where your policy sets that window at 60 days or 90 days for work it does not rank critical, file the exception with the expiry set to that window. The expiry on the scanner rule is what takes the row off the active queue, and what changes the tool's score, report, and remediation queue until the rule expires. The date in your policy or contract stays the remediation SLA.
+
+A bug that can finish on data the program already reads, on a file it was granted, or on a destination already permitted keeps the policy date. So does a kernel CVE whose code is in the Root Lock kernel you boot, and any finding your policy treats as immediate, including one known to be exploited. See [Scanner deadlines](../../maintenance/scanner-deadlines/).
 
 For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. Record that status from [Kernel Security Transparency](../../security/) on the rule. `apt` and `dnf` install the OS packages.
 
@@ -53,7 +57,7 @@ Root Lock records what programs actually do during Setup Mode and presents it fo
 
 **Zafran and risk-prioritization tools.** Zafran, Nucleus, Vulcan Cyber, and similar tools correlate CVEs against your deployed controls to identify which patches are actually urgent. They do not enforce anything at runtime.
 
-Root Lock reduces the urgency of items these tools surface: an unpatched CVE in a program whose allowlist scope is bounded has a structurally limited blast radius — a legitimate but lower-priority remediation. The two compose: a risk-prioritization tool can correctly de-prioritize CVEs in Root Lock-bounded programs because the enforcement is verifiable and the blast radius is documented.
+Root Lock reduces the urgency of items these tools surface when the exploit needs a program with no allowlist entry, a file the program was not granted, or a destination the program was not granted. That patch can ride the standard change window. The two compose: the tool can rank those CVEs behind findings that finish inside the grant, because the allowlist is what the kernel enforces and the files and destinations on it are the ones you approved.
 
 **Linux EDR.** CrowdStrike Falcon, SentinelOne, and Microsoft Defender for Endpoint generate alerts that require analyst triage. The attack classes Root Lock prevents — unauthorized binary execution, file access outside approved scope, outbound connections to unapproved destinations — never reach the EDR because the attack cannot progress past the kernel gate.
 

@@ -52,7 +52,7 @@ A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.1
 
 **Does Root Lock stop the vulnerability SLA clock?**
 
-Your policy or contract names when the patch goes in. That date is the remediation SLA. Lockdown bounds the blast radius: a bug in an allowlisted program can read and write only the files that program was granted. When you file an exception, the expiry on that scanner rule is what changes the tool's score, its report, and its remediation queue until the rule expires. See [Scanner deadlines](../maintenance/scanner-deadlines/). Kernel version strings are a separate workflow: [CVE Hygiene](../kernel-hardening/cve-hygiene-for-scanners/). Comparison: [How Root Lock Compares](../introduction/how-it-compares/).
+Your policy or contract names when the patch goes in. That date is the remediation SLA. Lockdown bounds the blast radius: a bug in an allowlisted program can read and write only the files that program was granted. When the finding needs a program with no allowlist entry, a file outside that grant, or a destination the program was not granted, and your policy allows an exception, the expiry on that scanner rule is what changes the tool's score, its report, and its remediation queue until the rule expires. See [Scanner deadlines](../maintenance/scanner-deadlines/). Kernel version strings are a separate workflow: [CVE Hygiene](../kernel-hardening/cve-hygiene-for-scanners/). Comparison: [How Root Lock Compares](../introduction/how-it-compares/).
 
 ---
 
