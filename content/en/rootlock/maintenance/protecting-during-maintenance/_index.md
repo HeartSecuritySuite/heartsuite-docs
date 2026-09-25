@@ -54,7 +54,7 @@ This is the path when Lockdown is applied. Physical or serial-console access is 
 After the safety checklist, Maintenance tells you to reboot from the **console**. It does not offer `[r]` Reboot on this path — the boot-menu choice has to happen at the console.
 
 1. Open the console and restart the machine there.
-2. At the boot menu, select **Maintenance: unseal and return to Root Lock**. Do not select the branded Root Lock kernel.
+2. At the boot menu, select **Maintenance: unseal and return to Root Lock**. Do not select the branded Root Lock kernel. If a boot menu password was set, that pick asks. At the GRUB prompt, the name is root and the password is the one you set here. The Root Lock entry still does not ask.
 3. The seal lifts automatically (`HS_unlock.sh`). The machine restarts on its own and returns to the Root Lock kernel in Setup Mode.
 4. On the serial console, press **Enter** when you see **Press Enter to start.** (see [Lockdown](../../lockdown/)).
 
@@ -97,7 +97,7 @@ Once you are in Setup Mode, SSH and Ansible can install packages and edit files 
 
 - **One host, many services.** One unseal covers every program on that machine.
 - **Many hosts already in Lockdown.** Ansible cannot lift the seal. The official `heartsecurity.root_lock` role leaves mode unchanged when `hs_state` is unset or `setup`. In-place patches still need the console path on each sealed host. For a fleet, reprovision from an updated image instead — see [Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) and [Central Policy](../../alerts/central-policy-management/).
-- **Detaching the disk.** Stopping a cloud VM and attaching its volume to another instance is hypervisor access, not a supported patch procedure. Treat it as the same class as serial-console access: break-glass, and restrict it in cloud IAM. See [Circumvention and recovery](../../introduction/how-it-compares/#circumvention-and-recovery).
+- **Detaching the disk.** Stopping a cloud VM and attaching its volume to another instance is hypervisor access, not a supported patch procedure. That mount is how a lost boot menu password is cleared, because the boot menu itself cannot reset it. Treat it as the same class as serial-console access: break-glass, and restrict it in cloud IAM. See [Circumvention and recovery](../../introduction/how-it-compares/#circumvention-and-recovery).
 
 ## What to install
 

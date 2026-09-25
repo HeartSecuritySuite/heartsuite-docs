@@ -329,7 +329,7 @@ Root Lock as the **guest** kernel inside a per-task VM or microVM (Kata, Firecra
 
 What is still under evaluation: **host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests. A Root Lock kernel as the KVM *host* is not a supported product role.
 
-Shared-kernel Docker, containerd, or Podman as the default on a Standard-host install remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window. Continuous scheduling is not the design.
+Shared-kernel Docker, containerd, or Podman as the default on a Standard-host install remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}

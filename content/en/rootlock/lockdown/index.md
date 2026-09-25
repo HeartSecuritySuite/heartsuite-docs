@@ -126,6 +126,9 @@ From the Dashboard, select Lockdown (`[l]`). The Dashboard shows a precondition 
 - `[d]` undo a recursive seal on a broad directory
 - SSH hardening (`[h]`) and SSH during Lockdown (`[r]` / `[j]`)
 - inbound permit selection (`[o]` / `[a]`); `[k]` removes recorded permits
+- `[l]` optional boot menu password. Default is off. Only before the seal, while Setup Mode can still write the boot menu. After Lockdown that key is absent because `/boot` cannot be rewritten.
+
+At the GRUB prompt, the name is root and the password is the one you set here. That password is not the Linux root login password. If you never set one, nothing changes: the console GRUB pick still unseals with no extra prompt. The Root Lock entry does not ask. Selecting **Maintenance: unseal and return to Root Lock**, or editing the kernel line, asks for that name and password when one was set. If the password does not land, `YES` does not start Lockdown. A lost password is recovered by mounting the disk from outside the machine. GRUB has no reset. On extlinux (Alpine) the control is not offered. Lockdown still works.
 
 If you do nothing, HeartSuite narrows those grants when Lockdown finalizes.
 
@@ -135,13 +138,13 @@ The commitment summaries and, after Lockdown, the Lockdown Inventory (`[l]`) are
 
 (The screenshot shows the checklist and the `YES` field. Grant changes use the keys listed above.)
 
-`YES` does not seal the machine on this boot. It starts a **probe reboot**. The Dashboard copy is "Probe reboot. Verifying queues stay clear." At that boot menu, do nothing. Wait. Do not select Maintenance.
+`YES` does not seal the machine on this boot. It starts a **probe reboot**. The Dashboard copy is "Probe reboot. Verifying queues stay clear." At that boot menu, do nothing. Wait. Do not select Maintenance. The normal boot does not ask for a boot menu password.
 
 If the queues stay clear, Root Lock finalizes Lockdown and reboots again to apply the seal. When the Dashboard is still open after finalize, it offers:
 
 - `[r]` **Reboot now: Lockdown will be applied**
 
-That second reboot is the seal. Again: at the boot menu, do nothing. Default is Root Lock. Do not select Maintenance.
+That second reboot is the seal. Again: at the boot menu, do nothing. Default is Root Lock. Do not select Maintenance. The normal boot does not ask for a boot menu password.
 
 Lockdown then persists on every Root Lock kernel boot. To make changes, use Maintenance (`[m]`).
 
@@ -157,7 +160,7 @@ Once Lockdown is applied, Lockdown (`[l]`) opens the **Lockdown Inventory**. It 
 From the Dashboard, open Maintenance (`[m]`). After Lockdown, **unsealing** requires physical or serial-console access. SSH is not enough to pick the boot-menu entry. After that reboot, you work over SSH again.
 
 1. Reboot from the **console**, not over SSH — only this GRUB pick needs the console.
-2. At the boot menu, select **Maintenance: unseal and return to Root Lock**.
+2. At the boot menu, select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set, that pick asks for it.
 3. The seal lifts automatically (`HS_unlock.sh` on that maintenance-kernel boot). The machine returns to the Root Lock kernel in Setup Mode. You do not stay on the maintenance kernel, and you do not press a key to remove flags. sshd running or stopped on the Root Lock kernel does not clear the seal.
 4. Log in over SSH (or stay on the console). Make your changes. New activity appears in the review queues.
 5. Lock down again from Lockdown (`[l]`).
@@ -178,7 +181,7 @@ Lockdown seals Root Lock's configuration with filesystem immutability, so a comp
 | Can root edit allowlist entries or Root Lock config files? | Yes | **No** — immutable; writes are blocked until Maintenance removes the seal |
 | Are file editors and broadly-scoped tools (`rm`, `cp`, `mv`) restricted? | No | **Yes**. Editors are sealed; `rm`, `cp`, and `mv` are replaced with restricted copies scoped to the paths your system uses them on. Restored when Maintenance unseals. |
 | How long does the seal last? | N/A | Until Maintenance unseals. The seal persists across reboots and re-engages automatically on every Root Lock kernel boot. |
-| How do you remove Lockdown? | N/A | Maintenance (`[m]`) — console GRUB pick **Maintenance: unseal and return to Root Lock**. Physical or serial-console access is required for that step. Then SSH for the work. |
+| How do you remove Lockdown? | N/A | Maintenance (`[m]`) — console GRUB pick **Maintenance: unseal and return to Root Lock**. Physical or serial-console access is required for that step. If a boot menu password was set, that pick asks for it. Then SSH for the work. |
 
 ### What Lockdown seals
 
@@ -227,7 +230,7 @@ You can make files and directories mutable again once Lockdown is no longer acti
 
 If you try to write to an immutable file without removing the flags first, you will encounter the error "could not open <filename> file; errno:1."
 
-If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually. That selection requires physical or serial-console access.
+If automatic GRUB configuration does not apply (Alpine or an unsupported bootloader), the Dashboard displays the exact entry to select manually. That selection requires physical or serial-console access. Alpine still has no boot menu password control. On GRUB, if a boot menu password was set, **Maintenance: unseal and return to Root Lock** asks for it.
 
 ### Lockdown commands
 

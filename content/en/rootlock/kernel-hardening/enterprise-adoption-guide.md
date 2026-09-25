@@ -21,14 +21,16 @@ toc: true
 
 ## Why a custom kernel
 
-Root Lock uses a custom-built Linux kernel (based on mainline LTS releases such as 5.19.6 and 6.18) so that enforcement cannot be bypassed by an attacker who already has remote root.
+Root Lock uses a custom-built Linux kernel (based on mainline LTS releases such as 5.19.6 and fielded 6.18.9-hs) so that enforcement cannot be bypassed by an attacker who already has remote root.
 
-The design removes at build time the kernel features most commonly used as bypass vectors for security controls:
+The design compiled out the kernel features most commonly used as bypass vectors:
 
-- The BPF syscall (`CONFIG_BPF_SYSCALL`) — there is no eBPF layer an attacker can load programs into or unload.
+- The BPF syscall (`CONFIG_BPF_SYSCALL`) — omitted; there is no eBPF layer an attacker can load programs into or unload.
 - User namespaces (`CONFIG_USER_NS`) — no unprivileged fake-root environment for container escapes or privilege escalation.
 - FUSE and OverlayFS — path-confusion and mount-based bypasses against VFS-level enforcement are unavailable.
 - Competing LSM frameworks (AppArmor, TOMOYO, and runtime SELinux enforcement) and related policy engines — no parallel policy that can be set permissive or edited to weaken decisions.
+
+Root Lock does not rely on an unloadable eBPF policy.
 
 Enforcement logic for program execution, file access, and outbound network connections is compiled into the kernel binary itself. Blocking decisions are consulted on every relevant operation. There is no runtime configuration file or agent that root can unload, kill, or reconfigure to disable protection.
 
@@ -42,7 +44,7 @@ The result is a deliberately smaller kernel (approximately 9 loadable modules ve
 
 Root Lock treats the kernel as an integrated part of the delivered product, not a third-party dependency the customer manages in isolation.
 
-- **Update cadence and patching**: Kernels are released as coordinated versioned bundles with the userspace components (daemon, Dashboard, tools, and installer). Updates follow the same maintenance window model as policy changes: boot the maintenance kernel, apply the bundle, return to the Root Lock kernel, and review.
+- **Update cadence and patching**: Kernels are released as coordinated versioned bundles with the userspace components (daemon, Dashboard, tools, and installer). After Lockdown, pick **Maintenance: unseal and return to Root Lock** at the console, land in Setup Mode on the Root Lock kernel, then apply the bundle over SSH — or reprovision from an updated image. Review new queue items before Lockdown again.
 
   Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
 - **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries — the vulnerable code path is absent by design; no patch or policy change is required. For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked.
@@ -151,10 +153,10 @@ Indemnity, limitation of liability, and SLA credits are contract terms. Residual
 Every installation retains a first-class recovery path:
 
 - The original distribution kernel is always present in GRUB (split into Maintenance and vanilla entries during install, with Maintenance labelled as the Setup Mode destination).
-- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence: reboot to maintenance kernel, remove the immutable seal, make changes, reboot back to the Root Lock kernel, review new activity, and re-engage Lockdown.
-- The Dashboard's Maintenance (`[m]`) handles the common case of quick maintenance-kernel work followed by guided return to the Root Lock kernel and review.
+- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence: reboot at the console, pick **Maintenance: unseal and return to Root Lock**, land in Setup Mode on the Root Lock kernel, make changes over SSH, review new activity, and re-engage Lockdown.
+- The Dashboard's Maintenance (`[m]`) handles the common case of that unseal, Setup Mode work, guided return to Lockdown, and review.
 - For policy or platform conflicts that make the Root Lock kernel unsuitable for an extended period, teams can remain on the maintenance kernel (the product continues to run and log in non-enforcing mode) or remove Root Lock entirely. Both paths are supported and documented.
-- Physical or console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control. No software on the system can block this path.
+- Physical or console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control when the boot menu password is left off. No software on the system can block that path while the password stays off. If one was set, GRUB asks before **Maintenance: unseal and return to Root Lock** or a kernel-line edit, and a forgotten password is cleared by mounting the disk from outside, not at the menu. The normal boot still does not ask.
 
 This is the documented, supported escape hatch for operational needs, kernel policy conflicts, or environments that ultimately decide against a custom kernel. Full procedures appear in the [Maintenance](../../maintenance/) section and [FAQs](../../faqs/).
 
@@ -199,4 +201,4 @@ The kernel is one component of a larger control. The surrounding pages (central 
 
 ---
 
-*This page is buyer-facing. Posture claims must match the fielded pin in [Evidence Status](evidence-status/). Last updated: 2026-08-20.*
+*This page is buyer-facing. Posture claims must match the fielded pin in [Evidence Status](evidence-status/). Last updated: 2026-09-11.*

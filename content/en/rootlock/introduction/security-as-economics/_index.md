@@ -31,7 +31,9 @@ Each additional step the attacker takes requires a new custom exploit targeted a
 
 **Patching urgency.** CVE classes that correspond to compiled-out kernel features do not generate emergency patch windows — the feature is absent, and no CVE in that class applies regardless of when the patch ships.
 
-For CVEs in features that are present, a vulnerable program whose allowlist scope is bounded has a structurally limited blast radius. The remediation is real; the urgency is not. Patch batching on schedule, rather than emergency change windows, is the practical result.
+For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. Record that status from [Kernel Security Transparency](../../security/) on the rule. `apt` and `dnf` install the OS packages.
+
+A cheaper commodity zero-day runs a program, touches files, and phones home. Lockdown bounds those three. A zero-day inside an allowlisted program reads the files on its allowlist.
 
 **Alert reduction.** An attack that cannot progress past the kernel gate does not generate a SIEM or EDR alert. A binary that cannot execute never triggers a process-execution event. An outbound connection refused at the kernel never appears in NDR telemetry as a beacon or data-loss event.
 

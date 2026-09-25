@@ -104,6 +104,8 @@ Root Lock is designed so it has no agent process, no BPF program, and no unloada
 
 **Related designs.** The idea that even root cannot rewrite the running policy is not unique to Root Lock. Android keeps SELinux policy on a verified, read-only image. FreeBSD can raise `securelevel` so `schg` files stay immutable until reboot. Root Lock's version of that idea is Lockdown: the allowlist is sealed, the kernel refuses the write, and unsealing takes the console or physical presence.
 
+**Linux kernel lockdown LSM.** Linux ships a separate lockdown LSM ([`kernel_lockdown(7)`](https://man7.org/linux/man-pages/man7/kernel_lockdown.7.html)). `lockdown=integrity` refuses changes to the running kernel image, including unsigned modules, unsigned `kexec`, and `/dev/mem`. `lockdown=confidentiality` also refuses kernel-memory reads. Root Lock's Lockdown seals the allowlist with `chattr +i`. Under that seal every execution, file access, and outbound connection needs a grant, including when the caller is root, and the grant list stays sealed until Maintenance unseal from a physical or serial console. The Linux LSM stops at the kernel image, so root can still read another program's files and install a userspace program.
+
 **What each tool does best.** Bypass surface is one dimension of comparison, not the whole picture. Each tool above retains strengths Root Lock does not replicate.
 
 *eBPF observers* (Falco, Cilium Tetragon, Sysdig Secure, Tracee, and bpftrace) ship mature rule libraries, Kubernetes-aware context, and fleet-wide runtime telemetry. For behavioural alerting on Kubernetes nodes — particularly autoscaled clusters, where on-host eBPF tooling is not a fit by design — those tools remain the right answer.
@@ -335,7 +337,7 @@ What this means for security:
 
 - Under Lockdown, an attacker who already has remote root cannot defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access.
 - Supported recovery (unseal) requires physical or serial-console access: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the unseal path. After unseal, SSH is how you work in Setup Mode.
-- Physical or serial-console access always returns control to you. No software applied to the host can prevent console recovery.
+- Physical or serial-console access always returns control to you when the boot menu password is left off. No software applied to the host can prevent that console recovery. If one was set, GRUB asks before **Maintenance: unseal and return to Root Lock** or a kernel-line edit, and a forgotten password is cleared by mounting the disk from outside, not at the menu. The normal boot still does not ask.
 - **What can still go wrong (beyond physical or serial-console access).** On a large kernel, whether every path is actually gated is still an engineering job. That includes seal and control paths that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points), an allowlist that approved too much in Setup Mode, and an already-approved program abused as a deputy.
 - Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. This is a different question than whether an agent is still running.
 
