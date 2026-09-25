@@ -52,7 +52,7 @@ A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.1
 
 **What is the cloud serial-console bypass risk?**
 
-Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same bypass path as a keyboard.
+Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same path as a keyboard. Both hit a GRUB password only if one was set. The normal Root Lock boot does not ask. Default is off.
 
 From the serial console you can `cat /var/log/heartsuite/install.log` (installer), `cat /var/log/heartsuite/initial-setup-latest.log`, `journalctl -t heartsuite`, and similar. Restricting serial console access is a customer-side cloud IAM responsibility.
 

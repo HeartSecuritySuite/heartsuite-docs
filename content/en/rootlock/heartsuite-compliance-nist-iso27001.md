@@ -125,9 +125,9 @@ There is no operator/administrator distinction and no per-function permission ch
 
 ### A.7 — Physical Controls
 
-Not covered. Lockdown requires **physical or serial-console access to bypass** (reboot to a maintenance kernel to clear immutability flags). Physical security of the host is a dependency, not a capability Root Lock provides.
+Not covered. Lockdown requires **physical or serial-console access to bypass** (reboot to a maintenance kernel to clear immutability flags). That path is enough while the boot menu password stays off. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. This is not  the Linux root password.
 
-In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) is the same bypass path as a keyboard. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Restricting serial console access in the cloud provider's IAM is a customer-side dependency that preserves Lockdown's protection model.
+In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) is the same path as a keyboard. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Serial console access still matters because the default is off, and because mounting the disk from outside does not go through GRUB. Restricting serial console access in the cloud provider's IAM is a customer-side dependency that preserves Lockdown's protection model.
 
 ### A.8 — Technological Controls
 

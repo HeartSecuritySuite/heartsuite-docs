@@ -43,9 +43,9 @@ A: Root Lock fits systems where the same programs do the same jobs, day after da
 
 Autoscaling work after you profile a **reference** host of that class and bake the allowlist into the image.
 
-Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see the [container reference architecture](introduction/deployment-scenarios/#container-hosts).
+Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see [Shared-kernel containers](introduction/deployment-scenarios/#container-hosts).
 
-Running a shared-kernel container runtime (Docker, containerd, Podman) directly on a Root Lock kernel host is not a fit by design. The kernel omits overlay filesystems and user namespaces because those are how attackers hide, shadow directories, and reach root.
+Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit by design. Overlay filesystems and user namespaces are how attackers shadow directories and reach root.
 
 Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit: Root Lock does not enforce through eBPF, and those tools need the BPF syscall. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
@@ -73,7 +73,7 @@ A: Same allowlist **across a fleet of similar hosts**: yes. Each host runs the R
 
 Install on each host is still Cloud Path or Local Path. Ansible does not replace Cloud Path or Local Path; it runs them and then applies policy.
 
-**Kubernetes:** only for long-lived, fixed pod sets established **before** Lockdown. Dynamic scheduling, HPA scale-out, and new mounts after Lockdown are not a fit. See [Deployment Scenarios](introduction/deployment-scenarios/) and [Containers and microVMs](introduction/containers-and-microvms/).
+**Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a fit by design, including a long-lived fixed pod set. Use Firecracker instead or build and run those images on another host. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts) and [Containers and microVMs](introduction/containers-and-microvms/).
 
 Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Compliance reporting stays in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
 
@@ -149,6 +149,8 @@ HeartSuite is **not** a certified scanning vendor. An exception or "doesn't appl
 Residual: we do not protect the vulnerable app's own files.
 
 Kernel CVE false positives (compiled-out features) are a **different** workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
+
+When your policy allows an exception, file it in the scanner you already run: [Scanner deadlines](maintenance/scanner-deadlines/).
 
 ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quick-reference/).
 
@@ -307,7 +309,7 @@ A: It **is** the supported leave path.
 
 Lockdown is built so remote root over SSH cannot unseal the allowlist or boot another kernel. The path out is the maintenance kernel, selected at the boot menu from a console. A console here means a keyboard to firmware, not an SSH session: a rack keyboard, a serial port, a BMC virtual console or serial-over-LAN (Dell iDRAC, HPE iLO, Lenovo XCC, IPMI SOL), a hypervisor serial console, or a cloud serial console.
 
-If you can reach that console, you can select **Maintenance: unseal and return to Root Lock**. An attacker with the same BMC or cloud-console credentials can too. Restricting who can reach the BMC and the cloud serial console is a customer control.
+If you can reach that console, you can select **Maintenance: unseal and return to Root Lock**. Reaching the console is still required. If a boot menu password was set, GRUB asks for name root and that password before that entry or a kernel-line edit. At the GRUB prompt, the name is root and the password is the one you set here. The normal Root Lock entry does not ask. Default is off.
 
 See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery).
 
@@ -319,7 +321,7 @@ A: The Root Lock kernel is installed alongside your existing kernel via GRUB —
 
 Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the kernel logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues. You see what is affected before anything is blocked.
 
-The removed features — eBPF, FUSE, overlay filesystems, unprivileged user namespaces — are how attackers hide, shadow directories, and reach root. Most production server workloads do not depend on them. The Root Lock kernel is built without them by design.
+eBPF, FUSE, overlay filesystems, and unprivileged user namespaces are how attackers hide, shadow directories, and reach root. Most production server workloads do not need a container engine on this host.
 
 All feature removals are documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification.
 
@@ -469,6 +471,12 @@ Use it in production after confirming programs work correctly under Lockdown.
 
 {{< /details >}}
 
+{{< details summary="What is the boot menu password?" >}}
+
+A: Optional. Default is off. Set it on Lockdown with `[l]`, only before the seal, while Setup Mode can still write the boot menu. After Lockdown that key is absent because `/boot` cannot be rewritten. At the GRUB prompt, the name is root and the password is the one you set here. That password is not the Linux root login password. The normal Root Lock boot does not ask. Selecting **Maintenance: unseal and return to Root Lock**, or editing the kernel line, does when one was set. If the password does not land, `YES` does not start Lockdown. Extlinux (Alpine) does not offer the control. Lockdown still works.
+
+{{< /details >}}
+
 {{< details summary="How do I apply the immutable seal after Lockdown?" >}}
 
 A: The seal is applied as part of Lockdown activation (see the "How do I activate Lockdown?" entry above). Once confirmed and rebooted, Lockdown + sealed is active automatically on every Root Lock kernel boot.
@@ -477,7 +485,7 @@ A: The seal is applied as part of Lockdown activation (see the "How do I activat
 
 {{< details summary="How do I make configuration changes after entering Lockdown?" >}}
 
-A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. SSH is not enough for that GRUB pick. The seal lifts automatically (`HS_unlock.sh`) and you land in Setup Mode, then log in over SSH to make the changes. Review new activity in the queues, then re-engage Lockdown (`[l]`).
+A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, type `YES` and reboot once into Setup Mode on the Root Lock kernel. If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set, that pick asks for it. SSH is not enough for that GRUB pick. The seal lifts automatically (`HS_unlock.sh`) and you land in Setup Mode, then log in over SSH to make the changes. Review new activity in the queues, then re-engage Lockdown (`[l]`).
 
 {{< /details >}}
 
@@ -507,7 +515,7 @@ A: The indicator at the top of the Dashboard immediately shows whether Root Lock
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: From a physical or serial console, reboot and select **Maintenance: unseal and return to Root Lock**. The Dashboard is not launched on the maintenance kernel. Express return brings you back to the Root Lock kernel in Setup Mode, where the Dashboard shows any pending items that caused the hang.
+A: From a physical or serial console, reboot and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set, that pick asks for it. The Dashboard is not launched on the maintenance kernel. Express return brings you back to the Root Lock kernel in Setup Mode, where the Dashboard shows any pending items that caused the hang.
 
 {{< /details >}}
 
