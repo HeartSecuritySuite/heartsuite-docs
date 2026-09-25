@@ -36,6 +36,7 @@ Root Lock reads the startup and shutdown logs, adds the programs it finds to the
 
 The first time you connect and the Dashboard appears, initial setup is complete. The Dashboard shows the reboot history.
 
+The first time the Dashboard is in front of you, initial setup is complete.
 ## Leave the host quiet
 
 After the first reboot into the Root Lock kernel, leave the machine alone until the Dashboard appears. Each SSH reconnect shows a status line and a shell. Root Lock is still adding startup and shutdown programs from those boots.

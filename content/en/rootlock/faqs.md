@@ -140,17 +140,11 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy 
 
 {{< details summary="Does Lockdown cancel vulnerability SLAs or scanner findings?" >}}
 
-A: No. Root Lock does not cancel vulnerability audits, SAST, SCA, host scanners, dependency bumps, or contractual resolve-critical clocks.
+A: Lockdown bounds the blast radius: no new program, no extra files, no extra destinations. When your policy allows an exception, file it in the scanner you already run: [Scanner deadlines](maintenance/scanner-deadlines/).
 
-Under Lockdown the kernel-sealed allowlist can **contain** a hole (no new program, no extra files, no extra destinations). That does **not** make the hole "not found," empty the scanner report, or let GRC hear "this doesn't apply."
+The scanning and resolve-critical contract stays yours. The ticket closes when that scanner or your contract accepts the exception.The vulnerable app's own files stay in scope.
 
-HeartSuite is **not** a certified scanning vendor. An exception or "doesn't apply" is only real if **their** certified scanner / customer contract accepts a different residual.
-
-Residual: we do not protect the vulnerable app's own files.
-
-Kernel CVE false positives (compiled-out features) are a **different** workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
-
-When your policy allows an exception, file it in the scanner you already run: [Scanner deadlines](maintenance/scanner-deadlines/).
+Kernel version-string findings are a separate workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
 
 ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quick-reference/).
 
@@ -158,13 +152,15 @@ ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quic
 
 {{< details summary="Do I still have to patch after Lockdown?" >}}
 
-A: Yes. Lockdown does not replace distro errata or app patches. You still install OS and application updates.
+A: Distro errata and application updates install on the remediation SLA in your policy or contract.
 
 **One host already in Lockdown:** Dashboard Maintenance `[m]`, console GRUB **Maintenance: unseal and return to Root Lock**, work in Setup Mode over SSH, review queues (re-allowlist), Lockdown `[l]` again. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
 **Many locked hosts:** bake the patched OS and the current Root Lock bundle into a new image and **reprovision**. Ansible distributes allowlists; it does **not** lift the seal. See "How do I patch many hosts that are already in Lockdown?" above and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
-Compiled-out kernel CVEs are "no HeartSuite kernel rebuild for that CVE," not "skip apt."
+The exception expiry is a different date, filed in the scanner. See [Scanner deadlines](maintenance/scanner-deadlines/).
+
+For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages.
 
 {{< /details >}}
 
