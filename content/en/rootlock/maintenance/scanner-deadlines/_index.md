@@ -2,7 +2,7 @@
 title: "File the scanner exception on its own date"
 linkTitle: "Scanner deadlines"
 weight: 7
-description: "How to record an expiry in the scanner you already run. The patch date in your policy or contract is unchanged."
+description: "Which findings can leave the active queue for the standard change window, and how to file that exception in the scanner you already run."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "scanner"]
 type: docs
@@ -61,13 +61,12 @@ These documents cover a backported fix, OpenSCAP tailoring, or intrusion prevent
 These keep the patch date in your policy or contract. Lockdown does not clear them, and an exception for one of them is a rule you file from your own policy:
 
 - In-process bugs, on data the program already reads
-- Kernel CVEs
+- Kernel CVEs whose code is in the kernel you boot
 - Injection inside an allowlisted process
 - Denial of service
 - An already-permitted destination
 - The vulnerable app's own files
-
-In the scanner comment, describe a dropped binary, a new destination, or a process that already has root and obeys the allowlist.
+- A known-exploited finding
 
 The kernel matches the path, so two copies with the same bytes at different paths are different entries. In Setup Mode the kernel logs but stops blocking until you return to Lockdown. See [Protecting During Maintenance](../protecting-during-maintenance/).
 
