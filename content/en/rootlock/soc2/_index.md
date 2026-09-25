@@ -126,7 +126,7 @@ While Lockdown is active, root cannot remove the immutable flags. The kernel dis
 
 An attacker who already has root over SSH cannot edit the SSH config, create accounts, change passwords, install cron jobs, or plant login-script backdoors.
 
-**Scope**: Root Lock installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from Root Lock.
+**Scope**: Root Lock installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from Root Lock while the boot menu password stays off. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. Serial access remains the backstop when the password is off. Mounting the disk from outside still bypasses a password that was set.
 
 Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 
