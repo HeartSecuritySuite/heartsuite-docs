@@ -83,7 +83,7 @@ Or look up the record number first:
 # /.hs/sys/hs-app-perm-orders-manager add -r 277 -n 192.0.2.10
 ```
 
-For normal use, approve through the Dashboard, which shows each destination's hostname and connection count before you approve it.
+The Dashboard is the supported path for normal use.
 
 For general allowlisting concepts (program execution, file access, write permissions), see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
 
