@@ -74,7 +74,7 @@ Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArm
 
 An attacker who already has remote root can turn those tools off by killing the program, unloading the module, or setting the LSM policy permissive. At Layer 2 there is nothing to turn off, because enforcement is part of the running kernel.
 
-Unsealing the allowlist takes physical presence or the cloud serial console. SSH stays the day-to-day admin path, but even as root it cannot unseal. That leaves two questions for a Root Lock host: whether Setup Mode approved too much, and whether someone at the console can unseal it.
+Unsealing the allowlist takes physical presence or the cloud serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. SSH cannot unseal. That leaves two questions for a Root Lock host: whether Setup Mode approved too much, and whether someone at the console can unseal it.
 
 See [Circumvention and recovery](#circumvention-and-recovery). For the full taxonomy with all tools mapped by layer, see [Layer Analysis](../layer-analysis/).
 

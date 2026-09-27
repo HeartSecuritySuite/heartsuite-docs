@@ -99,7 +99,7 @@ A: Yes, across a fleet of similar hosts. Each host runs the Root Lock kernel wit
 
 Each host still installs through Cloud Path or Local Path; Ansible runs that install and then applies policy.
 
-**Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a fit by design, including a long-lived fixed pod set. Use Firecracker instead or build and run those images on another host. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts) and [Containers and microVMs](introduction/containers-and-microvms/).
+**Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a supported workload, including a long-lived fixed pod set. Build and run those images on another host, or run Root Lock as the guest kernel in a VM you provide. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts) and [Containers and microVMs](introduction/containers-and-microvms/).
 
 Because Root Lock works on each host individually, event correlation stays in your SIEM, policy reconciliation in Git or your configuration management, and compliance reporting in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
 
