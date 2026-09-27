@@ -89,7 +89,7 @@ Autonomous agents are powerful because they decide what to do next. That is also
 
 Run Root Lock as the guest kernel inside a per-task virtual machine — a Kata Container, a Firecracker microVM, or plain KVM. You build the allowlist once: run a representative agent task in Setup Mode, review and approve the tools it uses through the Dashboard queues, then bake that allowlist into the VM image.
 
-Each task VM boots from that image with the allowlist already on the disk. The image is not sealed. The machine seals on a later boot. The allowlist holds for the life of the task. Then the VM is gone.
+Each task VM boots from that image with the allowlist already on the disk. The image is not sealed. You run the seal on that machine, and the seal takes effect on the next boot. The allowlist holds for the life of the task. Then the VM is gone.
 
 An attacker who already has root inside the VM cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. gVisor filters syscalls in userspace to protect the host; Root Lock, as the guest kernel, protects the workload.
 

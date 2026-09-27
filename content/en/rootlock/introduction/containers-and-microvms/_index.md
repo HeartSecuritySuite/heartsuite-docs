@@ -59,7 +59,7 @@ See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/
 
 Run Root Lock as the guest kernel inside a virtual machine you provide, such as a Kata Container or a Firecracker microVM. Build the allowlist once: run a representative task in Setup Mode, review and approve the tools through the Dashboard queues, then bake that allowlist into the VM image.
 
-The image carries the allowlist and is not sealed. You seal that machine on a later boot, and the allowlist holds for the life of the task until the VM is discarded.
+The image carries the allowlist and is not sealed. You run the seal on that machine, and the seal takes effect on the next boot. The allowlist holds for the life of the task until the VM is discarded.
 
 An attacker who already has root inside the guest cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
