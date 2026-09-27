@@ -19,7 +19,7 @@ A: Every attack does three things: run a program, access files, make a network c
 
 Where anti-malware tools look for signatures or suspicious behavior, Root Lock requires every execution, file access, and network connection to be approved through the Dashboard review queues. In Lockdown, anything not approved is blocked.
 
-Enforcement is compiled into the kernel, so there is no agent to kill and no module to unload. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist, because unsealing takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console — the same class as sitting at the rack. SSH remains how you log in and run the Dashboard, and after unseal it is how you make changes, but SSH is not enough to unseal.
+Enforcement is compiled into the kernel, so there is no agent to kill and no module to unload. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist, because unsealing takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console — the same class as sitting at the rack. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After unseal, SSH is how you work in Setup Mode.
 
 See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 
@@ -57,7 +57,7 @@ A: No. Root Lock is compiled into the kernel binary. You do not load it with `in
 
 eBPF tools (Falco, Tetragon, BPF LSM, eBPF Jailer) attach programs to a running kernel. That needs the BPF syscall. Root can unload those programs or kill the agent that loaded them. SELinux and AppArmor are LSM policy: on a typical distro, root can set them permissive or edit the policy file.
 
-Root Lock is neither an LSM nor eBPF, so there is no policy to set permissive and no program to unload. The supported way off the Root Lock kernel is a reboot into the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud serial console. SSH still works while the Root Lock kernel is running, but it is not enough to select that kernel.
+Root Lock is neither an LSM nor eBPF, so there is no policy to set permissive and no program to unload. The supported way off the Root Lock kernel is a reboot into the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot select that kernel. After unseal, SSH is how you work in Setup Mode.
 
 See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis](introduction/layer-analysis/).
 
@@ -87,7 +87,7 @@ A: An agent is another program on the allowlist, with its own execution, file, a
 
 A: No. In Setup Mode the Dashboard records which programs actually ran, what each one read or wrote, and where it connected, and you build the per-program allowlist by approving that record.
 
-Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Unsealing takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console; day-to-day SSH still works, but it is not enough to unseal.
+Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Unsealing takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After unseal, SSH is how you work in Setup Mode.
 
 SELinux still has policy depth Root Lock does not replicate (domain transitions, distribution-shipped profiles). See [How Root Lock Compares](introduction/how-it-compares/), [The Setup Journey](introduction/setup-overview/), and [Central Policy](alerts/central-policy-management/).
 
@@ -242,13 +242,13 @@ A: Lockdown requires an active subscription, all review queues to be cleared, an
 
 {{< details summary="I work remotely a lot; can I still access a Root Lock server remotely?" >}}
 
-A: Yes. Approve the SSH server to execute and to read the files it needs, the same as any other program; the allowlist entries the installer adds usually already cover `sshd`. Unsealing Lockdown is the one step that needs the console, because it is a boot-menu pick.
+A: In Setup Mode, yes. Approve the SSH server to execute and to read the files it needs, the same as any other program; the allowlist entries the installer adds usually already cover `sshd`. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. Unsealing Lockdown is the one step that needs the console, because it is a boot-menu pick. After unseal, SSH is how you work in Setup Mode.
 
 Internet Access (`[i]`) is outbound destinations only. Adding the address you connect *from* there does not grant inbound SSH.
 
 Root Lock still has SSH posture controls:
 
-- **Lockdown** — Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off). Inbound permits (`[o]` / `[a]`) record which source addresses may reach sshd while sealed. `[r]` / `[j]` choose whether SSH stays up under Lockdown.
+- **Lockdown** — Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off). Inbound permits (`[o]` / `[a]`) record which source addresses may reach sshd while sealed. `[r]` / `[j]` choose whether sshd stays up under Lockdown. The default is sshd stopped; leaving it running is not recommended.
 - **Maintenance** — unseal is a console GRUB pick. Once the seal is lifted, keep a restricted SSH route, leave SSH open, or take the network down (console only). You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
 sshd's own config, an OS packet filter, and cloud security groups still apply. If you SSH *from* the Root Lock host *to* other hosts, those destination IPs appear in Internet Access for the SSH client. See [Network and Remote Access](network/).

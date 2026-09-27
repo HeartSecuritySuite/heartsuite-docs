@@ -45,7 +45,7 @@ In Setup Mode, you are trusted to teach the allowlist — anything not on the al
 In Lockdown, trust is withdrawn from running programs regardless of which user runs them. Any program, including one running as root, must be on the allowlist. Your ability to change that allowlist at runtime is also withdrawn — configuration is sealed until Maintenance unseals it so you can install software or edit files.
 
 > [!NOTE]
-> Unsealing Lockdown takes physical or serial-console access: pick **Maintenance: unseal and return to Root Lock** at the boot menu. SSH is not enough for that step. SSH remains how you log in, run the Dashboard, and do the work after the seal lifts.
+> Unsealing Lockdown takes physical or serial-console access: pick **Maintenance: unseal and return to Root Lock** at the boot menu. SSH is not enough for that step. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. After unseal, SSH is how you work in Setup Mode.
 
 ### Protection state
 
@@ -124,7 +124,7 @@ From the Dashboard, select Lockdown (`[l]`). The Dashboard shows a precondition 
 - `[c]` add HeartSuite install paths to the Lockdown seal
 - `[x]` exclude specific write-conflict paths from the seal; `[n]` put an excluded path back
 - `[d]` undo a recursive seal on a broad directory
-- SSH hardening (`[h]`) and SSH during Lockdown (`[r]` / `[j]`)
+- SSH hardening (`[h]`) and SSH during Lockdown (`[r]` / `[j]`). The default is sshd stopped; leaving it running is not recommended.
 - inbound permit selection (`[o]` / `[a]`); `[k]` removes recorded permits
 - `[l]` optional boot menu password, off by default. It is offered only before the seal, while Setup Mode can still write the boot menu; after Lockdown the key is absent because `/boot` cannot be rewritten.
 

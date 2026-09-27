@@ -101,7 +101,7 @@ SELinux does have a switch meant to refuse this move until the next reboot, the 
 
 ### Root Lock: Lockdown refuses the path and the allowlist write
 
-On the third host Lockdown was already on, and SSH as root still worked. The ledger was never staged here, so root's first move is to create the path:
+On the third host Lockdown was already on, with sshd left running before the seal so this root shell was over SSH. That is not the default: sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. The ledger was never staged here, so root's first move is to create the path:
 
 ```text
 # mkdir -p /var/lib/vaultapp

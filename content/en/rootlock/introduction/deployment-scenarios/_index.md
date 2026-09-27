@@ -50,13 +50,13 @@ In financial, legal, healthcare, and defence workplaces, a workstation's toolcha
 > [!NOTE]
 > **Lockdown** seals the allowlist against change: the files are immutable (`chattr +i`), and the running kernel refuses the write, including from root. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
 
-In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, remote root cannot disable enforcement the way an agent can be killed, and SSH still works for day-to-day admin. Unsealing takes reaching the boot path: a keyboard and monitor on a physical machine, a serial console, or — on a virtual machine — the hypervisor that owns the guest's disk image and memory. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
+In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, remote root cannot disable enforcement the way an agent can be killed. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. Unsealing takes reaching the boot path: a keyboard and monitor on a physical machine, a serial console, or — on a virtual machine — the hypervisor that owns the guest's disk image and memory. After unseal, SSH is how you work in Setup Mode. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 On VMs the hypervisor is the outer protective layer; Root Lock protects everything inside. Platform controls that protect the boot path (measured boot, disk encryption with keys held by the platform, controlled hypervisor access) extend that protection upward.
 
 For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question — and a clear specification of which controls remain the platform's responsibility.
 
-For managed security providers, this answer is the same for every Root Lock-protected server they manage: under Lockdown, no administrator credential, root session, or SSH session can unseal or rewrite the security policy, while day-to-day SSH and the Dashboard keep working. For the competitive comparison on this point, see [How Root Lock Compares](../how-it-compares/#circumvention-and-recovery).
+For managed security providers, this answer is the same for every Root Lock-protected server they manage: under Lockdown, no administrator credential, root session, or SSH session can unseal or rewrite the security policy. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. After unseal, SSH is how you work in Setup Mode. For the competitive comparison on this point, see [How Root Lock Compares](../how-it-compares/#circumvention-and-recovery).
 
 ## Build, CI, and release infrastructure
 
