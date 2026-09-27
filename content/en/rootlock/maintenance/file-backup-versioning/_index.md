@@ -17,29 +17,23 @@ Modern ransomware targets backup systems first — shadow copies and backup agen
 
 Root Lock by HeartSuite creates a versioned backup every time a file in a protected directory is written. Versioning runs on the Root Lock kernel in both Setup Mode and Lockdown. Backup is a recovery store, not a prevention control: it does not stop the first write.
 
-Delayed activation does not change that rule. A **malicious sleeper** is an approved program that behaves as expected for a long time, then encrypts or overwrites files it is already allowed to write. Root Lock still versions every write in a directory you selected on Backup (`[b]`). The default is `/home`.
+The same holds when the attack waits. A **malicious sleeper** is an approved program that behaves as expected for a long time, then encrypts or overwrites files it is already allowed to write. Root Lock versions those writes too, as long as the files are in a directory you selected on Backup (`[b]`). HeartSuite Joint File System (HJFS) removes that condition: it versions every program data file without a directory list. See [The malicious sleeper attack](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack).
 
-HeartSuite Joint File System (HJFS) versions every program data file with no directory list. See [The malicious sleeper attack](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack).
-
-Under Lockdown, the kernel keeps other programs — including malware running as root — off those backup versions. That gate is absent on the maintenance kernel. Changing which directories are protected requires a [maintenance window](../protecting-during-maintenance/).
+Under Lockdown, the kernel keeps other programs — including malware running as root — off those backup versions; on the maintenance kernel Root Lock is not active, so that protection does not apply. Changing which directories are protected requires a [maintenance window](../protecting-during-maintenance/).
 
 ## Automatic versioning
 
 Root Lock monitors the protected directories you select. When any file in those directories (including subdirectories) is written, Root Lock creates a new versioned backup before the write completes. Versioning begins from first boot, before you have reviewed a single item.
 
-Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from.
-
-Root Lock backs up on every write. There is no window.
+Enterprise backup tools back up on a schedule — hourly, nightly, weekly. An attack that completes between backup windows has nothing to recover from. Root Lock backs up on every write, so there is no window for an attack to fit in.
 
 Other security tools that offer rollback on Linux — including endpoint tools with a rollback feature — rely on volume shadow copies or scheduled snapshots. The same gap exists: an attack that completes between snapshot intervals has nothing to recover from.
 
 CVE-2024-40711 — Veeam Backup & Replication, unauthenticated RCE — shows the sharper problem: the backup tool itself is the target. An attacker who reaches a Veeam host can execute code without authentication, destroy backups, then encrypt production files. Root Lock's backups have no running agent to exploit.
 
-By default, `/home` is configured for backup. You can add or remove directories from the Dashboard's Backup.
-
 ## Configuring protected directories
 
-From the Dashboard, select Backup (`[b]`). Backup has two tabs: **Configure** and **Restore**. Configure shows which directories are protected and when they were last versioned.
+From the Dashboard, select Backup (`[b]`). Backup has two tabs: **Configure** and **Restore**. Configure shows which directories are protected and when they were last versioned. By default, `/home` is protected.
 
 ![Backup configured with 3 protected directories](test_docs_backup_configured.svg)
 
@@ -48,11 +42,11 @@ From Configure you can:
 - **Add a directory** (`[a]`) — protect additional directories (for example `/var/www`, `/etc`, `/usr/lib`)
 - **Remove from backup** (`[r]`) — stop backing up a directory. Existing versions are retained until the retention window expires.
 
-`[n]` on Backup is Cancel, not add.
+On Backup, `[n]` cancels; add a directory with `[a]`.
 
 Recommended directories include those containing user documents, executable files, configuration, and shared libraries. Avoid high-churn directories like log directories — backup creates a new version on every write.
 
-Backup is optional. You can remove all directories, disabling backup entirely. Lockdown does not require backup to be configured.
+Backup is optional: you can remove all directories to disable it, and Lockdown does not require it.
 
 ## Restoring file versions
 
@@ -85,4 +79,4 @@ For scripting and automation that runs without the Dashboard:
 # hs-version-manager replace /home/user/document.txt <token>
 ```
 
-The Dashboard is the supported path for normal use.
+For normal use, prefer the Dashboard's Backup (`[b]`), which lets you browse versions by file or by date before you restore.

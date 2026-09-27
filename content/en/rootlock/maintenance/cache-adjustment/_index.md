@@ -11,9 +11,9 @@ aliases:
 toc: true
 ---
 
-**Overview**: Root Lock by HeartSuite caches allowlist entries in kernel memory for lookup speed. The cache is an LRU window, not a limit on how many programs you may approve. The Dashboard expands that window toward your allowlist size, up to 255 entries. Allowlists larger than 255 stay valid; the kernel evicts the least recently used cache slots.
+**Overview**: Root Lock by HeartSuite caches allowlist entries in kernel memory for lookup speed. The cache is an LRU window: its size sets how many entries stay in fast kernel memory, while the number of programs you may approve is unaffected. The Dashboard expands that window toward your allowlist size, up to 255 entries. Allowlists larger than 255 stay valid, and the kernel evicts the least recently used cache slots.
 
-Manual sizing is optional. You do not have to prune the allowlist when it grows past 255.
+Because the Dashboard sizes the cache for you, manual sizing is optional, and you can let the allowlist grow past 255 without pruning it.
 
 ## Automatic cache expansion
 
@@ -23,11 +23,11 @@ This runs in the background on the Dashboard's normal 60-second refresh cycle. Y
 
 ## When the allowlist is larger than 255
 
-Auto-expansion stops at 255. The extra allowlist entries remain in force; they are not refused. The kernel keeps the most recently used 255 in the cache.
+Auto-expansion stops at 255. Entries beyond that remain in force, and the kernel keeps the 255 most recently used in the cache.
 
-Pruning unused programs in Allowed (`[a]`) is hygiene, not a hard stop. After you remove entries, the next Dashboard refresh can shrink the working set the cache has to hold.
+Pruning unused programs in Allowed (`[a]`) is good hygiene rather than a requirement: after you remove entries, the next Dashboard refresh can shrink the working set the cache has to hold.
 
-There is no Dashboard warning of the form "Allowlist has 312 entries but kernel cache max is 255."
+The Dashboard shows no warning when the allowlist grows past the 255-entry cache.
 
 ## CLI access for scripting and automation
 
@@ -37,6 +37,6 @@ For scripting and automation that runs without the Dashboard, set the cache to a
 # /.hs/sys/hs-APO-cache-size 128
 ```
 
-Docs and older notes may say `hs-cache-size`. That is the glossary name; the binary on disk is `hs-APO-cache-size`.
+Some docs and older notes call this tool `hs-cache-size`, its glossary name; the binary on disk is `hs-APO-cache-size`.
 
-The Dashboard is the supported path for normal use.
+For normal use, let the Dashboard size the cache, because it re-checks the allowlist size on every refresh.

@@ -214,9 +214,7 @@ The feeds **do not** replicate RHSA numbering or distribution errata semantics. 
    - Verify compiled-out claims against the **pin payload config**. Guest `/boot/config-6.18.9-hs` is a stub.
    - Record exceptions with pin identity, config evidence, and a transparency link.
 
-Continue using **distribution OVAL/errata** for Non-Root Lock kernel maintenance windows and for non-kernel packages.
-
-OVAL XML general availability will be announced in release notes when ready.
+Continue using **distribution OVAL/errata** for maintenance-kernel boots and for non-kernel packages.
 
 ---
 

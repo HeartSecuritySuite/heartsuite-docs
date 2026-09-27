@@ -218,7 +218,7 @@ gantt
 
 > [!NOTE]
 > **Lockdown Tooling** (September–October 2023)  
-> `HS_lockdown.sh` applies immutability to critical paths across seven categories: HeartSuite config and tooling, the allowlist database, system authentication files, SSH configuration, the boot partition, systemd unit directories, and cron directories. This closes the attack path where an attacker schedules a script at next boot to re-widen permissions. Lockdown is reboot-only-reversible—there is no runtime command that clears it.
+> `HS_lockdown.sh` applies immutability to critical paths in five categories: installation integrity (HeartSuite config, tooling, and the allowlist database), system integrity (the boot partition, systemd unit directories, and SSH configuration), authentication files, boot-window persistence (cron directories), and maintenance tools. This closes the attack path where an attacker schedules a script at next boot to re-widen permissions. Lockdown is reboot-only-reversible—there is no runtime command that clears it.
 
 > [!NOTE]
 > **Allowlist manager + batch tools** (October 2023)  

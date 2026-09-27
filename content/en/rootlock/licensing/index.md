@@ -15,17 +15,17 @@ aliases:
 
 ## Subscription
 
-A subscription is required before you can activate Lockdown. The Dashboard also keeps Lockdown locked until the prior checklist items are complete. See [Lockdown](../lockdown/) for the activation flow.
+The Dashboard keeps Lockdown locked until the subscription on this host is active and the prior checklist items are complete. See [Lockdown](../lockdown/) for the activation flow.
 
 The subscription is a text file. One subscription can cover up to 9999 servers — at purchase, you specify how many servers it covers. You can purchase additional subscriptions if needed.
 
 ## Dashboard
 
-The Dashboard shows subscription status when it requires attention — an expired or missing subscription appears as a warning with a direct link to the upgrade page. A valid, active subscription is not displayed separately; the absence of a warning confirms that the subscription is in good standing. Lockdown stays locked until the subscription on this host is active.
+The Dashboard shows subscription status when it requires attention — an expired or missing subscription appears as a warning with a direct link to the upgrade page. A valid, active subscription shows nothing, so the absence of a warning confirms that the subscription is in good standing.
 
 ## Activate on this host
 
-After downloading the subscription file, copy it to each server it covers. Regardless of the original filename, it must be copied as `HS_license.txt` in the `/.hs/sys` directory. That on-disk name, and the registrar `register_HS_license` below, are filenames — not the product word "license."
+After downloading the subscription file, copy it to each server it covers. Regardless of the original filename, it must be copied as `HS_license.txt` in the `/.hs/sys` directory.
 
 ```bash
 # sudo cp MyCompany_HS_license.txt /.hs/sys/HS_license.txt
@@ -37,7 +37,7 @@ Register it using `register_HS_license`. The command requires the IP address of 
 # sudo /.hs/sys/register_HS_license <ip> 6121
 ```
 
-If activation is successful, the program creates an activation key and displays a confirmation message. If an error occurs, an error message is displayed. You need to activate each server only once.
+If activation succeeds, the program creates an activation key and displays a confirmation message; otherwise it displays an error message. You need to activate each server only once.
 
 With your subscription active and the prior checklist items complete, proceed to [Lockdown](../lockdown/) to activate Lockdown.
 

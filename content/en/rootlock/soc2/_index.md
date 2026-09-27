@@ -75,7 +75,7 @@ In environments where multiple administrators share root access, uid/tty-to-pers
 - Dashboard allowlist export (Programs, File Access, Internet Access queues)
 - Dedicated JSONL approval log showing timestamp, uid, tty, and entry details for each approval action
 - Lockdown status screenshot showing "Applied"
-- `hs-manage-allowlist list` output showing per-program permissions
+- `/.hs/sys/hs-app-perm-orders-manager view -a` output showing per-program permissions
 - Demonstration that a non-allowlisted program cannot execute while Lockdown is active
 
 ---
@@ -407,7 +407,7 @@ Under Lockdown, root cannot overwrite or delete the backups, because the kernel 
 |------------------|----------------|
 | Single file corrupted | Dashboard Backup → File-first browse → select version → restore |
 | Ransomware: many files modified same day | Dashboard Backup → Timeline view → filter by date → batch restore |
-| Restore from CLI/automation | `hs-version-manager restore <path> --version <timestamp>` |
+| Restore from CLI/automation | `hs-version-manager replace <path> <version>` |
 | List available versions | `hs-version-manager list <path>` |
 
 **System recovery after Root Lock kernel failure**:

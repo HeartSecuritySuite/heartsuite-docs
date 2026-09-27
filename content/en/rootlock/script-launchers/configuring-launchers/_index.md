@@ -75,6 +75,6 @@ Before or after Dashboard activation, you can run a script through a specific la
 # hs-python-launcher /path/to/your-script.py
 ```
 
-This applies the script's allowlist entry rather than the interpreter's. Running the same script with `python3` directly uses the interpreter's broader permissions. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.
+This applies the script's allowlist entry rather than the interpreter's. Before activation, running the same script with `python3` directly uses the interpreter's broader permissions; after activation, that call routes through the launcher as well. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.
 
 After activating launchers, return to the Dashboard. The Suggested Next Step directs you to [file access allowlisting](../../allowlisting/allowlisting-basics/) via the File Access queue (`[f]`) if that queue still has items.

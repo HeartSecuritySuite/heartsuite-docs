@@ -196,7 +196,7 @@ Once Lockdown is engaged, Root Lock seals these categories at once, using `chatt
 
 Lockdown also seals every program on the allowlist, so those binaries cannot be swapped while the machine is running.
 
-After Maintenance unseals and you are back in Setup Mode, the Dashboard and `hs-manage-allowlist` may show temporary write grants covering some of the paths that Lockdown normally seals. Those grants exist only while the seal is lifted. The exact paths sealed by default appear in the inventory shown during activation, or in the [Compliance Quick Reference](../compliance-quick-reference/). Adjust grants before you type `YES`, not on the inventory.
+After Maintenance unseals and you are back in Setup Mode, the Dashboard and `/.hs/sys/hs-app-perm-orders-manager` may show temporary write grants covering some of the paths that Lockdown normally seals. Those grants exist only while the seal is lifted. The exact paths sealed by default appear in the inventory shown during activation, or in the [Compliance Quick Reference](../compliance-quick-reference/). Adjust grants before you type `YES`, not on the inventory.
 
 If the Root Lock kernel fails to load, the startup script isolates the primary network interface and removes all immutable flags. The machine is then without Root Lock protection and without network access. Recovery requires booting to the maintenance kernel from physical or serial-console access, repairing or replacing the failed kernel, and locking down again.
 

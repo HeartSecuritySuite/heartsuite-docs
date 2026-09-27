@@ -50,7 +50,7 @@ Approving grants curl network access to these destinations.
 
 Press `[a]` to approve every listed address for that program, or `[s]` to skip it for later.
 
-When the Internet Access queue is empty, the Lockdown Checklist marks **3. Internet Access Allowlisting** complete and updates the Suggested Next Step.
+When the Internet Access queue is empty, the Lockdown Checklist marks **3. Internet Access Allowlisting** complete and updates the Suggested Next Step. That step goes to [Alert Settings](../alerts/) (`[e]`) if alerts are not configured yet, or to Lockdown (`[l]`) if they already are. Backup (`[b]`) can appear before Lockdown when backup is not configured.
 
 ## Approving a network destination
 
@@ -89,7 +89,7 @@ For general allowlisting concepts (program execution, file access, write permiss
 
 ## Inbound connections and remote login
 
-Root Lock manages outbound connections only. Inbound filtering (which ports are reachable, port scans, who may connect) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/), a closed appliance image that observes inbound and host-path traffic, lets you approve an allowlist, and seals it — if you move the workload onto that appliance.
+Root Lock manages outbound connections only. Inbound filtering (which ports are reachable, port scans, who may connect) is outside its scope. Use an OS packet filter, cloud provider security groups, or [HeartSuite Firewall](../../firewall/), a closed appliance image that observes inbound and host-path traffic, lets you approve an allowlist, and seals it — if you move the workload onto that appliance.
 
 To log in over SSH, approve the SSH server to execute and to read the files it needs. Adding the addresses you connect from to Internet Access does not grant inbound access — that queue is outbound destinations only.
 
