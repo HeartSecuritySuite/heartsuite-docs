@@ -2,7 +2,7 @@
 title: "Drive the allowlist from your own tooling"
 linkTitle: "Central Policy"
 weight: 2
-description: "Keep policy in Ansible, Terraform, ServiceNow, or custom automation. Export and apply Root Lock allowlists at fleet scale — not one TUI per host."
+description: "Keep policy in Ansible, Terraform, ServiceNow, or custom automation. Export and apply Root Lock allowlists at fleet scale instead of one Dashboard session per host."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "policy", "fleet", "ansible", "terraform", "servicenow", "automation", "central", "alerts", "siem", "security"]
 toc: true
@@ -11,62 +11,58 @@ aliases:
   - /docs/alerts/central-policy-management/
 ---
 
-**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the surface for a single host. Enterprises use their control planes to manage policy and observe at scale.
+**Overview**: Root Lock by HeartSuite is designed to be driven by your existing central tooling. The Dashboard is the surface for a single host. At fleet scale, your control planes curate policy, apply it to each host, and collect what each host reports back.
 
-Cloud Path and Local Path remain how each host is installed. This page is not a different install. It is how you harvest a baseline, install that package on many hosts, and apply extras without a Dashboard session on every machine.
+Cloud Path and Local Path remain how each host is installed. This page covers the fleet work around that install: harvesting an allowlist baseline from one host, installing that seeded package on many hosts, and applying extras without a Dashboard session on every machine.
 
-There is no built-in multi-host push from a HeartSuite server. Each host enforces its own allowlist, and Lockdown seals that allowlist on the device. Policy is applied per-host by your automation, with export surfaces for central consumption and attribution.
+Each host enforces its own allowlist, and Lockdown seals that allowlist on the host. HeartSuite has no central server that pushes policy to many hosts — your automation applies it per host, and each host exports status, alerts, and an approval log for central visibility and attribution.
 
-Keep policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration). The subscription activation step that enables Lockdown remains a per-host entitlement check. The content of the policy itself can be fully external.
+Keep policy curation, change approval, and fleet-wide visibility inside the tools you already run (Ansible, Terraform, GitOps repositories, ServiceNow, Splunk, Elastic, custom orchestration).
 
 ## Policy curation in your central systems
 
-A repository you already run (usually Git, applied by Ansible, Terraform, or similar) owns the list of approved programs, file-access paths, and network destinations. A CMDB holds configuration items (hosts, apps), not that grant list. An ITSM ticket can approve a change; it is not the policy store.
+A repository you already run — usually Git, applied by Ansible, Terraform, or similar — holds the list of approved programs, file-access paths, and network destinations. Your CMDB keeps describing hosts and apps, and your ITSM tickets keep approving changes; the repository is where the grants themselves live.
 
-- Generate or maintain policy as text lists (one absolute program path per line) or structured data that your automation can parse.
-- Curate changes through your normal processes: code review in Git, change tickets in ServiceNow, or policy-as-code pipelines.
-- **Dense fleets (recommended):** harvest an install-time allowlist baseline from one dense reference host, package Root Lock **with that seed**, then install via Ansible using the seeded package so initial setup is short — not a multi-hour observation period on every node.
-- **Post-install text lists** (`hs_seeds`, `batch_record_add.py`) are for extras and program-path fleet reuse **after** install — they do not replace install-time allowlist pre-seed.
+- Keep policy as text lists (one absolute program path per line) or structured data your automation can parse.
+- Put changes through your normal processes: code review in Git, change tickets in ServiceNow, or a policy-as-code pipeline.
 
-### Two seed mechanisms (do not conflate)
+## Two ways to seed the allowlist
 
-| | Install-time baseline pre-seed | Post-install text program list |
+Root Lock accepts seed policy at two points. An install-time baseline gives a new host the full allowlist of a host that already ran the same workload, so initial setup finishes quickly instead of running a multi-hour observation period on every node. A post-install program list adds programs to a host that is already running Root Lock.
+
+| | Install-time baseline pre-seed | Post-install program list |
 |---|--------------------------------|--------------------------------|
-| **Purpose** | Seed **first**, then install: initial setup starts from a known dense baseline | Additive program approvals for extras after Root Lock is up |
-| **When** | **Before/at** install (package or image includes baseline) | After Root Lock is installed; **not** while initial setup is still running |
-| **Shape** | Vendor packaging / installer options such as `--apo-seed` (baseline allowlist material) | Plain text: one absolute **program** path per line (`#` comments OK) |
-| **Apply with** | Seeded installer / image; Ansible by **running that installer** | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
+| **Purpose** | Start initial setup from a known baseline harvested from a reference host | Add program approvals after Root Lock is up |
+| **When** | Before or during install — the package or image carries the baseline | After Root Lock is installed and initial setup is complete |
+| **Shape** | Installer baseline material, enabled with installer options such as `--apo-seed` | Plain text: one absolute program path per line (`#` comments allowed) |
+| **Apply with** | The seeded installer or image; Ansible runs that installer | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
 
-**Not required:** re-apply a full harvested baseline via **text** `hs_seeds` or `batch_record_add.py` after initial setup on the same host class. That does not skip a multi-hour observation period; use install-time allowlist pre-seed for that.
+A program list carries program paths; the installer baseline also carries each program's grants and is what shortens initial setup. Re-applying a harvested baseline as a text list after initial setup therefore gains nothing. Program lists earn their place for role-scoped bootstrap lists (for example SSH and application entry points), for stack extras you approve after reviewing the queues, and for hosts that never ran those paths during setup.
 
-**Useful text seeds:** role-scoped bootstrap lists (for example SSH and app entrypoints), stack extras after residual queue review, and hosts that never observed those paths.
+## Seed a fleet from one reference host
 
-### Recommended order (dense / fleet — seed first)
+1. **Reference host.** Run initial setup on one host of this class under its real, full workload, then review what remains in the queues. If this host was installed without a baseline, this is the one time the fleet pays the multi-hour observation period.
+2. **Harvest the installer baseline** from that host with the harvest and packaging tooling. Ansible can orchestrate the collection over SSH. The result is installer baseline material — programs and their grants — for step 4, not an `hs_seeds` list.
+3. **Review** the baseline and promote it into your package pipeline.
+4. **Build or obtain** a Root Lock install package with baseline pre-seed enabled (for example installer option `--apo-seed`). Packages can ship with pre-seed off; enable it here.
+5. **Start each fleet node** from a clean OS.
+6. **Install Root Lock with Ansible**, pointing the playbook's install bundle at the pre-seeded installer. Initial setup starts from the baseline and finishes quickly.
+7. **Deploy** application and hardening automation, then review only the differences in the Dashboard.
+8. **Optional:** add extras with a program list (`hs-manage-allowlist list` → review → `hs_seeds` / `batch_record_add.py`).
+9. **Activate Lockdown** once the subscription, alert, and queue checks pass.
 
-1. **Reference host:** one machine of this class finishes initial setup, runs the real dense workload, residual queues reviewed (pay the multi-hour observation period **once** if the host was seed-off).
-2. **Harvest installer allowlist baseline** from that host with vendor harvest / packaging tooling (file and grant material for install-time pre-seed — not a program-path text list alone). Ansible may orchestrate collection over SSH; the artifact is still **installer baseline**, not `hs_seeds`.
-3. **Review** and promote the baseline into your package pipeline.
-4. **Build or obtain** a Root Lock install package **with baseline pre-seed enabled** (for example installer option `--apo-seed` / packaged baseline). Default customer packages may be seed-off until you enable this.
-5. **Clean OS** on each fleet node.
-6. **Ansible installs Root Lock using that seeded package** (point the playbook’s install bundle at the pre-seeded installer). Initial setup uses the seed and finishes quickly.
-7. Deploy application / hardening automation; residual Dashboard review for deltas only.
-8. Optional: post-install text program lists for extras (`hs-manage-allowlist list` → review → `hs_seeds` / `batch_record_add.py`).
-9. Activate Lockdown only when subscription, alerts, and queue gates are ready.
+The first reference host of a class has no baseline to start from: install it on a clean OS without pre-seed, let initial setup run under the real workload, review the queues, and harvest from step 2. Every later host follows the order above.
 
-### Cold path (first reference only)
-
-Clean OS → install **without** baseline pre-seed → long initial setup on a dense host → residual review → harvest baseline (step 2 above) → all later hosts use the dense / fleet order.
-
-Pending queue items are not grants until approved. Do not treat tester or one-shot pollution paths as production fleet seed.
+Seed only what the reference host's real workload ran, and leave out paths from test runs or one-off commands. An item in the pending queue becomes a grant only when you approve it.
 
 ## Applying policy from automation
 
-Use the CLI tools shipped with every installation (documented in the [Appendices](../appendices/) and [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/)) to apply **post-install** policy from your control plane. These tools do not replace install-time baseline pre-seed packaging:
+Use the CLI tools shipped with every installation (documented in the [Appendices](../appendices/) and [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/)) to apply post-install policy from your control plane:
 
 - `hs-manage-allowlist` — inspect current state, add or remove specific entries for programs, file paths, and network destinations.
 - `batch_record_add.py` — bulk-seed programs from a plain-text list of paths (adds each with standard library and configuration directories).
 
-Run these tools over SSH, via config-management agents, or as part of provisioning scripts **after** Root Lock is installed and initial setup is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
+Run these tools over SSH, via config-management agents, or as part of provisioning scripts after Root Lock is installed and initial setup is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
 
 Subscription activation (`hs-activate-subscription`) is still required on each host before Lockdown can be engaged — this is the entitlement step and remains local.
 
@@ -84,27 +80,25 @@ On every installed host, the `limited_tools` Python API under `/opt/heartsuite` 
 
 The role assumes Root Lock is already installed. It focuses on allowlist management plus mode transitions (Setup Mode / Lockdown). Full server provisioning — base OS preparation, hardening (for example the dev-sec collection), SFTP receiver setup, bundle-based installation, and post-install configuration — belongs in thin orchestrator playbooks that compose `heartsecurity.root_lock` with upstream collections and host-specific tasks.
 
-A reference provisioning example for a Debian 12 server is in the code repository under `ansible/examples/hs-debian12-provision/`. The pattern: install Root Lock (the example does not replace initial setup with a full text re-seed), start with a **minimal role-scoped** bootstrap allowlist via seed file, run the real workload, harvest observed **extras** from Setup Mode after residual review, maintain them in a seed file, and re-apply via the role for hosts that need those paths.
+A reference provisioning example for a Debian 12 server is in the code repository under `ansible/examples/hs-debian12-provision/`. The pattern: install Root Lock and let initial setup run, start with a minimal role-scoped bootstrap allowlist from a seed file, and run the real workload. After you review the queues, keep the extra programs Setup Mode logged in a seed file and re-apply it with the role on the hosts that need those paths.
 
 **Requirements**:
 
-- Root Lock already installed on managed hosts (the role does not install the product).
-- Prefer initial setup finished before applying workload `hs_seeds` / stack playbooks that assume a reviewed baseline.
+- Root Lock already installed on managed hosts.
+- Initial setup finished before you apply workload `hs_seeds` or stack playbooks that expect a reviewed baseline.
 - `become: true` — all operations are privileged.
 - Ansible >= 2.9.
 - The role invokes the production Python API in `/opt/heartsuite` (`limited_tools` via `/opt/heartsuite/venv/bin/python3` and `/opt/heartsuite/src`).
-
-`hs_seeds` / `hs_programs` are **post-install text program lists**. They are not install-time allowlist baseline packaging and not a binary policy file drop-in. Leave `hs_state` unset until subscription, alerts, and queue gates are ready for Lockdown.
 
 **Key variables** (all prefixed `hs_` to avoid collision with SELinux role variables):
 
 | Variable | Purpose |
 |----------|---------|
-| `hs_state` | Mode transition: `secure` or `lockdown` (synonyms). `setup` is informational only (no-op). Unset leaves mode unchanged. Calls `switch_to_secure()` with the same precondition gates as the Dashboard. Prefer unset until gates pass. |
+| `hs_state` | Mode transition: `secure` or `lockdown` (synonyms). `setup` is informational only (no-op). Unset leaves mode unchanged. Calls `switch_to_secure()` with the same precondition gates as the Dashboard. Leave it unset until the subscription, alert, and queue checks pass. |
 | `hs_programs` | List of absolute program paths to approve (uses `apply_allowlist_seed()` internally). |
-| `hs_seeds` | List of seed file paths, or literal inline paths when the entry is not an existing file. Seed files are plain text, one program path per line; `#` comments and blank lines are ignored. Combine freely with `hs_programs`. Post-install extras/fleet — not installer baseline pre-seed. |
+| `hs_seeds` | List of seed file paths, or literal inline paths when the entry is not an existing file. Seed files are plain text, one program path per line; `#` comments and blank lines are ignored. Combine freely with `hs_programs`. |
 
-Additional variables include `hs_gather_status` (default `true`, exposes `hs_status` fact), `hs_purge` / `hs_purge_allowlist` (currently emit a warning only — the scriptable surface is additive by design), and `hs_python` / `hs_src_path` overrides for non-standard install layouts.
+Additional variables include `hs_gather_status` (default `true`, exposes `hs_status` fact), `hs_purge` / `hs_purge_allowlist` (emit a warning only — the scriptable surface adds entries by design), and `hs_python` / `hs_src_path` overrides for non-standard install layouts.
 
 **Re-run behaviour**: All allowlist operations return `CommandResult` with `kind == "noop"` when an entry is already present. The role uses this for correct `changed_when` reporting, so repeated plays do not show spurious changes.
 
@@ -134,7 +128,7 @@ The `heartsecurity.root_lock` role is the preferred declarative path for post-in
 
 See the reference provisioning starter in the code repository (`ansible/examples/hs-debian12-provision/`) for composition: it delegates SSH/SFTP hardening to the dev-sec collection, performs bundle-based installation, registers backup directories and alert configuration, starts with a minimal allowlist bootstrap, and shows how to harvest from real workload observation into a seed file before using the role for allowlist and mode.
 
-Register playbooks as the mechanism that executes change records approved in your central system.
+Use these playbooks to carry out the change records your central system approves.
 
 #### Shell + register alternative
 
@@ -169,7 +163,7 @@ Use Ansible to distribute seed files and invoke the batch or management tools wi
       # Then copy or commit the harvest back to your policy repo
 ```
 
-This pattern does not use `CommandResult.kind == "noop"` for `changed_when`. Implement your own re-run checks (for example `creates`, or `register` + conditional tasks).
+Without the role there is no `CommandResult.kind == "noop"` to drive `changed_when`, so add your own re-run checks (for example `creates`, or `register` + conditional tasks).
 
 ### 2. Splunk / Elastic (and similar SIEMs) — ingesting for central dashboards and policy triggers
 
@@ -232,7 +226,7 @@ See [Alert Settings](.) for configuration of syslog and webhook (Fleet tab) and 
 
 The Dashboard remains the right surface for one-off investigation, initial setup on a new host, and guided maintenance windows. At fleet scale, routine policy application and observation move to your central tooling.
 
-Lockdown is still activated per host (after subscription activation and alert-channel prerequisites). Once active, the kernel and the immutable seal protect the applied policy exactly as they do for Dashboard-driven changes. Alerts for pending programs while Lockdown stays applied fire on all configured channels.
+While Lockdown is on, alerts for programs waiting in the pending queues go to every configured channel.
 
 Central automation drives allowlist policy and first install. It does not lift Lockdown.
 
