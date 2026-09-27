@@ -2,7 +2,7 @@
 title: "A sealed host filter beside a campus NGFW"
 linkTitle: "How it compares"
 weight: 35
-description: "What Root Lock Firewall is, what it complements, and why it sits beside a campus NGFW rather than replacing one."
+description: "What HeartSuite Firewall is, what it complements, and why it sits beside a campus NGFW rather than replacing one."
 categories: ["Essentials"]
 tags: ["firewall", "comparison", "ngfw", "cisco", "fortinet", "prototype"]
 type: docs
@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: A listening service on a Linux host accepts inbound packets unless a filter refuses them. Root Lock Firewall is that host-path filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist for this box, seal it.
+**Overview**: A listening service on a Linux host accepts inbound packets unless a filter refuses them. HeartSuite Firewall is that host-path filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist for this box, seal it.
 
 The question it answers is: did a human approve this socket on this box, and is that set sealed?
 
@@ -19,17 +19,17 @@ Application identification, TLS interception, and fleet NGFW management stay wit
 
 ---
 
-## Root Lock Firewall and Root Lock
+## HeartSuite Firewall and Root Lock
 
 Three OS-level controls are unrestricted by default on Linux: file access, network communication, and program execution. Inbound reachability is a fourth default: a bound port is open to the routeable world.
 
-Root Lock and Root Lock Firewall share a review grammar and a seal. They close different defaults.
+Root Lock and HeartSuite Firewall share a review grammar and a seal. They close different defaults.
 
 **Root Lock** is production-ready today on a server or a cloud image. You review programs, file paths, and outbound destinations, then enable Lockdown. Anything not on that allowlist is blocked at the kernel, including from root.
 
-**Root Lock Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. On the HeartSuite appliance image they are designed to run together.
+**HeartSuite Firewall** is the host packet filter for a closed appliance. You review inbound and this-host path events, then enable Firewall Lockdown. On the HeartSuite appliance image they are designed to run together.
 
-| Aspect | Root Lock | Root Lock Firewall | What this means in practice |
+| Aspect | Root Lock | HeartSuite Firewall | What this means in practice |
 |---|---|---|---|
 | Default it closes | A program inherits the user's right to execute, read, write, and connect out | A listener accepts inbound packets from anywhere that can route to it | Approving `curl` to one IP does not close port 22. Closing port 22 does not constrain `curl`. |
 | Placement | Kernel on the host you install | Filter on the appliance image; workload on that image | v1 is host-shaped: the workload runs on the image. |
@@ -42,7 +42,7 @@ Root Lock and Root Lock Firewall share a review grammar and a seal. They close d
 
 **Root Lock** is the shipped product for execution, files, and outbound destinations. Inbound on that deployment remains an OS packet filter or a cloud security group, as the [Network](../../rootlock/network/) page states.
 
-**Root Lock Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets.
+**HeartSuite Firewall** is the prototype that takes inbound on a HeartSuite appliance as its job. Use it when the workload can live on the image and the team wants the same observe → approve → seal act on sockets.
 
 Firewall Lockdown seals the packet allowlist. Root Lock Lockdown seals the kernel allowlist.
 
@@ -79,7 +79,7 @@ Named incidents (vendor advisories, not HeartSuite testing):
 | 2026 | Persistence in the FXOS base OS **survived upgrade** to the September 2025 fixed releases. Cisco's recommended removal is a reimage. A reboot CLI command is not enough. | [cisco-sa-asaftd-persist-CISAED25-03](https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-asaftd-persist-CISAED25-03) |
 | 2026 | FortiOS and related tools: **FortiCloud SSO** let an attacker with a FortiCloud account and a registered device log into *other* customers' devices when that SSO toggle was on. Fortinet documents that registering the device in the GUI enables the toggle unless you turn it off. Operators then downloaded configuration and created local admin accounts. Exploited in the wild. | [CVE-2026-24858](https://www.fortiguard.com/psirt/FG-IR-26-060) |
 
-Root Lock Firewall is designed without those surfaces:
+HeartSuite Firewall is designed without those surfaces:
 
 - no VPN web server as identity
 - no cloud SSO into the filter
@@ -94,9 +94,9 @@ See [Recent firewall campaigns](../examples/) for the honest residual on each in
 
 ---
 
-## What Root Lock Firewall complements
+## What HeartSuite Firewall complements
 
-| Gap Root Lock Firewall leaves open | Complementary control |
+| Gap HeartSuite Firewall leaves open | Complementary control |
 |---|---|
 | Program execution, file access, per-program outbound IPs | [Root Lock](../../rootlock/) |
 | Application content on an allowed port | WAF / application hardening |
@@ -106,13 +106,13 @@ See [Recent firewall campaigns](../examples/) for the honest residual on each in
 | Inline NAT, HA pairs, SD-WAN, site-to-site VPN | The existing campus or DC firewall |
 | Who may open the serial or hypervisor console | Cloud IAM, hypervisor ACL, locked rack |
 
-Root Lock Firewall and Root Lock address complementary OS-level defaults. Root Lock Firewall covers inbound and this-host path at the packet filter. Root Lock covers execution, files, and outbound destinations at the kernel.
+HeartSuite Firewall and Root Lock address complementary OS-level defaults. HeartSuite Firewall covers inbound and this-host path at the packet filter. Root Lock covers execution, files, and outbound destinations at the kernel.
 
 ---
 
 ## The HeartSuite appliance image, and a Root Lock server you already run
 
-The HeartSuite appliance image is the intended Root Lock Firewall deployment: kernel grants under a sealed host filter. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run stays a different product.
+The HeartSuite appliance image is the intended HeartSuite Firewall deployment: kernel grants under a sealed host filter. The image includes the Root Lock kernel. A packet filter on a general-purpose kernel you already run stays a different product.
 
 Root Lock on a server you already run is the shipped shape for hosts that need execution and outbound control and already have an inbound filter (OS or cloud). That remains valid.
 
@@ -120,7 +120,7 @@ Root Lock on a server you already run is the shipped shape for hosts that need e
 
 ## Positioning relative to common categories
 
-| Category | Does Root Lock Firewall apply? | Notes |
+| Category | Does HeartSuite Firewall apply? | Notes |
 |---|---|---|
 | Host inbound allowlist on a closed appliance | Yes — the job | Observe, approve, seal |
 | Stateful inspection | Yes | Connection state, not a stateless ACL box |
@@ -132,7 +132,7 @@ Root Lock on a server you already run is the shipped shape for hosts that need e
 | UFW-on-Ubuntu replacement | No | Image, not a package |
 | SIEM / NDR / EDR | Complements | Forward events; the SOC stays the SOC |
 
-**How Root Lock Firewall can be circumvented.** Under Firewall Lockdown paired with Root Lock Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Changing it takes Maintenance on the console or serial console. SSH is not enough.
+**How HeartSuite Firewall can be circumvented.** Under Firewall Lockdown paired with Root Lock Lockdown, an attacker who already has remote root cannot rewrite the sealed allowlist. Changing it takes Maintenance on the console or serial console. SSH is not enough.
 
 What remains is whether you approved too wide a rule, whether an allowed port is still a hole in the application, whether the filter program can be killed, and whether someone who holds the hypervisor owns the disk.
 

@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: A listening service on a general-purpose host accepts inbound packets unless a filter refuses them. That is the Unix default this product closes.
 
-Root Lock Firewall is a host-shaped stateful packet filter delivered as a closed HeartSuite appliance image, with [Root Lock by HeartSuite](../../../rootlock/) as the hardened OS under it. The Dashboard shows traffic as it happens, you approve a finite allowlist for this box's inbound and outbound path, and Firewall Lockdown seals that set.
+HeartSuite Firewall is a host-shaped stateful packet filter delivered as a closed HeartSuite appliance image, with [Root Lock by HeartSuite](../../../rootlock/) as the hardened OS under it. The Dashboard shows traffic as it happens, you approve a finite allowlist for this box's inbound and outbound path, and Firewall Lockdown seals that set.
 
 The filter judges packets by connection state on Linux netfilter's nft path. Execution, file access, and per-program outbound destinations remain with Root Lock, the kernel under the filter.
 
@@ -32,7 +32,7 @@ The closed image is the only delivery. Install scripts that appear in developmen
 
 ## What the filter decides
 
-Root Lock Firewall is a **host-shaped stateful firewall**.
+HeartSuite Firewall is a **host-shaped stateful firewall**.
 
 - **Host-shaped.** It filters traffic to and from *this* box. The workload runs on the image.
 - **Stateful.** Allow and deny follow connection state, not a stateless access list alone.
@@ -62,7 +62,7 @@ Firewall Lockdown and Root Lock Lockdown are paired on the appliance: Firewall L
 | May this program execute? | Root Lock |
 | Which files may it read or write? | Root Lock |
 | Which outbound IP may this program reach? | Root Lock |
-| Which packets may this box accept or send? | Root Lock Firewall |
-| Is the chosen packet allowlist sealed? | Root Lock Firewall (Firewall Lockdown) |
+| Which packets may this box accept or send? | HeartSuite Firewall |
+| Is the chosen packet allowlist sealed? | HeartSuite Firewall (Firewall Lockdown) |
 
 See [Network and Remote Access](../../../rootlock/network/) for Root Lock's outbound queue, and [Protection limits](../limits/) for what the packet boundary leaves to other tools.

@@ -2,7 +2,7 @@
 title: "Where a host-shaped firewall belongs"
 linkTitle: "Deployment scenarios"
 weight: 15
-description: "When Root Lock Firewall fits, when it sits beside Root Lock, and when a campus NGFW is still the right box for the edge."
+description: "When HeartSuite Firewall fits, when it sits beside Root Lock, and when a campus NGFW is still the right box for the edge."
 categories: ["Essentials"]
 tags: ["firewall", "deployment", "appliance", "scenarios", "prototype"]
 type: docs
@@ -11,9 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Root Lock Firewall fits when the workload can live on the closed HeartSuite image the product ships as, and you want a sealed inbound allowlist for this box. Campus NGFW blades stay the specialist tool.
+**Overview**: HeartSuite Firewall fits when the workload can live on the closed HeartSuite image the product ships as, and you want a sealed inbound allowlist for this box. Campus NGFW blades stay the specialist tool.
 
-## Where Root Lock Firewall fits
+## Where HeartSuite Firewall fits
 
 ### A single-purpose workload on a closed image
 
@@ -29,7 +29,7 @@ The hypervisor is part of the trust boundary. See [The virtual appliance residua
 
 ### Next to cloud security groups and provider DDoS tools
 
-Security groups and the provider's volumetric controls stay useful in front of any VM. Root Lock Firewall is the host allowlist *on* the image after that outer layer.
+Security groups and the provider's volumetric controls stay useful in front of any VM. HeartSuite Firewall is the host allowlist *on* the image after that outer layer.
 
 Cloud firewall services stay the provider's policy plane. Booting on AWS, Google Cloud, Azure, DigitalOcean, or Linode leaves that plane in place.
 
@@ -51,7 +51,7 @@ Using this image as a FortiGate or Cisco Secure Firewall replacement is a misfit
 
 ### Install-on-my-Ubuntu
 
-Root Lock Firewall ships only as the closed image, so it does not install onto a server you already run.
+HeartSuite Firewall ships only as the closed image, so it does not install onto a server you already run.
 
 Root Lock on a server you already own remains the kernel product. Inbound on that server stays the OS or cloud control you already run, unless you move the workload onto this appliance.
 
@@ -73,11 +73,11 @@ On the HeartSuite appliance image the two layers are designed to run together.
 
 | Job | Product |
 |---|---|
-| Inbound and this-host path | Root Lock Firewall |
+| Inbound and this-host path | HeartSuite Firewall |
 | Programs, files, outbound IPs | Root Lock |
 
-Root Lock without this image is still a complete kernel product. Root Lock Firewall on that server is an optional SKU.
+Root Lock without this image is still a complete kernel product. HeartSuite Firewall on that server is an optional SKU.
 
-Adding a second packet-filter manager next to Root Lock Firewall on the appliance opens a hole in the composition.
+Adding a second packet-filter manager next to HeartSuite Firewall on the appliance opens a hole in the composition.
 
 For residuals inside an approved port, see [Protection limits](../introduction/limits/).

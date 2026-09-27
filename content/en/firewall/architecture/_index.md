@@ -2,7 +2,7 @@
 title: "What sits under a closed firewall image"
 linkTitle: "Architecture"
 weight: 20
-description: "Root Lock Firewall is a closed image: a stateful host filter on Linux netfilter (nft). What is in the box."
+description: "HeartSuite Firewall is a closed image: a stateful host filter on Linux netfilter (nft). What is in the box."
 categories: ["Essentials"]
 tags: ["firewall", "architecture", "netfilter", "nftables", "kernel", "prototype"]
 type: docs
@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Root Lock Firewall is a stateful host filter on a closed HeartSuite image. You boot the image, open the Dashboard on the console or serial console, observe, approve, and seal.
+**Overview**: HeartSuite Firewall is a stateful host filter on a closed HeartSuite image. You boot the image, open the Dashboard on the console or serial console, observe, approve, and seal.
 
 The image already carries a custom kernel, a userspace stateful-inspection engine HeartSuite updates, a console TUI, and host-integrity grants. You do not allowlist those programs.
 
@@ -25,14 +25,14 @@ Install scripts that layer the prototype onto a throwaway guest exist for labora
 Workload on this image
         │
         ▼
-Root Lock Firewall     stateful allowlist for this host's path
+HeartSuite Firewall     stateful allowlist for this host's path
         │
         ▼
 Root Lock programs, files, per-program outbound IPs
                         plus the kernel the filter is allowed to run on
 ```
 
-Root Lock Firewall owns the host packet filter. Root Lock owns what may execute and which literal outbound addresses each program may use.
+HeartSuite Firewall owns the host packet filter. Root Lock owns what may execute and which literal outbound addresses each program may use.
 
 On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard.
 
@@ -85,7 +85,7 @@ Until hardware ships, treat hypervisor and cloud serial-console IAM as part of t
 | Environment | Notes |
 |---|---|
 | HeartSuite appliance image (QCOW2, OVA) | The supported delivery. Console or serial first. |
-| Root Lock kernel on a general-purpose server you built | That is Root Lock. Root Lock Firewall is the closed appliance image. |
+| Root Lock kernel on a general-purpose server you built | That is Root Lock. HeartSuite Firewall is the closed appliance image. |
 | Stock Debian or Ubuntu kernel | Delivery is the closed image. The nft-only constraint and the closed image assume the Root Lock kernel. |
 | Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. Provider controls (security groups, Network Firewall, Azure Firewall) stay the outer layer if you use them. |
 | Inline / NAT / HA pair | Later. See [Deployment scenarios](../deployment-scenarios/). |
