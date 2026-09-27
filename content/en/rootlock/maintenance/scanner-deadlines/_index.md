@@ -23,7 +23,7 @@ A finding can leave the active queue when the attacker's next step after the exp
 
 The vulnerable code is still on the host, so file these with a compensating-control or accepted-risk reason — the reason column in [Record the reason in that scanner](#record-the-reason-in-that-scanner) — and an expiry. A false-positive reason records that the vulnerability is absent, which is not true here, and the expiry is what brings the finding back for the patch.
 
-In the comment, name the step Lockdown stops: a dropped binary, a new destination, or — for a privilege-escalation finding — a root process that still runs under the allowlist. Where your policy sets the standard change window at 60 or 90 days for work it does not rank critical, set the expiry to that window.
+In the comment, name the step Lockdown stops: a program with no allowlist entry, a file that program was not granted, or a destination it was not granted. A privilege-escalation finding whose root process already has an allowlist entry is not, by itself, a reason the patch can wait. Where your policy sets the standard change window at 60 or 90 days for work it does not rank critical, set the expiry to that window.
 
 The deferral holds only while the host is in Lockdown. In Setup Mode the kernel logs but stops blocking until you return to Lockdown, so plan maintenance windows on these hosts with the open findings in mind. See [Protecting During Maintenance](../protecting-during-maintenance/).
 

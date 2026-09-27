@@ -122,7 +122,7 @@ Use it for:
 
 - Tables of approved programs with their exact file and network grants
 - Counts of programs, broad-write risks while locked down, and reporting hosts
-- Drift detection by comparing the stable `record_hash` across snapshots
+- Drift detection by comparing each host with the allowlist you keep in Git
 - Filtering for higher-risk entries using `risk_level`, `has_broad_write`, `has_network_grant`, and `lockdown_active_at_capture`
 
 Use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture at fleet scale.
@@ -141,7 +141,7 @@ The bridge is a read-only insight plane that complements syslog enforcement stre
 
 - A living allowlist table (one row per `program_path` with grant counts, `risk_level`, `has_broad_write`, `has_network_grant`, and related fields).
 - KPI-style posture metrics (policy counts, broad-write risk while locked down, high-grant surface, recent blocks).
-- Drift detection by comparing stable `record_hash` values across snapshots.
+- Drift detection by comparing each host with the allowlist you keep in Git.
 - Enforcement correlation for drill-down alongside policy rows.
 
 The stack is localhost-only, security-disabled, and throwaway (`docker compose down -v` wipes volumes). Do not publish Kibana, Elasticsearch, or the ingest receiver on a public IP without a network perimeter — for example a cloud firewall allowlist of known lab addresses, or an SSH tunnel so the browser reaches only `localhost`.
@@ -153,7 +153,7 @@ Use the production path above for real access control, TLS, and retention.
 | Fixture | Purpose |
 |---|---|
 | `tools/siem-test/` | Alert channel validation (syslog, email, webhook). Optional Kibana is for eyeballing raw text events. |
-| `tools/kibana-bridge/` | Policy-surface visibility in Kibana (tables, KPIs, risk filters, `record_hash` drift). Uses richer telemetry payloads. |
+| `tools/kibana-bridge/` | Policy-surface visibility in Kibana (tables, KPIs, risk filters), using richer telemetry payloads. Drift is a comparison with the allowlist you keep in Git. |
 
 They can run side by side on the same machine (different ports). Neither fixture is installed to `/.hs/sys` on hosts.
 
@@ -168,7 +168,7 @@ docker compose run --rm setup
 
 After setup, Kibana includes preconfigured data views:
 
-- **HeartSuite Policies** — primary view for the living allowlist table (Lens tables, drift filters).
+- **HeartSuite Policies** — primary view for the living allowlist table (Lens tables); compare it with the allowlist you keep in Git to find drift.
 - **HeartSuite Events** — raw telemetry and event drill-down in Discover.
 
 An optional imported dashboard, **HeartSuite - Policy Overview**, may also be present when saved objects are bundled with your checkout.
@@ -177,7 +177,7 @@ To feed live data during lab work, forward syslog or the evaluation-kit telemetr
 
 ### Pairing with Ansible central policy
 
-The exported policy data model pairs with Ansible (or Terraform/GitOps) central policy: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables, KPIs, and `record_hash` for fleet visibility and drift detection.
+The exported policy data model pairs with Ansible (or Terraform/GitOps) central policy: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables and KPIs for fleet visibility. Compare the allowlist you keep in Git for drift. Git history is the policy change record. Policy identity is not on `status.json`, syslog, webhook, or Kibana.
 
 The bridge (or your production Elasticsearch deployment) is the read side. Your control plane remains the write path.
 

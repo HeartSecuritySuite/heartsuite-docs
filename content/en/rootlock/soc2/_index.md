@@ -16,7 +16,7 @@ A TSC is met by the **entity's control environment**. HeartSuite does not hold a
 
 Availability (A1) and Confidentiality (C1) apply only when those categories are in the examination. Security (CC1–CC9) is always in. This page covers the CC6–CC8 rows where a host kernel MAC can contribute.
 
-The dedicated JSONL approval log, per-decision enforcement syslog stream, and rotating application audit log are described below. They help reconstruct allowlist changes and denials. JSONL rotates at 1 MB with one `.1` copy — ship it to a SIEM for Type II periods longer than that window.
+The dedicated JSONL approval log is when and which uid/tty ran an approval, and denial lines reach the journal only after Fleet syslog is turned on. The rotating application audit log is described below. JSONL rotates at 1 MB with one `.1` copy — ship it to a SIEM for Type II periods longer than that window. Git history is the authoritative policy change record.
 
 ---
 
@@ -363,7 +363,7 @@ Root Lock provides technical controls for the detection and containment phases o
 **Investigation**:
 
 - Dashboard Lockdown queue shows all denied items (blocked programs, file accesses, network connections) with timestamps and paths
-- `journalctl -t heartsuite` provides a timestamped log of alerts and enforcement decisions (message text begins with `heartsuite-alert:`)
+- Once Fleet syslog is on, `journalctl -t heartsuite` provides a timestamped log of alerts and enforcement decisions (message text begins with `heartsuite-alert:`)
 - File version history in Dashboard Backup shows what changed and when, supporting forensic timeline reconstruction
 
 **Allowlist update during active incident**:
@@ -456,9 +456,9 @@ sha256sum -c heartsuite-install.sh.sha256
 
 The installer will not overwrite protected files while the Root Lock kernel is booted, so you run it from a terminal in Setup Mode and type `YES` when it asks. The machine then takes one stock boot, and the installer continues the update from there. See [Updating Root Lock](../maintenance/updating-heartsuite/).
 
-**Allowlist as change record**:
+**Policy change record**:
 
-The allowlist is the authoritative record of every program, file access, and network connection that has been reviewed and approved. Every entry was created through the Dashboard review queues. Each approval action is written to a dedicated, persistent JSONL approval log that records the timestamp, uid, tty, and the exact entry details. The allowlist itself, stored in `/.hs/sys/`, is immutable under Lockdown.
+Git history is the authoritative policy change record. The on-host JSONL approval log is when and which uid/tty ran an approval, with the timestamp and the entry. The allowlist itself, stored in `/.hs/sys/`, is what the host enforces, and it is immutable under Lockdown.
 
 **Scope**: Update integrity relies on SHA-256 checksum verification — there is no GPG or PGP signature authenticating the bundle's origin against a HeartSuite-controlled signing key. The checksum verifies the file arrived intact; supply-chain authentication depends on retrieving the bundle and checksum over HTTPS from the HeartSuite distribution endpoint.
 
@@ -558,7 +558,7 @@ Backup files are versioned filesystem copies with no encryption at the Root Lock
 | CC7.3 Security event evaluation | Alert classification (immediate vs. threshold); Lockdown queue for investigation | Alert logs, denied-item queue, SIEM records |
 | CC7.4 Incident response | Structural containment; investigation queue; file restore; no customer IR runbook template | Maintenance log, restore records, customer IR policy |
 | CC7.5 Recovery | Per-write versioned backup under kernel protection; alerts on backup-disabled and coverage-reduced transitions; no encryption at HeartSuite layer | Backup config, version history, restore log |
-| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); CycloneDX/OSV/CONFIG SBOM at `/advisories/`; per-host allowlist applied by customer automation with rich export (status.json, JSONL approval log, syslog, webhook) for central consumption; no built-in multi-host push from HeartSuite | Maintenance log, install log, allowlist, central automation records, SIEM/JSONL evidence |
+| CC8.1 Change management | Maintenance window required; SHA-256 update verification (no GPG); CycloneDX/OSV/CONFIG SBOM at `/advisories/`; per-host allowlist applied by customer automation; Git history is the policy change record, and the JSONL approval log is when and which uid/tty ran an approval; no built-in multi-host push from HeartSuite | Maintenance log, install log, allowlist, central automation records, SIEM/JSONL evidence |
 | A1.2 Availability protection | Ransomware blocking in Lockdown + per-write recovery; malware persistence prevention | Backup config, alert log, maintenance checklist |
 | C1.1 Confidentiality | File access scoping; outbound exfiltration prevention; no backup encryption at HeartSuite layer | File/network allowlist, disk encryption config |
 

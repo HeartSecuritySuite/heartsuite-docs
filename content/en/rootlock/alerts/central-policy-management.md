@@ -170,7 +170,7 @@ Without the role there is no `CommandResult.kind == "noop"` to drive `changed_wh
 The primary use of Splunk and Elastic is consumption of the structured data streams (see [SIEM and Fleet Integration](siem-integration/)). Once events are in the SIEM:
 
 - Build dashboards showing per-node mode, pending counts (from status.json), block rates, and approval activity (from the JSONL approval log forwarded via syslog or other shipper).
-- Build views of the current allowlist and associated risks from the structured policy snapshots and posture data, including tables of programs with grant counts, `risk_level`, broad-write and network flags, and `record_hash` for drift detection.
+- Build views of the current allowlist and associated risks from the structured policy snapshots and posture data, including tables of programs with grant counts, `risk_level`, and broad-write and network flags. Compare the allowlist you keep in Git for drift. Policy identity is not on `status.json`, syslog, webhook, or Kibana.
 - Use SOAR playbooks or alert actions in the SIEM to trigger Ansible Tower / AWX jobs or Terraform runs that apply approved policy updates back to affected hosts.
 - Correlate HeartSuite enforcement events with change tickets to close the audit loop.
 
@@ -182,7 +182,7 @@ Store allowlist seeds and change manifests in the same Git repository as your in
 
 - Use Terraform `local_file` or `templatefile` to render per-host or per-role seed files from a central policy definition.
 - During `terraform apply`, a `remote-exec` provisioner, `local-exec` that calls Ansible, or a custom provider runs the seed application and `hs-manage-allowlist` invocations on the new or updated instance.
-- Drift detection: scheduled jobs (or Terraform Cloud/Enterprise runs) harvest current state via `hs-manage-allowlist list` or `cat ~/.cache/heartsuite/status.json`, compare against the repo, and open PRs or apply corrections.
+- Drift detection: scheduled jobs (or Terraform Cloud/Enterprise runs) harvest the allowlist with `hs-manage-allowlist list`, compare it with the allowlist you keep in Git, and open PRs or apply corrections. `status.json` is the health snapshot, not the policy identity.
 - Git history becomes the authoritative change record for policy; the on-host JSONL approval log provides the per-host attribution of when and by which uid/tty the change was executed.
 
 This pattern works especially well for immutable or frequently reprovisioned fleets.
