@@ -15,13 +15,13 @@ aliases:
 
 Root Lock by HeartSuite shows which one on the Dashboard. The indicator at the top shows the current protection state, and the Suggested Next Step tells you what to do.
 
-Installer and Dashboard logs live under `/var/log/heartsuite/`. Use the provider **serial console** to `cat` them. AWS **Get system log** is a buffered serial snapshot — it is not CloudWatch. CloudWatch, Cloud Logging, and Log Analytics need the **platform** logging agent plus IAM; Root Lock does not install that agent. Paths and the three cloud surfaces are listed in [Appendices → Log files](../appendices/#log-files).
+Installer and Dashboard logs live under `/var/log/heartsuite/`. Use the provider **serial console** to `cat` them. AWS **Get system log** is a buffered snapshot of that serial output, separate from CloudWatch. CloudWatch, Cloud Logging, and Log Analytics need the **platform** logging agent plus IAM, which Root Lock does not install. Paths and the three cloud surfaces are listed in [Appendices → Log files](../appendices/#log-files).
 
 ## Where to start
 
-The Dashboard is the primary diagnostic tool. Before checking log files, review:
+Start with the Dashboard, because it already counts and groups what was blocked by category. Before checking log files, review:
 
-- **Protection state** (indicator at the top): Confirms the current protection level. If it shows "SETUP MODE", "LOCKDOWN — immutable seal not applied", "Lockdown applied", or "maintenance kernel", you immediately know what protection level is active. "Lockdown applied" is Lockdown with the immutable seal.
+- **Protection state** (indicator at the top): Shows the current protection level: "SETUP MODE", "LOCKDOWN — immutable seal not applied", "Lockdown applied", or "maintenance kernel". "Lockdown applied" is Lockdown with the immutable seal.
 - **Status line at the bottom**: Shows the kernel indicator ("Root Lock" or "maintenance kernel"), current mode with uptime, and lockdown status.
 - **Pending/Denied counts**: In Setup Mode, these are pending items awaiting approval. In Lockdown, these are denied actions that may need allowlisting.
 - **Suggested Next Step**: Provides a single, actionable recommendation based on the current system state.
@@ -33,13 +33,13 @@ The Dashboard is the primary diagnostic tool. Before checking log files, review:
 
 ## Log management
 
-Root Lock logs activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. The Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
+Root Lock logs activity and presents it through the Dashboard's three review queues: Programs (`[p]`), File Access (`[f]`), and Internet Access (`[i]`). The Dashboard shows pending counts for each queue and groups items by category, so you always know what needs attention. Maintenance (`[m]`) provides guided workflows for common maintenance tasks.
 
-The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty **and** Secure Script Launchers is not still pending, the Dashboard automatically clears the log on its next refresh. No manual action is required.
+The review queues are how you see and resolve what needs attention. The underlying activity log is a temporary buffer — once all three review queues are empty and Secure Script Launchers is no longer pending, the Dashboard clears the log on its next refresh, without manual action.
 
 For compliance, SIEM integration, or long-term retention, enable **Syslog** on Alert Settings → Fleet. Denial lines and aggregated alerts then go to the journal under ident `heartsuite` (alert lines use the message prefix `heartsuite-alert:`). Approvals are in `/var/log/heartsuite/allowlist-audit.log`. See [SIEM and Fleet Integration](../alerts/siem-integration/). Formal compliance evidence is covered in the SOC 2 and compliance reference documents.
 
-Allow several days to a week of observation in Setup Mode. Systemd timers, cron jobs, and infrequent services appear in the review queues only when they run — the review queues accumulate these automatically.
+Allow several days to a week of observation in Setup Mode, because systemd timers, cron jobs, and infrequent services appear in the review queues only when they run.
 
 ## Kernel log
 
@@ -51,7 +51,7 @@ The kernel log is useful for advanced troubleshooting in three situations: a pro
 dmesg | grep HEARTSUITE
 ```
 
-The Dashboard presents the same information with metadata enrichment and grouping. The Dashboard runs on the Root Lock kernel. On the maintenance kernel the TUI is Maintenance standalone, not the Dashboard; the strip reads `maintenance kernel: Root Lock not active    No blocking · No logging · No backups`. Express return is meant to get you off that kernel quickly.
+The Dashboard presents the same information with metadata enrichment and grouping, but only on the Root Lock kernel. On the maintenance kernel the TUI is Maintenance standalone, and the strip reads `maintenance kernel: Root Lock not active    No blocking · No logging · No backups`. Express return, which lands you in Setup Mode on the Root Lock kernel, is meant to get you off that kernel quickly.
 
 ## Nested virtual machines without hardware virtualization
 

@@ -87,12 +87,10 @@ The Dashboard is the supported path for normal use.
 
 For general allowlisting concepts (program execution, file access, write permissions), see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
 
-When the Internet Access queue is empty, the Suggested Next Step goes to [Alert Settings](../alerts/) (`[e]`) if alerts are not configured yet — or to Lockdown (`[l]`) if they already are. Backup (`[b]`) can appear before Lockdown when backup is not configured.
-
 ## Inbound connections and remote login
 
-Root Lock manages outbound connections only. Inbound filtering (which ports are reachable, port scans, who may connect) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/) when you move the workload onto that Firewall appliance image and want inbound and this-host path observed and sealed.
+Root Lock manages outbound connections only. Inbound filtering (which ports are reachable, port scans, who may connect) is outside its scope. Use an OS packet filter, cloud provider security groups, or [Root Lock Firewall](../../firewall/), a closed appliance image that observes inbound and host-path traffic, lets you approve an allowlist, and seals it — if you move the workload onto that appliance.
 
 To log in over SSH, approve the SSH server to execute and to read the files it needs. Adding the addresses you connect from to Internet Access does not grant inbound access — that queue is outbound destinations only.
 
-Root Lock still lets you close, open, and restrict SSH on its own surfaces. Lockdown offers Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off), inbound permits (`[o]` / `[a]`) for source addresses, and `[r]` / `[j]` for whether sshd stays up under Lockdown. Maintenance can take the network down (console only), keep a restricted SSH route, or leave SSH open, including a source-IP limit. sshd itself, an OS packet filter, and cloud security groups still apply. See [Lockdown](../lockdown/) and [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
+The Dashboard has its own controls for SSH access. Lockdown offers Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off), inbound permits (`[o]` / `[a]`) for source addresses, and `[r]` / `[j]` for whether sshd stays up under Lockdown. Maintenance can take the network down (console only), keep a restricted SSH route, or leave SSH open, including a source-IP limit. sshd itself, an OS packet filter, and cloud security groups still apply. See [Lockdown](../lockdown/) and [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).

@@ -11,9 +11,9 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: A listening service accepts packets from anywhere the routing table can reach, unless a filter refuses them. Root Lock Firewall refuses inbound and this-host path traffic that is not on the sealed allowlist — including traffic aimed at services running as root.
+**Overview**: A listening service accepts packets from anywhere the routing table can reach, unless a filter refuses them. Under Firewall Lockdown, Root Lock Firewall refuses traffic to and from this box that is not on the sealed allowlist — including traffic aimed at services running as root.
 
-An attacker who uses a port you approved is constrained by that rule. Application content on that port stays with a WAF and Root Lock.
+An attacker who uses a port you approved is limited to what that rule allows, and what they send over that port is for a WAF and Root Lock to constrain.
 
 ---
 
@@ -21,9 +21,9 @@ An attacker who uses a port you approved is constrained by that rule. Applicatio
 
 **The scenario.** You approved inbound HTTPS to the workload on this image. An attacker exploits a bug in that web application over the allowed port.
 
-**What Root Lock Firewall does.** Packets to ports that are not on the allowlist still fail. Scanners probing closed ports still fail. A listener on a port that is not already in the sealed allowlist is not an approved path.
+**What Root Lock Firewall does.** Packets to ports that are not on the sealed allowlist still fail, so scanners probing closed ports get nothing, and a listener the attacker starts on a port outside the allowlist gets no inbound path.
 
-**What it does not cover.** If the attacker uses a port you already approved, this particular gate does not apply to application content on that port. Packets to ports off the allowlist still fail. A listener that binds a port the image already left open (including baseline ports open to any source) is still that approved path.
+**What it does not cover.** The filter does not judge application content on a port you approved. A listener that binds one of the ports the image already leaves open to any source is reachable too, because that port is already an approved path.
 
 A WAF, application hardening, and [Root Lock by HeartSuite](../../../rootlock/) (what that process may execute, read, write, and call outbound) address the blast radius inside the approved service.
 
@@ -33,7 +33,7 @@ A WAF, application hardening, and [Root Lock by HeartSuite](../../../rootlock/) 
 
 **The scenario.** A compromised approved program opens an outbound connection to an address you never reviewed.
 
-**What Root Lock Firewall does.** The host path is still subject to the sealed host filter. That is independent of per-program outbound policy.
+**What Root Lock Firewall does.** The connection still has to pass the sealed host filter, which applies to traffic leaving this box independently of per-program outbound policy.
 
 **What it does not cover.** If a compromised approved program opens an outbound connection to an address you never reviewed, this particular gate does not apply to per-program destinations. The sealed host filter on this image still holds. Which *program* may reach which *literal IP* stays [Root Lock](../../../rootlock/network/).
 

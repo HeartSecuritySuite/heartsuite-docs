@@ -16,11 +16,9 @@ type: docs
 
 > **Prototype**: Root Lock Firewall is under active development. Documentation reflects current design intent and is subject to change.
 
-**Overview**: An inbound port that nobody approved is open by default. Root Lock Firewall is the host-path packet filter on a closed HeartSuite appliance: observe real traffic, approve a finite allowlist, seal it.
+**Overview**: An inbound port that nobody approved is open by default. Root Lock Firewall is the packet filter for traffic to and from a closed HeartSuite appliance: you observe real traffic, approve a finite allowlist, and seal it. The workload runs on the appliance image itself, and the filter judges packets by connection state.
 
-The workload runs on the image. Packets are judged by connection state.
-
-Execution, files, and per-program outbound destinations stay [Root Lock by HeartSuite](../rootlock/). Root Lock is the hardened operating system under the filter.
+[Root Lock by HeartSuite](../rootlock/) is the hardened operating system under the filter, so execution, file access, and per-program outbound destinations stay under Root Lock's control.
 
 If execution control or per-program outbound allowlisting on an existing server is the requirement, stay with [Root Lock](../rootlock/) and the OS or cloud inbound control already on that host. See [Deployment scenarios](deployment-scenarios/) for fit by environment.
 
@@ -35,4 +33,4 @@ If execution control or per-program outbound allowlisting on an existing server 
 
 ## About this documentation
 
-*Covers Root Lock Firewall prototype. Root Lock remains the shipped kernel product; its inbound language is unchanged.*
+*Covers the Root Lock Firewall prototype. Root Lock remains the shipped kernel product, and what the Root Lock pages say about inbound traffic still applies to it.*

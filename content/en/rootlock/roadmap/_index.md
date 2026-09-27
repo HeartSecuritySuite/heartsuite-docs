@@ -17,7 +17,7 @@ no_list: true
 
 Traditional endpoint security detects threats after they execute. Root Lock by HeartSuite takes the opposite approach: it prevents malware from executing in the first place — at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. Root cannot change the allowlist while the machine is running. Recovery is the maintenance kernel via physical or serial-console access. See [Circumvention and recovery](../introduction/how-it-compares/#circumvention-and-recovery).
+Under Lockdown, anything not on the allowlist is blocked before it can act, and root cannot change the allowlist while the machine is running, so recovery goes through the maintenance kernel via physical or serial-console access. See [Circumvention and recovery](../introduction/how-it-compares/#circumvention-and-recovery).
 
 Even if malware is downloaded to a Root Lock server, it cannot run as a new program unless that program is already on the allowlist. A zero-day inside an already-allowlisted program (`nginx`, `python3`) still runs; it can only use the file paths and outbound addresses that program was approved for.
 
@@ -112,31 +112,31 @@ gantt
 
 > [!NOTE]
 > **Database Forensic Analysis with DBCarver** (January 4, 2017)  
-> First published paper. DBCarver reconstructs database content from disk images without relying on log files or system metadata, using page carving to recover both live and deleted data. Published at the 8th Biennial Conference on Innovative Data Systems Research (CIDR 2017). Co-authors: , Tanu Malik, Hugo Jehle, Jonathan Grier.
+> First published paper. DBCarver reconstructs database content from disk images without relying on log files or system metadata, using page carving to recover both live and deleted data. Published at the 8th Biennial Conference on Innovative Data Systems Research (CIDR 2017). Co-authors: Tanu Malik, Hugo Jehle, Jonathan Grier.
 
 > [!NOTE]
 > **Carving Database Storage to Detect and Trace Security Breaches** (August 2017)  
-> Shows how storage-layer carving can identify and trace unauthorized database modifications that are invisible to the application tier. Published in *Digital Investigation*, Volume 22 Supplement. Co-authors: , Boris Glavic, Jacob D. Furst, Lucas Bressan, Jonathan Grier.
+> Shows how storage-layer carving can identify and trace unauthorized database modifications that are invisible to the application tier. Published in *Digital Investigation*, Volume 22 Supplement. Co-authors: Boris Glavic, Jacob D. Furst, Lucas Bressan, Jonathan Grier.
 
 > [!NOTE]
 > **Detecting Database File Tampering through Page Carving** (March 2018)  
-> Proposes a method to detect direct modifications to database files that bypass standard DBMS security mechanisms—attacks that sit below the software layer and are invisible to the application. Published at the 21st International Conference on Extending Database Technology (EDBT 2018, Vienna). Co-authors: , Tanu Malik, Jacob D. Furst, Jonathan Grier.
+> Proposes a method to detect direct modifications to database files that bypass standard DBMS security mechanisms—attacks that sit below the software layer and are invisible to the application. Published at the 21st International Conference on Extending Database Technology (EDBT 2018, Vienna). Co-authors: Tanu Malik, Jacob D. Furst, Jonathan Grier.
 
 > [!NOTE]
 > **DB3F & DF-Toolkit: Database Forensic File Format and Toolkit** (July 2019)  
-> Introduces a standardized file format (DB3F) and toolkit for forensic interaction with database storage layers, enabling consistent abstracted access to deleted or unallocated data. Published in *Digital Investigation*, Volume 29 Supplement. Co-authors: , Rebecca Jacob, Jonathan Grier.
+> Introduces a standardized file format (DB3F) and toolkit for forensic interaction with database storage layers, enabling consistent abstracted access to deleted or unallocated data. Published in *Digital Investigation*, Volume 29 Supplement. Co-authors: Rebecca Jacob, Jonathan Grier.
 
 > [!NOTE]
 > **DF-Toolkit: Interacting with Low-Level Database Storage** (August 2020)  
-> Formalizes the toolkit for direct, abstracted access to DBMS storage—establishing the research infrastructure for broader forensic and compliance work. Published in the *Proceedings of the VLDB Endowment*, Volume 13, Issue 12 (VLDB 2020). Co-authors: James Wagner, , Tanu Malik, Jonathan Grier.
+> Formalizes the toolkit for direct, abstracted access to DBMS storage—establishing the research infrastructure for broader forensic and compliance work. Published in the *Proceedings of the VLDB Endowment*, Volume 13, Issue 12 (VLDB 2020). Co-authors: James Wagner, Tanu Malik, Jonathan Grier.
 
 > [!NOTE]
 > **Purging Data from Backups by Encryption** (2021)  
-> Presents a cryptographic erasure framework for targeted data destruction in database backups to meet compliance regulations—addressing the fundamental problem that backups cannot be edited without destroying their integrity. Published at the International Conference on Database and Expert Systems Applications (DEXA 2021). Co-authors: Nick Scope, , James Wagner, Ben Lenard.
+> Presents a cryptographic erasure framework for targeted data destruction in database backups to meet compliance regulations—addressing the fundamental problem that backups cannot be edited without destroying their integrity. Published at the International Conference on Database and Expert Systems Applications (DEXA 2021). Co-authors: Nick Scope, James Wagner, Ben Lenard.
 
 > [!NOTE]
 > **Purging Compliance from Database Backups by Encryption** (CYBER 2021 / February 2022)  
-> Extends the cryptographic erasure approach to broader compliance scenarios. Presented at CYBER 2021 (October 2021); published in *Journal of Data Intelligence*, Volume 3, Issue 1 (February 2022). Co-authors: Nick Scope, , Ben Lenard, James Wagner.
+> Extends the cryptographic erasure approach to broader compliance scenarios. Presented at CYBER 2021 (October 2021); published in *Journal of Data Intelligence*, Volume 3, Issue 1 (February 2022). Co-authors: Nick Scope, Ben Lenard, James Wagner.
 
 ---
 
@@ -178,7 +178,7 @@ gantt
 
 > [!NOTE]
 > **FUSE and OverlayFS intentionally disabled** (2022)  
-> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, as the [Container-host install](../introduction/containers-and-microvms/) for a long-lived image set, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel.
+> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel — see [Containers and microVMs](../introduction/containers-and-microvms/).
 
 > [!NOTE]
 > **Current 6.18 commercial kernel**  
@@ -198,7 +198,7 @@ gantt
 
 > [!NOTE]
 > **kmod and kexec Attack Paths Closed by Default** (2022)  
-> Kernel module loaders are absent from the shipped allowlist seed, so they cannot execute under Lockdown by default. If a binary has no allowlist entry, it cannot run — no explicit policy needed. The boot partition is made recursively immutable under Lockdown. Revoking Lockdown requires physical or serial-console access to select an alternate kernel; attackers cannot trigger it remotely.
+> Kernel module loaders are absent from the shipped allowlist seed, so under Lockdown they cannot execute by default, like any binary without an allowlist entry, and no separate policy is needed to block them. The boot partition is made recursively immutable under Lockdown, and revoking Lockdown requires physical or serial-console access to boot the maintenance kernel, so attackers cannot trigger it remotely.
 
 ---
 
@@ -222,7 +222,7 @@ gantt
 
 > [!NOTE]
 > **Allowlist manager + batch tools** (October 2023)  
-> The allowlist manager and batch population tools finalize. During Setup Mode, kernel log events can be promoted into allowlist entries so most of the initial inventory does not have to be typed by hand.
+> The allowlist manager and batch population tools reach their finished form. During Setup Mode, kernel log events can be promoted into allowlist entries so most of the initial inventory does not have to be typed by hand.
 
 > [!NOTE]
 > **US Patent 11,822,699 B1 — Issued** (November 21, 2023)  
@@ -306,7 +306,7 @@ gantt
 
 > [!NOTE]
 > **Alert system — email, syslog, webhook** (April–May 2026)  
-> Alert Settings (`[e]`) has two tabs: Email and Fleet. Email is SMTP. Fleet is syslog, webhook, and Node ID. The alert daemon runs as a background service. Webhook delivery can target PagerDuty Events API v2 and OpsGenie when you paste those HTTPS endpoints.
+> Alert Settings (`[e]`) has two tabs: Email, for SMTP delivery, and Fleet, for syslog, webhook, and Node ID. The alert daemon runs as a background service. Webhook delivery can target PagerDuty Events API v2 and OpsGenie when you paste those HTTPS endpoints.
 
 > [!NOTE]
 > **Lockdown re-engages on every Root Lock boot** (May 2026)  
@@ -314,7 +314,7 @@ gantt
 
 > [!NOTE]
 > **Initial Setup Unattended Install Service** (May 2026)  
-> A systemd oneshot service (with an OpenRC equivalent) chains the allowlist approval loop across reboots without an active console session. Initial setup completes automatically: the service pre-seeds allowlist entries, tracks setup state, and signals readiness—no console session required between reboots.
+> A systemd oneshot service (with an OpenRC equivalent) chains the allowlist approval loop across reboots without an active console session. Initial setup completes automatically: the service pre-seeds allowlist entries, tracks setup state, and signals readiness.
 
 > [!NOTE]
 > **Allowlist Management, Backup & Restore, Maintenance Wizard**  
@@ -325,11 +325,11 @@ gantt
 
 ### Host-as-VMM evaluation
 
-Root Lock as the **guest** kernel inside a per-task VM or microVM (Kata, Firecracker, or plain KVM) is **shipped**. The Container-host install for a long-lived, steady image set is also shipped. See [Containers and microVMs](../introduction/containers-and-microvms/) and [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
+Root Lock as the guest kernel inside a per-task VM or microVM (Kata, Firecracker, or plain KVM) is shipped. See [Containers and microVMs](../introduction/containers-and-microvms/) and [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
 What is still under evaluation: **host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests. A Root Lock kernel as the KVM *host* is not a supported product role.
 
-Shared-kernel Docker, containerd, or Podman as the default on a Standard-host install remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window.
+Shared-kernel Docker, containerd, or Podman as the default on a Root Lock host remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}

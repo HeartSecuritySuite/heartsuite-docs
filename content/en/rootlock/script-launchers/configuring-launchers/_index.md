@@ -11,7 +11,7 @@ aliases:
 toc: true
 ---
 
-**Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. The Launchers (`[s]`) shows detected interpreters and activates launchers in one step.
+**Overview**: An interpreter like Python, Perl, or PHP executes many different scripts — without additional control, a single allowlist entry for the interpreter applies to all of them equally. Secure Script Launchers identify the specific script being executed and apply a separate allowlist entry for it, giving each script its own file and network permissions. Launchers (`[s]`) on the Dashboard shows detected interpreters and activates launchers in one step.
 
 ## Activating launchers
 
@@ -54,7 +54,7 @@ None of the known interpreters have appeared in the activity log yet.
 Proceed without activating launchers.
 ```
 
-Secure Script Launchers is not required if your system does not use script interpreters. The checklist row then reads **Not applicable**.
+If your system does not use script interpreters, you can proceed without launchers, and the checklist row reads **Not applicable**.
 
 ## Skipping launcher setup
 
@@ -65,7 +65,7 @@ Skipped. Interpreters without a Secure Script Launcher
 activated will be blocked under Lockdown.
 ```
 
-Skip does not mark the checklist row complete. The Suggested Next Step stays on Launchers (`[s]`) while interpreters are still pending. You can return to Launchers at any time to activate them before Lockdown.
+Skipping leaves the checklist row incomplete, so the Suggested Next Step stays on Launchers (`[s]`) while interpreters are still pending. You can return to Launchers at any time to activate them before Lockdown.
 
 ## Testing a launcher directly
 

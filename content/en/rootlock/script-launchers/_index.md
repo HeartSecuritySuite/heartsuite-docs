@@ -19,4 +19,4 @@ toc: true
 - [Configuring Script Launchers](configuring-launchers/) — Direct use for testing and permanent symbolic link setups.
 - [Included Script Launchers](included-launchers/) — List of available launchers for Python, Perl, PHP, etc.
 
-Secure Script Launchers is row 4 on the Lockdown Checklist. The Suggested Next Step stays on Launchers (`[s]`) while interpreters are pending. Skipping activation does not mark the row complete. Once launchers are activated, or the row is not applicable, the Suggested Next Step goes to File Access (`[f]`) if that queue still has items — see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
+Secure Script Launchers is row 4 on the Lockdown Checklist, and the Suggested Next Step stays on Launchers (`[s]`) while interpreters are pending; skipping activation leaves the row incomplete. Once launchers are activated, or the row is not applicable, the Suggested Next Step goes to File Access (`[f]`) if that queue still has items — see [Allowlisting Basics](../allowlisting/allowlisting-basics/).
