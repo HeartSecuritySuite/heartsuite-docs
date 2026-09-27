@@ -30,9 +30,9 @@ This page maps Linux host security tools to the enforcement layer they occupy.
 | **5** | Userspace telemetry / response | Kernel-module or eBPF agents primarily providing detection, alerting, and response |
 | **Adj.** | Complementary controls | Tools that answer different questions — no enforcement overlap with Layers 2–5 |
 
-The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root.
+The higher the layer, the more layers beneath it an attacker can leverage to disable it. A Layer 5 agent can be killed by a process with root. A Layer 3 LSM policy can be set permissive by root. A Layer 2 kernel configuration, by contrast, changes only when you reboot into a different kernel.
 
-A Layer 2 kernel configuration cannot be changed without rebooting into a different kernel. For a visual representation of this by tool, see [Kernel architecture](../how-it-compares/#kernel-architecture).
+For a visual representation of this by tool, see [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 ## Tool map
 
@@ -43,7 +43,7 @@ A Layer 2 kernel configuration cannot be changed without rebooting into a differ
 | Kernel-embedded allowlist / stripped kernel | **Root Lock by HeartSuite**, custom hardened kernels, unikernels |
 | Hardware-virtualized micro-isolation | Firecracker, Kata Containers, Cloud Hypervisor |
 
-Enforcement is part of the kernel binary. Changing it requires a reboot into a different kernel. Remote root is not sufficient to disable it.
+Enforcement is part of the kernel binary, so changing it requires a reboot into a different kernel, and remote root alone cannot disable it.
 
 ### Layer 2–3 — Userspace-process-run-as-kernel
 
@@ -110,7 +110,7 @@ These tools do not overlap with Layers 2–5 enforcement. They answer different 
 
 ## Takeaway
 
-Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 or higher. Root can turn those off remotely without a reboot.
+Root Lock is the only product in this map sitting squarely at Layer 2 as a kernel-embedded allowlist enforced across all programs including root. Every other host enforcement tool sits at Layer 3 or higher, where root can turn it off remotely without a reboot.
 
 The Layer 2 position is what makes physical or serial-console access the bypass path.
 

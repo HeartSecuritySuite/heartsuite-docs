@@ -2,7 +2,7 @@
 title: "What this kernel needs — and what differs by stream"
 linkTitle: "System Requirements"
 weight: 3
-description: "Architecture, supported distributions, kernel features the Root Lock kernel omits, and which hosts the installer runs on. Confirm these before you install."
+description: "Architecture, supported distributions, kernel features and workloads the Root Lock kernel does not support, and which hosts the installer runs on. Confirm these before you install."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "requirements", "specs", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "x86"]
 type: docs
@@ -35,17 +35,17 @@ New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel.
 
 ## Software compatibility notes
 
-The Root Lock kernel omits eBPF, FUSE, OverlayFS, user namespaces, AppArmor, and KVM host-mode. Tools that need those interfaces run on another host or on the maintenance kernel.
+The Root Lock kernel omits eBPF. The 5.19.6 kernel also compiles out FUSE, OverlayFS, user namespaces, AppArmor, and KVM host mode. The 6.18.9-hs kernel builds those in (OverlayFS and KVM as modules), but the workloads that depend on them are not a supported configuration on a Root Lock host. Tools that need those interfaces run on another host or on the maintenance kernel.
 
 The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. In Setup Mode, programs that would be blocked under Lockdown appear in the Dashboard review queues, so you see them before you lock down. Software not listed below runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 
 | Workload | On the Root Lock kernel |
 |-----------|-------------------------|
 | eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall omitted |
-| FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Omitted |
-| Overlay / typical container storage | Omitted. Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides. |
-| AppArmor userspace (Snap, Ubuntu profiles, LXD) | Omitted |
-| Unprivileged user namespaces / rootless containers | Omitted |
+| FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Compiled out on 5.19.6. Built in on 6.18.9-hs (`CONFIG_FUSE_FS=y`), not a supported workload |
+| Overlay / typical container storage | Compiled out on 5.19.6; a module on 6.18.9-hs (`CONFIG_OVERLAY_FS=m`). Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides. |
+| AppArmor userspace (Snap, Ubuntu profiles, LXD) | Compiled out on 5.19.6. Built in on 6.18.9-hs (`CONFIG_SECURITY_APPARMOR=y`), not a supported workload |
+| Unprivileged user namespaces / rootless containers | Compiled out on 5.19.6. Built in on 6.18.9-hs (`CONFIG_USER_NS=y`), not a supported workload |
 | KVM hypervisor **host** | Not a supported product role. Root Lock as a **guest** on KVM/VMware/cloud is supported. |
 
 ## Bare metal, virtual machines, and nested VMs

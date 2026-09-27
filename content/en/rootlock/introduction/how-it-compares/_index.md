@@ -309,8 +309,8 @@ On-host eBPF tooling and a KVM hypervisor host are not a fit. Overlay filesystem
 
 - **Docker, containerd, Kubernetes, CRI-O, and Podman.** These are not a supported workload on a Root Lock host, and there is no Container-host install. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 - **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
-- **Hypervisor hosts running VMs via KVM.** KVM host features are compiled out to reduce attacker reach. Root Lock runs as a guest, not a host.
-- **Systems that require rootless containers.** Unprivileged user namespaces are omitted; they are a path to privilege escalation without credentials. Use a separate host.
+- **Hypervisor hosts running VMs via KVM.** KVM host features are compiled out of 5.19.6 to reduce attacker reach; 6.18.9-hs builds KVM as modules, but hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
+- **Systems that require rootless containers.** User namespaces are omitted from 5.19.6 and built into 6.18.9-hs, where rootless containers are still not a supported configuration; unprivileged user namespaces are a path to privilege escalation without credentials. Use a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 
