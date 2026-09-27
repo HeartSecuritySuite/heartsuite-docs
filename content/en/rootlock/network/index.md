@@ -50,7 +50,7 @@ Approving grants curl network access to these destinations.
 
 Press `[a]` to approve every listed address for that program, or `[s]` to skip it for later.
 
-When the Internet Access queue is empty, the Lockdown Checklist marks **3. Internet Access Allowlisting** complete and updates the Suggested Next Step. That step goes to [Alert Settings](../alerts/) (`[e]`) if alerts are not configured yet, or to Lockdown (`[l]`) if they already are. Backup (`[b]`) can appear before Lockdown when backup is not configured.
+When the Internet Access queue is empty, the Lockdown Checklist marks **3. Internet Access Allowlisting** complete and updates the Suggested Next Step.
 
 ## Approving a network destination
 
