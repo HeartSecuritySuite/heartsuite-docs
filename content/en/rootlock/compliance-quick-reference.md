@@ -58,7 +58,7 @@ No. Your policy or contract names when the patch goes in, and that date is the r
 
 **What is the cloud serial-console bypass risk?**
 
-Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same path as a keyboard. Both hit a GRUB password only if one was set. The normal Root Lock boot does not ask. Default is off.
+Root Lock installs `agetty` autologin on `/dev/ttyS0`. Cloud providers' out-of-band serial consoles (AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, GCP serial port, Azure Serial Console, DigitalOcean Console, etc.) give the same path as a keyboard. Either way, GRUB asks for a password before the maintenance entries only if you set the optional boot menu password, which is off by default; the normal Root Lock boot never asks.
 
 From the serial console you can `cat /var/log/heartsuite/install.log` (installer), `cat /var/log/heartsuite/initial-setup-latest.log`, `journalctl -t heartsuite`, and similar. Restricting serial console access is a customer-side cloud IAM responsibility.
 
@@ -82,7 +82,7 @@ When Fleet Syslog is enabled, denial lines and aggregated alerts are written to 
 
 **What is the Dashboard access control model?**
 
-No RBAC. Every Linux root user has identical access to all Dashboard functions. There is no operator/administrator distinction and no extra authentication layer inside Root Lock.
+Root Lock has no RBAC: every Linux root user has identical access to all Dashboard functions, with no operator/administrator distinction and no extra authentication layer inside Root Lock.
 
 Every allowlist approval is written to `/var/log/heartsuite/allowlist-audit.log` with timestamp, uid, and tty. Attributing those sessions to named people requires customer-side controls: `sudoers` policy, a privileged access management tool, or bastion host session recording.
 

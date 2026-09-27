@@ -49,7 +49,7 @@ Root Lock treats the kernel as an integrated part of the delivered product, not 
   Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
 - **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries — the vulnerable code path is absent by design; no patch or policy change is required. For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked.
 
-  Scores on HeartSuite are computed and published. Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+  Each CVE also carries a published Score on Root Lock, a CVSS v3.1 Environmental Score for a Root Lock deployment. Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 - **Stack pairing and testing**: The kernel is built, tested, and supported together with the matching userspace. The full enforcement contract (VFS hooks + Lockdown seal + allowlist) is validated across supported distributions.
 - **Support SLAs**: Commercial subscription terms cover the integrated stack, including kernel-related incidents, coordinated updates, and guidance on deployment and recovery. Activation and support details appear in the [Subscription](../../licensing/) section and your subscription agreement.
 
@@ -73,7 +73,7 @@ Deployments that require Secure Boot enabled for the Root Lock kernel entry may 
 
 The original distribution kernel (maintenance kernel) retains its signing status and can be used for recovery and maintenance regardless of Secure Boot policy.
 
-**Roadmap**: Signed kernel images, streamlined MOK tooling, and cloud-provider-specific runbooks (Azure, GCP, AWS) are prioritized work. Expanded test coverage for UEFI Secure Boot paths is tracked alongside the existing partial e2e validation.
+**Roadmap**: Signed kernel images, streamlined MOK tooling, and cloud-provider-specific runbooks (Azure, GCP, AWS) are prioritized work.
 
 Customers evaluating platforms with mandatory Secure Boot should engage support for the current test status and any interim runbooks applicable to their cloud account or hardware.
 
@@ -89,7 +89,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 - Standard networking stacks and cloud provider vNICs / security groups (Root Lock controls only outbound per-program destinations; inbound remains the responsibility of the OS firewall or cloud controls).
 - SIEM / SOAR ingestion via the two syslog streams and webhook (see [Alert Settings](../../alerts/)).
 - Monitoring and status collection via `~/.cache/heartsuite/status.json` (Ansible facts, Nagios, Zabbix, custom collectors).
-- EDR and observability via log forwarding (no on-host eBPF attachment). Enforcement events flow through syslog. Denial logs cover blocks only.
+- EDR and observability via log forwarding (no on-host eBPF attachment): enforcement events flow through syslog, and the denial log records blocks only.
 - Vulnerability scanners and HIDS/FIM agents (run during Setup Mode so their programs and paths are reviewed and approved).
 
 **Does not run on the Root Lock kernel** (use a kernel that still has these features, a separate host, or alternative controls):
@@ -118,10 +118,10 @@ Each host still installs through Cloud Path or Local Path. The Root Lock kernel 
 - **Image lifecycle**: Treat the Root Lock kernel + baseline allowlist as part of your pre-configured image. Harvest an install-time baseline, package with that seed, bake with Packer or your image pipeline, then replace instances on the same cadence as your other images. See [Central Policy](../../alerts/central-policy-management/).
 - **Provisioning**: Terraform, cloud-init, or your IaC tool launches the image (or runs the installer non-interactively). No special kernel module or agent is required after boot.
 - **Policy at scale**: Allowlist content (programs, file paths, network destinations) is curated centrally and applied via Ansible, Terraform + GitOps, ServiceNow, or custom automation exactly as described in [Alert Settings](../../alerts/) (fleet export surfaces and central policy patterns). Pre-seeding accelerates homogeneous fleets; observation + central review handles varied workloads.
-- **Kernel updates**: Delivered as versioned bundles. If Lockdown is applied, unseal first. Then run the bundle from Setup Mode and type `YES` for one stock boot — or reprovision from an updated pre-configured image. See [Updating Root Lock](../../maintenance/updating-heartsuite/) and the [pre-configured image alternative](kernel-support-policy/#pre-configured-image-alternative).
+- **Kernel updates**: Delivered as versioned bundles. If Lockdown is applied, unseal first. Then run the bundle from Setup Mode and type `YES`, which sets the next boot only to the stock kernel while Root Lock stays the default — or reprovision from an updated pre-configured image. See [Updating Root Lock](../../maintenance/updating-heartsuite/) and the [pre-configured image alternative](kernel-support-policy/#pre-configured-image-alternative).
 - **Observability and drift**: `status.json`, the JSONL approval log, and the two syslog streams feed your existing fleet dashboards and SIEM. Drift detection (policy or mode) is performed by harvesting from central jobs and comparing against the Git/CMDB source of truth.
 - **No new kernel-specific fleet tooling**: The same rsyslog rule, SSH/Ansible access, and image pipeline you use today handle the kernel boundary.
-- **Locked-fleet patches**: In-place package installs and in-place Root Lock bundles need Setup Mode. After Lockdown that window opens from physical or serial-console access on that host. Ansible does not unseal. For many hosts, bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances.
+- **Locked-fleet patches**: In-place package installs and in-place Root Lock bundles need Setup Mode, and after Lockdown that window opens from physical or serial-console access on that host. Ansible does not unseal. For many hosts, bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances.
 - **Console and disk**: The cloud serial console (AWS EC2 Serial Console, GCP Serial Console, Azure Serial Console, DigitalOcean Console) is recovery and break-glass, not a way to patch a fleet. Restrict it in cloud IAM. Stopping a VM and attaching its volume elsewhere is hypervisor access — the same trust boundary as the console, not a supported patch procedure. See [Circumvention and recovery](../../introduction/how-it-compares/#circumvention-and-recovery).
 
 This model keeps ownership of policy curation, change records, and visibility inside the tools your teams already run.
@@ -152,10 +152,9 @@ Indemnity, limitation of liability, and SLA credits are contract terms. Residual
 Every installation retains a first-class recovery path:
 
 - The original distribution kernel is always present in GRUB (split into Maintenance and vanilla entries during install, with Maintenance labelled as the Setup Mode destination).
-- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence: reboot at the console, pick **Maintenance: unseal and return to Root Lock**, land in Setup Mode on the Root Lock kernel, make changes over SSH, review new activity, and re-engage Lockdown.
-- The Dashboard's Maintenance (`[m]`) handles the common case of that unseal, Setup Mode work, guided return to Lockdown, and review.
+- The Dashboard's Maintenance flow (`[m]`) detects Lockdown state and guides you through the exact sequence for the common case: reboot at the console, pick **Maintenance: unseal and return to Root Lock**, land in Setup Mode on the Root Lock kernel, make changes over SSH, review new activity, and re-engage Lockdown.
 - For policy or platform conflicts that make the Root Lock kernel unsuitable for an extended period, teams can remain on the maintenance kernel (the product continues to run and log in non-enforcing mode) or remove Root Lock entirely. Both paths are supported and documented.
-- Physical or console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control when the boot menu password is left off. No software on the system can block that path while the password stays off. If one was set, GRUB asks before **Maintenance: unseal and return to Root Lock** or a kernel-line edit, and a forgotten password is cleared by mounting the disk from outside, not at the menu. The normal boot still does not ask.
+- Physical or serial-console access (local keyboard/monitor, serial, or cloud provider serial console) is always sufficient to select the maintenance kernel and regain full control when the boot menu password is left off. No software on the system can block that path while the password stays off. If one was set, GRUB asks before **Maintenance: unseal and return to Root Lock** or a kernel-line edit, and a forgotten password is cleared by mounting the disk from outside, not at the menu. The normal boot still does not ask.
 
 This is the documented, supported escape hatch for operational needs, kernel policy conflicts, or environments that ultimately decide against a custom kernel. Full procedures appear in the [Maintenance](../../maintenance/) section and [FAQs](../../faqs/).
 
@@ -170,7 +169,7 @@ Nothing on the kernel posture page relies on "trust us."
 
 ## Honest limitations
 
-Root Lock with the Root Lock kernel is a deliberate architectural choice that trades general-purpose kernel compatibility for bypass resistance and root-immunity. It is not the right fit for every environment.
+Root Lock with the Root Lock kernel is a deliberate architectural choice that trades general-purpose kernel compatibility for bypass resistance against a compromised root account. It is not the right fit for every environment.
 
 Organisations with formal "no custom kernel," "no modified kernel," or "vendor-certified kernel only" policies (driven by support contracts, regulatory certification of the base OS, or internal change-control mandates) should not adopt the Root Lock kernel.
 
@@ -200,4 +199,4 @@ The kernel is one component of a larger control. The surrounding pages (central 
 
 ---
 
-*This page is buyer-facing. Posture claims must match the fielded pin in [Evidence Status](evidence-status/). Last updated: 2026-09-11.*
+*Posture claims on this page follow the fielded pin in [Evidence Status](evidence-status/). Last updated: 2026-09-11.*

@@ -15,16 +15,16 @@ aliases:
 
 These guides cover how to make changes without leaving a hole an attacker can use. The Dashboard shows the current protection state — including Lockdown status — and the Suggested Next Step throughout maintenance.
 
-Maintenance is a time period during which you temporarily step out of Lockdown to make changes. It is not a separate mode. Root Lock has two modes: Setup Mode and Lockdown.
+Maintenance is a time period during which you temporarily step out of Lockdown to make changes, not a separate mode: Root Lock has two modes, Setup Mode and Lockdown.
 
 During maintenance you either switch to Setup Mode (the kernel logs but stops blocking) or boot the maintenance kernel (Root Lock is not loaded). The Dashboard's Maintenance (`[m]`) detects whether the immutable seal is active and opens the matching path.
 
-Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch with no GRUB is only when the strip already says Lockdown not applied.
+Installing packages, applying patches, and editing configuration happen in Setup Mode once the window is open — that is where blocking is off and logging stays on. After the first Lockdown, opening that window takes a console GRUB pick: **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you land back in Setup Mode on the Root Lock kernel. A one-reboot switch without the GRUB pick applies only when the strip already says **Lockdown not applied**.
 
-Distro errata and application updates install in Setup Mode, on the remediation SLA in your policy or contract. For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages. After the packages land, review the queues, then Lockdown again. Leaving Setup Mode open is the hole. A finding whose next step Lockdown stops can wait for the standard change window that policy names. File the exception in the scanner on its own expiry. See [Scanner deadlines](scanner-deadlines/).
+Distro errata and application updates install in Setup Mode, on the remediation SLA in your policy or contract. For a kernel CVE whose code is compiled out, the Root Lock kernel stays as shipped while `apt` and `dnf` install the OS packages. After the packages land, review the queues and lock down again, because leaving Setup Mode open is the hole. A scanner finding whose exploit only gets an attacker as far as a step Lockdown refuses can wait for the standard change window your policy names; you file that exception in the scanner with its own expiry. See [Scanner deadlines](scanner-deadlines/).
 
-- **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode. No GRUB pick.
-- **Seal applied (the usual path after the first Lockdown).** Physical or serial console is required to unseal. Reboot and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set before Lockdown, that entry asks for it. Everyday Root Lock boot does not. That boot is the maintenance kernel; it runs `HS_unlock.sh`. sshd up or down on the Root Lock kernel does not clear the seal. That is two reboots before the window is open. Installs and edits after that are over SSH in Setup Mode. A host left on stock returns to Root Lock by reboot — GRUB default stays Root Lock.
+- **Seal not applied.** Type `YES` and reboot once. You stay on the Root Lock kernel in Setup Mode, with no GRUB pick.
+- **Seal applied (the usual path after the first Lockdown).** Unsealing requires physical or serial-console access. Reboot and select **Maintenance: unseal and return to Root Lock**; if a boot menu password was set before Lockdown, that entry asks for it, while the everyday Root Lock boot does not. That boot is the maintenance kernel, which runs `HS_unlock.sh` and then returns you to Setup Mode on the Root Lock kernel — two reboots before the window is open. Starting or stopping sshd on the Root Lock kernel does not clear the seal, so the console step cannot be replaced by SSH. Once you are back in Setup Mode, installs and edits run over SSH. A host left on the stock kernel returns to Root Lock at the next reboot, because the GRUB default stays Root Lock.
 
 The Maintenance grid button is shown in Lockdown. Keyboard `[m]` also works in Setup Mode after you have unsealed.
 
@@ -37,13 +37,13 @@ Installing packages, replacing program files, and updating Root Lock itself are 
 | OS packages, configuration, replacing program files | Unseal, then work in Setup Mode — [Protecting During Maintenance](protecting-during-maintenance/) |
 | Root Lock kernel and Dashboard | Unseal if sealed, then one stock boot — [Updating Root Lock](updating-heartsuite/) |
 | Many hosts already in Lockdown | Reprovision from an updated image rather than opening a console on every node — [Enterprise Adoption Guide](../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets) |
-| A scanner finding with a deadline | When Lockdown already stops the next step, file the exception and use the standard change window. [Scanner deadlines](scanner-deadlines/). |
+| A scanner finding with a deadline | When the exploit only gets an attacker as far as a step Lockdown refuses, file the exception and patch in the standard change window. [Scanner deadlines](scanner-deadlines/). |
 
 ## In this section
 
-- [Scanner deadlines](scanner-deadlines/) — Which findings can leave the active queue for the standard change window, and how to file the exception on its own date.
-- [Protecting During Maintenance](protecting-during-maintenance/) — Console unseal after Lockdown (SSH is not enough for the GRUB pick). Then install or edit over SSH in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
+- [Scanner deadlines](scanner-deadlines/) — Which findings can wait for the standard change window, and how to file the exception with its own expiry.
+- [Protecting During Maintenance](protecting-during-maintenance/) — Unseal from the console after Lockdown, because SSH cannot make the GRUB pick, then install or edit over SSH in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
 - [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.
-- [Updating Root Lock](updating-heartsuite/) — Unseal if Lockdown is applied, then run the bundle from a terminal in Setup Mode. Type `YES` for one stock boot. The default stays Root Lock.
+- [Updating Root Lock](updating-heartsuite/) — Unseal if Lockdown is applied, then run the bundle from a terminal in Setup Mode and type `YES` for one stock boot; the GRUB default stays Root Lock.

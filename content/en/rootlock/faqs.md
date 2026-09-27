@@ -17,37 +17,37 @@ aliases:
 
 A: Every attack does three things: run a program, access files, make a network connection. Root Lock controls all three per program, not per user.
 
-Unlike anti-malware tools that look for signatures or suspicious behavior, every execution, file access, and network connection must be approved through the Dashboard review queues. In Lockdown, anything not approved is blocked.
+Where anti-malware tools look for signatures or suspicious behavior, Root Lock requires every execution, file access, and network connection to be approved through the Dashboard review queues. In Lockdown, anything not approved is blocked.
 
-There is no agent to kill and no module to unload. Enforcement is compiled into the kernel. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist. Unsealing takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console. Those are the same class as sitting at the rack. SSH is not enough to unseal. SSH remains how you log in and run the Dashboard; after unseal, it is how you make changes.
+Enforcement is compiled into the kernel, so there is no agent to kill and no module to unload. An attacker who already has remote root cannot turn Lockdown off or edit the sealed allowlist, because unsealing takes the console: a keyboard and monitor, a serial port, a BMC (Dell iDRAC, HPE iLO, and similar), or your cloud provider's serial console — the same class as sitting at the rack. SSH remains how you log in and run the Dashboard, and after unseal it is how you make changes, but SSH is not enough to unseal.
 
 See [How Root Lock Compares](introduction/how-it-compares/#circumvention-and-recovery).
 
 {{< /details >}}
 
-{{< details summary="Which scanner findings can leave this week's queue?" >}}
+{{< details summary="Which scanner findings can wait for the standard change window?" >}}
 
-A: Lockdown bounds the blast radius: no new program, no extra files, no extra destinations. When the finding needs one of those three, and your policy allows an exception, file it in the scanner you already run. The row leaves the active queue until the expiry on that rule: [Scanner deadlines](maintenance/scanner-deadlines/).
+A: Under Lockdown, a finding can wait when exploiting the bug only gets an attacker as far as a step Root Lock refuses: running a new program, opening a file the vulnerable program was never granted, or connecting to a destination outside its network allowlist. If your policy allows an exception, record it as one rule in the scanner you already run, with an expiry. The scanner takes the finding off its remediation queue until that expiry, and the finding comes back for the patch when it expires. See [Scanner deadlines](maintenance/scanner-deadlines/).
 
-The scanning and resolve-critical contract stays yours. The finding remains until the patch goes in. The vulnerable app's own files stay in scope.
+The exception does not move the patch date in your policy or contract, because the vulnerable code stays on the host until the patch goes in. A finding the attacker can complete inside the program's existing grants — including an attack on the vulnerable app's own files — stays on the patch date.
 
-Kernel version-string findings are a separate workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
+A scanner that flags a kernel CVE from the version string alone follows a separate workflow: [CVE Hygiene for Scanners](kernel-hardening/cve-hygiene-for-scanners/).
 
-ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quick-reference/).
+Root Lock does not scan for, report on, or remediate vulnerabilities, so ISO 27001 A.8.8 is not covered; see [Compliance Quick Reference](compliance-quick-reference/).
 
 {{< /details >}}
 
 {{< details summary="Do I still have to patch after Lockdown?" >}}
 
-A: Distro errata and application updates install on the remediation SLA in your policy or contract.
+A: Yes. Install distro errata and application updates on the remediation SLA in your policy or contract: Lockdown bounds what an unpatched bug can reach, but the vulnerable code stays on the host until the patch goes in.
 
-**One host already in Lockdown:** Dashboard Maintenance `[m]`, console GRUB **Maintenance: unseal and return to Root Lock**, work in Setup Mode over SSH, review queues (re-allowlist), Lockdown `[l]` again. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+**One host already in Lockdown:** open Maintenance (`[m]`) in the Dashboard, select **Maintenance: unseal and return to Root Lock** from the console boot menu, patch over SSH in Setup Mode, approve the new activity in the review queues, then activate Lockdown (`[l]`) again. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
-**Many locked hosts:** bake the patched OS and the current Root Lock bundle into a new image and **reprovision**. Ansible distributes allowlists; it does **not** lift the seal. See "How do I patch many hosts that are already in Lockdown?" above and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
+**Many locked hosts:** bake the patched OS and the current Root Lock bundle into a new image and reprovision, which avoids a console session on each node. Ansible distributes allowlists but does not lift the seal. See "How do I patch many hosts that are already in Lockdown?" below and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
-The expiry you file in the scanner is separate from that date. Where the policy sets the standard change window at 60 days or 90 days for work it does not rank critical, a finding whose next step Lockdown stops can use that window: set the expiry to it. See [Scanner deadlines](maintenance/scanner-deadlines/).
+The expiry you file in the scanner is a separate date from that SLA. Where your policy sets the standard change window at 60 days or 90 days for work it does not rank critical, a finding whose exploit only reaches a step Lockdown refuses — a new program, file, or destination — can take that window as its expiry. See [Scanner deadlines](maintenance/scanner-deadlines/).
 
-For a compiled-out kernel CVE, the Root Lock kernel stays as shipped. `apt` and `dnf` install the OS packages.
+A kernel CVE whose code is compiled out of the Root Lock kernel needs no kernel update. `apt` and `dnf` still install the OS packages and leave the Root Lock kernel as shipped.
 
 {{< /details >}}
 
@@ -57,7 +57,7 @@ A: No. Root Lock is compiled into the kernel binary. You do not load it with `in
 
 eBPF tools (Falco, Tetragon, BPF LSM, eBPF Jailer) attach programs to a running kernel. That needs the BPF syscall. Root can unload those programs or kill the agent that loaded them. SELinux and AppArmor are LSM policy: on a typical distro, root can set them permissive or edit the policy file.
 
-Root Lock is not an LSM and not eBPF. The supported way off the Root Lock kernel is a reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, into the maintenance kernel. SSH is not enough to select that kernel. SSH still works while the Root Lock kernel is running.
+Root Lock is neither an LSM nor eBPF, so there is no policy to set permissive and no program to unload. The supported way off the Root Lock kernel is a reboot into the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud serial console. SSH still works while the Root Lock kernel is running, but it is not enough to select that kernel.
 
 See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis](introduction/layer-analysis/).
 
@@ -67,11 +67,11 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis]
 
 A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. It is for operators who need a kernel allowlist they can build without custom MAC policy, then seal so root cannot unload it.
 
-Autoscaling work after you profile a **reference** host of that class and bake the allowlist into the image.
+Autoscaling groups fit too: profile one reference host of that class, then bake its allowlist into the image.
 
 Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see [Shared-kernel containers](introduction/deployment-scenarios/#container-hosts).
 
-Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit by design. Overlay filesystems and user namespaces are how attackers shadow directories and reach root.
+Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit by design, because overlay filesystems and user namespaces are how attackers shadow directories and reach root.
 
 Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit: Root Lock does not enforce through eBPF, and those tools need the BPF syscall. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
@@ -79,15 +79,15 @@ Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforce
 
 {{< details summary="How does Root Lock treat AI agents?" >}}
 
-A: An agent is another program on the allowlist. Blocked events today go to the journal under ident `heartsuite`. MCP is **not shipped**.
+A: An agent is another program on the allowlist, with its own execution, file, and network grants, so under Lockdown anything outside those grants is blocked. When Syslog is enabled on Alert Settings → Fleet, those blocked events go to the journal under ident `heartsuite`. Root Lock has no MCP integration.
 
 {{< /details >}}
 
 {{< details summary="Is Root Lock just easier SELinux?" >}}
 
-A: No. You build a per-program allowlist in Setup Mode. The Dashboard records what actually ran, what it read or wrote, and where it connected. You approve that.
+A: No. In Setup Mode the Dashboard records which programs actually ran, what each one read or wrote, and where it connected, and you build the per-program allowlist by approving that record.
 
-Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Unsealing takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console. SSH is not enough to unseal. Day-to-day SSH still works.
+Then Lockdown seals it. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off. Unsealing takes a keyboard and monitor, a serial port, a BMC, or the cloud serial console; day-to-day SSH still works, but it is not enough to unseal.
 
 SELinux still has policy depth Root Lock does not replicate (domain transitions, distribution-shipped profiles). See [How Root Lock Compares](introduction/how-it-compares/), [The Setup Journey](introduction/setup-overview/), and [Central Policy](alerts/central-policy-management/).
 
@@ -95,19 +95,19 @@ SELinux still has policy depth Root Lock does not replicate (domain transitions,
 
 {{< details summary="Can I use the same allowlist across a fleet or Kubernetes cluster?" >}}
 
-A: Same allowlist **across a fleet of similar hosts**: yes. Each host runs the Root Lock kernel with the allowlist installed locally. There is no HeartSuite central policy server. Your automation (Ansible, Terraform + GitOps, Puppet, scripts) distributes the files.
+A: Yes, across a fleet of similar hosts. Each host runs the Root Lock kernel with the allowlist installed locally, and because Root Lock has no central policy server, your automation (Ansible, Terraform + GitOps, Puppet, scripts) distributes the files.
 
-Install on each host is still Cloud Path or Local Path. Ansible does not replace Cloud Path or Local Path; it runs them and then applies policy.
+Each host still installs through Cloud Path or Local Path; Ansible runs that install and then applies policy.
 
 **Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a fit by design, including a long-lived fixed pod set. Use Firecracker instead or build and run those images on another host. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts) and [Containers and microVMs](introduction/containers-and-microvms/).
 
-Event correlation stays in your SIEM. Policy reconciliation stays in Git/CM. Compliance reporting stays in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
+Because Root Lock works on each host individually, event correlation stays in your SIEM, policy reconciliation in Git or your configuration management, and compliance reporting in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
 
 {{< /details >}}
 
 {{< details summary="How do I patch many hosts that are already in Lockdown?" >}}
 
-A: Bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances. That is the fleet path; it does not need a console session on each node.
+A: Bake the patched OS and the current Root Lock bundle into a new image and reprovision the instances. Unsealing a locked host takes the console, so reprovisioning is how a fleet patches without a console session on each node.
 
 In-place package installs still work on a **single** host after unseal — [Protecting During Maintenance](maintenance/protecting-during-maintenance/). An in-place Root Lock update is the same unseal, then `bash heartsuite-install.sh` from a terminal and type `YES` — [Updating Root Lock](maintenance/updating-heartsuite/). Ansible distributes allowlists; it does not lift the seal. See [Central Policy](alerts/central-policy-management/) and the [Enterprise Adoption Guide](kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
@@ -117,19 +117,19 @@ In-place package installs still work on a **single** host after unseal — [Prot
 
 A: Falco is a **detection** engine. AppArmor, SELinux, gVisor, and Linux EDR each do a different job. Root Lock is host-local **prevention** (allowlist + Lockdown).
 
-An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, that attacker cannot lift the seal. That is the comparison on the disable path.
+The tools differ most in how an attacker turns them off. An attacker who already has remote root can still kill a Falco agent, unload an eBPF program, or set SELinux permissive. Under Lockdown, that attacker cannot lift the seal, because lifting it takes physical or serial-console access: keyboard and monitor, serial port, or cloud serial console.
 
-See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table. Recovery takes physical or serial-console access: keyboard and monitor, serial port, or cloud serial console. For SELinux specifically, see the next question.
+See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side table. For SELinux specifically, see the next question.
 
 {{< /details >}}
 
 {{< details summary="How does Root Lock compare to SELinux specifically?" >}}
 
-A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock does not replicate. SELinux's domain transitions and per-service profiles are deliberate capabilities, not gaps.
+A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock does not replicate.
 
 The limitation on a typical distro is the trust boundary. Root can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly.
 
-Root Lock is not an LSM. Setup Mode logs what each program did, and you approve it in the queues. Lockdown seals that allowlist. Under Lockdown, root cannot lift the allowlist seal. The files are immutable (`chattr +i`). The kernel refuses the write. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console. SSH is not enough to unseal. After unseal, you work over SSH in Setup Mode.
+Root Lock is not an LSM, so it has no policy mode for root to switch. Setup Mode logs what each program did, you approve it in the queues, and Lockdown seals that allowlist: the files are made immutable (`chattr +i`) and the kernel refuses the write that would clear the flag, even from root. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console, not an SSH session. After unseal, you work over SSH in Setup Mode.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side. A lab of the same root-shell path is in [What Lockdown refused after a root shell](../../blog/2026/09/11/lockdown-after-a-root-shell/).
 
@@ -154,7 +154,7 @@ A: Root Lock replaces the preventive-enforcement layer of the following tool cat
 
 {{< details summary="Does Root Lock replace my SIEM, NDR, or vulnerability scanner?" >}}
 
-A: No. Root Lock blocks on each host individually. It does not correlate events across a fleet, ingest external data, or produce fleet-wide compliance reports on its own.
+A: No. Root Lock works on each host individually. It does not correlate events across a fleet, ingest external data, or produce fleet-wide compliance reports on its own.
 
 The same allowlist can still be distributed by your automation; see "Can I use the same allowlist across a fleet or Kubernetes cluster?" above.
 
@@ -168,7 +168,7 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Central Policy 
 
 A: Many security tools — including Falco, Cilium Tetragon, and CrowdStrike Falcon on Linux — rely on eBPF filters or user-space agents running as processes in the same OS as the programs they are meant to protect. Malware with sufficient privileges can disable, bypass, or unload them.
 
-Root Lock compiles blocking into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the Root Lock kernel is running, blocking is active.
+Root Lock compiles blocking into the kernel itself. There is no agent to kill, no filter to detach, and no module to unload. If the Root Lock kernel is running, its checks are running: Setup Mode logs what they see, and Lockdown blocks what is not approved.
 
 This is the difference between a lock on the door and a guard standing next to it.
 
@@ -178,7 +178,7 @@ This is the difference between a lock on the door and a guard standing next to i
 
 A: Lockdown makes allowlist entries and configuration files immutable at the filesystem, then disables changing immutability flags in the kernel. Under Lockdown, root cannot add, delete, or change allowlist entries. The kernel refuses the write.
 
-To make changes, open Maintenance (`[m]`). After the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you return to Setup Mode on the Root Lock kernel. The Dashboard confirms Lockdown status after every reboot.
+To make changes, open Maintenance (`[m]`). If the seal is applied, reboot from a physical or serial console and select **Maintenance: unseal and return to Root Lock**. The seal lifts automatically and you return to Setup Mode on the Root Lock kernel. The Dashboard confirms Lockdown status after every reboot.
 
 {{< /details >}}
 
@@ -226,7 +226,7 @@ Use Backup (`[b]`) to add or remove directories, browse version history, and res
 
 {{< details summary="Will Root Lock flood me with alerts?" >}}
 
-A: No. Most security tools flag suspicious patterns and generate high volumes of alerts. Real threats get lost in the noise.
+A: No. Most security tools flag suspicious patterns, and real threats get lost in the volume of alerts that produces.
 
 Root Lock only alerts on unauthorized activity: a program attempting to execute without approval, or an outbound connection to an unapproved destination. Email groups those blocks in a 5-minute window and caps at three block emails per hour, then sends a digest. Syslog and webhook emit each alert immediately.
 
@@ -236,24 +236,22 @@ In Lockdown with a complete allowlist, alerts are rare — the allowlist already
 
 {{< details summary="What does the free trial include?" >}}
 
-A: Lockdown requires an active subscription, all review queues to be cleared, and alert settings to be configured. Setup Mode logs activity without blocking — you can observe your workload, but blocking is not active. The Dashboard presents a precondition checklist before activation.
+A: Lockdown requires an active subscription, all review queues to be cleared, and alert settings to be configured. Setup Mode logs activity without blocking, so you can observe your workload before anything is blocked. The Dashboard presents a precondition checklist before activation.
 
 {{< /details >}}
 
 {{< details summary="I work remotely a lot; can I still access a Root Lock server remotely?" >}}
 
-A: Yes. Approve the SSH server to execute and to read the files it needs, the same as any other program. Installer seeds commonly already cover `sshd`.
+A: Yes. Approve the SSH server to execute and to read the files it needs, the same as any other program; the allowlist entries the installer adds usually already cover `sshd`. Unsealing Lockdown is the one step that needs the console, because it is a boot-menu pick.
 
 Internet Access (`[i]`) is outbound destinations only. Adding the address you connect *from* there does not grant inbound SSH.
 
 Root Lock still has SSH posture controls:
 
 - **Lockdown** — Harden SSH (`[h]`) when an authorized key is already present (key-only login, direct root login off). Inbound permits (`[o]` / `[a]`) record which source addresses may reach sshd while sealed. `[r]` / `[j]` choose whether SSH stays up under Lockdown.
-- **Maintenance** — unseal is a console GRUB pick (SSH is not enough for that step). Once the seal is lifted, keep a restricted SSH route, leave SSH open, or take the network down (console only). You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
+- **Maintenance** — unseal is a console GRUB pick. Once the seal is lifted, keep a restricted SSH route, leave SSH open, or take the network down (console only). You can limit SSH to specific source addresses, or press `[n]` to leave it open to anyone (not recommended). See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
 sshd's own config, an OS packet filter, and cloud security groups still apply. If you SSH *from* the Root Lock host *to* other hosts, those destination IPs appear in Internet Access for the SSH client. See [Network and Remote Access](network/).
-
-Unsealing Lockdown is the exception: that boot-menu pick needs the console.
 
 {{< /details >}}
 
@@ -281,17 +279,17 @@ A: The Local Path command is the same on a physical host and on a full virtual m
 
 A full virtual machine with hardware virtualization (KVM, VMware, or a cloud hypervisor) is a supported install target, the same as bare metal. What differs is the machine: keyboard and monitor on metal, hypervisor serial console and virtio devices on a VM.
 
-If the outer machine has no `/dev/kvm`, install there. Nesting a second guest causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
+If the outer machine does not expose `/dev/kvm`, install on that outer machine: in a guest nested inside it, the installer stops at the start. See [Bare metal, virtual machines, and nested VMs](introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
 
 {{< /details >}}
 
 {{< details summary="If Root Lock runs in a VM, can a hypervisor jailbreak bypass it?" >}}
 
-A: A full VM (KVM, VMware, AWS, Firecracker, Kata) is a supported install. Root Lock is the **guest** kernel. It blocks unapproved programs, files, and outbound network inside that guest, including as root. Remote root in the guest cannot unseal Lockdown.
+A: A full VM (KVM, VMware, AWS, Firecracker, Kata) is a supported install. Root Lock is the guest kernel. Under Lockdown it blocks unapproved programs, files, and outbound network inside that guest, including as root, and remote root in the guest cannot unseal Lockdown.
 
-What Root Lock does **not** police is the **hypervisor**: serial console, pause/snapshot, and attaching the disk to another machine. Those are the same class as a keyboard on metal. Restrict them in hypervisor or cloud IAM.
+The hypervisor's own controls — serial console, pause/snapshot, and attaching the disk to another machine — sit outside the guest, so Root Lock does not police them. They are the same class as a keyboard on metal, so restrict them in hypervisor or cloud IAM.
 
-A guest-to-host escape is an attack on **that** hypervisor, not on Root Lock. If it succeeds, the attacker has left the guest kernel. No guest kernel can close that.
+A guest-to-host escape attacks the hypervisor itself. If it succeeds, the attacker is running outside the guest kernel, where no guest kernel's controls reach.
 
 Shared-kernel containers (Docker/LXC as the *install target*) are not a fit: Root Lock must boot its own kernel. Root Lock as a hypervisor host is not a supported product role.
 
@@ -301,11 +299,11 @@ See [Containers and microVMs](introduction/containers-and-microvms/) and [Circum
 
 {{< details summary="Does Dell iDRAC (or iLO, or a cloud serial console) bypass Lockdown?" >}}
 
-A: It **is** the supported leave path.
+A: It is the supported way out of Lockdown.
 
 Lockdown is built so remote root over SSH cannot unseal the allowlist or boot another kernel. The path out is the maintenance kernel, selected at the boot menu from a console. A console here means a keyboard to firmware, not an SSH session: a rack keyboard, a serial port, a BMC virtual console or serial-over-LAN (Dell iDRAC, HPE iLO, Lenovo XCC, IPMI SOL), a hypervisor serial console, or a cloud serial console.
 
-If you can reach that console, you can select **Maintenance: unseal and return to Root Lock**. Reaching the console is still required. If a boot menu password was set, GRUB asks for name root and that password before that entry or a kernel-line edit. At the GRUB prompt, the name is root and the password is the one you set here. The normal Root Lock entry does not ask. Default is off.
+If you can reach that console, you can select **Maintenance: unseal and return to Root Lock**. The boot menu password is off by default. If one was set, GRUB asks for the name root and that password before that entry or a kernel-line edit, while the normal Root Lock entry boots without asking.
 
 See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery).
 
@@ -313,9 +311,9 @@ See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and
 
 {{< details summary="Will installing the Root Lock kernel break my existing software?" >}}
 
-A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot the maintenance kernel from the GRUB menu. The Dashboard runs on the Root Lock kernel (serial console, and SSH when sshd is up). It is not a second unseal control on the maintenance kernel. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
+A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot the maintenance kernel from the GRUB menu. The Dashboard runs on the Root Lock kernel (serial console, and SSH when sshd is up), not on the maintenance kernel. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
 
-Setup Mode reveals compatibility issues before Lockdown enforces anything. During Setup Mode the kernel logs all activity without blocking — programs that would fail in Lockdown appear in the Dashboard review queues. You see what is affected before anything is blocked.
+Setup Mode reveals compatibility issues before anything is blocked: the kernel logs all activity without blocking, and programs that would fail in Lockdown appear in the Dashboard review queues.
 
 eBPF, FUSE, overlay filesystems, and unprivileged user namespaces are how attackers hide, shadow directories, and reach root. Most production server workloads do not need a container engine on this host.
 
@@ -335,7 +333,7 @@ After you approve a program's execution, you approve its file access separately.
 
 A: The Root Lock kernel must be loaded during installation. Unattended initial setup records startup and shutdown programs that appeared in the previous boot and reboots as needed.
 
-Multiple passes are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. The Dashboard appears when that chain is complete. There is no System Setup screen.
+Multiple passes are needed because shutdown programs appear on the second boot, and timer-driven processes on later ones. The Dashboard appears when that chain is complete.
 
 {{< /details >}}
 
@@ -375,9 +373,9 @@ Do not approve them if they are not part of the runtime workload. Approving them
 
 A: Root Lock identifies a program by its **resolved absolute path** (what `execve` actually opened). Approving `/usr/bin/sshd` allows whatever file that path names at the next exec.
 
-Under Lockdown, replacing that file is blocked: the allowlist is immutable, many system trees are immutable, and a program can write a path only if its allowlist entry grants that write. That is write containment.
+Under Lockdown, replacing that file is blocked, because the allowlist is immutable, many system trees are immutable, and a program can write a path only if its allowlist entry grants that write.
 
-A compromised program that is already allowed still only gets the files and destinations on its entry. In-memory patching of an already-running allowed process is outside the exec gate.
+Root Lock checks the path when a program starts, so in-memory patching of an allowed process that is already running is outside that check. A compromised program that is already allowed still only gets the files and destinations on its entry.
 
 See [How Root Lock Compares](introduction/how-it-compares/) (Fuchsia hashes every executable; Root Lock does not).
 
@@ -385,9 +383,9 @@ See [How Root Lock Compares](introduction/how-it-compares/) (Fuchsia hashes ever
 
 {{< details summary="I approved /tmp or /usr in File Access — does Lockdown keep that?" >}}
 
-A: Not by default. Before Lockdown finalizes, HeartSuite shows caution panels and **strips** several risky grants unless you opt out: kmod directory reads, unexpected writes into OS trees (including `/tmp` and `/usr`), GTFOBins-style file-write tools, install-tree writes, and bare `/` grants. `rm`/`cp`/`mv` can be restricted to the directories they used in Setup.
+A: Not by default. Before Lockdown finalizes, the Dashboard shows caution panels and strips several risky grants unless you opt out: kmod directory reads, unexpected writes into OS trees (including `/tmp` and `/usr`), GTFOBins-style file-write tools, install-tree writes, and bare `/` grants. `rm`/`cp`/`mv` can be restricted to the directories they used in Setup Mode.
 
-If you do nothing, YES still narrows those grants. The keys on the Lockdown activation view keep the risk. Approving everything that appeared in Setup, then opting out of every panel, is how the protection thins.
+If you do nothing, typing `YES` still narrows those grants; keeping one takes its undo key on the Lockdown activation view. Approving everything that appeared in Setup Mode and then undoing every narrowing is how the protection thins.
 
 See [Lockdown](lockdown/).
 
@@ -397,7 +395,7 @@ See [Lockdown](lockdown/).
 
 A: No. Video, network, and block drivers are kernel code. They are not programs and they do not appear in the Programs queue.
 
-`/dev/sda` (or `/dev/vda`, `/dev/nvme0n1`) is a device node. Write access to it is a **file grant** on some userspace program — often a directory write to `/dev`. That is raw disk and skips the filesystem. HeartSuite gates that open.
+`/dev/sda` (or `/dev/vda`, `/dev/nvme0n1`) is a device node. Write access to it is a **file grant** on some userspace program — often a directory write to `/dev`. That write goes to the raw disk and skips the filesystem, which is why Root Lock requires a file grant for that open.
 
 `kmod` is the loader, not the driver. What kmod may load is what it may **read**. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
 
@@ -469,13 +467,13 @@ Use it in production after confirming programs work correctly under Lockdown.
 
 {{< details summary="What is the boot menu password?" >}}
 
-A: Optional. Default is off. Set it on Lockdown with `[l]`, only before the seal, while Setup Mode can still write the boot menu. After Lockdown that key is absent because `/boot` cannot be rewritten. At the GRUB prompt, the name is root and the password is the one you set here. That password is not the Linux root login password. The normal Root Lock boot does not ask. Selecting **Maintenance: unseal and return to Root Lock**, or editing the kernel line, does when one was set. If the password does not land, `YES` does not start Lockdown. Extlinux (Alpine) does not offer the control. Lockdown still works.
+A: An optional GRUB password, off by default, that guards the maintenance entry and kernel-line edits. Set it on Lockdown with `[l]` before the seal, while Setup Mode can still write the boot menu; after Lockdown that key is absent because `/boot` cannot be rewritten. At the GRUB prompt, the name is root and the password is the one you set with `[l]`, which is separate from the Linux root login password. The normal Root Lock boot does not ask, but selecting **Maintenance: unseal and return to Root Lock**, or editing the kernel line, does when one was set. If the password does not land, `YES` does not start Lockdown. Extlinux (Alpine) does not offer the control, and Lockdown still works there.
 
 {{< /details >}}
 
 {{< details summary="How do I apply the immutable seal after Lockdown?" >}}
 
-A: The seal is applied as part of Lockdown activation (see the "How do I activate Lockdown?" entry above). Once confirmed and rebooted, Lockdown + sealed is active automatically on every Root Lock kernel boot.
+A: The seal is applied as part of Lockdown activation (see the "How do I activate Lockdown?" entry above). Once confirmed and rebooted, Lockdown with the seal is active automatically on every Root Lock kernel boot.
 
 {{< /details >}}
 
@@ -487,7 +485,7 @@ A: Select Maintenance (`[m]`) from the Dashboard. If the seal is not applied, ty
 
 {{< details summary="Does sshd, or a Dashboard key, lift the seal?" >}}
 
-A: No. Leave Lockdown from a physical or serial console: GRUB **Maintenance: unseal and return to Root Lock**. That boot runs `HS_unlock.sh`. sshd running or stopped on the Root Lock kernel does not clear the seal. There is no second remove-the-seal control. After express return you are in Setup Mode; Lockdown (`[l]`) seals again. From stock, reboot — GRUB default stays Root Lock. Approving an allowlist grant is not a remote Lockdown off-switch.
+A: No. You leave Lockdown from a physical or serial console by selecting GRUB **Maintenance: unseal and return to Root Lock**. That boot runs `HS_unlock.sh` and returns you to the Root Lock kernel in Setup Mode, where Lockdown (`[l]`) seals again. Whether sshd is running on the Root Lock kernel has no effect on the seal, and neither a Dashboard key nor an allowlist grant lifts it remotely. If you are on the maintenance kernel, reboot: the GRUB default stays Root Lock.
 
 {{< /details >}}
 
@@ -511,7 +509,7 @@ A: The indicator at the top of the Dashboard immediately shows whether Root Lock
 
 {{< details summary="The system hangs—what's first?" >}}
 
-A: From a physical or serial console, reboot and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set, that pick asks for it. The Dashboard is not launched on the maintenance kernel. Express return brings you back to the Root Lock kernel in Setup Mode, where the Dashboard shows any pending items that caused the hang.
+A: From a physical or serial console, reboot and select **Maintenance: unseal and return to Root Lock**. If a boot menu password was set, that pick asks for it. The Dashboard is not launched on the maintenance kernel. That entry brings you back to the Root Lock kernel in Setup Mode, where the Dashboard shows any pending items that caused the hang.
 
 {{< /details >}}
 

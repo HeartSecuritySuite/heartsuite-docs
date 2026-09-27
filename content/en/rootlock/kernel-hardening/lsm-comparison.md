@@ -12,7 +12,7 @@ toc: true
 ---
 
 **Subject:** Root Lock by HeartSuite, kernel 5.19.6  
-**Audience:** Security engineers familiar with SELinux, AppArmor, or TOMOYO evaluating HeartSuite for containment or appliance deployments.
+**Audience:** Security engineers familiar with SELinux, AppArmor, or TOMOYO evaluating Root Lock for containment or appliance deployments.
 
 ---
 
@@ -20,17 +20,15 @@ toc: true
 
 SELinux, AppArmor, and TOMOYO all answer the same question: *given that a kernel feature is present, what should a process be allowed to do with it?*
 
-HeartSuite answers a different question: *which kernel features should exist on this system at all?*
+Root Lock answers a different question: *which kernel features should exist on this system at all?*
 
-This is not a claim that one approach is universally superior.
-
-For **single-purpose containment appliances**, removing bypass primitives from the kernel is more reliable than writing policy around them. Policy can be misconfigured. Certain primitives (BPF, FUSE, overlayfs) can defeat any MAC policy regardless of how carefully it is written.
+Neither approach is universally superior. For **single-purpose containment appliances**, removing bypass primitives from the kernel is more reliable than writing policy around them. Policy can be misconfigured. Certain primitives (BPF, FUSE, overlayfs) can defeat any MAC policy regardless of how carefully it is written.
 
 ---
 
-## Comparison Table
+## Comparison table
 
-| Dimension | HeartSuite 5.19.6 | SELinux | AppArmor | TOMOYO |
+| Dimension | Root Lock 5.19.6 | SELinux | AppArmor | TOMOYO |
 |---|---|---|---|---|
 | **Enforcement model** | VFS-hook enforcement compiled into the kernel binary (not a loadable module); structural (removes capabilities) | Type enforcement + MLS; label-based; process and object contexts | Path-based MAC; per-program profiles | Path-based MAC; learning-mode profiles |
 | **Policy language** | None — enforcement is structural | Type Enforcement (.te), policy modules, audit2allow | Profile language, `aa-genprof` | Pathname-based domain rules; built-in learning mode |
@@ -50,7 +48,7 @@ For **single-purpose containment appliances**, removing bypass primitives from t
 
 The table below lists the kernel-level bypass vectors most relevant to MAC enforcement. "Closed" means the kernel option is disabled — the attack vector does not exist on the system. "Open" means the feature is present and policy must account for it.
 
-| Bypass vector | HeartSuite 5.19.6 | SELinux | AppArmor | TOMOYO |
+| Bypass vector | Root Lock 5.19.6 | SELinux | AppArmor | TOMOYO |
 |---|---|---|---|---|
 | `BPF_SYSCALL` — programmable LSM hook override | **Closed** (`=n`) | Open | Open | Open |
 | `FUSE_FS` — path confusion via userspace filesystem | **Closed** (`=n`) | Open | Open | Open |
@@ -88,20 +86,16 @@ Choose Root Lock when:
 
 ## Co-existence
 
-HeartSuite does not stack with AppArmor or TOMOYO. Both are kernel-disabled (`CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`).
+Root Lock does not stack with AppArmor or TOMOYO. Both are kernel-disabled (`CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`).
 
-**SELinux** behaves differently depending on the deployment OS:
+**SELinux** can run alongside Root Lock. Root Lock's VFS hooks fire before the LSM chain (`security_path_*()` calls). The ordering means:
 
-HeartSuite's VFS hooks fire **before** the LSM chain (`security_path_*()` calls). The ordering means:
+- If Root Lock denies an operation → the SELinux hook is never reached. Root Lock is the first and final authority on that call.
+- If Root Lock allows an operation → SELinux can still deny it. SELinux can only add restrictions to what Root Lock allows, never grant access Root Lock denies.
 
-- If HeartSuite **denies** an operation → the SELinux hook is never reached. HeartSuite is the first and final authority on that call.
-- If HeartSuite **allows** an operation → SELinux can still deny it. SELinux can only **add** restrictions to what HeartSuite allows, never grant access HeartSuite denies.
+This ordering is intentional: whatever SELinux mode and policy the deployment OS configures, the stacking is additive, not conflicting, and Root Lock enforcement cannot be bypassed via the SELinux layer.
 
-This is intentional and safe. On RHEL/Fedora, SELinux is Enforcing by default; the stacking is additive, not conflicting. On Debian/Ubuntu, no SELinux policy is loaded by default. Either way, Root Lock enforcement cannot be bypassed via the SELinux layer.
-
-*RHEL operational note:* As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for Root Lock's specific operations. If AVC denials appear, `ausearch -m AVC -ts recent | audit2why` identifies them and `audit2allow` generates the targeted module.
-
-Root Lock enforcement is unaffected. SELinux operates after Root Lock in the hook chain and cannot override Root Lock decisions.
+*RHEL operational note:* As with any new kernel module on RHEL, a targeted SELinux policy entry may be needed for Root Lock's specific operations. If AVC denials appear, `ausearch -m AVC -ts recent | audit2why` identifies them and `audit2allow` generates the targeted module. Those denials come from SELinux after Root Lock has already allowed the operation, so Root Lock enforcement is unaffected.
 
 ---
 

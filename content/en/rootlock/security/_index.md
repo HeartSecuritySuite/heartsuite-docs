@@ -23,7 +23,7 @@ markup:
 
 The **Score on Root Lock** column is a CVSS v3.1 Environmental Score for a Root Lock deployment: the risk on this kernel, not the theoretical worst case.
 
-Where the attack surface is absent — hardware not present, trigger not installed, feature not compiled in — the score is 0.0 regardless of Base Score. Where the code path is reachable, Lockdown bounds new execution and sealed-allowlist writes; residual scores stay non-zero.
+Where the attack surface is absent — hardware not present, trigger not installed, feature not compiled in — the score is 0.0 regardless of Base Score. Where the code path is reachable, the score stays non-zero because the bug can still be triggered; under Lockdown, the attacker who triggers it still cannot run new programs or write to the sealed allowlist.
 
 Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 
@@ -45,7 +45,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 <div class="cve-hero-card cve-hero-contained">
 <p class="cve-hero-number text-teal">{{< cve-stat type="reachable" >}}</p>
 <p class="cve-hero-label">CVEs with reachable code paths</p>
-<p class="cve-hero-detail">Live residual. Lockdown bounds post-exploitation; the score stays non-zero.</p>
+<p class="cve-hero-detail">The code path is reachable, so the score stays non-zero; Lockdown limits what an attacker can do after exploiting it.</p>
 </div>
 </div>
 <div class="col-md-4">
@@ -60,23 +60,22 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ### Which kernel these scores apply to
 
-Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A row is Not Affected only where that option is unset on the kernel you boot. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so those CVEs stay on the patch date. Where the two lines differ, the entry states both.
+Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A row is Not Affected only where that option is unset on the kernel you boot, because only then is the vulnerable code absent. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so their CVEs stay on the patch date. Where the two lines differ, the entry states both.
 
-**Score on Root Lock** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. Reachable + Lockdown bounds maps to **Affected, mitigated**.
+**Score on Root Lock** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. A reachable code path whose impact Lockdown limits maps to **Affected, mitigated**.
 
 ## What malware can and cannot do on this system
 
-### Blocked
+### Blocked under Lockdown
 
 - **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The allowlist is populated only at boot from your authorized sources; any in-memory tampering is wiped on the next boot.
-
-> **Supply-chain compromise: contained, not prevented.**
-> If malware arrives inside a trusted update, Root Lock does not block it from running — it was authorized. What Root Lock does enforce is the blast radius. The malware cannot launch processes outside the allowlist, cannot reach unallowlisted network destinations, and cannot install additional code. A compromised supplier gets one program slot, not the system.
-
 - **New program execution.** The kernel refuses to run any program not in the Lockdown allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
 - **Kernel module loading post-boot.** On Debian 12, `modprobe` and `insmod` are symlinks to `kmod`, which is added to the allowlist during standard Setup Mode via `systemd-modules-load.service`. Lockdown's file-access enforcement denies `kmod` access to `/usr/lib/modprobe.d/` by default — module loading fails at the file-read stage before any module can be loaded. Module-based rootkits cannot be installed.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
 - **Mounting new filesystems.** Lockdown blocks `mount()`, `fsmount()`, and `move_mount()` after boot. Bind-mounts and remounts to shadow allowlisted paths are refused.
+
+> **Supply-chain compromise: contained, not prevented.**
+> If malware arrives inside a trusted update, it runs, because you authorized that program. Root Lock still limits what it can reach: it can launch only allowlisted processes, connect only to allowlisted network destinations, and cannot install additional code. A compromised supplier gets one program slot, not the system.
 
 ### Bounded by allowlist composition
 
@@ -84,7 +83,7 @@ Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A
 - **Service disruption.** Root can panic the kernel via syscall primitives or `kill -9` allowlisted services. Availability hardening is a separate control; Root Lock does not prevent denial-of-service.
 - **Lateral movement.** Attackers can pivot through whatever the allowlisted process tree permits, but cannot extend that tree. New processes outside the allowlist do not run.
 
-Under Lockdown the kernel decides, per program, whether it can run, which files it can read or write, and which destinations it can reach. By design, remote root does not change that while the machine is running. The files are immutable. The kernel refuses the write. Recovery is the maintenance kernel via physical or serial-console access.
+Under Lockdown the kernel decides, per program, whether it can run, which files it can read or write, and which destinations it can reach. By design, remote root cannot change those decisions while the machine is running, because the allowlist files are immutable and the kernel refuses the write. Recovery is the maintenance kernel via physical or serial-console access.
 
 ### Out of scope
 
@@ -144,7 +143,7 @@ These compiled-in paths keep a live residual. Full write-ups: [Compiled-in CVEs]
 
 Root Lock runs **two independent kernel-level controls**, and the per-CVE entries reference both. They are not peers in a list — one is load-bearing, one is defense-in-depth, and the distinction matters when reading residual risk:
 
-- **Lockdown (load-bearing).** `hs_sandbox_caching.c` enforces the SPF allowlist on every `execve`. This check runs unconditionally — it is **not** gated by `HS_lockdown_state` — so it continues to refuse non-allowlisted programs even if an attacker with arbitrary kernel write clears Lockdown. The only Lockdown-conditional behavior in this file is an additional log-file write block; the allowlist match itself is independent.
+- **Allowlist check (load-bearing).** `hs_sandbox_caching.c` enforces the SPF allowlist on every `execve`. This check runs unconditionally — it is not gated by `HS_lockdown_state` — so it continues to refuse non-allowlisted programs even if an attacker with arbitrary kernel write clears Lockdown. The only Lockdown-conditional behavior in this file is an additional log-file write block; the allowlist match itself is independent.
 - **Lockdown (defense-in-depth).** `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`. While that atomic is nonzero, `kernel/ioctl.c:561,568` returns EPERM on `FS_IOC_GETFLAGS`/`FS_IOC_SETFLAGS` (closing the `chattr -i` path that would otherwise let root strip immutability from the allowlist file), and `kernel/namespace.c:4218,4300,4453` returns EPERM on all mount paths. There are five `HS_locked_down()` check sites total in the kernel — none in `fs/` or `net/` — so Lockdown is an API-gate layer, not an in-line corruption boundary.
 
 **The load-bearing control against persistence and lateral expansion is Lockdown's allowlist.** Even in the worst case where an attacker chains a kernel UAF into arbitrary write and clears `HS_lockdown_state`, they still cannot run new programs, modify the allowlist, install backdoors, or survive a reboot, because the allowlist check is not on the same state machine. They regain only the ability to mount filesystems and set immutable flags — meaningful but bounded.
@@ -153,7 +152,7 @@ Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then stat
 
 ### Why this is unusual
 
-Most kernel hardening tools gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. Root Lock does not work that way. **Lockdown's allowlist is consulted on every `execve` regardless of Lockdown's state** — there is no kill-switch an attacker can flip. Even in the worst case examined in this catalog, the system continues to refuse new code execution.
+Most kernel hardening tools gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. In Root Lock, **the allowlist is consulted on every `execve` regardless of Lockdown's state**, so there is no kill-switch an attacker can flip. Even in the worst case examined in this catalog, the system continues to refuse new code execution.
 
 ### Note on Scores on Root Lock and deployment tuning
 
@@ -185,7 +184,7 @@ When a scanner flags Root Lock for a CVE listed as Not Affected, the result is a
 
 For the full verification workflow (maintenance-kernel exceptions, scanner configuration, audit evidence, and published OSV feeds), see [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
 
-Share this section and the [disabled-features](disabled-features/) catalog with your scanner vendor as the reference for any disputed CVE entry. The proof is the pin config for the kernel you boot, not a version string. On 6.18.9-hs the guest file `/boot/config-6.18.9-hs` is a stub, so `grep` of that file does not confirm the gate. See [Evidence Status](../kernel-hardening/evidence-status/).
+Share this section and the [disabled-features](disabled-features/) catalog with your scanner vendor as the reference for any disputed CVE entry. The proof is the pin config — the build configuration published for the kernel you boot — not a version string. On 6.18.9-hs the guest file `/boot/config-6.18.9-hs` is a stub, so `grep` of that file does not confirm the gate. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 ## The Four Assessment Gates
 
@@ -195,8 +194,8 @@ Every entry in this catalog was verified source-first. No assumptions were made 
 
 **Gate 2 — Does Root Lock's outbound connection control cover the attack path?** For socket-based CVEs, Root Lock intercepts outbound `connect()` calls only. Attack paths that reach the kernel through socket creation, `sendmsg`, `recvmsg`, or kernel-internal crypto interfaces are not covered by this control and are noted accordingly.
 
-**Gate 3 — Can an exploit program run?** Under Lockdown, the program allowlist is made filesystem-immutable. No new program entries can be added. An attacker-dropped exploit program has no allowlist entry and cannot execute. This gate does not apply to CVEs exploitable from within an already-running, allowlisted process.
+**Gate 3 — Can an exploit program run?** Under Lockdown, the program allowlist is made filesystem-immutable, so no new entries can be added and an exploit program the attacker drops has no entry and cannot execute. This gate does not apply to CVEs exploitable from within an already-running, allowlisted process.
 
-**Gate 4 — What can root actually do under Lockdown?** When a CVE achieves root privilege, Lockdown applies a further constraint. The kernel refuses to clear filesystem immutable flags (`chattr -i` is blocked at the syscall level). All three mount syscall variants are blocked. Clearing Lockdown takes a reboot from physical or serial-console access onto the maintenance kernel. SSH is not enough to unseal. SSH remains how you administer the host before and after that step. Seal and control integrity are product contracts on the pin you run.
+**Gate 4 — What can root actually do under Lockdown?** When a CVE achieves root privilege, Lockdown applies a further constraint. The kernel refuses to clear filesystem immutable flags (`chattr -i` is blocked at the syscall level). All three mount syscall variants are blocked. Clearing Lockdown takes a reboot from physical or serial-console access onto the maintenance kernel; SSH cannot unseal, although it remains how you administer the host before and after that step. Seal and control integrity are product contracts on the pin you run.
 
 The two residual risks that Lockdown does not close are in-memory data exfiltration (reading live process memory) and availability impact (crashing the system). These are noted in affected entries where relevant.

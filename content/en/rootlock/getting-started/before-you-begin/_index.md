@@ -15,7 +15,7 @@ aliases:
 ## System requirements
 
 - **Operating System**: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Debian 11 and Ubuntu 20.04 use the 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, and the rest of the EL9 family are not offered (Python below 3.11). RHEL 8 and older extended-support releases are below the glibc floor. See [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/).
-- **Execution environment**: bare metal or a full virtual machine with hardware virtualization (KVM, cloud hypervisors, VMware). The Local Path command is the same on both. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests sharing the provider kernel) are not a fit by design. If a VPS or cloud guest has no `/dev/kvm`, install there; nesting a second guest causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms) and [Deployment Scenarios](../../introduction/deployment-scenarios/).
+- **Execution environment**: bare metal or a full virtual machine with hardware virtualization (KVM, cloud hypervisors, VMware). The Local Path command is the same on both. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests sharing the provider kernel) are not a fit by design. If a VPS or cloud guest has no `/dev/kvm`, install directly on that guest, because the installer stops at the start inside a second guest nested within it. See [Bare metal, virtual machines, and nested VMs](../../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms) and [Deployment Scenarios](../../introduction/deployment-scenarios/).
 - **Access Level**: Root access (sudo privileges).
 - **Skills**: Basic familiarity with the Linux command line.
 
@@ -25,7 +25,7 @@ If your setup differs, check the [Introduction](../../introduction/) for compati
 
 On Local Path, complete distribution updates and install the packages and services this host will actually run. Then install Root Lock. During initial setup, Root Lock records startup and shutdown programs from those boots. Package-install helpers, compilers, and one-shot probes that execute in that window become allowlist entries even if they never execute again.
 
-After the Dashboard appears, run the workload you will keep — not compilers, probes, or other one-shot tools. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+After the Dashboard appears, run the workload you will keep and leave out compilers, probes, and other one-shot tools, because everything that executes in Setup Mode lands in the review queues. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
 
 ## Choosing your setup path
 

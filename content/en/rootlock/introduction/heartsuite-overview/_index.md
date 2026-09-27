@@ -21,7 +21,7 @@ Your SSH server and your web server both run as root. They still get different p
 
 ## Kernel-level enforcement
 
-No program can execute without an allowlist entry. That entry also controls which files the program can read or write, and which network connections it can make.
+Under Lockdown, no program can execute without an allowlist entry. That entry also controls which files the program can read or write, and which network connections it can make.
 
 The **Dashboard** is the interface. After unattended initial setup, it shows the checklist and what is waiting for review.
 
@@ -44,13 +44,11 @@ The security industry patches vulnerabilities one at a time. Root Lock removes t
 
 Most malware escalates privilege by reaching for the same handful of kernel features: eBPF to hide processes, FUSE to redirect reads, overlay filesystems to shadow directories, userspace LSM frameworks (AppArmor, SMACK, Landlock) to pivot through, and unprivileged user namespaces to gain root without credentials.
 
-The Root Lock kernel is deliberately compiled without them. Those are the features an attacker uses to become root and to get around an allowlist.
+The Root Lock kernel is deliberately compiled without them, because those are the features an attacker uses to become root and to get around an allowlist.
 
 A stock Ubuntu kernel ships with over 6,600 loadable modules. The Root Lock kernel ships with 13.
 
-Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features. Root Lock removes them. See [Kernel architecture](../how-it-compares/#kernel-architecture).
-
-Shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design. See [Deployment Scenarios](../deployment-scenarios/).
+Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features; Root Lock removes them instead. See [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 ## Features
 
@@ -73,13 +71,13 @@ File access is approved as **read** or **write**. Write includes read. See [Allo
 
 Activating Lockdown requires empty review queues, configured alerts, and an active subscription. Type `YES` (case-sensitive) to confirm.
 
-Once Lockdown is applied, the allowlist cannot change while the machine is running, including as root. `YES` starts a probe reboot; a second reboot applies the seal. `[m]` Maintenance is the path to make changes. See [Lockdown](../../lockdown/).
+`YES` starts a probe reboot, and a second reboot applies the seal. From then on the allowlist is sealed while the machine is running, and root cannot change it either; Maintenance (`[m]`) is the path to make changes. See [Lockdown](../../lockdown/).
 
 ### 3. File backup and versioning
 
 Root Lock backs up files in designated directories on every write. The version manager can restore a version after encryption, deletion, or modification.
 
-Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. Root Lock's backups are not permission-protected: under Lockdown, the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling, including root.
+Modern ransomware destroys backup systems before encrypting files — shadow copies and backup agents are typically the first targets. Root Lock's backups are protected by the kernel rather than by file permissions: under Lockdown, the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling, including root.
 
 When an approved program is compromised, recovery starts from the write before the damage, not the last scheduled snapshot.
 
@@ -98,11 +96,11 @@ Download from heartsecsuite.com, install, and boot the Root Lock kernel. Initial
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).
+Cloud Path and Local Path install one machine at a time, and Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](../../alerts/central-policy-management/).
 
 ## Is Root Lock right for you?
 
-Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design. Overlay filesystems and user namespaces are how attackers shadow directories and reach root. See [Deployment Scenarios](../deployment-scenarios/#container-hosts).
+Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design, because overlay filesystems and user namespaces are how attackers shadow directories and reach root. See [Deployment Scenarios](../deployment-scenarios/#container-hosts).
 
 If you already run Falco, AppArmor, gVisor, a Linux EDR agent, a SIEM, NDR, or a scanner, see [How Root Lock Compares](../how-it-compares/) and [Security as economics](../security-as-economics/).
 

@@ -20,18 +20,18 @@ menu:
 
 On Local Path, complete distribution updates and install the packages and services this host will actually run. Then run the installer. During initial setup, Root Lock records startup and shutdown programs from those boots. Package-install helpers, compilers, and one-shot probes that execute in that window become allowlist entries even if they never execute again.
 
-On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues — dismiss them if they are not runtime. Details are in [Installation Part 2](installation-part2/).
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues; skip any the host does not need at runtime. Details are in [Installation Part 2](installation-part2/).
 
 ## Choose your path
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-configured cloud instance (AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers). The Dashboard confirms initial setup is complete on first boot — skip ahead to the allowlisting queues. First-boot leftovers (cloud-init, provisioning helpers) can still appear there; do not approve them if they are not runtime.
+Launch a pre-configured cloud instance (AWS, Google Cloud, Azure, DigitalOcean, Linode, and other providers). The Dashboard confirms initial setup is complete on first boot — skip ahead to the allowlisting queues. First-boot leftovers (cloud-init, provisioning helpers) can still appear there; skip any the host does not need at runtime.
 
 Installer and initial setup logs from the image build are in `/var/log/heartsuite/`. Use the provider serial console if you need them.
 {{< /choice-card >}}
 {{< choice-card header="Local Path" >}}
-Finish distribution updates and install the packages and services this host will actually run, then run a single install command on bare metal or a full virtual machine with hardware virtualization. Reboot multiple times to build the initial allowlist of startup and shutdown programs. Nesting a second guest without `/dev/kvm` causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
+Finish distribution updates and install the packages and services this host will actually run, then run a single install command on bare metal or a full virtual machine with hardware virtualization. The host then reboots several times while Root Lock adds startup and shutdown programs to the initial allowlist. Nesting a second guest without `/dev/kvm` causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
 
 1. [Obtaining Root Lock](obtaining-heartsuite/) — Run the install command.
 2. [Installation Part 1](installation-part1/) — Run the installer and reboot to load the kernel.

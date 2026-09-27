@@ -15,13 +15,13 @@ menu:
     identifier: "containers-and-microvms"
 ---
 
-**Overview**: Shared-kernel Docker is not a supported workload on a Root Lock host. Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root. Root Lock by HeartSuite does not ship a container-host install that turns those features into a supported runtime.
+**Overview**: Shared-kernel Docker is not a supported workload on a Root Lock host. Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root, so Root Lock by HeartSuite ships no container-host install that turns those features into a supported runtime.
 
 The install is a sealed appliance — a backup receiver, a fixed server, a closed device. Build and run OCI images on another host. When a task should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
 ## Why Docker is not a fit on this host
 
-Docker, containerd, Podman, and runc isolate processes on the **host** kernel. That stack needs OverlayFS and user namespaces. On a Standard-host install those primitives are compiled out — they are the attack surface, path to root, and bypass the allowlist model removes. See [System Requirements](../system-requirements/#software-compatibility-notes).
+Docker, containerd, Podman, and runc isolate processes on the host kernel. That stack needs OverlayFS and user namespaces. On a Standard-host install those primitives are compiled out — they are the attack surface, the path to root, and the bypass that the allowlist model removes. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
 A backup receiver that only accepts Restic over SFTP does not need Docker. Run the container engine on another host, and let Root Lock protect the machines around it.
 
@@ -39,7 +39,7 @@ Industry pattern: platforms that run untrusted or multi-tenant code put Firecrac
 
 ### On another host
 
-Build and run Docker, containerd, Kubernetes, and CRI-O images on a host that is not running the Root Lock kernel. Root Lock protects the fixed-workload machines around that runtime. The installer can notice a container engine on this host. It records a standard host and does not enable overlay filesystem support.
+Build and run Docker, containerd, Kubernetes, and CRI-O images on a host that is not running the Root Lock kernel. Root Lock protects the fixed-workload machines around that runtime. The installer can notice a container engine on this host, but it records a standard host and does not enable overlay filesystem support.
 
 See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts).
 
@@ -57,13 +57,13 @@ See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/
   (known / trusted workload only)
 ```
 
-Run Root Lock as the guest kernel inside a virtual machine. Build the allowlist once: run a representative task in Setup Mode, review and approve the tools through the Dashboard queues, then bake that allowlist into the VM image. A Kata Container or a Firecracker microVM is a virtual machine you provide.
+Run Root Lock as the guest kernel inside a virtual machine you provide, such as a Kata Container or a Firecracker microVM. Build the allowlist once: run a representative task in Setup Mode, review and approve the tools through the Dashboard queues, then bake that allowlist into the VM image.
 
 Each task VM boots from that image into Lockdown. The allowlist holds for the life of the task. Then the VM is gone.
 
 An attacker who already has root inside the guest cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-Root Lock is not a hypervisor host. Running Firecracker or Kata **on** a Root Lock kernel so this box becomes the VMM for untrusted tenants is not a supported configuration. KVM host mode is compiled out; the product protects workloads **inside** a kernel. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
+Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. KVM host mode is compiled out. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
 ## What to run
 
@@ -96,7 +96,7 @@ A: On a **Standard-host** install, no — OverlayFS and user namespaces are comp
 
 {{< details summary="Does Root Lock use Firecracker like large cloud platforms?" >}}
 
-A: No as a product dependency. Large platforms use Firecracker **under** multi-tenant serverless and sandboxes. You run Root Lock **inside** a Firecracker microVM, a Kata Container, or a cloud VM the same way you run it inside any guest. Root Lock does not ship Firecracker and is not a Firecracker distribution.
+A: Not as a product dependency. Large platforms use Firecracker **under** multi-tenant serverless and sandboxes. You run Root Lock **inside** a Firecracker microVM, a Kata Container, or a cloud VM the same way you run it inside any guest. Root Lock does not ship Firecracker and is not a Firecracker distribution.
 
 {{< /details >}}
 

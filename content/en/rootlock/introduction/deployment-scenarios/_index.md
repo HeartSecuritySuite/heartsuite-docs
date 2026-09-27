@@ -15,11 +15,11 @@ menu:
     identifier: "deployment-scenarios"
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including malware running as root.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including malware running as root. Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off.
 
-In Setup Mode, Root Lock logs activity so you can review and approve it through the Dashboard queues. Lockdown then enforces what you approved. Patches and new tools follow the same path: a maintenance window, review, then Lockdown again.
+In Setup Mode, Root Lock logs activity so you can review and approve it through the Dashboard queues. Lockdown then enforces what you approved.
 
-Root Lock operates standalone — no SaaS policy server, no agent-to-console channel. The Root Lock kernel sits beside your existing kernel in GRUB; you can boot back to it. The scenarios below are where that model fits, then where it is not a fit by design.
+Root Lock operates standalone — no SaaS policy server, no agent-to-console channel. The Root Lock kernel sits beside your existing kernel in GRUB; you can boot back to the existing kernel. The scenarios below are where that model fits, then where it is not a fit by design.
 
 ## Production servers
 
@@ -29,11 +29,9 @@ On a homogeneous fleet of these servers, install each host through Cloud Path or
 
 Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Lockdown.
 
-Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. An attacker who already has remote root cannot turn it off.
+CVE-2026-31431 — privilege escalation via AF_ALG — shows what Lockdown means on a production server. An attacker who exploits it ends up with root. On a Root Lock kernel AF_ALG is not compiled in, so that path is gone.
 
-CVE-2026-31431 — privilege escalation via AF_ALG — shows what that means. An attacker who exploits it already has root. On a Root Lock kernel AF_ALG is not compiled in. That path is gone.
-
-Even if it had been, Lockdown closes that path: the kernel refuses to clear immutable flags, blocks the mount, and blocks writes to the audit log, so a program added from that shell is gone after reboot.
+Even if it had been, Lockdown constrains the root shell the exploit produces: the kernel refuses to clear immutable flags, blocks mount operations, and blocks writes to the audit log, so a program added from that shell is gone after reboot.
 
 See [Kernel Security Transparency](../../security/) for the full CVE status table and scanner guidance.
 
@@ -50,17 +48,15 @@ File Backup is the recovery layer. The kernel restricts the backup directory to 
 In financial, legal, healthcare, and defence workplaces, a workstation's toolchain is set by policy, not preference. The **Dashboard** includes review queues that let you approve each tool and add it to the allowlist. In Lockdown, only the tools you approve can execute — everything else is blocked.
 
 > [!NOTE]
-> **Lockdown** seals the allowlist against change. Under Lockdown, root cannot change the allowlist while it is running. The files are immutable (`chattr +i`). The kernel refuses the write. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
+> **Lockdown** seals the allowlist against change: the files are immutable (`chattr +i`), and the running kernel refuses the write, including from root. A compromised user session cannot quietly add an unauthorized tool, because the kernel itself will not accept the change.
 
-In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, remote root cannot disable enforcement the way an agent can be killed. Unsealing takes physical or serial-console access. SSH still works for day-to-day admin. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
-
-No program or user inside the running Root Lock kernel, including root, can modify the allowlist or disable enforcement. Disabling enforcement requires reaching the boot path: a keyboard and monitor on a physical machine, a serial console, or — on a virtual machine — the hypervisor that owns the guest's disk image and memory.
+In regulated industries — financial services, healthcare, defence — auditors ask a specific question: can an administrator, or an attacker who has compromised an administrator account, disable your security controls? With Lockdown active, remote root cannot disable enforcement the way an agent can be killed, and SSH still works for day-to-day admin. Unsealing takes reaching the boot path: a keyboard and monitor on a physical machine, a serial console, or — on a virtual machine — the hypervisor that owns the guest's disk image and memory. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 On VMs the hypervisor is the outer protective layer; Root Lock protects everything inside. Platform controls that protect the boot path (measured boot, disk encryption with keys held by the platform, controlled hypervisor access) extend that protection upward.
 
 For environments subject to SOC 2, PCI DSS, HIPAA, or ISO 27001, that is a concrete answer to the privileged-access control question — and a clear specification of which controls remain the platform's responsibility.
 
-For managed security providers, this answer is the same for every Root Lock-protected server they manage: under Lockdown, no administrator credential, no root session, and no SSH session can unseal or rewrite the security policy. Day-to-day SSH and the Dashboard still work. Unsealing requires physical or serial-console access. For the competitive comparison on this point, see [How Root Lock Compares](../how-it-compares/#circumvention-and-recovery).
+For managed security providers, this answer is the same for every Root Lock-protected server they manage: under Lockdown, no administrator credential, root session, or SSH session can unseal or rewrite the security policy, while day-to-day SSH and the Dashboard keep working. For the competitive comparison on this point, see [How Root Lock Compares](../how-it-compares/#circumvention-and-recovery).
 
 ## Build, CI, and release infrastructure
 
@@ -68,9 +64,9 @@ A build host sits at the top of a supply chain. Compromise it, and every downstr
 
 CVE-2024-27198 — JetBrains TeamCity, unauthenticated RCE — shows what that means. An attacker who reaches a TeamCity server can execute any program without credentials. On a Root Lock build host, that program has no allowlist entry. The kernel refuses to run it.
 
-A supply chain attacker who compromises the build pipeline itself — using its own credentials and tooling — does not introduce a new program. In the May 2026 TanStack incident, 84 malicious package versions across 42 packages were published in six minutes using valid pipeline credentials. The execution gate fires but does not block: the pipeline already has a valid allowlist entry.
+A supply chain attacker who compromises the build pipeline itself — using its own credentials and tooling — does not introduce a new program. In the May 2026 TanStack incident, 84 malicious package versions across 42 packages were published in six minutes using valid pipeline credentials. The program check does not stop that attack, because the pipeline tools already have allowlist entries.
 
-The attack is contained, not prevented at execution. The network allowlist still blocks: a compromised build tool cannot reach destinations outside its approved list, regardless of credential validity.
+What contains it is the network allowlist: under Lockdown, a compromised build tool cannot reach destinations outside its approved list, regardless of credential validity.
 
 **Root Lock** restricts the host to only approved programs, controlling which can execute, which files they can access, and which network connections they can make:
 
@@ -95,18 +91,18 @@ Run Root Lock as the guest kernel inside a per-task virtual machine — a Kata C
 
 Each task VM boots from that image into Lockdown with the allowlist already in force. The allowlist holds for the life of the task. Then the VM is gone.
 
-An attacker who already has root inside the VM cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. gVisor filters syscalls in userspace to protect the host. Root Lock is the guest kernel. It protects the workload.
+An attacker who already has root inside the VM cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. gVisor filters syscalls in userspace to protect the host; Root Lock, as the guest kernel, protects the workload.
 
 > [!NOTE]
-> Setup Mode logs the most reliable allowlist when the same programs run in the same way across tasks — repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
+> You get the most reliable allowlist from Setup Mode when the same programs run in the same way across tasks, because repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.
 
 ## Shared-kernel containers {#container-hosts}
 
-Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload on a Root Lock host. The installer can notice that one of those engines is present. It records the host as a standard host. It does not turn on overlay filesystem support, and it does not adapt Setup Mode for container images.
+Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload on a Root Lock host. The installer can notice that one of those engines is present, but it records the host as a standard host: it does not turn on overlay filesystem support or adapt Setup Mode for container images.
 
 Build and run OCI images on another host. Root Lock protects the fixed-workload machines around that runtime. For a task that should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
-Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root. The 5.19 kernel is built without them. The fielded 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces compiled in. That configuration is not a container-host product. See [How Root Lock Compares](../how-it-compares/#kernel-architecture).
+Overlay filesystems and user namespaces are features attackers use to shadow directories and reach root. The 5.19 kernel is built without them. The fielded 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces compiled in, but that configuration is not a container-host product. See [How Root Lock Compares](../how-it-compares/#kernel-architecture).
 
 ## Where Root Lock is not a fit
 

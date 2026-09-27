@@ -21,7 +21,7 @@ Under the public terms, personal and non-production use is free. Typical cases: 
 
 Company production hosts need a paid commercial subscription. That includes work servers, customer-facing systems, and fleets. Support terms follow the subscription agreement.
 
-## rates
+## Rates
 
 Billing unit: one **sealed host** (physical server or VM) with Lockdown in use.
 

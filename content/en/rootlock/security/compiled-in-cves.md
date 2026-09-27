@@ -436,7 +436,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 
 ### CVE-2023-2236, CVE-2022-3910
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.  
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)  
 **Component**: io_uring — asynchronous I/O subsystem (`CONFIG_IO_URING`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Score on Root Lock**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
@@ -452,7 +452,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear these CVEs on that kernel. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so these CVEs cannot be cleared as compiled out on either kernel. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1322,7 +1322,7 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 
 ### CVE-2025-21863
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1335,7 +1335,7 @@ In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear this CVE. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so this CVE cannot be cleared as compiled out on either kernel. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1417,7 +1417,7 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 
 ### CVE-2025-40364
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply.
+**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1430,7 +1430,7 @@ In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchr
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. Compile-out is not a reason to clear this CVE. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so this CVE cannot be cleared as compiled out on either kernel. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -3411,11 +3411,11 @@ If your deployment adds `trace-cmd`, `perf`, or a program that writes `/sys/kern
 **Status**: 5.19.6 Not exploitable — feature not compiled; 6.18.9-hs Not exploitable — tool not in the program allowlist
 **Component**: IPsec authencesn (`CONFIG_CRYPTO_AUTHENC`)
 **Base Score**: 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 does not compile the AF_ALG AEAD interface the bug uses; 6.18.9-hs compiles that interface as a module and HeartSuite APO does not include the programs that load it
+**Score on Root Lock**: 0.0 — 5.19.6 does not compile the AF_ALG AEAD interface the bug uses; 6.18.9-hs compiles that interface as a module and the program allowlist does not include the programs that load it
 
 authencesn requires a zero authsize or an authsize of at least 4 bytes because the ESN encrypt and decrypt paths always move 4 bytes of high-order sequence number at the end of the authenticated data. Instance creation copied the inner ahash digest size into the default authsize without rejecting the invalid 1..3 range. Binding that instance through AF_ALG then ran the ESN tail handling with a too-short tag and hit an out-of-bounds read.
 
-Both Root Lock kernels are in the NVD range (Linux 4.11 through 6.18.26) and compile `crypto/authencesn.c` via `CONFIG_CRYPTO_AUTHENC`. The unprivileged trigger is AF_ALG (`CONFIG_CRYPTO_USER_API_AEAD`) after instantiating authencesn with a 1..3-byte ahash such as `cbcmac(cipher_null)` from the CCM template. 5.19.6 has `CONFIG_CRYPTO_USER_API_AEAD` and `CONFIG_CRYPTO_USER` not set, so that userspace crypto path is not present. 6.18.9-hs builds AF_ALG AEAD, authenc, CCM, and IPsec ESP as modules. Reaching the path requires those modules to be loaded. HeartSuite APO does not include `modprobe`, `insmod`, `ip`, `setkey`, or IPsec daemons. Module autoload also runs `modprobe` and is refused.
+Both Root Lock kernels are in the NVD range (Linux 4.11 through 6.18.26) and compile `crypto/authencesn.c` via `CONFIG_CRYPTO_AUTHENC`. The unprivileged trigger is AF_ALG (`CONFIG_CRYPTO_USER_API_AEAD`) after instantiating authencesn with a 1..3-byte ahash such as `cbcmac(cipher_null)` from the CCM template. 5.19.6 has `CONFIG_CRYPTO_USER_API_AEAD` and `CONFIG_CRYPTO_USER` not set, so that userspace crypto path is not present. 6.18.9-hs builds AF_ALG AEAD, authenc, CCM, and IPsec ESP as modules. Reaching the path requires those modules to be loaded. The program allowlist does not include `modprobe`, `insmod`, `ip`, `setkey`, or IPsec daemons. Module autoload also runs `modprobe` and is refused.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3519,7 +3519,7 @@ If a 6.18.9-hs deployment loads `vsock.ko` and an allowlisted program creates AF
 **Status**: Not exploitable — tool not in the program allowlist
 **Component**: Device mapper ioctl (`CONFIG_BLK_DEV_DM=y` on 5.19.6; `CONFIG_BLK_DEV_DM=m` on 6.18.9-hs)
 **Base Score**: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — both kernels compile device mapper; HeartSuite APO does not include the programs that issue device-mapper ioctls
+**Score on Root Lock**: 0.0 — both kernels compile device mapper; the program allowlist does not include the programs that issue device-mapper ioctls
 **Affected range**: Linux 2.6.12.1 through 5.10.257; 5.11 through 5.15.208; 5.16 through 6.1.174; 6.2 through 6.6.139; 6.7 through 6.12.87; 6.13 through 6.18.29; 6.19 through 7.0.6. Both HeartSuite production kernels sit in that window.
 **Upstream fix**: bounds check after `align_ptr()` in `retrieve_status()` (`drivers/md/dm-ioctl.c`); stable 6.18.30+
 
@@ -3571,12 +3571,12 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-53059
 
-Status: Not exploitable — tool not in the program allowlist
-Component: Device-mapper dirty log (CONFIG_BLK_DEV_DM, CONFIG_DM_MIRROR)
-Base Score: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-Score on Root Lock: 0.0
+**Status**: Not exploitable — tool not in the program allowlist  
+**Component**: Device-mapper dirty log (`CONFIG_BLK_DEV_DM`, `CONFIG_DM_MIRROR`)  
+**Base Score**: 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
+**Score on Root Lock**: 0.0
 
-The bug is an integer overflow in the device-mapper dirty log. A 64-bit region count is truncated to 32 bits, the log bitsets are allocated too small, and later bit operations write out of bounds in kernel heap. The trigger is creating a device-mapper mirror whose region count overflows UINT_MAX. That requires dmsetup (or LVM). HeartSuite APO does not ship dmsetup or LVM; the attack surface is not reachable.
+The bug is an integer overflow in the device-mapper dirty log. A 64-bit region count is truncated to 32 bits, the log bitsets are allocated too small, and later bit operations write out of bounds in kernel heap. The trigger is creating a device-mapper mirror whose region count overflows UINT_MAX. That requires dmsetup (or LVM). The program allowlist does not include dmsetup or LVM, so the attack surface is not reachable.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3722,7 +3722,7 @@ This CVE describes a one-byte out-of-bounds read in `tlv_data_is_valid()`. The p
 
 On 5.19.6, `# CONFIG_BT is not set`. The Bluetooth socket family, HCI layer, and MGMT parser are absent from the running kernel.
 
-On 6.18.9-hs, `CONFIG_BT=m`. Reaching the parser requires the Bluetooth module to be loaded, a registered HCI controller, and a trusted MGMT command. `MGMT_OP_ADD_ADVERTISING` is not in the untrusted command set; the kernel refuses it without `CAP_NET_ADMIN`. HeartSuite APO does not include `bluetoothd`, `bluetoothctl`, `btmgmt`, or `modprobe`/`insmod`/`kmod`. Module autoload also runs `modprobe` and is refused. The MGMT advertising path is not reached.
+On 6.18.9-hs, `CONFIG_BT=m`. Reaching the parser requires the Bluetooth module to be loaded, a registered HCI controller, and a trusted MGMT command. `MGMT_OP_ADD_ADVERTISING` is not in the untrusted command set; the kernel refuses it without `CAP_NET_ADMIN`. The program allowlist does not include `bluetoothd`, `bluetoothctl`, `btmgmt`, or `modprobe`/`insmod`/`kmod`. Module autoload also runs `modprobe` and is refused. The MGMT advertising path is not reached.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3934,13 +3934,13 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: 5.19.6 Not Affected; 6.18.9-hs Not exploitable — tool not in the program allowlist
 **Component**: Open vSwitch datapath (`CONFIG_OPENVSWITCH`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 is outside the affected range and does not compile Open vSwitch; 6.18.9-hs compiles the datapath as a module, and HeartSuite APO does not include the programs that load that module
+**Score on Root Lock**: 0.0 — 5.19.6 is outside the affected range and does not compile Open vSwitch; 6.18.9-hs compiles the datapath as a module, and the program allowlist does not include the programs that load that module
 
 Open vSwitch stores generated flow actions as Netlink attributes with a 16-bit length field. After the old 32 KiB action-stream cap was removed, a nested CLONE or conntrack action can be generated larger than 65,535 bytes. The stored length wraps, and a later dump or teardown walks attacker-controlled bytes as independent actions. On a kernel that has the datapath loaded and lets an unprivileged user hold `CAP_NET_ADMIN` in a network namespace, that is a local path to root.
 
 5.19.6 predates the unbounded nested-action path and is built with `CONFIG_OPENVSWITCH` not set.
 
-6.18.9-hs is in the NVD range (6.14 through 6.18.39) and builds `CONFIG_OPENVSWITCH=m` with conntrack and unprivileged user namespaces enabled. Reaching the bug still requires the `openvswitch` module to be loaded. HeartSuite APO does not include `modprobe`, `insmod`, `ovs-vswitchd`, or `ovs-vsctl`. Module autoload also runs `modprobe` and is refused. The datapath is not loaded on a standard Root Lock deployment, and it cannot be loaded after the allowlist is in force.
+6.18.9-hs is in the NVD range (6.14 through 6.18.39) and builds `CONFIG_OPENVSWITCH=m` with conntrack and unprivileged user namespaces enabled. Reaching the bug still requires the `openvswitch` module to be loaded. The program allowlist does not include `modprobe`, `insmod`, `ovs-vswitchd`, or `ovs-vsctl`. Module autoload also runs `modprobe` and is refused. The datapath is not loaded on a standard Root Lock deployment, and it cannot be loaded after the allowlist is in force.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3994,7 +3994,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Base Score**: 7.8 HIGH
 **Score on Root Lock**: 0.0 — standard Root Lock deployments do not run netfs streaming writes; attaching a netfs mount is blocked
 
-Netfslib can overwrite a streaming write when avoiding read-while-write. Both pins compile netfs support (5.19.6 `=y` with `CONFIG_9P_FS=y`; 6.18.9-hs `=m` with ceph/cifs/afs/9p modules). The path needs a mounted network filesystem. Root Lock root is not netfs. `modprobe`/`insmod`/`kmod` and netfs mkfs/mount helpers are absent from the program allowlist. Under Lockdown, `mount()` / `fsmount()` / `move_mount()` return `-EPERM`.
+Netfslib can overwrite a streaming write when avoiding read-while-write. Both pins compile netfs support (5.19.6 `=y` with `CONFIG_9P_FS=y`; 6.18.9-hs `=m` with ceph/cifs/afs/9p modules). The path needs a mounted network filesystem, and the Root Lock root filesystem is not one. `modprobe`/`insmod`/`kmod` and netfs mkfs/mount helpers are absent from the program allowlist. Under Lockdown, `mount()` / `fsmount()` / `move_mount()` return `-EPERM`.
 
 The trigger cannot be reached on any Root Lock deployment.
 

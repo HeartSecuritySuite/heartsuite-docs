@@ -22,7 +22,7 @@ menu:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing takes the maintenance kernel from a physical or serial console. SSH remains how you log in and run the Dashboard; after unseal, it is how you make changes. [Lockdown](../lockdown/) covers activation. [Circumvention and recovery](how-it-compares/#circumvention-and-recovery) covers residual risk.
+In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing means booting the maintenance kernel from a physical or serial console. SSH remains how you log in and run the Dashboard, and after the unseal it is how you make changes. [Lockdown](../lockdown/) covers activation. [Circumvention and recovery](how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 ## In this section
 
@@ -33,4 +33,4 @@ In Lockdown, anything not on the allowlist is blocked before it can act. By desi
 - [How Root Lock Compares](how-it-compares/) — What Root Lock replaces, what it complements, and how it can be circumvented.
 - [Security as Economics](security-as-economics/) — Which scanner findings can wait for the standard change window, and what that does to attacker cost.
 
-For detailed installation steps, see [Installation](../installation/). [Getting Started](../getting-started/) covers Cloud Path and Local Path. On a single host they converge at the Dashboard after initial setup. Many hosts still install through Cloud Path or Local Path on each machine — see [Central Policy](../alerts/central-policy-management/).
+For detailed installation steps, see [Installation](../installation/). [Getting Started](../getting-started/) covers Cloud Path and Local Path. On a single host they converge at the Dashboard after initial setup. Both paths install one machine at a time; to apply allowlist policy across many hosts from Ansible, Terraform, or GitOps, see [Central Policy](../alerts/central-policy-management/).

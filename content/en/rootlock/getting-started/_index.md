@@ -22,9 +22,9 @@ Check [Before You Begin](before-you-begin/) for system requirements and prerequi
 
 ## Order of work
 
-On Local Path, finish distribution updates and install the packages and services this host will actually run. Then run the installer. After the first reboot into the Root Lock kernel, leave the host quiet until the Dashboard appears.
+On Local Path, finish distribution updates and install the packages and services this host will actually run. Then run the installer. After the first reboot into the Root Lock kernel, leave the host alone until the Dashboard appears, because Root Lock is still adding startup and shutdown programs from those boots.
 
-On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues — do not approve them if they are not runtime.
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers can still appear in the queues; skip any the host does not need at runtime.
 
 When the Dashboard appears, Root Lock has already added the programs that executed at boot and shutdown. In Setup Mode, Root Lock logs the rest of the workload. [Allowlisting Basics](../allowlisting/allowlisting-basics/) covers **approve** and **skip**. After Lockdown, add software through [Protecting During Maintenance](../maintenance/protecting-during-maintenance/).
 
@@ -32,7 +32,7 @@ When the Dashboard appears, Root Lock has already added the programs that execut
 
 {{< choice-pane >}}
 {{< choice-card header="Cloud Path" >}}
-Launch a pre-installed Root Lock instance. No download or kernel installation required. First-boot leftovers can still appear in the queues — dismiss them if they are not runtime.
+Launch a pre-installed Root Lock instance. No download or kernel installation required. First-boot leftovers can still appear in the queues; skip any the host does not need at runtime.
 
 1. **Launch the instance** — start a pre-installed image on AWS, Google Cloud, Azure, DigitalOcean, Linode, or another provider.
 2. **Open the Dashboard** — you boot into Setup Mode and the Dashboard appears on first login. Initial setup is already complete.

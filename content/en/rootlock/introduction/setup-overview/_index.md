@@ -29,7 +29,7 @@ Setup Mode is the default after installation. Automated backup also runs in Setu
 
 Initial setup runs unattended after you boot the Root Lock kernel. It reads startup and shutdown activity, adds those programs to the allowlist, and reboots as needed.
 
-Cloud images already finished this at image-prep time. The Dashboard appears when that chain is complete.
+Cloud images complete initial setup during image preparation. On both paths, the Dashboard appears once initial setup is complete.
 
 | Checklist | Description |
 |-----------|-------------|
@@ -61,11 +61,11 @@ Many hosts still install through Cloud Path or Local Path on each machine. Ansib
 
 ## After the Dashboard appears
 
-Initial setup already recorded boot and shutdown. Setup Mode logs every program that executes, every file it reads or writes, and every outbound connection.
+Initial setup already added the programs from boot and shutdown. Setup Mode logs every program that executes, every file it reads or writes, and every outbound connection.
 
-Start the services you will keep. Compilers, probes, and extra shells that execute now become items in the review queues. If you approve them, Lockdown grants them. Do not approve programs that should not execute in production — they do not belong on the allowlist.
+Start the services you will keep. Compilers, probes, and extra shells that execute now become items in the review queues, and any you approve can run under Lockdown. Skip programs that should not execute in production, because they do not belong on the allowlist.
 
-After Lockdown, new packages go through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/). Approve and skip in [Allowlisting Basics](../../allowlisting/allowlisting-basics/).
+After Lockdown, new packages go through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/). [Allowlisting Basics](../../allowlisting/allowlisting-basics/) covers **approve** and **skip**.
 
 ## From installation to Lockdown
 
@@ -111,7 +111,7 @@ graph TD
 
 > [!WARNING]
 >
-> Complete remaining allowlisting in Setup Mode before activating Lockdown. Initial setup already added startup and shutdown programs. Anything still waiting in the review queues will be blocked.
+> Complete remaining allowlisting in Setup Mode before activating Lockdown. Initial setup already added startup and shutdown programs. Anything still waiting in the review queues will be blocked under Lockdown.
 
 Activating Lockdown shows an allowlist summary and a precondition checklist. Type `YES` (case-sensitive) to confirm. That starts a probe reboot; a second reboot applies the seal. See [Lockdown](../../lockdown/) for the activation flow.
 

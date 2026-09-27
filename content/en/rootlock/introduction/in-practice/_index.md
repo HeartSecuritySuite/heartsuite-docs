@@ -97,9 +97,9 @@ If vsftpd is on the allowlist, the backdoor activates inside vsftpd's own proces
 
 Root Lock limits what the attacker can do with that shell — file reads and outbound network connections remain gated. A program already approved to run can exercise its approved permissions, including ones a backdoor author planned for.
 
-The delayed-activation case is the **malicious sleeper**: an approved program behaves as expected for months, then uses those same permissions. The execute gate does not fire. In Lockdown, file reads and writes stay inside the program's allowlist, and outbound destinations stay closed.
+The delayed-activation case is the **malicious sleeper**: an approved program behaves as expected for months, then turns those same permissions against you. The execute gate does not fire, because nothing new runs, but under Lockdown the program's file reads and writes stay inside its allowlist and every destination outside its network allowlist stays closed.
 
-[Backup](../../maintenance/file-backup-versioning/) recovers protected directories from the write before the damage. It does not stop the first write to an approved path. Per-program-version file isolation, and automatic backup of every data file, are [HeartSuite Joint File System (HJFS)](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack).
+[Backup](../../maintenance/file-backup-versioning/) does not stop the sleeper's first write to an approved path, but it lets you restore protected directories to the version from before the damage. [HeartSuite Joint File System (HJFS)](../../../hjfs/introduction/hjfs-overview/#the-malicious-sleeper-attack) adds per-program-version file isolation and automatic backup of every data file.
 
 **Attacks within a program's approved scope.** A compromised web server that reads only files it is already approved to read, and connects only to destinations already in its network allowlist, operates within its allowlist. Every file outside that scope is still blocked. Every connection to an unapproved destination is still refused.
 
@@ -107,8 +107,8 @@ Tight allowlisting limits the blast radius. Under Lockdown, the kernel blocks an
 
 Under Lockdown the kernel gates execute, files, and outbound network per program. By design, remote root does not override those gates and has no intended path to change the sealed allowlist while the machine is running.
 
-The files are immutable on disk. The kernel refuses the write. The backup files are protected by the Root Lock kernel itself, not by filesystem permissions. Unapproved programs do not persist across reboot. An already-approved program still has its grants until you change them from a maintenance window.
+The allowlist files are immutable on disk and the kernel refuses the write, while the backup files are protected by the Root Lock kernel itself rather than by filesystem permissions. Unapproved programs do not persist across reboot, but an already-approved program keeps its grants until you change them from a maintenance window.
 
-Lockdown also sets `chattr +i` on `/root` itself (directory inode), not only on allowlist files. `curl` blocked from `/root/credentials.txt` is the per-program layer. The directory flag is the seal. Neither layer is a remote Lockdown off-switch; unseal is the console GRUB pick **Maintenance: unseal and return to Root Lock**. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
+Lockdown also sets `chattr +i` on the `/root` directory inode itself, not only on the allowlist files, so the `curl` example above meets two layers: the per-program file allowlist refuses the read of `/root/credentials.txt`, and the immutable flag on the directory is the seal. Neither layer can be lifted remotely, because unsealing takes the console GRUB pick **Maintenance: unseal and return to Root Lock**. See [Circumvention and recovery](../how-it-compares/#circumvention-and-recovery).
 
 For detection and response when an attack stays within approved boundaries, see [How Root Lock Compares](../how-it-compares/) — specifically the complementary tools table covering SIEM, NDR, and EDR. For the economics of this attack model — what it costs the attacker to work through each boundary — see [Security as Economics](../security-as-economics/).

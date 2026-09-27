@@ -11,9 +11,9 @@ aliases:
 
 This document maps Root Lock by HeartSuite capabilities to NIST CSF **1.1** and ISO/IEC 27001:2022 **Annex A** as technical contributions a customer may cite after their own risk assessment.
 
-ISO 27001 certifies an organization's ISMS (clauses 4–10). Annex A is the reference set declared in a **Statement of Applicability**. CSF 1.1 outcomes are organizational. Put this product on the SoA only where a kernel allowlist actually treats the risk.
+ISO 27001 certifies an organization's ISMS (clauses 4–10), and Annex A is the reference set of controls declared in its **Statement of Applicability**. CSF 1.1 outcomes are organizational too, so put this product on the SoA only where a kernel allowlist actually treats the risk.
 
-CSF 2.0 (February 2024) reorganized Protect (PR.AC → PR.AA and similar). This page stays on **1.1 IDs** so the table is one version.
+CSF 2.0 (February 2024) reorganized Protect (PR.AC → PR.AA and similar). This page uses **1.1 IDs** throughout so every row refers to the same version.
 
 Root Lock is a preventive enforcement layer: default-deny execution, file access, and outbound network policy at the kernel. Under Lockdown, remote root has no intended path to lift that policy at runtime.
 
@@ -27,15 +27,15 @@ Root Lock operates through three enforcement gates, applied per program, not per
 
 | Gate | What it controls |
 |---|---|
-| **Execution** | A program must be explicitly allowlisted to execute. Unapproved binaries are blocked even for root. |
+| **Execution** | A program must be explicitly allowlisted to execute. Under Lockdown, unapproved binaries are blocked, including when root runs them. |
 | **File access** | Each approved program can only read or write paths explicitly permitted in its allowlist entry. |
-| **Network access** | Each approved program can only connect to specific IPv4/IPv6 addresses. All other outbound connections are blocked. |
+| **Network access** | Each approved program can only connect to specific IPv4/IPv6 addresses. Under Lockdown, all other outbound connections are blocked. |
 
 Two modes govern behaviour: **Setup Mode** (log and review, no blocking) and **Lockdown** (blocking active, configuration sealed with filesystem immutability flags that, by design, remote root cannot clear at runtime). Recovery is the maintenance kernel via physical or serial-console access.
 
 Under Lockdown, kernel-level immutability also protects authentication files (`/etc/passwd`, `/etc/shadow`), SSH configuration, systemd units, sudo policy, scheduled tasks (cron/anacron), system libraries (`/usr/lib/`), and Root Lock's own configuration and kernel image directory.
 
-File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling, including root.
+File Backup & Versioning takes an automatic snapshot on every write to designated directories (default: `/home`). Under Lockdown the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program, including root, except Root Lock backup tooling.
 
 ---
 
@@ -55,24 +55,24 @@ Relevant CSF **subcategory** (partial): **ID.AM-2** (software platforms and appl
 
 This is Root Lock's primary contribution.
 
-These are CSF 1.1 **subcategories**, not categories. Rows that were previously mapped incorrectly (identity lifecycle, remote access, network segmentation, data-at-rest encryption, vulnerability-management **plan**, remote maintenance, logging **program**) are omitted rather than stretched.
+These are CSF 1.1 **subcategories**, not categories. Subcategories that a host allowlist does not meet (identity lifecycle, remote access, network segmentation, data-at-rest encryption, vulnerability-management **plan**, remote maintenance, logging **program**) are left out of the table rather than stretched, and are listed below it.
 
 | CSF 1.1 subcategory | HeartSuite contribution (partial) |
 |---|---|
-| **PR.AC-4** — Access permissions are managed, incorporating the principles of least privilege and separation of duties | Per-program execution and file-access allowlists enforce least privilege at the kernel, including for root. Dashboard RBAC / organizational SoD is **not** provided. |
-| **PR.DS-5** — Protections against data leaks are implemented | Outbound network allowlist limits exfiltration **destinations**; it does not inspect content of approved connections. |
+| **PR.AC-4** — Access permissions are managed, incorporating the principles of least privilege and separation of duties | Per-program execution and file-access allowlists enforce least privilege at the kernel, including for root. Root Lock does not provide Dashboard RBAC or organizational separation of duties. |
+| **PR.DS-5** — Protections against data leaks are implemented | Outbound network allowlist limits exfiltration destinations; it does not inspect content of approved connections. |
 | **PR.IP-1** — A baseline configuration of information technology/industrial control systems is created and maintained | Allowlist plus Lockdown is an enforced host baseline. Changes take a maintenance window. |
 | **PR.PT-3** — The principle of least functionality is incorporated by configuring systems to provide only essential capabilities | Lockdown disables editors, restricts `rm`/`cp`/`mv`, and seals scheduled-task files. |
 
 **Not claimed here (complementary customer controls):**
 
 - **PR.AC-1** identity lifecycle — sealing `/etc/shadow` is integrity of the file, not issue/revoke/audit of identities.
-- **PR.AC-3** remote access — outbound IP allowlisting is not VPN/SSH/RDP management; inbound is unmanaged.
+- **PR.AC-3** remote access — outbound IP allowlisting does not manage VPN, SSH, or RDP access, and Root Lock does not filter inbound connections.
 - **PR.AC-5** network integrity / segmentation — host socket allowlisting is not network segregation.
-- **PR.DS-1** data-at-rest — backups and config are **not** encrypted at the Root Lock layer; LUKS is the complementary control (see A.8.13 / A.8.24).
-- **PR.IP-12** vulnerability management plan — same idea as ISO **A.8.8**, which is **not covered**. Blast-radius reduction is not a VM plan.
-- **PR.MA-2** remote maintenance — unsealing Lockdown is a local/serial two-reboot (console GRUB pick). Package work after unseal is still over SSH. The control is that remote root cannot lift the seal; it is not a ban on remote admin.
-- **PR.PT-1** audit/log records determined, documented, implemented, and reviewed — a logging **program**, not `chattr` on a buffer that is cleared on maintenance.
+- **PR.DS-1** data-at-rest — backups and config are not encrypted at the Root Lock layer; LUKS is the complementary control (see A.8.13 / A.8.24).
+- **PR.IP-12** vulnerability management plan — the counterpart of ISO **A.8.8**, which is also not covered: limiting what an unpatched vulnerability can reach does not make a vulnerability management plan.
+- **PR.MA-2** remote maintenance — unsealing Lockdown takes two reboots and a GRUB pick at the local or serial console, and package work after the unseal runs over SSH as usual. What Root Lock adds is that remote root cannot lift the seal, which does not amount to managing remote maintenance.
+- **PR.PT-1** audit/log records determined, documented, implemented, and reviewed — this calls for a logging **program**. Root Lock's sealed on-device buffers are cleared on maintenance, so they feed that program rather than meet the control.
 
 ### Function: Detect
 
@@ -125,21 +125,21 @@ There is no operator/administrator distinction and no per-function permission ch
 
 ### A.7 — Physical Controls
 
-Not covered. Lockdown requires **physical or serial-console access to bypass** (reboot to a maintenance kernel to clear immutability flags). That path is enough while the boot menu password stays off. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. This is not  the Linux root password.
+Not covered. Lockdown requires **physical or serial-console access to bypass** (reboot to a maintenance kernel to clear immutability flags). The optional boot menu password is off by default, so that console access is enough. If you set one, **Maintenance: unseal and return to Root Lock** and any kernel-line edit prompt for the GRUB name `root` and that password, which is separate from the Linux root password.
 
-In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) is the same path as a keyboard. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Serial console access still matters because the default is off, and because mounting the disk from outside does not go through GRUB. Restricting serial console access in the cloud provider's IAM is a customer-side dependency that preserves Lockdown's protection model.
+In cloud deployments, the provider's out-of-band serial console (AWS EC2 Serial Console, GCP serial port, Azure Serial Console, DigitalOcean Console) is the same path as a keyboard. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Restricting that console still matters with the password set, because someone who mounts the disk from outside the VM never passes through GRUB. Restricting serial console access in the cloud provider's IAM is a customer-side dependency that preserves Lockdown's protection model.
 
 ### A.8 — Technological Controls
 
 | Control | HeartSuite contribution |
 |---|---|
-| **A.8.2** — Privileged access rights | Immutable seal and per-program gates apply at runtime, including to programs running as root. sudo, PAM, and a privileged-access tool such as WALLIX record who may elevate and when; Root Lock records what those programs may execute, read, write, and connect to, including as root. This page does not claim a PEDM partnership. By design, remote root has no intended path to execute a new binary, modify sealed files, or clear Lockdown state; unseal is the console GRUB pick **Maintenance: unseal and return to Root Lock**, and that boot runs `HS_unlock.sh`. sshd does not clear the seal. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with timestamp, uid, and tty in `/var/log/heartsuite/allowlist-audit.log`; attributing those sessions to named personnel requires customer-side session logging (auditd or a PAM tool). The rotating application log (`/var/log/heartsuite/ui.log`) is supplementary. |
+| **A.8.2** — Privileged access rights | Immutable seal and per-program gates apply at runtime, including to programs running as root. sudo, PAM, and a privileged-access tool such as WALLIX govern who may elevate and when; Root Lock controls what those programs may execute, read, write, and connect to, including as root. This page does not claim a PEDM partnership. By design, remote root has no intended path to execute a new binary, modify sealed files, or clear Lockdown state; unseal is the console GRUB pick **Maintenance: unseal and return to Root Lock**, and that boot runs `HS_unlock.sh`. sshd does not clear the seal. Dashboard access requires Linux root credentials; no additional authentication layer exists within HeartSuite. Every allowlist approval action is recorded with timestamp, uid, and tty in `/var/log/heartsuite/allowlist-audit.log`; attributing those sessions to named personnel requires customer-side session logging (auditd or a PAM tool). The rotating application log (`/var/log/heartsuite/ui.log`) is supplementary. |
 | **A.8.3** — Information access restriction | Per-program file-access allowlist restricts which paths each program can read or write. |
 | **A.8.4** — Access to source code | Not covered natively; HeartSuite does not distinguish source code files. File-access allowlists can be configured to restrict access to specific paths. |
-| **A.8.5** — Secure authentication | **Not covered.** HeartSuite provides no authentication mechanism. Sealing `/etc/passwd` and `sshd_config` is integrity of those files, not authentication. An optional boot menu password is not a Dashboard login and not the Linux root password. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. Serial console access still matters because the default is off, and because mounting the disk from outside does not go through GRUB. |
+| **A.8.5** — Secure authentication | **Not covered.** HeartSuite provides no authentication mechanism. Sealing `/etc/passwd` and `sshd_config` is integrity of those files, not authentication. The optional boot menu password (off by default) guards only the GRUB maintenance entries and kernel-line edits; it is neither a Dashboard login nor the Linux root password (see A.7). |
 | **A.8.7** — Protection against malware | Default-deny execution allowlist prevents unauthorised binaries from running. No signature-based or behavioural malware detection. |
 | **A.8.8** — Management of technical vulnerabilities | Not covered. HeartSuite constrains the impact of unpatched vulnerabilities via allowlist boundaries but does not scan for, report on, or remediate them. |
-| **A.8.9** — Configuration management | Allowlist plus Lockdown is an enforced host configuration state. Changes take a maintenance window. No HeartSuite multi-host push. Customer automation applies policy per host. No emergency revocation while Lockdown is sealed. Boot-path integrity: `CONFIG_IMA` is not set and `CONFIG_KEXEC_FILE` is not set. The kernel image directory is sealed under Lockdown via `chattr +i`. Secure Boot for the Root Lock kernel remains incomplete. See [Central Policy Management](../alerts/central-policy-management/). |
+| **A.8.9** — Configuration management | Allowlist plus Lockdown is an enforced host configuration state, and changes take a maintenance window. HeartSuite has no multi-host push, so your automation applies policy host by host, and while Lockdown is sealed an entry cannot be revoked outside that window either. For boot-path integrity, `CONFIG_IMA` and `CONFIG_KEXEC_FILE` are not set, and Lockdown seals the kernel image directory with `chattr +i`. Secure Boot for the Root Lock kernel remains incomplete. See [Central Policy Management](../alerts/central-policy-management/). |
 | **A.8.10** — Information deletion | Not covered. HeartSuite's restricted `rm` under Lockdown limits accidental deletion but has no secure-deletion or data-retention controls. |
 | **A.8.11** — Data masking | Not covered. |
 | **A.8.12** — Data leakage prevention | Partially. Network allowlist prevents outbound connections to unapproved destinations; it does not inspect the content of approved connections. |
@@ -191,7 +191,7 @@ For Nagios/Zabbix/Ansible polling, `lockdown`, `is_hs_kernel`, and `daemon_ok` a
 
 ## Open Questions
 
-The following items remain open or only partly answerable. Kernel CVE process, OSV, and CycloneDX are no longer in that set.
+The following items remain open or only partly answerable. The kernel CVE and SBOM entries link to what is already published.
 
 ### Evidence & Attestation
 
@@ -213,9 +213,9 @@ The following items remain open or only partly answerable. Kernel CVE process, O
 
 ### Incident Response & Recovery
 
-1. **What is the documented RTO for restoring a Lockdown host after a security incident?** Recovery requires a minimum three-step, two-reboot sequence with manual Dashboard queue review. No time estimate is defined; duration is queue-dependent. There is no fast path.
+1. **What is the documented RTO for restoring a Lockdown host after a security incident?** Recovery requires a minimum three-step, two-reboot sequence with manual Dashboard queue review. No time estimate is defined, because the duration depends on how much is waiting in the queues, and there is no fast path.
 
-1. **Can HeartSuite backups be restored to a different host?** The restore mechanism is local-only. There is no export, archive, or transfer capability; cross-host restore is architecturally absent.
+1. **Can HeartSuite backups be restored to a different host?** No. Restore is local-only, because Root Lock has no export, archive, or transfer capability for backups.
 
 1. **How are HeartSuite security incidents (in the product itself) disclosed to customers?** *(Organisational — not in the product.)* A.5.24 is the **customer organization’s** incident-management planning. Vendor notification terms live in the subscription agreement, not in that control.
 
@@ -225,7 +225,7 @@ The following items remain open or only partly answerable. Kernel CVE process, O
 
 ### Compliance Certifications
 
-1. **Does HeartSuite map to sector-specific frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? **Not in this document.** Those regimes are not copy-paste of CSF 1.1 or ISO Annex A. NIS2 and DORA are not 800-171. CMMC Level 2 is 800-171-based; that still needs its own map. Do not treat this page as a PCI, HIPAA, NIS2, DORA, or CMMC mapping.
+1. **Does HeartSuite map to sector-specific frameworks** — PCI DSS, HIPAA, NIS2, DORA, CMMC? **Not in this document.** Each of those regimes has its own requirements rather than copying CSF 1.1 or ISO Annex A, and NIS2 and DORA do not derive from NIST SP 800-171. Even CMMC Level 2, which is based on 800-171, needs its own map, so do not treat this page as a PCI, HIPAA, NIS2, DORA, or CMMC mapping.
 
 ---
 
@@ -252,7 +252,7 @@ When Root Lock runs as a guest VM on a cloud platform, responsibility for contro
 | Vulnerability scanning | — | — | Customer operates |
 | Incident response program | — | — | Customer defines |
 
-The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Anyone who can reach the cloud provider's out-of-band serial console can boot to the maintenance kernel without further authentication from Root Lock while the boot menu password stays off. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. This is not a Dashboard login and not the Linux root password. Serial console access still matters because the default is off, and because mounting the disk from outside does not go through GRUB.
+The most operationally significant customer responsibility in cloud deployments is **restricting serial console access**. Root Lock installs `agetty` autologin on `/dev/ttyS0`. Anyone who can reach the cloud provider's out-of-band serial console can boot to the maintenance kernel without further authentication from Root Lock, unless you set the optional boot menu password (off by default; see A.7). Even with that password set, console and volume access stay sensitive, because mounting the disk from outside never passes through GRUB.
 
 Restricting serial console access at the cloud provider IAM layer is the control that preserves Lockdown's protection model in cloud environments.
 

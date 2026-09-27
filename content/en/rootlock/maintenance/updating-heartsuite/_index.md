@@ -24,11 +24,11 @@ It does not wipe user data, existing allowlist entries, or backup files. A compl
 
 ## Why the update needs a stock boot
 
-The installer will not overwrite Root Lock while that kernel is booted. It checks `uname -r`. Setup Mode is still the Root Lock kernel. You can copy the bundle there, and you can install packages and edit configuration there.
+The installer will not overwrite Root Lock while that kernel is booted, which it checks with `uname -r`. Setup Mode still runs the Root Lock kernel, so you can copy the bundle, install packages, and edit configuration there, but the update itself finishes on a different boot.
 
-You can also **start** `bash heartsuite-install.sh` there from a terminal. The installer asks you to type `YES` (case-sensitive). That sets the **next boot only** to the original distro kernel (stock) or Maintenance, keeps Root Lock as the default, and continues the update after that boot. You do not pick a menu entry, and you do not run the installer a second time.
+You can also start `bash heartsuite-install.sh` there from a terminal. The installer asks you to type `YES` (case-sensitive), which sets the next boot only to the original distro kernel (stock) or Maintenance, keeps Root Lock as the default, and continues the update after that boot. You do not pick a menu entry, and you do not run the installer a second time.
 
-If the session is not a terminal — for example `curl … | sudo bash` — the installer prints a one-shot command such as `grub-reboot '…' && reboot` for **this** machine instead of asking `YES`. Copy that command; do not invent a number. After that boot, run `bash heartsuite-install.sh` again. If the installer cannot name an entry, it tells you to open the console and choose stock or Maintenance at the boot menu.
+If the session is not a terminal — for example `curl … | sudo bash` — the installer prints a one-shot command such as `grub-reboot '…' && reboot` for this machine instead of asking `YES`. Copy that command exactly rather than typing a boot entry number of your own. After that boot, run `bash heartsuite-install.sh` again. If the installer cannot name an entry, it tells you to open the console and choose stock or Maintenance at the boot menu.
 
 The first-install command `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash` is for a host that does not yet have Root Lock. On a host already running the Root Lock kernel it downloads the bundle and then follows the non-terminal path above.
 
@@ -38,17 +38,17 @@ If Lockdown is applied (the strip says **Lockdown applied**), unseal first. The 
 - **Already on the original distro kernel or the maintenance kernel, and the strip does not say Lockdown applied.** Skip Unseal and skip `YES`. Run the installer.
 - **On the maintenance kernel but the strip still says Lockdown applied.** The immutable flags are still on the files. Unseal first.
 
-On the stock or maintenance boot, Root Lock is not loaded: it does not block programs, does not log, and does not take backups. That stock boot is ordinary Linux. Default console-dark is NIC down unless Maintenance already chose a live or firewall route — this update path is that live route, over SSH, after the console GRUB pick **Maintenance: unseal and return to Root Lock**. Choose a time when that gap is acceptable.
+On the stock or maintenance boot Root Lock is not loaded, so it does not block programs, log, or take backups: that boot is ordinary Linux. By default the NIC stays down on that boot unless Maintenance already chose a live or firewall route; this update path uses that live route, over SSH, after the console GRUB pick **Maintenance: unseal and return to Root Lock**. Choose a time when that gap is acceptable.
 
 ## Before you begin
 
 - **Unseal first if Lockdown is applied.** From the Dashboard, open Maintenance (`[m]`) and follow the sealed path in [Protecting During Maintenance](../protecting-during-maintenance/). You must land in Setup Mode before the installer can set the next boot.
 - **Verify the bundle.** Compare the SHA-256 of `heartsuite-install.sh` against the published checksum before running it.
-- **Physical or serial-console access** if the installer cannot name a boot entry, and for recovery if the new kernel does not boot. You do not need the console only because you are in Setup Mode.
+- **Physical or serial-console access** if the installer cannot name a boot entry, and for recovery if the new kernel does not boot. Being in Setup Mode alone does not require the console.
 
 ## Update procedure
 
-1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`. In Setup Mode that copy is allowed. Under Lockdown it may be denied — `HS_lockdown.sh` sets `chattr +i` on `/root`, not only because of the allowlist. Unseal first.
+1. Place `heartsuite-install.sh` and `heartsuite-install.sh.sha256` on the system, typically by `scp` into `/root/`. In Setup Mode that copy is allowed. Under Lockdown it may be denied, and not only by the allowlist: `HS_lockdown.sh` also sets `chattr +i` on `/root`. Unseal first.
 2. If Lockdown is applied, open Maintenance (`[m]`) and complete the unseal path. You should be in Setup Mode on the Root Lock kernel before the next step.
 3. Verify integrity:
 
@@ -70,12 +70,12 @@ On the stock or maintenance boot, Root Lock is not loaded: it does not block pro
 
 ## Many hosts
 
-The in-place bundle is per host. After Lockdown, each sealed host still unseals from the console before the installer can set the next boot — `/boot` is sealed.
+The in-place bundle is per host. After Lockdown, each sealed host still needs the console unseal before the installer can set the next boot, because `/boot` is sealed.
 
 For many locked hosts, reprovision from an updated pre-configured image instead of running the bundle on each live machine. That path is equivalent for support when the image contains a published bundle. See [Kernel Support Policy](../../kernel-hardening/kernel-support-policy/#pre-configured-image-alternative) and [Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/#operational-model-for-fleets).
 
 ## If the update fails
 
-If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Selecting a kernel other than Root Lock, or editing the kernel line, asks for the boot menu password if one was set. The normal Root Lock entry does not. Default is off.
+If the new Root Lock kernel does not boot, select the previous kernel from the GRUB menu. Physical or serial-console access is required for this step. Selecting a kernel other than Root Lock, or editing the kernel line, asks for the boot menu password if one was set (none is set by default). The normal Root Lock entry does not ask.
 
 Both the previous Root Lock kernel and the maintenance kernel remain available as recovery entries. Contact HeartSuite support at [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include the contents of `/var/log/heartsuite/install.log` in your message — we're happy to help you recover.

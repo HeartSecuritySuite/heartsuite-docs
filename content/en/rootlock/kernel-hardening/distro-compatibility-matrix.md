@@ -32,8 +32,6 @@ Each row assigns a **tier** that says what HeartSuite has run recently and what 
 | **Compatible (customer validation)** | Same RPM or Debian family as a tested row, but HeartSuite has not published branded testing for your exact minor or vendor image. You run install and Lockdown on your gold image before production. |
 | **Not supported** | Outside architecture or distribution scope. Use HJFS on a standard kernel or a supported base OS. |
 
-Do **not** read “Supported” as “Lockdown certified on this date.” On 2026-08-18 the release-core campaign finished **PARTIAL** (`Release eligible: no`). That campaign’s guest list is not today’s release-core set.
-
 **Columns**
 
 - **Kernel line** — Which Root Lock kernel the current installer for that row ships. Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only. Ubuntu 22.04 is not offered on this installer. You do not pick both lines at install on a given row.
@@ -50,8 +48,8 @@ Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.
 | **Debian** | 13 (Trixie) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Seedless initial setup can stress OpenSSH split paths. |
 | **Debian** | 12 (Bookworm) | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Primary lab reference. |
 | **Debian** | 11 (Bullseye) | **Legacy (5.19 only)** | 5.19 | GRUB | glibc &lt; 2.34. k6 / 6.18 install is not offered. |
-| **Ubuntu** | 26.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud default with Debian 13. UEFI/OVMF pflash, same class as 24.04. Not a Lockdown sign-off. |
-| **Ubuntu** | 24.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud images are UEFI/OVMF pflash; remaining lab PARTIAL is post-seal SSH or kernel ledger, not snapshot create. |
+| **Ubuntu** | 26.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud default with Debian 13. UEFI/OVMF pflash, same class as 24.04. |
+| **Ubuntu** | 24.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud images are UEFI/OVMF pflash. |
 | **Ubuntu** | 22.04 LTS | **Not supported** | — | — | glibc 2.35 meets the floor. Stock Python 3.10 is below the installer floor of 3.11. The installer refuses the host. |
 | **Ubuntu** | 20.04 LTS | **Legacy (5.19 only)** | 5.19 | GRUB | Same glibc floor as Debian 11. k6 / 6.18 install is not offered. |
 | **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same rule as the Ubuntu release you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives of 24.04 or 26.04. A 22.04 or 20.04 derivative follows that row. Staging validation is still required. AppArmor is compiled in on the current 6.18 pin — see [Workload fit](#workload-fit-not-distro-specific). |
@@ -125,7 +123,7 @@ The current installer needs glibc 2.34 or newer and Python 3.11 or newer. Rocky 
 | **AlmaLinux 9** | Not supported. Same Python floor as Rocky Linux 9. |
 | **AlmaLinux 8** | Not supported. Same glibc floor as RHEL 8. |
 
-**SELinux on RHEL-family systems:** On RHEL and Fedora, SELinux is Enforcing by default. Root Lock VFS hooks are designed to run before the LSM chain, so SELinux can add restrictions after Root Lock allows an operation and cannot lift a Root Lock denial. A targeted SELinux policy module may still be needed for product paths. If AVC denials appear, use `ausearch` and `audit2allow`. Hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence). That LSM page is still written against the **5.19.6** measured pack — do not treat it as the 6.18.9-hs LSM list.
+**SELinux on RHEL-family systems:** Root Lock VFS hooks are designed to run before the LSM chain, so SELinux can add restrictions after Root Lock allows an operation and cannot lift a Root Lock denial. A targeted SELinux policy module may still be needed for product paths. If AVC denials appear, use `ausearch` and `audit2allow`. Hook-order detail: [LSM Comparison → Co-existence](lsm-comparison/#co-existence). That LSM page is still written against the **5.19.6** measured pack — do not treat it as the 6.18.9-hs LSM list.
 
 ---
 
@@ -137,7 +135,7 @@ Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 are the current k6 `release
 |--------------|----------|
 | **Debian 12 / 13** | Supported (lab). Preferred for new Debian-based gold images. |
 | **Debian 11** | Legacy — 5.19 / k5 only. glibc 2.31. |
-| **Ubuntu 26.04 LTS** | Supported (lab). Cloud default with Debian 13. Not a Lockdown sign-off. |
+| **Ubuntu 26.04 LTS** | Supported (lab). Cloud default with Debian 13. |
 | **Ubuntu 24.04 LTS** | Supported (lab). UEFI/pflash on cloud images. |
 | **Ubuntu 22.04 LTS** | Not supported. Stock Python 3.10 is below 3.11. |
 | **Ubuntu 20.04 LTS** | Legacy — 5.19 / k5 only. glibc 2.31. |
@@ -180,7 +178,7 @@ Before you install on a cloud instance:
 - Run the install once on your target instance type in staging before fleet rollout.
 - If the installer stops before reboot, read `/var/log/heartsuite/install.log` and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with the log attached.
 
-Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a supported product role**. That is a support-scope statement. The fielded 6.18 pin compiles `CONFIG_KVM=m`; do not read “not supported” as “KVM is compiled out.” See [Workload fit](#workload-fit-not-distro-specific).
+Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a supported product role**. That is a support-scope statement rather than a compile-out: the fielded 6.18 pin compiles `CONFIG_KVM=m`. See [Workload fit](#workload-fit-not-distro-specific).
 
 ---
 
@@ -188,7 +186,7 @@ Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a sup
 
 Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether a **workload** belongs on that host is a separate decision.
 
-The two kernel lines are **not** the same configuration.
+The two kernel lines ship different configurations.
 
 | Interface | 5.19 legacy (Debian 11 / Ubuntu 20.04) | Fielded 6.18 pin (`6.18.9-hs`, packaging `6.18.9-HeartSuite-3`, build `#37`) |
 |-----------|----------------------------------------|-------------------------------------------------------------------------------|
@@ -199,7 +197,7 @@ The two kernel lines are **not** the same configuration.
 | `CONFIG_SECURITY_APPARMOR` | not set | `=y` |
 | `CONFIG_KVM` | not set | `=m` |
 
-On the **current 6.18 pin**, “this tool cannot run” is **not** an `ENOSYS` / compiled-out claim for eBPF, FUSE, OverlayFS, user namespaces, AppArmor, or KVM. A program can still fail because it is not on the allowlist, because Lockdown refuses a new mount or a new module load, or because the role is unsupported.
+On the **current 6.18 pin**, “this tool cannot run” is not an `ENOSYS` / compiled-out claim for eBPF, FUSE, OverlayFS, user namespaces, AppArmor, or KVM. A program can still fail because it is not on the allowlist, because Lockdown refuses a new mount or a new module load, or because the role is unsupported.
 
 | Requirement | On the current 6.18 pin | On 5.19 legacy |
 |-------------|-------------------------|----------------|
@@ -241,7 +239,7 @@ If install or Root Lock kernel boot fails on a Supported, In lab, Experimental, 
 
 1. **`/var/log/heartsuite/install.log`** — installer steps and outcome (see [Appendices](../../appendices/)).
 2. **Kernel identity:** output of `uname -r`.
-   - Current 6.18 stream: expect **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build `#37`). Absence of the word `HeartSuite` does **not** mean you are on the maintenance kernel.
+   - Current 6.18 stream: expect **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build `#37`). Absence of the word `HeartSuite` does not mean you are on the maintenance kernel.
    - 5.19 legacy: expect a string such as `5.19.6-HeartSuite-2.0`.
    - Maintenance kernel: a distribution version string with no Root Lock packaging (for example a stock `debian` or `el` uname).
 3. **OS identity:** contents of `/etc/os-release`.

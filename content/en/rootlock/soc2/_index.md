@@ -64,7 +64,7 @@ The three dimensions of per-program access control:
 
 Access permissions are built during Setup Mode via the Dashboard review queues. Each program's execution, file access, and network access is presented for explicit human approval before Lockdown is activated.
 
-Under Lockdown, root cannot change the allowlist. The files are immutable (`chattr +i`). The kernel refuses the write. No program can extend access at runtime.
+Under Lockdown, root cannot change the allowlist: the files are immutable (`chattr +i`) and the kernel refuses the write, so no program can extend access at runtime.
 
 **Scope**: Every allowlist approval action (programs, file paths, network destinations) is recorded in a dedicated, persistent JSONL approval log with timestamp, uid, and tty. That log provides direct session attribution for changes to the policy.
 
@@ -106,7 +106,7 @@ CC6.3 is an organizational control for this product. Restricting which personnel
 
 **How Root Lock can support a customer control**:
 
-Root Lock does **not** implement inbound / boundary access control. There is no inbound packet filter, VPN, or external-user authentication in the product. Inbound filtering remains a customer-side OS packet filter or cloud security group — that complementary control is what typically addresses CC6.6.
+Root Lock does not implement inbound / boundary access control: the product has no inbound packet filter, VPN, or external-user authentication. Inbound filtering remains a customer-side OS packet filter or cloud security group — that complementary control is what typically addresses CC6.6.
 
 What Root Lock *does* on the host (the five-category `chattr +i` seal of OS configuration, authentication files, and related paths) is a **logical access / change-protection** activity. Cite it under CC6.1 and CC8.1. The inventory stays here so the seal is documented in one place.
 
@@ -122,11 +122,11 @@ The five sealed categories:
 | Scheduled tasks and login scripts | Cron and anacron configuration, environment defaults, root shell profiles |
 | Maintenance tools | File editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies |
 
-While Lockdown is active, root cannot remove the immutable flags. The kernel disables `chattr`. Modifying any of these resources requires booting the maintenance kernel, which requires physical or serial-console access (keyboard and monitor, serial port, or cloud provider serial console).
+While Lockdown is active, root cannot remove the immutable flags because the kernel disables `chattr`, so modifying any of these resources requires booting the maintenance kernel, which requires physical or serial-console access (keyboard and monitor, serial port, or cloud provider serial console).
 
 An attacker who already has root over SSH cannot edit the SSH config, create accounts, change passwords, install cron jobs, or plant login-script backdoors.
 
-**Scope**: Root Lock installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from Root Lock while the boot menu password stays off. Default is off. If one was set, **Maintenance: unseal and return to Root Lock** and a kernel-line edit ask for GRUB name root and that password. Serial access remains the backstop when the password is off. Mounting the disk from outside still bypasses a password that was set.
+**Scope**: Root Lock installs `agetty` autologin on the serial port (`/dev/ttyS0`). Whoever has access to the cloud provider's out-of-band console (AWS EC2 Serial Console, Azure Serial Console, GCP serial port, DigitalOcean Console) can reach the maintenance kernel without further authentication from Root Lock unless the optional boot menu password was set; it is off by default. With a password set, **Maintenance: unseal and return to Root Lock** and any kernel-line edit prompt for the GRUB name `root` and that password, but someone who mounts the disk from outside the VM never passes through GRUB.
 
 Restricting serial console access is a customer-side organizational control enforced through cloud provider IAM — it is the final backstop of Lockdown's protection model.
 

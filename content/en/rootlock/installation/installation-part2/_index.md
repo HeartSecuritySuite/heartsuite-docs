@@ -40,7 +40,7 @@ The first time the Dashboard is in front of you, initial setup is complete.
 
 ## Leave the host quiet
 
-After the first reboot into the Root Lock kernel, leave the machine alone until setup finishes. Each SSH reconnect shows a status line and a shell. Root Lock is still adding startup and shutdown programs from those boots. On a graphical VM window, do not wait for the Dashboard to replace the login prompt.
+After the first reboot into the Root Lock kernel, leave the machine alone until setup finishes, because Root Lock is still adding startup and shutdown programs from those boots. Each SSH reconnect shows a status line and a shell. On a graphical VM window the login prompt stays, so log in once setup finishes rather than waiting for the Dashboard to replace it.
 
 ## What already landed on the allowlist
 
@@ -50,15 +50,15 @@ Package-install helpers, compilers, and one-shot probes that executed during tho
 
 ## Run the services you will keep
 
-Start the services this host will keep. Do not run throwaway tests, compilers, or extra shells. In the review queues, approve programs that belong on this host. Dismiss the one-shots as approving them grants them under Lockdown. [Allowlisting Basics](../../allowlisting/allowlisting-basics/) covers **approve** and **skip**.
+Start the services this host will keep, and leave out throwaway tests, compilers, and extra shells, because everything that executes now lands in the review queues. In the review queues, approve programs that belong on this host and skip the one-shots, because approving them lets them run under Lockdown. [Allowlisting Basics](../../allowlisting/allowlisting-basics/) covers **approve** and **skip**.
 
-Setup Mode after the Dashboard is for that kept workload. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
+Use Setup Mode for that kept workload. After Lockdown, add software through [Protecting During Maintenance](../../maintenance/protecting-during-maintenance/).
 
 ## Cloud leftovers
 
-On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers (cloud-init, provisioning helpers) may still appear in the queues. Do not approve them if they are not runtime.
+On Cloud Path, Root Lock already finished initial setup during image preparation. First-boot leftovers (cloud-init, provisioning helpers) may still appear in the queues; skip any the host does not need at runtime.
 
-Cloud images often ship a first-boot SSH policy that allows password login so you can reach the guest. After first boot, running sshd is typically key-only. Check the live sshd configuration, for leftover cloud-init snippets.
+Cloud images often ship a first-boot SSH policy that allows password login so you can reach the guest. After first boot, running sshd is typically key-only. Check the live sshd configuration for leftover cloud-init snippets.
 
 ## If the Dashboard does not appear
 
@@ -92,7 +92,7 @@ If something goes wrong during setup, the next login (SSH or serial console) sho
 Two options are available:
 
 - **`[r]` Retry** — restarts the setup from where it stopped.
-- **`[q]` Open shell** — drops you to a shell to investigate before retrying. On the serial console, `cat /var/log/heartsuite/install.log` or `cat /var/log/heartsuite/initial-setup-latest.log`. AWS **Get system log** is a serial buffer, not CloudWatch. CloudWatch needs the platform agent plus IAM; Root Lock does not install it.
+- **`[q]` Open shell** — drops you to a shell to investigate before retrying. On the serial console, `cat /var/log/heartsuite/install.log` or `cat /var/log/heartsuite/initial-setup-latest.log`. AWS **Get system log** shows the serial buffer; CloudWatch needs the platform agent plus IAM, which Root Lock does not install.
 
 > [!WARNING]
 > Setup must complete before you activate Lockdown. If the initial allowlist is incomplete, the system may hang on boot or shutdown after activating Lockdown.

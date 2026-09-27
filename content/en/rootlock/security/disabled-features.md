@@ -14,13 +14,13 @@ aliases:
 <!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
 <!-- markdownlint-disable MD001 -->
 
-**Overview**: A row is Not Affected on the kernel you boot only when that option is unset. On the 6.18.9-hs kernel that ships, `CONFIG_BPF_SYSCALL` is unset. `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_USER_NS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_NF_TABLES=m`, `CONFIG_KVM=m` (Intel and AMD), and `CONFIG_SECURITY_APPARMOR=y` are in that kernel. Those CVEs stay on the patch date. The guest file `/boot/config-6.18.9-hs` is a stub, so `grep` of that file is not the proof. See [Evidence Status](../kernel-hardening/evidence-status/).
+**Overview**: A row is Not Affected on the kernel you boot only when that option is unset, because only then is the vulnerable code absent. On the 6.18.9-hs kernel that ships, `CONFIG_BPF_SYSCALL` is unset. `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_USER_NS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_NF_TABLES=m`, `CONFIG_KVM=m` (Intel and AMD), and `CONFIG_SECURITY_APPARMOR=y` are in that kernel, so their CVEs stay on the patch date. The proof for any row is the pin config — the build configuration published for that kernel — because the guest file `/boot/config-6.18.9-hs` is a stub and a `grep` of it proves nothing. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 Compiled-in residuals and write-ups: [Compiled-in CVEs](../compiled-in-cves/). Method: [Kernel Security Transparency](../).
 
-Where an option below is unset, that subsystem is absent and the group is Not Affected without a per-CVE review. Where the 6.18.9-hs pin builds the option, the row says so and the Not Affected badge is not used.
+Where an option below is unset, that subsystem is absent and the group is Not Affected without a per-CVE review. Where the 6.18.9-hs kernel builds the option, the row says so and carries no Not Affected badge.
 
-Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](../compiled-in-cves/#cve-2026-31431). An attacker who already has root still cannot persist and still cannot edit the allowlist. The files are immutable. The kernel refuses the write.
+Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](../compiled-in-cves/#cve-2026-31431). An attacker who already has root still cannot persist or edit the allowlist, because the allowlist files are immutable and the kernel refuses the write.
 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|
@@ -222,7 +222,7 @@ The BPF syscall interface is the kernel entry point through which user-space pro
 
 nftables is the in-kernel packet classification and filtering framework. CVE-2023-32233 describes a use-after-free in anonymous set handling reachable via crafted netlink messages by a local user with `CAP_NET_ADMIN`. CVE-2023-0179 describes a stack-based buffer overflow in the nftables netlink implementation reachable from a user namespace.
 
-`CONFIG_NF_TABLES=m` on the 6.18.9-hs kernel that ships. Loading the module makes the code reachable. These CVEs are not a false positive on that pin.
+The 6.18.9-hs kernel that ships builds nftables as a module (`CONFIG_NF_TABLES=m`), and loading the module makes this code reachable, so scanner findings for these CVEs are real on that kernel.
 
 ### Network Traffic Control Schedulers
 
@@ -283,15 +283,15 @@ None of these four filesystems is compiled into the Root Lock kernel. Mounting a
 ### Hardware-Specific and Virtualization Drivers
 
 **Status**: Split by option on 6.18.9-hs  
-**Config gate**: `CONFIG_FPGA` is not set. The GRU symbol is absent from the pin. `CONFIG_DVB_CORE=m`. `CONFIG_KVM_INTEL=m` (see [Kvm](#config-kvm)).  
+**Config gate**: `CONFIG_FPGA` is not set and the GRU symbol is absent from the 6.18.9-hs kernel; `CONFIG_DVB_CORE=m` and `CONFIG_KVM_INTEL=m` (see [Kvm](#config-kvm)) are built.  
 **CVEs covered**: CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919, CVE-2022-3424, CVE-2023-26242, CVE-2022-2196
 
 - **DVB Core** (CVE-2022-45884, CVE-2022-45885, CVE-2022-45886, CVE-2022-45919) — `CONFIG_DVB_CORE=m` on the 6.18.9-hs kernel that ships. These stay on the patch date.
-- **SGI GRU** (CVE-2022-3424) — the GRU symbol is absent from the 6.18.9-hs pin. Not Affected on that pin.
-- **Intel FPGA** (CVE-2023-26242) — `CONFIG_FPGA` is not set. Not Affected on that pin.
+- **SGI GRU** (CVE-2022-3424) — the GRU symbol is absent from the 6.18.9-hs kernel, so this CVE is Not Affected there.
+- **Intel FPGA** (CVE-2023-26242) — `CONFIG_FPGA` is not set, so this CVE is Not Affected on 6.18.9-hs.
 - **KVM Intel** (CVE-2022-2196) — `CONFIG_KVM_INTEL=m`. Covered under [Kvm](#config-kvm). Stays on the patch date.
 
-Root Lock runs as a guest. Hosting virtual machines is not a supported product role. KVM is still built as a module on this pin.
+KVM is built as a module on the 6.18.9-hs kernel even though Root Lock runs as a guest; see [Kvm](#config-kvm).
 
 ### USB Network Adapter and SMB Server
 
@@ -438,7 +438,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_FUSE_FS=y` on 6.18.9-hs
 **CVEs covered**: CVE-2023-52504
 
-`CONFIG_FUSE_FS=y` on the 6.18.9-hs kernel that ships. These CVEs are not a false positive on that pin.
+The 6.18.9-hs kernel that ships builds FUSE in (`CONFIG_FUSE_FS=y`), so scanner findings for these CVEs are real on that kernel.
 
 ### NFC
 
@@ -742,7 +742,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_KVM=m` on 6.18.9-hs
 **CVEs covered**: CVE-2024-35791, CVE-2022-2196
 
-`CONFIG_KVM=m` and `CONFIG_KVM_INTEL=m` on the 6.18.9-hs kernel that ships. CVE-2022-2196 is the Intel nested-VMX case. These CVEs are not a false positive on that pin. Root Lock runs as a guest. Hosting virtual machines on this kernel is not a supported product role. The module is still in the kernel.
+The 6.18.9-hs kernel that ships builds KVM as modules (`CONFIG_KVM=m`, `CONFIG_KVM_INTEL=m`), so scanner findings for these CVEs, including the Intel nested-VMX case CVE-2022-2196, are real on that kernel. Root Lock runs as a guest and hosting virtual machines on this kernel is not a supported product role, but the module is still in the kernel, so these CVEs stay on the patch date.
 
 ### Aquantia Atlantic Driver {#atlantic-driver}
 
@@ -830,7 +830,7 @@ Neither `CONFIG_USB_NET_RNDIS_WLAN` nor `CONFIG_SMB_SERVER` is compiled into the
 **Config gate**: `CONFIG_KVM_AMD=m` on 6.18.9-hs
 **CVEs covered**: CVE-2023-52816
 
-`CONFIG_KVM_AMD=m` on the 6.18.9-hs kernel that ships. These CVEs are not a false positive on that pin.
+The 6.18.9-hs kernel that ships builds KVM AMD as a module (`CONFIG_KVM_AMD=m`), so scanner findings for these CVEs are real on that kernel.
 
 ### Network Block Device (NBD) {#nbd-driver}
 
@@ -1472,7 +1472,7 @@ IMA's measurement and appraisal functions — runtime file integrity checking an
 **Config gate**: `CONFIG_SECURITY_APPARMOR=y` on 6.18.9-hs
 **CVEs covered**: CVE-2026-23408
 
-`CONFIG_SECURITY_APPARMOR=y` on the 6.18.9-hs kernel that ships. This CVE is not a false positive on that pin.
+The 6.18.9-hs kernel that ships builds AppArmor in (`CONFIG_SECURITY_APPARMOR=y`), so a scanner finding for this CVE is real on that kernel.
 
 ### Rcu Nocb Cpu {#config-rcu-nocb-cpu}
 
