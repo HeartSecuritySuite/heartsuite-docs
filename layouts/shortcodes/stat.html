@@ -1,0 +1,17 @@
+{{- /*
+  stat: one big-number card inside stat-row. Bootstrap 5 utility classes only.
+  tone: info (default), teal, success, warning. teal maps to Bootstrap primary,
+  since Bootstrap has no teal border or subtle-background class.
+*/ -}}
+{{- $tone := .Get "tone" | default "info" -}}
+{{- if eq $tone "teal" }}{{ $tone = "primary" }}{{ end -}}
+{{- $bg := cond (in (slice "success" "warning") $tone) (printf "bg-%s-subtle" $tone) "bg-body-tertiary" -}}
+<div class="col-md-4">
+<div class="h-100 p-4 border-top border-3 border-{{ $tone }} {{ $bg }}">
+<p class="display-5 fw-bold lh-1 mb-3 text-{{ $tone }}-emphasis">{{ .Get "number" }}</p>
+<p class="mb-2">{{ .Get "label" | markdownify }}</p>
+{{- with .Get "source" }}
+<p class="small text-body-secondary mb-0">{{ with $.Get "url" }}<a href="{{ . }}">{{ end }}{{ $.Get "source" }}{{ with $.Get "url" }}</a>{{ end }}</p>
+{{- end }}
+</div>
+</div>

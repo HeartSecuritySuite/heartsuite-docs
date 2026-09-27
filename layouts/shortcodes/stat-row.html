@@ -1,0 +1,11 @@
+{{- /*
+  stat-row: a row of big-number cards for blog posts. Wraps stat shortcodes.
+
+  Usage:
+    {{< stat-row >}}
+    {{< stat number="1 in 10" label="..." source="..." url="https://..." tone="success|teal|info|warning" >}}
+    {{< /stat-row >}}
+*/ -}}
+<div class="row text-center g-3 pt-2 pb-4">
+{{ .Inner }}
+</div>

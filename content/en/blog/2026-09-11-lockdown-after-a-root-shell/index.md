@@ -29,10 +29,12 @@ This lab puts that question to three hosts. You are logged in over SSH as root, 
 `vaultapp` is a demo program, and its ledger is the file no other tool should read. The same job ran on Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, and Debian 12 running Root Lock by HeartSuite with Lockdown on, and none of them was rebooted along the way. AppArmor and SELinux both stopped the read once policy was written for it, and the same root shell then turned that policy off with one command. Under Lockdown, the root shell could not create the path, could not run `vaultapp`, and could not add a grant for itself, because the allowlist is sealed and the Root Lock kernel refuses the write.
 
 {{% alert title="The short version" color="success" %}}
+
 - **AppArmor:** a custom profile stopped root's `cat`; one `aa-disable` unloaded it, and the ledger printed.
 - **SELinux:** a custom type stopped root's `cat` under Enforcing; one `setenforce 0` switched to permissive, and the ledger printed.
 - **Root Lock under Lockdown:** the ledger path could not be created, the allowlist write was refused, and `chattr -i` on the allowlist was refused — from the same kind of root shell.
 - **What that holds:** exactly what you approved in Setup Mode, so narrow grants before you lock down.
+
 {{% /alert %}}
 
 On Ubuntu and Rocky the file was already on disk, and default policy let root `cat` it. Those two hosts then got extra policy that denied `cat` while still letting `vaultapp` read the ledger, and the same root shell then tried to turn that policy off.

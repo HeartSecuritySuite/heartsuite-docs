@@ -23,9 +23,11 @@ The numbers say the same. Across vendor telemetry, a typical organization has th
 Here is what changes under Lockdown. For many of those rows, the attacker's next step after the exploit is running a program, opening a file, or reaching an address this host does not allow, and the Root Lock kernel refuses that step. That row does not need tonight. It moves to your next change window with a signed exception, an expiry, and syslog proof that the refusal was working the whole time. The rows that are truly urgent — known-exploited, or finishing inside what the program is already allowed to do — you still patch on their date. There are fewer of them, and you know which ones they are.
 
 {{% alert title="The short version" color="success" %}}
+
 - **Moves to the change window:** a critical row whose next step after the exploit — a new program, a file, or a destination — is one Lockdown refuses on that host.
 - **Still patched on its date:** known-exploited (KEV) rows, anything your policy ranks critical, and bugs that finish inside what the program is already allowed to do.
 - **What you keep:** a signed exception with an expiry, syslog proof the refusal was working, and fewer nights on the pager.
+
 {{% /alert %}}
 
 ## Why a CVSS critical isn't always urgent

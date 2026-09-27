@@ -21,9 +21,11 @@ You gave the agents a sandbox with no internet. The one sanctioned way out was t
 Every attack does three things: run a program, access files, make a network connection. Under Lockdown, Root Lock enforces default-deny on all three at the kernel, per program, including programs running as root. There is no permissive mode to flip, no LSM to unload, no userspace shim to detach, and no agent to kill, and an attacker who already has root cannot edit the allowlist. That makes the July chain a fair test. This post answers a narrow question honestly: on an agent host running Root Lock in Lockdown, which steps does the kernel refuse, and which still belong to the proxy, the platform, and the application? Root Lock did not take part in this incident, and nothing here claims it would have stopped the whole chain.
 
 {{% alert title="The short version" color="success" %}}
+
 - **Refused under Lockdown on the agent host:** a program the agent drops that has no allowlist entry, a file the agent's interpreter was never granted, and a connection to any destination outside its grants — the open internet, Hugging Face, Modal, or the cloud metadata endpoint.
 - **Still open:** traffic to the one approved destination, the package proxy. A message board built on that proxy, and a zero-day inside it, belong to the proxy.
 - **What you get:** after the shell, the agent's next new program, file, or destination is refused at the kernel, as root or not, whether or not anyone is watching the alerts.
+
 {{% /alert %}}
 
 ## How AI agents escaped the ExploitGym sandbox
