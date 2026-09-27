@@ -48,7 +48,7 @@ A program list carries program paths; the installer baseline also carries each p
 5. **Start each fleet node** from a clean OS.
 6. **Install Root Lock with Ansible**, pointing the playbook's install bundle at the pre-seeded installer. Initial setup starts from the baseline and finishes quickly.
 7. **Deploy** application and hardening automation, then review only the differences in the Dashboard.
-8. **Optional:** add extras with a program list (`hs-manage-allowlist list` → review → `hs_seeds` / `batch_record_add.py`).
+8. **Optional:** harvest extras with `hs-manage-allowlist list` and review the paths. Apply them with `hs_seeds`, which approves each program path, or with `batch_record_add.py`, which approves those paths and also grants read on `/usr/lib` and `/etc`.
 9. **Activate Lockdown** once the subscription, alert, and queue checks pass.
 
 The first reference host of a class has no baseline to start from: install it on a clean OS without pre-seed, let initial setup run under the real workload, review the queues, and harvest from step 2. Every later host follows the order above.
