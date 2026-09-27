@@ -15,9 +15,9 @@ toc: true
 
 The image already carries a custom kernel, a userspace stateful-inspection engine HeartSuite updates, a console TUI, and host-integrity grants. You do not allowlist those programs.
 
-That shape is required by the kernel underneath. Root Lock by HeartSuite is a custom Linux kernel. Delivery is the closed image on that kernel.
+The kernel underneath requires that shape: Root Lock by HeartSuite is a custom Linux kernel, so the firewall is delivered as a closed image built on it.
 
-Laboratory install scripts exist for layer-installing the prototype on a throwaway guest. They remain laboratory.
+Install scripts that layer the prototype onto a throwaway guest exist for laboratory use only.
 
 ## Two layers, one box
 
@@ -36,23 +36,23 @@ Root Lock Firewall owns the host packet filter. Root Lock owns what may execute 
 
 On this image there is one filter owner. A second manager (UFW, firewalld, or a hand-maintained ruleset beside the product) is a composition hazard.
 
-Root Lock's own packet path — SSH scope and accept-only service permits at Lockdown — remains thin. See [Lockdown](../../rootlock/lockdown/) for that Root Lock path.
+Root Lock's own packet rules stay minimal: SSH scope and accept-only service permits at Lockdown. See [Lockdown](../../rootlock/lockdown/) for that Root Lock path.
 
 ## Linux netfilter on the nft path
 
 The Root Lock kernel carries nftables. The older iptables table is absent. Public documentation therefore describes the data path as **Linux netfilter, nft path**. Older iptables tools on this image load no table, so a rule you thought you applied does nothing.
 
-A userspace stateful-inspection engine drives the filter. The Dashboard writes allowlist entries. Engine internals, a vendor web panel, and a cluster GUI stay off the glass.
+A userspace stateful-inspection engine drives the filter. The Dashboard writes allowlist entries. Engine internals, a vendor web panel, and a cluster GUI do not appear in the Dashboard.
 
-HeartSuite is the update authority for that engine. External reputation and geo downloads are off under seal.
+HeartSuite is the update authority for that engine. Under the seal, the engine does not download external reputation or geolocation feeds.
 
-The engine is still userspace software. Root Lock is what constrains which binaries may run and which addresses they may call. That residual is why the two layers ship together on the image.
+The engine is still userspace software, which is why the two layers ship together on the image: Root Lock constrains which binaries may run and which addresses they may call.
 
 ## What the seal actually is
 
 Firewall Lockdown makes the chosen allowlist immutable on the running appliance and is applied together with Root Lock Lockdown. After reboot, the Dashboard treats the ruleset as read-only.
 
-The seal is immutability of the set you chose. Reduce through Maintenance.
+The seal makes the set you chose immutable. To narrow it, go through Maintenance.
 
 Completeness of correspondence between the live filter table and the review queue is an engineering property under test. If a later engine can make the seal hashable, the product class stays a stateful host filter.
 
@@ -65,15 +65,13 @@ You administer the box from the console TUI. The appliance is designed without:
 - cloud single sign-on into the filter
 - vendor-static administrative accounts
 
-The host filter's image baseline can still include the SSH port and the usual workload ports, open to any source. That is a port shape, not a running listener.
-
-Starting a listener on those ports is reachable from any source until you narrow the baseline through Maintenance. See [Protection limits](../introduction/limits/).
+The host filter's image baseline can still open the SSH port and the usual workload ports to any source. An open port is not a running listener, but a listener you start on one of those ports is reachable from any source until you narrow the baseline through Maintenance. See [Protection limits](../introduction/limits/).
 
 Those omissions are the architectural answer to the campaign class in [Recent firewall campaigns](../examples/). They shrink the remote attack surface of the filter. Someone who holds the hypervisor console or the rack key still reaches the box.
 
 ## The virtual appliance residual
 
-A virtual appliance runs on someone else's hypervisor. Control of that hypervisor is control of the disk and of the serial console. A hostile hypervisor owns the disk.
+A virtual appliance runs on someone else's hypervisor. Control of that hypervisor is control of the disk and of the serial console.
 
 Two deliveries, same inspection class:
 
@@ -91,5 +89,5 @@ Until hardware ships, treat hypervisor and cloud serial-console IAM as part of t
 | Stock Debian or Ubuntu kernel | Delivery is the closed image. The nft-only constraint and the closed image assume the Root Lock kernel. |
 | Cloud IaaS (AWS, Google Cloud, Azure, and others) | The virtual appliance may *run* there. Provider controls (security groups, Network Firewall, Azure Firewall) stay the outer layer if you use them. |
 | Inline / NAT / HA pair | Later. See [Deployment scenarios](../deployment-scenarios/). |
-| Shared-kernel containers on this image | This image is a closed appliance. A container engine stays off the image. Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either. Use Firecracker and kata instead. See [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts). |
+| Shared-kernel containers on this image | This image is a closed appliance, so a container engine stays off it. Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either; run the workload in a Firecracker or Kata microVM instead. See [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts) and [Containers and microVMs](../../rootlock/introduction/containers-and-microvms/). |
 | Windows or macOS | The filter and the kernel are Linux. |

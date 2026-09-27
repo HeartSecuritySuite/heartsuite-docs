@@ -4,75 +4,72 @@ linkTitle: "When a scanner row can wait"
 date: 2026-09-25
 slug: when-a-scanner-row-can-wait
 draft: false
-description: "A scanner row can leave the active queue when Lockdown already stops the next step, and only if your policy already allows an expiring exception. The patch date stays. No share of the queue is measured."
+description: "Under Lockdown, a critical scanner row can wait for the standard change window when the exploit's next step is one Root Lock refuses, and only when your policy already allows an expiring exception. The patch date stays."
 author: "Ron Hessing"
 tags: ["root-lock", "lockdown", "patching", "scanners"]
 toc: true
 ---
 
-The scanner puts a short clock on a high score. Read the next step on that host.
+Take a path-traversal bug in a web server, the kind of flaw behind Apache's CVE-2021-41773. A crafted request makes the server open a file outside its web root and send it back. The scanner scores it critical and starts a short clock on two hosts.
 
-When the next step is a program with no allowlist entry, a file that program was not granted, or a destination that program was not granted, you file that step in the scanner you already run. You set the expiry to the window your own policy already names for work it does not rank critical. The morning the rule expires, the finding is eligible to be urgent again.
+On the first host, the attacker wants `/etc/passwd` and the server's private keys. Under Lockdown, the web server's allowlist entry names the files it may read, and neither is on it, so the kernel refuses the open. The traversal works as a URL trick and fails as a file operation. On the second host, the attacker wants the application's database credentials, and the web server already reads that file every time it starts. Nothing refuses that read.
 
-Root Lock by HeartSuite does not file that rule, and it does not close the ticket. The date in your policy or your contract stays the patch date. You still patch.
-
-Three things have to already be true before a boss can treat that filing as a reason to buy.
+Same CVE, same score. On the first host the row can wait for the standard change window. On the second it is this week's work. The difference is what that program was already granted — and three more things have to be true before the wait is defensible.
 
 ## The contract already allows an exception
 
-A named approver on your side accepts a written exception, and the exception expires. Root Lock is not a party to that contract and does not file the rule.
+The wait is an exception your own policy grants. A named approver on your side accepts it in writing, and it expires. You file it as a rule in the scanner you already run, with the expiry set to the window your policy already names for work it does not rank critical — often 60 or 90 days. The morning the rule expires, the finding is urgent again. The patch date in your policy or contract stays where it was; the exception changes the scanner's queue, and you still patch.
 
-Where the scorecard is criticals closed in seven days, and the rule has no exception clause, the filing gives the analyst a comment to write and the boss no cover. A written seven-day install rule stays seven days.
+That only works where the policy has an exception clause. If the scorecard is criticals closed in seven days with no exception path, a written seven-day install rule stays seven days, and the filing gives the analyst a comment to write and nothing more.
 
-PCI DSS critical patches, under your own ranking, are due within one month of release. A compensating control filed after that month does not repair the miss. The [Council's FAQ](https://www.pcisecuritystandards.org/faq/articles/Frequently_Asked_Question/Can-a-compensating-control-be-used-for-requirements-with-a-periodic-or-defined-frequency-where-an-entity-did-not-perform-the-activity-within-the-required-timeframe/) uses a critical patch that missed its window as the example. A named approver and an expiry are not lines on the report template. They sit on the exception ticket your policy already requires.
-
-For work your policy does not rank critical, 60 days and 90 days are that policy's window when the policy already names them. They are not a Root Lock schedule.
+Timing matters too. PCI DSS critical patches, under your own ranking, are due within one month of release, and a compensating control filed after that month does not repair the miss. The [Council's FAQ](https://www.pcisecuritystandards.org/faq/articles/Frequently_Asked_Question/Can-a-compensating-control-be-used-for-requirements-with-a-periodic-or-defined-frequency-where-an-entity-did-not-perform-the-activity-within-the-required-timeframe/) uses exactly that case — a critical patch that missed its window — as its example. File the exception inside the window, on the exception ticket your policy already requires, with the approver and the expiry on it.
 
 ## The row is that class on this host
 
-The same CVE can wait on one machine and stay this week's work on the next. The difference is what that program was already granted.
+A row can wait when the attacker's next step after the exploit is one Lockdown refuses:
 
-Under Lockdown, the step that can leave the active queue is one of these:
+- running a program with no allowlist entry — the allowlist matches the path, so a copy of an allowed binary at a new path has no entry
+- opening a file that program was not granted
+- connecting to a destination that program was not granted
 
-- a program with no allowlist entry
-- a file that program was not granted
-- a destination that program was not granted
+The rest stay on the patch date, because the attack completes inside what the program is already allowed to do:
 
-These stay on the patch date:
-
-- a bug that finishes on data the program already reads, on a file it was granted, or on a destination already permitted
+- a bug that finishes on data the program already reads, on a file it was granted, or at a destination already permitted — the second host above
+- a next step that starts a program that already has an allowlist entry
 - injection inside an allowlisted process
 - denial of service
-- a kernel CVE whose code is in the kernel that boots
-- a finding your policy ranks critical, including one known to be exploited
 - the vulnerable application's own files
+- a kernel CVE whose code is in the kernel that boots
 
-In the 6.18 kernel, io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are present, so CVEs in that code stay on the patch date. They drop off only when that code is absent from the kernel you boot. The BPF syscall is off. Record that row as not affected. Do not use the not-affected reason for a real CVE whose next step Lockdown stops.
+Two rules override the class. A finding your policy ranks critical stays on the patch date, and so does a finding on the [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities) list — even when the next step has no allowlist entry. CVE-2021-41773 itself is on that list, so on a real queue it stays on the patch date on both hosts. The example above shows the test; the list decides first.
 
-A program that already has an allowlist entry can be started. The test is a program with no entry.
-
-No count says what share of a real queue is the class that can wait. Known-exploited findings, and code that is in the kernel you boot, stay on the patch date even when the next step has no allowlist entry.
-
-The allowlist names the file's location. It does not hash the file. Leave Lockdown from a physical or serial console and pick **Maintenance: unseal and return to Root Lock** at the boot menu. That boot lifts the seal. Relock is the reboot back to Lockdown.
+Kernel rows follow the code, not the version string. In the 6.18 kernel, io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are present, so their CVEs stay on the patch date. The BPF syscall is off, so a BPF syscall CVE is a row you record as not affected. Keep that reason for code that is absent. A real CVE whose next step Lockdown refuses is a compensating control with an expiry, because the vulnerable code is still there.
 
 ## Someone can show the control was operating
 
-The exception needs evidence from the dates on the rule. That history is not one file Root Lock ships.
+The exception needs evidence from the dates on the rule, and the record that carries it is syslog. With Fleet Syslog on — Alert Settings, Fleet tab — Lockdown denials arrive as lines with identifier `heartsuite`. Save a search for the dates on the rule and keep it with the rule. Turn the switch on before the window opens; a window with the switch off has no `heartsuite` lines to attach.
 
-The status file at `~/.cache/heartsuite/status.json` is rewritten about every minute. Ansible, Nagios, and Zabbix can read the current state there. The file does not keep the window. The approval log at `/var/log/heartsuite/allowlist-audit.log` records allowlist approvals, with the user id and the terminal. It does not record refusals. It is not the exhibit.
+The two local files answer different questions. The status file at `~/.cache/heartsuite/status.json` is rewritten about every minute, so Ansible, Nagios, and Zabbix can read the current state, and a monitor that polls it keeps the history of `lockdown` across the window. The approval log at `/var/log/heartsuite/allowlist-audit.log` records who approved each allowlist entry, with the user id and the terminal — the attribution for changes, where syslog is the record of refusals.
 
-The line you attach is a syslog record with identifier `heartsuite`. Denial lines are there when Fleet Syslog is on, under Alert Settings on the Fleet tab. With that switch off, there is no heartsuite line to attach. Save the search for the dates on the rule and keep it with the rule. The filing steps are on [Scanner deadlines](https://docs.heartsecsuite.com/rootlock/maintenance/scanner-deadlines/). The syslog setup is on [SIEM and Fleet Integration](https://docs.heartsecsuite.com/rootlock/alerts/siem-integration/).
+The deferral also holds only while the host stays in Lockdown. Leaving Lockdown takes a physical or serial console and the boot menu pick **Maintenance: unseal and return to Root Lock**, which returns the host to Setup Mode, where the kernel logs and stops blocking. Relock is the reboot back to Lockdown. Plan maintenance on these hosts with the open rows in mind.
 
-## The write grants are still wide
+The filing steps for each scanner are on [Scanner deadlines](https://docs.heartsecsuite.com/rootlock/maintenance/scanner-deadlines/). The syslog setup is on [SIEM and Fleet Integration](https://docs.heartsecsuite.com/rootlock/alerts/siem-integration/).
 
-Harvests of Debian and Ubuntu guests already show hundreds of write grants and dozens of write directories on a host. A converged host has not been counted. If that width holds after the list is narrowed, "only the files that program was granted" is a weak reason to leave a finding for later, and fewer rows are the class that can wait.
+## How far the argument reaches
 
-That count comes before any classifier and before any scanner client. Root Lock does not classify the CVE. You type the reason into the scanner you already run.
+The case is only as strong as the grants. A program with wide write grants makes "a file that program was not granted" a weaker reason, and fewer of its rows are the class that can wait. Narrow the list after Setup Mode, and the reason gets stronger on every row that program owns.
+
+The judgment stays yours. Root Lock does not classify the CVE or file the rule, you read the next step, and you type the reason into the scanner you already run. What Root Lock contributes is the refusal itself: under Lockdown, the attacker's next unapproved program, file, or destination is refused on every one of those hosts until the patch lands.
 
 ## What you can defend in the meeting
 
-Bring a short list from your own queue. Name the rows, the next step, and the window your policy already has. File them in Tenable or Qualys with an expiry. The finding returns the morning the rule expires.
+Bring a short list from your own queue:
 
-Tenable Accept hides the row from the active views until that date and does not change VPR. A Qualys risk acceptance takes the row off remediation after a scan, and the expiry puts it back. A comment by itself does not pause the ticket clock. The person who clicks is often not the approver.
+- the rows, and for each one the next step Lockdown refuses
+- the window your policy already names for that work
+- the approver who signs the exception
+- the saved `heartsuite` syslog search for those dates
 
-A boss turns that list into money only by counting their own off-hours emergencies of that shape. One planning case put the optimistic result at about $715,000 a year, net, at 1,000 hosts, and only if half of those emergencies could wait, handled on each machine at the console. That half was assumed. It was not counted. A shop that rebakes one image and redeploys does not have that console cost. Until you have the count from your own queue, the figure stays a scenario. It is not a saving, and it is not a price.
+File them in Tenable or Qualys with an expiry. Tenable Accept hides the row from the active views until that date and leaves VPR as scored. A Qualys risk acceptance takes the row off remediation after a scan, and the expiry puts it back. Either way the finding returns the morning the rule expires, and a comment on its own does not pause the ticket clock — the exception does. The person who clicks is often not the approver, so put the approver's name on the rule.
+
+Whether this saves money depends on your own count: how many off-hours emergencies in your queue were this class. Count them before you price the argument.

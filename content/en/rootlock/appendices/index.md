@@ -33,10 +33,10 @@ The Dashboard guides you through the Lockdown Checklist. These are the main view
 
 ## Lockdown scripts
 
-These run automatically when you engage or leave Lockdown from the Dashboard (Lockdown `[l]`, Maintenance `[m]`). Day-to-day you do not invoke them. There is no Dashboard field to add an extra seal directory. The Lockdown Inventory is read-only. Extra `chattr` paths: after unseal, edit `HS_lockdown.sh` and the matching reverse lines in `HS_unlock.sh`, then Lockdown (`[l]`) again. Run `HS_unlock.sh` yourself only for recovery outside the Dashboard.
+These run automatically when you engage or leave Lockdown from the Dashboard (Lockdown `[l]`, Maintenance `[m]`). Day-to-day you do not invoke them. To seal an extra path with `chattr`, edit the scripts, because the Dashboard has no field for an extra seal directory and the Lockdown Inventory is read-only: after unseal, edit `HS_lockdown.sh` and the matching reverse lines in `HS_unlock.sh`, then lock down again from Lockdown (`[l]`).
 
-- **`HS_lockdown.sh`** — runs when Lockdown is applied, and again automatically on every Root Lock kernel boot after that. It seals Root Lock's configuration so it can't be changed while the Root Lock kernel is running, applies `chattr +i` to `/root` (the directory inode) and the other sealed paths, disables common file editors (`nano`, `vim`, `sed`, `ed`), seals the restricted `rm`/`cp`/`mv` copies, then engages Lockdown. That directory flag is not the allowlist. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
-- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. The stock kernel boot is what runs this; sshd on the Root Lock kernel does not. Maintenance runs it for you on the console unseal path. Invoke it yourself only if you need recovery outside the Dashboard. Default on that stock boot is console-dark (NIC down) unless a live or firewall route was chosen. Relock from stock is reboot; GRUB default stays Root Lock.
+- **`HS_lockdown.sh`** — runs when Lockdown is applied, and again automatically on every Root Lock kernel boot after that. It seals Root Lock's configuration so it can't be changed while the Root Lock kernel is running, applies `chattr +i` to `/root` (the directory inode) and the other sealed paths, disables common file editors (`nano`, `vim`, `sed`, `ed`), seals the restricted `rm`/`cp`/`mv` copies, then engages Lockdown. That flag is a filesystem seal, a separate layer from the allowlist. Deployments where kmod is allowlisted should also complete the steps in [Restricting Kernel Module Loading](../maintenance/kmod-hardening/) before engaging Lockdown for the first time.
+- **`HS_unlock.sh`** — reverses `HS_lockdown.sh` — it re-enables changes to Root Lock's configuration, restores the file editors, and restores `rm`, `cp`, and `mv` to their full versions. It runs on the stock kernel boot, never from sshd on the Root Lock kernel, and Maintenance runs it for you on the console unseal path. Invoke it yourself only if you need recovery outside the Dashboard. On that stock boot the NIC stays down by default, leaving only the console, unless a live or firewall route was chosen. To relock from stock, reboot: the GRUB default stays Root Lock.
 
 ## Recovery & scripting CLI
 
@@ -60,7 +60,7 @@ These run on their own — you do not need to invoke them yourself.
 - **`hs-unlock-progs`** — runs automatically as part of `HS_unlock.sh`. Not invoked directly in normal use.
 - **`add_logged_permissions.py` / `add_start_and_shutdown_programs.py`** — used internally during local installation to scan logs and build allowlist entries for startup programs. Not for direct user invocation. There is no `hs-os-boot-setup.py` on a current install.
 - **`init_base_records.sh`** — used by the installation script to add Linux Standard Base (LSB) programs to allowlist entries. Used only once during Part 1 of installation.
-- **`HS_startup.sh`** — runs automatically when the system boots, turning Root Lock on. On the maintenance kernel it also lifts the immutable seal before express return.
+- **`HS_startup.sh`** — runs automatically when the system boots, turning Root Lock on. On the maintenance kernel it also lifts the immutable seal before the automatic return to the Root Lock kernel.
 
 ## Legacy / scripted deployment only
 
@@ -85,14 +85,14 @@ Installed in `/usr/bin` (in the default PATH). Configured via the Dashboard's La
 
 These files are written automatically by Root Lock. They are not tools and require no user invocation. Day-to-day you use the Dashboard review queues, not these paths.
 
-Three cloud surfaces are not the same thing:
+Cloud providers offer three different log surfaces:
 
 - **Serial console** (EC2 Serial Console, Linode LISH, Hetzner, Azure Serial Console, GCP serial, and others) — interactive `cat` of local files. The serial console (ttyS0) has root autologin.
 - **Get system log** (AWS) — a buffered serial snapshot in the provider console. It is not CloudWatch.
 - **CloudWatch / Cloud Logging / Log Analytics** — the **platform** logging agent plus IAM. Root Lock does not install that agent. On AWS, if the CloudWatch agent is already present at install, Root Lock may drop a collect config for `/var/log/heartsuite/`. You still attach the instance role. `/.hs/sys/HS_log.txt` is not in that collect list.
 
-- **`/.hs/sys/HS_log.txt`** — temporary denial buffer (plus a few activation lines), not a success audit. Cleared in Setup Mode when the review queues are empty and Secure Script Launchers is not still pending; also cleared on a maintenance reboot; rotated in place at about 32 MiB. Forwarded to journald as ident `heartsuite` **only** when Syslog is enabled on Alert Settings → Fleet.
-- **`/var/log/heartsuite/install.log`** — installer bundle output, persisted on every install persist for serial recovery. On AWS, recent serial output is also on **Actions > Monitor and troubleshoot > Get system log**.
+- **`/.hs/sys/HS_log.txt`** — temporary denial buffer (plus a few activation lines), not a success audit. Cleared in Setup Mode when the review queues are empty and Secure Script Launchers is not still pending; also cleared on a maintenance reboot; rotated in place at about 32 MiB. Forwarded to journald as ident `heartsuite` only when Syslog is enabled on Alert Settings → Fleet.
+- **`/var/log/heartsuite/install.log`** — installer bundle output, kept on every install so you can read it from the serial console for recovery. On AWS, recent serial output is also on **Actions > Monitor and troubleshoot > Get system log**.
 - **`/var/log/heartsuite/allowlist-audit.log`** — JSONL of allowlist **approvals** (timestamp, uid, tty). Rotates at 1 MB and keeps one `.1` copy. Not under `~/.local/share/heartsuite/`.
 - **`/var/log/heartsuite/ui.log`** — rotating Python application log (INFO and above). Size-capped at about 8 MB. Not a keystroke transcript.
 - **`/var/log/heartsuite/dropped_violations.log`** — denials that were already allowlisted and therefore dropped from the review queues. Advanced artifact, not a daily surface.
@@ -125,7 +125,7 @@ Three cloud surfaces are not the same thing:
 
 ## Integration tooling (evaluation and fleet automation)
 
-Production hosts use the installed bundle: CLI tools under `/.hs/sys`, the `limited_tools` Python API under `/opt/heartsuite`, syslog, and `status.json`. The items below are **not** installed by `heartsuite-install.sh`; they are available with coordinated release materials or on request.
+Production hosts use the installed bundle: CLI tools under `/.hs/sys`, the `limited_tools` Python API under `/opt/heartsuite`, syslog, and `status.json`. The items below are not installed by `heartsuite-install.sh`; they are available with coordinated release materials or on request.
 
 - **`heartsecurity.root_lock` Ansible role** — declarative post-install management of allowlist programs and mode/Lockdown transitions (modelled on `linux-system-roles.selinux`). The role assumes Root Lock is already installed. Full server provisioning is handled by thin orchestrator playbooks that compose this role. See [Central Policy Management and External Control](../alerts/central-policy-management/#official-ansible-role-heartsecurityroot_lock) and `ansible/examples/hs-debian12-provision/`. Request the role package from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if it is not already in your delivery.
 - **`tools/kibana-bridge/`** — optional disposable Docker stack for policy-centric Kibana views during lab evaluation (living allowlist table, KPIs, risk signals, `record_hash` drift). Complements syslog enforcement streams; not required for production. Security-disabled and intended for localhost or a tightly perimeter-controlled lab only — see [SIEM and Fleet Integration](../alerts/siem-integration/#toolskibana-bridge-optional-evaluation-stack).

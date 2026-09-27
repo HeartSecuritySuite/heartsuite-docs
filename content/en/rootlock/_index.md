@@ -19,7 +19,7 @@ aliases:
 
 **Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. An attacker who already has remote root cannot edit the sealed allowlist while the machine is running. Leave Lockdown from a physical or serial console: GRUB **Maintenance: unseal and return to Root Lock**. That boot runs `HS_unlock.sh`. sshd does not lift the seal. Relock from stock is reboot; GRUB default stays Root Lock. SSH remains how you log in and run the Dashboard; after unseal, it is how you make changes. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
+In Lockdown, anything not on the allowlist is blocked before it can act. An attacker who already has remote root cannot edit the sealed allowlist while the machine is running. To leave Lockdown, pick **Maintenance: unseal and return to Root Lock** in GRUB from a physical or serial console; that boot runs `HS_unlock.sh`, which is what lifts the seal — sshd does not. Relocking from the maintenance kernel is a reboot, because the GRUB default stays Root Lock. SSH remains how you log in and run the Dashboard, and after the unseal it is how you make changes. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 On a single host, Root Lock supports two setup paths. Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 
@@ -32,9 +32,9 @@ Manual installation with a guided setup across several reboots.
 {{< /choice-card >}}
 {{< /choice-pane >}}
 
-Many hosts still install through Cloud Path or Local Path on each machine. Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](alerts/central-policy-management/).
+Cloud Path and Local Path install one machine at a time, and Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](alerts/central-policy-management/).
 
-Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design. Overlay filesystems and user namespaces are how attackers shadow directories and reach root. Build and run OCI images on another host. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts).
+Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design, because overlay filesystems and user namespaces are how attackers shadow directories and reach root, so build and run OCI images on another host. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts).
 
 ## Introduction and concepts
 
@@ -61,7 +61,7 @@ The pages below are the individual steps, linked from Quick Start:
 - [SIEM and Fleet Integration](alerts/siem-integration/) — Connect to Splunk, Elastic, PagerDuty, and other tools at fleet scale (syslog, webhook, status JSON).
 - [Central Policy Management and External Control](alerts/central-policy-management/) — Drive allowlist policy from Ansible, Terraform, ServiceNow, GitOps, and custom automation.
 - [Maintenance](maintenance/) — Protecting during maintenance, file backup and versioning, cache adjustment, kmod file-access narrowing, updating Root Lock, and reprovisioning locked fleets from an updated image.
-- [Scanner deadlines](maintenance/scanner-deadlines/) — Which findings can leave this week's queue for the standard change window your policy already names.
+- [Scanner deadlines](maintenance/scanner-deadlines/) — Which scanner findings can wait for the standard change window your policy already names.
 
 ## Troubleshoot and reference
 

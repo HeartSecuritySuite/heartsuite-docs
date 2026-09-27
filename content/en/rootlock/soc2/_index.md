@@ -176,7 +176,7 @@ Specific transmission controls:
 
 This is the primary use case of Root Lock. The implementation is structural, not signature-based.
 
-**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute. It has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether any scanner detected the file.
+**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute, because it has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether any scanner detected the file.
 
 **Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not. In Lockdown, it is blocked before the interpreter processes it.
 
@@ -206,7 +206,7 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 **Official criterion**: The entity uses detection and monitoring procedures to identify (1) changes to configurations that introduce new vulnerabilities, and (2) susceptibilities to newly discovered vulnerabilities.
 
-A customer scanner remains the usual CC7.1 control. Root Lock can reduce blast radius of some unpatched flaws. Denial alerts belong under CC7.2.
+A customer scanner remains the usual CC7.1 control. Root Lock can reduce the blast radius of some unpatched flaws, and its denial alerts belong under CC7.2.
 
 **How Root Lock can support a customer control**:
 
@@ -226,7 +226,7 @@ The "Critical file version created outside maintenance window" alert fires when 
 | Mode/state changes (Setup ↔ Lockdown) | Immediate alert on all channels on every state change |
 | New allowlist pushed while Lockdown active | Immediate alert on all channels |
 
-**Integration with vulnerability management**: Root Lock is designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). Root Lock can reduce the blast radius of an unpatched vulnerability; the scanner maps what needs patching. SOC 2 does not prescribe those two tools. The entity still needs a vulnerability-identification control for CC7.1.
+**Integration with vulnerability management**: Root Lock is designed to complement — not replace — vulnerability scanners (Tenable Nessus, Qualys VMDR, Rapid7 InsightVM). Root Lock can reduce the blast radius of an unpatched vulnerability while the scanner maps what needs patching, so the entity still needs a vulnerability-identification control for CC7.1. SOC 2 does not prescribe either tool.
 
 **Evidence artifacts**:
 
@@ -397,9 +397,9 @@ Root Lock provides technical controls for the detection and containment phases o
 
 Root Lock creates a backup version of every file write in protected directories. Unlike scheduled snapshot tools, there is no backup window — if a file is encrypted or corrupted at 3:47 AM, the version from 3:46 AM exists.
 
-That is the gap ransomware exploits in schedule-based backup tools, and the gap CVE-2024-40711 for Veeam Backup & Replication exploited by targeting the backup agent itself.
+Ransomware exploits that window in schedule-based backup tools. CVE-2024-40711 in Veeam Backup & Replication shows a second gap: the attacker targets the backup agent itself.
 
-Under Lockdown, root cannot overwrite or delete the backups. The kernel blocks write and unlink to `/.hs/b/` for every program except Root Lock backup tooling. There is no backup agent to kill.
+Under Lockdown, root cannot overwrite or delete the backups, because the kernel blocks write and unlink to `/.hs/b/` for every program except Root Lock backup tooling. There is no backup agent to kill.
 
 **Recovery workflow**:
 
@@ -454,7 +454,7 @@ Updates are delivered as a single self-extracting bundle (`heartsuite-install.sh
 sha256sum -c heartsuite-install.sh.sha256
 ```
 
-The installer will not overwrite protected files while the Root Lock kernel is booted. From a terminal in Setup Mode, type `YES` for one stock boot. See [Updating Root Lock](../maintenance/updating-heartsuite/).
+The installer will not overwrite protected files while the Root Lock kernel is booted, so you run it from a terminal in Setup Mode and type `YES` when it asks. The machine then takes one stock boot, and the installer continues the update from there. See [Updating Root Lock](../maintenance/updating-heartsuite/).
 
 **Allowlist as change record**:
 
@@ -491,9 +491,9 @@ A1 applies only if Availability is in the examination.
 
 **How Root Lock can support a customer control**:
 
-Root Lock does **not** provide environmental protections (power, HVAC, fire, physical site). Those remain the customer's or cloud provider's controls.
+Root Lock does not provide environmental protections (power, HVAC, fire, physical site). Those remain the customer's or cloud provider's controls.
 
-The product **can** contribute to the **backup and recovery** clause of A1.2: per-write versioned copies under `/.hs/b/`, kernel-protected under Lockdown. Those copies stay on the host and are unencrypted at the Root Lock layer. Offsite DR and LUKS stay with the customer.
+The product can contribute to the backup and recovery clause of A1.2: per-write versioned copies under `/.hs/b/`, kernel-protected under Lockdown. Those copies stay on the host and are unencrypted at the Root Lock layer. Offsite DR and LUKS stay with the customer.
 
 **Ransomware** (separate from environmental protections above). Root Lock addresses it at two layers:
 

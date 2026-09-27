@@ -2,7 +2,7 @@
 title: "Review queues: programs, files, network"
 linkTitle: "Allowlisting Basics"
 weight: 1
-description: "The Dashboard shows what each program tried to run, read, write, or reach. Approve the intent; remove the rest before you turn on Lockdown."
+description: "The Dashboard shows which programs executed during Setup Mode and what each one read, wrote, or reached. Approve what the host needs; skip the rest before you lock down."
 categories: ["Guides"]
 tags: ["heartsuite", "linux", "permissions", "allowlist", "security", "programs"]
 type: docs
@@ -27,7 +27,7 @@ In Setup Mode, Root Lock logs every program execution, file access, and outbound
 - **File Access queue** (`[f]`) — programs that already have an allowlist entry and read or wrote files not yet granted
 - **Internet Access queue** (`[i]`) — programs that already have an allowlist entry and reached destinations not yet granted
 
-The Dashboard shows pending counts for each queue and provides a Suggested Next Step. When Programs is empty, that screen suggests File Access (`[f]`). After you return to the Dashboard, the Suggested Next Step opens Secure Script Launchers (`[s]`) if interpreters are pending, otherwise the next queue that still has items.
+The Dashboard shows pending counts for each queue and provides a Suggested Next Step. When Programs is empty, the Programs queue suggests File Access (`[f]`). After you return to the Dashboard, the Suggested Next Step opens Secure Script Launchers (`[s]`) if interpreters are pending, otherwise the next queue that still has items.
 
 The three queues are independent lists. Suggested Next Step prefers Programs when that count is non-zero, then Secure Script Launchers, then File Access, then Internet Access — that is suggestion order, not a lock. `[p]`, `[f]`, and `[i]` stay on the Dashboard; you can open Internet Access while Programs still has pending items.
 
@@ -59,7 +59,7 @@ Two additional keys appear contextually, not in the footer:
 
 ### When to skip
 
-Do not approve a program that executed only to install, compile, or probe and will not execute in production. Approving it grants that program under Lockdown. Press `[s]` Skip for now to defer the item without granting it.
+Skip a program that executed only to install, compile, or probe and will not execute in production, because approving it lets that program run under Lockdown. Press `[s]` Skip for now to defer the item without granting it.
 
 ### Metadata shown in review
 
@@ -179,9 +179,9 @@ From the Dashboard, select the File Access queue (`[f]`).
 > Grouped review handles the common case where a program reads many files from the same directory (e.g., `/usr/lib/python3/`). Root Lock groups these together and shows a sample, so you can approve directory-level access without reviewing each file individually.
 
 > [!NOTE]
-> Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked when it recreates the same file later. The summary line shows the breakdown: "8 still exist; 34 have been removed since".
+> Some files shown in the queue may be labelled **(no longer exists)** in dimmed text. These are files the program accessed during Setup Mode that have since been deleted — temporary files, build artefacts, and similar. They are shown rather than filtered out because approving directory-level access now prevents the program from being blocked under Lockdown when it recreates the same file later. The summary line shows the breakdown: "8 still exist; 34 have been removed since".
 
-Do not approve directory grants for install-time trees — package-manager caches, build directories, and similar — unless that program needs those paths at runtime.
+Do not approve directory grants for install-time trees — package-manager caches, build directories, and similar — unless that program needs those paths at runtime, because a directory grant covers everything under it.
 
 ## Internet Access queue
 
@@ -231,9 +231,9 @@ Software you add after Lockdown goes through [Protecting During Maintenance](../
 
 ## Review queues in Lockdown
 
-In Lockdown the review queues are read-only. `[a]` and `[s]` do nothing — you cannot approve items while in Lockdown. The queues show **denied** items (actions Root Lock blocked), not pending items awaiting approval.
+In Lockdown the review queues are read-only, so `[a]` and `[s]` do nothing. The queues show **denied** items (actions Root Lock blocked), not pending items awaiting approval.
 
-Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, enter a maintenance period first via the Maintenance (`[m]`) — this switches to Setup Mode where the review queues become interactive again.
+Use `[n]` to navigate through denied items one by one. To approve a denied program, file access, or network destination, first start a maintenance period from Maintenance (`[m]`), which returns you to Setup Mode, where the review queues become interactive again.
 
 > [!NOTE]
 > Denied items in Lockdown are a normal part of operation, not failures. A denied item means Root Lock blocked something that was not on the allowlist. Review it to decide whether to approve it or leave it blocked.

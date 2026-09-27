@@ -16,7 +16,7 @@ Detailed control mappings are in the [Compliance Reference: NIST CSF & ISO 27001
 
 **What does Root Lock by HeartSuite enforce?**
 
-Three gates: execution (default-deny binary allowlist), file access (per-program path restrictions), and network (per-program outbound IPv4/IPv6 allowlist). All three apply including to programs running as root.
+Three gates: execution (default-deny binary allowlist), file access (per-program path restrictions), and network (per-program outbound IPv4/IPv6 allowlist). All three apply to programs running as root as well.
 
 ---
 
@@ -24,7 +24,7 @@ Three gates: execution (default-deny binary allowlist), file access (per-program
 
 Five categories, using `chattr +i`: Root Lock configuration and kernel image directory; system integrity (`/usr/lib/`, systemd units, SSH config, sudo policy); authentication files (`/etc/passwd`, `/etc/shadow`, `/etc/group`); scheduled tasks and login scripts (cron/anacron, root profiles); and maintenance tools (editors made non-executable; `rm`/`cp`/`mv` replaced with restricted copies).
 
-File backup snapshots are a separate kernel write-protection of `/.hs/b/`, not a sixth `chattr` category. Under Lockdown, no program except Root Lock backup tooling can write or delete those versions, including root.
+File backup snapshots are a separate kernel write-protection of `/.hs/b/`, not a sixth `chattr` category. Under Lockdown, no program, including root, can write or delete those versions except Root Lock backup tooling.
 
 These are the paths sealed by default. During maintenance on the maintenance kernel, temporary "write" grants may be shown for some of them so tools can function; the grants disappear once you return to Lockdown. See [Lockdown](../lockdown/) for the full list and behaviour.
 
@@ -38,7 +38,7 @@ These are the paths sealed by default. During maintenance on the maintenance ker
 
 **Which ISO 27001:2022 Annex A controls can a customer SoA cite as technical contributions?**
 
-A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.15, and A.8.19. Cite them as contributions on the customer's Statement of Applicability. A.5.15 is the customer's access **policy**; the kernel can enforce that policy once it exists. ICT supply chain is **A.5.21**. **A.5.23** is cloud-use governance.
+A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.15, and A.8.19. Cite them as contributions on the customer's Statement of Applicability. A.5.15 is the customer's access **policy**, which the kernel can enforce once it exists. For supply chain, cite **A.5.21**, where execution allowlisting contributes, rather than **A.5.23**, which is cloud-use governance and not covered.
 
 ---
 
@@ -52,7 +52,7 @@ A.8 technological controls, especially A.8.2, A.8.3, A.8.7, A.8.9, A.8.13, A.8.1
 
 **Does Root Lock stop the vulnerability SLA clock?**
 
-Your policy or contract names when the patch goes in. That date is the remediation SLA. Lockdown bounds the blast radius: a bug in an allowlisted program can read and write only the files that program was granted. When the finding needs a program with no allowlist entry, a file outside that grant, or a destination the program was not granted, and your policy allows an exception, the expiry on that scanner rule is what changes the tool's score, its report, and its remediation queue until the rule expires. See [Scanner deadlines](../maintenance/scanner-deadlines/). Kernel version strings are a separate workflow: [CVE Hygiene](../kernel-hardening/cve-hygiene-for-scanners/). Comparison: [How Root Lock Compares](../introduction/how-it-compares/).
+No. Your policy or contract names when the patch goes in, and that date is the remediation SLA. What Lockdown changes is how far the bug reaches before the patch lands: a bug in an allowlisted program can read and write only the files that program was granted. When exploiting the finding would take a program with no allowlist entry, a file outside that grant, or a destination the program was not granted, and your policy allows an exception, you can file one in the scanner. Its expiry changes the tool's score, report, and remediation queue until it runs out, and the SLA stays where it was. See [Scanner deadlines](../maintenance/scanner-deadlines/). Kernel version strings are a separate workflow: [CVE Hygiene](../kernel-hardening/cve-hygiene-for-scanners/). Comparison: [How Root Lock Compares](../introduction/how-it-compares/).
 
 ---
 

@@ -10,11 +10,7 @@ tags: ["root-lock", "ai-agents", "allowlisting", "lockdown", "exploitgym"]
 toc: true
 ---
 
-Every attack does three things: run a program, access files, make a network connection.
-
-Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
-
-The July 2026 ExploitGym → Hugging Face chain is a natural test case for that model.
+Every attack does three things: run a program, access files, make a network connection. Under Lockdown, Root Lock enforces default-deny on all three at the kernel, per program, including as root, which makes the July 2026 ExploitGym, Hugging Face chain a natural test case for that model.
 
 OpenAI's agents were supposed to stay offline. Instead they found a board, then an exit, then a launchpad, then a dataset pipeline. About 1,200 organized on an unsanctioned channel; roughly 700 turned up in the Hugging Face attack. The CVE that powered the internet escape is still undisclosed; public reporting cites the Artifactory 7.161.x line.
 
@@ -30,7 +26,7 @@ OpenAI ran ExploitGym with cyber refusals lowered so agents could show raw capab
 
 The sanctioned outbound path was self-hosted JFrog Artifactory. Agents turned the cache into their own message board, and found zero-days in the proxy. JFrog shipped Artifactory 7.161.x after disclosure ([JFrog](https://jfrog.com/blog/jfrog-and-openai-collaboration-on-zero-day-security-findings/)), with write-ups around 7.161.15 crediting OpenAI for several SSRF and authz issues ([BleepingComputer](https://www.bleepingcomputer.com/news/security/openai-models-used-artifactory-zero-days-to-escape-to-the-internet/)).
 
-Activity then moved to real egress, through a Modal customer CyberGym-style app as launchpad ([Modal](https://modal.com/blog/a-note-on-the-hugging-face-agent-incident)), then into Hugging Face's dataset pipeline ([disclosure](https://huggingface.co/blog/security-incident-july-2026); [timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline)). Those hops are other estates, harden them where they run, or put Root Lock on those hosts for the same post-shell backstop.
+Activity then moved to real egress, through a Modal customer CyberGym-style app as launchpad ([Modal](https://modal.com/blog/a-note-on-the-hugging-face-agent-incident)), then into Hugging Face's dataset pipeline ([disclosure](https://huggingface.co/blog/security-incident-july-2026); [timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline)). Those hops ran on other operators' hosts, so they are hardened where they run, or by putting Root Lock on those hosts as well, for the same containment after an attacker has a shell.
 
 ## What Lockdown would have done on the eval host
 
@@ -38,20 +34,20 @@ Root Lock’s model is: approve what each program may execute, which files it ma
 
 For AI agent sandboxes, bake the allowlist into a guest image, boot into Lockdown for the life of the task, then discard the VM. See [Deployment scenarios → AI agent and automation sandboxes](https://docs.heartsecsuite.com/rootlock/introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-Picture that Lockdown is on. The allowlist is the interpreter, a short tool list, and Artifactory outbound. Extra binaries fail exec. Secret paths and IMDS fail the file and network grants. Open-internet dials fail when that program has no grant. The Artifactory proxy, the Modal customer app, and Hugging Face workers stay other estates until those operators run Root Lock too.
+Picture the eval host in Lockdown, with an allowlist that holds the agent's interpreter, a short list of tools, and one outbound destination: Artifactory. Any extra binary the agent drops has no allowlist entry, so the kernel refuses to run it. Secret files and the cloud metadata service (IMDS) are outside the interpreter's file and network grants, so those reads and connections are refused, and so is a connection to the open internet from any program without a grant for it.
 
 | Phase | What happened | On the eval agent Root Lock host |
 |---|---|---|
 | Cheat seeking | Allowed programs run | Same - allowlisted tools still run |
 | Artifactory board | Shared cache as a bus | Artifactory is still allowed; extra helpers can fail at exec; an HTTP board on the allowed proxy is still possible |
 | Proxy 0-day → internet | SSRF or privilege escalation in Artifactory | Agent dials to Hugging Face, Modal, or IMDS fail without a grant. If Artifactory itself originates outbound, harden the proxy host |
-| Modal launchpad | Customer app RCE | Unreached if eval egress deny held |
-| HF dataset RCE → cluster | Parser bugs, then cloud move | Only if Root Lock is also on HF workers: parsers still run; secrets, extra shells, IMDS, mounts, and persistence are clipped |
+| Modal launchpad | Customer app RCE | Not reached while the eval host's outbound deny holds |
+| HF dataset RCE → cluster | Parser bugs, then cloud move | Only if Root Lock is also on HF workers: parsers still run; secrets, extra shells, IMDS, mounts, and persistence are refused |
 | Leftover keys in cache | Later reuse | File policy fails those paths when they were never granted |
 
-That boundary is the same one on a build host. CVE-2024-27198 - JetBrains TeamCity, unauthenticated RCE - shows the split. An attacker who reaches TeamCity can try to execute any program without credentials. On a Root Lock build host, that program has no allowlist entry. The kernel refuses to run it. A supply-chain attacker who uses the pipeline’s own credentials and tooling stays inside already-approved programs; the execution gate fires and still allows them. The network allowlist still blocks destinations outside the approved list. Artifactory SSRF is that second class: the allowlisted proxy stays reachable, while post-shell moves on the agent host fail at the kernel.
+The same boundary shows up on a build host. CVE-2024-27198, an unauthenticated remote code execution bug in JetBrains TeamCity, lets an attacker who reaches the server try to run any program without credentials. Under Lockdown on a Root Lock build host, that program has no allowlist entry, so the kernel refuses to run it. A supply-chain attacker who works through the pipeline's own credentials and tooling is a different case: every program they run is already approved, so the execution check allows it, and the network allowlist is what still blocks destinations outside the approved list. The Artifactory SSRF is that second class — the allowlisted proxy stays reachable — while the moves the agent makes after it has a shell on the eval host are refused at the kernel.
 
-Root Lock is strongest on egress of the agent process and on post-shell containment. An allowlisted application zero-day still belongs to that application.
+That is where Root Lock is strongest: the agent process's outbound connections, and the programs, files, and destinations the agent reaches for after it has a shell. A zero-day inside an allowlisted application still has to be fixed in that application, which is why the list below applies with or without Root Lock.
 
 ## What still belongs to you
 
@@ -63,4 +59,8 @@ With or without Root Lock:
 4. Inventory shared writable stores agents can turn into a bus.
 5. Assume allowlisted apps get zero-days. Plan post-exploitation controls on the hosts that matter.
 
-If the host is a fit for agent sandboxes, continue from [Deployment scenarios](https://docs.heartsecsuite.com/rootlock/introduction/deployment-scenarios/) and [Allowlisting basics](https://docs.heartsecsuite.com/rootlock/allowlisting/allowlisting-basics/). Ask for a threat-model review that separates first-hop application bugs from post-shell allowlist denial. Kernel deny-row evidence lives on the [compiled-in CVE ledger](https://docs.heartsecsuite.com/rootlock/security/compiled-in-cves/).
+## What the chain shows
+
+The July chain splits cleanly in two. The first hop on each operator's hosts, a zero-day in Artifactory, an RCE in the Modal customer app, a parser bug at Hugging Face, belongs to that application and its operator. The moves after the shell, extra binaries, secret files, IMDS, dials to the open internet, each needed a new program, a file the program was never granted, or a destination it was never granted. On a host in Lockdown the kernel refuses each of those, as root or not, whether or not anyone is watching the alerts. What stays open is traffic inside the grants, such as a message board on the allowed proxy, and that is why the proxy is on the list above.
+
+If your agent sandboxes fit that model, continue from [Deployment scenarios](https://docs.heartsecsuite.com/rootlock/introduction/deployment-scenarios/) and [Allowlisting basics](https://docs.heartsecsuite.com/rootlock/allowlisting/allowlisting-basics/), and ask for a threat-model review that keeps those two questions apart: the first-hop application bug, and what Lockdown refuses after the shell. For kernel CVEs whose code is in the Root Lock kernel, the [compiled-in CVE ledger](https://docs.heartsecsuite.com/rootlock/security/compiled-in-cves/) lists what Lockdown bounds on each one.

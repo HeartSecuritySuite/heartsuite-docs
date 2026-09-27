@@ -1,7 +1,7 @@
 ---
 title: "HeartSuite product documentation"
 linkTitle: "Home"
-description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. Unsealing Lockdown uses the maintenance kernel via physical or serial console. SSH is the admin path."
+description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. Unsealing Lockdown takes the maintenance kernel from a physical or serial console; everyday administration runs over SSH."
 ---
 
 This site is the documentation for HeartSuite products. Each product has its own section.

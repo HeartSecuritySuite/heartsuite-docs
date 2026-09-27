@@ -11,7 +11,7 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: Root Lock Firewall fits when the workload can live on a closed HeartSuite image and you want a sealed inbound allowlist for this box. Delivery is that image. Campus NGFW blades stay the specialist tool.
+**Overview**: Root Lock Firewall fits when the workload can live on the closed HeartSuite image the product ships as, and you want a sealed inbound allowlist for this box. Campus NGFW blades stay the specialist tool.
 
 ## Where Root Lock Firewall fits
 
@@ -45,13 +45,13 @@ v1 has no FORWARD or NAT product surface. Keep the existing edge firewall in fro
 
 ### Campus, branch, or "NGFW refresh"
 
-App-ID, TLS interception, URL clouds, SD-WAN, SSL-VPN as identity, and a central management empire stay with the specialist tool.
+App-ID, TLS interception, URL clouds, SD-WAN, SSL-VPN as identity, and a central management platform stay with the specialist tool.
 
 Using this image as a FortiGate or Cisco Secure Firewall replacement is a misfit.
 
 ### Install-on-my-Ubuntu
 
-Delivery is the image.
+Root Lock Firewall ships only as the closed image, so it does not install onto a server you already run.
 
 Root Lock on a server you already own remains the kernel product. Inbound on that server stays the OS or cloud control you already run, unless you move the workload onto this appliance.
 
@@ -61,7 +61,7 @@ A hardware appliance (TPM / measured boot) is planned. v1 is the virtual image. 
 
 ### Shared-kernel container hosts
 
-This appliance is a closed image. Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either. Build and run those images on another host. See Root Lock [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts).
+This appliance is a closed image with no container engine, and Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either, so build and run those images on another host. See Root Lock [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts).
 
 ### A WAF or API gateway requirement
 
@@ -78,6 +78,6 @@ On the HeartSuite appliance image the two layers are designed to run together.
 
 Root Lock without this image is still a complete kernel product. Root Lock Firewall on that server is an optional SKU.
 
-Adding a second packet-filter manager next to Root Lock Firewall on the appliance *is* a hole in the composition.
+Adding a second packet-filter manager next to Root Lock Firewall on the appliance opens a hole in the composition.
 
 For residuals inside an approved port, see [Protection limits](../introduction/limits/).

@@ -44,7 +44,7 @@ Network access mediation and OS-mediated user-file access are planned for subseq
 
 **HJFS** eliminates entire risk classes — cross-program file leakage, malicious updates reaching prior-version data, programs permanently deleting files — by design, without depending on correct admin configuration. It runs on a standard unmodified kernel.
 
-Network access mediation and execution control are planned for subsequent releases. For those controls today, use Root Lock. On a Root Lock kernel, both can share the host.
+Network access mediation and execution control are planned for subsequent releases, so for those controls today, use Root Lock; on a Root Lock kernel, both can share the host.
 
 ---
 
@@ -54,13 +54,13 @@ HJFS is per-program file isolation on a standard unmodified kernel. Each program
 
 **Network.** Which connections a program can open is Root Lock's domain. Isolation still limits what data is reachable — a confined program can only read its own files. See [Network exfiltration](../introduction/limits/#network-exfiltration).
 
-**Execution.** Which programs may start is Root Lock's domain. A binary placed on the system can be launched. HJFS still confines what running programs can access. See [Unauthorized program execution](../introduction/limits/#unauthorized-program-execution).
+**Execution.** Which programs may start is Root Lock's domain. A binary placed on the system can be launched, but HJFS still confines what it can access once it runs. See [Unauthorized program execution](../introduction/limits/#unauthorized-program-execution).
 
-**Encryption.** Files within a program's storage area are readable by that program in plaintext. Isolation controls which programs can reach a file. Use standard disk or volume encryption alongside HJFS for encryption at rest. Per-program isolation still holds on the plaintext files.
+**Encryption.** Files within a program's storage area are readable by that program in plaintext, because isolation controls which programs can reach a file, not how it is stored. Use standard disk or volume encryption alongside HJFS for encryption at rest.
 
 **Permissions.** Standard OS permissions are user-based: they answer "can this user read this file?" HJFS is program-based: it answers "did this program create this file?" The two operate at different levels and are complementary.
 
-**Backup.** HJFS automatically backs up every data file each time it is written, to a protected area no program can access. This provides fine-grained version history for ransomware recovery and rollback. Off-site backup, disaster recovery, and compliance-driven backup management stay with dedicated backup infrastructure. The per-write history still holds for files HJFS itself stores.
+**Backup.** HJFS automatically backs up every data file each time it is written, to a protected area no program can access. This provides fine-grained version history for ransomware recovery and rollback. Off-site backup, disaster recovery, and compliance-driven backup management stay with dedicated backup infrastructure.
 
 **Detection.** For behavioural detection, fleet correlation, and incident response, SIEM and NDR tools remain the right answer and should run alongside HJFS.
 
@@ -87,7 +87,7 @@ HJFS covers file read and write access at the filesystem layer, per program and 
 
 Network and execution control on that host stay with existing tooling: egress filtering, separate allowlisting, or whatever is already in place.
 
-**On a Root Lock kernel** both can share the host: Root Lock for execute and network, HJFS for per-program file isolation and versioning. Per-program file isolation on a standard kernel still holds when you run HJFS alone.
+**On a Root Lock kernel** both can share the host: Root Lock for execute and network, HJFS for per-program file isolation and versioning.
 
 ---
 
@@ -106,4 +106,4 @@ Network and execution control on that host stay with existing tooling: egress fi
 
 **How HJFS can be circumvented.** HJFS file isolation operates at the filesystem layer, below any running software. No program — regardless of privilege — can cross program storage boundaries while HJFS is present.
 
-The one path around it is physical or serial-console access: an attacker who can remove the HJFS drive removes the isolation layer. Standard physical and console controls apply. See [Security guarantees](../introduction/hjfs-overview/#security-guarantees). File isolation still holds for every software path while the drive is present.
+The one path around it is physical or serial-console access: an attacker who can remove the HJFS drive removes the isolation layer. Standard physical and console controls apply. See [Security guarantees](../introduction/hjfs-overview/#security-guarantees).
