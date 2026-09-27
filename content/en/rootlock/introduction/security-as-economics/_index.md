@@ -66,7 +66,7 @@ EDR's telemetry, behavioural analytics, and incident response capabilities remai
 **Cost to buy.** Root Lock replaces the preventive-enforcement layer of several overlapping tools, leaving detection and response capabilities intact. What that means in practice for each category:
 
 - **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon) — Root Lock removes the BPF syscall by design. On-host eBPF tooling is not a fit. Their preventive role is covered by the allowlist. Budget line removed; stronger prevention gained.
-- **gVisor** — if you are running it solely to protect workloads from root-level compromise inside a container or VM, Root Lock is a direct replacement as the guest kernel. No second userspace kernel layer.
+- **gVisor** — if you are running it solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock is a direct replacement as the guest kernel. No second userspace kernel layer.
 - **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE) — prevention is replaced; telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing for telemetry-only deployments.
 - **AppArmor and SELinux** — no licensing cost, but the policy-authoring overhead is real; see the SELinux comparison above.
 

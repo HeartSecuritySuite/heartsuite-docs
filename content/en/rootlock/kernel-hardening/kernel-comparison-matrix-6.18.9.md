@@ -19,7 +19,7 @@ toc: true
 **Source file:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)  
 **Legacy (published):** [Hardening scores: 5.19.6](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-> This page measures the **fielded #37 pin**. It is not a derived unpublished cut. `CONFIG_IO_URING`, `CONFIG_KEXEC`, and `CONFIG_KEXEC_FILE` are **=y**. Guest `/boot/config-6.18.9-hs` is an 11-line RD stub — hash the pin payload config.
+> This page measures the fielded #37 pin, on which `CONFIG_IO_URING`, `CONFIG_KEXEC`, and `CONFIG_KEXEC_FILE` are `=y`. Hash the pin payload config, not guest `/boot/config-6.18.9-hs`, which is an 11-line initramfs stub.
 
 ---
 
@@ -38,13 +38,13 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 - **Attack-surface** = dangerous features disabled. Higher = more things off.
 - **Exploit-resistance** = defensive mitigations against memory bugs. Higher = harder to exploit.
 - These axes are largely independent.
-- **Do not** compare these percentages to the 5.19.6 pack (checker `b9b83a0`, 132 / 109 item denominators).
+- Do not compare these percentages to the 5.19.6 pack, because its checker commit (`b9b83a0`) uses different item counts (132 / 109).
 
 ### What this shows
 
-HS 6.18.9-hs **does not** lead attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%). Bypass primitives that 5.19.6 compiled out are **on** here.
+HS 6.18.9-hs trails on attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%), and the bypass primitives that 5.19.6 compiled out are enabled here.
 
-HS 6.18.9-hs **does** sit above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
+HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
 
 ### Bypass-primitive options — measured
 

@@ -42,12 +42,12 @@ These run automatically when you engage or leave Lockdown from the Dashboard (Lo
 
 For scripting, automation, and recovery scenarios. UI users rarely need these — most have a Dashboard equivalent that handles them automatically.
 
-- **`hs-app-perm-orders-manager`** — CLI tool to browse and edit allowlist entries (`/.hs/sys/hs-app-perm-orders-manager`; that directory is not on `PATH`). House name in some docs: `hs-manage-allowlist`. For advanced workflows and automation. View `--help` for details.
+- **`hs-app-perm-orders-manager`** — CLI tool to browse and edit allowlist entries (`/.hs/sys/hs-app-perm-orders-manager`; that directory is not on `PATH`). For advanced workflows and automation. View `--help` for details.
 - **`hs-monitor-state`** — on-disk binary that sets Setup Mode or Lockdown on next boot (`/.hs/sys/hs-monitor-state`). The Dashboard Lockdown button (`[l]`) is the normal path. There is no `hs-mode-switch` file on a current install.
 - **`hs-cache-size`** — glossary name for the kernel allowlist cache size (10–255). On disk the binary is `/.hs/sys/hs-APO-cache-size`. The cache is an LRU window, not a program cap. The Dashboard auto-expands it on every refresh; see [Adjusting the Cache Size](../maintenance/cache-adjustment/). Use the CLI only for scripting and automation.
 - **`register_HS_license`** — activates the server using your Root Lock subscription (`/.hs/sys/register_HS_license`). Some Dashboard copy still prints the house name `hs-activate-subscription`. Required before Lockdown can be activated.
 - **`hs-backup-config-manager`** — specify directories for automatic file backup (`list`, `add -d <path>`, `del -d <path>`). Only files in designated directories are backed up when modified. Prefer the Dashboard's Backup (`[b]`) for directory management.
-- **`hs-version-manager`** — restore prior versions of backed-up files (`list`, `versions`, `replace <path> <token>`). Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
+- **`hs-version-manager`** — restore prior versions of backed-up files (`list <path>`, `replace <path> <token>`). Prefer the Dashboard's Backup (`[b]`) for version browsing and restoration. View `--help` for details.
 - **`hs-shim-manager`** — configures interpreter names for Secure Script Launchers (`/.hs/sys/hs-shim-manager`). House name: `hs-secure-script-launcher-manager`. Prefer the Dashboard's Launchers (`[s]`) for normal use. View `--help` for scripting details.
 - **`empty_HS_log.sh`** — clears `/.hs/sys/HS_log.txt`. The Dashboard does this when queues drain in Setup Mode. There is no `hs-clear-logs` binary.
 

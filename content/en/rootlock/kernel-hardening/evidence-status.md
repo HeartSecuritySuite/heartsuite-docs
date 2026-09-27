@@ -24,7 +24,7 @@ toc: true
 | **6.18.9-hs #37** | Fielded pin / new deployments | `3cd18247…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-08-18 (`e870d01`) | 2026-08-18 (Debian 12 guest) |
 | **5.19.6** | Legacy / existing fleets | [Published](../evidence-pack-5.19.6.txt) | [Published](../evidence-pack-5.19.6.txt) | [Published](kernel-comparison-matrix-5.19.6/) | 2026-05-19 (`b9b83a0`) | 2026-05-19 (Debian 12 VM) |
 
-The two lines do **not** share the same kernel config. 5.19.6 compiled out BPF/FUSE/OVERLAY/USER_NS/AppArmor/TOMOYO. Fielded 6.18.9-hs #37 compiles those in. Treat 5.19.6 scores as **legacy**, not as a substitute for 6.18.9-hs.
+The two lines use different kernel configs. 5.19.6 compiled out BPF/FUSE/OVERLAY/USER_NS/AppArmor/TOMOYO. Fielded 6.18.9-hs #37 compiles those in. Treat 5.19.6 scores as **legacy**, not as a substitute for 6.18.9-hs.
 
 ---
 
@@ -32,14 +32,14 @@ The two lines do **not** share the same kernel config. 5.19.6 compiled out BPF/F
 
 - **Identity** — uname `6.18.9-hs`, `file` `#37`, vmlinuz SHA-256 `1b44fffb…`, pin config SHA-256 `3cd18247…` in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
 - **Automated scores** — checker `e870d01`: overall 148/259 (57.1%), attack-surface 57/131 (43.5%), exploit-resistance 78/110 (70.9%)
-- **Runtime** — Debian 12 guest: 74 modules loaded, 4190 `.ko.xz`, LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activate at t+4s
-- **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Threat model](auditor-brief/) now follow this pack
+- **Runtime** — Debian 12 guest: 74 modules loaded, 4190 `.ko.xz`, LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activation at t+4s
+- **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Threat model](auditor-brief/) are based on this pack
 
 **Known limits of this publication**
 
 - Era-matched Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are in the pack.
-- Guest `/boot/config-6.18.9-hs` is an 11-line RD stub. `CONFIG_IKCONFIG` is off. Analysis uses the pin payload config whose SHA matches `VERSION_MAP`.
-- This is the **fielded** pin, including `IO_URING=y`, `KEXEC=y`, `KEXEC_FILE=y`. It is not a derived unpublished hardening cut.
+- Guest `/boot/config-6.18.9-hs` is an 11-line initramfs stub, and `CONFIG_IKCONFIG` is off, so the running kernel does not export its config either. Analysis therefore uses the pin payload config, whose SHA-256 is recorded in the pack.
+- This is the fielded pin, including `IO_URING=y`, `KEXEC=y`, and `KEXEC_FILE=y`.
 
 ---
 
@@ -57,8 +57,6 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 | Auditor / procurement / 6.18 matrix refresh from that pack | **Done** (2026-08-18) |
 | Era-matched Arch linux-hardened **6.18.16** row | **Done** (2026-08-18) |
 | Era-matched vanilla **6.18.9** `defconfig` | **Done** (2026-08-18) |
-| `/boot/config-*` matching the pin (stop shipping the RD stub as `config-6.18.9-hs`) | **Open** — installer/product |
-| Derived cut with IO_URING/KEXEC/BPF compiled out | **Not this pin** — do not advertise as shipped |
 
 ---
 
@@ -67,7 +65,7 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 **Evaluating a 6.18.9-hs deployment today**
 
 - Use [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) and [Threat model](auditor-brief/).
-- Confirm `uname -r` is `6.18.9-hs` and `file` on vmlinuz contains `#37`. Absence of the word `HeartSuite` does not mean the maintenance kernel.
+- Confirm `uname -r` is `6.18.9-hs` and `file` on vmlinuz contains `#37`. The `uname -r` string does not contain the word `HeartSuite`, so its absence is not a sign that the maintenance kernel is running.
 - Do not close BPF/FUSE/io_uring scanner findings as compiled-out on this pin.
 
 **Evaluating a 5.19.6 legacy fleet**

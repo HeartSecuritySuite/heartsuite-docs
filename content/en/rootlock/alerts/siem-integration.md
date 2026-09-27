@@ -13,11 +13,11 @@ aliases:
 
 **Overview**: Root Lock by HeartSuite integrates with your existing SIEM, EDR, and observability stack via syslog (journald/rsyslog) and webhook. Configure once in Alert Settings → Fleet, and let your central tooling handle monitoring, correlation, and alerting. There is no requirement to run the Dashboard on every host for day-to-day fleet visibility.
 
-Raw **denial** decisions and higher-level alerts are emitted in real time. Successful allowlisted work is not streamed. Incident tools receive the events you configure them to receive.
+Root Lock emits kernel denial decisions and higher-level alerts in real time. Allowlisted work that succeeds is not streamed, so every event your SIEM receives is either a denial or an alert.
 
 ## Syslog (recommended for SIEM ingestion)
 
-When the Fleet tab **Syslog** switch is on (*Send alerts to /dev/log (LOG_AUTH facility)*), every alert and every kernel **denial** is written to the local journal under identifier `heartsuite`. Successful allowlisted work is not streamed. Alert message text begins with `heartsuite-alert:`.
+When the Fleet tab **Syslog** switch is on (*Send alerts to /dev/log (LOG_AUTH facility)*), every alert and every kernel denial is written to the local journal under identifier `heartsuite`. Alert message text begins with `heartsuite-alert:`.
 
 **Filebeat / Elastic (or any rsyslog-compatible shipper)**
 
@@ -34,7 +34,7 @@ output.elasticsearch:
 logging.level: warning
 ```
 
-The journal identifier is `heartsuite` on every host. How you ship that identifier is stack-specific: Filebeat journald for Elastic, a universal forwarder or HEC for Splunk, a DSM for QRadar, promtail for Loki. The YAML below is an Elastic example, not a universal ingest path.
+The journal identifier is `heartsuite` on every host. How you ship that identifier is stack-specific: Filebeat journald for Elastic, a universal forwarder or HEC for Splunk, a DSM for QRadar, promtail for Loki. The YAML above is an Elastic example, not a universal ingest path.
 
 Pre-flight check on the host:
 
@@ -85,7 +85,7 @@ Example generic payload (a Lockdown block):
 }
 ```
 
-`mode` is the on-disk token (`"Setup Mode"` or `"Secure Mode"`). The Dashboard label for `"Secure Mode"` is Lockdown. `lockdown` is the seal boolean. `tier` is `1` when you switch Setup Mode or Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network.
+`mode` is the on-disk token (`"Setup Mode"` or `"Secure Mode"`). The Dashboard label for `"Secure Mode"` is Lockdown. `lockdown` is the seal boolean. `tier` is `1` when you switch between Setup Mode and Lockdown, and for allowlist, backup-coverage, and kernel-module config changes. It is `2` for denied programs, files, and network.
 
 Supported targets:
 
@@ -94,7 +94,7 @@ Supported targets:
 - Slack Incoming Webhooks
 - Generic HTTPS JSON receivers
 
-Test Webhook (`[w]`) sends a test POST.
+Test Webhook (`[w]`) sends a test POST, so you can confirm the receiver accepts the payload before a real alert depends on it.
 
 ## Status JSON (pull-based monitoring)
 
@@ -112,8 +112,6 @@ Tools that can consume it directly:
 - Nagios / Icinga / Zabbix (SSH or file checks)
 - Any script that `cat`s or `jq`s the file on a schedule
 
-No configuration is required on the Root Lock side.
-
 ## Policy and posture data in Elastic and Kibana
 
 In addition to the enforcement and alert streams, Root Lock can emit structured policy and posture data — snapshots of the current allowlist and periodic reports of the host's protection posture. When ingested into Elasticsearch, that data supports views of the allowlist across your fleet.
@@ -125,7 +123,7 @@ Use it for:
 - Drift detection by comparing each host with the allowlist you keep in Git
 - Filtering for higher-risk entries using `risk_level`, `has_broad_write`, `has_network_grant`, and `lockdown_active_at_capture`
 
-Use the Dashboard for deliberate changes, review queues, and sealing on individual hosts. Use the central view for scanning, filtering, and correlating posture at fleet scale.
+Use the Dashboard on individual hosts to review the queues, change the allowlist, and activate Lockdown. Use the central view for scanning, filtering, and correlating posture at fleet scale.
 
 ### Production path on real hosts
 
@@ -135,9 +133,9 @@ On production hosts, ship enforcement and alert streams via syslog or Filebeat a
 
 For lab, evaluation, and customer demos, HeartSuite offers `tools/kibana-bridge/`: an optional disposable Docker stack (Elasticsearch, Kibana, and a small ingest receiver) that turns Root Lock telemetry (`apo_change`, heartbeats, enforcement) into policy-centric Kibana views.
 
-It is **not** installed by `heartsuite-install.sh`. Request an evaluation kit from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or use the materials included with your coordinated release delivery.
+`heartsuite-install.sh` does not install it. Request an evaluation kit from [support@heartsecsuite.com](mailto:support@heartsecsuite.com) or use the materials included with your coordinated release delivery.
 
-The bridge is a read-only insight plane that complements syslog enforcement streams. It does not replace them and is not required for production. Typical views include:
+The bridge is a read-only view that sits beside the syslog enforcement streams; production needs only those streams. Typical views include:
 
 - A living allowlist table (one row per `program_path` with grant counts, `risk_level`, `has_broad_write`, `has_network_grant`, and related fields).
 - KPI-style posture metrics (policy counts, broad-write risk while locked down, high-grant surface, recent blocks).
@@ -155,7 +153,7 @@ Use the production path above for real access control, TLS, and retention.
 | `tools/siem-test/` | Alert channel validation (syslog, email, webhook). Optional Kibana is for eyeballing raw text events. |
 | `tools/kibana-bridge/` | Policy-surface visibility in Kibana (tables, KPIs, risk filters), using richer telemetry payloads. Drift is a comparison with the allowlist you keep in Git. |
 
-They can run side by side on the same machine (different ports). Neither fixture is installed to `/.hs/sys` on hosts.
+They can run side by side on the same machine (different ports).
 
 **Quickstart (evaluation):**
 
@@ -177,7 +175,7 @@ To feed live data during lab work, forward syslog or the evaluation-kit telemetr
 
 ### Pairing with Ansible central policy
 
-The exported policy data model pairs with Ansible (or Terraform/GitOps) central policy: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `batch_record_add.py`, or `hs-manage-allowlist`, and use Kibana tables and KPIs for fleet visibility. Compare the allowlist you keep in Git for drift. Git history is the policy change record. Policy identity is not on `status.json`, syslog, webhook, or Kibana.
+The exported policy data model pairs with Ansible (or Terraform/GitOps) central policy: curate one allowlist in your repo, push via the `heartsecurity.root_lock` Ansible role, `/.hs/sys/batch_record_add.py`, or `/.hs/sys/hs-app-perm-orders-manager`, and use Kibana tables and KPIs for fleet visibility. Compare the allowlist you keep in Git for drift. Git history is the policy change record. Policy identity is not on `status.json`, syslog, webhook, or Kibana.
 
 The bridge (or your production Elasticsearch deployment) is the read side. Your control plane remains the write path.
 

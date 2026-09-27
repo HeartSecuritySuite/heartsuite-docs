@@ -21,7 +21,7 @@ toc: true
 
 ## What this page covers
 
-This page states **what HeartSuite publishes today** for Root Lock kernel supply-chain verification and **what is on the roadmap** — without overstating availability.
+This page states **what HeartSuite publishes today** for Root Lock kernel supply-chain verification and **what is on the roadmap**.
 
 It is the single reference for:
 
@@ -67,9 +67,7 @@ sha256sum -c heartsuite-install.sh.sha256
 
 Expected output: `heartsuite-install.sh: OK`
 
-This is the **only generally available cryptographic integrity check** for bundles today. It confirms the file you received matches the checksum HeartSuite published for that release.
-
-It does **not** by itself prove publisher identity. That is why GPG and cosign are on the roadmap (see below).
+This is the **only generally available cryptographic integrity check** for bundles today. It confirms the file you received matches the checksum HeartSuite published for that release, but it does not by itself prove publisher identity, which is why GPG and cosign signing are on the roadmap (see below).
 
 Full install procedure and maintenance-window context: [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
@@ -77,9 +75,9 @@ Full install procedure and maintenance-window context: [Updating Root Lock](../.
 
 Every released Root Lock kernel stream publishes the **SHA-256 hash of the exact kernel `.config`** used for that build. This hash is the anchor for independent hardening verification:
 
-- Compare the published hash to the **pin payload `.config`**, not guest `/boot/config-$(uname -r)` on 6.18.9-hs. That file is an 11-line initramfs stub (`CONFIG_IKCONFIG` is off). Hashes and commands: [Threat model](auditor-brief/), [Evidence Status](evidence-status/).
-- Re-run the open-source `kernel-hardening-checker` against that pin config to reproduce attack-surface and exploit-resistance scores
-- Cross-check stream-specific raw output in `evidence-pack-*.txt` artefacts referenced from the comparison and auditor pages
+- Compare the published hash to the **pin payload `.config`**, not the installed `/boot/config-$(uname -r)` on 6.18.9-hs, because that file is an 11-line initramfs stub (`CONFIG_IKCONFIG` is off). Hashes and commands: [Threat model](auditor-brief/), [Evidence Status](evidence-status/).
+- Re-run the open-source `kernel-hardening-checker` against that pin config to reproduce attack-surface and exploit-resistance scores.
+- Cross-check stream-specific raw output in `evidence-pack-*.txt` artefacts referenced from the comparison and auditor pages.
 
 Config hashes are **per stream** (for example, 6.18 primary LTS and legacy 5.19), not a single global value. Publication status per stream is tracked in [Evidence Status](evidence-status/).
 
@@ -104,7 +102,7 @@ Feeds are published on this documentation site when HeartSuite cuts an annotated
 
 HeartSuite distributes the Root Lock kernel as binaries in the coordinated `heartsuite-install.sh` bundle. Portions of the Root Lock kernel are subject to the GNU General Public License.
 
-HeartSuite does **not** maintain a public kernel source repository at this time. **Corresponding source code** for the Root Lock kernel build you are running is available on **written request** under GPL obligations.
+HeartSuite does not maintain a public kernel source repository at this time. **Corresponding source code** for the Root Lock kernel build you are running is available on **written request** under GPL obligations.
 
 Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
 
@@ -112,7 +110,7 @@ Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
 - HeartSuite product version (for example, v1.6.4)
 - Release tag or `heartsuite-install.sh.sha256` reference if known
 
-HeartSuite will provide source matching that build. Independent verification of kernel configuration does **not** require source access — use the published `.config` SHA-256 and reproduction steps in the [Threat model](auditor-brief/).
+HeartSuite will provide source matching that build. Independent verification of kernel configuration does not require source access — use the published `.config` SHA-256 and reproduction steps in the [Threat model](auditor-brief/).
 
 ### Subscription notification
 
@@ -153,7 +151,7 @@ Existing SHA-256 verification remains valid for customers who have not yet adopt
 
 ## Roadmap: GPG and cosign signed bundles
 
-**Today**: Integrity is **SHA-256 only** — detect accidental corruption or tampering in transit if you verify against the published checksum before execution.
+**Today**: Integrity is **SHA-256 only**, which detects accidental corruption or tampering in transit when you verify against the published checksum before execution.
 
 **Planned**:
 
@@ -162,11 +160,11 @@ Existing SHA-256 verification remains valid for customers who have not yet adopt
 | **GPG signatures** | Prove the checksum manifest and release metadata were issued by HeartSuite's signing key; support `gpg --verify` in install pipelines |
 | **Cosign (or equivalent OCI signing)** | Attach signatures to bundle artefacts for CI/CD and image pipelines that already consume sigstore-compatible provenance |
 
-**What HeartSuite is not claiming yet**:
+**Current position**:
 
-- No published GPG public key or cosign policy on this site today.
-- No requirement that customers use signing before install — SHA-256 verification remains the baseline until signing is generally available.
-- Signing addresses **publisher authenticity** and **pipeline integration**; it does not change the Root Lock kernel's CVE reachability model or Lockdown semantics.
+- This site publishes no GPG public key or cosign policy yet.
+- SHA-256 verification remains the install baseline until signing is generally available, so customers are not required to use signing before install.
+- Signing adds **publisher authenticity** and **pipeline integration**; the Root Lock kernel's CVE reachability model and Lockdown semantics stay the same.
 
 Teams with mandatory code-signing policies should treat SHA-256 + config-hash verification as the current interim control and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) for questionnaire language until GPG/cosign GA.
 
@@ -176,9 +174,7 @@ Teams with mandatory code-signing policies should treat SHA-256 + config-hash ve
 
 Enterprise Linux teams often use **OVAL** definitions with OpenSCAP, or **OSV** entries in broader SCA tooling, to reduce false positives from raw NVD version matching.
 
-**Published today** (JSON under `/advisories/`, absolute base `https://docs.heartsecsuite.com/advisories/`):
-
-For release tag **`hs-v1.6.4-kernel-6.18.9`** (`gate_status: PASS` in the catalogue):
+**Published today** for release tag **`hs-v1.6.4-kernel-6.18.9`** (`gate_status: PASS` in the catalogue), as JSON under `/advisories/` (absolute base `https://docs.heartsecsuite.com/advisories/`):
 
 - **`index.json`** — Feed catalogue (`hs-advisory-catalog/v1`) with release tag, HeartSuite version, kernel base, and per-feed `published` flags.
 - **`hs-cve-config-sbom.json`** — CONFIG-gate Not-Affected manifest (`hs-cve-config-sbom/v1`) produced by the CVE↔CONFIG crosswalk gate in Root Lock CI.
@@ -195,23 +191,23 @@ The feeds encode logic that version strings alone cannot express:
 
 | Data element | Purpose |
 |---|---|
-| **Product / stream scope** | Distinguish Root Lock kernel (`HeartSuite` in `uname -r`) from distribution maintenance-kernel boots on the same host |
+| **Product / stream scope** | Distinguish Root Lock kernel (`6.18.9-hs` on the 6.18 pin, `HeartSuite` in the legacy 5.19 string) from distribution maintenance-kernel boots on the same host |
 | **Config gates** | Map CVEs to `CONFIG_*` options — **Not Affected** when subsystem is compiled out |
 | **Score on Root Lock** | Environmental applicability (including 0.0 neutralisation) |
 | **Reachable / bounded** | Flag CVEs where code path exists and Lockdown bounds post-exploitation |
 | **Fixed-in-bundle boundaries** | Tie remediation to HeartSuite build release and bundle manifest CVE list |
 | **Config SHA-256 reference** | Anchor feed evaluations to the published `.config` hash for the stream |
 
-The feeds **do not** replicate RHSA numbering or distribution errata semantics. HeartSuite remediation is expressed through **coordinated bundles** and transparency documentation, not per-CVE RPM errata on the HS binary.
+The feeds do not replicate RHSA numbering or distribution errata semantics, because HeartSuite remediation is expressed through **coordinated bundles** and transparency documentation rather than per-CVE RPM errata on the Root Lock kernel binary.
 
 ### Automation workflow
 
 1. Pull the catalogue: `curl -fsS https://docs.heartsecsuite.com/advisories/index.json`
 2. Ingest `hs-cve-config-sbom.json` and `osv.json` into your vulnerability-management platform.
 3. For CVEs not covered by machine-readable entries, use **[CVE Hygiene for Scanners](cve-hygiene-for-scanners/)**:
-   - Confirm boot context: fielded Root Lock kernel is `6.18.9-hs` (see [Evidence Status](evidence-status/)). A missing `HeartSuite` substring still matches that pin.
+   - Confirm boot context: fielded Root Lock kernel is `6.18.9-hs` (see [Evidence Status](evidence-status/)). That string has no `HeartSuite` substring, so its absence does not mean you are on the maintenance kernel.
    - Look up the CVE on [Kernel Security Transparency](../../security/).
-   - Verify compiled-out claims against the **pin payload config**. Guest `/boot/config-6.18.9-hs` is a stub.
+   - Verify compiled-out claims against the **pin payload config**, because the installed `/boot/config-6.18.9-hs` is a stub.
    - Record exceptions with pin identity, config evidence, and a transparency link.
 
 Continue using **distribution OVAL/errata** for maintenance-kernel boots and for non-kernel packages.

@@ -17,7 +17,7 @@ menu:
 **Overview**: After running the install command, the machine reboots into the Root Lock kernel.
 
 > [!NOTE]
-> Cloud users skip this step entirely. The Root Lock kernel is pre-installed and on first boot the Dashboard confirms initial setup is complete. The Dashboard appears automatically on first boot.
+> Cloud users skip this step entirely, because the Root Lock kernel is pre-installed. The Dashboard appears automatically on first boot and confirms initial setup is complete.
 
 ## Reboot into the Root Lock kernel
 
@@ -28,7 +28,7 @@ After reboot, Root Lock reads the startup and shutdown logs and adds those progr
 > [!NOTE]
 > **If you are connected over SSH**, your session drops when the reboot fires — this is expected. Reconnect after the machine comes back.
 >
-> While initial setup is running, each SSH login shows a brief status line and drops you at a regular shell; the Dashboard appears once complete. The serial console (virsh console, AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, etc.) shows the current step on every boot. On cloud serial, run `cat /var/log/heartsuite/install.log` to see bundle output or `journalctl -t heartsuite` for enforcement.
+> While initial setup is running, each SSH login shows a brief status line and drops you at a regular shell; the Dashboard appears once complete. The serial console (virsh console, AWS EC2 Serial Console / Get system log, Linode LISH, Hetzner console, etc.) shows the current step on every boot. On cloud serial, run `cat /var/log/heartsuite/install.log` to see bundle output or `journalctl -t heartsuite` for denial and alert lines.
 
 > [!NOTE]
 > **If an amber warning appears instead of the countdown**, the installer could not set the GRUB default automatically. This occurs on Alpine Linux or when the GRUB configuration is missing. The warning includes instructions for opening a console session on your cloud provider (AWS, Azure, GCP, or DigitalOcean) or local VM before rebooting — then select the Root Lock kernel from the GRUB menu manually.

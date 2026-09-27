@@ -15,7 +15,9 @@ toc: false
 
 ---
 
-Root Lock ships a Linux kernel with 9 loadable modules. A standard Debian Linux system typically ships 3,500 to 4,000.
+> **Note:** 5.19.6 is the legacy kernel line, installed only on Debian 11 and Ubuntu 20.04. New installs on every other supported distribution run 6.18.9-hs, whose posture is in [Hardening matrix for kernel 6.18.9](../kernel-comparison-matrix-6.18.9/).
+
+The Root Lock 5.19.6 kernel ships with 9 loadable modules. A standard Debian Linux system typically ships 3,500 to 4,000.
 
 The count is small because the kernel is built for one job and includes nothing outside it, not because capability was cut.
 

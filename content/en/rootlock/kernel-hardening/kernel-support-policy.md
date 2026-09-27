@@ -37,7 +37,7 @@ It applies to:
 
 ## LTS-only strategy
 
-HeartSuite's **current** commercial baseline is a **mainline LTS** kernel (6.18). New streams are LTS bases — not arbitrary upstream version chasing.
+HeartSuite's current commercial baseline is a **mainline LTS** kernel (6.18). New streams are LTS bases — not arbitrary upstream version chasing.
 
 The **5.19** stream is a legacy exception: 5.19 was a short-lived mainline release. It remains in this policy only for existing deployments until the deprecation window closes.
 
@@ -70,7 +70,7 @@ HeartSuite follows a **different model**, aligned with how Root Lock is built an
 | Third-party kernel modules | kABI / stable module interface across minor updates | **Not a design goal** on the Root Lock kernel — enforcement architecture intentionally diverges from general-purpose distro kernels |
 | Delivery unit | Distribution package manager and errata channels | **Coordinated `heartsuite-install.sh` bundle** with userspace stack |
 
-HeartSuite is honest about the trade-off: the Root Lock kernel is **not** a drop-in substitute for a distribution kernel in every operational sense. It **is** the enforcement kernel for Lockdown.
+The Root Lock kernel is not a drop-in substitute for a distribution kernel in every operational sense, because it is built as the enforcement kernel for Lockdown.
 
 The distribution **maintenance kernel** remains on the system for maintenance and recovery. Distribution errata still apply to packages and to the maintenance kernel path.
 
@@ -82,24 +82,24 @@ For deployment implications, coexistence with distribution maintenance, and flee
 
 The running kernel version is shown by `uname -r`. On a Root Lock deployment, the string identifies the HeartSuite build, not a distribution errata package.
 
-**Fielded 6.18 pin:** `uname -r` is **`6.18.9-hs`**. Packaging label is `6.18.9-HeartSuite-3` (build **#37**). Absence of the word `HeartSuite` in `uname -r` does **not** mean you are on the maintenance kernel.
+**Fielded 6.18 pin:** `uname -r` is **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build **#37**), so the absence of the word `HeartSuite` in `uname -r` does not mean you are on the maintenance kernel.
 
 **Legacy 5.19 example:** `5.19.6-HeartSuite-1.0`
 
 | Component | Fielded 6.18 example | Meaning |
 |---|---|---|
 | Upstream LTS base | `6.18.9` | The mainline LTS kernel version HeartSuite built from for this release. This is the upstream tag lineage, not a count of every upstream commit merged since a prior HeartSuite build. |
-| Vendor segment | `hs` in `uname`; `HeartSuite` in the packaging label | Identifies the binary as an Root Lock kernel. Match `uname -r` to [Evidence Status](evidence-status/) and the distro matrix, not to a single historical suffix. |
+| Vendor segment | `hs` in `uname`; `HeartSuite` in the packaging label | Identifies the binary as a Root Lock kernel. Match `uname -r` to [Evidence Status](evidence-status/) and the distro matrix, not to a single historical suffix. |
 | HeartSuite build | packaging `6.18.9-HeartSuite-3`, `file` **#37** | HeartSuite's rebuild/bundle identity for this upstream base. |
 
-On 6.18 the HS-vs-maintenance test is `uname -r` plus `file` on vmlinuz, as documented in [Evidence Status](evidence-status/). The fielded pin is `6.18.9-hs`.
+On 6.18, tell the Root Lock kernel from the maintenance kernel with `uname -r` plus `file` on vmlinuz, as documented in [Evidence Status](evidence-status/).
 
 ### What the version string does **not** mean
 
 Procurement and scanner teams trained on distribution errata often misread custom kernel strings. The Root Lock kernel version string **does not** imply:
 
 - **Full upstream parity** — The string does not assert that every fix present in a newer upstream kernel is backported. HeartSuite rebuilds on the LTS base with the published HeartSuite configuration; fixes apply to **compiled-in** paths or are addressed through structural absence and Lockdown bounds as documented on the [Kernel Security Transparency](../../security/) page.
-- **Distribution errata equivalence** — A match against a distribution CVE feed or `rpm -q kernel` version is not valid for the Root Lock kernel. The Root Lock kernel is not the distribution enforcement kernel.
+- **Distribution errata equivalence** — A match against a distribution CVE feed or `rpm -q kernel` version is not valid for the Root Lock kernel, because the Root Lock kernel is not a distribution kernel package.
 - **Scanner "fixed in version" logic** — Vulnerability scanners that compare `uname -r` to NVD "fixed version" thresholds will produce false positives for Root Lock kernels. Use HeartSuite's per-CVE status and [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) guidance instead of raw version-string matching.
 - **kABI or DKMS compatibility** — The string does not promise binary compatibility with out-of-tree kernel modules built for the distribution kernel or for prior HS builds.
 - **Live-patch level** — There is no parallel "kpatch level" or running-patch suffix; updates require a coordinated bundle and reboot path.
@@ -128,13 +128,13 @@ Root Lock kernel updates are delivered only as part of **coordinated HeartSuite 
 
 ### Applying an update
 
-The installer will not overwrite Root Lock while that kernel is booted.
+The installer will not overwrite Root Lock while that kernel is booted, so the update finishes on one stock or maintenance boot.
 
-1. If Lockdown is applied, unseal from the console first. That trip is not the install boot.
-2. From a terminal in Setup Mode, run `bash heartsuite-install.sh` and type `YES`. That takes one stock or maintenance boot and continues the update. The default stays Root Lock.
-3. If you are already on the original distro kernel or the maintenance kernel and Lockdown is not applied, run the installer. There is no `YES` step.
+1. If Lockdown is applied, unseal from the console first, because the installer cannot set the next boot while `/boot` is sealed. The unseal is a separate boot from the one that installs the update.
+2. From a terminal in Setup Mode, run `bash heartsuite-install.sh` and type `YES`. The installer sets the next boot to the stock or maintenance kernel, continues the update after that boot, and keeps Root Lock as the default.
+3. If you are already on the original distro kernel or the maintenance kernel and Lockdown is not applied, run the installer without a `YES` step.
 
-Root Lock is **not** loaded on that stock or maintenance boot: it does not block, log, or take backups. Choose a time when that gap is acceptable.
+Root Lock is not loaded on that stock or maintenance boot, so it does not block, log, or take backups. Choose a time when that gap is acceptable.
 
 Full step-by-step procedures, failure recovery, and Lockdown considerations are in [Updating Root Lock](../../maintenance/updating-heartsuite/).
 
@@ -157,7 +157,7 @@ Clock start for timed tiers: **HeartSuite confirmation** that the issue applies 
 | Tier | Criteria | Target delivery |
 |---|---|---|
 | **Critical** | Actively exploited in the wild **or** remote unauthenticated RCE on a **reachable** Root Lock kernel path (compiled in, triggerable on a supported deployment profile) | **15 business days** from HeartSuite confirmation |
-| **Important** | Reachable HS path, **no** known active exploitation | **30 business days** from HeartSuite confirmation |
+| **Important** | Reachable Root Lock kernel path, **no** known active exploitation | **30 business days** from HeartSuite confirmation |
 | **Moderate / Low (reachable)** | Reachable but lower practical impact on standard server profiles; Lockdown may bound post-exploitation | **Next scheduled coordinated bundle** |
 | **Not Affected** | Vulnerable subsystem **compiled out** or path documented as unreachable on the Root Lock kernel; Score on Root Lock **0.0** | **No patch required** — status documented on the CVE page; bundle may still ship for other reasons |
 
@@ -165,7 +165,7 @@ Clock start for timed tiers: **HeartSuite confirmation** that the issue applies 
 
 - Many high-severity CVEs are **Not Affected** on Root Lock kernels because the attack surface was never compiled in. Those entries do not consume patch-tier clocks.
 - For reachable CVEs, Lockdown limits persistence and arbitrary code execution even before a rebuild ships; patching remains part of defense-in-depth and subscription commitments for reachable paths.
-- HeartSuite does **not** commit to per-CVE errata identifiers in the distribution-vendor style. Bundle manifests list addressed CVEs for the release.
+- HeartSuite does not issue per-CVE errata identifiers in the distribution-vendor style; bundle manifests list the CVEs addressed in each release.
 
 ---
 
@@ -178,7 +178,7 @@ HeartSuite notifies subscription customers through the following channels:
 | **Email** | Sent to contacts registered on the subscription (security advisories, bundle availability, stream-deprecation notices). Ensure procurement keeps technical and security distribution lists current with HeartSuite. |
 | **Release notes** | Published on this documentation site with each coordinated release — summary of kernel stream, version string, and notable CVE or configuration changes. |
 | **Bundle manifest** | Shipped with or referenced by the bundle — includes version identifiers, checksum, and the CVE list addressed in that build. |
-| **Machine-readable feeds** | JSON advisory artefacts under [`/advisories/`](/advisories/index.json) — CONFIG-gate SBOM, OSV (279 entries), and CycloneDX SBOM published for `hs-v1.6.4-kernel-6.18.9` (`gate_status: PASS`). Catalogue schema: `hs-advisory-catalog/v1`. Detail: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/#published-advisory-feeds-hs-kernel). |
+| **Machine-readable feeds** | JSON advisory artefacts under [`/advisories/`](/advisories/index.json), published on each annotated `hs-v*` release tag (CONFIG-gate SBOM, OSV, CycloneDX SBOM; catalogue schema `hs-advisory-catalog/v1`). Detail: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/#published-advisory-feeds-hs-kernel). |
 
 **Major stream deprecation**: HeartSuite provides **at least 30 days' advance notice** before ending support for an Root Lock kernel stream (for example, end of 5.19 support). Notice includes migration bundle availability and recommended maintenance windows.
 
@@ -231,15 +231,13 @@ Root Lock **replaces the enforcement kernel** for protected operation; it does *
 
 Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the maintenance-kernel path and to userspace packages.
 
-Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the Root Lock kernel should run on a kernel that still exposes those interfaces, or on a separate host.
-
-The Root Lock kernel omits these by design to eliminate bypass primitives and attack surface. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
+Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the Root Lock kernel should run on a kernel that still exposes those interfaces, or on a separate host. The Root Lock kernel omits these by design to eliminate bypass primitives and attack surface. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
 
 ---
 
 ## What Root Lock does not provide
 
-Root Lock does **not** offer the following on the Root Lock kernel path:
+Root Lock does not offer the following on the Root Lock kernel path:
 
 | Capability | HeartSuite position |
 |---|---|

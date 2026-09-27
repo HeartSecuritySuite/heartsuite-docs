@@ -2,7 +2,7 @@
 title: "What this kernel needs — and what differs by stream"
 linkTitle: "System Requirements"
 weight: 3
-description: "Architecture, supported distributions, kernel features the Root Lock kernel omits, and which hosts the installer runs on. Confirm these before you install."
+description: "Architecture, supported distributions, kernel features and workloads the Root Lock kernel does not support, and which hosts the installer runs on. Confirm these before you install."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "requirements", "specs", "debian", "ubuntu", "alpine", "rhel", "fedora", "centos", "rocky", "x86"]
 type: docs

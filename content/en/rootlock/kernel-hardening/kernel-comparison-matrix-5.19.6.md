@@ -18,6 +18,8 @@ toc: true
 
 ---
 
+> **Note:** 5.19.6 is the legacy kernel line, installed only on Debian 11 and Ubuntu 20.04. New installs on every other supported distribution run 6.18.9-hs, whose posture is in [Hardening matrix for kernel 6.18.9](../kernel-comparison-matrix-6.18.9/).
+
 ## Part 1 — Measured comparison (same kernel era)
 
 All three configs below are built from the 5.19.x kernel tree. Checker scores are directly comparable — same Kconfig namespace, same option universe.
@@ -55,7 +57,7 @@ Vanilla defconfig is the baseline: it does about as well as HS on attack-surface
 | `CONFIG_KEXEC` | =y | **=n** | kexec destroys Lockdown state |
 | `CONFIG_MODULE_SIG` | =n | **=y** | Unsigned modules can unload HeartSuite |
 
-HS: 5/8 disabled. Arch lh: 3/8 disabled (different 3). **Neither disables all eight.**
+HS 5.19.6 disables five of the eight options and Arch linux-hardened disables a different three, so neither disables all eight.
 
 ### Exploit-resistance mitigations — side by side
 
@@ -114,7 +116,7 @@ These projects were not scored with the checker in this analysis — either beca
 
 ## Part 4 — CPU mitigations (5.19.6 naming)
 
-5.19.6 uses pre-6.1 option names. Checker reports these as FAIL (uses the 6.1+ `CONFIG_MITIGATION_*` names). Mitigations confirmed present:
+5.19.6 uses pre-6.1 option names, and the checker looks for the 6.1+ `CONFIG_MITIGATION_*` names, so it reports these as FAIL even though the mitigations are present:
 
 | Mitigation | 5.19.6 option | Value |
 |---|---|---|

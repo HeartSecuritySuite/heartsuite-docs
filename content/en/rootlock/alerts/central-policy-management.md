@@ -35,7 +35,7 @@ Root Lock accepts seed policy at two points. An install-time baseline gives a ne
 | **Purpose** | Start initial setup from a known baseline harvested from a reference host | Add program approvals after Root Lock is up |
 | **When** | Before or during install — the package or image carries the baseline | After Root Lock is installed and initial setup is complete |
 | **Shape** | Installer baseline material, enabled with installer options such as `--apo-seed` | Plain text: one absolute program path per line (`#` comments allowed) |
-| **Apply with** | The seeded installer or image; Ansible runs that installer | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `hs-manage-allowlist` |
+| **Apply with** | The seeded installer or image; Ansible runs that installer | `hs_seeds` / `hs_programs` (Ansible role), `batch_record_add.py`, `/.hs/sys/hs-app-perm-orders-manager` |
 
 A program list carries program paths; the installer baseline also carries each program's grants and is what shortens initial setup. Re-applying a harvested baseline as a text list after initial setup therefore gains nothing. Program lists earn their place for role-scoped bootstrap lists (for example SSH and application entry points), for stack extras you approve after reviewing the queues, and for hosts that never ran those paths during setup.
 
@@ -48,7 +48,7 @@ A program list carries program paths; the installer baseline also carries each p
 5. **Start each fleet node** from a clean OS.
 6. **Install Root Lock with Ansible**, pointing the playbook's install bundle at the pre-seeded installer. Initial setup starts from the baseline and finishes quickly.
 7. **Deploy** application and hardening automation, then review only the differences in the Dashboard.
-8. **Optional:** harvest extras with `hs-manage-allowlist list` and review the paths. Apply them with `hs_seeds`, which approves each program path, or with `batch_record_add.py`, which approves those paths and also grants read on `/usr/lib` and `/etc`.
+8. **Optional:** harvest extras with `get_allowlist_programs()` from the `limited_tools` Python API, which prints one program path per line, and review the paths. Apply them with `hs_seeds`, which approves each program path, or with `batch_record_add.py`, which approves those paths and also grants read on `/usr/lib` and `/etc`.
 9. **Activate Lockdown** once the subscription, alert, and queue checks pass.
 
 The first reference host of a class has no baseline to start from: install it on a clean OS without pre-seed, let initial setup run under the real workload, review the queues, and harvest from step 2. Every later host follows the order above.
@@ -59,7 +59,7 @@ Seed only what the reference host's real workload ran, and leave out paths from 
 
 Use the CLI tools shipped with every installation (documented in the [Appendices](../appendices/) and [Batch Allowlisting Tools](../../allowlisting/batch-allowlisting-tools/)) to apply post-install policy from your control plane:
 
-- `hs-manage-allowlist` — inspect current state, add or remove specific entries for programs, file paths, and network destinations.
+- `/.hs/sys/hs-app-perm-orders-manager` — inspect current state, add or remove specific entries for programs, file paths, and network destinations. `/.hs/sys` is not on `PATH`, so call it by its full path.
 - `batch_record_add.py` — bulk-seed programs from a plain-text list of paths (adds each with standard library and configuration directories).
 
 Run these tools over SSH, via config-management agents, or as part of provisioning scripts after Root Lock is installed and initial setup is complete. Your central system prepares the seed data or change set; the automation layer delivers and applies it to each target host.
@@ -72,7 +72,7 @@ Examples for the primary integration patterns follow.
 
 HeartSuite provides an official declarative Ansible role (`heartsecurity.root_lock`) for fleet policy application and Lockdown transitions. It is modelled on `linux-system-roles.selinux` and ships with coordinated release materials; email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) if you need the role package.
 
-On every installed host, the `limited_tools` Python API under `/opt/heartsuite` is the runtime integration surface the role uses. A shell-and-CLI alternative using `batch_record_add.py` and `hs-manage-allowlist` follows below for ad-hoc or legacy playbooks.
+On every installed host, the `limited_tools` Python API under `/opt/heartsuite` is the runtime integration surface the role uses. A shell-and-CLI alternative using `batch_record_add.py` and `hs-app-perm-orders-manager` follows below for ad-hoc or legacy playbooks.
 
 #### Official Ansible role: `heartsecurity.root_lock`
 
@@ -153,14 +153,25 @@ Use Ansible to distribute seed files and invoke the batch or management tools wi
 
     - name: Apply targeted network and file deltas from central policy
       shell: |
-        hs-manage-allowlist add -x /usr/bin/curl -n 93.184.216.34
-        hs-manage-allowlist add -r /etc/ssl/certs -w /var/log/app
+        /.hs/sys/hs-app-perm-orders-manager add -x /usr/bin/curl -n 93.184.216.34
+        /.hs/sys/hs-app-perm-orders-manager add -x /usr/bin/curl -d /etc/ssl/certs
       # Idempotency and error handling left to your playbook
 
+    - name: Harvest the applied program list on the host
+      shell: >
+        /opt/heartsuite/venv/bin/python3 -c "import sys; sys.path.insert(0, '/opt/heartsuite/src');
+        from core.limited_tools import get_allowlist_programs;
+        print('\\n'.join(sorted(get_allowlist_programs() or [])))"
+      register: hs_allowlist
+      changed_when: false
+
     - name: Record application in central audit
-      shell: "hs-manage-allowlist list > /tmp/current-allowlist-{{ inventory_hostname }}.txt"
+      copy:
+        content: "{{ hs_allowlist.stdout }}\n"
+        dest: "policy/harvest/allowlist-{{ inventory_hostname }}.txt"
       delegate_to: localhost
-      # Then copy or commit the harvest back to your policy repo
+      become: false
+      # Then commit the harvest back to your policy repo
 ```
 
 Without the role there is no `CommandResult.kind == "noop"` to drive `changed_when`, so add your own re-run checks (for example `creates`, or `register` + conditional tasks).
@@ -181,8 +192,8 @@ Syslog is the recommended high-volume path for both the per-decision enforcement
 Store allowlist seeds and change manifests in the same Git repository as your infrastructure code.
 
 - Use Terraform `local_file` or `templatefile` to render per-host or per-role seed files from a central policy definition.
-- During `terraform apply`, a `remote-exec` provisioner, `local-exec` that calls Ansible, or a custom provider runs the seed application and `hs-manage-allowlist` invocations on the new or updated instance.
-- Drift detection: scheduled jobs (or Terraform Cloud/Enterprise runs) harvest the allowlist with `hs-manage-allowlist list`, compare it with the allowlist you keep in Git, and open PRs or apply corrections. `status.json` is the health snapshot, not the policy identity.
+- During `terraform apply`, a `remote-exec` provisioner, `local-exec` that calls Ansible, or a custom provider runs the seed application and `hs-app-perm-orders-manager` invocations on the new or updated instance.
+- Drift detection: scheduled jobs (or Terraform Cloud/Enterprise runs) harvest the program list with `get_allowlist_programs()` from the `limited_tools` Python API, compare it with the allowlist you keep in Git, and open PRs or apply corrections. `status.json` is the health snapshot, not the policy identity.
 - Git history becomes the authoritative change record for policy; the on-host JSONL approval log provides the per-host attribution of when and by which uid/tty the change was executed.
 
 This pattern works especially well for immutable or frequently reprovisioned fleets.
@@ -200,7 +211,7 @@ This keeps policy changes inside the same approval workflow used for all other i
 
 Any tool that can copy files and run commands as root on the target can drive policy:
 
-- Puppet: a custom resource or exec that writes a seed list managed by Hiera or PuppetDB and then invokes `batch_record_add.py` or `hs-manage-allowlist`.
+- Puppet: a custom resource or exec that writes a seed list managed by Hiera or PuppetDB and then invokes `batch_record_add.py` or `hs-app-perm-orders-manager`.
 - Chef: a recipe that templates policy from a data bag and executes the CLI tools.
 - Pure scripts (Python, Bash, or your language of choice) run from a central runner or cron on a bastion: query the authoritative policy store, compute the diff for each host (or use a node-specific tag), SSH in, and apply.
 
@@ -218,7 +229,7 @@ Status JSON and the JSONL approval log are written whenever the alert daemon is 
 
 - **Webhook** — HTTPS POST of compact JSON alert payloads on every significant event. Configure the endpoint in Alert Settings; use for immediate routing into ServiceNow, PagerDuty, or your own policy-evaluation service.
 
-- **Harvest current allowlist state** — run `hs-manage-allowlist list` (or the equivalent Dashboard export) on a schedule or on demand and commit the output to your central policy repository. This closes the loop: central sees what is actually enforced on each host and can detect drift or feed the next baseline.
+- **Harvest current allowlist state** — run `get_allowlist_programs()` from the `limited_tools` Python API, or `/.hs/sys/hs-app-perm-orders-manager view -a` for each program's grants, on a schedule or on demand and commit the output to your central policy repository. This closes the loop: central sees what is actually enforced on each host and can detect drift or feed the next baseline.
 
 See [Alert Settings](.) for configuration of syslog and webhook (Fleet tab) and [SIEM and Fleet Integration](siem-integration/) for production-scale ingestion patterns.
 

@@ -16,13 +16,13 @@ toc: true
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-This page describes the **fielded #37 pin**. It does not describe a derived unpublished cut that turns `IO_URING` / `KEXEC` off. Those options are **=y** on the binary that boots.
+This page describes the fielded #37 pin, the binary that boots, on which `IO_URING` and `KEXEC` are `=y`.
 
 ---
 
 ## Threat model
 
-Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. On the 5.19.6 pack that was done mainly by compiling bypass primitives out. On the fielded 6.18.9-hs pin those primitives are compiled **in**. Enforcement on this pin is the Root Lock allowlist and Lockdown, running **alongside** other LSMs, not instead of a compiled-out surface.
+Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. The 5.19.6 kernel countered that mainly by compiling the bypass primitives out. The fielded 6.18.9-hs pin compiles those primitives in, so on this pin the countermeasure is the Root Lock allowlist and Lockdown, which run alongside the other LSMs.
 
 ---
 
@@ -30,21 +30,21 @@ Root Lock targets **a process on the protected system attempting to bypass VFS-l
 
 Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-08-18, against pin config SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`.
 
-Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers (no 6.18.9-hardened in the Arch archive). Do not mix these percentages with the 5.19.6 pack (`b9b83a0`, different item universe).
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers (no 6.18.9-hardened in the Arch archive). Do not mix these percentages with the 5.19.6 pack, because its checker commit (`b9b83a0`) counts a different set of items.
 
 ### Attack-surface reduction
 
 Automated score: **57/131 (43.5%)**  
 Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-The fielded pin does **not** lead this axis. Pin greps: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
+The fielded pin trails both era-matched peers on this axis. Config greps on the pin show the bypass options compiled in: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
 Automated score: **78/110 (70.9%)**  
 Era-matched Arch linux-hardened 6.18.16: 92/110 (83.6%). Era-matched vanilla 6.18.9 defconfig: 56/110 (50.9%). KSPP: 93/110 (84.5%).
 
-This pin is **above** vanilla 6.17 on this axis. Present: `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`, `KFENCE`, `MODULE_SIG`. Still missing or unforced: `INIT_ON_FREE_DEFAULT_ON`, `MODULE_SIG_FORCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `KFENCE_SAMPLE_INTERVAL=0`.
+This pin scores above vanilla 6.18.9 `defconfig` on this axis. Present: `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`, `KFENCE`, `MODULE_SIG`. Still missing or unforced: `INIT_ON_FREE_DEFAULT_ON`, `MODULE_SIG_FORCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `KFENCE_SAMPLE_INTERVAL=0`.
 
 Overall checker: **148/259 (57.1%)**.
 
@@ -63,30 +63,30 @@ Debian 12 lab guest, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256
 ## Residual risks
 
 **1. Kernel memory corruption / exploitation**  
-Self-protection is 78/110, not the 5.19.6 vanilla-baseline story. Heap and CFI gaps remain: no `INIT_ON_FREE_DEFAULT_ON`, no `KSTACK_ERASE`, no `RANDSTRUCT_FULL`, KFENCE sample interval 0, IOMMU default is lazy. An attacker who reaches a reliable in-kernel primitive still has those gaps.
+Self-protection scores 78/110, well above the vanilla baseline that 5.19.6 sat near, but heap and CFI gaps remain: no `INIT_ON_FREE_DEFAULT_ON`, no `KSTACK_ERASE`, no `RANDSTRUCT_FULL`, KFENCE sample interval 0, IOMMU default is lazy. An attacker who reaches a reliable in-kernel primitive still has those gaps.
 
 **2. Competing LSMs are live**  
-The 5.19.6 “sole enforcing MAC / SELinux permissive / no securityfs” write-up is **false** on this pin. AppArmor, TOMOYO, Yama, Landlock, BPF LSM, IMA, and EVM initialize. Red-team work must include stacked-LSM interaction (policy denials, IMA, AppArmor profiles), not only Root Lock.
+The 5.19.6 description (Root Lock as the sole enforcing MAC, SELinux permissive, no securityfs) does not hold on this pin. AppArmor, TOMOYO, Yama, Landlock, BPF LSM, IMA, and EVM initialize. Red-team work must include stacked-LSM interaction (policy denials, IMA, AppArmor profiles), not only Root Lock.
 
 **3. MODULE_SIG is on; MODULE_SIG_FORCE is not**  
-`CONFIG_MODULE_SIG=y`. `CONFIG_MODULE_SIG_FORCE` is not set. `kernel.modules_disabled=0`. Lockdown’s kmod block, when engaged, is still an operator-procedure mitigation for *new* loads after Lockdown.
+`CONFIG_MODULE_SIG=y`, but `CONFIG_MODULE_SIG_FORCE` is not set and `kernel.modules_disabled=0`, so the kernel does not refuse unsigned modules on its own. Lockdown's module-load block covers that gap only once you engage Lockdown, and only for modules loaded after that point.
 
 **4. Can root unseal the allowlist or turn enforcement off?**  
-Root cannot lift the allowlist seal or turn enforcement off through an intended agent kill. Seal and control integrity are kernel-enforced product contracts. Extra syscalls and sibling attributes on **this pin** still need live gates. Do not treat the architecture diagram as the gate list.
+By design, root has no intended path to lift the allowlist seal or turn enforcement off, because there is no agent to kill: the seal and the control paths are enforced in the kernel. Test that contract rather than reading it off the architecture diagram, and confirm on the deployed pin (`6.18.9-hs` #37) that additional syscalls and related attributes are gated as well.
 
-Confirm live gates on the **deployed ship pin** (`6.18.9-hs` #37). Checker percentages measure the published `.config`; they sit next to a residual-risk list for architecture review.
+The checker percentages measure only the published `.config`, so read them together with this residual-risk list during architecture review.
 
 **5. Allowlist breadth after learning**  
-Setup Mode records observed behaviour. You ratify grants. Residual risk after Lockdown includes an allowlist wider than the intended slice.
+Setup Mode records what programs do, and you approve the resulting allowlist entries. Any entry wider than the workload needs stays in force after Lockdown.
 
 **6. Intentional maintenance and console recovery path**  
 Supported recovery of a sealed allowlist requires booting the maintenance kernel and using Dashboard Maintenance to lift immutability flags. That path requires physical or serial-console access — keyboard and monitor, serial port, or cloud provider serial console.
 
 **7. Confused deputy among allowlisted programs**  
-Enforcement is per program identity. An allowlisted powerful role can still be abused inside its grants.
+Enforcement is per program identity, so an allowlisted program with broad grants can still be abused within those grants.
 
 **8. Portable open flags and size mutation under a read grant**  
-By default Root Lock does **not** redefine the `O_RDONLY|O_TRUNC` UAPI corner. A program with a **read** grant can still change file size if DAC write allows the truncate.
+By default Root Lock keeps the standard Linux behaviour of `O_RDONLY|O_TRUNC`, so a program with a read grant can still truncate a file when DAC write permission allows it.
 
 ---
 

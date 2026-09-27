@@ -58,7 +58,7 @@ $ ./start_TinyDemo r FileA
 FileA: not in this version's storage area
 ```
 
-That miss is the isolation. A malicious update is a new hash, so it starts with an empty area and cannot open the prior version's files. To give v2 a copy, use the file transfer utility — not `open()` from v2. See [Secure file transfer](../hjfs-overview/#secure-file-transfer-between-programs).
+This failed read is the isolation at work. A malicious update is also a new hash, so it too starts with an empty area and cannot open the prior version's files. To give v2 a copy of `FileA`, use the file transfer utility; v2 cannot open v1's copy itself. See [Secure file transfer](../hjfs-overview/#secure-file-transfer-between-programs).
 
 ## 5. Write FileA under v2
 
@@ -72,7 +72,7 @@ The pear was a dull green color.
 
 ## 6. Roll back to v1
 
-Confirm the active version, then set it back to the first. Rollback does not copy or merge files. It makes v1's area the one `open()` resolves.
+Confirm the active version, then set it back to the first. Rollback copies and merges nothing; it makes v1's area the one `open()` resolves.
 
 ```sh
 $ ./HJFS_version_manager TinyDemo -c
@@ -84,4 +84,4 @@ $ ./start_TinyDemo r FileA
 The apple was a shiny red color.
 ```
 
-v2's pear is still in v2's area. It is not gone; it is not visible while v1 is active. The file transfer utility can copy it across if you need it. See [Version rollback](../hjfs-overview/#version-rollback).
+v2's pear file is still in v2's area; it is only hidden while v1 is active. The file transfer utility can copy it across if you need it. See [Version rollback](../hjfs-overview/#version-rollback).

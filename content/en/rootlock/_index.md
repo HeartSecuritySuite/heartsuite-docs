@@ -84,7 +84,7 @@ The pages below are the individual steps, linked from Quick Start:
 
 ## Also in this documentation
 
-- [Root Lock Firewall](../firewall/) — Prototype. Inbound and host-path filter for a closed HeartSuite appliance.
+- [HeartSuite Firewall](../firewall/) — Prototype. Inbound and host-path filter for a closed HeartSuite appliance.
 - [HeartSuite Joint File System (HJFS)](../hjfs/) — Prototype. Per-program file isolation on a standard unmodified kernel.
 - [HeartSuite Exec](../exec-lock/) — Prototype. HJFS UI for program install, update, and version selection.
 

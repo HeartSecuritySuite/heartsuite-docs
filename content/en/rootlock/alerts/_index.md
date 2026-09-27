@@ -26,9 +26,9 @@ Single-host setup is on this page (Dashboard → Alerts). For production fleets 
 
 ## When alerts fire
 
-Alerts are a push channel for blocks and state changes that warrant immediate attention. They are not a replacement for the Dashboard.
+Alerts are a push channel for blocks and state changes that warrant immediate attention; you still review and act on them from the Dashboard.
 
-By default, Setup Mode logs without sending alerts — alerting on expected teaching activity would be constant noise. Alerts become active when Lockdown is active. On the Fleet tab, **Setup Mode Alerts** (*Send security alerts while in Setup Mode*) sends the same block alerts during Setup Mode. Leave that switch off unless you need those Setup Mode alerts.
+By default, Setup Mode logs without sending alerts, because alerting on expected Setup Mode activity would be constant noise. Alerts start when you activate Lockdown. On the Fleet tab, **Setup Mode Alerts** (*Send security alerts while in Setup Mode*) sends the same block alerts during Setup Mode — turn it on only when you want that extra volume.
 
 ## Configuring alerts
 
@@ -45,9 +45,9 @@ Configure SMTP credentials to receive email alerts directly. Fields, in the orde
 - **Password** (masked on entry; never displayed after saving)
 - **Your email** — the recipient address
 
-Save (`[s]`) requires **SMTP Host** and **Your email**. Root Lock validates those fields but does not attempt a live connection at save time. Test (`[t]`) sends a test email — that is the only moment SMTP connectivity is verified. If the test fails, the Result panel states what went wrong and what to try next. SMTP banners and authentication codes are not shown.
+Save (`[s]`) requires **SMTP Host** and **Your email**. Root Lock validates those fields without connecting to the server, so Test (`[t]`) is the only moment SMTP connectivity is verified: it sends a test email. If the test fails, the Result panel states what went wrong and what to try next, without the raw SMTP banners or authentication codes.
 
-Once configured, the Email Status panel lists the stored values with the password shown as `(set)`. The form stays visible — there is no Edit step. Leave **Password** blank to keep the stored password. Remove (`[r]`) deletes the stored SMTP credentials and turns email alerts off. Syslog and webhook are not affected.
+Once configured, the Email Status panel lists the stored values with the password shown as `(set)`. The form stays visible — there is no Edit step. Leave **Password** blank to keep the stored password. Remove (`[r]`) deletes the stored SMTP credentials and turns email alerts off; syslog and webhook keep working.
 
 ### Fleet tab
 
@@ -109,15 +109,13 @@ To receive this payload, create an integration in your incident management tool 
 - [OpsGenie — Incoming webhook integration](https://support.atlassian.com/opsgenie/docs/integrate-opsgenie-with-webhook/)
 - [Slack — Incoming webhooks](https://api.slack.com/incoming-webhooks)
 
-**Status JSON** — A passive monitoring surface at `~/.cache/heartsuite/status.json`, updated every 60 seconds. Ansible, Nagios, and [Zabbix](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks) can read this file via SSH pull. No Fleet setting turns it on or off — it is written whenever the alert daemon is running. This is read-only; it does not push notifications.
+**Status JSON** — A passive monitoring surface at `~/.cache/heartsuite/status.json`, updated every 60 seconds. Ansible, Nagios, and [Zabbix](https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/ssh_checks) can read this file via SSH pull. It is written whenever the alert daemon is running, so no Fleet setting turns it on or off. Your monitoring tool pulls the file; it pushes nothing.
 
 At fleet scale, enable syslog on every node, forward via rsyslog to your SIEM, and alert from the SIEM's own rule engine. Webhook covers incident management tools (PagerDuty, OpsGenie). Status JSON covers Ansible health checks. Email is for a single host or as a supplementary channel.
 
 For production examples (Filebeat/Elastic, rsyslog forwarding, webhook targets, verification commands) and the scale path for larger teams, see [SIEM and Fleet Integration](siem-integration/). That page also covers policy and posture data for allowlist tables and drift views in Kibana/Elastic — that export is not a Fleet-tab switch.
 
-To own and apply allowlist policy from Ansible, Terraform, GitOps, ServiceNow, or custom scripts — including pre-seeding, harvest, and consumption of status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). The Dashboard is the surface for a single host.
-
-When at least one push channel is configured, the Dashboard unlocks Lockdown.
+To own and apply allowlist policy from Ansible, Terraform, GitOps, ServiceNow, or custom scripts — including pre-seeding, harvesting a baseline from a reference host, and consuming status.json / JSONL approval logs / syslog / webhook — see [Central Policy Management and External Control](central-policy-management/). The Dashboard is the surface for a single host.
 
 ## What triggers an alert
 

@@ -91,7 +91,7 @@ Run Root Lock as the guest kernel inside a per-task virtual machine — a Kata C
 
 Each task VM boots from that image with the allowlist already on the disk. The image is not sealed. You run the seal on that machine, and the seal takes effect on the next boot. The allowlist holds for the life of the task. Then the VM is gone.
 
-An attacker who already has root inside the VM cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. gVisor filters syscalls in userspace to protect the host; Root Lock, as the guest kernel, protects the workload.
+An attacker who already has root inside the VM cannot turn this off. Its enforcement is not an LSM policy that can be unloaded or set permissive, and there is no userspace shim to detach and no agent to kill. gVisor filters syscalls in userspace to protect the host; Root Lock, as the guest kernel, protects the workload.
 
 > [!NOTE]
 > You get the most reliable allowlist from Setup Mode when the same programs run in the same way across tasks, because repeating activity is what you can review and approve in the Dashboard queues with confidence. Agents that call unpredictable tools at runtime are harder to allowlist than agents whose action space is well-scoped to a defined set of tools.

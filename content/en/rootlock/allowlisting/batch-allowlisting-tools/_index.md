@@ -1,5 +1,5 @@
 ---
-title: "Allowlist many hosts without the TUI"
+title: "Allowlist many hosts without the Dashboard"
 linkTitle: "Batch Allowlisting Tools"
 weight: 4
 description: "CLI tools for scripted allowlisting when the Dashboard queues are not the right path — image builds, fleets, and repeatable installs."
@@ -15,21 +15,19 @@ menu:
     identifier: "batch-allowlisting-tools"
 ---
 
-**Overview**: The Dashboard review queues handle allowlisting for routine setup — grouped review, metadata enrichment, and intelligent grouping cover most workflows. The tools below are for scripted deployments and direct allowlist management where CLI access is required.
+**Overview**: The Dashboard review queues handle allowlisting for routine setup, because grouped review and metadata enrichment give you the context to approve each program. The two command-line tools below are for scripted deployments and for managing allowlist entries directly when you work from a shell instead of the Dashboard.
 
-These CLI tools are the integration points for external control. Central automation — Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts — prepares policy data and invokes the tools on each host to apply or harvest allowlists.
+These tools are also where external control plugs in. Central automation — Ansible playbooks, Terraform provisioners, GitOps pipelines, ServiceNow flows, Puppet, or custom scripts — prepares policy data and runs the tools on each host to apply or harvest allowlists. See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples.
 
-See [Central Policy Management and External Control](../../alerts/central-policy-management/) for patterns and examples.
+For Ansible, the preferred path is the official `heartsecurity.root_lock` role, which declares allowlist programs and mode transitions on hosts where Root Lock is already installed. It is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
 
-The official `heartsecurity.root_lock` role (narrow post-install declarative management) is the preferred Ansible path for Root Lock-specific concerns. It is commonly composed inside larger provisioning playbooks that also handle OS hardening (e.g. dev-sec collection), installation, and host services.
+**When to use these tools:** after Root Lock is installed and initial setup is complete, to add program lists — extras for your application stack, a list reused across hosts, or a bootstrap list scoped to a server role. A new host gets its full allowlist from an install-time baseline instead: harvest the baseline from a reference host, package it with installer pre-seed such as `--apo-seed`, and let Ansible install that package. Only that baseline shortens the multi-hour initial setup, because it carries each program's grants as well as its path. See [Two ways to seed the allowlist](../../alerts/central-policy-management/#two-ways-to-seed-the-allowlist).
 
-**When to use these tools:** after Root Lock is installed and initial setup is complete, for additive program lists (stack extras, fleet reuse, role-scoped bootstrap). They are **not** the install-time allowlist baseline path.
-
-For dense fleets, **seed the installer first** (harvest the allowlist from a reference host, package with pre-seed such as `--apo-seed`, then Ansible installs that package) — see [Central Policy Management](../../alerts/central-policy-management/). Do not use a full text dump here to skip multi-hour initial setup; that requires install-time pre-seed, not `batch_record_add.py`.
+Both tools live in `/.hs/sys/`, which is not on `PATH`, and both need root.
 
 ## batch_record_add.py
 
-`batch_record_add.py` creates allowlist entries in bulk from a plain text file of program paths — one absolute path per line. For each path, it adds the program with `/usr/lib` and `/etc` as default allowed directories. This tool is located in `/.hs/sys/` and requires root:
+`batch_record_add.py` creates allowlist entries in bulk from a plain text file of program paths — one absolute path per line. For each path, it adds the program with `/usr/lib` and `/etc` as default allowed directories:
 
 ```bash
 # /.hs/sys/batch_record_add.py <file>
@@ -44,17 +42,17 @@ Where `<file>` contains one absolute program path per line, for example:
 ```
 
 > [!WARNING]
-> `batch_record_add.py` adds programs with hardcoded default directories — no metadata enrichment, no grouping, no per-program review. Use it only when you have independently verified the program list and understand that each entry will be approved with `/usr/lib` and `/etc` access. For standard setup, the Dashboard review queues provide the same result with full context. Do not use this tool as a substitute for install-time baseline packaging, and do not run bulk seeds while initial setup is still running unless you have a deliberate exception.
+> `batch_record_add.py` approves every listed program with the same hardcoded directories and skips the metadata enrichment, grouping, and per-program review the Dashboard queues provide. Use it only for a program list you have verified independently, knowing that each entry gets `/usr/lib` and `/etc` access. Wait until initial setup has finished before you run it, unless you have a specific reason to seed earlier.
 
 ## hs-app-perm-orders-manager
 
-`/.hs/sys/hs-app-perm-orders-manager` browses and edits existing allowlist entries (`/.hs/sys` is not on `PATH`). It is not a review tool — it operates on entries that have already been created. Use it to inspect, modify, or remove existing entries. `list` is the usual harvest command when a reference host's reviewed programs should feed a central text seed for other hosts:
+`/.hs/sys/hs-app-perm-orders-manager` browses and edits allowlist entries directly, without the review context of the Dashboard queues. Use it to inspect, add, modify, or remove entries. `list` prints one row per entry (`Record # => program :: is interpreter?`), and `view -a` adds each program's directories and network destinations. For a central text seed with one program path per line, harvest with `get_allowlist_programs()` from the `limited_tools` Python API instead — see [Central Policy Management](../../alerts/central-policy-management/). The full command reference:
 
 ```bash
 # /.hs/sys/hs-app-perm-orders-manager --help
 ```
 
-Both tools require root. Run them from a root shell:
+Run both tools from a root shell:
 
 ```bash
 # sudo -s

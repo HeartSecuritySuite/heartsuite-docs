@@ -88,14 +88,14 @@ Arch 6.18.16 is era-matched. The 5.19.6 row uses the older pack.
 - A closed, reviewed program set after Setup Mode
 - Running as a **guest** on KVM, VMware, or cloud hypervisors
 
-**Do not choose it expecting the 5.19.6 compile-out brochure on a 6.18.9-hs host.** BPF, FUSE, OverlayFS, user namespaces, and AppArmor are present on this pin. Local eBPF tooling and FUSE are not `ENOSYS`.
+
 
 **Consider extra kernel hardening or a future derived cut if you also need:**
 
 - The 5.19-style compiled-out bypass list (`BPF=n`, `IO_URING=n`, `KEXEC=n`, …)
 - KSPP items still FAIL on this pin (`INIT_ON_FREE`, `KSTACK_ERASE`, `MODULE_SIG_FORCE`, …)
 
-**Root Lock is not a replacement for** network firewalls, WAFs, SIEM, or EDR hunting. It is host-local kernel enforcement.
+Root Lock is host-local kernel enforcement, so it does not replace network firewalls, WAFs, SIEM, or EDR hunting.
 
 ---
 
@@ -110,4 +110,4 @@ Tool: https://github.com/a13xp0p0v/kernel-hardening-checker (commit e870d0141259
 Expected checker:   OK 148 / FAIL 111
 ```
 
-Do not hash guest `/boot/config-6.18.9-hs` (11-line RD stub). Full methodology: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).
+Do not hash guest `/boot/config-6.18.9-hs`, because it is an 11-line initramfs stub rather than the build config. Full methodology: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).
