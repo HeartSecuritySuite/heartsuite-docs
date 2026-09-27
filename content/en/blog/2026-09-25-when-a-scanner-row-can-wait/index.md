@@ -1,28 +1,46 @@
 ---
-title: "The 11 p.m. critical that can wait for the change window"
+title: "Which critical CVEs can wait for the patch window?"
 linkTitle: "When a scanner row can wait"
 date: 2026-09-25
 slug: when-a-scanner-row-can-wait
 draft: false
-description: "Scanner criticals keep admins patching late into the night. Under Lockdown, a row whose next step Root Lock refuses can move to your standard change window with a signed, expiring exception. Known-exploited rows, and bugs that finish inside what a program is already allowed to do, keep their date."
+description: "Not every scanner critical needs an off-hours patch. How to tell which CVEs can wait for your change window with a compensating control, and which can't."
 author: "Ron Hessing"
-tags: ["root-lock", "lockdown", "patching", "scanners"]
+tags: ["root-lock", "lockdown", "patching", "scanners", "vulnerability-management", "cve", "compensating-control"]
 toc: true
 ---
 
-It is 11 p.m. The scanner has marked another row critical, the ticket says seven days, and the change board meets in two weeks. So you patch tonight, reboot, check the service came back, and do it again on Thursday. You are not the only one who finds this absurd. A sysadmin on r/sysadmin described a two-week deadline for highs and criticals "regardless if it actually affects us," against a two-week change lead time, "so never meet the sla." A developer on r/github went through 89 "critical" alerts and judged 83 of them impossible in their setup, and the reply underneath said it best: "everything screams critical so nothing feels critical anymore." [CSO Online reported in May 2026](https://www.csoonline.com/article/4169623/why-patching-slas-should-be-the-floor-not-the-strategy.html) that teams "keep closing easy criticals to keep the dashboard green."
+It is 11 p.m. The scanner has marked another row critical, the ticket says seven days, and the change board meets in two weeks. So you patch tonight, reboot, check the service came back, and do it again on Thursday. You are not the only one who finds this absurd. A sysadmin on r/sysadmin in May 2025 described a two-week deadline for highs and criticals "regardless if it actually affects us," against a two-week change lead time, "so never meet the sla." A developer on r/github in March 2026 went through 89 "critical" alerts and judged 83 of them impossible in their setup, and the reply underneath said it best: "everything screams critical so nothing feels critical anymore." [CSO Online reported in May 2026](https://www.csoonline.com/article/4169623/why-patching-slas-should-be-the-floor-not-the-strategy.html) that teams "keep closing easy criticals to keep the dashboard green."
 
 The numbers say the same. Across vendor telemetry, a typical organization has the capacity to close about one in ten open findings a month ([Cyentia Institute with Kenna Security, 2023](https://www.cyentia.com/the-hidden-complexity-of-vulnerability-remediation/)). In [PDQ's State of Sysadmin 2026](https://www.pdq.com/blog/state-of-system-administration-2026/) survey of 1,034 administrators, 51% name timely patching among the tasks that take too much time, and 52% say they are constantly playing catch-up with technology changes. [Hackuity's 2025 survey](https://www.hackuity.io/blog/nearly-half-of-security-teams-struggling-to-cope-with-growing-volume-of-vulnerabilities) of 200 security leaders found 46% say CVE volume is straining the team and 38% report burnout.
 
+{{< stat-row >}}
+{{< stat number="1 in 10" tone="info" label="A typical organization has the capacity to close about one in ten open findings a month." source="Cyentia Institute with Kenna Security, 2023" url="https://www.cyentia.com/the-hidden-complexity-of-vulnerability-remediation/" >}}
+{{< stat number="51%" tone="teal" label="of sysadmins name timely patching among the tasks that take too much time." source="PDQ State of Sysadmin 2026, n=1,034" url="https://www.pdq.com/blog/state-of-system-administration-2026/" >}}
+{{< stat number="38%" tone="warning" label="of security leaders say CVE volume has led to burnout on the team." source="Hackuity, 2025, n=200" url="https://www.hackuity.io/blog/nearly-half-of-security-teams-struggling-to-cope-with-growing-volume-of-vulnerabilities" >}}
+{{< /stat-row >}}
+
 Here is what changes under Lockdown. For many of those rows, the attacker's next step after the exploit is running a program, opening a file, or reaching an address this host does not allow, and the Root Lock kernel refuses that step. That row does not need tonight. It moves to your next change window with a signed exception, an expiry, and syslog proof that the refusal was working the whole time. The rows that are truly urgent — known-exploited, or finishing inside what the program is already allowed to do — you still patch on their date. There are fewer of them, and you know which ones they are.
 
-## Why so few criticals are tonight's work
+{{% alert title="The short version" color="success" %}}
+- **Moves to the change window:** a critical row whose next step after the exploit — a new program, a file, or a destination — is one Lockdown refuses on that host.
+- **Still patched on its date:** known-exploited (KEV) rows, anything your policy ranks critical, and bugs that finish inside what the program is already allowed to do.
+- **What you keep:** a signed exception with an expiry, syslog proof the refusal was working, and fewer nights on the pager.
+{{% /alert %}}
+
+## Why a CVSS critical isn't always urgent
 
 A CVSS base score is the worst case for the bug, and FIRST, which maintains CVSS, says the base score measures severity, not risk. About 6% of published CVEs have ever been seen exploited ([Jacobs et al., 2023](https://arxiv.org/abs/2302.14172)), and CISA's Known Exploited Vulnerabilities list holds roughly 0.5% of them ([FIRST EPSS FAQ](https://www.first.org/epss/faq)). The kernel's own CVE team says many kernel CVEs are not relevant to a given system, because each system uses a small part of the tree ([kernel CVE documentation](https://docs.kernel.org/process/cve.html)).
 
+{{< stat-row >}}
+{{< stat number="~6%" tone="info" label="of published CVEs have ever been seen exploited." source="Jacobs et al., 2023" url="https://arxiv.org/abs/2302.14172" >}}
+{{< stat number="~0.5%" tone="teal" label="of published CVEs are on CISA's Known Exploited Vulnerabilities list." source="FIRST EPSS FAQ" url="https://www.first.org/epss/faq" >}}
+{{< stat number="14 days" tone="warning" label="typical gap in 2026 from a new bug's publication to its KEV listing — why KEV rows keep their date." source="Barracuda, July 2026" url="https://blog.barracuda.com/2026/07/24/KEV-gap-how-fast-do-exploited-bugs-get-flagged" >}}
+{{< /stat-row >}}
+
 Those are rates across every published CVE, not a verdict on the row in front of you. The critical label says how bad a bug could be somewhere. It does not say what an attacker can do next on this host — and that is the question Lockdown answers.
 
-## Which rows move to the window
+## Which critical CVEs can wait for the change window
 
 Take a path-traversal bug in a web server, the kind of flaw behind Apache's CVE-2021-41773. A crafted request makes the server open a file outside its web root and send it back. The scanner scores it critical and starts a short clock on two hosts.
 
@@ -49,7 +67,7 @@ Two rules override the class. A finding your policy ranks critical stays on the 
 
 Kernel rows follow the code, not the version string. The BPF syscall is off, so a BPF syscall CVE is a row you record as not affected. Keep that reason for code that is absent. A real CVE whose next step Lockdown refuses is a compensating control with an expiry, because the vulnerable code is still there.
 
-## The exception your policy already allows
+## Filing a compensating control exception
 
 The wait is an exception your own policy grants. A named approver on your side accepts it in writing, and it expires. You file it as a rule in the scanner you already run, with the expiry set to the window your policy already names for work it does not rank critical — often 60 or 90 days. The morning the rule expires, the finding is urgent again. The patch date in your policy or contract stays where it was; the exception changes the scanner's queue, and you still patch — in daylight, in the window, with the rest of the batch. The breaches people cite are patches that existed and were not installed — Equifax and CVE-2017-5638, WannaCry and MS17-010 — which is why the exception carries an expiry instead of replacing the patch.
 
@@ -57,7 +75,7 @@ That only works where the policy has an exception clause. If the scorecard is cr
 
 Timing matters too. PCI DSS critical patches, under your own ranking, are due within one month of release, and a compensating control filed after that month does not repair the miss. The [Council's FAQ](https://www.pcisecuritystandards.org/faq/articles/Frequently_Asked_Question/Can-a-compensating-control-be-used-for-requirements-with-a-periodic-or-defined-frequency-where-an-entity-did-not-perform-the-activity-within-the-required-timeframe/) uses exactly that case — a critical patch that missed its window — as its example. File the exception inside the window, on the exception ticket your policy already requires, with the approver and the expiry on it.
 
-## Proof the refusal was working
+## Evidence for the auditor
 
 The exception needs evidence from the dates on the rule, and the record that carries it is syslog. With Fleet Syslog on — Alert Settings, Fleet tab — Lockdown denials arrive as lines with identifier `heartsuite`. Save a search for the dates on the rule and keep it with the rule. Turn the switch on before the window opens; a window with the switch off has no `heartsuite` lines to attach.
 
@@ -65,7 +83,7 @@ The two local files answer different questions. The status file at `~/.cache/hea
 
 The deferral also holds only while the host stays in Lockdown. Leaving Lockdown takes a physical or serial console and the boot menu pick **Maintenance: unseal and return to Root Lock**, which returns the host to Setup Mode, where the kernel logs and stops blocking. Relock is the reboot back to Lockdown. Plan maintenance on these hosts with the open rows in mind.
 
-## What to bring to the meeting
+## Filing it in Tenable or Qualys
 
 Bring a short list from your own queue:
 
@@ -84,7 +102,13 @@ The case is as strong as the grants. A program with wide write grants makes "a f
 
 The judgment stays yours. Root Lock does not classify the CVE or file the rule; you read the next step, and you type the reason into the scanner you already run. What Root Lock contributes is the refusal itself: under Lockdown, the attacker's next unapproved program, file, or destination is refused on every one of those hosts until the patch lands.
 
-## What the quiet nights are worth
+## What emergency patching costs at 100 and 1,000 servers
+
+{{< stat-row >}}
+{{< stat number="$445k" tone="success" label="left over each year after paying for Root Lock — busy shop, 1,000 hosts." source="Hour-based estimate, inputs below" >}}
+{{< stat number="2.6–2.9×" tone="success" label="back on every subscription dollar in the busy shop, paid in nights nobody is paged." source="Hour-based estimate, inputs below" >}}
+{{< stat number="10×" tone="teal" label="the subscription, once about 30 off-hours rounds a year are rows Lockdown lets wait." source="Hour-based estimate, inputs below" >}}
+{{< /stat-row >}}
 
 No published study prices an emergency patch cycle, so the figures below are built from hours, and each input is an estimate you replace with your own. An off-hours emergency costs about six hours before any host is touched — triage, emergency change approval, a rushed staging test, and the notice to the business — then about an hour per host to install, reboot, and check, at an overtime rate, plus four hours for each host where the rushed change fails. The same patch folded into a window you already scheduled costs about 0.4 hours per host and none of the fixed six.
 
