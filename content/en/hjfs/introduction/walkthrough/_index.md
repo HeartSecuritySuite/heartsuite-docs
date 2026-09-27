@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: Each installed version of a program has its own storage area. After an update, the new version cannot open files the old version created. Rolling back makes the old files available again — they were never copied into the new area.
 
-See [HJFS overview](../hjfs-overview/#per-version-storage) for why. This walkthrough is the CLI shape of that rule.
+[HJFS overview](../hjfs-overview/#per-version-storage) explains why versions are isolated; this walkthrough shows the same rule from the command line.
 
 ## 1. Check the installed program version
 
@@ -49,7 +49,7 @@ $ ./HJFS_version_manager TinyDemo -l
 
 ## 4. v2 cannot read v1's FileA
 
-v2 is now active. `FileA` still exists in v1's storage area. It is not in v2's.
+v2 is now active. `FileA` still exists in v1's storage area, but v2 has its own area, and `FileA` is not in it.
 
 ```sh
 $ ./start_TinyDemo -V

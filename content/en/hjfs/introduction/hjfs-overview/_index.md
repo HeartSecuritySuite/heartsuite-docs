@@ -11,15 +11,11 @@ toc: true
 
 > **Prototype**: Content on this page reflects current design intent and will be updated as the product matures.
 
-**Overview**: On a standard Linux system, any program can open any file you can reach, including programs running as root. HeartSuite Joint File System (HJFS) binds data files to the program version that created them.
-
-No other program can read or write those files, regardless of privilege. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../rootlock/). See [The security problem HJFS solves](../security-problem/).
+**Overview**: On a standard Linux system, any program can open any file you can reach, including programs running as root. HeartSuite Joint File System (HJFS) binds data files to the program version that created them, so no other program can read or write those files, regardless of privilege. Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../rootlock/). See [The security problem HJFS solves](../security-problem/).
 
 ## File isolation in practice
 
-HJFS binds data files to the program that created them. A program can only reach files in its own storage area. That boundary holds even for programs running as root.
-
-Malware present on the system cannot read, modify, or encrypt files that belong to another program. The `open()` call blocks the attempt before it reaches the data.
+A program can reach only the files in its own storage area, and that boundary holds even for programs running as root. Malware already present on the system therefore cannot read, modify, or encrypt files that belong to another program: the filesystem's `open()` call refuses the attempt before it reaches the data.
 
 ### Technical implementation
 
@@ -29,9 +25,9 @@ HJFS moves file access enforcement out of the kernel's user-permission model and
 - Tools for installing and updating programs into the HJFS structure.
 - A version selector that determines which program version is active when a program starts.
 
-Executables are stored in a separate area. The `open()` modification marks that area read-only for all programs. Only the official HJFS installer has write access. Programs cannot modify or replace their own binaries.
+Executables are stored in a separate area, which the `open()` modification makes read-only for every program except the official HJFS installer. Programs therefore cannot modify or replace their own binaries.
 
-HJFS operates entirely within the filesystem layer. A standard kernel is sufficient — no kernel modification is required.
+Because HJFS operates entirely within the filesystem layer, a standard kernel is sufficient.
 
 When a program opens a file, the modified `open()` call routes the request to that program's isolated storage area:
 
@@ -47,7 +43,7 @@ HJFS enforces isolation at the version level, not just the program level. Each i
 
 HJFS trusts a program only with the storage area that version created. Storage areas belonging to other programs — or to other versions of the same program — are outside that trust boundary, even when the program runs as root.
 
-Identity is the executable plus its libraries, hashed. A single library change is a new version. Utilities show a human-readable install-time identifier (for example, `260208_123022P`); the hash is what HJFS enforces.
+HJFS identifies a version by a hash of the executable and its libraries, so a change to a single library makes a new version. Utilities show a human-readable install-time identifier (for example, `260208_123022P`), but the hash is what HJFS enforces.
 
 When a program opens a versioned file, the `open()` call resolves both the program name and the version hash before locating the file:
 
@@ -65,9 +61,9 @@ Because each program is confined to its own storage area, moving data between pr
 
 - **Copy utility**: Copies a file from one program's storage area directly to another's. Every transfer is an explicit, auditable operation.
 - **Transfer area**: A neutral staging location where a file can be deposited once and made available for other programs to read and copy to their own areas. Programs can read from the transfer area but cannot write to other programs' areas directly.
-- **Clipboard**: Copy and paste between programs requires your action. A program cannot do it without you.
+- **Clipboard**: Copy and paste between programs requires your action, so a program cannot move data through the clipboard on its own.
 
-Programs cannot permanently delete files. They can only move a file to trash. A separate utility shows trash contents and permanently deletes selected files after you confirm.
+Programs can only move a file to trash, never delete it permanently. A separate utility shows trash contents and permanently deletes selected files after you confirm.
 
 ### Version management
 
@@ -93,11 +89,11 @@ HJFS automatic backup differs from Root Lock's backup mechanism in two ways. Roo
 
 #### The malicious sleeper attack
 
-Program version isolation leaves a window. A malicious update can behave as expected for months before it activates. New data files accumulate inside that version's storage area. Rolling back the program version leaves those files where they were written: they were never in the prior version's area.
+Program version isolation leaves a window, because a malicious update can behave as expected for months before it activates. During that time, new data files accumulate inside the malicious version's storage area, and rolling back the program version leaves them where they were written: they were never in the prior version's area.
 
 #### How the backup defeats it
 
-HJFS copies every write to a protected area no program can open, including programs running as root. Ransomware targets backup first because intact backups remove the leverage of encryption. HJFS removes that option at the same `open()` boundary that isolates program storage.
+HJFS copies every write to a protected area no program can open, including programs running as root. Ransomware targets backups first because intact backups remove the leverage of encryption, and HJFS removes that option at the same `open()` boundary that isolates program storage.
 
 When the attack activates:
 
@@ -137,7 +133,7 @@ On a Root Lock kernel, HJFS and Root Lock can share the host. HJFS also runs on 
 | Per-program-version file isolation | No | Yes |
 | Audited cross-program file transfer | No | Yes |
 
-Which programs run and which network connections they open stay Root Lock's domain. See [How HJFS compares](../../how-it-compares/).
+See [How HJFS compares](../../how-it-compares/) for when to run HJFS alone and when to run it beside Root Lock.
 
 ## Status
 

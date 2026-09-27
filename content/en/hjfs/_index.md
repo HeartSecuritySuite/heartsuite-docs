@@ -18,11 +18,11 @@ type: docs
 
 **Overview**: Every program you run gets full access to your files by default, including malware. HeartSuite Joint File System (HJFS) changes this at the filesystem layer.
 
-Each program has its own storage area. No other program can read or write its files, including programs running as root. File isolation is per program and per version. No custom kernel is required.
+Each program has its own storage area, and no other program can read or write its files, including programs running as root. Isolation is per program and per version, so an update to a program cannot reach the files an earlier version created. HJFS enforces this inside the filesystem, so no custom kernel is required.
 
-Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../rootlock/). On a Root Lock kernel, both can share the host. HJFS also runs on a standard unmodified kernel.
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../rootlock/). HJFS runs on a standard unmodified kernel, and on a Root Lock kernel HJFS and Root Lock can share the host.
 
-If execution or network control is the primary requirement, see [Deployment scenarios](deployment-scenarios/) — that job is Root Lock (or existing host controls on a stock kernel).
+If you need to control which programs execute or which connections they open, that job belongs to Root Lock, or to existing host controls on a stock kernel. See [Deployment scenarios](deployment-scenarios/).
 
 ## See it in action
 
@@ -35,7 +35,7 @@ If execution or network control is the primary requirement, see [Deployment scen
 - [Advanced protection](advanced-protection/) — An optional level that adds system-managed file dialogs and separates internal from user files, requiring application updates.
 - [Deployment scenarios](deployment-scenarios/) — Where HJFS fits, where it sits beside Root Lock, and where another control owns the workload.
 - [How HJFS compares](how-it-compares/) — What HJFS isolates, what it complements, and when to run it alone versus beside Root Lock.
-- [Attack examples](examples/) — How HJFS is designed to confine a separate encryptor or a tainted version, and the residual when a program hurts files it already owns.
+- [Attack examples](examples/) — How HJFS is designed to confine a separate encryptor or a tainted version, and what stays exposed when a compromised program damages files it already owns.
 - [Roadmap](roadmap/) — Current prototype scope and planned development.
 
 ## About this documentation

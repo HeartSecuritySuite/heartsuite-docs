@@ -20,7 +20,7 @@ HJFS provides two levels of protection:
 | Basic protection | Yes | No | Program and version isolation. All current HJFS v1.0 capabilities. |
 | Advanced protection | Yes | Yes | Adds internal/user file separation and OS-mediated file access. Requires application updates. |
 
-Basic protection runs existing software unchanged. Advanced protection builds on it and delivers stronger guarantees for user-facing data files. Applications must be updated to use the new OS functions.
+Basic protection runs existing software unchanged. Advanced protection builds on it with stronger guarantees for user-facing data files, but applications must be updated to use the new OS functions.
 
 ## Internal files and user files
 
@@ -28,11 +28,11 @@ Advanced protection subdivides each program's per-version storage area into two 
 
 **Internal files** are managed directly by the program using file names. They are hidden from user utilities — they cannot be browsed, copied, or accessed outside the program that owns them. A spell-checker dictionary, a configuration file, or game state data are examples of internal files.
 
-**User files** are the documents, spreadsheets, and images you work with. A program cannot open a user file by specifying its name. It invokes a system function that presents a standard OS file-selection dialog. You make the selection.
+**User files** are the documents, spreadsheets, and images you work with. A program cannot open a user file by specifying its name; instead it invokes a system function that presents a standard OS file-selection dialog, and you make the selection.
 
 The OS opens the file and passes a file handle to the program — not a path. The program never learns the file's location in the broader filesystem.
 
-Malware cannot open user files without you. It must wait for you to open a file through the dialog. You can restrict that file to read-only for the program.
+Malware therefore cannot open your user files on its own: it has to wait until you open a file through the dialog, and you can restrict that file to read-only for the program.
 
 ![Diagram 2.6 — Advanced versioned file open (internal): Program A calls open(file2a), the OS determines program name and version, and locates the file in the "internal" subarea of the matched version-hash directory. A separate "user" subarea exists alongside it.](/images/hjfs/diagram-005.jpg)
 

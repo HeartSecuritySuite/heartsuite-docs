@@ -13,16 +13,16 @@ toc: true
 
 **Overview**: When you run a program, the OS grants it every file you can reach. A word processor and ransomware running as the same user have the same access.
 
-HeartSuite Joint File System (HJFS) keeps file access with you, not with the program. Isolation is per program and per version, including as root.
+HeartSuite Joint File System (HJFS) stops a program from inheriting everything you can reach: each program gets only its own files, isolated per program and per version, including programs running as root.
 
 ## The root cause
 
-File permissions are granted to users, not to programs. That assumption is still the default. A word processor and a ransomware process running as the same user have identical access to every file that user owns.
+Operating systems grant file permissions to users, not to programs, and that is still the default. As a result, a word processor and a ransomware process running as the same user have identical access to every file that user owns.
 
-Ransomware opens your files using the same system call as any legitimate program, reads them, encrypts them, and overwrites the originals. Backup restores a snapshot taken before the damage. Detection reacts after access was already granted, and only to attacks it already recognizes.
+Ransomware opens your files using the same system call as any legitimate program, reads them, encrypts them, and overwrites the originals. Backup can only restore a snapshot taken before the damage, and detection reacts after access was already granted, and only to attacks it already recognizes.
 
 ## What HJFS changes
 
 HJFS replaces user-based file permissions with program-based file permissions, enforced inside the filesystem. Each program has its own storage area. No other program can read or write those files, including programs running as root.
 
-Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../rootlock/). On a Root Lock kernel, both can share the host. See [Protection limits](../limits/).
+Which programs run and which network connections they open stay with [Root Lock by HeartSuite](../../../rootlock/). On a Root Lock kernel, HJFS and Root Lock can share the host. See [Protection limits](../limits/).

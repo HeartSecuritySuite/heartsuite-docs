@@ -37,9 +37,9 @@ Firewall Rules groups related events when they share a service or origin so you 
 
 The Suggested Next Step offers **Seal Firewall** with `[l]` only when the queue is empty and the precondition checklist also passes.
 
-Most appliances need several days of representative traffic before that offer is earned. A development host that never saw production clients will under-teach the allowlist.
+Most appliances need several days of representative traffic before that offer appears. An allowlist taught on a development host that never saw production clients will be missing the traffic those clients send.
 
-The image already leaves a small set of ports open to any source (workload ports, and the SSH port even when no administrative SSH listener is running). Observation does not produce those. Seal keeps them. Narrow them through Maintenance after you know the workload.
+The image already leaves a small set of ports open to any source (workload ports, and the SSH port even when no administrative SSH listener is running). Those ports never appear as review events, and sealing keeps them open, so narrow them through Maintenance once you know what the workload needs.
 
 `[l]` opens Firewall Lockdown. Advance with `[y]` to see the review: rule counts, samples, and what the box already has for logging. Logging and SIEM destinations are not configured on this path.
 
@@ -47,22 +47,22 @@ The image already leaves a small set of ports open to any source (workload ports
 
 The confirmation word is `YES` — uppercase, case-sensitive.
 
-After you confirm, reboot from the console or hypervisor so Firewall Lockdown is applied with Root Lock Lockdown. The Dashboard does not reboot the host. `[r]` shows reboot instructions after the seal is accepted.
+After you confirm, reboot from the console or hypervisor so Firewall Lockdown is applied with Root Lock Lockdown. The Dashboard does not reboot the host itself; once the seal is accepted, `[r]` shows the reboot instructions.
 
 ![Firewall Lockdown with preconditions met, approved rule counts and samples, logging present, SIEM not configured, and the YES prompt in frame](test_docs_firewall_lockdown_yes.svg)
 
-After reboot the strip is quiet when both seals are in place. Mutate keys are absent from Firewall Rules and from inventory. Absence is the signal that the set is sealed.
+After reboot the strip is quiet when both seals are in place, and the keys that change rules are gone from Firewall Rules and from inventory. Their absence is how you know the set is sealed.
 
 ## 5. Inventory is read-only
 
 After reboot, `[l]` opens the same Firewall Lockdown surface as inventory. It shows the allowlist that is in effect, and whether Root Lock Lockdown is present.
 
-Advisories can flag a rule that is broader than the traffic that earned it. Edit through Maintenance.
+Advisories can flag a rule that is broader than the traffic that earned it; to narrow that rule, go through Maintenance.
 
 ## 6. Change only through Maintenance
 
 To change a sealed rule, open **Maintenance** with `[m]`. Enter reduced posture with `[e]`, then type `YES`.
 
-Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot. SSH from a laptop is not the recovery path. Console or serial is.
+Edit or re-observe on Firewall Rules, then seal again with `[l]`, `YES`, and a host reboot. Unsealing does not reboot the host. Recovery runs on the console or serial console, not over SSH from a laptop.
 
-See [Root Lock Firewall overview](../firewall-overview/) for the observe → approve → seal grammar, and [Protection limits](../limits/#physical-access-and-the-console) for the console recovery path.
+See [HeartSuite Firewall overview](../firewall-overview/) for the observe → approve → seal grammar, and [Protection limits](../limits/#physical-access-and-the-console) for the console recovery path.

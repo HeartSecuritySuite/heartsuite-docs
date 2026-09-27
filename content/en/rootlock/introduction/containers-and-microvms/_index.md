@@ -61,7 +61,7 @@ Run Root Lock as the guest kernel inside a virtual machine you provide, such as 
 
 The image carries the allowlist and is not sealed. You run the seal on that machine, and the seal takes effect on the next boot. The allowlist holds for the life of the task until the VM is discarded.
 
-An attacker who already has root inside the guest cannot turn this off. There is no LSM to unload, no userspace shim to detach, and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
+An attacker who already has root inside the guest cannot turn this off, because blocking is compiled into the guest kernel: its enforcement cannot be unloaded or set permissive the way an LSM policy can, and there is no userspace shim to detach and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
 Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. KVM host mode is compiled out. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
@@ -69,9 +69,9 @@ Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the 
 
 | Workload | Shape | Where it is documented |
 |---|---|---|
-| Backup / SFTP dump target, single-purpose server | Standard host → seed allowlist → Lockdown | [Production servers](../deployment-scenarios/#production-servers), [Closed appliances](../deployment-scenarios/#closed-appliances-and-embedded-devices) |
+| Backup / SFTP dump target, single-purpose server | Root Lock host → seed allowlist → Lockdown | [Production servers](../deployment-scenarios/#production-servers), [Closed appliances](../deployment-scenarios/#closed-appliances-and-embedded-devices) |
 | Build/CI fixed toolchain | Same | [Build, CI, and release infrastructure](../deployment-scenarios/#build-ci-and-release-infrastructure) |
-| Docker, containerd, Kubernetes, CRI-O, or Podman on this host | Not a fit. Build and run the images on another host | [Shared-kernel containers](../deployment-scenarios/#container-hosts) |
+| Docker, containerd, Kubernetes, CRI-O, or Podman, including continuous scheduling | Not a fit on this host. Build and run the images on another host | [Shared-kernel containers](../deployment-scenarios/#container-hosts), [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
 | AI agent with a scoped tool set | Guest Root Lock in a per-task VM | [AI agent sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes) |
 | Continuous Docker/K8s scheduling on this kernel | Not a fit | [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
 
