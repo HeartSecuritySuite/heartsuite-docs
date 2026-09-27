@@ -88,8 +88,6 @@ Arch 6.18.16 is era-matched. The 5.19.6 row uses the older pack.
 - A closed, reviewed program set after Setup Mode
 - Running as a **guest** on KVM, VMware, or cloud hypervisors
 
-
-
 **Consider extra kernel hardening or a future derived cut if you also need:**
 
 - The 5.19-style compiled-out bypass list (`BPF=n`, `IO_URING=n`, `KEXEC=n`, …)
