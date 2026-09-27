@@ -16,7 +16,7 @@ You are logged in over SSH as root, and the job is to read a file that belongs t
 /var/lib/vaultapp/customer-ledger.secret
 ```
 
-`vaultapp` is a demo program, and its ledger is the file no other tool should read. The same job ran on three hosts — Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, and Debian 12 running Root Lock by HeartSuite with Lockdown on — and none of them was rebooted along the way.
+`vaultapp` is a demo program, and its ledger is the file no other tool should read. The same job ran on three hosts, Ubuntu 24.04 with AppArmor, Rocky Linux 9 with SELinux Enforcing, and Debian 12 running Root Lock by HeartSuite with Lockdown on, and none of them was rebooted along the way.
 
 On Ubuntu and Rocky the file was already on disk, and default policy let root `cat` it. Those two hosts then got extra policy that denied `cat` while still letting `vaultapp` read the ledger, and the same root shell then tried to turn that policy off.
 
