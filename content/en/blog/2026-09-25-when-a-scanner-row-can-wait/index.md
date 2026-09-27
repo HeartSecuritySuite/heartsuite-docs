@@ -16,9 +16,15 @@ On the first host, the attacker wants `/etc/passwd` and the server's private key
 
 Same CVE, same score. On the first host the row can wait for the standard change window. On the second it is this week's work. The difference is what that program was already granted — and three more things have to be true before the wait is defensible.
 
+## Why the queue never empties
+
+Most teams cannot close findings as fast as scanners open them. Across vendor telemetry, the typical organization closes about one in ten open findings a month and top performers about one in four (Cyentia Institute with Kenna Security, 2023). In PDQ's State of Sysadmin 2026 survey of 1,034 administrators, 51% say timely patching takes too much time and 52% say they are constantly playing catch-up. Hackuity's 2025 survey of 200 security leaders found 46% say CVE volume is straining the team and 38% report burnout.
+
+The critical label does not sort that pile. A CVSS base score is the worst case for the bug, and FIRST, which maintains CVSS, says the base score measures severity, not risk. About 6% of published CVEs have ever been seen exploited ([Jacobs et al., 2023](https://arxiv.org/abs/2302.14172)), and CISA's Known Exploited Vulnerabilities list holds roughly 0.5% of them ([FIRST EPSS FAQ](https://www.first.org/epss/faq)). Those are rates across every published CVE, not a verdict on the row in front of you — that row still needs a reason on this host, and the rest of this post is how you write it.
+
 ## The contract already allows an exception
 
-The wait is an exception your own policy grants. A named approver on your side accepts it in writing, and it expires. You file it as a rule in the scanner you already run, with the expiry set to the window your policy already names for work it does not rank critical — often 60 or 90 days. The morning the rule expires, the finding is urgent again. The patch date in your policy or contract stays where it was; the exception changes the scanner's queue, and you still patch.
+The wait is an exception your own policy grants. A named approver on your side accepts it in writing, and it expires. You file it as a rule in the scanner you already run, with the expiry set to the window your policy already names for work it does not rank critical — often 60 or 90 days. The morning the rule expires, the finding is urgent again. The patch date in your policy or contract stays where it was; the exception changes the scanner's queue, and you still patch. The breaches people cite are patches that existed and were not installed. Equifax and CVE-2017-5638, WannaCry and MS17-010 which is why the exception carries an expiry instead of replacing the patch.
 
 That only works where the policy has an exception clause. If the scorecard is criticals closed in seven days with no exception path, a written seven-day install rule stays seven days, and the filing gives the analyst a comment to write and nothing more.
 
@@ -41,9 +47,9 @@ The rest stay on the patch date, because the attack completes inside what the pr
 - the vulnerable application's own files
 - a kernel CVE whose code is in the kernel that boots
 
-Two rules override the class. A finding your policy ranks critical stays on the patch date, and so does a finding on the [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities) list — even when the next step has no allowlist entry. CVE-2021-41773 itself is on that list, so on a real queue it stays on the patch date on both hosts. The example above shows the test; the list decides first.
+Two rules override the class. A finding your policy ranks critical stays on the patch date, and so does a finding on the [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities) list — even when the next step has no allowlist entry. CVE-2021-41773 itself is on that list, so on a real queue it stays on the patch date on both hosts. The example above shows the test; the list decides first. The list also moves fast: for recent bugs, Barracuda's July 2026 review of KEV additions since 2023 found a median of 6 to 14 days from publication to listing, so a quarterly window misses that tail by design. FedRAMP's 2026 [vulnerability rules](https://fedramp.gov/2026/reference/vulnerability-detection-and-response/) say the same from the other side: a fully mitigated vulnerability still exists until it is remediated, and its KEV due date stands.
 
-Kernel rows follow the code, not the version string. In the 6.18 kernel, io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are present, so their CVEs stay on the patch date. The BPF syscall is off, so a BPF syscall CVE is a row you record as not affected. Keep that reason for code that is absent. A real CVE whose next step Lockdown refuses is a compensating control with an expiry, because the vulnerable code is still there.
+The kernel's own CVE team says many kernel CVEs are not relevant to a given system, because each system uses a small part of the tree ([kernel CVE documentation](https://docs.kernel.org/process/cve.html)). Kernel rows follow the code, not the version string. The BPF syscall is off, so a BPF syscall CVE is a row you record as not affected. Keep that reason for code that is absent. A real CVE whose next step Lockdown refuses is a compensating control with an expiry, because the vulnerable code is still there.
 
 ## Someone can show the control was operating
 
@@ -72,4 +78,24 @@ Bring a short list from your own queue:
 
 File them in Tenable or Qualys with an expiry. Tenable Accept hides the row from the active views until that date and leaves VPR as scored. A Qualys risk acceptance takes the row off remediation after a scan, and the expiry puts it back. Either way the finding returns the morning the rule expires, and a comment on its own does not pause the ticket clock — the exception does. The person who clicks is often not the approver, so put the approver's name on the rule.
 
-Whether this saves money depends on your own count: how many off-hours emergencies in your queue were this class. Count them before you price the argument.
+## What the off-hours version costs
+
+No published study prices an emergency patch cycle, so the figures below are built from hours, and each input is an estimate you replace with your own. An off-hours emergency costs about six hours before any host is touched — triage, emergency change approval, a rushed staging test, and the notice to the business — then about an hour per host to install, reboot, and check, at an overtime rate, plus four hours for each host where the rushed change fails. The same patch folded into a window you already scheduled costs about 0.4 hours per host and none of the fixed six.
+
+At $75 an hour, two shops show the range. The first column is the yearly cost of rushing rows whose next step Lockdown would have refused. The net subtracts the time Root Lock itself adds: the console unseal Lockdown requires before scheduled maintenance on hosts you update in place.
+
+| Estate | Busy shop: 18 emergencies a year, half of them this class, 80% of hosts on each | Disciplined shop: 6 emergencies a year, a quarter this class, already patches monthly |
+|---|---|---|
+| 100 hosts | about $89,000 rushed; about **+$77,000** net | about $7,000 rushed; about **−$8,000** net |
+| 1,000 hosts | about $838,000 rushed; about **+$715,000** net | about $60,000 rushed; about **−$88,000** net |
+
+In the busy shop at 1,000 hosts, more than $700,000 a year goes to off-hours work on rows that could have waited for the window. In the disciplined shop, the scheduled window already absorbs most of that work, and Root Lock's maintenance costs more than the deferral saves — there the case for Root Lock is the refusal, not the budget. Hosts rebuilt from an image never need the unseal, so on an image-based fleet the added cost is one more stage in the image build.
+
+The deciding inputs are your own. Four questions replace the estimates:
+
+- In the last 12 months, how many times was someone paged off-hours to patch a Linux CVE before the next window, and how many hosts did each page touch?
+- How many of those were this class — the next step a program, file, or destination Lockdown refuses — and not on the KEV list?
+- Is your scheduled patching automated end to end, or does someone install and check each host by hand?
+- What is the fully loaded hourly cost of the person paged, and is off-hours work paid as overtime or absorbed into salary? If it is absorbed, drop the overtime rate and the case shrinks.
+
+If the answer to the first question is "never", this is not a budget argument for you, and the reason to run Root Lock on those hosts is the refusal itself.
