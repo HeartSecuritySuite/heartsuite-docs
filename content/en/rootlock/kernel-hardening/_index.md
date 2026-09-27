@@ -24,13 +24,11 @@ Start here if you are evaluating the Root Lock kernel for a regulated or enterpr
 - [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — How enterprise Linux security teams verify CVE status without upstream version false positives.
 - [Supply Chain and Advisory Feeds](supply-chain-and-advisories/) — SHA-256 today; published JSON feeds at `/advisories/` (CONFIG-gate SBOM, OSV with 279 entries, CycloneDX SBOM for `hs-v1.6.4-kernel-6.18.9`); roadmap for GPG/cosign signing and OVAL.
 
-**Reading guide**: Several pages name Red Hat Enterprise Linux (RHEL), RHSA advisories, and OVAL feeds as **familiar anchors** for procurement and vulnerability-management teams. The same errata-first discipline applies on Rocky, AlmaLinux, Ubuntu LTS, Debian, and SUSE.
-
-Root Lock is not a RHEL-only product. The [Distro Compatibility Matrix](distro-compatibility-matrix/) lists validated bases across RPM and Debian families.
+**Reading guide**: Several pages name Red Hat Enterprise Linux (RHEL), RHSA advisories, and OVAL feeds because procurement and vulnerability-management teams already know them. The same errata-first discipline applies on Rocky, AlmaLinux, Ubuntu LTS, Debian, and SUSE, and the [Distro Compatibility Matrix](distro-compatibility-matrix/) lists validated bases across both the RPM and Debian families.
 
 ## Evidence and technical reference
 
-Every measured number derives from the open-source `kernel-hardening-checker` tool applied identically to HeartSuite and reference kernels. No estimates. Raw evidence files and config SHA-256 hashes are included so any qualified team can verify independently.
+Every measured number derives from the open-source `kernel-hardening-checker` tool applied identically to HeartSuite and reference kernels, with no estimates. Raw evidence files and config SHA-256 hashes are included so any qualified team can verify independently.
 
 - [Evidence Status](evidence-status/) — 6.18.9-hs #37 pack published 2026-08-18; 5.19.6 remains the legacy pack.
 - [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Fielded 6.18.9-hs #37 measured scores.
