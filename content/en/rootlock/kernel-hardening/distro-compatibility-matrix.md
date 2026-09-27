@@ -203,11 +203,13 @@ On the **current 6.18 pin**, “this tool cannot run” is not an `ENOSYS` / com
 |-------------|-------------------------|----------------|
 | Local eBPF tooling (Falco, bpftrace, bcc, …) | Syscall is compiled in. Lockdown still refuses unallowlisted loaders. | Syscall not compiled. |
 | FUSE mounts (sshfs, s3fs, AppImage, …) | FUSE is compiled in. New mounts after Lockdown follow product mount rules. | FUSE not compiled. |
-| Overlay / typical container storage | `overlay` is available as a module. Dynamic Kubernetes after Lockdown is still a poor fit (allowlist and mount seal), not because OverlayFS is absent. | Overlay not compiled. |
+| Overlay / typical container storage | `overlay` is available as a module. Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. | Overlay not compiled. |
 | KVM **hypervisor host** | **Not a supported product role** (module may be present). | Not compiled. |
-| Rootless / unprivileged user-namespace containers | User namespaces are compiled in. Still validate under Lockdown; do not assume rootless “just works.” | User namespaces not compiled. |
+| Rootless / unprivileged user-namespace containers | User namespaces are compiled in. Rootless containers are not a supported workload on this host. | User namespaces not compiled. |
 | Root Lock as a **guest** inside KVM, VMware, or cloud hypervisors | Yes | Yes |
 | Fixed appliance, regulated server, closed workload set | Yes | Yes |
+
+For Docker, containerd, Kubernetes, CRI-O, and Podman, OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 
 Full exclusion table: [System Requirements](../../introduction/system-requirements/). Mixed-environment decision tree: [Enterprise Adoption Guide → Compatibility](enterprise-adoption-guide/#compatibility-and-certification).
 

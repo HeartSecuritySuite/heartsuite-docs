@@ -53,7 +53,7 @@ Enforcement is part of the kernel binary. Changing it requires a reboot into a d
 
 gVisor intercepts container syscalls in a userspace process that acts as the container's kernel, reducing exposure to the host kernel. The sentry process runs in userspace and can be compromised; a bug in its syscall emulation can allow escape.
 
-Root Lock running as a guest kernel inside a gVisor-isolated container is a coherent composition — see [How It Compares → gVisor](../how-it-compares/#what-root-lock-replaces).
+Root Lock is the guest kernel in a VM the customer provides — see [How It Compares → gVisor](../how-it-compares/#what-root-lock-replaces).
 
 ### Layer 3 — LSM hooks (in-tree)
 

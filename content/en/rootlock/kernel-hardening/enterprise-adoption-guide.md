@@ -95,9 +95,9 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 **Does not run on the Root Lock kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
 - Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is omitted.
-- Shared-kernel container engines on this host (Docker, containerd, CRI-O, Kubernetes, Podman), including a fixed pod set. Build and run OCI images on another host.
+- Docker, containerd, Kubernetes, CRI-O, and Podman on this host, including a fixed pod set, are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 - KVM hypervisor hosts. Root Lock runs as a guest.
-- Rootless / unprivileged user-namespace containers.
+- Rootless / unprivileged user-namespace containers are not a supported workload.
 - Any workload that needs a compiled-out kernel feature for its core function.
 
 **Decision tree (high level)**
@@ -105,7 +105,7 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 | Requirement | Recommended path |
 |---|---|
 | Need kernel-level per-program execution + file + network control that survives compromised root, and can accommodate the Root Lock kernel | Root Lock with Root Lock kernel |
-| Must run eBPF tooling locally or require full dynamic container orchestration after policy is sealed | A host whose kernel still has those features, or an adjacent standard host, plus other controls; consider HJFS for file isolation |
+| Must run eBPF tooling locally, or run Docker, containerd, Kubernetes, CRI-O, or Podman on this host | For on-host eBPF, a host whose kernel still has those features, or an adjacent standard host. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides. Consider HJFS for file isolation. |
 | Strict "no custom or modified kernel" policy (certification, vendor support contract, or internal mandate) | HJFS (standard kernel) for file isolation, with [HeartSuite Exec](../../../exec-lock/) as the HJFS program UI. Kernel execution and network default-deny remain Root Lock and require the Root Lock kernel; on a stock kernel use existing host tooling. See [HJFS documentation](../../hjfs/) |
 | Want both layers | Root Lock (execution/network) + HJFS (file isolation and versioning) on the same host where the Root Lock kernel is acceptable |
 

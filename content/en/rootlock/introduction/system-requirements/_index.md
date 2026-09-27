@@ -43,7 +43,7 @@ The Root Lock kernel is installed alongside your existing kernel via GRUB — it
 |-----------|-------------------------|
 | eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall omitted |
 | FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Omitted |
-| Overlay / typical container storage | Omitted. Dynamic Kubernetes after Lockdown is also a poor fit because of the mount seal. |
+| Overlay / typical container storage | Omitted. Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides. |
 | AppArmor userspace (Snap, Ubuntu profiles, LXD) | Omitted |
 | Unprivileged user namespaces / rootless containers | Omitted |
 | KVM hypervisor **host** | Not a supported product role. Root Lock as a **guest** on KVM/VMware/cloud is supported. |

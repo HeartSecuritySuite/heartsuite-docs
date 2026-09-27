@@ -178,7 +178,7 @@ gantt
 
 > [!NOTE]
 > **FUSE and OverlayFS intentionally disabled** (2022)  
-> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. Containers fit as OCI images built and run off-host, or as untrusted workloads in per-task microVMs with Root Lock as the guest kernel — see [Containers and microVMs](../introduction/containers-and-microvms/).
+> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides — see [Containers and microVMs](../introduction/containers-and-microvms/).
 
 > [!NOTE]
 > **Current 6.18 commercial kernel**  
@@ -325,11 +325,11 @@ gantt
 
 ### Host-as-VMM evaluation
 
-Root Lock as the guest kernel inside a per-task VM or microVM (Kata, Firecracker, or plain KVM) is shipped. See [Containers and microVMs](../introduction/containers-and-microvms/) and [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
+Root Lock is the guest kernel in a VM the customer provides. See [Containers and microVMs](../introduction/containers-and-microvms/) and [AI agent sandboxes](../introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
 What is still under evaluation: **host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests. A Root Lock kernel as the KVM *host* is not a supported product role.
 
-Shared-kernel Docker, containerd, or Podman as the default on a Root Lock host remains a poor fit: new mounts and image pulls after Lockdown still need a maintenance window.
+Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}
