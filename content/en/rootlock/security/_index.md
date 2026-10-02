@@ -45,7 +45,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 <div class="cve-hero-card cve-hero-contained">
 <p class="cve-hero-number text-teal">{{< cve-stat type="reachable" >}}</p>
 <p class="cve-hero-label">CVEs with reachable code paths</p>
-<p class="cve-hero-detail">The code path is reachable, so the score stays non-zero; Lockdown limits what an attacker can do after exploiting it.</p>
+<p class="cve-hero-detail">On 6.18.9-hs the code path is still open, so the score stays non-zero. Rows fixed on this kernel are left out of the count.</p>
 </div>
 </div>
 <div class="col-md-4">
