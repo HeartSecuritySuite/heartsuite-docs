@@ -106,7 +106,7 @@ HeartSuite does not maintain a public kernel source repository at this time. **C
 
 Email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) and include:
 
-- Output of `uname -r` (fielded pin: `6.18.9-hs`) and `file` on vmlinuz (expect `#37`)
+- Output of `uname -r` (fielded pin: `6.18.9-hs`) and `file` on vmlinuz (expect `#43`)
 - HeartSuite product version (for example, v1.6.4)
 - Release tag or `heartsuite-install.sh.sha256` reference if known
 
@@ -127,7 +127,7 @@ Each coordinated release is accompanied by a **bundle manifest** (shipped with t
 | Field | Purpose | Example / notes |
 |---|---|---|
 | **HeartSuite product version** | Identifies the coordinated stack release | For example, HeartSuite v1.6.4 |
-| **Root Lock kernel version string** | Running kernel identity after install | Fielded pin: `6.18.9-hs` (packaging `6.18.9-HeartSuite-3`, build #37) — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
+| **Root Lock kernel version string** | Running kernel identity after install | Fielded pin: `6.18.9-hs` (packaging `6.18.9-HeartSuite-3`, build #43) — see [version-string anatomy](kernel-support-policy/#hs-kernel-version-string-anatomy) |
 | **Stream** | Supported LTS line | `6.18` (primary) or `5.19` (legacy) |
 | **Bundle checksum** | SHA-256 of `heartsuite-install.sh` | Must match `heartsuite-install.sh.sha256` |
 | **Config SHA-256** | Hash of the kernel `.config` for this build | Links reproducible verification to this release |
@@ -227,7 +227,7 @@ Continue using **distribution OVAL/errata** for maintenance-kernel boots and for
 
 **Complementary artefacts** (always available):
 
-- Published kernel `.config` SHA-256 and `evidence-pack-*.txt` for reproducible hardening measurement (5.19.6 legacy pack; 6.18.9-hs #37 pack published 2026-08-18 — see [Evidence Status](evidence-status/))
+- Published kernel `.config` SHA-256 and `evidence-pack-*.txt` for reproducible hardening measurement (5.19.6 legacy pack; 6.18.9-hs #43 pack published 2026-10-02; the 18 August pack is build #37 — see [Evidence Status](evidence-status/))
 - CONFIG-gate SBOM at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json)
 - Bundle SHA-256 manifests
 - CVE transparency and bundle manifest CVE lists

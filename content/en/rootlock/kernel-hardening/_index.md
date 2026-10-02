@@ -30,9 +30,9 @@ Start here if you are evaluating the Root Lock kernel for a regulated or enterpr
 
 Every measured number derives from the open-source `kernel-hardening-checker` tool applied identically to HeartSuite and reference kernels, with no estimates. Raw evidence files and config SHA-256 hashes are included so any qualified team can verify independently.
 
-- [Evidence Status](evidence-status/) — 6.18.9-hs #37 pack published 2026-08-18; 5.19.6 remains the legacy pack.
-- [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Scores are the 18 August 2026 measurement (build #37).
+- [Evidence Status](evidence-status/) — 6.18.9-hs #43 checker pack published 2026-10-02; the 18 August pack is build #37 and holds the guest boot; 5.19.6 remains the legacy pack.
+- [Comparison Matrix (6.18.9)](kernel-comparison-matrix-6.18.9/) — Scores are the build #43 checker run. Arch and vanilla rows are the 18 August measurement on the same checker.
 - [Comparison Matrix (5.19.6)](kernel-comparison-matrix-5.19.6/) — Legacy stream, fully measured: HeartSuite vs vanilla defconfig, Arch hardened, and KSPP target.
-- [Threat model and residual risk](auditor-brief/) — Threat model for the kernel that ships, August #37 measured scores, residual risks, and reproduction commands.
+- [Threat model and residual risk](auditor-brief/) — Threat model for the kernel that ships, build #43 checker scores, residual risks, and reproduction commands. The guest boot in that brief is build #37.
 - [LSM Comparison](lsm-comparison/) — HeartSuite vs SELinux, AppArmor, and TOMOYO: enforcement model, bypass-primitive resistance, and co-existence.
 - [Analyst Summary](analyst-summary/) — Non-technical summary for journalists and analysts, with fact-checker citations.

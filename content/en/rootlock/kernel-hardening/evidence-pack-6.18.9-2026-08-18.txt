@@ -1,12 +1,13 @@
 Root Lock by HeartSuite — Kernel Hardening Evidence Pack
-Subject: fielded 6.18.9-hs pin (packaging 6.18.9-HeartSuite-3, build #37)
+Subject: 18 August 2026 record of 6.18.9-hs build #37 (packaging 6.18.9-HeartSuite-3)
+The kernel that ships is build #43. Its checker pack is evidence-pack-6.18.9.txt.
 Retrieved: 2026-08-18
 Tool: kernel-hardening-checker commit e870d0141259f875d3d1b54fef49dec7074e4cac
         (github.com/a13xp0p0v/kernel-hardening-checker; short e870d01)
 Runtime verification: Debian 12 lab guest, 2026-08-18 22:46–22:48 UTC
 
-This pack measures the **fielded** binary. It is not a derived unpublished
-hardening cut. IO_URING, KEXEC, and KEXEC_FILE remain =y on this pin.
+This pack measures build #37. IO_URING, KEXEC, and KEXEC_FILE are =y on
+this binary. Build #43 leaves KEXEC and KEXEC_FILE unset and keeps IO_URING=y.
 
 === 1. CONFIG AND BINARY IDENTITY ===
 
@@ -76,9 +77,9 @@ Verified directly from the canonical analysis config:
 
 Score against the 5.19.6 "6+1 disable" checklist: 0/8 of BPF/IO_URING/FUSE/
 OVERLAY/APPARMOR/TOMOYO/KEXEC/USER_NS are disabled on this pin.
-The 5.19.6 pack's sentence that 6.18.x disables IO_URING and KEXEC is
-**false for the fielded #37 pin**. Those three =y values (IO_URING, KEXEC,
-KEXEC_FILE) are recorded here as shipped, not as a derived unpublished cut.
+The 5.19.6 pack's older sentence that 6.18.x disables IO_URING and KEXEC
+does not describe build #37. Those three =y values (IO_URING, KEXEC,
+KEXEC_FILE) are the #37 config recorded in this file.
 
 === 4. ALTERNATIVE LSMs (compiled in on this pin) ===
 

@@ -230,7 +230,7 @@ If install or Root Lock kernel boot fails on a Supported, In lab, Experimental, 
 
 1. **`/var/log/heartsuite/install.log`** — installer steps and outcome (see [Appendices](../../appendices/)).
 2. **Kernel identity:** output of `uname -r`.
-   - Current 6.18 stream: expect **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build `#37`). Absence of the word `HeartSuite` does not mean you are on the maintenance kernel.
+   - Current 6.18 stream: expect **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build `#43`). `uname -r` does not contain the word `HeartSuite`. A distribution version string means the maintenance kernel is running.
    - 5.19 legacy: expect a string such as `5.19.6-HeartSuite-2.0`.
    - Maintenance kernel: a distribution version string with no Root Lock packaging (for example a stock `debian` or `el` uname).
 3. **OS identity:** contents of `/etc/os-release`.
@@ -249,7 +249,7 @@ Kernel update recovery if a new Root Lock kernel fails to boot: [Updating Root L
 - [System Requirements](../../introduction/system-requirements/) — Architecture, kernel lines, and software notes
 - [Enterprise Adoption Guide](enterprise-adoption-guide/) — Secure Boot status, fleet operations, procurement decision tree
 - [LSM Comparison](lsm-comparison/) — SELinux co-existence (5.19.6 measured pack)
-- [Procurement Brief](procurement-brief/) — Hardening posture comparison (5.19.6 measured pack)
+- [Procurement Brief](procurement-brief/) — Hardening posture comparison (6.18.9-hs build #43)
 - [CVE Hygiene for Scanners](cve-hygiene-for-scanners/) — Scanner workflow; do not infer 6.18 compile-out from 5.19 greps
 - [How Root Lock Compares](../../introduction/how-it-compares/) — What belongs on a separate host
 - [Deployment Scenarios](../../introduction/deployment-scenarios/) — Where Root Lock fits
@@ -258,4 +258,4 @@ Kernel update recovery if a new Root Lock kernel fails to boot: [Updating Root L
 
 ---
 
-*Last updated: 2026-09-24. Rows follow `distro_catalog.yaml` and the installer floors (glibc 2.34, Python 3.11). Workload Kconfig values are from the fielded 6.18.9-hs `#37` config and the published 5.19.6-HeartSuite-1.0 pack. No complete Lockdown M2 release-core gate is claimed for this date.*
+*Last updated: 2026-10-02. Rows follow `distro_catalog.yaml` and the installer floors (glibc 2.34, Python 3.11). Workload Kconfig values are from the 6.18.9-hs `#43` packaging config and the published 5.19.6-HeartSuite-1.0 pack. No complete Lockdown M2 release-core gate is claimed for this date.*

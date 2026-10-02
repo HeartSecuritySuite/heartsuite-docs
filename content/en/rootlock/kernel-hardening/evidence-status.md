@@ -23,8 +23,8 @@ toc: true
 
 | Stream | Role | Config SHA-256 | Evidence pack | Comparison matrix | Checker run | Runtime verification |
 |---|---|---|---|---|---|---|
-| **6.18.9-hs build #43** | Kernel that ships | `d6a08a04…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [18 August matrix](kernel-comparison-matrix-6.18.9/) | 2026-10-02 (`e870d01`) | Not repeated |
-| **6.18.9-hs build #37** | 18 August 2026 pack | `3cd18247…` in [pack](../evidence-pack-6.18.9-2026-08-18.txt) | [Published](../evidence-pack-6.18.9-2026-08-18.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-08-18 (`e870d01`) | 2026-08-18 (Debian 12 guest) |
+| **6.18.9-hs build #43** | Kernel that ships | `d6a08a04…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-10-02 (`e870d01`) | Not repeated |
+| **6.18.9-hs build #37** | 18 August 2026 pack | `3cd18247…` in [pack](../evidence-pack-6.18.9-2026-08-18.txt) | [Published](../evidence-pack-6.18.9-2026-08-18.txt) | Scores kept in that pack | 2026-08-18 (`e870d01`) | 2026-08-18 (Debian 12 guest) |
 | **5.19.6** | Legacy / existing fleets | [Published](../evidence-pack-5.19.6.txt) | [Published](../evidence-pack-5.19.6.txt) | [Published](kernel-comparison-matrix-5.19.6/) | 2026-05-19 (`b9b83a0`) | 2026-05-19 (Debian 12 VM) |
 
 5.19.6 scores are legacy. Build #37 is the 18 August measurement. Build #43 is the kernel that ships.
@@ -36,14 +36,14 @@ toc: true
 - **Identity** — `file` `#43`, vmlinuz SHA-256 `f2e47498…`, packaging config SHA-256 `d6a08a04…` in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
 - **Automated scores** — checker `e870d01`, run 2026-10-02: overall 153/259 (59.1%), attack-surface 62/131 (47.3%), exploit-resistance 78/110 (70.9%)
 - **Runtime** — not repeated. The Debian 12 guest boot is the build #37 pack.
-- **What moved since #37** — `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, and `CONFIG_KEXEC_FILE` are unset. `CONFIG_IO_URING` stays `y`.
+- **What moved since #37** — `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, `CONFIG_KEXEC_FILE`, `CONFIG_CRASH_DUMP`, and `CONFIG_PROC_VMCORE` are unset. `CONFIG_IO_URING` stays `y`.
+- **Buyer pages** — [Procurement Brief](procurement-brief/), [Threat model](auditor-brief/), and the [6.18.9 matrix](kernel-comparison-matrix-6.18.9/) use these checker totals. Arch and vanilla columns stay the 18 August rows.
 
 ## What the 18 August 2026 pack contains
 
 - **Identity** — uname `6.18.9-hs`, `file` `#37`, vmlinuz SHA-256 `1b44fffb…`, config SHA-256 `3cd18247…` in [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt)
 - **Automated scores** — checker `e870d01`: overall 148/259 (57.1%), attack-surface 57/131 (43.5%), exploit-resistance 78/110 (70.9%)
-- **Runtime** — Debian 12 guest: LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activation at t+4s
-- **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Threat model](auditor-brief/) are based on this pack
+- **Runtime** — Debian 12 guest: LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activation at t+4s. Procurement, the threat model, and the 6.18.9 matrix cite this guest when they name a booted LSM list.
 
 **Known limits of this publication**
 
@@ -64,7 +64,8 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 | Milestone | Status |
 |---|---|
 | 18 August 2026 pack: SHA, checker, and runtime notes | **Done** (2026-08-18) |
-| Auditor / procurement / 6.18 matrix refresh from that pack | **Done** (2026-08-18) |
+| Auditor / procurement / 6.18 matrix refresh from the 18 August pack | **Done** (2026-08-18); superseded for checker totals by the #43 row below |
+| Build #43 matrix, procurement, and auditor checker totals | **Done** (2026-10-02) |
 | Era-matched Arch linux-hardened **6.18.16** row | **Done** (2026-08-18) |
 | Era-matched vanilla **6.18.9** `defconfig` | **Done** (2026-08-18) |
 | Build #43 checker run on the packaging config | **Done** (2026-10-02) |

@@ -2,7 +2,7 @@
 title: "What a red team should test on this kernel"
 linkTitle: "Auditor Brief"
 weight: 22
-description: "Threat model and residual risks for the kernel that ships, 6.18.9-hs (packaging 6.18.9-HeartSuite-3). Build #37 is the 18 August 2026 measurement. 5.19.6 remains the legacy pack."
+description: "Threat model and residual risks for the kernel that ships, 6.18.9-hs build #43. The Debian 12 guest boot is the 18 August build #37 pack. 5.19.6 remains the legacy pack."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
@@ -11,12 +11,12 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite — **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`); build **#37** is the 18 August 2026 measurement; **5.19.6** legacy  
-**Evidence status:** The 18 August 2026 guest boot and checker run for build **#37** are in [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). Build **#43**, the kernel that ships, is in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02, no guest boot). The **5.19.6** pack remains the legacy measured stream.  
+**Subject:** Root Lock by HeartSuite — **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy stream.  
+**Evidence status:** Checker scores for the kernel that ships are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02). The Debian 12 guest boot is build **#37**, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). The **5.19.6** pack remains the legacy measured stream.  
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-The measurements below are the 18 August 2026 run on build #37, which had `IO_URING` and `KEXEC` set. The kernel that ships has the BPF syscall off, `CONFIG_IO_URING=y`, and `CONFIG_KEXEC` unset.
+On the kernel that ships, the BPF syscall is off, `CONFIG_IO_URING=y`, and `CONFIG_KEXEC` is unset.
 
 ---
 
@@ -26,18 +26,18 @@ Root Lock targets **a process on the protected system attempting to bypass VFS-l
 
 ---
 
-## What the measurements show (18 August 2026, build #37)
+## What the measurements show (build #43, checker run 2026-10-02)
 
-Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-08-18, against pin config SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`.
+Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-10-02, against packaging config SHA-256 `d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684`.
 
-Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers (no 6.18.9-hardened in the Arch archive). Do not mix these percentages with the 5.19.6 pack, because its checker commit (`b9b83a0`) counts a different set of items.
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers from the 18 August run of the same checker (no 6.18.9-hardened in the Arch archive). Keep these percentages off the 5.19.6 pack, because its checker commit (`b9b83a0`) counts a different set of items.
 
 ### Attack-surface reduction
 
-Automated score: **57/131 (43.5%)**  
+Automated score: **62/131 (47.3%)**  
 Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-The August #37 config trails both era-matched peers on this axis.
+Build #43 trails both era-matched peers on this axis. Five checks moved to OK since build #37: `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, `CONFIG_KEXEC_FILE`, `CONFIG_CRASH_DUMP`, and `CONFIG_PROC_VMCORE`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
@@ -46,11 +46,11 @@ Era-matched Arch linux-hardened 6.18.16: 92/110 (83.6%). Era-matched vanilla 6.1
 
 This pin scores above vanilla 6.18.9 `defconfig` on this axis. Present: `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM`, `SLAB_FREELIST_HARDENED`, `KFENCE`, `MODULE_SIG`. Still missing or unforced: `INIT_ON_FREE_DEFAULT_ON`, `MODULE_SIG_FORCE`, `RANDSTRUCT_FULL`, `KSTACK_ERASE`, `KFENCE_SAMPLE_INTERVAL=0`.
 
-Overall checker: **148/259 (57.1%)**.
+Overall checker: **153/259 (59.1%)**.
 
-### Runtime (Debian 12 guest, 2026-08-18)
+### Runtime (Debian 12 guest, 2026-08-18, build #37)
 
-Debian 12 lab guest, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
+This guest boot was not repeated for build #43. Debian 12 lab guest, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
 
 - `/sys/kernel/security/lsm` = `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`
 - No selinuxfs. `/proc/self/attr/current` = `unconfined`
@@ -97,20 +97,20 @@ git -C /tmp/khc checkout e870d0141259f875d3d1b54fef49dec7074e4cac
 
 # Use the pin payload config — NOT guest /boot/config-6.18.9-hs (11-line stub)
 sha256sum config-6.18.9-hs
-# Expected: 3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9
+# Expected: d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684
 
 python3 /tmp/khc/bin/kernel-hardening-checker -c config-6.18.9-hs
-# Expected summary: OK - 148 / FAIL - 111
+# Expected summary: OK - 153 / FAIL - 106
 ```
 
-Bypass-primitive greps on the **pin** config:
+Bypass-primitive greps on the **#43 packaging** config. `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, and `CONFIG_KEXEC_FILE` are unset, so they do not match a `=` line. `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, and `CONFIG_OVERLAY_FS=m`.
 
 ```bash
-grep -E "^(CONFIG_BPF_SYSCALL|CONFIG_IO_URING|CONFIG_FUSE_FS|CONFIG_OVERLAY_FS|CONFIG_SECURITY_APPARMOR|CONFIG_SECURITY_TOMOYO|CONFIG_KEXEC|CONFIG_KEXEC_FILE|CONFIG_USER_NS)=" \
+grep -E "CONFIG_(BPF_SYSCALL|IO_URING|FUSE_FS|OVERLAY_FS|SECURITY_APPARMOR|SECURITY_TOMOYO|KEXEC|KEXEC_FILE|USER_NS)" \
   config-6.18.9-hs
 ```
 
-Runtime on a guest whose `file /boot/vmlinuz-$(uname -r)` contains `#37`:
+The `/sys/kernel/security/lsm` reading below is the build #37 guest from 2026-08-18. A #43 guest boot was not recorded.
 
 ```bash
 uname -r
@@ -119,4 +119,4 @@ python3 -c "print(open('/sys/kernel/security/lsm').read())"
 # lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm
 ```
 
-Full raw notes for this #37 procedure: [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt).
+Full raw notes: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt). Guest boot: [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt).
