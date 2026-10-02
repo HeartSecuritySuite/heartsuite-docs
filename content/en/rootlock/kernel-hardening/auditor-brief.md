@@ -37,7 +37,7 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 Automated score: **57/131 (43.5%)**  
 Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-The August #37 config trails both era-matched peers on this axis. Config greps on that config show the bypass options compiled in: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
+The August #37 config trails both era-matched peers on this axis.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
@@ -53,7 +53,6 @@ Overall checker: **148/259 (57.1%)**.
 Debian 12 lab guest, `uname -r` **`6.18.9-hs`**, `file` **#37**, vmlinuz SHA-256 `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`.
 
 - `/sys/kernel/security/lsm` = `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`
-- `lsmod`: **74** modules loaded; **4190** `*.ko.xz` under `/lib/modules/6.18.9-hs`; `modules.builtin` **198**
 - No selinuxfs. `/proc/self/attr/current` = `unconfined`
 - dmesg: LSM list above at t+0.05s; `activating Heartsuite service` / monitor ON at t+4s
 - Guest `/boot/config-6.18.9-hs` is an **11-line initramfs RD stub**, not the build config. Hash the pin payload config, not that file.

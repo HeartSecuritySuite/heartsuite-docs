@@ -79,16 +79,16 @@ HS 5.19.6 disables five of the eight options and Arch linux-hardened disables a 
 
 These projects were not scored with the checker in this analysis — either because their configs were unavailable for the 5.19 era, because they are paywalled, or because a meaningful config was not locatable. Characterizations are drawn from each project's public documentation and design goals.
 
-| Project | Bypass Prevention | Exploit Resistance | Module Footprint | Availability | Primary Use Case |
-|---|---|---|---|---|---|
-| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | **~9 modules** (measured) | Commercial | Containment of untrusted code on dedicated appliance |
-| Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY, INIT_ON_ALLOC, SLAB_FREELIST | Hundreds | Free, open-source | General-purpose hardened desktop/server |
-| NixOS linux_hardened | Moderate | **High** | Hundreds | **Removed from nixpkgs 2025** (lack of maintenance) | Was: reproducible hardened NixOS systems |
-| grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Large | Paid subscription | Maximum exploit resistance; enterprise |
-| CLIP OS (ANSSI) | High — minimal modules + BPF disabled | High — KSPP-style mitigations | ~400 | Public (archived) | Government/high-security Linux platform |
-| Hardened Gentoo | Moderate | High | Large | Free, open-source | Reproducible hardened Gentoo systems |
-| GrapheneOS | High — Android-targeted bypass removal | **Very High** — extensive Android hardening patches | Android-specific | Free, open-source | Hardened Android (not x86/server) |
-| Kicksecure / Whonix | Low–Moderate | Low–Moderate — mostly OS-level hardening, not kernel patches | Standard Debian | Free, open-source | Privacy-focused Debian derivative |
+| Project | Bypass Prevention | Exploit Resistance | Availability | Primary Use Case |
+|---|---|---|---|---|
+| **HeartSuite 5.19.6** | **Very High** — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS all disabled | Low — vanilla upstream baseline | Commercial | Containment of untrusted code on dedicated appliance |
+| Arch linux-hardened 5.19.11 | Moderate — keeps BPF, FUSE, AppArmor, USER_NS | **High** — HARDENED_USERCOPY, FORTIFY, INIT_ON_ALLOC, SLAB_FREELIST | Free, open-source | General-purpose hardened desktop/server |
+| NixOS linux_hardened | Moderate | **High** | **Removed from nixpkgs 2025** (lack of maintenance) | Was: reproducible hardened NixOS systems |
+| grsecurity / PaX | High | **Very High** — RBAC + PaX heap/stack protections | Paid subscription | Maximum exploit resistance; enterprise |
+| CLIP OS (ANSSI) | High — BPF disabled | High — KSPP-style mitigations | Public (archived) | Government/high-security Linux platform |
+| Hardened Gentoo | Moderate | High | Free, open-source | Reproducible hardened Gentoo systems |
+| GrapheneOS | High — Android-targeted bypass removal | **Very High** — extensive Android hardening patches | Free, open-source | Hardened Android (not x86/server) |
+| Kicksecure / Whonix | Low–Moderate | Low–Moderate — mostly OS-level hardening, not kernel patches | Free, open-source | Privacy-focused Debian derivative |
 
 **Notes on the qualitative table:**
 
@@ -101,13 +101,10 @@ These projects were not scored with the checker in this analysis — either beca
 
 ---
 
-## Part 3 — LSM stack and module count (measured)
+## Part 3 — LSM stack (measured)
 
 | Metric | HS 5.19.6 | Source |
 |---|---|---|
-| Modules loaded at runtime | **0** (lsmod empty) | Runtime measurement |
-| Loadable .ko files shipped | 9 | Runtime measurement |
-| modules.builtin entries | 334 | Runtime measurement |
 | SELinux at runtime | Permissive (`enforce=0`) | Runtime measurement — `/sys/fs/selinux/enforce` |
 | Active enforcing MAC LSM | HeartSuite | Runtime measurement — dmesg enforcement trace |
 | Alt-LSMs (YAMA, LANDLOCK, IMA, EVM, LOCKDOWN_LSM) | All disabled | Config grep |
@@ -140,4 +137,3 @@ These projects were not scored with the checker in this analysis — either beca
 | MODULE_SIG enforced | No | **Yes** |
 | BPF_SYSCALL disabled | **Yes** | No |
 | FUSE/OVERLAY disabled | **Yes** | No |
-| Runtime modules loaded | **0** | Not measured |

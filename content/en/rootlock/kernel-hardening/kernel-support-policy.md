@@ -204,7 +204,7 @@ The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends
 3. Reboot into the 6.18 Root Lock kernel, review Dashboard queues for any new program activity, and re-engage Lockdown if required.
 4. Update vulnerability-management and configuration baselines to reference the new version string and published 6.18 config hash.
 
-Functional differences between streams (configuration, module footprint, CVE tables) are summarized in the [Distro Compatibility Matrix](distro-compatibility-matrix/) and stream-specific evidence materials.
+Functional differences between streams (configuration and CVE tables) are summarized in the [Distro Compatibility Matrix](distro-compatibility-matrix/) and stream-specific evidence materials.
 
 ---
 

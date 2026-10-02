@@ -52,7 +52,7 @@ Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.
 | **Ubuntu** | 24.04 LTS | **Supported** | 6.18 (`6.18.9-hs`) | GRUB | `release-core`. Cloud images are UEFI/OVMF pflash. |
 | **Ubuntu** | 22.04 LTS | **Not supported** | — | — | glibc 2.35 meets the floor. Stock Python 3.10 is below the installer floor of 3.11. The installer refuses the host. |
 | **Ubuntu** | 20.04 LTS | **Legacy (5.19 only)** | 5.19 | GRUB | Same glibc floor as Debian 11. k6 / 6.18 install is not offered. |
-| **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same rule as the Ubuntu release you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives of 24.04 or 26.04. A 22.04 or 20.04 derivative follows that row. Staging validation is still required. AppArmor is compiled in on the current 6.18 pin — see [Workload fit](#workload-fit-not-distro-specific). |
+| **Ubuntu-derived** | Other LTS | **Compatible (customer validation)** | Same rule as the Ubuntu release you track | GRUB | Mint, Pop!_OS, and similar `.deb` + GRUB derivatives of 24.04 or 26.04. A 22.04 or 20.04 derivative follows that row. Staging validation is still required. |
 | **Rocky Linux** | 10 | **Experimental** | 6.18 (`6.18.9-hs`) | GRUB | Stock Python 3.12 meets the installer floor. A 2026-08-26 install-and-setup pass does not certify the row and is not Lockdown. |
 | **Rocky Linux** | 9 | **Not supported** | — | — | glibc 2.34 meets the floor. Stock Python 3.9 is below 3.11. The installer refuses the host. Not “Rocky 9.7 validated.” |
 | **Fedora** | 42 | **In lab** | 6.18 (`6.18.9-hs`) | GRUB | `release-plus`. Cloud root is often btrfs. Install preflight can refuse until a btrfs-capable module set is present. Not Fedora 41. Not certified. |
@@ -139,7 +139,7 @@ Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 are the current k6 `release
 | **Ubuntu 24.04 LTS** | Supported (lab). UEFI/pflash on cloud images. |
 | **Ubuntu 22.04 LTS** | Not supported. Stock Python 3.10 is below 3.11. |
 | **Ubuntu 20.04 LTS** | Legacy — 5.19 / k5 only. glibc 2.31. |
-| **Other Ubuntu-derived** | Same rule as the Ubuntu release they track. A 22.04 derivative is not offered. On 24.04 and 26.04, validate Snap/LXD on the **running** kernel; the current 6.18 pin compiles AppArmor in. |
+| **Other Ubuntu-derived** | Same rule as the Ubuntu release they track. A 22.04 derivative is not offered. On 24.04 and 26.04, validate Snap/LXD on the **running** kernel. |
 
 On Debian/Ubuntu the installer sets the Root Lock kernel as the GRUB default and reboots when GRUB automation succeeds. The original distribution kernel remains in GRUB as Maintenance and vanilla entries for recovery.
 
@@ -178,7 +178,7 @@ Before you install on a cloud instance:
 - Run the install once on your target instance type in staging before fleet rollout.
 - If the installer stops before reboot, read `/var/log/heartsuite/install.log` and email [support@heartsecsuite.com](mailto:support@heartsecsuite.com) with the log attached.
 
-Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a supported product role**. That is a support-scope statement rather than a compile-out: the fielded 6.18 pin compiles `CONFIG_KVM=m`. See [Workload fit](#workload-fit-not-distro-specific).
+Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a supported product role**. See [Workload fit](#workload-fit-not-distro-specific).
 
 ---
 

@@ -24,7 +24,7 @@ toc: true
 | **6.18.9-hs #37** | Fielded pin / new deployments | `3cd18247…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-08-18 (`e870d01`) | 2026-08-18 (Debian 12 guest) |
 | **5.19.6** | Legacy / existing fleets | [Published](../evidence-pack-5.19.6.txt) | [Published](../evidence-pack-5.19.6.txt) | [Published](kernel-comparison-matrix-5.19.6/) | 2026-05-19 (`b9b83a0`) | 2026-05-19 (Debian 12 VM) |
 
-The two lines use different kernel configs. 5.19.6 compiled out BPF/FUSE/OVERLAY/USER_NS/AppArmor/TOMOYO. Fielded 6.18.9-hs #37 compiles those in. Treat 5.19.6 scores as **legacy**, not as a substitute for 6.18.9-hs.
+The two lines use different kernel configs. Treat 5.19.6 scores as **legacy**, not as a substitute for 6.18.9-hs.
 
 ---
 
@@ -32,7 +32,7 @@ The two lines use different kernel configs. 5.19.6 compiled out BPF/FUSE/OVERLAY
 
 - **Identity** — uname `6.18.9-hs`, `file` `#37`, vmlinuz SHA-256 `1b44fffb…`, pin config SHA-256 `3cd18247…` in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
 - **Automated scores** — checker `e870d01`: overall 148/259 (57.1%), attack-surface 57/131 (43.5%), exploit-resistance 78/110 (70.9%)
-- **Runtime** — Debian 12 guest: 74 modules loaded, 4190 `.ko.xz`, LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activation at t+4s
+- **Runtime** — Debian 12 guest: LSM `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`, Root Lock activation at t+4s
 - **Buyer and auditor summaries** — [Procurement Brief](procurement-brief/) and [Threat model](auditor-brief/) are based on this pack
 
 **Known limits of this publication**

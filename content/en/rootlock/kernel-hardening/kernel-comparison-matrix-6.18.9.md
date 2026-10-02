@@ -42,7 +42,7 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 
 ### What this shows
 
-HS 6.18.9-hs trails on attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%), and the bypass primitives that 5.19.6 compiled out are enabled here.
+HS 6.18.9-hs trails on attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%).
 
 HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
 
@@ -80,24 +80,21 @@ HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs
 
 ## Part 2 — Qualitative orientation (cross-project)
 
-| Project | Bypass prevention | Exploit resistance | Module footprint | Availability | Primary use case |
-|---|---|---|---|---|---|
-| **HeartSuite 6.18.9-hs #37** | Low–moderate — BPF/FUSE/OVERLAY/AppArmor/TOMOYO/USER_NS/IO_URING/KEXEC present (measured) | Moderate–high — 70.9% self_protection (measured) | **74 loaded / 4190 `.ko.xz`** (Debian 12 guest) | Commercial | Containment via allowlist + Lockdown on a general-purpose 6.18 config |
-| **HeartSuite 5.19.6** | **Very high** compile-out ([measured](kernel-comparison-matrix-5.19.6/)) | Low — vanilla baseline | **0 loaded / 9 `.ko`** | Commercial (legacy) | Same product contract; different kernel config |
-| Arch linux-hardened 6.18.16 | Moderate | **High** (83.6% ER) | Hundreds | Free | General-purpose hardened desktop/server |
-| grsecurity / PaX | High | **Very high** | Large | Paid | Maximum exploit resistance |
-| CLIP OS (ANSSI) | High | High | ~400 | Public (archived) | Government platform |
-| KSPP recommended x86-64 | High (intent) | **Very high** (intent) | N/A | Public | Industry benchmark |
+| Project | Bypass prevention | Exploit resistance | Availability | Primary use case |
+|---|---|---|---|---|
+| **HeartSuite 6.18.9-hs #37** | Measured 43.5% attack-surface | Moderate–high — 70.9% self_protection (measured) | Commercial | Containment via allowlist + Lockdown |
+| **HeartSuite 5.19.6** | Measured 68.9% attack-surface ([matrix](kernel-comparison-matrix-5.19.6/)) | Low — vanilla baseline | Commercial (legacy) | Same product contract; different kernel config |
+| Arch linux-hardened 6.18.16 | Moderate | **High** (83.6% ER) | Free | General-purpose hardened desktop/server |
+| grsecurity / PaX | High | **Very high** | Paid | Maximum exploit resistance |
+| CLIP OS (ANSSI) | High | High | Public (archived) | Government platform |
+| KSPP recommended x86-64 | High (intent) | **Very high** (intent) | Public | Industry benchmark |
 
 ---
 
-## Part 3 — LSM stack and module count (measured)
+## Part 3 — LSM stack (measured)
 
 | Metric | HS 6.18.9-hs #37 | Source |
 |---|---|---|
-| Modules loaded at runtime | **74** | Debian 12 guest, 2026-08-18 |
-| Loadable `.ko.xz` shipped | **4190** | `/lib/modules/6.18.9-hs` |
-| modules.builtin entries | **198** | same guest |
 | SELinux fs | **absent** (no `/sys/fs/selinux`) | runtime |
 | `/sys/kernel/security/lsm` | `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm` | runtime |
 | Root Lock activation | dmesg t+4s, monitor ON | runtime |
@@ -122,9 +119,7 @@ HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs
 | Overall checker | **57.1%** | 50.0%† | 69.9% |
 | Attack-surface | **43.5%** | **68.9%**† | 58.0% |
 | Exploit-resistance | **70.9%** | 28.4%† | **83.6%** |
-| BPF / FUSE / USER_NS / AppArmor off | **No** | **Yes** | No |
 | IO_URING / KEXEC off | **No** | No | KEXEC off on Arch row |
-| Runtime modules loaded | **74** | **0** | Not measured |
 | Config SHA-256 published | **Yes** (`3cd18247…`) | **Yes** (`d67caa6…`) | Bundled |
 
 † Different checker commit and item counts — directional only.
