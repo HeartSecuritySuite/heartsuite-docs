@@ -167,21 +167,13 @@ gantt
 
 > [!NOTE]
 > **LSM replacement — Root Lock is the security module** (2022)  
-> Root Lock does not layer on top of the Linux Security Module framework — it replaces it. AppArmor, TOMOYO, Landlock, and several other LSMs are disabled at build time. Root Lock implements its own path-based enforcement in their place, eliminating the interaction complexity and potential bypass paths that arise when multiple security modules run alongside each other.
+> Root Lock does not layer on top of the Linux Security Module framework — it replaces it. Root Lock implements its own path-based enforcement, eliminating the interaction complexity and potential bypass paths that arise when multiple security modules run alongside each other.
 
 > [!NOTE]
 > **eBPF intentionally disabled** (2022)  
 > BPF system calls are disabled at build time. BPF verifier vulnerabilities have historically bypassed the exact kernel hooks Root Lock relies on for enforcement. Disabling eBPF closes that path permanently.
 >
 > Local eBPF tooling is not a fit by design: the BPF syscall is how attackers hide, reach root, and bypass host controls. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
-
-> [!NOTE]
-> **FUSE and OverlayFS intentionally disabled** (2022)  
-> Both filesystem types are disabled at build time because attackers use them to shadow protected directories or escape controls. This is a design choice to remove the path rather than layer policy on top of it. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides — see [Containers and microVMs](../introduction/containers-and-microvms/).
-
-> [!NOTE]
-> **Current 6.18 commercial kernel**  
-> The 2022 design above is the 5.19 line. On the current 6.18 commercial kernel those interfaces are compiled in; “not a fit” is allowlist and mount policy, not a missing syscall. Workload notes: [System Requirements](../introduction/system-requirements/#software-compatibility-notes).
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  

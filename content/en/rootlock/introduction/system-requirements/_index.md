@@ -35,7 +35,7 @@ New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel.
 
 ## Software compatibility notes
 
-The BPF syscall is off on the 6.18.9-hs kernel, so eBPF tools cannot attach. Workloads that need FUSE, OverlayFS, user namespaces, AppArmor, or a KVM host are not a supported configuration on a Root Lock host. Tools that need those interfaces run on another host or on the maintenance kernel.
+The BPF syscall is off on the 6.18.9-hs kernel, so eBPF tools cannot attach.
 
 The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. In Setup Mode, programs that would be blocked under Lockdown appear in the Dashboard review queues, so you see them before you lock down. Software not listed below runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 

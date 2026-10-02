@@ -186,26 +186,15 @@ Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a sup
 
 Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether a **workload** belongs on that host is a separate decision.
 
-The two kernel lines ship different configurations.
+On the kernel that ships, the BPF syscall is off, so there is no eBPF program to load.
 
-| Interface | 5.19 legacy (Debian 11 / Ubuntu 20.04) | Fielded 6.18 pin (`6.18.9-hs`, packaging `6.18.9-HeartSuite-3`, build `#37`) |
-|-----------|----------------------------------------|-------------------------------------------------------------------------------|
-| `CONFIG_BPF_SYSCALL` | not set | `=y` |
-| `CONFIG_FUSE_FS` | not set | `=y` |
-| `CONFIG_OVERLAY_FS` | not set | `=m` |
-| `CONFIG_USER_NS` | not set | `=y` |
-| `CONFIG_SECURITY_APPARMOR` | not set | `=y` |
-| `CONFIG_KVM` | not set | `=m` |
-
-On the **current 6.18 pin**, “this tool cannot run” is not an `ENOSYS` / compiled-out claim for eBPF, FUSE, OverlayFS, user namespaces, AppArmor, or KVM. A program can still fail because it is not on the allowlist, because Lockdown refuses a new mount or a new module load, or because the role is unsupported.
-
-| Requirement | On the current 6.18 pin | On 5.19 legacy |
-|-------------|-------------------------|----------------|
-| Local eBPF tooling (Falco, bpftrace, bcc, …) | Syscall is compiled in. Lockdown still refuses unallowlisted loaders. | Syscall not compiled. |
-| FUSE mounts (sshfs, s3fs, AppImage, …) | FUSE is compiled in. New mounts after Lockdown follow product mount rules. | FUSE not compiled. |
-| Overlay / typical container storage | `overlay` is available as a module. Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. | Overlay not compiled. |
-| KVM **hypervisor host** | **Not a supported product role** (module may be present). | Not compiled. |
-| Rootless / unprivileged user-namespace containers | User namespaces are compiled in. Rootless containers are not a supported workload on this host. | User namespaces not compiled. |
+| Requirement | On the kernel that ships | On 5.19 legacy |
+|-------------|--------------------------|----------------|
+| Local eBPF tooling (Falco, bpftrace, bcc, …) | The BPF syscall is off. | Syscall not compiled. |
+| FUSE mounts (sshfs, s3fs, AppImage, …) | New mounts after Lockdown follow product mount rules. | FUSE not compiled. |
+| Overlay / typical container storage | Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. | Overlay not compiled. |
+| KVM **hypervisor host** | **Not a supported product role.** | Not compiled. |
+| Rootless / unprivileged user-namespace containers | Rootless containers are not a supported workload on this host. | User namespaces not compiled. |
 | Root Lock as a **guest** inside KVM, VMware, or cloud hypervisors | Yes | Yes |
 | Fixed appliance, regulated server, closed workload set | Yes | Yes |
 

@@ -60,7 +60,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ### Which kernel these scores apply to
 
-Scores on this page apply to **6.18.9-hs**. 5.19.6 is an archived kernel line. A row is Not Affected only where that option is unset on the kernel you boot, because only then is the vulnerable code absent. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so their CVEs stay on the patch date.
+Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A row is Not Affected only where that option is unset on the kernel you boot, because only then is the vulnerable code absent. On 6.18.9-hs, the BPF syscall is off, so there is no eBPF program to load. Where the two lines differ, the entry states both.
 
 **Score on Root Lock** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. A reachable code path whose impact Lockdown limits maps to **Affected, mitigated**.
 

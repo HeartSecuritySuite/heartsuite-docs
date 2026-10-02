@@ -313,7 +313,7 @@ A: The Root Lock kernel is installed alongside your existing kernel via GRUB —
 
 Setup Mode reveals compatibility issues before anything is blocked: the kernel logs all activity without blocking, and programs that would fail in Lockdown appear in the Dashboard review queues.
 
-On 6.18.9-hs the BPF syscall is off. FUSE, overlay filesystems, and user namespaces are in that kernel, and the workloads that need them are not a supported configuration. See [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
+On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. See [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 
 {{< /details >}}
 

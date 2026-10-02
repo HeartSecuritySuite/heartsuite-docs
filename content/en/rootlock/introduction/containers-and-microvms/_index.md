@@ -15,13 +15,13 @@ menu:
     identifier: "containers-and-microvms"
 ---
 
-**Overview**: Shared-kernel Docker is not a supported workload on a Root Lock host, because the container stack depends on overlay filesystems and user namespaces — features attackers use to shadow directories and reach root.
+**Overview**: Shared-kernel Docker is not a supported workload on a Root Lock host.
 
 Build and run OCI images on another host. When a task should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
 ## Why Docker is not a fit on this host
 
-Docker, containerd, Podman, and runc isolate processes on the host kernel, and that isolation depends on OverlayFS for image layers and on user namespaces. The 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces built in. A container runtime on it is not a supported configuration: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
+Docker, containerd, Podman, and runc isolate processes on the host kernel. A container runtime on it is not a supported configuration: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
 A backup receiver that accepts Restic over SFTP runs a handful of programs and needs no container engine. Run the container engine on another host, and let Root Lock protect the machines around it.
 
@@ -78,7 +78,7 @@ Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the 
 
 | Approach | Isolation boundary | On a Root Lock kernel |
 |---|---|---|
-| Docker / runc on this host | Shared host kernel | Not a supported workload. 6.18.9-hs ships OverlayFS as a module, and a container runtime on it is not a supported configuration. |
+| Docker / runc on this host | Shared host kernel | Not a supported workload. |
 | gVisor | Userspace syscall filter | Discussed as a peer under [How it compares](../how-it-compares/); different threat model |
 | Firecracker / Kata microVM | Hardware VM boundary | Compose with Root Lock as the guest kernel |
 | Root Lock Lockdown | Sealed allowlist in the Root Lock kernel itself | Shipped product core |

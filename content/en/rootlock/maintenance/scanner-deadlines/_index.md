@@ -46,7 +46,7 @@ An exception for one of these is a rule you file on your own policy's terms, not
 
 The false-positive or not-affected reason is for one case: a kernel CVE whose code is absent from the kernel you boot. Record the config gate that leaves it out on the rule. The catalog of gates and the CVEs each one covers is [Kernel Security Transparency](../../security/).
 
-On the 6.18 kernel, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so their CVEs stay on the patch date. `apt` and `dnf` update the OS packages and leave the Root Lock kernel as shipped, so a package update does not change which kernel code is present.
+On the 6.18 kernel, the BPF syscall is off, so there is no eBPF program to load. `apt` and `dnf` update the OS packages and leave the Root Lock kernel as shipped, so a package update does not change which kernel code is present.
 
 A scanner that flags a kernel CVE from the version string alone follows [CVE Hygiene for Scanners](../../kernel-hardening/cve-hygiene-for-scanners/).
 

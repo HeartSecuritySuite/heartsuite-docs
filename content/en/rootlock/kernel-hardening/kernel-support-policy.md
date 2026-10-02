@@ -163,7 +163,7 @@ Clock start for timed tiers: **HeartSuite confirmation** that the issue applies 
 
 **Notes**
 
-- A CVE is **Not Affected** on the kernel you boot only where that config leaves the option unset, and those entries do not consume patch-tier clocks. On 6.18.9-hs the BPF syscall is one of those. FUSE, OverlayFS, user namespaces, nftables, KVM, and io_uring are in that kernel, so their CVEs stay on the patch date.
+- A CVE is **Not Affected** on the kernel you boot only where that config leaves the option unset, and those entries do not consume patch-tier clocks. On 6.18.9-hs the BPF syscall is one of those, so there is no eBPF program to load.
 - For reachable CVEs, Lockdown limits persistence and arbitrary code execution even before a rebuild ships; patching remains part of defense-in-depth and subscription commitments for reachable paths.
 - HeartSuite does not issue per-CVE errata identifiers in the distribution-vendor style; bundle manifests list the CVEs addressed in each release.
 
@@ -229,7 +229,7 @@ Root Lock **replaces the enforcement kernel** for protected operation; it does n
 
 Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the maintenance-kernel path and to userspace packages.
 
-Agents or tools that need the BPF syscall, or a kernel option the 6.18.9-hs config leaves unset, should run on a kernel that exposes that option, or on a separate host. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
+Agents or tools that need the BPF syscall should run on a kernel that exposes it, or on a separate host. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section.
 
 ---
 

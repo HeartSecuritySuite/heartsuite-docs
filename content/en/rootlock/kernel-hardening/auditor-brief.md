@@ -22,7 +22,7 @@ The measurements below are the 18 August 2026 run on build #37, which had `IO_UR
 
 ## Threat model
 
-Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. The 6.18.9-hs kernel that ships leaves the BPF syscall off and leaves FUSE, OverlayFS, user namespaces, and AppArmor in the build. The countermeasure is the allowlist and Lockdown.
+Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. The BPF syscall is off on the 6.18.9-hs kernel that ships, so there is no eBPF program to load. The countermeasure is the allowlist and Lockdown.
 
 ---
 

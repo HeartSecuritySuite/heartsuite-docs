@@ -14,7 +14,7 @@ aliases:
 <!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
 <!-- markdownlint-disable MD001 -->
 
-**Overview**: A row is Not Affected on the kernel you boot only when that option is unset, because only then is the vulnerable code absent. On the 6.18.9-hs kernel that ships, `CONFIG_BPF_SYSCALL` is unset. `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_USER_NS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_NF_TABLES=m`, `CONFIG_KVM=m` (Intel and AMD), and `CONFIG_SECURITY_APPARMOR=y` are in that kernel, so their CVEs stay on the patch date. The proof for any row is the pin config — the build configuration published for that kernel — because the guest file `/boot/config-6.18.9-hs` is a stub and a `grep` of it proves nothing. See [Evidence Status](../kernel-hardening/evidence-status/).
+**Overview**: A row is Not Affected on the kernel you boot only when that option is unset, because only then is the vulnerable code absent. On the 6.18.9-hs kernel that ships, `CONFIG_BPF_SYSCALL` is unset, so there is no eBPF program to load. The proof for any row is the pin config — the build configuration published for that kernel — because the guest file `/boot/config-6.18.9-hs` is a stub and a `grep` of it proves nothing. See [Evidence Status](../kernel-hardening/evidence-status/).
 
 Compiled-in residuals and write-ups: [Compiled-in CVEs](../compiled-in-cves/). Method: [Kernel Security Transparency](../).
 
