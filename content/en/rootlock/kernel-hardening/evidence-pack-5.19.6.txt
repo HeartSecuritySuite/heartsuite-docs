@@ -123,7 +123,7 @@ Runtime verification (Debian 12 lab guest, 2026-05-19):
     HS_activate_hs (custom syscall), HS_is_on, HS_locked_down,
     HS_capable_backup_from_path_and_pid, HS_file_is_in_sandbox
 
-CONCLUSION (open item resolved):
+CONCLUSION:
   SELinux is compiled-in but runs in permissive mode with no policy loaded —
   it observes but does not deny. HeartSuite is the sole enforcing MAC LSM.
   The design invariant ("HeartSuite is the first and final enforcement authority")

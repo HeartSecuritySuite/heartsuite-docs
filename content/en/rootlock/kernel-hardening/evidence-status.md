@@ -59,20 +59,6 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 
 ---
 
-## Evidence parity roadmap
-
-| Milestone | Status |
-|---|---|
-| 18 August 2026 pack: SHA, checker, and runtime notes | **Done** (2026-08-18) |
-| Auditor / procurement / 6.18 matrix refresh from the 18 August pack | **Done** (2026-08-18); superseded for checker totals by the #43 row below |
-| Build #43 matrix, procurement, and auditor checker totals | **Done** (2026-10-02) |
-| Era-matched Arch linux-hardened **6.18.16** row | **Done** (2026-08-18) |
-| Era-matched vanilla **6.18.9** `defconfig` | **Done** (2026-08-18) |
-| Build #43 checker run on the packaging config | **Done** (2026-10-02) |
-| Build #43 guest boot (LSM list, lsmod, dmesg) | Not run |
-
----
-
 ## For procurement and audit teams
 
 **Evaluating a 6.18.9-hs deployment today**

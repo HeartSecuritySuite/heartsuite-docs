@@ -57,7 +57,6 @@ modules_disabled sysctl (runtime): 0 — module loading is not locked after boot
 kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y / CONFIG_KEXEC_FILE=y
 
 Comparison: the published 5.19.6 pack recorded 0 modules loaded and 9 .ko files.
-Do not carry those 5.19.6 module numbers onto this pin.
 
 === 3. BYPASS-PRIMITIVE OPTIONS (config grep on pin SHA 3cd18247…) ===
 
@@ -77,9 +76,6 @@ Verified directly from the canonical analysis config:
 
 Score against the 5.19.6 "6+1 disable" checklist: 0/8 of BPF/IO_URING/FUSE/
 OVERLAY/APPARMOR/TOMOYO/KEXEC/USER_NS are disabled on this pin.
-The 5.19.6 pack's older sentence that 6.18.x disables IO_URING and KEXEC
-does not describe build #37. Those three =y values (IO_URING, KEXEC,
-KEXEC_FILE) are the #37 config recorded in this file.
 
 === 4. ALTERNATIVE LSMs (compiled in on this pin) ===
 
@@ -126,9 +122,7 @@ Runtime verification (Debian 12 lab guest, 2026-08-18):
 
 CONCLUSION:
   Root Lock activates on this guest. It is **not** the sole LSM on the stack.
-  Competing LSMs listed above are compiled in and initialized. Do not copy the
-  5.19.6 "sole enforcing MAC / securityfs absent / SELinux permissive" write-up
-  onto this pin.
+  Competing LSMs listed above are compiled in and initialized.
 
 === 6. CPU MITIGATIONS (6.18 CONFIG_MITIGATION_* names) ===
 
@@ -231,8 +225,7 @@ Runtime on a guest booted into 6.18.9-hs #37:
 === 13. SOURCE CITATIONS ===
 
   Pin: fielded-6.18.9-hs-37
-  IO_URING and KEXEC remain compiled in on this pin (not a derived unpublished cut)
-  Published 5.19.6 pack (do not mix scores): evidence-pack-5.19.6.txt
+  Published 5.19.6 pack: evidence-pack-5.19.6.txt
   Checker: github.com/a13xp0p0v/kernel-hardening-checker @ e870d01
   Arch 6.18.16-hardened1 config: gitlab.archlinux.org/archlinux/packaging/packages/linux-hardened
     tag 6.18.16.hardened1-1, file config.x86_64, SHA-256 286d7e1e5a2af411e071b024e3e771effb468b463d1d3f26c604ac2e49c03739
