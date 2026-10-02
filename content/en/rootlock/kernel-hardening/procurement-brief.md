@@ -14,7 +14,7 @@ toc: true
 **Overview**: Side-by-side comparison of Root Lock kernel configuration choices against community hardened kernels and the KSPP benchmark.
 
 **Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy measured stream.  
-**Evidence:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18, checker `e870d01`). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
+**Evidence:** tables below are the 18 August 2026 run, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt) (checker `e870d01`). Build #43, the kernel that ships: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02, 153/259, no guest boot). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
 
 **Kernel that ships:** `uname -r` is `6.18.9-hs`. The BPF syscall is off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset.
 
@@ -101,4 +101,4 @@ Tool: https://github.com/a13xp0p0v/kernel-hardening-checker (commit e870d0141259
 Expected checker:   OK 148 / FAIL 111
 ```
 
-Do not hash guest `/boot/config-6.18.9-hs`, because it is an 11-line initramfs stub rather than the build config. Full methodology: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).
+Do not hash guest `/boot/config-6.18.9-hs`, because it is an 11-line initramfs stub rather than the build config. Full methodology for this #37 block: [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt).

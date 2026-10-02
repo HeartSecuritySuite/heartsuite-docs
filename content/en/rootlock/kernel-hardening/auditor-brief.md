@@ -12,7 +12,7 @@ toc: true
 ---
 
 **Subject:** Root Lock by HeartSuite — **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`); build **#37** is the 18 August 2026 measurement; **5.19.6** legacy  
-**Evidence status:** Measured config SHA-256, checker output, and runtime verification for **6.18.9-hs #37** are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18). The **5.19.6** pack remains the legacy measured stream.  
+**Evidence status:** The 18 August 2026 guest boot and checker run for build **#37** are in [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). Build **#43**, the kernel that ships, is in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02, no guest boot). The **5.19.6** pack remains the legacy measured stream.  
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
@@ -119,4 +119,4 @@ python3 -c "print(open('/sys/kernel/security/lsm').read())"
 # lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm
 ```
 
-Full raw notes: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt).
+Full raw notes for this #37 procedure: [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt).

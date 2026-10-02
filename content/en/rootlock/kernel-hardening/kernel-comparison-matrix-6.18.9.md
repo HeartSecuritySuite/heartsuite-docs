@@ -16,7 +16,8 @@ toc: true
 **Config SHA-256 (pin payload):** `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`  
 **vmlinuz SHA-256:** `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`  
 **Tool:** [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, run 2026-08-18  
-**Source file:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)  
+**Source file:** [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt)  
+**Kernel that ships:** build `#43`, checker 153/259 (59.1%) in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt). That run has no guest boot.  
 **Legacy (published):** [Hardening scores: 5.19.6](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
 > This page is the 18 August 2026 checker pack. It is not the kernel that ships. Hash the pack's payload config, not guest `/boot/config-6.18.9-hs`, which is an 11-line initramfs stub.
@@ -108,4 +109,4 @@ HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs
 
 † Different checker commit and item counts — directional only.
 
-For the 5.19.6 dataset see [Hardening scores: 5.19.6](kernel-comparison-matrix-5.19.6/). Raw 6.18 notes: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt). Publication status: [Evidence Status](evidence-status/).
+For the 5.19.6 dataset see [Hardening scores: 5.19.6](kernel-comparison-matrix-5.19.6/). Raw notes for this table: [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). Build #43: [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt). Publication status: [Evidence Status](evidence-status/).
