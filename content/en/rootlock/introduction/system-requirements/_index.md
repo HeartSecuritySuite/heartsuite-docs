@@ -62,6 +62,6 @@ What differs is the machine you run it on: firmware and real devices on metal; v
 
 Root Lock must boot its own kernel, so it runs on bare metal or a full VM. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman sharing the provider kernel, systemd-nspawn) belong on a separate host. A nested guest needs `/dev/kvm` on the outer machine; if `/dev/kvm` is missing, install Root Lock on the outer machine itself.
 
-See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) and [Reduced Kernel Footprint](../heartsuite-overview/#reduced-kernel-footprint).
+See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
 When the host matches these requirements, continue to [Getting Started](../../getting-started/).
