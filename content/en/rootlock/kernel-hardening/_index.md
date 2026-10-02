@@ -11,7 +11,7 @@ aliases:
 toc: false
 ---
 
-**Overview**: Root Lock by HeartSuite runs custom-built Linux kernels (5.19 legacy and 6.18 primary LTS). This section covers buyer evaluation, support policy, compatibility, scanner hygiene, and reproducible evidence.
+**Overview**: Root Lock by HeartSuite runs a custom-built Linux kernel, 6.18.9-hs. Lockdown is the enforcement. This section covers buyer evaluation, support policy, compatibility, scanner hygiene, and reproducible evidence.
 
 ## For buyers and procurement
 

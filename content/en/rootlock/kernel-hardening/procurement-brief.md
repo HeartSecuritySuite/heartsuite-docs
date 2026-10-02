@@ -16,7 +16,7 @@ toc: true
 **Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy measured stream.  
 **Evidence:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18, checker `e870d01`). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
 
-**Kernel that ships:** `uname -r` is `6.18.9-hs`. The BPF syscall is off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset. FUSE is built in. OverlayFS, nftables, and KVM are modules. Thousands of loadable modules ship with it.
+**Kernel that ships:** `uname -r` is `6.18.9-hs`. The BPF syscall is off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset.
 
 **Measured pack:** the tables below are the 18 August 2026 checker run on build #37. That config had the BPF syscall on, and `KEXEC`, `KEXEC_FILE`, and `IO_URING` set. The percentages, the 74-loaded count, and the 4190 `.ko.xz` count are that pack.
 
@@ -65,7 +65,7 @@ On **6.18.9-hs #37** the picture is reversed:
 - Exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**.
 - `IO_URING`, `KEXEC`, and `KEXEC_FILE` are **=y**.
 
-On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel. On that August config the syscalls do not return `ENOSYS`. On the kernel that ships, `bpf()` returns `ENOSYS`. io_uring, FUSE, OverlayFS, and KVM do not.
+On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel. On that August config the syscalls do not return `ENOSYS`. On the kernel that ships, `bpf()` returns `ENOSYS`.
 
 ---
 
