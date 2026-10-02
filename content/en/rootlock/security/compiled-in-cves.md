@@ -34,7 +34,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-46020](#cve-2026-46020) | DAMON core — `damos_quota_goal->nid` for `node_mem_{used,free}_bp` (`CONFIG_DAMON`, `CO… | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-46121](#cve-2026-46121) | DAMON sysfs schemes (`CONFIG_DAMON`, `CONFIG_DAMON_SYSFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-46279](#cve-2026-46279) | mm/alloc_tag (`CONFIG_MEM_ALLOC_PROFILING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
-| [CVE-2026-46281](#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-46281](#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-52968](#cve-2026-52968) | KVM s390 PCI (`CONFIG_KVM_S390`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
 | [CVE-2026-52969](#cve-2026-52969) | KVM dirty ring (`CONFIG_KVM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-53004](#cve-2026-53004) | SCTP (`CONFIG_IP_SCTP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
@@ -43,7 +43,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-63794](#cve-2026-63794) | KVM AMD SVM — SEV debug crypt (`CONFIG_KVM`, `CONFIG_KVM_AMD`, `CONFIG_KVM_AMD_SEV`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-63804](#cve-2026-63804) | GFS2 clustered filesystem (`CONFIG_GFS2_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-64121](#cve-2026-64121) | IFB intermediate functional block (`CONFIG_IFB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
-| [CVE-2026-64600](#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-64600](#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-64239](#cve-2026-64239) | DAMON sysfs schemes (`CONFIG_DAMON_SYSFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
 | [CVE-2026-64283](#cve-2026-64283) | KVM guest_memfd (`CONFIG_KVM_GUEST_MEMFD`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-64531](#cve-2026-64531) | Open vSwitch datapath (`CONFIG_OPENVSWITCH`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
@@ -68,15 +68,15 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-52962](#cve-2026-52962) | CephFS setxattr (`CONFIG_CEPH_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53059](#cve-2026-53059) | Device-mapper dirty log (`CONFIG_DM_MIRROR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-53089](#cve-2026-53089) | BPF offload info fill (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
-| [CVE-2026-53119](#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
-| [CVE-2026-53120](#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
-| [CVE-2026-53129](#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
+| [CVE-2026-53119](#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-53120](#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
+| [CVE-2026-53129](#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
 | [CVE-2026-53136](#cve-2026-53136) | AMD display BIOS parser (`CONFIG_DRM_AMDGPU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53137](#cve-2026-53137) | AMD HDMI HDCP 2.x (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53138](#cve-2026-53138) | AMD display VBIOS walk (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53143](#cve-2026-53143) | AMD KFD SDMA checkpoint (`CONFIG_HSA_AMD`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53149](#cve-2026-53149) | Thunderbolt property parser (`CONFIG_USB4`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
-| [CVE-2026-53233](#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-53233](#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-53255](#cve-2026-53255) | Bluetooth MGMT advertising (`CONFIG_BT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53272](#cve-2026-53272) | EROFS compressed read (`CONFIG_EROFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53286](#cve-2026-53286) | Intel IDPF ethernet (`CONFIG_IDPF`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
@@ -108,7 +108,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2025-71306](#cve-2025-71306) | IMA exec appraisal (`CONFIG_IMA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-45998](#cve-2026-45998) | RxRPC (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-46191](#cve-2026-46191) | framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
-| [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
 | [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
@@ -3175,7 +3175,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: vmalloc — virtually contiguous allocator (`CONFIG_MMU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 on 5.19.6 (outside the affected range). 6.1 MEDIUM on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`) — a standard allowlist has no outbound networking utility, so Modified Confidentiality is Low; Modified Integrity is None; Modified Availability stays High because the bug can panic the kernel
+**Score on Root Lock**: 0.0 on 5.19.6 (outside the affected range). 7.1 HIGH on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`) — Modified Integrity is None; Modified Confidentiality stays High on a worst-case allowlist; Modified Availability stays High because the bug can panic the kernel
 **Affected range**: 6.18 through 6.18.26; also 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until base ≥ 6.18.27
 **Upstream fix**: `e9b057a44def` (mainline); stable 6.18.27+
 
@@ -3189,7 +3189,7 @@ On 6.18.9-hs the helper is in the running kernel. `vrealloc_node_align_noprof` i
 
 A reboot is a clean slate. The attack does not survive it.
 
-These constraints are why Modified Integrity is None. On a standard allowlist, Modified Confidentiality is Low: the live session can still read files, and sending them off the host takes an outbound utility the allowlist does not include. Modified Availability stays High because the bug can panic the kernel. The score on 6.18.9-hs is 6.1 MEDIUM. It stays above 0.0 because the helper is compiled in.
+These constraints are why Modified Integrity is None. Modified Confidentiality stays High: the live session can still read files and send them off the host through an allowlisted outbound utility. Modified Availability stays High because the bug can panic the kernel. The score on 6.18.9-hs is 7.1 HIGH. It stays above 0.0 because the helper is compiled in.
 
 ### CVE-2026-52968
 
@@ -3338,7 +3338,7 @@ If a 6.18.9-hs deployment adds `ip`, `ethtool`, and a way to load `ifb` to the a
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: XFS reflink / copy-on-write (`CONFIG_XFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 on 5.19.6 (XFS is not compiled). 6.1 MEDIUM on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`) — a standard allowlist has no outbound networking utility, so Modified Confidentiality is Low; Modified Integrity is None; Modified Availability stays High because the bug can panic the kernel
+**Score on Root Lock**: 0.0 on 5.19.6 (XFS is not compiled). 7.1 HIGH on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`) — Modified Integrity is None; Modified Confidentiality stays High on a worst-case allowlist; Modified Availability stays High because the bug can panic the kernel
 **Affected ranges**: NVD: 4.11 through 5.15.211; 5.16 through 6.1.177; 6.2 through 6.6.144; 6.7 through 6.12.95; 6.13 through 6.18.38; 6.19 through 7.1.3. HeartSuite 5.19.6 is in range with XFS not compiled. HeartSuite 6.18.9-hs is in range with `CONFIG_XFS_FS=m`.
 **Upstream fix**: 5.15.212, 6.1.178, 6.6.145, 6.12.96, 6.18.39, 7.1.4
 
@@ -3653,7 +3653,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: ACPI WMI bus (`CONFIG_ACPI_WMI`)
 **Base Score**: 7.8 HIGH
-**Score on Root Lock**: 0.0 on 5.19.6 (the WMI bus is not compiled). 6.1 MEDIUM on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`) — a standard allowlist has no outbound networking utility, so Modified Confidentiality is Low; Modified Integrity is None; Modified Availability stays High because the bug can panic the kernel
+**Score on Root Lock**: 0.0 on 5.19.6 (the WMI bus is not compiled). 7.1 HIGH on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`) — Modified Integrity is None; Modified Confidentiality stays High on a worst-case allowlist; Modified Availability stays High because the bug can panic the kernel
 
 The WMI bus reads `driver_override` while a driver probe is in progress, and a concurrent write to that attribute can free the string. 5.19.6 does not build the WMI bus. 6.18.9-hs builds it as a module, and the upstream fix is in 6.18.33. Patch on your policy date. Lockdown limits what an attacker can do after the bug fires.
 
@@ -3663,13 +3663,13 @@ The WMI bus reads `driver_override` while a driver probe is in progress, and a c
 **Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
 **Component:** PCI core driver_override (CONFIG_PCI=y, CONFIG_SYSFS=y on 5.19.6 and 6.18.9)
 **Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock:** 6.1 MEDIUM (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H). Modified Integrity is None because a new program does not run and Lockdown blocks chattr and all three mount syscalls. Modified Confidentiality is Low on a standard allowlist with no outbound networking utility. Modified Availability stays High because the bug can panic the kernel.
+**Score on Root Lock:** 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H). Modified Integrity is None because a new program does not run and Lockdown blocks chattr and all three mount syscalls. Modified Confidentiality stays High on a worst-case allowlist. Modified Availability stays High because the bug can panic the kernel.
 
 The bug is a use-after-free in the PCI bus match path. When a driver is probed through __driver_attach(), match() runs without the device lock and reads the driver_override string while a concurrent write to /sys/bus/pci/devices/<addr>/driver_override can free it.
 
 PCI is compiled in on both fielded kernels and is present on a standard server. The trigger is a write to that sysfs attribute plus a concurrent driver attach. Allowlisted shells, python3, and systemd can perform that write when they hold a write grant on the PCI sysfs node. The path is not a socket path.
 
-**Lockdown.** Even if the use-after-free is turned into kernel execution and a root userspace, the program allowlist refuses every non-allowlisted program at exec. Lockdown returns -EPERM on FS_IOC_SETFLAGS, so immutable flags cannot be cleared, and returns -EPERM on mount, fsmount, and move_mount, so bind-mounts over sealed paths fail. The live session can still read files. Sending them off the host takes an outbound utility a standard allowlist does not include, and the bug can still panic the kernel.
+**Lockdown.** Even if the use-after-free is turned into kernel execution and a root userspace, the program allowlist refuses every non-allowlisted program at exec. Lockdown returns -EPERM on FS_IOC_SETFLAGS, so immutable flags cannot be cleared, and returns -EPERM on mount, fsmount, and move_mount, so bind-mounts over sealed paths fail. The live session can still read files and send them off the host through an allowlisted outbound utility, and the bug can still panic the kernel.
 
 **Even with this CVE exploited to root, the attacker cannot run new code on this system.** The program allowlist refuses every non-allowlisted program at execve, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
 
@@ -3680,7 +3680,7 @@ A reboot is a clean slate. The attack does not survive it.
 **Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
 **Component:** fs/mbcache (`CONFIG_FS_MBCACHE=y` and `CONFIG_EXT4_FS=y` on 5.19.6-HeartSuite-2.0; `CONFIG_FS_MBCACHE=m` and `CONFIG_EXT4_FS=m` on 6.18.9-hs)
 **Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock:** 6.1 MEDIUM — Modified Confidentiality Low, Integrity None (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a root session from that use-after-free cannot persist or remount. Availability stays High: a crash is residual. In-memory reads remain.
+**Score on Root Lock:** 7.1 HIGH — Modified Integrity None (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a root session from that use-after-free cannot persist or remount. Confidentiality stays High on a worst-case allowlist: in-memory reads remain. Availability stays High: a crash is residual.
 
 `mb_cache_destroy()` tears down the ext4 extended-attribute cache without canceling pending shrink work. If entry creation already scheduled that work, the worker touches the cache after free. The trigger is the last put of a mounted ext4 volume — `umount` of that volume, or teardown at reboot. Both fielded kernels ship the code. `mount` and `umount` are on the HeartSuite allowlist. Lockdown refuses new mounts; it does not refuse `umount`. An already-mounted extra ext4 volume, or the last put of root ext4 at reboot, still reaches destroy.
 
@@ -3755,7 +3755,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: netdev generic netlink RX bind (`CONFIG_NET_DEVMEM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 on 5.19.6 — BIND_RX / `CONFIG_NET_DEVMEM` do not exist before Linux 6.12; 6.1 MEDIUM on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`) — a standard allowlist has no outbound networking utility, so Modified Confidentiality is Low; Modified Integrity is None; Modified Availability stays High because the bug can panic the kernel
+**Score on Root Lock**: 0.0 on 5.19.6 — BIND_RX / `CONFIG_NET_DEVMEM` do not exist before Linux 6.12; 7.1 HIGH on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`) — Modified Integrity is None; Modified Confidentiality stays High on a worst-case allowlist; Modified Availability stays High because the bug can panic the kernel
 **Affected range**: Linux 6.12 through 6.12.93, 6.13 through 6.18.35, 6.19 through 7.0.12
 **Upstream fix**: 6.12.94, 6.18.36, 7.0.13
 
@@ -3769,7 +3769,7 @@ On 6.18.9-hs `CONFIG_NET_DEVMEM=y` and `netdev_nl_bind_rx_doit` is in the image.
 
 A reboot is a clean slate. The attack does not survive it.
 
-These constraints are why Modified Integrity is None. On a standard allowlist, Modified Confidentiality is Low: the live session can still read files, and sending them off the host takes an outbound utility the allowlist does not include. Modified Availability stays High because the bug can panic the kernel. The double-free itself is kernel memory corruption and is outside the layer those API checks close. The score on 6.18.9-hs is 6.1 MEDIUM.
+These constraints are why Modified Integrity is None. Modified Confidentiality stays High: the live session can still read files and send them off the host through an allowlisted outbound utility. Modified Availability stays High because the bug can panic the kernel. The double-free itself is kernel memory corruption and is outside the layer those API checks close. The score on 6.18.9-hs is 7.1 HIGH.
 
 ### CVE-2026-53255
 
@@ -3947,7 +3947,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: ADFS filesystem (`CONFIG_ADFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 on 5.19.6. 6.1 MEDIUM on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`) — a standard allowlist has no outbound networking utility, so Modified Confidentiality is Low; Modified Integrity is None; Modified Availability stays High because the bug can panic the kernel
+**Score on Root Lock**: 0.0 on 5.19.6. 7.1 HIGH on 6.18.9-hs (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`) — Modified Integrity is None; Modified Confidentiality stays High on a worst-case allowlist; Modified Availability stays High because the bug can panic the kernel
 **Affected range**: Linux 5.6 through 5.10.257; 5.11 through 5.15.208; 5.16 through 6.1.174; 6.2 through 6.6.140; 6.7 through 6.12.90; 6.13 through 6.18.32; 6.19 through 7.0.9. Both HeartSuite production kernels sit in that window. Fixed in 6.18.33+.
 **Upstream fix**: `dd9d3e16c2d5` (mainline); stable 6.18.33+
 
@@ -3963,7 +3963,7 @@ Lockdown returns `-EPERM` on `mount`, `fsmount`, and `move_mount`. It does not i
 
 A reboot is a clean slate. The attack does not survive it.
 
-These constraints are why Modified Integrity is None. On a standard allowlist, Modified Confidentiality is Low: the live session can still read files, and sending them off the host takes an outbound utility the allowlist does not include. Modified Availability stays High because the bug can panic the kernel. The out-of-bounds write itself is kernel memory corruption and is outside the layer those API checks close. The score on 6.18.9-hs is 6.1 MEDIUM.
+These constraints are why Modified Integrity is None. Modified Confidentiality stays High: the live session can still read files and send them off the host through an allowlisted outbound utility. Modified Availability stays High because the bug can panic the kernel. The out-of-bounds write itself is kernel memory corruption and is outside the layer those API checks close. The score on 6.18.9-hs is 7.1 HIGH.
 
 ### CVE-2026-64239
 

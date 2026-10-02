@@ -95,7 +95,7 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 
 These seven CVEs keep a non-zero Score on Root Lock on 6.18.9-hs. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). Groups whose option is unset: [Disabled features](disabled-features/).
 
-The [Score on Root Lock](#note-on-scores-on-root-lock-and-deployment-tuning) below is the score for 6.18.9-hs on a standard allowlist with no outbound networking utilities. Modified Confidentiality is Low, Modified Integrity is None, and Modified Availability stays High: 6.1 MEDIUM. The finding stays on the patch date in your policy. The fix arrives in a Root Lock bundle. Lockdown limits what an attacker can do after the bug fires.
+The [Score on Root Lock](#note-on-scores-on-root-lock-and-deployment-tuning) below is the score for 6.18.9-hs. It assumes a worst-case allowlist, and a hardened allowlist lowers it. The finding stays on the patch date in your policy. The fix arrives in a Root Lock bundle. Lockdown limits what an attacker can do after the bug fires.
 
 The io_uring CVEs in the catalog are already fixed on 6.18.9-hs.
 
@@ -103,28 +103,28 @@ The io_uring CVEs in the catalog are already fixed on 6.18.9-hs.
 
 | CVE | Component | Base Score | Score on Root Lock |
 |-----|-----------|------------|--------------------|
-| [CVE-2026-46281](compiled-in-cves/#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
+| [CVE-2026-46281](compiled-in-cves/#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
 
 ### Filesystems (3 CVEs)
 
 | CVE | Component | Base Score | Score on Root Lock |
 |-----|-----------|------------|--------------------|
-| [CVE-2026-64600](compiled-in-cves/#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
-| [CVE-2026-53129](compiled-in-cves/#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
-| [CVE-2026-52992](compiled-in-cves/#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
+| [CVE-2026-64600](compiled-in-cves/#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
+| [CVE-2026-53129](compiled-in-cves/#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
+| [CVE-2026-52992](compiled-in-cves/#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
 
 ### Networking (1 CVE)
 
 | CVE | Component | Base Score | Score on Root Lock |
 |-----|-----------|------------|--------------------|
-| [CVE-2026-53233](compiled-in-cves/#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
+| [CVE-2026-53233](compiled-in-cves/#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
 
 ### Core kernel (2 CVEs)
 
 | CVE | Component | Base Score | Score on Root Lock |
 |-----|-----------|------------|--------------------|
-| [CVE-2026-53119](compiled-in-cves/#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
-| [CVE-2026-53120](compiled-in-cves/#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge bg-warning text-dark">6.1 MEDIUM</span> |
+| [CVE-2026-53119](compiled-in-cves/#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
+| [CVE-2026-53120](compiled-in-cves/#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> |
 
 ## How to read the backstop sections
 
@@ -138,9 +138,9 @@ Many kernel controls sit on one switch an attacker can clear with a kernel write
 
 ### Note on Scores on Root Lock and deployment tuning
 
-The seven residuals above are the published Score on Root Lock for 6.18.9-hs. They use a standard allowlist with no outbound networking utilities (`curl`, `wget`, outbound `ssh`, `nc`, or `python` with sockets). A live session can still read files. Sending them off the host takes one of those utilities. A console or side channel can still carry data out, so Modified Confidentiality is Low (`MC:L`). Modified Integrity is None (`MI:N`): a new program does not run, the allowlist stays as loaded, and the session ends at reboot. Modified Availability stays High (`MA:H`) because the bug can panic the kernel. The vector is `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H`, which is 6.1 MEDIUM.
+The seven residuals above are the published Score on Root Lock for 6.18.9-hs. They assume a worst-case allowlist: one that holds an outbound networking utility such as `curl`, `wget`, outbound `ssh`, `nc`, or `python3` with sockets. A live session can read files and send them off the host through that utility, so Modified Confidentiality stays High (`MC:H`). Modified Integrity is None (`MI:N`): a new program does not run, the allowlist stays as loaded, and the session ends at reboot. Modified Availability stays High (`MA:H`) because the bug can panic the kernel. The vector is `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`, which is 7.1 HIGH.
 
-An allowlist that already contains one of those outbound utilities puts Modified Confidentiality back to High. The same vector with `MC:H` is 7.1 HIGH. That figure belongs to that allowlist.
+If you have confirmed that your allowlist holds none of those utilities, you can credit `MC:L`. A live session can still read files, but carrying them off the host then takes a console or a side channel. The same vector with `MC:L` is 6.1 MEDIUM. The published score stays at 7.1 for any deployment that has not confirmed this.
 
 An allowlist with no process-mutation utilities (`kill`, `pkill`, or init-system control beyond what Root Lock itself uses) can treat the userspace part of a disruption as `MA:L`. A kernel panic does not depend on the allowlist, so the published score keeps `MA:H`.
 
