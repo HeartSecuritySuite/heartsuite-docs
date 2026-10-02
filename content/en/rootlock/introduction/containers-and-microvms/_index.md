@@ -21,7 +21,7 @@ Build and run OCI images on another host. When a task should sit in its own mach
 
 ## Why Docker is not a fit on this host
 
-Docker, containerd, Podman, and runc isolate processes on the host kernel, and that isolation depends on OverlayFS for image layers and on user namespaces. An attacker who reaches those features can shadow a directory the allowlist trusts or build a fake-root environment, which is why the 5.19.6 kernel is built without them. The 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces built in, but a container runtime on it is still not a supported configuration: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
+Docker, containerd, Podman, and runc isolate processes on the host kernel, and that isolation depends on OverlayFS for image layers and on user namespaces. The 6.18.9-hs kernel ships OverlayFS as a module and has user namespaces built in. A container runtime on it is not a supported configuration: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
 A backup receiver that accepts Restic over SFTP runs a handful of programs and needs no container engine. Run the container engine on another host, and let Root Lock protect the machines around it.
 
@@ -63,7 +63,7 @@ The image carries the allowlist and is not sealed. You run the seal on that mach
 
 An attacker who already has root inside the guest cannot turn this off, because blocking is compiled into the guest kernel: its enforcement cannot be unloaded or set permissive the way an LSM policy can, and there is no userspace shim to detach and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. The 5.19.6 kernel is built without KVM; the 6.18.9-hs kernel builds KVM as modules, and hosting stays outside the supported roles on both. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
+Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. The 6.18.9-hs kernel builds KVM as modules, and hosting virtual machines on a Root Lock kernel is not a supported configuration. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
 ## What to run
 
@@ -78,7 +78,7 @@ Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the 
 
 | Approach | Isolation boundary | On a Root Lock kernel |
 |---|---|---|
-| Docker / runc on this host | Shared host kernel | Not a supported workload. 5.19.6 is built without OverlayFS; 6.18.9-hs ships it as a module, and a container runtime on it is still not a supported configuration |
+| Docker / runc on this host | Shared host kernel | Not a supported workload. 6.18.9-hs ships OverlayFS as a module, and a container runtime on it is not a supported configuration. |
 | gVisor | Userspace syscall filter | Discussed as a peer under [How it compares](../how-it-compares/); different threat model |
 | Firecracker / Kata microVM | Hardware VM boundary | Compose with Root Lock as the guest kernel |
 | Root Lock Lockdown | Sealed allowlist in the Root Lock kernel itself | Shipped product core |
@@ -89,7 +89,7 @@ Root Lock makes sure programs do only what you approved. A microVM adds an optio
 
 {{< details summary="Can I run Docker on a Root Lock host?" >}}
 
-A: No. Root Lock ships a single install for hosts with a fixed set of programs, and a container runtime on the Root Lock kernel is not a supported configuration. The 5.19.6 kernel is built without OverlayFS and user namespaces; on 6.18.9-hs, where both are present, Root Lock under Lockdown refuses the new mounts a runtime makes when it starts containers. Build and run the images on another host. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel. See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
+A: No. Root Lock ships a single install for hosts with a fixed set of programs, and a container runtime on the Root Lock kernel is not a supported configuration. Under Lockdown, Root Lock refuses the new mounts a runtime makes when it starts containers. Build and run the images on another host. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel. See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
 
 {{< /details >}}
 

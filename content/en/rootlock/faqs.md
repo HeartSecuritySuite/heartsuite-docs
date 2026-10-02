@@ -190,9 +190,7 @@ A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Pytho
 
 {{< details summary="Which Linux kernels does Root Lock ship? Is Linux 7 supported?" >}}
 
-A: Two custom kernels on mainline LTS: **6.18** for new installs (`uname -r` is `6.18.9-hs`) and **5.19** only on Debian 11 / Ubuntu 20.04 through end of 2026.
-
-See [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
+A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a shipped kernel. A host already on Debian 11 or Ubuntu 20.04 is the legacy case, in [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
 
 {{< /details >}}
 
@@ -311,13 +309,11 @@ See [Circumvention and recovery](introduction/how-it-compares/#circumvention-and
 
 {{< details summary="Will installing the Root Lock kernel break my existing software?" >}}
 
-A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot the maintenance kernel from the GRUB menu. The Dashboard runs on the Root Lock kernel (serial console, and SSH when sshd is up), not on the maintenance kernel. The Root Lock kernel is based on mainline LTS Linux (5.19 or 6.18), not a fork.
+A: The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. You can boot the maintenance kernel from the GRUB menu. The Dashboard runs on the Root Lock kernel (serial console, and SSH when sshd is up), not on the maintenance kernel. A new install boots mainline LTS 6.18 (`uname -r` is `6.18.9-hs`).
 
 Setup Mode reveals compatibility issues before anything is blocked: the kernel logs all activity without blocking, and programs that would fail in Lockdown appear in the Dashboard review queues.
 
-eBPF, FUSE, overlay filesystems, and unprivileged user namespaces are how attackers hide, shadow directories, and reach root. Most production server workloads do not need a container engine on this host.
-
-All feature removals are documented in [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table will run without modification.
+On 6.18.9-hs the BPF syscall is off. FUSE, overlay filesystems, and user namespaces are in that kernel, and the workloads that need them are not a supported configuration. See [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 
 {{< /details >}}
 
