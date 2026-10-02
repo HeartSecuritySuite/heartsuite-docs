@@ -49,7 +49,7 @@ For patch targets, notification channels, and support boundaries, see the [Kerne
 | **RHSA-style errata IDs** | **Not offered** | Not planned — advisories remain bundle- and transparency-page-centric |
 | **Root Lock kernel source (GPL)** | On written request via [support@heartsecsuite.com](mailto:support@heartsecsuite.com) | Public kernel source repository not offered at this time |
 
-HeartSuite does **not** commit to delivery dates for roadmap items on this page. When an artefact reaches general availability, this page and the [Kernel Support Policy](kernel-support-policy/) will be updated and customers will be notified through subscription email and release notes.
+HeartSuite does not commit to delivery dates for roadmap items on this page. When an artefact reaches general availability, this page and the [Kernel Support Policy](kernel-support-policy/) will be updated and customers will be notified through subscription email and release notes.
 
 ---
 
@@ -135,7 +135,7 @@ Each coordinated release is accompanied by a **bundle manifest** (shipped with t
 | **Release date** | Publication date of the bundle | For change-control and audit timelines |
 | **Distribution targets** | Validated distro families for this bundle | See [Distro Compatibility Matrix](distro-compatibility-matrix/) |
 
-Manifests do **not** replace the [Kernel Security Transparency](../../security/) page for reachability analysis. A CVE omitted from the "addressed" list may still be **Not Affected** on Root Lock kernels because the vulnerable subsystem was never compiled in.
+Manifests do not replace the [Kernel Security Transparency](../../security/) page for reachability analysis. A CVE omitted from the "addressed" list may still be **Not Affected** on Root Lock kernels because the vulnerable subsystem was never compiled in.
 
 ### Planned manifest extensions
 

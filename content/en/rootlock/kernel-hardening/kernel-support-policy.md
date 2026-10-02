@@ -94,7 +94,7 @@ The running kernel version is shown by `uname -r`. On a Root Lock deployment, th
 
 On 6.18, tell the Root Lock kernel from the maintenance kernel with `uname -r` plus `file` on vmlinuz, as documented in [Evidence Status](evidence-status/).
 
-### What the version string does **not** mean
+### What the version string does not mean
 
 Procurement and scanner teams trained on distribution errata often misread custom kernel strings. The Root Lock kernel version string **does not** imply:
 
@@ -180,9 +180,7 @@ HeartSuite notifies subscription customers through the following channels:
 | **Bundle manifest** | Shipped with or referenced by the bundle — includes version identifiers, checksum, and the CVE list addressed in that build. |
 | **Machine-readable feeds** | JSON advisory artefacts under [`/advisories/`](/advisories/index.json), published on each annotated `hs-v*` release tag (CONFIG-gate SBOM, OSV, CycloneDX SBOM; catalogue schema `hs-advisory-catalog/v1`). Detail: [Supply Chain and Advisory Feeds](supply-chain-and-advisories/#published-advisory-feeds-hs-kernel). |
 
-**Major stream deprecation**: HeartSuite provides **at least 30 days' advance notice** before ending support for an Root Lock kernel stream (for example, end of 5.19 support). Notice includes migration bundle availability and recommended maintenance windows.
-
-Machine-readable advisory feeds are **published** as JSON under [`/advisories/`](/advisories/index.json) on each annotated `hs-v*` release tag.
+**Major stream deprecation**: HeartSuite provides **at least 30 days' advance notice** before ending support for a Root Lock kernel stream (for example, end of 5.19 support). Notice includes migration bundle availability and recommended maintenance windows.
 
 For the current release (`hs-v1.6.4-kernel-6.18.9`, `gate_status: PASS`): CONFIG-gate Not-Affected SBOM at [`/advisories/hs-cve-config-sbom.json`](/advisories/hs-cve-config-sbom.json), OSV at [`/advisories/osv.json`](/advisories/osv.json) (279 entries), and CycloneDX SBOM at [`/advisories/sbom.cyclonedx.json`](/advisories/sbom.cyclonedx.json).
 
@@ -227,7 +225,7 @@ On a host running Root Lock:
 | **Root Lock kernel** | Enforcement kernel for Setup Mode and Lockdown | **HeartSuite coordinated bundles only** |
 | **Maintenance kernel** | Maintenance, recovery, and distribution-compatible work | **Distribution errata and package updates** apply as usual |
 
-Root Lock **replaces the enforcement kernel** for protected operation; it does **not** remove the distribution kernel or cancel distribution maintenance obligations on the maintenance-kernel path. During maintenance on the maintenance kernel, the host behaves as a standard distribution system without Lockdown enforcement.
+Root Lock **replaces the enforcement kernel** for protected operation; it does not remove the distribution kernel or cancel distribution maintenance obligations on the maintenance-kernel path. During maintenance on the maintenance kernel, the host behaves as a standard distribution system without Lockdown enforcement.
 
 Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the maintenance-kernel path and to userspace packages.
 

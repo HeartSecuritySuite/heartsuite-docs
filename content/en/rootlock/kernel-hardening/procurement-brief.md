@@ -24,9 +24,7 @@ For deployment, Secure Boot, fleet, and “no custom kernel” alternatives see 
 
 All numbers below are outputs of `kernel-hardening-checker` commit `e870d0141259f875d3d1b54fef49dec7074e4cac` applied to the **#37 pin config** (SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`) and to configs bundled with that checker.
 
-Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers. **Do not** mix these percentages with the 5.19.6 pack (checker `b9b83a0`).
-
-This page measures the **fielded** pin. It does not describe a derived cut that disables `IO_URING` or `KEXEC`.
+Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers. Do not mix these percentages with the 5.19.6 pack, because its checker commit (`b9b83a0`) counts a different set of items.
 
 ---
 
@@ -46,22 +44,22 @@ This page measures the **fielded** pin. It does not describe a derived cut that 
 
 \* KSPP is a recommendation fragment, not a shipping kernel.
 
-Legacy 5.19.6 glance (checker `b9b83a0`, **not** comparable item-for-item): attack-surface 68.9% (91/132), exploit-resistance 28.4% (31/109), 0 modules loaded / 9 `.ko`. See the [5.19.6 matrix](kernel-comparison-matrix-5.19.6/).
+Legacy 5.19.6 glance (checker `b9b83a0`, not comparable item-for-item): attack-surface 68.9% (91/132), exploit-resistance 28.4% (31/109), 0 modules loaded / 9 `.ko`. See the [5.19.6 matrix](kernel-comparison-matrix-5.19.6/).
 
 ---
 
-## What this pin is and is not
+## What changed between 5.19.6 and this pin
 
 On **5.19.6**, Root Lock compiled out BPF, user namespaces, FUSE, OverlayFS, AppArmor, and TOMOYO, and sat near vanilla on exploit-resistance.
 
-On **fielded 6.18.9-hs #37** that story is inverted:
+On **fielded 6.18.9-hs #37** the picture is reversed:
 
-- Bypass primitives above are **compiled in** (`OVERLAY_FS=m`).
+- The same bypass primitives are compiled in, with OverlayFS as a module (`OVERLAY_FS=m`).
 - Live LSM on the measured guest: `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`.
 - Exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**.
 - `IO_URING`, `KEXEC`, and `KEXEC_FILE` are **=y**.
 
-Lockdown and the allowlist still constrain unallowlisted programs and (when engaged) new module loads. That is policy, not `ENOSYS`.
+On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel; the syscalls themselves still exist and do not return `ENOSYS`.
 
 ---
 

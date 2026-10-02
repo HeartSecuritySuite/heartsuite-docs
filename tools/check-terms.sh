@@ -35,8 +35,18 @@ BANNED=(
   "enforcement is inactive"     # → blocking is inactive
 
   # Stale version claims
-  "coming in v2"            # container host support has shipped
-  "Coming in v2"            # container host support has shipped
+  "coming in v2"            # retired roadmap wording
+  "Coming in v2"            # retired roadmap wording
+
+  # September 2026 prose and accuracy review — style guide R31, R33, R34, §5.1
+  "this particular gate"        # → name what is not controlled and the remedy (R31)
+  "\*\*not\*\*"                 # → plain "not"; emphasis bold on negations (R31)
+  "hs-manage-allowlist"         # → /.hs/sys/hs-app-perm-orders-manager; the house name does not ship (R33)
+  "hs-version-manager restore"  # → hs-version-manager replace <path> <version> (R33)
+  "Container-host install"      # → no container-host install profile ships (installer source)
+  "Standard-host install"       # → "Root Lock host"; there is only one install profile
+  "Root Lock Firewall"          # → HeartSuite Firewall (§5.1 sibling name)
+  "HeartSuite APO"              # → the program allowlist (§5.1)
 
   # Product naming — §5.1 (house brand HeartSuite; product Root Lock)
   "Root Lock by HeartSuite security suite"  # stacked endorsed name + category

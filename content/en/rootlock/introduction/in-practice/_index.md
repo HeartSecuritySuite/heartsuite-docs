@@ -35,7 +35,7 @@ In Lockdown, the kernel refuses to execute it. The attacker has a file. They can
 
 This applies equally to interpreted scripts. A malicious Python script dropped at `/tmp/attack.py` has no allowlist entry for that path. Root Lock's Secure Script Launchers give each script its own allowlist entry, separate from the interpreter. Python runs. The unauthorized script does not.
 
-**What it does not cover.** If the attacker already controls an approved program and issues commands within that program's approved scope, this particular gate does not apply. The other two still do: the program can only read and write files in its allowlist, and only connect to destinations in its network allowlist.
+**What it does not cover.** If the attacker already controls an approved program and issues commands within that program's approved scope, the program check does not apply. The other two still do: the program can only read and write files in its allowlist, and only connect to destinations in its network allowlist.
 
 Every attempt to launch a new program returns to this gate — any new program without an allowlist entry is blocked. See [When Attackers Stay Within Approved Boundaries](#when-attackers-stay-within-approved-boundaries) for the full picture.
 

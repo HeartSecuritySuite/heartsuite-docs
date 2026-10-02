@@ -63,7 +63,7 @@ The image carries the allowlist and is not sealed. You run the seal on that mach
 
 An attacker who already has root inside the guest cannot turn this off, because blocking is compiled into the guest kernel: its enforcement cannot be unloaded or set permissive the way an LSM policy can, and there is no userspace shim to detach and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. KVM host mode is compiled out. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
+Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. The 5.19.6 kernel is built without KVM; the 6.18.9-hs kernel builds KVM as modules, and hosting stays outside the supported roles on both. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
 ## What to run
 
@@ -73,13 +73,12 @@ Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the 
 | Build/CI fixed toolchain | Same | [Build, CI, and release infrastructure](../deployment-scenarios/#build-ci-and-release-infrastructure) |
 | Docker, containerd, Kubernetes, CRI-O, or Podman, including continuous scheduling | Not a fit on this host. Build and run the images on another host | [Shared-kernel containers](../deployment-scenarios/#container-hosts), [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
 | AI agent with a scoped tool set | Guest Root Lock in a per-task VM | [AI agent sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes) |
-| Continuous Docker/K8s scheduling on this kernel | Not a fit | [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
 
 ## Comparison
 
 | Approach | Isolation boundary | On a Root Lock kernel |
 |---|---|---|
-| Docker / runc on this host | Shared host kernel | Not a supported workload. 5.19.6 is built without OverlayFS. 6.18.9-hs ships OverlayFS as a module; that is not a container-host install |
+| Docker / runc on this host | Shared host kernel | Not a supported workload. 5.19.6 is built without OverlayFS; 6.18.9-hs ships it as a module, and a container runtime on it is still not a supported configuration |
 | gVisor | Userspace syscall filter | Discussed as a peer under [How it compares](../how-it-compares/); different threat model |
 | Firecracker / Kata microVM | Hardware VM boundary | Compose with Root Lock as the guest kernel |
 | Root Lock Lockdown | Sealed allowlist in the Root Lock kernel itself | Shipped product core |
@@ -90,7 +89,7 @@ Root Lock makes sure programs do only what you approved. A microVM adds an optio
 
 {{< details summary="Can I run Docker on a Root Lock host?" >}}
 
-A: On a **Standard-host** install, no — OverlayFS and user namespaces are compiled out. Choose the **Container-host** install when the installer detects a container engine and you have a long-lived, steady set of images. New containers after Lockdown still need a maintenance window. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel instead. See [Deployment Scenarios → Container hosts](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
+A: No. Root Lock ships a single install for hosts with a fixed set of programs, and a container runtime on the Root Lock kernel is not a supported configuration. The 5.19.6 kernel is built without OverlayFS and user namespaces; on 6.18.9-hs, where both are present, Root Lock under Lockdown refuses the new mounts a runtime makes when it starts containers. Build and run the images on another host. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel. See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
 
 {{< /details >}}
 

@@ -163,7 +163,7 @@ If you run a tighter allowlist, you may legitimately credit a lower MC. Specific
 - **Allowlist contains zero outbound-networking utilities** (no `curl`, `wget`, outbound `ssh`, `nc`, scripting languages with socket access, etc.): `MC:L` becomes defensible — the attacker can read on disk but has no in-band exfiltration path within Lockdown's allowlist. Out-of-band (physical-console, side-channel) exfiltration remains possible; that's why the credit is L, not N.
 - **Allowlist contains zero process-mutation utilities** (no `kill`, `pkill`, init-system control surfaces beyond what Root Lock itself uses): `MA:L` becomes defensible for the disruption-via-userspace component, though kernel-level availability impact (panics, OOM via syscalls) is independent of allowlist composition and keeps `MA:H` for any CVE that grants kernel-context primitives.
 
-These are deployment-specific reductions and are **not** baked into the published Scores on Root Lock. If you have hardened your allowlist accordingly, you can recompute your deployment-specific score by adjusting `MC` and/or `MA` in the modified vector. The published scores are correct for any deployment that has not affirmatively confirmed the tighter conditions above.
+These are deployment-specific reductions and are not baked into the published Scores on Root Lock. If you have hardened your allowlist accordingly, you can recompute your deployment-specific score by adjusting `MC` and/or `MA` in the modified vector. The published scores are correct for any deployment that has not affirmatively confirmed the tighter conditions above.
 
 ### Note on Not-exploitable entries that depend on allowlist composition
 

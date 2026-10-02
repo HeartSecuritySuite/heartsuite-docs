@@ -45,7 +45,7 @@ Within that area, every write is automatically backed up to a protected location
 
 **What HJFS does.** HJFS confines what a running program can open, so a newly started tool cannot reach files belonging to other programs.
 
-**What it does not cover.** If an attacker downloads a new binary and launches it, this particular gate does not apply to execution. Once it is running, HJFS still confines it to its own storage area. Root Lock requires any new binary to have an allowlist entry before it can execute. See [Root Lock](../../../rootlock/).
+**What it does not cover.** HJFS does not decide which programs may execute, so it does not stop the downloaded tool from starting. Under Lockdown, Root Lock requires any new binary to have an allowlist entry before it can execute. See [Root Lock](../../../rootlock/).
 
 ---
 
