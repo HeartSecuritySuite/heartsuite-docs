@@ -2,7 +2,7 @@
 title: "Hardening matrix for kernel 6.18.9"
 linkTitle: "Comparison matrix 6.18.9"
 weight: 18
-description: "Measured checker scores and runtime for the fielded 6.18.9-hs #37 pin, with era-matched Arch 6.18.16 and vanilla 6.18.9 defconfig."
+description: "18 August 2026 checker pack. The kernel that ships is 6.18.9-hs, and the BPF syscall is off on that kernel."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison", "6.18"]
 type: docs
@@ -11,15 +11,15 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite, fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**)  
-**uname -r:** `6.18.9-hs`  
+**Subject:** 18 August 2026 checker pack. The kernel that ships is **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`), and the BPF syscall is off on that kernel.  
+**uname -r on the pack:** `6.18.9-hs`  
 **Config SHA-256 (pin payload):** `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`  
 **vmlinuz SHA-256:** `1b44fffb9b570497f19f4c68e170602b542bc84bfe9f49d936c123dc59f5db8a`  
 **Tool:** [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, run 2026-08-18  
 **Source file:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)  
 **Legacy (published):** [Hardening scores: 5.19.6](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-> This page measures the fielded #37 pin, on which `CONFIG_IO_URING`, `CONFIG_KEXEC`, and `CONFIG_KEXEC_FILE` are `=y`. Hash the pin payload config, not guest `/boot/config-6.18.9-hs`, which is an 11-line initramfs stub.
+> This page is the 18 August 2026 checker pack. It is not the kernel that ships. Hash the pack's payload config, not guest `/boot/config-6.18.9-hs`, which is an 11-line initramfs stub.
 
 ---
 
@@ -45,22 +45,6 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 HS 6.18.9-hs trails on attack-surface (43.5% vs era-matched Arch 58.0% and vanilla 6.18.9 defconfig 67.2%).
 
 HS 6.18.9-hs sits above vanilla 6.18.9 defconfig on exploit-resistance (70.9% vs 50.9%) and below era-matched Arch 6.18.16 hardened (83.6%).
-
-### Bypass-primitive options — measured
-
-| Option | HS 6.18.9-hs #37 | HS 5.19.6 (published pack) |
-|---|---|---|
-| `CONFIG_BPF_SYSCALL` | **=y** | **=n** |
-| `CONFIG_IO_URING` | **=y** | =y |
-| `CONFIG_FUSE_FS` | **=y** | **=n** |
-| `CONFIG_OVERLAY_FS` | **=m** | **=n** |
-| `CONFIG_SECURITY_APPARMOR` | **=y** | **=n** |
-| `CONFIG_SECURITY_TOMOYO` | **=y** | **=n** |
-| `CONFIG_KEXEC` | **=y** | =y |
-| `CONFIG_KEXEC_FILE` | **=y** | =n |
-| `CONFIG_USER_NS` | **=y** | **=n** |
-| `CONFIG_MODULE_SIG` | **=y** | =n |
-| `CONFIG_MODULE_SIG_FORCE` | =n | =n |
 
 ### Exploit-resistance mitigations — measured
 

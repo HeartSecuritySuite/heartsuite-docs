@@ -39,7 +39,6 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 | Dangerous features disabled (attack-surface) | 43.5% (57/131) | 58.0% (76/131) | 100% (131/131) |
 | Exploit-resistance mitigations | 70.9% (78/110) | **83.6%** (92/110) | 84.5% (93/110) |
 | Overall checker | 57.1% (148/259) | 69.9% (181/259) | 91.4% (235/257) |
-| BPF syscall compiled out | **No** (`=y`) | No | Yes (intent) |
 | `MODULE_SIG` | Yes | Yes | Yes |
 | `MODULE_SIG_FORCE` | No | No (SHA512 row differs) | Yes (intent) |
 | Independently verifiable | **Yes** — pin SHA-256 + pack | Bundled in checker | Bundled in checker |
@@ -54,7 +53,7 @@ Legacy 5.19.6 glance (checker `b9b83a0`, not comparable item-for-item): attack-s
 
 This section describes the August #37 config, not the kernel that ships.
 
-On the measured guest the LSM list was `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`. Exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**, and `IO_URING`, `KEXEC`, and `KEXEC_FILE` are **=y**.
+On that August config, exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**.
 
 On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel. On that August config the syscalls do not return `ENOSYS`. On the kernel that ships, `bpf()` returns `ENOSYS`.
 
@@ -85,8 +84,7 @@ Arch 6.18.16 is era-matched. The 5.19.6 row uses the older pack.
 
 **Consider extra kernel hardening or a future derived cut if you also need:**
 
-- The 5.19-style compiled-out bypass list (`BPF=n`, `IO_URING=n`, `KEXEC=n`, …)
-- KSPP items still FAIL on this pin (`INIT_ON_FREE`, `KSTACK_ERASE`, `MODULE_SIG_FORCE`, …)
+- KSPP items still FAIL on this pack (`INIT_ON_FREE`, `KSTACK_ERASE`, `MODULE_SIG_FORCE`, …)
 
 Root Lock is host-local kernel enforcement, so it does not replace network firewalls, WAFs, SIEM, or EDR hunting.
 

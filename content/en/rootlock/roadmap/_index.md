@@ -51,8 +51,8 @@ gantt
 
     section Kernel Engine (2022)
     Program allowlist engine (Setup Mode + Lockdown)   :done, 2022-01-01, 2022-12-31
-    LSM replacement — competing LSMs disabled          :done, 2022-01-01, 2022-09-30
-    eBPF compiled out (BPF verifier surface)           :done, 2022-01-01, 2022-09-30
+    LSM replacement — Root Lock path enforcement       :done, 2022-01-01, 2022-09-30
+    BPF syscall off                                    :done, 2022-01-01, 2022-09-30
     Network allowlist — IP-literal kernel enforcement  :done, 2022-06-01, 2022-12-31
     Allowlist audit logging                            :done, 2022-11-01, 2023-01-31
 
@@ -167,13 +167,13 @@ gantt
 
 > [!NOTE]
 > **LSM replacement — Root Lock is the security module** (2022)  
-> Root Lock does not layer on top of the Linux Security Module framework — it replaces it. Root Lock implements its own path-based enforcement, eliminating the interaction complexity and potential bypass paths that arise when multiple security modules run alongside each other.
+> Root Lock does not layer on top of the Linux Security Module framework — it replaces it. Root Lock implements its own path-based enforcement.
 
 > [!NOTE]
 > **eBPF intentionally disabled** (2022)  
-> BPF system calls are disabled at build time. BPF verifier vulnerabilities have historically bypassed the exact kernel hooks Root Lock relies on for enforcement. Disabling eBPF closes that path permanently.
+> On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load.
 >
-> Local eBPF tooling is not a fit by design: the BPF syscall is how attackers hide, reach root, and bypass host controls. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
+> Local eBPF tooling is not a fit. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  

@@ -63,7 +63,7 @@ The image carries the allowlist and is not sealed. You run the seal on that mach
 
 An attacker who already has root inside the guest cannot turn this off, because blocking is compiled into the guest kernel: its enforcement cannot be unloaded or set permissive the way an LSM policy can, and there is no userspace shim to detach and no agent to kill. This is the path for AI agent sandboxes, fixed-tool automation, and disposable task VMs. See [AI agent and automation sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes).
 
-Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. The 6.18.9-hs kernel builds KVM as modules, and hosting virtual machines on a Root Lock kernel is not a supported configuration. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
+Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the VMM for untrusted tenants, is not a supported configuration, because Root Lock protects workloads inside a kernel rather than hosting them. See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 
 ## What to run
 

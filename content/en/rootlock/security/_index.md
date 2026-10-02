@@ -93,11 +93,11 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 
 ## Residuals (non-zero Score on Root Lock)
 
-These seven paths are in 6.18.9-hs and keep a non-zero Score on Root Lock. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). Compiled-out groups: [Disabled features](disabled-features/).
+These seven CVEs keep a non-zero Score on Root Lock on 6.18.9-hs. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). Groups whose option is unset: [Disabled features](disabled-features/).
 
 The [Score on Root Lock](#note-on-scores-on-root-lock-and-deployment-tuning) below is the score for 6.18.9-hs. It assumes a worst-case allowlist, and a hardened allowlist lowers it. The finding stays on the patch date in your policy. The fix arrives in a Root Lock bundle. Lockdown limits what an attacker can do after the bug fires.
 
-io_uring is compiled in on 6.18.9-hs, and that kernel already contains the fixes for the io_uring CVEs in the catalog.
+The io_uring CVEs in the catalog are already fixed on 6.18.9-hs.
 
 ### Memory (1 CVE)
 

@@ -11,18 +11,18 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite, kernel 5.19.6  
-**Audience:** Security engineers familiar with SELinux, AppArmor, or TOMOYO evaluating Root Lock for containment or appliance deployments.
+**Subject:** Archived kernel 5.19.6. The kernel that ships is 6.18.9-hs, and on that kernel the BPF syscall is off.  
+**Audience:** Security engineers familiar with SELinux, AppArmor, or TOMOYO reading the archived 5.19.6 comparison.
 
 ---
 
 ## The core distinction
 
+This page is the archived 5.19.6 kernel. It is not the kernel that ships.
+
 SELinux, AppArmor, and TOMOYO all answer the same question: *given that a kernel feature is present, what should a process be allowed to do with it?*
 
-Root Lock answers a different question: *which kernel features should exist on this system at all?*
-
-Neither approach is universally superior. For **single-purpose containment appliances**, removing bypass primitives from the kernel is more reliable than writing policy around them. Policy can be misconfigured. Certain primitives (BPF, FUSE, overlayfs) can defeat any MAC policy regardless of how carefully it is written.
+On 5.19.6, the Root Lock column records which of those features that kernel left unset.
 
 ---
 

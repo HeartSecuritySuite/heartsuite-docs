@@ -178,7 +178,7 @@ In those cases the supported path is:
 
 The [HJFS how-it-compares](../../hjfs/how-it-compares/) and limits pages, together with the bypass and circumvention sections of [How Root Lock Compares](../../introduction/how-it-compares/), give procurement teams the material needed to map requirements to the appropriate product or combination.
 
-Root Lock positions the Root Lock kernel for the subset of workloads where the documented properties (compiled enforcement, physical- or serial-console recovery, compiled-out bypass primitives, and Lockdown) justify the kernel change.
+Root Lock positions the Root Lock kernel for the subset of workloads where the documented properties (compiled enforcement, physical- or serial-console recovery, and Lockdown) justify the kernel change.
 
 ## Next steps for enterprise evaluation
 

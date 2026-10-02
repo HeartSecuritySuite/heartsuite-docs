@@ -305,10 +305,10 @@ Agent-based scanners (Tenable Nessus Agent, Qualys Cloud Agent) run as allowlist
 
 ## Where a separate kernel is required
 
-On-host eBPF tooling and a KVM hypervisor host are not a fit. Overlay filesystems and user namespaces are features attackers use to shadow directories.
+On-host eBPF tooling and a KVM hypervisor host are not a fit.
 
 - **Docker, containerd, Kubernetes, CRI-O, and Podman.** These are not a supported workload on a Root Lock host, and no install profile makes this host a container host. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
-- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
+- **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is off, so there is no eBPF program to load. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
 - **Hypervisor hosts running VMs via KVM.** Hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
 - **Systems that require rootless containers.** Rootless containers are not a supported configuration. Use a separate host.
 

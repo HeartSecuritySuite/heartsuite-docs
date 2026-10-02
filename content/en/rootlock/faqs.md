@@ -71,7 +71,7 @@ Autoscaling groups fit too: profile one reference host of that class, then bake 
 
 Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see [Shared-kernel containers](introduction/deployment-scenarios/#container-hosts).
 
-Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit by design, because overlay filesystems and user namespaces are how attackers shadow directories and reach root.
+Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit.
 
 Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit: Root Lock does not enforce through eBPF, and those tools need the BPF syscall. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
@@ -141,7 +141,7 @@ A: Root Lock replaces the preventive-enforcement layer of the following tool cat
 
 **What Root Lock can replace (narrowly):**
 
-- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): the allowlist covers blocking, and the BPF syscall is omitted by design — it is how attackers hide, reach root, and bypass host controls. These tools cannot run on the Root Lock kernel anyway. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): the allowlist covers blocking, and on 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. These tools cannot run on the Root Lock kernel. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
 - **gVisor**: if used solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock is a direct replacement as the guest kernel.
 - **AppArmor / SELinux**: no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [Security as Economics](introduction/security-as-economics/) for the full comparison.
 - **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE): prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to Root Lock.

@@ -34,7 +34,7 @@ Manual installation with a guided setup across several reboots.
 
 Cloud Path and Local Path install one machine at a time, and Ansible, Terraform, and GitOps apply allowlist policy after that install — see [Central Policy](alerts/central-policy-management/).
 
-Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit by design, because overlay filesystems and user namespaces are how attackers shadow directories and reach root, so build and run OCI images on another host. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts).
+Root Lock fits production servers, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit. Build and run OCI images on another host. See [Deployment Scenarios](introduction/deployment-scenarios/#container-hosts).
 
 ## Introduction and concepts
 
