@@ -52,7 +52,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 <div class="cve-hero-card cve-hero-compiled">
 <p class="cve-hero-number text-info">{{< cve-stat type="compiled-out" >}}</p>
 <p class="cve-hero-label">Additional CVEs</p>
-<p class="cve-hero-detail">Kernel features never compiled in.</p>
+<p class="cve-hero-detail">Unset on the kernel you boot.</p>
 </div>
 </div>
 </div>
@@ -60,7 +60,7 @@ Scores use CR=M, IR=M, AR=M with no Temporal adjustments.
 
 ### Which kernel these scores apply to
 
-Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A row is Not Affected only where that option is unset on the kernel you boot, because only then is the vulnerable code absent. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so their CVEs stay on the patch date. Where the two lines differ, the entry states both.
+Scores on this page apply to **6.18.9-hs**. 5.19.6 is an archived kernel line. A row is Not Affected only where that option is unset on the kernel you boot, because only then is the vulnerable code absent. On 6.18.9-hs, the BPF syscall is off. io_uring, FUSE, user namespaces, OverlayFS, nftables, and KVM are in that kernel, so their CVEs stay on the patch date.
 
 **Score on Root Lock** is a product-specific environmental figure. Compiled-out maps to VEX-style **Not Affected**. A reachable code path whose impact Lockdown limits maps to **Affected, mitigated**.
 
@@ -68,7 +68,7 @@ Scores apply to the Root Lock kernel: **5.19.6-HeartSuite** and **6.18.9-hs**. A
 
 ### Blocked under Lockdown
 
-- **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The allowlist is populated only at boot from your authorized sources; any in-memory tampering is wiped on the next boot.
+- **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The next boot loads your on-disk allowlist. In-memory tampering is wiped on that boot. A kernel write that changes the on-disk file is what the next boot loads.
 - **New program execution.** The kernel refuses to run any program not in the Lockdown allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
 - **Kernel module loading post-boot.** On Debian 12, `modprobe` and `insmod` are symlinks to `kmod`, which is added to the allowlist during standard Setup Mode via `systemd-modules-load.service`. Lockdown's file-access enforcement denies `kmod` access to `/usr/lib/modprobe.d/` by default — module loading fails at the file-read stage before any module can be loaded. Module-based rootkits cannot be installed.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
@@ -93,66 +93,48 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 
 ## Residuals (non-zero Score on Root Lock)
 
-These compiled-in paths keep a live residual. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). Compiled-out groups: [Disabled features](disabled-features/).
+These seven paths are in 6.18.9-hs and keep a non-zero Score on Root Lock. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). Compiled-out groups: [Disabled features](disabled-features/).
 
-| CVE | Component | Base Score | Score on Root Lock | Status |
-|-----|-----------|-----------|-----------------|--------|
-| [CVE-2026-46281](compiled-in-cves/#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 6.18.9-hs — Lockdown limits post-exploitation; Not Affected on 5.19.6 |
-| [CVE-2026-64600](compiled-in-cves/#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 6.18.9-hs — Lockdown limits post-exploitation; Not Affected on 5.19.6 |
-| [CVE-2026-53119](compiled-in-cves/#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
-| [CVE-2026-53120](compiled-in-cves/#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.5 HIGH</span> | Affected — Lockdown limits post-exploitation |
-| [CVE-2026-53129](compiled-in-cves/#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> | Affected — Lockdown limits post-exploitation |
-| [CVE-2026-53233](compiled-in-cves/#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
-| [CVE-2026-52992](compiled-in-cves/#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
-| [CVE-2023-2236, CVE-2022-3910](compiled-in-cves/#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
-| [CVE-2024-35886](compiled-in-cves/#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-44985](compiled-in-cves/#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-44986](compiled-in-cves/#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-44987](compiled-in-cves/#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-47701](compiled-in-cves/#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49882](compiled-in-cves/#cve-2024-49882) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49883](compiled-in-cves/#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49884](compiled-in-cves/#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49889](compiled-in-cves/#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-48956](compiled-in-cves/#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-53170](compiled-in-cves/#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
-| [CVE-2025-21863](compiled-in-cves/#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
-| [CVE-2025-40364](compiled-in-cves/#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
-| [CVE-2025-38550](compiled-in-cves/#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2025-38572](compiled-in-cves/#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2025-39866](compiled-in-cves/#cve-2025-39866) | VFS writeback subsystem | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — writeback always active; Lockdown limits post-exploitation |
-| [CVE-2022-50432](compiled-in-cves/#cve-2022-50432) | kernfs subsystem (`CONFIG_KERNFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_KERNFS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53473](compiled-in-cves/#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-50496](compiled-in-cves/#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
-| [CVE-2022-50546](compiled-in-cves/#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-38586](compiled-in-cves/#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
-| [CVE-2022-50423](compiled-in-cves/#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
-| [CVE-2024-36971](compiled-in-cves/#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
-| [CVE-2024-38577](compiled-in-cves/#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
-| [CVE-2024-50055](compiled-in-cves/#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
-| [CVE-2024-56600](compiled-in-cves/#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-56601](compiled-in-cves/#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
-| [CVE-2025-22121](compiled-in-cves/#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2022-49865](compiled-in-cves/#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; base I:N, Lockdown limits post-exploitation persistence |
-| [CVE-2023-3567](compiled-in-cves/#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_VT=y`; base I:N, Lockdown limits post-exploitation persistence |
-| [CVE-2022-48689](compiled-in-cves/#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_INET=y`; Lockdown reduces MI: High→Low (AC:H base) |
-| [CVE-2025-39702](compiled-in-cves/#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_IPV6=y`; Lockdown reduces MI: High→Low (AC:H base) |
-| [CVE-2023-6531](compiled-in-cves/#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
+The [Score on Root Lock](#note-on-scores-on-root-lock-and-deployment-tuning) below is the score for 6.18.9-hs. It assumes a worst-case allowlist, and a hardened allowlist lowers it. The finding stays on the patch date in your policy. The fix arrives in a Root Lock bundle. Lockdown limits what an attacker can do after the bug fires.
+
+io_uring is compiled in on 6.18.9-hs, and that kernel already contains the fixes for the io_uring CVEs in the catalog.
+
+### Memory (1 CVE)
+
+| CVE | Component | Base Score | Score on Root Lock |
+|-----|-----------|------------|--------------------|
+| [CVE-2026-46281](compiled-in-cves/#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> |
+
+### Filesystems (3 CVEs)
+
+| CVE | Component | Base Score | Score on Root Lock |
+|-----|-----------|------------|--------------------|
+| [CVE-2026-64600](compiled-in-cves/#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> |
+| [CVE-2026-53129](compiled-in-cves/#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> |
+| [CVE-2026-52992](compiled-in-cves/#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> |
+
+### Networking (1 CVE)
+
+| CVE | Component | Base Score | Score on Root Lock |
+|-----|-----------|------------|--------------------|
+| [CVE-2026-53233](compiled-in-cves/#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> |
+
+### Core kernel (2 CVEs)
+
+| CVE | Component | Base Score | Score on Root Lock |
+|-----|-----------|------------|--------------------|
+| [CVE-2026-53119](compiled-in-cves/#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> |
+| [CVE-2026-53120](compiled-in-cves/#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.5 HIGH</span> |
 
 ## How to read the backstop sections
 
-Root Lock runs **two independent kernel-level controls**, and the per-CVE entries reference both. They are not peers in a list — one is load-bearing, one is defense-in-depth, and the distinction matters when reading residual risk:
+Root Lock runs two kernel controls, and the per-CVE entries refer to both. The allowlist check runs on every program start, whether or not Lockdown is on. A kernel write can change Lockdown state in memory. Root from userspace cannot clear it. A program with no allowlist entry does not run.
 
-- **Allowlist check (load-bearing).** `hs_sandbox_caching.c` enforces the SPF allowlist on every `execve`. This check runs unconditionally — it is not gated by `HS_lockdown_state` — so it continues to refuse non-allowlisted programs even if an attacker with arbitrary kernel write clears Lockdown. The only Lockdown-conditional behavior in this file is an additional log-file write block; the allowlist match itself is independent.
-- **Lockdown (defense-in-depth).** `sys_hs_lockdown_hs()` sets `HS_lockdown_state = 7`. While that atomic is nonzero, `kernel/ioctl.c:561,568` returns EPERM on `FS_IOC_GETFLAGS`/`FS_IOC_SETFLAGS` (closing the `chattr -i` path that would otherwise let root strip immutability from the allowlist file), and `kernel/namespace.c:4218,4300,4453` returns EPERM on all mount paths. There are five `HS_locked_down()` check sites total in the kernel — none in `fs/` or `net/` — so Lockdown is an API-gate layer, not an in-line corruption boundary.
-
-**The load-bearing control against persistence and lateral expansion is Lockdown's allowlist.** Even in the worst case where an attacker chains a kernel UAF into arbitrary write and clears `HS_lockdown_state`, they still cannot run new programs, modify the allowlist, install backdoors, or survive a reboot, because the allowlist check is not on the same state machine. They regain only the ability to mount filesystems and set immutable flags — meaningful but bounded.
-
-Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then state which of these two layers limits its post-exploitation impact and how.
+Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then state which of these two controls limits what an attacker can do after the bug fires.
 
 ### Why this is unusual
 
-Most kernel hardening tools gate enforcement on a single state variable that an attacker with arbitrary kernel write can clear in one instruction. In Root Lock, **the allowlist is consulted on every `execve` regardless of Lockdown's state**, so there is no kill-switch an attacker can flip. Even in the worst case examined in this catalog, the system continues to refuse new code execution.
+Many kernel controls sit on one switch an attacker can clear with a kernel write. Root Lock checks the allowlist on every program start, whether or not Lockdown is on, so clearing Lockdown leaves program start closed.
 
 ### Note on Scores on Root Lock and deployment tuning
 

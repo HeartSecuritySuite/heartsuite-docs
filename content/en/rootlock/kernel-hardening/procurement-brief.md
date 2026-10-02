@@ -13,8 +13,12 @@ toc: true
 
 **Overview**: Side-by-side comparison of Root Lock kernel configuration choices against community hardened kernels and the KSPP benchmark.
 
-**Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**). **5.19.6** is the legacy measured stream.  
+**Subject:** Fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy measured stream.  
 **Evidence:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18, checker `e870d01`). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
+
+**Kernel that ships:** `uname -r` is `6.18.9-hs`. The BPF syscall is off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset. FUSE is built in. OverlayFS, nftables, and KVM are modules. Thousands of loadable modules ship with it.
+
+**Measured pack:** the tables below are the 18 August 2026 checker run on build #37. That config had the BPF syscall on, and `KEXEC`, `KEXEC_FILE`, and `IO_URING` set. The percentages, the 74-loaded count, and the 4190 `.ko.xz` count are that pack.
 
 For deployment, Secure Boot, fleet, and “no custom kernel” alternatives see the [Enterprise Adoption Guide](enterprise-adoption-guide/). Support and scanner notes: [Kernel Support Policy](kernel-support-policy/), [Distro Compatibility Matrix](distro-compatibility-matrix/), [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 
@@ -28,7 +32,7 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 
 ---
 
-## At a glance (fielded 6.18.9-hs #37)
+## At a glance (6.18.9-hs measurement, 18 August 2026)
 
 | What you care about | HS 6.18.9-hs #37 | Arch linux-hardened 6.18.16 | KSPP x86-64* |
 |---|---|---|---|
@@ -50,16 +54,18 @@ Legacy 5.19.6 glance (checker `b9b83a0`, not comparable item-for-item): attack-s
 
 ## What changed between 5.19.6 and this pin
 
+This section describes the August #37 config, not the kernel that ships.
+
 On **5.19.6**, Root Lock compiled out BPF, user namespaces, FUSE, OverlayFS, AppArmor, and TOMOYO, and sat near vanilla on exploit-resistance.
 
-On **fielded 6.18.9-hs #37** the picture is reversed:
+On **6.18.9-hs #37** the picture is reversed:
 
 - The same bypass primitives are compiled in, with OverlayFS as a module (`OVERLAY_FS=m`).
 - Live LSM on the measured guest: `lockdown,capability,landlock,yama,apparmor,tomoyo,bpf,ipe,ima,evm`.
 - Exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**.
 - `IO_URING`, `KEXEC`, and `KEXEC_FILE` are **=y**.
 
-On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel; the syscalls themselves still exist and do not return `ENOSYS`.
+On this pin, the allowlist constrains programs that have no allowlist entry, and Lockdown, once engaged, also constrains new module loads. Both work by policy decision in the kernel. On that August config the syscalls do not return `ENOSYS`. On the kernel that ships, `bpf()` returns `ENOSYS`. io_uring, FUSE, OverlayFS, and KVM do not.
 
 ---
 

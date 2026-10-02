@@ -40,15 +40,13 @@ Initial setup runs unattended on first boot of the Root Lock kernel, and again a
 
 ## Reduced kernel footprint
 
-The security industry patches vulnerabilities one at a time. Root Lock removes the features attackers rely on — by design.
+The security industry patches vulnerabilities one at a time. A new install boots the 6.18.9-hs kernel. The BPF syscall is off. FUSE, OverlayFS, user namespaces, and AppArmor are in that kernel. The workloads that need them are not a supported configuration.
 
 Most malware escalates privilege by reaching for the same handful of kernel features: eBPF to hide processes, FUSE to redirect reads, overlay filesystems to shadow directories, userspace LSM frameworks (AppArmor, SMACK, Landlock) to pivot through, and unprivileged user namespaces to gain root without credentials.
 
-The Root Lock kernel is deliberately compiled without them, because those are the features an attacker uses to become root and to get around an allowlist.
+A stock Ubuntu kernel ships with thousands of loadable modules. The 6.18.9-hs kernel does too. Under Lockdown, a module loads only when `kmod` can read that `.ko`. See [Restricting Kernel Module Loading](../../maintenance/kmod-hardening/).
 
-A stock Ubuntu kernel ships with over 6,600 loadable modules. The Root Lock kernel ships with 13.
-
-Detection tools like Falco, Cilium Tetragon, and bpftrace watch these features; Root Lock removes them instead. See [Kernel architecture](../how-it-compares/#kernel-architecture).
+Detection tools like Falco, Cilium Tetragon, and bpftrace need the BPF syscall. That syscall is off. See [Kernel architecture](../how-it-compares/#kernel-architecture).
 
 ## Features
 

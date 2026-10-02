@@ -2,7 +2,7 @@
 title: "What a red team should test on this kernel"
 linkTitle: "Auditor Brief"
 weight: 22
-description: "Threat model, measured scores, and residual risks on the fielded 6.18.9-hs #37 pin. 5.19.6 remains the legacy pack."
+description: "Threat model and residual risks for the kernel that ships, 6.18.9-hs (packaging 6.18.9-HeartSuite-3). Build #37 is the 18 August 2026 measurement. 5.19.6 remains the legacy pack."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
@@ -11,22 +11,22 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite — fielded **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`, build **#37**); **5.19.6** legacy  
+**Subject:** Root Lock by HeartSuite — **6.18.9-hs** (packaging `6.18.9-HeartSuite-3`); build **#37** is the 18 August 2026 measurement; **5.19.6** legacy  
 **Evidence status:** Measured config SHA-256, checker output, and runtime verification for **6.18.9-hs #37** are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-08-18). The **5.19.6** pack remains the legacy measured stream.  
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
-This page describes the fielded #37 pin, the binary that boots, on which `IO_URING` and `KEXEC` are `=y`.
+The measurements below are the 18 August 2026 run on build #37, which had `IO_URING` and `KEXEC` set. The kernel that ships has the BPF syscall off, `CONFIG_IO_URING=y`, and `CONFIG_KEXEC` unset.
 
 ---
 
 ## Threat model
 
-Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. The 5.19.6 kernel countered that mainly by compiling the bypass primitives out. The fielded 6.18.9-hs pin compiles those primitives in, so on this pin the countermeasure is the Root Lock allowlist and Lockdown, which run alongside the other LSMs.
+Root Lock targets **a process on the protected system attempting to bypass VFS-level enforcement**. The 6.18.9-hs kernel that ships leaves the BPF syscall off and leaves FUSE, OverlayFS, user namespaces, and AppArmor in the build. The countermeasure is the allowlist and Lockdown.
 
 ---
 
-## What the measurements show (6.18.9-hs #37)
+## What the measurements show (18 August 2026, build #37)
 
 Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-08-18, against pin config SHA-256 `3cd1824742b9a15e9467c774c5f62081f9547f730ad7cd9bce464a7d286a7db9`.
 
@@ -37,7 +37,7 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 Automated score: **57/131 (43.5%)**  
 Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-The fielded pin trails both era-matched peers on this axis. Config greps on the pin show the bypass options compiled in: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
+The August #37 config trails both era-matched peers on this axis. Config greps on that config show the bypass options compiled in: `CONFIG_BPF_SYSCALL=y`, `CONFIG_IO_URING=y`, `CONFIG_FUSE_FS=y`, `CONFIG_OVERLAY_FS=m`, `CONFIG_USER_NS=y`, `CONFIG_SECURITY_APPARMOR=y`, `CONFIG_SECURITY_TOMOYO=y`, `CONFIG_KEXEC=y`, `CONFIG_KEXEC_FILE=y`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
@@ -72,7 +72,7 @@ The 5.19.6 description (Root Lock as the sole enforcing MAC, SELinux permissive,
 `CONFIG_MODULE_SIG=y`, but `CONFIG_MODULE_SIG_FORCE` is not set and `kernel.modules_disabled=0`, so the kernel does not refuse unsigned modules on its own. Lockdown's module-load block covers that gap only once you engage Lockdown, and only for modules loaded after that point.
 
 **4. Can root unseal the allowlist or turn enforcement off?**  
-By design, root has no intended path to lift the allowlist seal or turn enforcement off, because there is no agent to kill: the seal and the control paths are enforced in the kernel. Test that contract rather than reading it off the architecture diagram, and confirm on the deployed pin (`6.18.9-hs` #37) that additional syscalls and related attributes are gated as well.
+By design, root has no intended path to lift the allowlist seal or turn enforcement off, because there is no agent to kill: the seal and the control paths are enforced in the kernel. Test that contract rather than reading it off the architecture diagram, and confirm on the kernel that ships (`6.18.9-hs`) that additional syscalls and related attributes are gated as well.
 
 The checker percentages measure only the published `.config`, so read them together with this residual-risk list during architecture review.
 

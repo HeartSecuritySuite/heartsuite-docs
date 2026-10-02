@@ -44,7 +44,7 @@ The **5.19** stream is a legacy exception: 5.19 was a short-lived mainline relea
 **Why LTS-only**
 
 - LTS branches receive upstream security and stability maintenance for a defined period, which gives HeartSuite a predictable rebuild base.
-- HeartSuite's security model depends on a **fixed, published kernel configuration** (compiled-out subsystems, enforcement hooks, and Lockdown integration). Rebuilding on a known LTS tag preserves that contract while absorbing upstream fixes that apply to the compiled-in code paths.
+- HeartSuite's security model depends on a **fixed, published kernel configuration** (the BPF syscall off, enforcement hooks, and Lockdown integration). Rebuilding on a known LTS tag preserves that contract while absorbing upstream fixes that apply to the compiled-in code paths.
 - Chasing every upstream minor release would multiply validation cost without improving the enforcement properties buyers adopt Root Lock for.
 
 **Commercial baseline**
@@ -82,7 +82,7 @@ For deployment implications, coexistence with distribution maintenance, and flee
 
 The running kernel version is shown by `uname -r`. On a Root Lock deployment, the string identifies the HeartSuite build, not a distribution errata package.
 
-**Fielded 6.18 pin:** `uname -r` is **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3` (build **#37**), so the absence of the word `HeartSuite` in `uname -r` does not mean you are on the maintenance kernel.
+**Fielded 6.18 pin:** `uname -r` is **`6.18.9-hs`**. The packaging label is `6.18.9-HeartSuite-3`, so the absence of the word `HeartSuite` in `uname -r` does not mean you are on the maintenance kernel.
 
 **Legacy 5.19 example:** `5.19.6-HeartSuite-1.0`
 
@@ -90,7 +90,7 @@ The running kernel version is shown by `uname -r`. On a Root Lock deployment, th
 |---|---|---|
 | Upstream LTS base | `6.18.9` | The mainline LTS kernel version HeartSuite built from for this release. This is the upstream tag lineage, not a count of every upstream commit merged since a prior HeartSuite build. |
 | Vendor segment | `hs` in `uname`; `HeartSuite` in the packaging label | Identifies the binary as a Root Lock kernel. Match `uname -r` to [Evidence Status](evidence-status/) and the distro matrix, not to a single historical suffix. |
-| HeartSuite build | packaging `6.18.9-HeartSuite-3`, `file` **#37** | HeartSuite's rebuild/bundle identity for this upstream base. |
+| HeartSuite build | packaging `6.18.9-HeartSuite-3` | HeartSuite's bundle identity for this upstream base. `uname -r` stays `6.18.9-hs`. |
 
 On 6.18, tell the Root Lock kernel from the maintenance kernel with `uname -r` plus `file` on vmlinuz, as documented in [Evidence Status](evidence-status/).
 
@@ -163,7 +163,7 @@ Clock start for timed tiers: **HeartSuite confirmation** that the issue applies 
 
 **Notes**
 
-- Many high-severity CVEs are **Not Affected** on Root Lock kernels because the attack surface was never compiled in. Those entries do not consume patch-tier clocks.
+- A CVE is **Not Affected** on the kernel you boot only where that config leaves the option unset, and those entries do not consume patch-tier clocks. On 6.18.9-hs the BPF syscall is one of those. FUSE, OverlayFS, user namespaces, nftables, KVM, and io_uring are in that kernel, so their CVEs stay on the patch date.
 - For reachable CVEs, Lockdown limits persistence and arbitrary code execution even before a rebuild ships; patching remains part of defense-in-depth and subscription commitments for reachable paths.
 - HeartSuite does not issue per-CVE errata identifiers in the distribution-vendor style; bundle manifests list the CVEs addressed in each release.
 
@@ -229,7 +229,7 @@ Root Lock **replaces the enforcement kernel** for protected operation; it does n
 
 Distribution-vendor subscriptions (RHEL, SLES, Ubuntu Pro, and similar extended-support offerings) and third-party agents that require the distribution kernel for full functionality continue to apply to the maintenance-kernel path and to userspace packages.
 
-Agents or tools that require BPF, specific kernel modules, or kernel interfaces absent from the Root Lock kernel should run on a kernel that still exposes those interfaces, or on a separate host. The Root Lock kernel omits these by design to eliminate bypass primitives and attack surface. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
+Agents or tools that need the BPF syscall, or a kernel option the 6.18.9-hs config leaves unset, should run on a kernel that exposes that option, or on a separate host. See the [Enterprise Adoption Guide](enterprise-adoption-guide/) compatibility section and [Reduced Kernel Footprint](../introduction/heartsuite-overview/#reduced-kernel-footprint).
 
 ---
 

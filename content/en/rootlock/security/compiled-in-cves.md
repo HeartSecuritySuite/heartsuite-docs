@@ -34,7 +34,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-46020](#cve-2026-46020) | DAMON core — `damos_quota_goal->nid` for `node_mem_{used,free}_bp` (`CONFIG_DAMON`, `CO… | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-46121](#cve-2026-46121) | DAMON sysfs schemes (`CONFIG_DAMON`, `CONFIG_DAMON_SYSFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-46279](#cve-2026-46279) | mm/alloc_tag (`CONFIG_MEM_ALLOC_PROFILING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
-| [CVE-2026-46281](#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 6.18.9-hs — Lockdown limits post-exploitation; Not Affected on 5.19.6 |
+| [CVE-2026-46281](#cve-2026-46281) | vmalloc — virtually contiguous allocator (`CONFIG_MMU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-52968](#cve-2026-52968) | KVM s390 PCI (`CONFIG_KVM_S390`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
 | [CVE-2026-52969](#cve-2026-52969) | KVM dirty ring (`CONFIG_KVM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-53004](#cve-2026-53004) | SCTP (`CONFIG_IP_SCTP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
@@ -43,7 +43,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-63794](#cve-2026-63794) | KVM AMD SVM — SEV debug crypt (`CONFIG_KVM`, `CONFIG_KVM_AMD`, `CONFIG_KVM_AMD_SEV`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-63804](#cve-2026-63804) | GFS2 clustered filesystem (`CONFIG_GFS2_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-64121](#cve-2026-64121) | IFB intermediate functional block (`CONFIG_IFB`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
-| [CVE-2026-64600](#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 6.18.9-hs — Lockdown limits post-exploitation; Not Affected on 5.19.6 |
+| [CVE-2026-64600](#cve-2026-64600) | XFS reflink / copy-on-write (`CONFIG_XFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-64239](#cve-2026-64239) | DAMON sysfs schemes (`CONFIG_DAMON_SYSFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
 | [CVE-2026-64283](#cve-2026-64283) | KVM guest_memfd (`CONFIG_KVM_GUEST_MEMFD`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-64531](#cve-2026-64531) | Open vSwitch datapath (`CONFIG_OPENVSWITCH`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
@@ -68,15 +68,15 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-52962](#cve-2026-52962) | CephFS setxattr (`CONFIG_CEPH_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53059](#cve-2026-53059) | Device-mapper dirty log (`CONFIG_DM_MIRROR`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
 | [CVE-2026-53089](#cve-2026-53089) | BPF offload info fill (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
-| [CVE-2026-53119](#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
-| [CVE-2026-53120](#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.5 HIGH</span> | Affected — Lockdown limits post-exploitation |
-| [CVE-2026-53129](#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> | Affected — Lockdown limits post-exploitation |
+| [CVE-2026-53119](#cve-2026-53119) | ACPI WMI bus (`CONFIG_ACPI_WMI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
+| [CVE-2026-53120](#cve-2026-53120) | PCI `driver_override` (`CONFIG_PCI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.5 HIGH</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
+| [CVE-2026-53129](#cve-2026-53129) | ext4 mbcache (`CONFIG_FS_MBCACHE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">6.1 HIGH</span> | In the kernel on 5.19.6 and on 6.18.9-hs. |
 | [CVE-2026-53136](#cve-2026-53136) | AMD display BIOS parser (`CONFIG_DRM_AMDGPU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53137](#cve-2026-53137) | AMD HDMI HDCP 2.x (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53138](#cve-2026-53138) | AMD display VBIOS walk (`CONFIG_DRM_AMD_DC`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
 | [CVE-2026-53143](#cve-2026-53143) | AMD KFD SDMA checkpoint (`CONFIG_HSA_AMD`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53149](#cve-2026-53149) | Thunderbolt property parser (`CONFIG_USB4`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
-| [CVE-2026-53233](#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
+| [CVE-2026-53233](#cve-2026-53233) | netdev RX bind (`CONFIG_NET_DEVMEM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2026-53255](#cve-2026-53255) | Bluetooth MGMT advertising (`CONFIG_BT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53272](#cve-2026-53272) | EROFS compressed read (`CONFIG_EROFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-53286](#cve-2026-53286) | Intel IDPF ethernet (`CONFIG_IDPF`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — hardware absent on 6.18.9-hs |
@@ -108,9 +108,9 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2025-71306](#cve-2025-71306) | IMA exec appraisal (`CONFIG_IMA`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-45998](#cve-2026-45998) | RxRPC (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
 | [CVE-2026-46191](#cve-2026-46191) | framebuffer console rotation (`CONFIG_FRAMEBUFFER_CONSOLE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
-| [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation |
+| [CVE-2026-52992](#cve-2026-52992) | ADFS filesystem (`CONFIG_ADFS_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs. |
 | [CVE-2022-4139](#cve-2022-4139) | i915 GPU | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
-| [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
+| [CVE-2023-2236, CVE-2022-3910](#cve-2023-2236-cve-2022-3910) | io_uring | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1–7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-52530](#cve-2023-52530) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2023-52612](#cve-2023-52612) | kernel crypto framework — scomp interface (`CONFIG_CRYPTO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `CONFIG_INET_IPCOMP` not compiled; no compression algorithm registered; `scomp_acomp_comp_decomp()` unreachable |
 | [CVE-2024-26704](#cve-2024-26704) | ext4 filesystem — online defragmentation (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `EXT4_IOC_MOVE_EXT` ioctl only reached by defrag tools; none in Root Lock allowlist |
@@ -120,35 +120,35 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2022-48702](#cve-2022-48702) | EMU10K1 audio driver (`CONFIG_SND_EMU10K1`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_EMU10K1` not set |
 | [CVE-2022-48695](#cve-2022-48695) | mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-35789](#cve-2024-35789) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
-| [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2024-35886](#cve-2024-35886) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-52835](#cve-2023-52835) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2023-52868](#cve-2023-52868) | thermal management (`CONFIG_THERMAL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — thermal sysfs not in allowlist; Lockdown prevents modification |
 | [CVE-2024-38588](#cve-2024-38588) | kprobes (`CONFIG_KPROBES`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — kprobe registration not in allowlist; Lockdown prevents modification |
 | [CVE-2024-40901](#cve-2024-40901) | LSI/Avago mpt3sas SCSI driver (`CONFIG_SCSI_MPT3SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_MPT3SAS` not set |
 | [CVE-2024-41092](#cve-2024-41092) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2024-42136](#cve-2024-42136) | CD-ROM subsystem (`CONFIG_CDROM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | CD-ROM drive absent on server |
-| [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2024-44985](#cve-2024-44985) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-44986](#cve-2024-44986) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-44987](#cve-2024-44987) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-46673](#cve-2024-46673) | Adaptec aacraid SCSI driver (`CONFIG_SCSI_AACRAID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_AACRAID` not set |
 | [CVE-2024-46746](#cve-2024-46746) | AMD SFH HID driver (`CONFIG_AMD_SFH_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AMD_SFH_HID` not set |
 | [CVE-2024-46798](#cve-2024-46798) | ALSA rawmidi subsystem (`CONFIG_SND_RAWMIDI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_RAWMIDI` not compiled |
 | [CVE-2024-46849](#cve-2024-46849) | Amlogic Meson ASoC driver (`CONFIG_SND_MESON_CARD_UTILS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — driver not compiled in |
 | [CVE-2024-47682](#cve-2024-47682) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — non-conformant VPD firmware absent; standard SAS/SATA drives conform to SCSI spec |
-| [CVE-2024-47701](#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-47701](#cve-2024-47701) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-49852](#cve-2024-49852) | Emulex EFC FC driver (`CONFIG_SCSI_EFCT`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_EFCT` not compiled |
-| [CVE-2024-49882](#cve-2024-49882) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49883](#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49884](#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
-| [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2024-49882](#cve-2024-49882) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-49883](#cve-2024-49883) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-49884](#cve-2024-49884) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-49889](#cve-2024-49889) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-49960](#cve-2024-49960) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown |
 | [CVE-2024-49983](#cve-2024-49983) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown |
 | [CVE-2024-50007](#cve-2024-50007) | ASIHPI soundcard driver (`CONFIG_SND_ASIHPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_ASIHPI` not compiled |
 | [CVE-2022-48951](#cve-2022-48951) | ALSA SoC layer (`CONFIG_SND_SOC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_SOC` not compiled |
-| [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2022-48956](#cve-2022-48956) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2022-49022](#cve-2022-49022) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
 | [CVE-2022-49023](#cve-2022-49023) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
-| [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_SCSI=y`; Lockdown limits post-exploitation |
+| [CVE-2024-53170](#cve-2024-53170) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-53173](#cve-2024-53173) | NFS v4 client (`CONFIG_NFS_V4`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `mount()` blocked by Lockdown; no NFS v4 share reachable on HS |
 | [CVE-2024-53214](#cve-2024-53214) | VFIO subsystem (`CONFIG_VFIO`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_VFIO` not compiled |
 | [CVE-2024-53227](#cve-2024-53227) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
@@ -156,11 +156,11 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2024-56609](#cve-2024-56609) | Realtek rtw88 WiFi driver (`CONFIG_RTW88`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_RTW88` not compiled |
 | [CVE-2024-56631](#cve-2024-56631) | SCSI generic driver (`CONFIG_CHR_DEV_SG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `/dev/sg*` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-57899](#cve-2024-57899) | mac80211 wireless stack (`CONFIG_MAC80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — 32-bit-specific vulnerability; Root Lock kernel is x86_64 |
-| [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
+| [CVE-2025-21863](#cve-2025-21863) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-52930](#cve-2023-52930) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2023-52988](#cve-2023-52988) | Intel HDA audio driver (`CONFIG_SND_HDA_INTEL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — no audio hardware present |
 | [CVE-2025-22083](#cve-2025-22083) | vhost-SCSI driver (`CONFIG_VHOST_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_VHOST_SCSI` not compiled |
-| [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`). Compile-out does not apply. Stays on the patch date. |
+| [CVE-2025-40364](#cve-2025-40364) | io_uring (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2025-37738](#cve-2025-37738) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown; crafted xattr image cannot be mounted |
 | [CVE-2022-49789](#cve-2022-49789) | IBM Z Fibre Channel driver (`CONFIG_ZFCP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ZFCP` not compiled |
 | [CVE-2022-49842](#cve-2022-49842) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
@@ -174,10 +174,10 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2025-38239](#cve-2025-38239) | LSI MegaRAID SAS driver (`CONFIG_MEGARAID_SAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_MEGARAID_SAS` not set |
 | [CVE-2025-38389](#cve-2025-38389) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
 | [CVE-2025-38494](#cve-2025-38494) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
-| [CVE-2025-38550](#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2025-38550](#cve-2025-38550) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2025-38563](#cve-2025-38563) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2025-38565](#cve-2025-38565) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `perf_event_paranoid=3`; no perf tooling in allowlist |
-| [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
+| [CVE-2025-38572](#cve-2025-38572) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2025-38699](#cve-2025-38699) | Brocade bfa FC driver (`CONFIG_SCSI_BFA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_BFA_FC` not compiled |
 | [CVE-2025-38729](#cve-2025-38729) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2025-39788](#cve-2025-39788) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
@@ -189,14 +189,14 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2022-50378](#cve-2022-50378) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Amlogic Meson ARM SoC GPU absent |
 | [CVE-2025-39841](#cve-2025-39841) | Emulex lpfc FC driver (`CONFIG_SCSI_LPFC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_LPFC` not compiled |
 | [CVE-2025-39864](#cve-2025-39864) | cfg80211 wireless framework (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No WiFi NIC present |
-| [CVE-2025-39866](#cve-2025-39866) | VFS writeback subsystem | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — writeback always active; Lockdown limits post-exploitation |
+| [CVE-2025-39866](#cve-2025-39866) | VFS writeback subsystem | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2022-50422](#cve-2022-50422) | SAS libsas library (`CONFIG_SCSI_SAS_LIBSAS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_SAS_LIBSAS` not set |
-| [CVE-2022-50432](#cve-2022-50432) | kernfs subsystem (`CONFIG_KERNFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_KERNFS=y`; Lockdown limits post-exploitation |
-| [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50432](#cve-2022-50432) | kernfs subsystem (`CONFIG_KERNFS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2023-53473](#cve-2023-53473) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-53510](#cve-2023-53510) | SCSI subsystem (`CONFIG_SCSI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | UFS flash storage absent on x86 server |
 | [CVE-2022-50488](#cve-2022-50488) | BFQ I/O scheduler (`CONFIG_IOSCHED_BFQ`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_IOSCHED_BFQ` not compiled |
-| [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BLK_DEV_DM=y`; Lockdown limits post-exploitation |
-| [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50496](#cve-2022-50496) | device mapper (`CONFIG_BLK_DEV_DM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2022-50546](#cve-2022-50546) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-53640](#cve-2023-53640) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2023-53676](#cve-2023-53676) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
 | [CVE-2025-71075](#cve-2025-71075) | Adaptec aic94xx SAS driver (`CONFIG_SCSI_AIC94XX`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_AIC94XX` not set |
@@ -207,7 +207,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-23216](#cve-2026-23216) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
 | [CVE-2025-71238](#cve-2025-71238) | QLogic qla2xxx FC driver (`CONFIG_SCSI_QLA_FC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SCSI_QLA_FC` not compiled |
 | [CVE-2026-31581](#cve-2026-31581) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
-| [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_R8169=y`; Lockdown limits post-exploitation |
+| [CVE-2024-38586](#cve-2024-38586) | Realtek r8169 Ethernet driver (`CONFIG_R8169`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-38630](#cve-2024-38630) | watchdog timer subsystem (`CONFIG_WATCHDOG`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — watchdog daemon not in allowlist; Lockdown prevents modification |
 | [CVE-2024-39463](#cve-2024-39463) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `mount()` blocked by Lockdown; no 9P filesystem on Root Lock deployments |
 | [CVE-2024-40956](#cve-2024-40956) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Intel IAX/DSA accelerator hardware absent |
@@ -229,20 +229,20 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2025-38548](#cve-2025-38548) | hardware monitoring subsystem (`CONFIG_HWMON`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Corsair Commander Pro hardware absent |
 | [CVE-2022-50320](#cve-2022-50320) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — FPDT crash requires malformed firmware; not reachable on standard OEM hardware |
 | [CVE-2023-53395](#cve-2023-53395) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — AML exploit requires crafted firmware; ACPI tables read-only after boot |
-| [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_ACPI=y`; Lockdown limits post-exploitation |
+| [CVE-2022-50423](#cve-2022-50423) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2026-23378](#cve-2026-23378) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `tc` not in allowlist; Lockdown prevents modification |
-| [CVE-2024-36971](#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
-| [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_TASKS_RCU=y`; Lockdown limits post-exploitation |
+| [CVE-2024-36971](#cve-2024-36971) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-38577](#cve-2024-38577) | RCU tasks subsystem (`CONFIG_TASKS_RCU`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-40958](#cve-2024-40958) | network namespaces (`CONFIG_NET_NS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `CLONE_NEWNET` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-41039](#cve-2024-41039) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2024-46713](#cve-2024-46713) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2024-46852](#cve-2024-46852) | DMA-BUF shared buffer (`CONFIG_DMA_SHARED_BUFFER`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — no DRM/GPU device on headless server |
 | [CVE-2022-48950](#cve-2022-48950) | perf events subsystem (`CONFIG_PERF_EVENTS`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `perf_event_paranoid=3`; no perf tooling in allowlist |
 | [CVE-2022-49026](#cve-2022-49026) | Intel e100 Fast Ethernet driver (`CONFIG_E100`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — Intel Pro/100 NIC not present on modern server hardware |
-| [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_BASE_FULL=y`; Lockdown limits post-exploitation |
+| [CVE-2024-50055](#cve-2024-50055) | core kernel (`CONFIG_BASE_FULL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-50112](#cve-2024-50112) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — LAM not implemented in Linux 5.19.x; introduced in 6.2 |
-| [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_IPV6=y`; Lockdown limits post-exploitation |
-| [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | Affected — `CONFIG_INET=y`; Lockdown limits post-exploitation |
+| [CVE-2024-56600](#cve-2024-56600) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2024-56601](#cve-2024-56601) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.3 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-56616](#cve-2024-56616) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | DisplayPort MST display hardware absent |
 | [CVE-2026-53223](#cve-2026-53223) | AF_PACKET timestamp cmsgs (`CONFIG_PACKET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `CAP_NET_RAW` not granted to services; packet tools absent from allowlist; Lockdown prevents modification |
 | [CVE-2022-48701](#cve-2022-48701) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | `CONFIG_SND_USB_AUDIO` not set |
@@ -256,9 +256,9 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2024-53150](#cve-2024-53150) | USB audio driver (`CONFIG_SND_USB_AUDIO`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_SND_USB_AUDIO` not compiled |
 | [CVE-2024-56663](#cve-2024-56663) | cfg80211 wireless stack (`CONFIG_CFG80211`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — no WiFi NIC present |
 | [CVE-2025-21993](#cve-2025-21993) | iSCSI iBFT driver (`CONFIG_ISCSI_IBFT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_IBFT` not set |
-| [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_EXT4_FS=y`; Lockdown limits post-exploitation |
+| [CVE-2025-22121](#cve-2025-22121) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2025-37785](#cve-2025-37785) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown; crafted ext4 image cannot be mounted |
-| [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_IPV6=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2022-49865](#cve-2022-49865) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2025-38103](#cve-2025-38103) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
 | [CVE-2025-38249](#cve-2025-38249) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2025-38556](#cve-2025-38556) | HID subsystem (`CONFIG_HID`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No USB HID input devices on headless server |
@@ -273,7 +273,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2026-23076](#cve-2026-23076) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2026-23318](#cve-2026-23318) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2023-3268](#cve-2023-3268) | relay filesystem (`CONFIG_RELAY`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — debugfs relay not in allowlist; Lockdown prevents modification |
-| [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | Affected — `CONFIG_VT=y`; base I:N, Lockdown limits post-exploitation persistence |
+| [CVE-2023-3567](#cve-2023-3567) | virtual terminal (VT) (`CONFIG_VT`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2024-26593](#cve-2024-26593) | Intel SMBus I2C controller (`CONFIG_I2C_I801`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — no I2C tool in allowlist; Lockdown prevents modification |
 | [CVE-2024-34777](#cve-2024-34777) | DMA map benchmark (`CONFIG_DMA_MAP_BENCHMARK`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_DMA_MAP_BENCHMARK` not compiled in Root Lock kernel |
 | [CVE-2024-49860](#cve-2024-49860) | ACPI subsystem (`CONFIG_ACPI`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — malformed ACPI _STR firmware absent; standard OEM firmware conforms to spec |
@@ -284,13 +284,18 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — perf_event_open() blocked by perf_event_paranoid=3 |
 | [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
-| [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_INET=y`; Lockdown reduces MI: High→Low (AC:H base) |
-| [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_IPV6=y`; Lockdown reduces MI: High→Low (AC:H base) |
-| [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | Affected — `CONFIG_UNIX=y`; Lockdown reduces MI: High→Low (AC:H base) |
+| [CVE-2022-48689](#cve-2022-48689) | TCP receive zerocopy (`CONFIG_INET`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2025-39702](#cve-2025-39702) | IPv6 networking stack (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge bg-warning text-dark">6.5 MEDIUM</span> | In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
+| [CVE-2023-6531](#cve-2023-6531) | Unix domain sockets (`CONFIG_UNIX`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs. |
 | [CVE-2023-51043](#cve-2023-51043) | DRM subsystem (`CONFIG_DRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — no DRM/GPU device on headless server |
 | [CVE-2025-37915](#cve-2025-37915) | network traffic scheduler (`CONFIG_NET_SCHED`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `tc` not in allowlist; Lockdown prevents modification |
 | [CVE-2024-0775](#cve-2024-0775) | ext4 filesystem (`CONFIG_EXT4_FS`) | <span class="badge badge-cve-high">6.7 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `mount(MS_REMOUNT)` blocked by Lockdown; ext4 remount entry point unreachable |
 | [CVE-2024-0841](#cve-2024-0841) | hugetlbfs (`CONFIG_HUGETLBFS`) | <span class="badge bg-warning text-dark">6.6 MEDIUM</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — mount() blocked by Lockdown; hugetlbfs mount path unreachable |
+| [CVE-2026-23395](#cve-2026-23395) | Bluetooth L2CAP (`CONFIG_BT`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Needs an LE HCI connection in `BT_CONNECTED`. A socket does not enter the function. |
+| [CVE-2026-31500](#cve-2026-31500) | Intel Bluetooth (`CONFIG_BT_INTEL`) | no CNA score | <span class="badge badge-cve-none">0.0</span> | Runs only from an Intel USB controller Hardware Error event. |
+| [CVE-2026-23234](#cve-2026-23234) | f2fs (`CONFIG_F2FS_FS`) | no CNA score | <span class="badge badge-cve-none">0.0</span> | Write completion on an f2fs superblock. Install roots named here are ext4 and xfs. |
+| [CVE-2026-23235](#cve-2026-23235) | f2fs sysfs (`CONFIG_F2FS_FS`) | no CNA score | <span class="badge badge-cve-none">0.0</span> | Per-mount sysfs attributes. They exist only after an f2fs mount. |
+| [CVE-2026-31532](#cve-2026-31532) | CAN raw (`CONFIG_CAN_RAW`) | <span class="badge badge-cve-high">7.8 HIGH</span> | not scored 0.0 | `raw_rcv` needs a CAN netdevice. `socket()` is not the gate. The pin has `CONFIG_USER_NS=y`. |
 
 ### CVE-2026-31431
 
@@ -324,6 +329,62 @@ The Dirty Frag chain has no second link on this system regardless: `CONFIG_AF_RX
 The trigger cannot be reached on any default Root Lock deployment.
 
 If your deployment adds XFRM management tooling (`ip xfrm`, `setkey`, strongSwan, libreswan, or an equivalent IKE daemon) to the Root Lock allowlist, a security association can be established and `esp_output` becomes reachable. In that configuration this CVE applies at its base score of 8.8 HIGH. Treat it as Affected and apply the standard backstop logic.
+
+### CVE-2026-23395
+
+**Status**: Not exploitable while no HCI device is up  
+**Component**: Bluetooth L2CAP enhanced credit connect (`CONFIG_BT`, `CONFIG_BT_LE_L2CAP_ECRED=y`)  
+**Base Score**: 8.8 HIGH (AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H) — Linux CNA  
+**Score on Root Lock**: 0.0 while no LE HCI connection is in `BT_CONNECTED`  
+**Upstream fix**: 6.18.20
+
+`l2cap_ecred_conn_req` (`net/bluetooth/l2cap_core.c`) runs only after `l2cap_recv_frame` has an `hci_conn` in `BT_CONNECTED` and a listening PSM. The overflow write is in `l2cap_ecred_rsp_defer`. Opening an `AF_BLUETOOTH` socket does not enter either function. The CNA trigger is a nearby radio.
+
+`CONFIG_BT_HCIVHCI=m` is a second way to get an HCI device. `vhci_open` in `drivers/bluetooth/hci_vhci.c` has no `capable()` check, and the misc device sets no mode in this tree. This note does not confirm who can open `/dev/vhci`. If that device is opened and an LE connection reaches `BT_CONNECTED`, the base score applies.
+
+### CVE-2026-31500
+
+**Status**: Not exploitable on a server with no Intel USB Bluetooth controller  
+**Component**: `btintel_hw_error` (`CONFIG_BT_INTEL`)  
+**Base Score**: Linux CNA published no CVSS base score  
+**Score on Root Lock**: 0.0 — the callback is not installed without that controller  
+**Upstream fix**: 6.18.21
+
+`btintel_hw_error` (`drivers/bluetooth/btintel.c`) is assigned only from `btintel_configure_setup`, and the only caller of that setup in this tree is `btusb` under `BTUSB_INTEL_COMBINED`. `hci_hardware_error_evt` is what queues it. A socket does not call it. `vhci` does not install this callback.
+
+### CVE-2026-23234
+
+**Status**: Not exploitable while no f2fs filesystem is mounted  
+**Component**: `f2fs_write_end_io` (`CONFIG_F2FS_FS`)  
+**Base Score**: Linux CNA published no CVSS base score  
+**Score on Root Lock**: 0.0 — no f2fs superblock on the ext4 or xfs install root  
+**Upstream fix**: 6.18.13
+
+`f2fs_write_end_io` (`fs/f2fs/data.c`) is the end I/O of a write bio on an f2fs superblock. The use-after-free is that completion against `kfree(sbi)` in `kill_f2fs_super`. The function does not run for an ext4 or xfs root. The Nitro install note records that root as ext4. The installer module list names `ext4` and `xfs`, not `f2fs`.
+
+A new mount needs `CAP_SYS_ADMIN` in the init user namespace. `f2fs_fs_type.fs_flags` is `FS_REQUIRES_DEV | FS_ALLOW_IDMAP`, with no `FS_USERNS_MOUNT`. A user namespace does not pass that check. This note does not treat the program allowlist as the gate.
+
+### CVE-2026-23235
+
+**Status**: Not exploitable while no f2fs filesystem is mounted  
+**Component**: f2fs per-mount sysfs (`CONFIG_F2FS_FS`)  
+**Base Score**: Linux CNA published no CVSS base score  
+**Score on Root Lock**: 0.0 — the attributes are created in `f2fs_fill_super`  
+**Upstream fix**: 6.18.13
+
+`f2fs_sbi_show` and `__sbi_store` (`fs/f2fs/sysfs.c`) are the show and store for `carve_out` and `atgc_age_threshold`. Those attributes are registered from `f2fs_fill_super`. Module load does not create them. The same mount rule as CVE-2026-23234 applies. Once a filesystem is mounted, the attributes are mode `0644`, so a non-owner can read them.
+
+### CVE-2026-31532
+
+**Status**: Stays on the patch date. Not scored 0.0  
+**Component**: CAN raw receive (`CONFIG_CAN_RAW`)  
+**Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — Linux CNA  
+**Score on Root Lock**: not scored 0.0  
+**Upstream fix**: 6.18.24
+
+`raw_rcv` (`net/can/raw.c`) runs when a frame arrives on an `ARPHRD_CAN` netdevice. `socket(AF_CAN, SOCK_RAW, CAN_RAW)` succeeds with no interface and does not call `raw_rcv`. `can.ko` autoloads from that socket. `can-raw.ko` autoloads from `can_create`. Neither load delivers a frame.
+
+Creating `vcan` is an rtnetlink newlink. Non-GET rtnetlink messages require `CAP_NET_ADMIN`. The 6.18.9 pin has `CONFIG_USER_NS=y` and `CONFIG_CAN_VCAN=m`. The CNA says a user namespace can supply that capability. This note does not call the trigger absent.
 
 ### CVE-2026-43500
 
@@ -436,7 +497,7 @@ The vulnerable path never opens. The bug exists in the source — not on this sy
 
 ### CVE-2023-2236, CVE-2022-3910
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)  
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: io_uring — asynchronous I/O subsystem (`CONFIG_IO_URING`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)  
 **Score on Root Lock**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band  
@@ -452,7 +513,7 @@ Both CVEs describe use-after-free conditions in io_uring's fixed file management
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so these CVEs cannot be cleared as compiled out on either kernel. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. The upstream fix is already in 6.18.9-hs. On 5.19.6 the `io_uring_setup` syscall has no capability gate — any local user can create an io_uring ring and reach both vulnerable paths. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -604,7 +665,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2022-48689
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: TCP receive zerocopy (`CONFIG_INET`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
@@ -681,7 +742,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2024-35886
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -825,7 +886,7 @@ On a HeartSuite system with an optical drive installed, Lockdown's constraints w
 
 ### CVE-2024-44985
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -848,7 +909,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-44986
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -871,7 +932,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-44987
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -972,7 +1033,7 @@ If a device returns VPD page 0xb1 with a length of exactly 8 bytes (as QEMU v2.x
 
 ### CVE-2024-47701
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1006,7 +1067,7 @@ The kref_put() function will call nport->release if the refcount drops to zero. 
 
 ### CVE-2024-49882
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1029,7 +1090,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-49883
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1052,7 +1113,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-49884
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1075,7 +1136,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-49889
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1142,7 +1203,7 @@ The ASIHPI driver writes firmware-controlled index values into a static array wi
 
 ### CVE-2022-48956
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1225,7 +1286,7 @@ The USB-audio driver does not validate `bLength` of each descriptor when travers
 
 ### CVE-2024-53170
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: SCSI subsystem (`CONFIG_SCSI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1322,7 +1383,7 @@ In the mac80211 wireless stack, a type-size mismatch between `unsigned long` (4 
 
 ### CVE-2025-21863
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1335,7 +1396,7 @@ In `io_uring/io_uring.c`, `io_init_req()` reads `sqe->opcode` from userspace and
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so this CVE cannot be cleared as compiled out on either kernel. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. The upstream fix is already in 6.18.9-hs. On 5.19.6, reaching the vulnerable io_uring path requires a process to submit crafted SQEs via `io_uring_enter()`; this is a normal operation for any application using io_uring. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1381,7 +1442,7 @@ In `drivers/vhost/scsi.c`, `vhost_scsi_set_endpoint()` at line 1531 does not gua
 
 ### CVE-2025-22121
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Score on Root Lock**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
@@ -1417,7 +1478,7 @@ In `fs/ext4/dir.c`, when a corrupted ext4 directory block contains a `'.'` entry
 
 ### CVE-2025-40364
 
-**Status**: Affected on 5.19.6 and on 6.18.9-hs (`CONFIG_IO_URING=y`)
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: io_uring (`CONFIG_IO_URING`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1430,7 +1491,7 @@ In `io_uring/io_uring.c`, `io_req_prep_async()` at line 7829 prepares an asynchr
 
 **Why the score is not 0.0:**
 
-`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships, so this CVE cannot be cleared as compiled out on either kernel. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
+`CONFIG_IO_URING=y` is compiled in on 5.19.6 and on the 6.18.9-hs kernel that ships. The upstream fix is already in 6.18.9-hs. On 5.19.6, reaching the provided-buffer UAF path requires a process to submit io_uring SQEs with `IOSQE_BUFFER_SELECT` in a pattern where the async preparation phase selects a buffer slot before the request is discarded. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a non-allowlisted program without an allowlist entry.
 
 **What this means for you as an HS user:**
 
@@ -1475,7 +1536,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2022-49865
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Score on Root Lock**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
@@ -1642,7 +1703,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2025-38550
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1701,7 +1762,7 @@ When perf_mmap() fails to allocate a buffer, it still invokes the event_mapped()
 
 ### CVE-2025-38572
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1749,7 +1810,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2025-39702
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
@@ -1958,7 +2019,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2025-39866
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: VFS writeback subsystem
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -1993,7 +2054,7 @@ When executing SMP task failed, the smp_execute_task_sg() calls del_timer() to d
 
 ### CVE-2022-50432
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: kernfs subsystem (`CONFIG_KERNFS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2017,7 +2078,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2023-53473
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2076,7 +2137,7 @@ In `block/bfq-iosched.c`, a use-after-free occurs in `bfq_select_queue()` involv
 
 ### CVE-2022-50496
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: device mapper (`CONFIG_BLK_DEV_DM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2100,27 +2161,25 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2022-50546
 
-**Status**: Affected
+**Status**: Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ext4 filesystem (`CONFIG_EXT4_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
+**Score on Root Lock**: 0.0 — the introducing commit is not in 5.19.6, and 6.18.9-hs contains the fix
 
-**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Affected range**: Introducing commit absent from 5.19.6. Fixed in 6.1.4, which 6.18.9-hs contains.
 **Upstream fix**: fs/ext4/inode.c
 
 **What this means for an attacker:**
 
 In `ext4_evict_inode()` (`fs/ext4/inode.c:180`), the function checks `EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL` to determine whether the inode being evicted is an extended attribute inode. Under certain error paths during inode allocation, the ext4-specific `i_flags` field in `ext4_inode_info` is not fully initialized before the inode reaches eviction, causing the flag test to read from uninitialized memory. KMSAN reported the uninitialized-value access at this check.
 
-**Why the score is not 0.0:**
+**Why the score is 0.0:**
 
-`CONFIG_EXT4_FS=y` is compiled in and 5.19.6 falls within the affected range. ext4 is the primary filesystem on a Debian 11 server and inode eviction occurs during normal filesystem operation. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root. An attacker cannot execute a new exploit program to trigger this path — it has no allowlist entry and the kernel refuses to run it.
+The introducing commit is not in 5.19.6. The fix is in 6.1.4, and 6.18.9-hs contains that fix. `CONFIG_EXT4_FS=y` does not place this bug in either kernel.
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
-
-A reboot is a clean slate. The attack does not survive it.
+5.19.6 predates this bug, and 6.18.9-hs contains the fix. The backstop on [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections) applies to rows that are in the kernel.
 
 ### CVE-2023-53640
 
@@ -2305,7 +2364,7 @@ An out of bounds (OOB) memory access flaw was found in the Linux kernel in relay
 
 ### CVE-2023-3567
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: virtual terminal (VT) (`CONFIG_VT`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
 **Score on Root Lock**: 7.1 HIGH — base I:N; Lockdown limits post-exploitation persistence
@@ -2328,26 +2387,24 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2023-6531
 
-**Status**: Affected
+**Status**: Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: Unix domain sockets (`CONFIG_UNIX`)
 **Base Score**: 7.0 HIGH (AV:L/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 6.5 MEDIUM — Lockdown reduces MI: High→Low; AC:H reduces exploitability (Exp=1.05 vs 1.83 for AC:L)
-**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Score on Root Lock**: 0.0 — the introducing commit is not in 5.19.6, and 6.18.9-hs contains the fix
+**Affected range**: Introducing commit absent from 5.19.6. Fixed in 6.7-rc5, which 6.18.9-hs contains.
 **Upstream fix**: net/unix/garbage.c
 
 **What this means for an attacker:**
 
 In `net/unix/garbage.c`, the Unix socket garbage collector frees orphaned socket buffers (SKBs) without coordinating with concurrent `unix_stream_read_generic()` operations on the socket those SKBs are queued on. The race allows `unix_stream_read_generic()` to access an SKB that the garbage collector has already freed, causing a use-after-free. AC:H reflects that exploitation requires precise timing between the GC sweep and a concurrent stream read.
 
-**Why the score is not 0.0:**
+**Why the score is 0.0:**
 
-`CONFIG_UNIX=y` is compiled in and 5.19.6 falls within the affected range. Unix domain sockets are used by virtually all inter-process communication on a Debian 11 server (systemd, D-Bus, logging daemons). The narrow race window (AC:H) makes reliable exploitation difficult. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot execute a standalone race-exploit program without an allowlist entry.
+The introducing commit is not in 5.19.6. The fix is in 6.7-rc5, and 6.18.9-hs contains that fix. `CONFIG_UNIX=y` does not place this bug in either kernel.
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
-
-A reboot is a clean slate. The attack does not survive it.
+5.19.6 predates this bug, and 6.18.9-hs contains the fix. The backstop on [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections) applies to rows that are in the kernel.
 
 ### CVE-2023-51043
 
@@ -2386,7 +2443,7 @@ In `drivers/i2c/busses/i2c-i801.c`, the Intel I801 SMBus driver handles block pr
 
 ### CVE-2024-38586
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: Realtek r8169 Ethernet driver (`CONFIG_R8169`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2720,7 +2777,7 @@ The attack vector has no path to execution on a standard Debian 11 server deploy
 
 ### CVE-2022-50423
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: ACPI subsystem (`CONFIG_ACPI`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2767,7 +2824,7 @@ In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — th
 
 ### CVE-2024-36971
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: TCP/IP destination cache (`CONFIG_INET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2790,7 +2847,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-38577
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: RCU tasks subsystem (`CONFIG_TASKS_RCU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2881,26 +2938,24 @@ In e100_xmit_prepare(), if we can't map the skb, then return -ENOMEM, so e100_xm
 
 ### CVE-2024-50055
 
-**Status**: Affected
+**Status**: Not in this kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: core kernel (`CONFIG_BASE_FULL`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
-**Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
+**Score on Root Lock**: 0.0 — introduced in Linux 6.3 and fixed in 6.11.4, so 5.19.6 and 6.18.9-hs are outside that range
+**Affected range**: Linux 6.3 through 6.6.57, and 6.7 through 6.11.4. 5.19.6 and 6.18.9-hs are outside both ranges.
 **Upstream fix**: drivers/base/bus.c
 
 **What this means for an attacker:**
 
 In `drivers/base/bus.c`, `bus_register()` allocates a `subsys_private` struct (`@priv`) and calls `kset_register()` to publish the bus kobject. If a subsequent step in `bus_register()` fails — for example, during sysfs attribute file creation — the error path calls `kset_unregister()`, which frees `@priv` through its kobject release callback. `bus_register()` then also frees `@priv` directly in its own error path, causing a double-free.
 
-**Why the score is not 0.0:**
+**Why the score is 0.0:**
 
-`CONFIG_BASE_FULL=y` is compiled in and 5.19.6 falls within the affected range. `bus_register()` is called during driver probe and device enumeration, typically at boot or when kernel modules are loaded. Triggering the double-free requires causing a bus registration to fail partway through a specific sysfs error. In Lockdown, `hs_sandbox_caching.c` enforces the SPF allowlist against all processes including root; an attacker cannot load an exploit module or execute an exploit program without an allowlist entry.
+The bug arrived in Linux 6.3. One fix is in 6.6.57, and the later copy is fixed in 6.11.4. 5.19.6 is older than the bug. 6.18.9-hs is past that second fix. `CONFIG_BASE_FULL=y` does not place the bug in either kernel.
 
 **What this means for you as an HS user:**
 
-**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
-
-A reboot is a clean slate. The attack does not survive it.
+5.19.6 predates this bug, and 6.18.9-hs contains the fix. The backstop on [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections) applies to rows that are in the kernel.
 
 ### CVE-2024-50112
 
@@ -2926,7 +2981,7 @@ On x86_64, the MDS/MD_CLEAR mitigation (VERW-based CPU buffer flush) is applied 
 
 ### CVE-2024-56600
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: IPv6 networking stack (`CONFIG_IPV6`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -2950,7 +3005,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2024-56601
 
-**Status**: Affected
+**Status**: In the kernel on 5.19.6. Fixed upstream on 6.18.9-hs.
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH — Lockdown reduces MI: High→Low
@@ -3117,7 +3172,7 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-46281
 
-**Status**: Not Affected on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation
+**Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: vmalloc — virtually contiguous allocator (`CONFIG_MMU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 0.0 on 5.19.6 (outside the affected range). 7.1–7.3 HIGH on 6.18.9-hs — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High; score stays within the HIGH band
@@ -3280,7 +3335,7 @@ If a 6.18.9-hs deployment adds `ip`, `ethtool`, and a way to load `ifb` to the a
 
 ### CVE-2026-64600
 
-**Status**: Affected — Lockdown limits post-exploitation
+**Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: XFS reflink / copy-on-write (`CONFIG_XFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.1–7.3 HIGH — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High
@@ -3595,10 +3650,17 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-53119
 
+**Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
+**Component**: ACPI WMI bus (`CONFIG_ACPI_WMI`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 7.3 HIGH on 6.18.9-hs
+
+The WMI bus reads `driver_override` while a driver probe is in progress, and a concurrent write to that attribute can free the string. 5.19.6 does not build the WMI bus. 6.18.9-hs builds it as a module, and the upstream fix is in 6.18.33. Patch on your policy date. Lockdown limits what an attacker can do after the bug fires.
+
 ### CVE-2026-53120
 
 **CVE-2026-53120**
-**Status:** Affected — Lockdown limits post-exploitation
+**Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
 **Component:** PCI core driver_override (CONFIG_PCI=y, CONFIG_SYSFS=y on 5.19.6 and 6.18.9)
 **Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock:** 7.5 (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H) — Modified Integrity None because the program allowlist refuses new programs and Lockdown blocks chattr and all three mount syscalls. Confidentiality High and Availability High remain (in-memory reads and crash).
@@ -3615,7 +3677,7 @@ A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2026-53129
 
-**Status:** Affected — Lockdown limits post-exploitation
+**Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
 **Component:** fs/mbcache (`CONFIG_FS_MBCACHE=y` and `CONFIG_EXT4_FS=y` on 5.19.6-HeartSuite-2.0; `CONFIG_FS_MBCACHE=m` and `CONFIG_EXT4_FS=m` on 6.18.9-hs)
 **Base Score:** 7.8 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock:** 6.1 — Modified Confidentiality Low, Integrity None (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:L/MI:N/MA:H). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a kernel use-after-free that reaches root cannot persist or remount. Availability stays High: a crash is residual. In-memory reads remain.
@@ -3690,7 +3752,7 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-53233
 
-**Status**: Not Affected on 5.19.6; Affected — Lockdown limits post-exploitation on 6.18.9
+**Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: netdev generic netlink RX bind (`CONFIG_NET_DEVMEM`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 0.0 on 5.19.6 — BIND_RX / `CONFIG_NET_DEVMEM` do not exist before Linux 6.12; 7.3 HIGH on 6.18.9 — Lockdown reduces MI: High→Low; C and A remain High
@@ -3882,7 +3944,7 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-52992
 
-**Status**: Not exploitable — feature not compiled on 5.19.6; Affected on 6.18.9-hs — Lockdown limits post-exploitation
+**Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: ADFS filesystem (`CONFIG_ADFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
 **Score on Root Lock**: 7.3 HIGH on 6.18.9-hs — Lockdown reduces MI: High→Low (no allowlist modification, no persistence, no backdoors); C and A remain High. 0.0 on 5.19.6

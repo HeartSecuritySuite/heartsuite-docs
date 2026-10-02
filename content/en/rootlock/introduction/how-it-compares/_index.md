@@ -32,10 +32,10 @@ Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer diffe
 
 | Standard Linux | Root Lock |
 |---|---|
-| Wide kernel + security agent watching it | Custom kernel. **5.19.6** compiled many bypass primitives out. Fielded **6.18.9-hs** keeps BPF, FUSE, OverlayFS, and stacked LSMs in; enforcement is allowlist + Lockdown. |
-| BPF programs enforce blocking policy | **5.19.6:** BPF syscall omitted. **6.18.9-hs:** BPF is `=y`; Root Lock still does not rely on an unloadable eBPF policy. |
+| Wide kernel + security agent watching it | Custom kernel. Fielded **6.18.9-hs** keeps FUSE, OverlayFS, and stacked LSMs in, with the BPF syscall off. Enforcement is allowlist + Lockdown. |
+| BPF programs enforce blocking policy | The BPF syscall is off (`bpf()` returns `ENOSYS`). `CONFIG_BPF` and `CONFIG_BPF_JIT` are on. Root Lock does not rely on an unloadable eBPF policy. |
 | Kernel module driver provides telemetry | No HeartSuite agent module to kill. Other modules exist on 6.18.9-hs (thousands shipped). |
-| OverlayFS and FUSE enabled for containers | **5.19.6:** compiled out. **6.18.9-hs:** FUSE `=y`, OverlayFS `=m`. |
+| OverlayFS and FUSE enabled for containers | FUSE is built in. OverlayFS is a module. A container runtime on this host is not a supported configuration. |
 | Blocking depends on runtime configuration | Blocking is compiled into the kernel; the allowlist is sealed under Lockdown |
 
 ```mermaid
@@ -68,7 +68,7 @@ graph TB
 
 Standard Linux security tools are runtime layers an attacker who already has remote root can disable. Root Lock compiles enforcement into the kernel binary itself. The BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
 
-Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For the features Root Lock has compiled out, the answer is always no, without patching, without policy, without an agent checking.
+Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For a feature the booted kernel leaves unset, the vulnerable code is absent. On 6.18.9-hs that includes the BPF syscall. FUSE, OverlayFS, user namespaces, nftables, KVM, and io_uring are in that kernel, and their CVEs stay on the patch date. See [Kernel Security Transparency](../../security/).
 
 Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). Root Lock sits at Layer 2: enforcement is compiled into the kernel binary itself, not a program installed in userspace.
 
@@ -88,7 +88,7 @@ The comparison below is scoped to preventive enforcement. Telemetry, behavioural
 
 | Tool | What it does | How it can be disabled | How Root Lock compares |
 |---|---|---|---|
-| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker who already has remote root can unload the BPF program, kill the agent, or disable the BPF syscall | **5.19.6:** BPF syscall omitted. **6.18.9-hs:** BPF is `=y`; Root Lock still does not rely on an unloadable eBPF policy. There is no HeartSuite agent to kill. Enforcement is compiled in. |
+| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker who already has remote root can unload the BPF program, kill the agent, or disable the BPF syscall | The BPF syscall is off (`bpf()` returns `ENOSYS`). `CONFIG_BPF` and `CONFIG_BPF_JIT` are on. Root Lock does not rely on an unloadable eBPF policy. There is no HeartSuite agent to kill. Enforcement is compiled in. |
 | **AppArmor, SELinux, SMACK, Landlock** (LSM policy on a stock kernel) | Per-process MAC profiles limiting filesystem and capability access | Root can set SELinux to permissive, unload an AppArmor profile, or edit the policy file | Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. The files are immutable, and the kernel refuses the write. |
 | **seccomp-bpf sandboxes** (systemd services, browser sandboxes, bubblewrap, firejail) | Per-process syscall filters set by the process itself or its parent | A parent with equivalent privilege can spawn the same binary without the filter. Filters are scoped to a process tree, not to the program identity | Root Lock gates by program identity, not process lineage. A program's allowlist applies every time it runs, regardless of who spawned it. |
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | Root Lock *is* the kernel: one layer instead of two, with nothing to unload. It is the guest kernel in a VM the customer provides. |
@@ -112,7 +112,7 @@ Root Lock is designed so it has no agent process, no BPF program, and no unloada
 
 *LSM policy on a stock kernel* (AppArmor, SELinux, SMACK, Landlock) offers policy capabilities Root Lock does not replicate: SELinux refpolicy and domain transitions, AppArmor's distribution-shipped per-application profiles, Landlock's per-application self-confinement primitive. Root Lock's value is the sealed boundary (`chattr +i` immutability plus a running kernel that refuses runtime changes), not richer policy syntax.
 
-On **5.19.6**, `CONFIG_SECURITY_APPARMOR` is compiled out and existing profiles cease to apply at the first Root Lock kernel boot. On fielded **6.18.9-hs**, AppArmor is present in the live LSM list — do not assume profiles disappeared. A lab of the same root-shell path on Rocky SELinux versus Lockdown is in [What Lockdown refused after a root shell](../../../blog/2026/09/11/lockdown-after-a-root-shell/).
+On 6.18.9-hs, AppArmor is present in the live LSM list. Do not assume profiles disappeared at the first Root Lock boot. A lab of the same root-shell path on Rocky SELinux versus Lockdown is in [What Lockdown refused after a root shell](../../../blog/2026/09/11/lockdown-after-a-root-shell/).
 
 *seccomp-bpf sandboxes* in systemd services, browser sandboxes, bubblewrap, and firejail sit closer to the syscall surface than Root Lock can. A Chromium renderer's own seccomp filter is genuine defence-in-depth from inside the program; Root Lock does not replace it, and both layers are worth keeping.
 
@@ -156,7 +156,7 @@ For any environment running software it did not write, which is most production 
 
 Root Lock's policy is an allowlist file, which is what an attacker who already has root would want to change, so Lockdown seals it: the files are immutable, and the kernel refuses the write.
 
-**Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. Root Lock targets Linux 5.19.6 and 6.18 natively.
+**Platform.** Capsicum is primary on FreeBSD. Linux support is incomplete. Root Lock targets Linux 6.18 natively.
 
 The two designs make opposite choices: modify the application, or maintain a policy database. For a Linux fleet running software you did not write, Root Lock's approach (maintain the database, get transparency and the full Setup → Lockdown lifecycle) is the one that covers the workload.
 
@@ -186,7 +186,7 @@ Root Lock's Setup Mode is the practical answer for standard infrastructure: run 
 
 Root Lock's policy is an allowlist file, which is what an attacker who already has root would want to change, so Lockdown seals it: the files are immutable, and the kernel refuses the write. seL4 makes authority impossible to forge; Root Lock seals the allowlist after Lockdown engages (see [Circumvention and recovery](#circumvention-and-recovery)).
 
-**Platform.** seL4 is not a Linux kernel; standard Linux software requires a full porting effort to run on it. Root Lock targets Linux 5.19.6 and 6.18 and is installed by replacing the kernel on an existing host.
+**Platform.** seL4 is not a Linux kernel; standard Linux software requires a full porting effort to run on it. Root Lock targets Linux 6.18 and is installed by replacing the kernel on an existing host.
 
 The two approaches make opposite foundational choices: build the OS from a proof up, or enforce on the software stack that already exists. For commercial infrastructure running standard Linux software, Root Lock is the option that ships.
 
@@ -208,7 +208,7 @@ At Lockdown it seals the allowlist and the critical system paths: the files are 
 
 **The Setup Mode gap.** Fuchsia has no learning phase and no operator-facing allowlist tooling for standard server software, because standard server software does not run on Fuchsia. Root Lock's Setup Mode records what each binary does; you review and approve through the Dashboard queues, then engage Lockdown. The workflow exists because Root Lock deploys on the software stack already running in production.
 
-**Platform.** Fuchsia targets embedded devices and consumer hardware. It is not a Linux kernel and has no server deployment path. Root Lock targets Linux 5.19.6 and 6.18 server deployments and is installed by replacing the kernel on an existing host.
+**Platform.** Fuchsia targets embedded devices and consumer hardware. It is not a Linux kernel and has no server deployment path. Root Lock targets Linux 6.18 server deployments and is installed by replacing the kernel on an existing host.
 
 Fuchsia's security architecture is more restrictive at every layer: per-component namespaces, cryptographic verification, handle-only access, userspace drivers. Root Lock provides enforced per-program allowlisting on existing Linux deployments without rebuilding the OS. For any organization running Linux infrastructure today, Root Lock is the option that deploys.
 
@@ -309,8 +309,8 @@ On-host eBPF tooling and a KVM hypervisor host are not a fit. Overlay filesystem
 
 - **Docker, containerd, Kubernetes, CRI-O, and Podman.** These are not a supported workload on a Root Lock host, and no install profile makes this host a container host. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 - **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
-- **Hypervisor hosts running VMs via KVM.** KVM host features are compiled out of 5.19.6 to reduce attacker reach; 6.18.9-hs builds KVM as modules, but hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
-- **Systems that require rootless containers.** User namespaces are omitted from 5.19.6 and built into 6.18.9-hs, where rootless containers are still not a supported configuration; unprivileged user namespaces are a path to privilege escalation without credentials. Use a separate host.
+- **Hypervisor hosts running VMs via KVM.** The 6.18.9-hs kernel builds KVM as modules. Hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
+- **Systems that require rootless containers.** User namespaces are built in on 6.18.9-hs. Rootless containers are not a supported configuration. Use a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 

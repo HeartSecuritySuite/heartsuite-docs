@@ -180,7 +180,7 @@ This is the primary use case of Root Lock. The implementation is structural, not
 
 **Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not. In Lockdown, it is blocked before the interpreter processes it.
 
-**Reduced kernel features attackers can reach**: The Root Lock kernel omits eBPF, FUSE, overlay filesystems, user namespaces, and competing LSMs. Those are how attackers hide, shadow directories, and reach root.
+**Reduced kernel features attackers can reach**: On the 6.18.9-hs kernel that ships, the BPF syscall is off, so there is no eBPF program to load. FUSE and user namespaces are built in, OverlayFS is a kernel module, and AppArmor is built in. A workload that needs those is not a supported configuration.
 
 See [System Requirements](../introduction/system-requirements/#software-compatibility-notes) and [Deployment Scenarios](../introduction/deployment-scenarios/) for details.
 
@@ -194,8 +194,8 @@ See [System Requirements](../introduction/system-requirements/#software-compatib
 
 - Alert log showing blocked execution attempts in Lockdown
 - Dashboard Programs queue showing items blocked and denied
-- Kernel configuration file (`/.hs/sys/` kernel config) showing compiled-out features
-- CVE status table from Kernel Security Transparency page showing features not compiled in
+- Kernel configuration for the 6.18.9-hs kernel you boot
+- CVE status table on the Kernel Security Transparency page
 - Backup configuration and version history showing per-write versioning
 
 ---
@@ -210,7 +210,7 @@ A customer scanner remains the usual CC7.1 control. Root Lock can reduce the bla
 
 **How Root Lock can support a customer control**:
 
-**Vulnerability surface reduction**: Root Lock reduces the kernel features attackers can reach by removing them at compile time. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel, with per-CVE "Score on Root Lock" ratings showing the actual risk after those structural mitigations. CVEs affecting kernel features not compiled in receive a Score on Root Lock of 0.0 — the vulnerable feature is not present by design.
+**Vulnerability surface reduction**: Where the kernel you boot leaves an option unset, that code is absent and the Score on Root Lock for those CVEs is 0.0. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel. On 6.18.9-hs, an option that is built stays on the patch date.
 
 **Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, Root Lock configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel.
 

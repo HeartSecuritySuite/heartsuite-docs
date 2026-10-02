@@ -55,7 +55,7 @@ The table below lists the kernel-level bypass vectors most relevant to MAC enfor
 | `OVERLAY_FS` — `d_path()` mismatch in overlay mounts | **Closed** (`=n`) | Open | Open | Open |
 | `USER_NS` — fake root via user namespace | **Closed** (`=n`) | Open | Open | Open |
 
-An attacker who can reach any "Open" primitive has a path to bypass LSM enforcement regardless of how well the policy is written. HeartSuite closes all four vectors above at the kernel config level.
+An attacker who can reach any "Open" primitive has a path to bypass LSM enforcement regardless of how well the policy is written. On 5.19.6, HeartSuite closes all four vectors above at the kernel config level.
 
 ---
 
@@ -78,7 +78,7 @@ Choose Root Lock when:
 - You are deploying a **single-purpose appliance** running one or a small set of known workloads.
 - Your threat model centers on **containment escape** — a compromised application attempting to break out of its enforcement boundary.
 - You want **zero policy surface** — no policy file, no `audit2allow`, no profile to misconfigure.
-- BPF tooling, container runtimes, FUSE mounts, and user namespaces are **not part of the system's attack surface** — they are absent from the kernel, not restricted by policy.
+- On kernel 5.19.6, BPF tooling, container runtimes, FUSE mounts, and user namespaces are **not part of that kernel's attack surface** — they are absent from the 5.19.6 kernel, not restricted by policy.
 - You want a **violation-focused audit trail**: every denied file access, network connection, and sandbox violation is logged with the specific program path and target resource. In Setup Mode, would-be denials are logged and permitted simultaneously. That gives full visibility into the policy surface without blocking anything.
 - You want independent verifiability: the kernel config SHA-256 is published and measurements are reproducible with an open-source tool.
 
@@ -86,7 +86,7 @@ Choose Root Lock when:
 
 ## Co-existence
 
-Root Lock does not stack with AppArmor or TOMOYO. Both are kernel-disabled (`CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`).
+On kernel 5.19.6, Root Lock does not stack with AppArmor or TOMOYO. Both are kernel-disabled on 5.19.6 (`CONFIG_SECURITY_APPARMOR=n`, `CONFIG_SECURITY_TOMOYO=n`).
 
 **SELinux** can run alongside Root Lock. Root Lock's VFS hooks fire before the LSM chain (`security_path_*()` calls). The ordering means:
 
