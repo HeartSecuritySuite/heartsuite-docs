@@ -63,6 +63,14 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis]
 
 {{< /details >}}
 
+{{< details summary="How do I stop using Root Lock on a host?" >}}
+
+A: Reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, and select the original distribution kernel at GRUB. Root Lock is part of the Root Lock kernel binary, so there is no module to unload and no service to stop. Every install keeps the original distribution kernel in GRUB.
+
+If a boot menu password was set before Lockdown, picking another kernel entry asks for it. See [Recovery and fallback](kernel-hardening/enterprise-adoption-guide/#recovery-and-fallback-the-maintenance-kernel-as-supported-escape-hatch).
+
+{{< /details >}}
+
 {{< details summary="Who is Root Lock for?" >}}
 
 A: Root Lock fits systems where the same programs do the same jobs, day after day — production servers with defined stacks, closed appliances and embedded devices, regulated workstations, build and CI infrastructure, and AI agent sandboxes inside per-task virtual machines. It is for operators who need a kernel allowlist they can build without custom MAC policy, then seal so root cannot unload it.
