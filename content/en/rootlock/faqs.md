@@ -65,9 +65,9 @@ See [How Root Lock Compares](introduction/how-it-compares/) and [Layer Analysis]
 
 {{< details summary="How do I stop using Root Lock on a host?" >}}
 
-A: Reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, and select the original distribution kernel at GRUB. Root Lock is part of the Root Lock kernel binary, so there is no module to unload and no service to stop. Every install keeps the original distribution kernel in GRUB.
+A: The console pick does not remove Root Lock from the host. Reboot from a keyboard and monitor, a serial port, a BMC, or your cloud serial console, and select **Maintenance: unseal and return to Root Lock**. That boot runs `HS_unlock.sh` and returns you to the Root Lock kernel in Setup Mode. The GRUB default stays Root Lock, so the next reboot boots Root Lock again.
 
-If a boot menu password was set before Lockdown, picking another kernel entry asks for it. See [Recovery and fallback](kernel-hardening/enterprise-adoption-guide/#recovery-and-fallback-the-maintenance-kernel-as-supported-escape-hatch).
+If a boot menu password was set before Lockdown, that entry asks for the GRUB name `root` and the boot menu password, while the everyday Root Lock entry does not ask. See [Protecting During Maintenance](maintenance/protecting-during-maintenance/).
 
 {{< /details >}}
 
