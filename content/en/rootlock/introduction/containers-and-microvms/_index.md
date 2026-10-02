@@ -2,7 +2,7 @@
 title: "Containers, microVMs, and the sealed host"
 linkTitle: "Containers & microVMs"
 weight: 6
-description: "Shared-kernel Docker, containerd, Kubernetes, and CRI-O are not a supported workload. OCI images are built and run on another host. Root Lock runs as the guest kernel inside a virtual machine."
+description: "Shared-kernel Docker, containerd, Kubernetes, and CRI-O are not a fit by design: under Lockdown, Root Lock refuses the new mounts a runtime makes. OCI images are built and run on another host. Root Lock runs as the guest kernel inside a virtual machine."
 categories: ["Essentials"]
 tags: ["heartsuite", "linux", "containers", "docker", "firecracker", "kata", "microvm"]
 type: docs
@@ -15,13 +15,13 @@ menu:
     identifier: "containers-and-microvms"
 ---
 
-**Overview**: Shared-kernel Docker is not a supported workload on a Root Lock host.
+**Overview**: Shared-kernel Docker on a Root Lock host is not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container.
 
 Build and run OCI images on another host. When a task should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
 ## Why Docker is not a fit on this host
 
-Docker, containerd, Podman, and runc isolate processes on the host kernel. A container runtime on it is not a supported configuration: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
+Docker, containerd, Podman, and runc isolate processes on the host kernel. A container runtime on it is not a fit by design: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
 A backup receiver that accepts Restic over SFTP runs a handful of programs and needs no container engine. Run the container engine on another host, and let Root Lock protect the machines around it.
 
@@ -31,7 +31,7 @@ A backup receiver that accepts Restic over SFTP runs a handful of programs and n
 |---|---|---|
 | **Firecracker** | A small virtual machine monitor that uses KVM to boot microVMs quickly and densely, each with its own guest kernel. Built for multi-tenant isolation. | Runs underneath platform workloads rather than on developer laptops; Docker Desktop keeps its role for everyday development. |
 | **Kata Containers** | An OCI/Kubernetes runtime that runs each container image inside a light VM, with QEMU, Cloud Hypervisor, or Firecracker as the backend. | Uses the same OCI image format, and moves the isolation boundary from the shared kernel to a VM. |
-| **Docker / containerd / runc** | Shared-kernel packaging and runtime: process isolation on the host kernel. | The shared-kernel baseline, and not a supported workload on a Root Lock host. |
+| **Docker / containerd / runc** | Shared-kernel packaging and runtime: process isolation on the host kernel. | Not a fit by design on a Root Lock host: under Lockdown, Root Lock refuses the new mounts a runtime makes. |
 
 Platforms that run untrusted or multi-tenant code put Firecracker or Kata underneath the workload, so each tenant gets its own kernel. Everyday microservices still ship as Docker/OCI images on a shared-kernel runtime. Firecracker signals strong isolation, and it sits alongside Docker rather than replacing it.
 
@@ -71,14 +71,14 @@ Running Firecracker or Kata on a Root Lock kernel, so that this box becomes the 
 |---|---|---|
 | Backup / SFTP dump target, single-purpose server | Root Lock host → seed allowlist → Lockdown | [Production servers](../deployment-scenarios/#production-servers), [Closed appliances](../deployment-scenarios/#closed-appliances-and-embedded-devices) |
 | Build/CI fixed toolchain | Same | [Build, CI, and release infrastructure](../deployment-scenarios/#build-ci-and-release-infrastructure) |
-| Docker, containerd, Kubernetes, CRI-O, or Podman, including continuous scheduling | Not a fit on this host. Build and run the images on another host | [Shared-kernel containers](../deployment-scenarios/#container-hosts), [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
+| Docker, containerd, Kubernetes, CRI-O, or Podman, including continuous scheduling | Not a fit by design on this host. Under Lockdown, Root Lock refuses the new mounts a runtime makes. Build and run the images on another host | [Shared-kernel containers](../deployment-scenarios/#container-hosts), [Where it is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit) |
 | AI agent with a scoped tool set | Guest Root Lock in a per-task VM | [AI agent sandboxes](../deployment-scenarios/#ai-agent-and-automation-sandboxes) |
 
 ## Comparison
 
 | Approach | Isolation boundary | On a Root Lock kernel |
 |---|---|---|
-| Docker / runc on this host | Shared host kernel | Not a supported workload. |
+| Docker / runc on this host | Shared host kernel | Not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. |
 | gVisor | Userspace syscall filter | Discussed as a peer under [How it compares](../how-it-compares/); different threat model |
 | Firecracker / Kata microVM | Hardware VM boundary | Compose with Root Lock as the guest kernel |
 | Root Lock Lockdown | Sealed allowlist in the Root Lock kernel itself | Shipped product core |
@@ -89,7 +89,7 @@ Root Lock makes sure programs do only what you approved. A microVM adds an optio
 
 {{< details summary="Can I run Docker on a Root Lock host?" >}}
 
-A: No. Root Lock ships a single install for hosts with a fixed set of programs, and a container runtime on the Root Lock kernel is not a supported configuration. Under Lockdown, Root Lock refuses the new mounts a runtime makes when it starts containers. Build and run the images on another host. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel. See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
+A: No. Root Lock ships a single install for hosts with a fixed set of programs, and a container runtime on the Root Lock kernel is not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes when it starts containers. Build and run the images on another host. For untrusted or multi-tenant work, run the workload in a VM or microVM with Root Lock as the guest kernel. See [Deployment Scenarios → Shared-kernel containers](../deployment-scenarios/#container-hosts) and [FAQs](../../faqs/).
 
 {{< /details >}}
 

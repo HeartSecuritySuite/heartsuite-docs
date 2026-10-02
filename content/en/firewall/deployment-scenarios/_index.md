@@ -61,7 +61,7 @@ A hardware appliance (TPM / measured boot) is planned. v1 is the virtual image. 
 
 ### Shared-kernel container hosts
 
-This appliance is a closed image with no container engine, and Docker, containerd, Kubernetes, and CRI-O are not a supported workload on the Root Lock kernel either, so build and run those images on another host. See Root Lock [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts).
+This appliance is a closed image with no container engine. Docker, containerd, Kubernetes, CRI-O, and Podman are not a fit on the Root Lock kernel by design: under Lockdown, Root Lock refuses the new mounts a runtime makes, so build and run those images on another host. See Root Lock [Deployment Scenarios](../../rootlock/introduction/deployment-scenarios/#container-hosts).
 
 ### A WAF or API gateway requirement
 

@@ -23,9 +23,9 @@ toc: true
 
 Root Lock uses a custom-built Linux kernel, mainline LTS 6.18.9-hs, so enforcement is in the kernel an attacker who already has remote root is running.
 
-The BPF syscall is off. There is no eBPF program to load or unload.
+The BPF syscall is off by design. There is no eBPF program to load or unload.
 
-A container runtime or a KVM host on this kernel is not a supported configuration.
+A container runtime on this kernel is not a fit by design: under Lockdown, Root Lock refuses the new mounts a runtime makes. A KVM host on this kernel is not a supported configuration.
 
 Root Lock does not rely on an unloadable eBPF policy.
 
@@ -89,10 +89,10 @@ Root Lock is designed to coexist with the majority of enterprise infrastructure 
 
 **Does not run on the Root Lock kernel** (use a kernel that still has these features, a separate host, or alternative controls):
 
-- Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — the BPF syscall is omitted.
-- Docker, containerd, Kubernetes, CRI-O, and Podman on this host, including a fixed pod set, are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
+- Local execution of eBPF-based tools (Falco, Cilium Tetragon, bpftrace, etc.) — not a fit by design. The BPF syscall is off, so there is no eBPF program to load.
+- Docker, containerd, Kubernetes, CRI-O, and Podman on this host, including a fixed pod set, are not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 - KVM hypervisor hosts. Root Lock runs as a guest.
-- Rootless / unprivileged user-namespace containers are not a supported workload.
+- Rootless / unprivileged user-namespace containers are not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes.
 - Any workload that needs a kernel option the 6.18.9-hs config leaves unset.
 
 **Decision tree (high level)**

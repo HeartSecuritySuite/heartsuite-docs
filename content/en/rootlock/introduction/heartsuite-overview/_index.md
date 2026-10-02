@@ -88,7 +88,7 @@ Cloud Path and Local Path install one machine at a time, and Ansible, Terraform,
 
 ## Is Root Lock right for you?
 
-Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman), shared-kernel container guests, local eBPF tooling, and rootless containers are not a fit. See [Deployment Scenarios](../deployment-scenarios/#container-hosts).
+Root Lock fits production servers, closed appliances, regulated workstations, build and CI infrastructure, and AI agent sandboxes. Containers fit as OCI images built and run off-host. Shared-kernel containers (Docker, containerd, Kubernetes, CRI-O, Podman) and rootless containers are not a fit by design: under Lockdown, Root Lock refuses the new mounts a runtime makes. A shared-kernel container guest is not a fit by design, because Root Lock must boot its own kernel. Local eBPF tooling is not a fit by design: the BPF syscall is off, so there is no eBPF program to load. See [Deployment Scenarios](../deployment-scenarios/#container-hosts).
 
 If you already run Falco, AppArmor, gVisor, a Linux EDR agent, a SIEM, NDR, or a scanner, see [How Root Lock Compares](../how-it-compares/) and [Security as economics](../security-as-economics/).
 

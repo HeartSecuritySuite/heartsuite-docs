@@ -35,17 +35,17 @@ New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel.
 
 ## Software compatibility notes
 
-The BPF syscall is off on the 6.18.9-hs kernel, so eBPF tools cannot attach.
+The BPF syscall is off by design on the 6.18.9-hs kernel, so eBPF tools cannot attach.
 
 The Root Lock kernel is installed alongside your existing kernel via GRUB — it does not replace it. In Setup Mode, programs that would be blocked under Lockdown appear in the Dashboard review queues, so you see them before you lock down. Software not listed below runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 
 | Workload | On the Root Lock kernel |
 |-----------|-------------------------|
-| eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Syscall omitted |
+| eBPF tooling (Falco, bpftrace, bcc, Cilium, Tetragon, …) | Not a fit by design. The BPF syscall is off, so there is no eBPF program to load. |
 | FUSE (sshfs, s3fs, rclone, AppImage, gocryptfs, …) | Not a supported workload |
-| Overlay / typical container storage | Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides. |
+| Overlay / typical container storage | Not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. Build and run Docker, containerd, Kubernetes, CRI-O, and Podman images off this host, or run Root Lock as the guest kernel in a VM the customer provides. |
 | AppArmor userspace (Snap, Ubuntu profiles, LXD) | Not a supported workload |
-| Unprivileged user namespaces / rootless containers | Not a supported workload |
+| Unprivileged user namespaces / rootless containers | Not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. |
 | KVM hypervisor **host** | Not a supported product role. Root Lock as a **guest** on KVM/VMware/cloud is supported. |
 
 ## Bare metal, virtual machines, and nested VMs
@@ -60,7 +60,7 @@ What differs is the machine you run it on: firmware and real devices on metal; v
 | **Full VM with hardware virtualization** (KVM, VMware, AWS/GCP/Azure and other cloud hypervisors) | Yes | The hypervisor serial console is the boot path (`virsh console`, AWS EC2 Serial Console, Linode LISH, Hetzner console, and similar). Devices are virtio or the cloud equivalent. |
 | **A VM nested inside another VM without hardware virtualization** | No | The installer stops at the start. Install on the outer machine, or use a host that exposes `/dev/kvm`. |
 
-Root Lock must boot its own kernel, so it runs on bare metal or a full VM. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman sharing the provider kernel, systemd-nspawn) belong on a separate host. A nested guest needs `/dev/kvm` on the outer machine; if `/dev/kvm` is missing, install Root Lock on the outer machine itself.
+Root Lock must boot its own kernel by design, so it runs on bare metal or a full VM. Shared-kernel container guests (OpenVZ, LXC, Docker/Podman sharing the provider kernel, systemd-nspawn) belong on a separate host. A nested guest needs `/dev/kvm` on the outer machine; if `/dev/kvm` is missing, install Root Lock on the outer machine itself.
 
 See [Where Root Lock is not a fit](../deployment-scenarios/#where-root-lock-is-not-a-fit).
 

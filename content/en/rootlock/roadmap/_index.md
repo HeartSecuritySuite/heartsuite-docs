@@ -171,9 +171,9 @@ gantt
 
 > [!NOTE]
 > **eBPF intentionally disabled** (2022)  
-> On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load.
+> On 6.18.9-hs the BPF syscall is off by design, so there is no eBPF program to load. Root Lock does not enforce through eBPF.
 >
-> Local eBPF tooling is not a fit. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
+> Local eBPF tooling is not a fit for that reason. Observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and `/proc` inspection.
 
 > [!NOTE]
 > **Network Allowlist — IP-Literal Kernel Enforcement** (2022)  
@@ -320,7 +320,7 @@ Root Lock is the guest kernel in a VM the customer provides. See [Containers and
 
 What is still under evaluation: **host-as-VMM** — a Root Lock host that allowlists only the microVM stack and keeps untrusted work in throwaway guests. A Root Lock kernel as the KVM *host* is not a supported product role.
 
-Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
+Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 
 {{% /tab %}}
 {{% tab header="Planned" %}}

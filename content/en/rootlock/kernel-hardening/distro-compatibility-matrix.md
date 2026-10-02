@@ -186,15 +186,15 @@ Root Lock as a **hypervisor host** (running VMs from this kernel) is **not a sup
 
 Distribution compatibility answers whether Root Lock **installs and boots** on your base OS. Whether a **workload** belongs on that host is a separate decision.
 
-On the kernel that ships, the BPF syscall is off, so there is no eBPF program to load.
+On the kernel that ships, the BPF syscall is off by design, so there is no eBPF program to load.
 
 | Requirement | On the kernel that ships | On 5.19 legacy |
 |-------------|--------------------------|----------------|
-| Local eBPF tooling (Falco, bpftrace, bcc, …) | The BPF syscall is off. | Syscall not compiled. |
+| Local eBPF tooling (Falco, bpftrace, bcc, …) | Not a fit by design. The BPF syscall is off, so there is no eBPF program to load. | Syscall not compiled. |
 | FUSE mounts (sshfs, s3fs, AppImage, …) | New mounts after Lockdown follow product mount rules. | FUSE not compiled. |
-| Overlay / typical container storage | Docker, containerd, Kubernetes, CRI-O, and Podman on a Root Lock host are not a supported workload. | Overlay not compiled. |
+| Overlay / typical container storage | Not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. | Overlay not compiled. |
 | KVM **hypervisor host** | **Not a supported product role.** | Not compiled. |
-| Rootless / unprivileged user-namespace containers | Rootless containers are not a supported workload on this host. | User namespaces not compiled. |
+| Rootless / unprivileged user-namespace containers | Not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. | User namespaces not compiled. |
 | Root Lock as a **guest** inside KVM, VMware, or cloud hypervisors | Yes | Yes |
 | Fixed appliance, regulated server, closed workload set | Yes | Yes |
 

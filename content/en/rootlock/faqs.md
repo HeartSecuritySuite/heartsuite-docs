@@ -79,9 +79,9 @@ Autoscaling groups fit too: profile one reference host of that class, then bake 
 
 Containers fit as OCI images built and run on a separate host, with Root Lock protecting the fixed-workload hosts around them — see [Shared-kernel containers](introduction/deployment-scenarios/#container-hosts).
 
-Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit.
+Running Docker, containerd, Kubernetes, CRI-O, or Podman on a Root Lock host is not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container.
 
-Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit: Root Lock does not enforce through eBPF, and those tools need the BPF syscall. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
+Hosts that run eBPF-based tools like Falco, Cilium, or Tetragon as their enforcement layer are not a fit by design: Root Lock does not enforce through eBPF, and the BPF syscall is off, so there is no eBPF program for those tools to load. See [Deployment Scenarios](introduction/deployment-scenarios/) for the full breakdown.
 
 {{< /details >}}
 
@@ -107,7 +107,7 @@ A: Yes, across a fleet of similar hosts. Each host runs the Root Lock kernel wit
 
 Each host still installs through Cloud Path or Local Path; Ansible runs that install and then applies policy.
 
-**Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a supported workload, including a long-lived fixed pod set. Run that workload in a Firecracker or Kata microVM instead, with Root Lock as the guest kernel. See [Deployment Scenarios](introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes) and [Containers and microVMs](introduction/containers-and-microvms/). Root Lock does not ship Firecracker or Kata. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs.
+**Kubernetes:** a cluster that schedules pods onto the Root Lock host is not a fit by design, including a long-lived fixed pod set. Under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. Run that workload in a Firecracker or Kata microVM instead, with Root Lock as the guest kernel. See [Deployment Scenarios](introduction/deployment-scenarios/#ai-agent-and-automation-sandboxes) and [Containers and microVMs](introduction/containers-and-microvms/). Root Lock does not ship Firecracker or Kata. The same allowlist can still be copied across Root Lock hosts that run a fixed set of programs.
 
 Because Root Lock works on each host individually, event correlation stays in your SIEM, policy reconciliation in Git or your configuration management, and compliance reporting in your GRC tool. See [Central Policy Management](alerts/central-policy-management/).
 
@@ -149,7 +149,7 @@ A: Root Lock replaces the preventive-enforcement layer of the following tool cat
 
 **What Root Lock can replace (narrowly):**
 
-- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): the allowlist covers blocking, and on 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. These tools cannot run on the Root Lock kernel. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
+- **Commercial eBPF enforcement tools** (Sysdig Secure, commercial Falco, Cilium Tetragon): the allowlist covers blocking, and Root Lock removes the BPF syscall by design. On 6.18.9-hs there is no eBPF program to load. These tools cannot run on the Root Lock kernel. OSS Falco carries no licensing cost but does carry ongoing rule-tuning overhead that goes away.
 - **gVisor**: if used solely to protect workloads from root-level compromise inside a VM or microVM, Root Lock is a direct replacement as the guest kernel.
 - **AppArmor / SELinux**: no licensing cost, but the policy-authoring and drift-management overhead is replaced by observation-driven allowlist setup. See [Security as Economics](introduction/security-as-economics/) for the full comparison.
 - **The blocking dimension of Linux EDR** (CrowdStrike Falcon, SentinelOne, MDE): prevention is replaced. Telemetry, behavioural analytics, and SOC console are not. Some vendors offer lighter-tier pricing once the workload prevention layer moves to Root Lock.
@@ -297,7 +297,7 @@ The hypervisor's own controls — serial console, pause/snapshot, and attaching 
 
 A guest-to-host escape attacks the hypervisor itself. If it succeeds, the attacker is running outside the guest kernel, where no guest kernel's controls reach.
 
-Shared-kernel containers (Docker/LXC as the *install target*) are not a fit: Root Lock must boot its own kernel. Root Lock as a hypervisor host is not a supported product role.
+Shared-kernel containers (Docker/LXC as the *install target*) are not a fit by design: Root Lock must boot its own kernel. Root Lock as a hypervisor host is not a supported product role.
 
 See [Containers and microVMs](introduction/containers-and-microvms/) and [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery).
 
@@ -321,7 +321,7 @@ A: The Root Lock kernel is installed alongside your existing kernel via GRUB —
 
 Setup Mode reveals compatibility issues before anything is blocked: the kernel logs all activity without blocking, and programs that would fail in Lockdown appear in the Dashboard review queues.
 
-On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. See [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
+On 6.18.9-hs the BPF syscall is off by design, so there is no eBPF program to load. See [System Requirements → Software Compatibility Notes](introduction/system-requirements/#software-compatibility-notes). Software not listed in that table runs on the Root Lock kernel like any other program: under Lockdown it needs an allowlist entry.
 
 {{< /details >}}
 

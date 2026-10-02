@@ -98,20 +98,20 @@ An attacker who already has root inside the VM cannot turn this off. Its enforce
 
 ## Shared-kernel containers {#container-hosts}
 
-Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload on a Root Lock host. The installer can notice that one of those engines is present, but it records the host as a standard host and does not adapt Setup Mode for container images.
+Docker, containerd, Kubernetes, CRI-O, and Podman are not a supported workload on a Root Lock host, by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. The installer can notice that one of those engines is present, but it records the host as a standard host and does not adapt Setup Mode for container images.
 
 Build and run OCI images on another host. Root Lock protects the fixed-workload machines around that runtime. For a task that should sit in its own machine, install Root Lock as the guest kernel in a virtual machine.
 
 ## Where Root Lock is not a fit
 
-A few workloads are incompatible with the Root Lock kernel as shipped — **not a fit by design**. The BPF syscall is off.
+A few workloads are incompatible with the Root Lock kernel as shipped — **not a fit by design**.
 
 - **Shared-kernel container guests (OpenVZ, LXC, Docker/Podman guests on a provider kernel, systemd-nspawn)** — Root Lock must boot its own kernel by design. Full VMs under KVM or cloud hypervisors are supported; Root Lock runs as a guest kernel inside them.
-- **Shared-kernel container engines on this host (Docker, containerd, CRI-O, Kubernetes, Podman)** — not a fit, including a long-lived or fixed set of containers. Build and run those images on another host. See [Shared-kernel containers](#container-hosts) above.
-- **Hosts where eBPF-based tooling must run locally** — Falco, Cilium, Tetragon, bpftrace, and similar tools need the BPF syscall. On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. These tools can still observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and /proc inspection.
+- **Shared-kernel container engines on this host (Docker, containerd, CRI-O, Kubernetes, Podman)** — not a fit by design, including a long-lived or fixed set of containers. Under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. Build and run those images on another host. See [Shared-kernel containers](#container-hosts) above.
+- **Hosts where eBPF-based tooling must run locally** — not a fit by design. Falco, Cilium, Tetragon, bpftrace, and similar tools need the BPF syscall, and Root Lock does not enforce through eBPF. On 6.18.9-hs the BPF syscall is off, so there is no eBPF program to load. These tools can still observe the Root Lock host from adjacent infrastructure via network taps or log forwarding. For on-host forensics, use strace and /proc inspection.
 - **Hypervisor hosts running virtual machines** — Root Lock protects workloads running *inside* a kernel. A hypervisor host grants trusted access to guest workloads it does not control — the inverse model. KVM host mode is not a supported configuration. Root Lock runs as a guest on KVM, cloud hypervisors, and other platforms.
 - **A VM nested inside another VM without hardware virtualization** — a VPS or cloud guest is already a virtual machine. Install Root Lock there, or on a host that exposes `/dev/kvm`. Nesting a second guest without hardware virtualization causes the installer to stop at the start. See [Bare metal, virtual machines, and nested VMs](../system-requirements/#bare-metal-virtual-machines-and-nested-vms).
-- **Rootless containers** — not a fit. Run them on a separate host.
+- **Rootless containers** — not a fit by design. Under Lockdown, Root Lock refuses the new mounts a runtime makes. Run them on a separate host.
 - **Applications that update daily or on an unpredictable schedule** — each update that adds a new binary, dependency, or network destination requires a maintenance window: open Setup Mode, run the update, approve the new allowlist entries, and re-engage Lockdown. That process fits controlled patch schedules. At daily cadence the overhead is daily. Applications with a predictable update cycle are a better fit.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
