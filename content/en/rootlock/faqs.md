@@ -133,11 +133,7 @@ See [How Root Lock Compares](introduction/how-it-compares/) for a side-by-side t
 
 {{< details summary="How does Root Lock compare to SELinux specifically?" >}}
 
-A: SELinux is a strong MAC framework — it confines processes using labels, enforces type-based file access controls, and limits capability use across the system. For organizations that maintain SELinux policy (refpolicy or targeted), it provides fine-grained control that Root Lock does not replicate.
-
-The limitation on a typical distro is the trust boundary. Root can set SELinux to permissive mode, reload a relaxed policy, or edit policy files directly.
-
-Root Lock is not an LSM, so it has no policy mode for root to switch. Setup Mode logs what each program did, you approve it in the queues, and Lockdown seals that allowlist: the files are made immutable (`chattr +i`) and the kernel refuses the write that would clear the flag, even from root. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console, not an SSH session. After unseal, you work over SSH in Setup Mode.
+A: Root can set SELinux to permissive mode, reload a relaxed policy, or edit the policy files. Root Lock is not an LSM, so it has no policy mode for root to switch. Setup Mode logs what each program did, you approve it in the queues, and Lockdown seals that allowlist: the files are made immutable (`chattr +i`) and the kernel refuses the write that would clear the flag, even from root. Unsealing takes booting the maintenance kernel from a keyboard and monitor, a serial port, a BMC, or your cloud provider's serial console, not an SSH session. After unseal, you work over SSH in Setup Mode.
 
 The two are not mutually exclusive. SELinux's domain transitions and distribution-shipped per-application profiles add policy depth Root Lock does not provide; Root Lock adds the sealed boundary SELinux does not. See [How Root Lock Compares](introduction/how-it-compares/) for the full side-by-side. A lab of the same root-shell path is in [What Lockdown refused after a root shell](../../blog/2026/09/11/lockdown-after-a-root-shell/).
 
