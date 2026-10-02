@@ -32,10 +32,10 @@ Your SIEM, network detection, vulnerability scanner, or HIDS. Those answer diffe
 
 | Standard Linux | Root Lock |
 |---|---|
-| Wide kernel + security agent watching it | Custom kernel. Fielded **6.18.9-hs** keeps FUSE, OverlayFS, and stacked LSMs in, with the BPF syscall off. Enforcement is allowlist + Lockdown. |
-| BPF programs enforce blocking policy | The BPF syscall is off (`bpf()` returns `ENOSYS`). `CONFIG_BPF` and `CONFIG_BPF_JIT` are on. Root Lock does not rely on an unloadable eBPF policy. |
-| Kernel module driver provides telemetry | No HeartSuite agent module to kill. Other modules exist on 6.18.9-hs (thousands shipped). |
-| OverlayFS and FUSE enabled for containers | FUSE is built in. OverlayFS is a module. A container runtime on this host is not a supported configuration. |
+| Wide kernel + security agent watching it | Custom kernel. The BPF syscall is off. Enforcement is allowlist + Lockdown. |
+| BPF programs enforce blocking policy | The BPF syscall is off (`bpf()` returns `ENOSYS`). Root Lock does not rely on an unloadable eBPF policy. |
+| Kernel module driver provides telemetry | No HeartSuite agent module to kill. |
+| OverlayFS and FUSE enabled for containers | A container runtime on this host is not a supported configuration. |
 | Blocking depends on runtime configuration | Blocking is compiled into the kernel; the allowlist is sealed under Lockdown |
 
 ```mermaid
@@ -68,7 +68,7 @@ graph TB
 
 Standard Linux security tools are runtime layers an attacker who already has remote root can disable. Root Lock compiles enforcement into the kernel binary itself. The BPF syscall is absent, so there is no eBPF layer to unload, no agent to kill.
 
-Every published Linux kernel CVE comes with the same question: is that kernel feature compiled into your hosts? For a feature the booted kernel leaves unset, the vulnerable code is absent. On 6.18.9-hs that includes the BPF syscall. FUSE, OverlayFS, user namespaces, nftables, KVM, and io_uring are in that kernel, and their CVEs stay on the patch date. See [Kernel Security Transparency](../../security/).
+For a feature the booted kernel leaves unset, the vulnerable code is absent. On 6.18.9-hs that includes the BPF syscall. See [Kernel Security Transparency](../../security/).
 
 Most runtime security tools sit at Layer 3 (LSM hooks such as SELinux and AppArmor) or Layer 5 (userspace EDR agents such as CrowdStrike Falcon and SentinelOne). Root Lock sits at Layer 2: enforcement is compiled into the kernel binary itself, not a program installed in userspace.
 
@@ -88,7 +88,7 @@ The comparison below is scoped to preventive enforcement. Telemetry, behavioural
 
 | Tool | What it does | How it can be disabled | How Root Lock compares |
 |---|---|---|---|
-| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker who already has remote root can unload the BPF program, kill the agent, or disable the BPF syscall | The BPF syscall is off (`bpf()` returns `ENOSYS`). `CONFIG_BPF` and `CONFIG_BPF_JIT` are on. Root Lock does not rely on an unloadable eBPF policy. There is no HeartSuite agent to kill. Enforcement is compiled in. |
+| **Falco, Cilium Tetragon, Sysdig Secure, Tracee, bpftrace** (eBPF-based runtime detection) | Attach BPF programs to kernel hooks, watch syscall patterns, alert on suspicious behaviour | An attacker who already has remote root can unload the BPF program, kill the agent, or disable the BPF syscall | The BPF syscall is off (`bpf()` returns `ENOSYS`). Root Lock does not rely on an unloadable eBPF policy. There is no HeartSuite agent to kill. Enforcement is compiled in. |
 | **AppArmor, SELinux, SMACK, Landlock** (LSM policy on a stock kernel) | Per-process MAC profiles limiting filesystem and capability access | Root can set SELinux to permissive, unload an AppArmor profile, or edit the policy file | Under Lockdown there is no permissive mode, nothing to unload, and the allowlist cannot be edited. The files are immutable, and the kernel refuses the write. |
 | **seccomp-bpf sandboxes** (systemd services, browser sandboxes, bubblewrap, firejail) | Per-process syscall filters set by the process itself or its parent | A parent with equivalent privilege can spawn the same binary without the filter. Filters are scoped to a process tree, not to the program identity | Root Lock gates by program identity, not process lineage. A program's allowlist applies every time it runs, regardless of who spawned it. |
 | **gVisor** (userspace kernel for container sandboxing) | Intercepts container syscalls in a userspace kernel, reducing exposure to the host kernel | Runs as a userspace process; a compromise of the gVisor process itself, or a bug in its syscall emulation, can allow escape | Root Lock *is* the kernel: one layer instead of two, with nothing to unload. It is the guest kernel in a VM the customer provides. |
@@ -309,8 +309,8 @@ On-host eBPF tooling and a KVM hypervisor host are not a fit. Overlay filesystem
 
 - **Docker, containerd, Kubernetes, CRI-O, and Podman.** These are not a supported workload on a Root Lock host, and no install profile makes this host a container host. OCI images are built and run off this host, or Root Lock is the guest kernel in a VM the customer provides.
 - **Falco, Cilium Tetragon, bpftrace, and similar eBPF tools.** The BPF syscall is deliberately absent. This closes the verifier bypass surface and prevents unloading of enforcement. Observe from adjacent hosts via syslog instead. On-host eBPF tooling is not a fit.
-- **Hypervisor hosts running VMs via KVM.** The 6.18.9-hs kernel builds KVM as modules. Hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
-- **Systems that require rootless containers.** User namespaces are built in on 6.18.9-hs. Rootless containers are not a supported configuration. Use a separate host.
+- **Hypervisor hosts running VMs via KVM.** Hosting VMs is not a supported configuration. Root Lock runs as a guest, not a host.
+- **Systems that require rootless containers.** Rootless containers are not a supported configuration. Use a separate host.
 
 See [System Requirements → Software Compatibility Notes](../system-requirements/#software-compatibility-notes) for the full list.
 

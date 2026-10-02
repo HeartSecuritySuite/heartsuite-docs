@@ -53,7 +53,6 @@ gantt
     Program allowlist engine (Setup Mode + Lockdown)   :done, 2022-01-01, 2022-12-31
     LSM replacement — competing LSMs disabled          :done, 2022-01-01, 2022-09-30
     eBPF compiled out (BPF verifier surface)           :done, 2022-01-01, 2022-09-30
-    FUSE and OverlayFS compiled out                    :done, 2022-01-01, 2022-09-30
     Network allowlist — IP-literal kernel enforcement  :done, 2022-06-01, 2022-12-31
     Allowlist audit logging                            :done, 2022-11-01, 2023-01-31
 

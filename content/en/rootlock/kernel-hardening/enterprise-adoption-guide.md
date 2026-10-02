@@ -25,17 +25,15 @@ Root Lock uses a custom-built Linux kernel, mainline LTS 6.18.9-hs, so enforceme
 
 The BPF syscall is off. There is no eBPF program to load or unload.
 
-FUSE and AppArmor are built in. User namespaces are built in. OverlayFS, nftables, and KVM are modules. A container runtime or a KVM host on this kernel is not a supported configuration.
+A container runtime or a KVM host on this kernel is not a supported configuration.
 
 Root Lock does not rely on an unloadable eBPF policy.
 
 Enforcement logic for program execution, file access, and outbound network connections is compiled into the kernel binary itself. Blocking decisions are consulted on every relevant operation. There is no runtime configuration file or agent that root can unload, kill, or reconfigure to disable protection.
 
-This is distinct from "hardening mitigations" (stack canaries, allocator hardening, etc.). Those raise the cost of exploiting a memory bug. On 6.18.9-hs the features attackers use are in the kernel. Lockdown bounds a compromised program to the files and destinations it was granted.
+This is distinct from "hardening mitigations" (stack canaries, allocator hardening, etc.). Those raise the cost of exploiting a memory bug. Lockdown bounds a compromised program to the files and destinations it was granted.
 
 See the side-by-side scores and rationale in the [Procurement Brief](../procurement-brief/) and the bypass table in [How Root Lock Compares](../../introduction/how-it-compares/).
-
-The 6.18.9-hs kernel ships thousands of loadable modules, in the same class as a general-purpose distribution. Under Lockdown, what `kmod` may load is what it may read. Published hashes for the advisory feeds are on [Supply Chain and Advisory Feeds](../supply-chain-and-advisories/).
 
 ## What Root Lock owns for kernel risk
 

@@ -1,8 +1,8 @@
 ---
-title: "A smaller kernel, not a thicker agent"
+title: "Kernel hardening"
 linkTitle: "Kernel Hardening"
 weight: 108
-description: "Buyer briefs for the 6.18.9-hs kernel. The BPF syscall is off. FUSE, OverlayFS, user namespaces, and AppArmor stay in that kernel."
+description: "Buyer briefs, scanner hygiene, distro fit, and measured evidence."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "comparison"]
 type: docs
@@ -11,7 +11,7 @@ aliases:
 toc: false
 ---
 
-**Overview**: Root Lock by HeartSuite runs a custom-built Linux kernel, 6.18.9-hs. The BPF syscall is off. FUSE, OverlayFS, user namespaces, and AppArmor are in that kernel, and the workloads that need them are not a supported configuration. Lockdown is the enforcement. This section covers buyer evaluation, support policy, compatibility, scanner hygiene, and reproducible evidence.
+**Overview**: Root Lock by HeartSuite runs custom-built Linux kernels (5.19 legacy and 6.18 primary LTS). This section covers buyer evaluation, support policy, compatibility, scanner hygiene, and reproducible evidence.
 
 ## For buyers and procurement
 

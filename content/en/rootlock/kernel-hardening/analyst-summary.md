@@ -2,7 +2,7 @@
 title: "Kernel hardening in plain language"
 linkTitle: "Analyst Summary"
 weight: 60
-description: "What Root Lock removes from the kernel, why, and how to fact-check the claims — for journalists, analysts, and non-specialists."
+description: "Checker scores for the legacy 5.19.6 kernel, and how to fact-check them."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "overview"]
 type: docs
@@ -17,17 +17,9 @@ toc: false
 
 > **Note:** 5.19.6 is the legacy kernel line, installed only on Debian 11 and Ubuntu 20.04. New installs on every other supported distribution run 6.18.9-hs, whose posture is in [Hardening matrix for kernel 6.18.9](../kernel-comparison-matrix-6.18.9/).
 
-The Root Lock 5.19.6 kernel ships with 9 loadable modules. A standard Debian Linux system typically ships 3,500 to 4,000.
-
-The count is small because the kernel is built for one job and includes nothing outside it, not because capability was cut.
-
-Root Lock also disables the kernel features most often used to bypass security controls: BPF (a programmable kernel interface), FUSE (user-space filesystems), overlay filesystems, and competing security policy engines including AppArmor and SELinux. Each of these has been used in documented real-world attacks to escape software sandboxes or override security policies.
-
-On a run of the open-source `kernel-hardening-checker` config linter — the same tool Linux kernel security researchers use — the Root Lock kernel outperforms Arch linux-hardened on attack-surface measures.
+On a run of the open-source `kernel-hardening-checker` config linter — the same tool Linux kernel security researchers use — the Root Lock 5.19.6 kernel outperforms Arch linux-hardened on attack-surface measures.
 
 Scores, compared on the same 5.19.x kernel generation so they are directly equivalent: **91 out of 132** checks passed by Root Lock versus **77 out of 132** for Arch linux-hardened.
-
-Arch linux-hardened scores lower on this axis because it keeps BPF, FUSE, and AppArmor enabled. Its general-purpose users depend on those features, even though they also provide paths for bypassing security controls.
 
 **Where Root Lock is not strongest:** Exploit resistance.
 
