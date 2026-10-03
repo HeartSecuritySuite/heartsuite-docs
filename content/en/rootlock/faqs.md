@@ -188,13 +188,13 @@ To make changes, open Maintenance (`[m]`). If the seal is applied, reboot from a
 
 {{< details summary="What are the system requirements for Root Lock?" >}}
 
-A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Fedora 42 is in lab. Rocky Linux 10, CentOS Stream 10, Alpine, and openSUSE Tumbleweed are experimental. Debian 11 and Ubuntu 20.04 are lab re-proof of the withdrawn 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 meet the glibc floor and fail the Python floor, so the installer refuses them. RHEL 8, AlmaLinux 8, and older extended-support releases (CentOS 7, Ubuntu 18.04, Debian 10 and earlier) are below the glibc floor. There is no compat package that puts this installer on those releases. Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
+A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Fedora 42 is in lab. Rocky Linux 10, CentOS Stream 10, Alpine, and openSUSE Tumbleweed are experimental. Debian 11 and Ubuntu 20.04 are lab re-proof of the legacy 5.19 kernel. Ubuntu 22.04, Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 meet the glibc floor and fail the Python floor, so the installer refuses them. RHEL 8, AlmaLinux 8, and older extended-support releases (CentOS 7, Ubuntu 18.04, Debian 10 and earlier) are below the glibc floor. There is no compat package that puts this installer on those releases. Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
 
 {{< /details >}}
 
 {{< details summary="Which Linux kernels does Root Lock ship? Is Linux 7 supported?" >}}
 
-A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a shipped kernel. 5.19 is withdrawn. Debian 11 and Ubuntu 20.04 are lab re-proof of that archived line only. See [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
+A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a shipped kernel. 5.19 is the legacy line. Debian 11 and Ubuntu 20.04 are lab re-proof of the k5 installer. See [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
 
 {{< /details >}}
 

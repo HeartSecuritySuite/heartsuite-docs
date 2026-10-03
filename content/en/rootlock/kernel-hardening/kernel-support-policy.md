@@ -2,7 +2,7 @@
 title: "How long each Root Lock kernel is maintained"
 linkTitle: "Kernel Support Policy"
 weight: 10
-description: "LTS streams, patch targets, 5.19 deprecation, and how Root Lock kernel maintenance differs from a distro vendor's model."
+description: "LTS streams, patch targets, the legacy 5.19 line, and how Root Lock kernel maintenance differs from a distro vendor's model."
 categories: ["Reference"]
 tags: ["kernel", "support", "patching", "lifecycle", "enterprise", "rhel"]
 type: docs
@@ -27,7 +27,7 @@ It applies to:
 
 - **Root Lock kernel stream** currently shipped and supported:
   - **6.18** — primary LTS stream and commercial baseline (HeartSuite v1.6.4 ships kernel **6.18.9**).
-- **5.19** is withdrawn. No customer support and no further updates. Debian 11 and Ubuntu 20.04 are lab re-proof of that archived k5 installer only. They do not take the current 6.18 bundle.
+- **5.19** — legacy line for lab re-proof on Debian 11 and Ubuntu 20.04. Those hosts take the k5 installer. New images take the 6.18 bundle.
 - **Coordinated update bundles** that deliver the Root Lock kernel together with matching userspace components (Dashboard, daemon, tools, and installer). Kernel changes are not published or supported as standalone kernel-only packages outside these bundles.
 - **Integration with subscription terms** — patch targets, notification channels, and binding service-level commitments appear in your subscription agreement. This page states public targets and operational boundaries so buyers can align internal change-control and vulnerability-management programs before contract signature.
 
@@ -39,7 +39,7 @@ It applies to:
 
 HeartSuite's current commercial baseline is a **mainline LTS** kernel (6.18). New streams are LTS bases — not arbitrary upstream version chasing.
 
-The **5.19** stream is withdrawn. It was a short-lived mainline release. It remains here only as lab re-proof of the archived k5 installer on Debian 11 and Ubuntu 20.04.
+The **5.19** stream is the legacy line. It was a short-lived mainline release. Debian 11 and Ubuntu 20.04 keep it for lab re-proof of the k5 installer. Fleets already on 5.19 use the schedule in [5.19 stream deprecation](#519-stream-deprecation).
 
 **Why LTS-only**
 
@@ -190,7 +190,7 @@ For the current release (`hs-v1.6.4-kernel-6.18.9`, `gate_status: PASS`): CONFIG
 
 ## 5.19 stream deprecation
 
-The upstream **5.19** branch is **end-of-life**. HeartSuite no longer recommends 5.19 for new deployments or new pre-configured images.
+The upstream **5.19** branch is end-of-life. New deployments and new pre-configured images use the 6.18 line.
 
 **Support window for existing deployments**
 

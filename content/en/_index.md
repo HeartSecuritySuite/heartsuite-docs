@@ -12,10 +12,7 @@ Prototypes:
 
 - [HeartSuite Firewall](firewall/) — Prototype. Inbound and host-path filter for a closed HeartSuite appliance.
 - [HeartSuite Joint File System (HJFS)](hjfs/) — Prototype. Per-program file isolation on a standard unmodified kernel.
-
-Proposal:
-
-- [HeartSuite Exec](exec-lock/) — Proposal. HJFS UI for program install, update, and version selection. No engineering underway.
+- [HeartSuite Exec](exec-lock/) — Prototype. HJFS UI for program install, update, and version selection.
 
 The [Root Lock documentation](rootlock/) is the main product guide: overview, install, allowlisting, and Lockdown.
 

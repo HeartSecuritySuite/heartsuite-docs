@@ -11,8 +11,8 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite — **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the withdrawn k5 line.  
-**Evidence status:** Checker scores for the kernel that ships are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02). The Debian 12 guest boot is build **#37**, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). The **5.19.6** pack remains the measured record of that withdrawn line.  
+**Subject:** Root Lock by HeartSuite — **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy k5 line.  
+**Evidence status:** Checker scores for the kernel that ships are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02). The Debian 12 guest boot is build **#37**, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). The **5.19.6** pack remains the measured record of that legacy line.  
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
 
