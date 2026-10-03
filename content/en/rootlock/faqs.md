@@ -397,7 +397,7 @@ A: No. Video, network, and block drivers are kernel code. They are not programs 
 
 `/dev/sda` (or `/dev/vda`, `/dev/nvme0n1`) is a device node. Write access to it is a **file grant** on some userspace program — often a directory write to `/dev`. That write goes to the raw disk and skips the filesystem, which is why Root Lock requires a file grant for that open.
 
-`kmod` is the loader, not the driver. What kmod may load is what it may **read**. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
+`kmod` is the loader, not the driver. Early in every Root Lock kernel boot, a latch service sets `kernel.modules_disabled=1`. After that, the kernel refuses every new module load, even when `kmod` can read the module file. File grants on `kmod` only matter before the latch runs, which is early in boot, before the network is configured. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
 
 {{< /details >}}
 

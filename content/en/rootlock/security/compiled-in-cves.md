@@ -18,6 +18,8 @@ aliases:
 
 Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections) on the Kernel Security Transparency landing before the entries. Compiled-out groups are on [Not Affected — Disabled Features](../disabled-features/).
 
+**Module loads after boot.** Where a write-up below says a module cannot be loaded, the control is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, Setup Mode included, before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, the kernel refuses every new module load, even for root or an allowlisted `kmod`. Modules already loaded stay loaded. Granting `kmod` file access does not change that. A 0.0 score on an `=m` (module) option does not take the row off the patch date, and Not Affected still means only that the option is unset.
+
 | CVE | Component | Base Score | Score on Root Lock | Status |
 |-----|-----------|-----------|-----------------|--------|
 | [CVE-2024-47685](#cve-2024-47685) | nf_reject_ipv6 | <span class="badge bg-danger">9.1 CRITICAL</span> | <span class="badge badge-erased">0.0</span> | Score on Root Lock 0.0 — trigger not present in default configuration |
@@ -280,7 +282,7 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 | [CVE-2022-49799](#cve-2022-49799) | kernel tracing (`CONFIG_TRACING`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — tracefs not in allowlist; Lockdown prevents modification |
 | [CVE-2025-37879](#cve-2025-37879) | Plan 9 filesystem (9P) (`CONFIG_9P_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — `mount()` blocked by Lockdown; no 9P filesystem on Root Lock deployments |
 | [CVE-2025-39869](#cve-2025-39869) | DMA engine framework (`CONFIG_DMA_ENGINE`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Texas Instruments eDMA hardware absent |
-| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — pernet race requires module loading; kmod's access to modprobe.d blocked by Lockdown file-access enforcement |
+| [CVE-2024-36883](#cve-2024-36883) | TCP/IP networking (`CONFIG_INET`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — pernet race requires a new module load; `kernel.modules_disabled=1` refuses that load after boot |
 | [CVE-2024-50193](#cve-2024-50193) | x86_64 architecture (`CONFIG_X86_64`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not exploitable — perf_event_open() blocked by perf_event_paranoid=3 |
 | [CVE-2024-26654](#cve-2024-26654) | ALSA sound subsystem (`CONFIG_SND`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No audio hardware present |
 | [CVE-2024-26939](#cve-2024-26939) | Intel i915 DRM driver (`CONFIG_DRM_I915`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-erased">0.0</span> | No Intel display GPU present |
@@ -2814,13 +2816,13 @@ Whenever an ife action replace changes the metalist, instead of replacing the ol
 **Status**: Not exploitable
 **Component**: TCP/IP networking (`CONFIG_INET`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Score on Root Lock**: 0.0 — pernet race requires module loading; `kmod`'s access to `/usr/lib/modprobe.d/` denied by Lockdown file-access enforcement post-boot
+**Score on Root Lock**: 0.0 — pernet race requires a new module load; `kernel.modules_disabled=1` refuses that load after boot
 **Affected range**: Linux 5.x–6.x; 5.19.6 falls within range  
 **Upstream fix**: net/core/net_namespace.c
 
 In `net/core/net_namespace.c`, `net_alloc_generic()` reads `max_gen_ptrs` — the size of the generic pointers array — to determine how much memory to allocate for a new network namespace. This read occurs without holding `pernet_ops_rwsem`. `register_pernet_operations()` can increment `max_gen_ptrs` concurrently while holding the write side of that lock. The race can cause `net_alloc_generic()` to allocate an undersized array, leading to out-of-bounds access when the new namespace is subsequently populated.
 
-`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines), so the race cannot be triggered post-Lockdown unless a new kernel module is loaded. New module loading is blocked by **Lockdown**, not by the Linux kernel's built-in lockdown LSM: on Debian 12, `modprobe` and `insmod` are symlinks to `/usr/bin/kmod`, which is added to the allowlist by standard Setup Mode via `systemd-modules-load.service`. HeartSuite does not refuse `execve` on `kmod`; the block operates at the file-access layer — Lockdown denies `kmod` access to `/usr/lib/modprobe.d/` by default, so module loading fails at the file-read stage before any module can be loaded. There is no `HS_locked_down()` check site in the `init_module` / `finit_module` syscall path — the block is at the file-access layer, enforced by Lockdown. (If you follow the [kmod hardening procedure](../maintenance/kmod-hardening/), kmod's module-path access records are explicitly scoped to permitted paths, hardening against configuration drift.) After Lockdown engages at boot, all statically-linked pernet operations have already registered and `max_gen_ptrs` is stable; no concurrent write is possible. Separately, creating a network namespace requires `CAP_NET_ADMIN` with user namespaces disabled on the Root Lock kernel; no unprivileged process can initiate the namespace-creation side of the race. The race condition cannot be triggered on any Root Lock deployment where `kmod` does not have file-access permissions to `/usr/lib/modprobe.d/`.
+`CONFIG_INET=y` is compiled in and 5.19.6 falls within the affected range. The race requires `register_pernet_operations()` to execute concurrently with `net_alloc_generic()`. `register_pernet_operations()` is invoked exclusively from module initialization (`module_init` routines). Early in every Root Lock kernel boot, before sshd starts, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1`. Until the next reboot, the kernel refuses `init_module` and `finit_module`, even for root or an allowlisted `kmod`, so no new module can call `register_pernet_operations()`. Before the latch, which is before the network is configured, Lockdown denies `kmod` read of `/usr/lib/modprobe.d/`; granting that read does not reopen loading after it. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). Built-in pernet operations register during kernel init, before the latch, and `max_gen_ptrs` is stable after that. The race cannot be triggered by loading a new module after the latch.
 
 ### CVE-2024-36971
 
@@ -3219,24 +3221,24 @@ This CVE describes a wrapped `u64` offset in `kvm_reset_dirty_gfn()`. The bounds
 
 On 5.19.6, `CONFIG_KVM` is not set. Host KVM is not in the running kernel.
 
-On 6.18.9-hs, `CONFIG_KVM=m`. The trigger requires a loaded `kvm` module and a userspace program that opens `/dev/kvm`, enables the dirty ring, and issues `KVM_RESET_DIRTY_RINGS`. No KVM userspace program is in the Root Lock allowlist. `modprobe` is not in the allowlist, so the `kvm` module cannot be loaded at runtime. Under Lockdown, the allowlist cannot be modified. The dirty-ring reset path is never reached.
+On 6.18.9-hs, `CONFIG_KVM=m`. The trigger requires a loaded `kvm` module and a userspace program that opens `/dev/kvm`, enables the dirty ring, and issues `KVM_RESET_DIRTY_RINGS`. No KVM userspace program is in the Root Lock allowlist. After boot, `kernel.modules_disabled=1` refuses a later load of `kvm`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). Under Lockdown, the allowlist cannot be modified. The dirty-ring reset path is never reached.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If your deployment adds a KVM userspace program (qemu, libvirt, firecracker, or equivalent) to the Root Lock allowlist and loads the `kvm` module, this CVE applies at its base score of 7.8 HIGH. Treat it as Affected and apply the standard backstop logic.
+If `kvm` was already loaded when the latch ran, and the allowlist includes a KVM userspace program (qemu, libvirt, firecracker, or equivalent), this CVE applies at its base score of 7.8 HIGH. Treat it as Affected and apply the standard backstop logic.
 
 ### CVE-2026-53004
 
 **Status**: Not exploitable
 **Component**: SCTP (`CONFIG_IP_SCTP`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 does not compile SCTP; 6.18.9 builds SCTP as a module that cannot be loaded because `modprobe`/`insmod`/`kmod` are not on the allowlist
+**Score on Root Lock**: 0.0 — 5.19.6 does not compile SCTP; 6.18.9 builds SCTP as a module, and `kernel.modules_disabled=1` refuses a later load
 **Affected range**: Linux through 7.0.9 (Ubuntu 5.15–7.0 and Debian bullseye 5.10 needed the fix)
 **Upstream fix**: 7.1-rc1 / 7.0.10
 
 `sctp_getsockopt_peer_auth_chunks()` checks `if (len < num_chunks)` and then writes `num_chunks` bytes to `p->gauth_chunks`, which sits eight bytes inside the caller's `optval`. The check omits the `sctp_authchunks` header. When the caller passes `len == num_chunks`, `copy_to_user()` writes eight bytes past the declared buffer. Those bytes land in the caller's own userspace; this is not kernel memory corruption.
 
-On 5.19.6, `# CONFIG_IP_SCTP is not set`. The function is absent from the vmlinux System.map. On 6.18.9-hs, `CONFIG_IP_SCTP=m`. Reaching the function requires the SCTP module to be loaded, an SCTP association with AUTH enabled, and `getsockopt(SCTP_PEER_AUTH_CHUNKS)`. The shipped allowlist has no `modprobe`, `insmod`, `kmod`, or SCTP tools. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added. The SCTP stack is not loaded.
+On 5.19.6, `# CONFIG_IP_SCTP is not set`. The function is absent from the vmlinux System.map. On 6.18.9-hs, `CONFIG_IP_SCTP=m`. Reaching the function requires the SCTP module to be loaded, an SCTP association with AUTH enabled, and `getsockopt(SCTP_PEER_AUTH_CHUNKS)`. The shipped allowlist has no SCTP tools. After boot, `kernel.modules_disabled=1` refuses a later load of `sctp`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added. The SCTP stack is not loaded.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3245,7 +3247,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not exploitable  
 **Component**: net/sched action API (`CONFIG_NET_SCHED`, `CONFIG_NET_CLS_ACT`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org)  
-**Score on Root Lock**: 0.0 — no tc action can be instantiated; `tc` and module-loading tools are absent from the allowlist  
+**Score on Root Lock**: 0.0 — no tc action can be instantiated; `tc` is absent from the allowlist, and `kernel.modules_disabled=1` refuses a later load of the action modules  
 **Affected range**: 4.14 through unfixed stables including 6.18 before 6.18.36; **5.19.6 and 6.18.9-hs are in range**  
 **Upstream fix**: stable 6.18.36+ (5.19 branch is EOL; no backport)
 
@@ -3255,11 +3257,11 @@ This CVE describes a use-after-free in the traffic-control action lifecycle. Con
 
 On 5.19.6 every `CONFIG_NET_ACT_*` option is not set. No action kind is registered in the running image, so a NEWTFILTER that names an action cannot create one.
 
-On 6.18.9-hs every `CONFIG_NET_ACT_*` option is a module and those kinds are not in vmlinux. Loading them requires `kmod`/`modprobe`/`insmod`, which are not on the allowlist. The `tc` program that issues NEWTFILTER and DELFILTER is also not on the allowlist. Under Lockdown the allowlist cannot be extended.
+On 6.18.9-hs every `CONFIG_NET_ACT_*` option is a module and those kinds are not in vmlinux. After boot, `kernel.modules_disabled=1` refuses a later load, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The `tc` program that issues NEWTFILTER and DELFILTER is also not on the allowlist. Under Lockdown the allowlist cannot be extended.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If your deployment adds `tc` to the allowlist (and on 6.18.9-hs also allowlists loading of `act_*` modules), treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+If the action modules were already loaded when the latch ran, and the allowlist includes `tc`, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
 
 ### CVE-2026-53359
 
@@ -3291,11 +3293,11 @@ This CVE describes a page overflow in `sev_dbg_crypt()` on the ENCRYPT path in `
 
 On 5.19.6, `# CONFIG_KVM is not set`. `CONFIG_KVM_GUEST=y` is guest-side paravirt only. There is no `CONFIG_KVM_AMD` / `CONFIG_KVM_AMD_SEV`, and `sev_dbg_crypt` is not in the 5.19.6 image.
 
-On 6.18.9-hs, `CONFIG_KVM=m`, `CONFIG_KVM_AMD=m`, and `CONFIG_KVM_AMD_SEV=y`. Reaching the overflow requires a loaded `kvm_amd` module, an SEV guest, and the SEV debug-encrypt ioctl. No qemu, libvirt, virsh, or KVM/SEV userspace appears in the Root Lock allowlist, and `modprobe` / `insmod` / `kmod` are likewise absent, so the module is not loadable from userspace. The kernel refuses to run a dropped program with no allowlist entry. After gaining root through any other avenue, Lockdown still blocks allowlist modification, so those tools cannot be added for the life of the boot.
+On 6.18.9-hs, `CONFIG_KVM=m`, `CONFIG_KVM_AMD=m`, and `CONFIG_KVM_AMD_SEV=y`. Reaching the overflow requires a loaded `kvm_amd` module, an SEV guest, and the SEV debug-encrypt ioctl. No qemu, libvirt, virsh, or KVM/SEV userspace appears in the Root Lock allowlist. After boot, `kernel.modules_disabled=1` refuses a later load of `kvm_amd`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The kernel refuses to run a dropped program with no allowlist entry. After gaining root through any other avenue, Lockdown still blocks allowlist modification, so those tools cannot be added for the life of the boot.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If a 6.18.9-hs deployment adds qemu-system, libvirt, or any other program that issues KVM SEV debug-encrypt ioctls to the allowlist, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+If `kvm_amd` was already loaded when the latch ran, and the allowlist includes qemu-system, libvirt, or any other program that issues KVM SEV debug-encrypt ioctls, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
 
 ### CVE-2026-63804
 
@@ -3319,7 +3321,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not exploitable
 **Component**: IFB intermediate functional block (`CONFIG_IFB`)
 **Base Score**: 7.1 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H) — NVD
-**Score on Root Lock**: 0.0 — `CONFIG_IFB` is not compiled on 5.19.6; on 6.18.9-hs the trigger requires `ip`, `ethtool`, and `modprobe`, none of which are in the Root Lock allowlist
+**Score on Root Lock**: 0.0 — `CONFIG_IFB` is not compiled on 5.19.6; on 6.18.9-hs the trigger requires `ip` and `ethtool`, which are absent from the allowlist, and `kernel.modules_disabled=1` refuses a later load of `ifb`
 **Affected range**: 5.17 through 6.1.174; 6.2 through 6.6.141; 6.7 through 6.12.91; 6.13 through 6.18.33; 6.19 through 7.0.10; plus 7.1-rc1–rc4. Both production kernels (5.19.6 and 6.18.9-hs) sit in range.
 **Upstream fix**: ethtool stats walk `dev->num_tx_queues`; stable 6.18.34+
 
@@ -3327,11 +3329,11 @@ This CVE describes a slab out-of-bounds read in the IFB ethtool stats path. `ifb
 
 On 5.19.6, `CONFIG_IFB` is not compiled. The Kconfig depends on `NET_ACT_MIRRED || NFT_FWD_NETDEV`. Both parents are unset (`# CONFIG_NET_ACT_MIRRED is not set`, `# CONFIG_NF_TABLES is not set`), so the `CONFIG_IFB` symbol is not offered. The 5.19.6 System.map has no `ifb_get_ethtool_stats` symbol. The callbacks in `drivers/net/ifb.c` are not in the running image.
 
-On 6.18.9-hs, `CONFIG_IFB=m`. The module is built, not builtin. Reaching the bug requires loading `ifb`, creating an asymmetric IFB device, and querying ethtool stats. `ip`, `ethtool`, and `modprobe` are absent from the Root Lock allowlist. Under Lockdown the allowlist cannot be changed: `FS_IOC_SETFLAGS` returns `-EPERM`, and `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`. Root cannot add those programs.
+On 6.18.9-hs, `CONFIG_IFB=m`. The module is built, not builtin. Reaching the bug requires a loaded `ifb`, an asymmetric IFB device, and an ethtool stats query. After boot, `kernel.modules_disabled=1` refuses a later load of `ifb`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). `ip` and `ethtool` are absent from the Root Lock allowlist. Under Lockdown the allowlist cannot be changed: `FS_IOC_SETFLAGS` returns `-EPERM`, and `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`. Root cannot add those programs.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If a 6.18.9-hs deployment adds `ip`, `ethtool`, and a way to load `ifb` to the allowlist, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
+If `ifb` was already loaded when the latch ran, and the allowlist includes `ip` and `ethtool`, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
 
 ### CVE-2026-64600
 
@@ -3440,7 +3442,7 @@ This CVE describes a NULL pointer dereference in `z_erofs_decompress_pcluster()`
 
 On 5.19.6, `# CONFIG_EROFS_FS is not set`. The EROFS decompression path is not in the running kernel.
 
-On 6.18.9-hs, `CONFIG_EROFS_FS=m` and `CONFIG_EROFS_FS_ZIP=y`. Reaching the path requires the erofs module to be loaded and a ztailpacking EROFS volume to be mounted, then a `read()` of a compressed file. `modprobe`, `insmod`, and `kmod` are not on the allowlist, so `erofs.ko` cannot be loaded. `mkfs.erofs`, `dump.erofs`, and `fsck.erofs` are not on the allowlist. `mount` is on the allowlist; under Lockdown, `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`, so a brought-in image cannot be attached. HeartSuite startup and setup do not mount EROFS.
+On 6.18.9-hs, `CONFIG_EROFS_FS=m` and `CONFIG_EROFS_FS_ZIP=y`. Reaching the path requires the erofs module to be loaded and a ztailpacking EROFS volume to be mounted, then a `read()` of a compressed file. After boot, `kernel.modules_disabled=1` refuses a later load of `erofs`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). `mkfs.erofs`, `dump.erofs`, and `fsck.erofs` are not on the allowlist. `mount` is on the allowlist; under Lockdown, `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`, so a brought-in image cannot be attached. HeartSuite startup and setup do not mount EROFS.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3466,11 +3468,11 @@ If your deployment adds `trace-cmd`, `perf`, or a program that writes `/sys/kern
 **Status**: 5.19.6 Not exploitable — feature not compiled; 6.18.9-hs Not exploitable — tool not in the program allowlist
 **Component**: IPsec authencesn (`CONFIG_CRYPTO_AUTHENC`)
 **Base Score**: 7.1 HIGH (CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 does not compile the AF_ALG AEAD interface the bug uses; 6.18.9-hs compiles that interface as a module and the program allowlist does not include the programs that load it
+**Score on Root Lock**: 0.0 — 5.19.6 does not compile the AF_ALG AEAD interface the bug uses; 6.18.9-hs compiles that interface as a module, and `kernel.modules_disabled=1` refuses a later load. `ip`, `setkey`, and IPsec daemons are also absent from the allowlist
 
 authencesn requires a zero authsize or an authsize of at least 4 bytes because the ESN encrypt and decrypt paths always move 4 bytes of high-order sequence number at the end of the authenticated data. Instance creation copied the inner ahash digest size into the default authsize without rejecting the invalid 1..3 range. Binding that instance through AF_ALG then ran the ESN tail handling with a too-short tag and hit an out-of-bounds read.
 
-Both Root Lock kernels are in the NVD range (Linux 4.11 through 6.18.26) and compile `crypto/authencesn.c` via `CONFIG_CRYPTO_AUTHENC`. The unprivileged trigger is AF_ALG (`CONFIG_CRYPTO_USER_API_AEAD`) after instantiating authencesn with a 1..3-byte ahash such as `cbcmac(cipher_null)` from the CCM template. 5.19.6 has `CONFIG_CRYPTO_USER_API_AEAD` and `CONFIG_CRYPTO_USER` not set, so that userspace crypto path is not present. 6.18.9-hs builds AF_ALG AEAD, authenc, CCM, and IPsec ESP as modules. Reaching the path requires those modules to be loaded. The program allowlist does not include `modprobe`, `insmod`, `ip`, `setkey`, or IPsec daemons. Module autoload also runs `modprobe` and is refused.
+Both Root Lock kernels are in the NVD range (Linux 4.11 through 6.18.26) and compile `crypto/authencesn.c` via `CONFIG_CRYPTO_AUTHENC`. The unprivileged trigger is AF_ALG (`CONFIG_CRYPTO_USER_API_AEAD`) after instantiating authencesn with a 1..3-byte ahash such as `cbcmac(cipher_null)` from the CCM template. 5.19.6 has `CONFIG_CRYPTO_USER_API_AEAD` and `CONFIG_CRYPTO_USER` not set, so that userspace crypto path is not present. 6.18.9-hs builds AF_ALG AEAD, authenc, CCM, and IPsec ESP as modules. Reaching the path requires those modules to be loaded. After boot, `kernel.modules_disabled=1` refuses a later load, whether requested by kernel autoload or an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The program allowlist does not include `ip`, `setkey`, or IPsec daemons.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3500,11 +3502,11 @@ This CVE describes an out-of-bounds read in `fec_decode_bufs()`. The decoder ass
 
 On 5.19.6-HeartSuite-2.0, `# CONFIG_DM_VERITY is not set`. `CONFIG_DM_VERITY_FEC` has no line. `drivers/md/dm-verity-fec.c` is not compiled.
 
-On 6.18.9-hs, `CONFIG_DM_VERITY=m` and `CONFIG_DM_VERITY_FEC=y`. That is not enough. The decode path runs only after a verity target with FEC is mapped and a hash verification failure enters FEC recovery. Creating that mapping requires `veritysetup` or `dmsetup`. Loading the module requires `modprobe`. None of those programs are on the HeartSuite allowlist. No default Root Lock deployment mounts a verity+FEC volume. the program allowlist refuses to execute the missing tools. Under Lockdown the allowlist cannot be changed.
+On 6.18.9-hs, `CONFIG_DM_VERITY=m` and `CONFIG_DM_VERITY_FEC=y`. That is not enough. The decode path runs only after a verity target with FEC is mapped and a hash verification failure enters FEC recovery. Creating that mapping requires `veritysetup` or `dmsetup`. After boot, `kernel.modules_disabled=1` refuses a later load of `dm-verity`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). `veritysetup` and `dmsetup` are not on the HeartSuite allowlist. No default Root Lock deployment mounts a verity+FEC volume. Under Lockdown the allowlist cannot be changed.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If a 6.18.9-hs deployment adds `veritysetup` or `dmsetup` and a way to load `dm-verity` to the allowlist, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
+If `dm-verity` was already loaded when the latch ran, and the allowlist includes `veritysetup` or `dmsetup`, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
 
 ### CVE-2026-46136
 
@@ -3553,7 +3555,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
 **Component**: vsock (`CONFIG_VSOCKETS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 does not compile AF_VSOCK; 6.18.9-hs ships vsock as modules that cannot be loaded because modprobe, insmod, and kmod are not on the allowlist
+**Score on Root Lock**: 0.0 — 5.19.6 does not compile AF_VSOCK; 6.18.9-hs ships vsock as modules, and `kernel.modules_disabled=1` refuses a later load
 **Affected range**: Linux 5.5–5.10.257, 5.11–5.15.208, 5.16–6.1.174, 6.2–6.6.139, 6.7–6.12.89, 6.13–6.18.31, 6.19–7.0.8. Both 5.19.6 and 6.18.9-hs are in range. Fixed in 6.18.32+ and 6.1.175+
 **Upstream fix**: stable 6.18.32+ / 6.1.175+
 
@@ -3561,13 +3563,13 @@ This CVE describes inverted buffer-size clamping in `vsock_update_buffer_size()`
 
 On 5.19.6, `# CONFIG_VSOCKETS is not set`. The AF_VSOCK family is not in the kernel.
 
-On 6.18.9-hs, `CONFIG_VSOCKETS=m` with loopback, virtio, VMware VMCI, vsockmon, and vhost_vsock also `=m`. Reaching the path requires the vsock family to be registered and a process to open an AF_VSOCK socket and call setsockopt. The installer and startup scripts do not load vsock. The allowlist has no vsock, qemu, or socat program, and no modprobe, insmod, or kmod. Kernel autoload of the `net-pf-40` family also execs modprobe and is refused. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added.
+On 6.18.9-hs, `CONFIG_VSOCKETS=m` with loopback, virtio, VMware VMCI, vsockmon, and vhost_vsock also `=m`. Reaching the path requires the vsock family to be registered and a process to open an AF_VSOCK socket and call setsockopt. The installer and startup scripts do not load vsock. The allowlist has no vsock, qemu, or socat program. After boot, `kernel.modules_disabled=1` refuses a later load, whether requested by kernel autoload of the `net-pf-40` family or an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added.
 
 The network hook at connect() and sendto() does not fire on socket() or setsockopt. That does not change the result: the vsock family is not registered.
 
 The trigger cannot be reached on any Root Lock deployment.
 
-If a 6.18.9-hs deployment loads `vsock.ko` and an allowlisted program creates AF_VSOCK sockets, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+If `vsock` was already loaded when the latch ran, and an allowlisted program creates AF_VSOCK sockets, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
 
 ### CVE-2026-46294
 
@@ -3584,7 +3586,7 @@ NVD scores the overflow as a local path to high impact. The kernel description s
 
 On 5.19.6, `CONFIG_BLK_DEV_DM=y`. `retrieve_status`, `ctl_ioctl`, and `dm_ctl_ioctl` are in the running image.
 
-On 6.18.9-hs, `CONFIG_BLK_DEV_DM=m`. The ioctl path is not in vmlinux. Loading the module requires `modprobe`/`insmod`/`kmod`, which are not on the allowlist.
+On 6.18.9-hs, `CONFIG_BLK_DEV_DM=m`. The ioctl path is not in vmlinux. After boot, `kernel.modules_disabled=1` refuses a later load, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections).
 
 `dmsetup`, LVM (`lvcreate`, `lvchange`, `vgchange`, `pvcreate`), `cryptsetup`, `kpartx`, `multipath`, and `dmeventd` are not on the allowlist. Lockdown refuses `FS_IOC_SETFLAGS`, so the allowlist cannot be extended to add them. The ioctl path is never reached.
 
@@ -3620,7 +3622,7 @@ This CVE describes a buffer leak in `__ceph_setxattr()`. On the retry path, `old
 
 On 5.19.6, `# CONFIG_CEPH_FS is not set` and `# CONFIG_CEPH_LIB is not set`. The 5.19.6 System.map has no Ceph symbols. `__ceph_setxattr` is not in the running image.
 
-On 6.18.9-hs, `CONFIG_CEPH_FS=m` and `CONFIG_CEPH_LIB=m`. The filesystem is not built in. The 6.18.9-hs System.map has no Ceph symbols. Reaching `__ceph_setxattr` requires a mounted CephFS volume. That state requires loading `ceph.ko` and the Ceph userspace (`mount.ceph`, `ceph`). Those programs are not on the HeartSuite allowlist. `modprobe`, `kmod`, and `insmod` are not on the allowlist, so the module is not loaded. `mount` is on the allowlist; it cannot load the Ceph module or run `mount.ceph`.
+On 6.18.9-hs, `CONFIG_CEPH_FS=m` and `CONFIG_CEPH_LIB=m`. The filesystem is not built in. The 6.18.9-hs System.map has no Ceph symbols. Reaching `__ceph_setxattr` requires a mounted CephFS volume. That state requires a loaded `ceph.ko` and the Ceph userspace (`mount.ceph`, `ceph`). Those programs are not on the HeartSuite allowlist. After boot, `kernel.modules_disabled=1` refuses a later load of `ceph`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). `mount` is on the allowlist. It cannot run `mount.ceph`, and it cannot load the Ceph module after the latch.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3784,7 +3786,7 @@ This CVE describes a one-byte out-of-bounds read in `tlv_data_is_valid()`. The p
 
 On 5.19.6, `# CONFIG_BT is not set`. The Bluetooth socket family, HCI layer, and MGMT parser are absent from the running kernel.
 
-On 6.18.9-hs, `CONFIG_BT=m`. Reaching the parser requires the Bluetooth module to be loaded, a registered HCI controller, and a trusted MGMT command. `MGMT_OP_ADD_ADVERTISING` is not in the untrusted command set; the kernel refuses it without `CAP_NET_ADMIN`. The program allowlist does not include `bluetoothd`, `bluetoothctl`, `btmgmt`, or `modprobe`/`insmod`/`kmod`. Module autoload also runs `modprobe` and is refused. The MGMT advertising path is not reached.
+On 6.18.9-hs, `CONFIG_BT=m`. Reaching the parser requires the Bluetooth module to be loaded, a registered HCI controller, and a trusted MGMT command. `MGMT_OP_ADD_ADVERTISING` is not in the untrusted command set; the kernel refuses it without `CAP_NET_ADMIN`. The program allowlist does not include `bluetoothd`, `bluetoothctl`, or `btmgmt`. After boot, `kernel.modules_disabled=1` refuses a later load of the Bluetooth module, whether requested by kernel autoload or an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The MGMT advertising path is not reached.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3793,7 +3795,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
 **Component**: EROFS compressed read (`CONFIG_EROFS_FS`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — NVD
-**Score on Root Lock**: 0.0 — 5.19.6 does not compile EROFS; 6.18.9-hs builds EROFS as a module that is not in vmlinux and cannot be loaded because modprobe/insmod/kmod are not on the allowlist
+**Score on Root Lock**: 0.0 — 5.19.6 does not compile EROFS; 6.18.9-hs builds EROFS as a module that is not in vmlinux, and `kernel.modules_disabled=1` refuses a later load
 **Affected range**: Linux 5.17 through 6.12.93, 6.13 through 6.18.35, 6.19 through 7.0.12, and 7.1-rc1–rc6. Both HeartSuite production kernels sit in that window until the config and load gates apply.
 **Upstream fix**: 1aee05e814d2 (mainline); stable 6.12.94, 6.18.36, 7.0.13
 
@@ -3801,11 +3803,11 @@ This CVE describes a use-after-free on the EROFS superblock decompress flag. `z_
 
 On 5.19.6, `# CONFIG_EROFS_FS is not set`. The decompress path is absent from the running kernel. System.map contains no erofs symbols.
 
-On 6.18.9-hs, `CONFIG_EROFS_FS=m` with `CONFIG_EROFS_FS_ZIP=y`. The 6.18.9 `z_erofs_decompress_kickoff()` still writes the decompress flag after `queue_work`. The vmlinux System.map contains no erofs symbols. Startup does not load EROFS. Reaching the race requires a loaded erofs module and a mounted compressed EROFS volume that is then unmounted while I/O completes. The allowlist has no `modprobe`, `insmod`, `kmod`, `mkfs.erofs`, `fsck.erofs`, or `dump.erofs`. Module autoload execs `modprobe` and is refused. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added, and `mount()`, `fsmount()`, and `move_mount()` return `EPERM`, so a new EROFS volume cannot be mounted.
+On 6.18.9-hs, `CONFIG_EROFS_FS=m` with `CONFIG_EROFS_FS_ZIP=y`. The 6.18.9 `z_erofs_decompress_kickoff()` still writes the decompress flag after `queue_work`. The vmlinux System.map contains no erofs symbols. Startup does not load EROFS. Reaching the race requires a loaded erofs module and a mounted compressed EROFS volume that is then unmounted while I/O completes. After boot, `kernel.modules_disabled=1` refuses a later load, whether requested by kernel autoload or an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The allowlist has no `mkfs.erofs`, `fsck.erofs`, or `dump.erofs`. Under Lockdown, `FS_IOC_SETFLAGS` returns `EPERM`, so those programs cannot be added, and `mount()`, `fsmount()`, and `move_mount()` return `EPERM`, so a new EROFS volume cannot be mounted.
 
 The trigger cannot be reached on any default Root Lock deployment.
 
-If a 6.18.9-hs deployment loads erofs and mounts a compressed EROFS volume, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
+If `erofs` was already loaded when the latch ran and a compressed EROFS volume is mounted, treat this CVE as Affected at 7.8 HIGH and apply the standard backstop.
 
 ### CVE-2026-53286
 
@@ -3887,7 +3889,7 @@ This CVE describes a use-after-free in `fb_find_mode()`. When the caller passes 
 
 `# CONFIG_FB is not set` on 5.19.6-HeartSuite-2.0. The introducing change is 6.4. 5.19.6 predates it and does not compile fbdev.
 
-On 6.18.9-hs, `CONFIG_FB=y` and `CONFIG_FB_MODE_HELPERS=y`. That is not enough. The built-in framebuffer drivers (`CONFIG_FB_EFI`, `CONFIG_FB_VESA`, `CONFIG_FB_SIMPLE`) register firmware-supplied timings and do not call `fb_find_mode()`. The generic `/dev/fb*` mode ioctl uses `fb_set_var()`, which also does not call `fb_find_mode()`. The remaining callers are modular legacy or virtual framebuffer drivers. Loading those drivers requires `modprobe` or `insmod`. Those programs, and `fbset`, are not in the HeartSuite allowlist. the program allowlist refuses to execute them. Under Lockdown the allowlist is immutable, so root cannot add them.
+On 6.18.9-hs, `CONFIG_FB=y` and `CONFIG_FB_MODE_HELPERS=y`. That is not enough. The built-in framebuffer drivers (`CONFIG_FB_EFI`, `CONFIG_FB_VESA`, `CONFIG_FB_SIMPLE`) register firmware-supplied timings and do not call `fb_find_mode()`. The generic `/dev/fb*` mode ioctl uses `fb_set_var()`, which also does not call `fb_find_mode()`. The remaining callers are modular legacy or virtual framebuffer drivers. After boot, `kernel.modules_disabled=1` refuses a later load of those drivers, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). `fbset` is not in the HeartSuite allowlist. Under Lockdown the allowlist is immutable, so root cannot add it.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3913,7 +3915,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
 **Component**: RxRPC (`CONFIG_AF_RXRPC`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 is outside the NVD range and does not compile AF_RXRPC; 6.18.9-hs compiles AF_RXRPC as a module, and the programs that load or use that module are not on the allowlist
+**Score on Root Lock**: 0.0 — 5.19.6 is outside the NVD range and does not compile AF_RXRPC; 6.18.9-hs compiles AF_RXRPC as a module, `kernel.modules_disabled=1` refuses a later load, and AFS and RxRPC userspace programs are absent from the allowlist
 **Affected range**: Linux 6.2 through 6.6.139; 6.7 through 6.12.85; 6.13 through 6.18.26; 6.19 through 7.0.3. **5.19.6 is not in range.** Production **6.18.9-hs** remains in range until the module is loaded.
 **Upstream fix**: 6.6.140, 6.12.86, 6.18.27, 7.0.4
 
@@ -3921,7 +3923,7 @@ This CVE describes a use-after-free after `skb_unshare()` fails in `rxrpc_input_
 
 5.19.6 predates the introduction and is built with `# CONFIG_AF_RXRPC is not set`. 6.18.9-hs is in range and is built with `CONFIG_AF_RXRPC=m`.
 
-Reaching the bug requires the RxRPC family to be registered so inbound packets hit `rxrpc_input_packet()`. On 6.18.9-hs the family is a module. Opening `socket(AF_RXRPC)` asks the kernel to autoload the protocol family; that autoload executes `modprobe`, which has no allowlist record and is refused. AFS clients and RxRPC userspace programs are also absent from the allowlist. The fielded kernel image has no rxrpc symbols, so the stack is not built in and is not loaded at boot.
+Reaching the bug requires the RxRPC family to be registered so inbound packets hit `rxrpc_input_packet()`. On 6.18.9-hs the family is a module. Opening `socket(AF_RXRPC)` asks the kernel to autoload the protocol family. After boot, `kernel.modules_disabled=1` refuses that load, even when `kmod` is allowlisted. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). AFS clients and RxRPC userspace programs are also absent from the allowlist. The fielded kernel image has no rxrpc symbols, so the stack is not built in and is not loaded at boot.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -3996,13 +3998,13 @@ The trigger cannot be reached on any Root Lock deployment.
 **Status**: 5.19.6 Not Affected; 6.18.9-hs Not exploitable — tool not in the program allowlist
 **Component**: Open vSwitch datapath (`CONFIG_OPENVSWITCH`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
-**Score on Root Lock**: 0.0 — 5.19.6 is outside the affected range and does not compile Open vSwitch; 6.18.9-hs compiles the datapath as a module, and the program allowlist does not include the programs that load that module
+**Score on Root Lock**: 0.0 — 5.19.6 is outside the affected range and does not compile Open vSwitch; 6.18.9-hs compiles the datapath as a module, `kernel.modules_disabled=1` refuses a later load, and `ovs-vswitchd` and `ovs-vsctl` are absent from the allowlist
 
 Open vSwitch stores generated flow actions as Netlink attributes with a 16-bit length field. After the old 32 KiB action-stream cap was removed, a nested CLONE or conntrack action can be generated larger than 65,535 bytes. The stored length wraps, and a later dump or teardown walks attacker-controlled bytes as independent actions. On a kernel that has the datapath loaded and lets an unprivileged user hold `CAP_NET_ADMIN` in a network namespace, that is a local path to root.
 
 5.19.6 predates the unbounded nested-action path and is built with `CONFIG_OPENVSWITCH` not set.
 
-6.18.9-hs is in the NVD range (6.14 through 6.18.39) and builds `CONFIG_OPENVSWITCH=m` with conntrack and unprivileged user namespaces enabled. Reaching the bug still requires the `openvswitch` module to be loaded. The program allowlist does not include `modprobe`, `insmod`, `ovs-vswitchd`, or `ovs-vsctl`. Module autoload also runs `modprobe` and is refused. The datapath is not loaded on a standard Root Lock deployment, and it cannot be loaded after the allowlist is in force.
+6.18.9-hs is in the NVD range (6.14 through 6.18.39) and builds `CONFIG_OPENVSWITCH=m` with conntrack and unprivileged user namespaces enabled. Reaching the bug still requires the `openvswitch` module to be loaded. After boot, `kernel.modules_disabled=1` refuses a later load, whether requested by kernel autoload or an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). The program allowlist does not include `ovs-vswitchd` or `ovs-vsctl`. The datapath is not loaded on a standard Root Lock deployment.
 
 The trigger cannot be reached on any Root Lock deployment.
 
@@ -4019,13 +4021,13 @@ This CVE describes a use-after-free in `sctp_process_asconf()`. A single ASCONF 
 
 On 5.19.6, `# CONFIG_IP_SCTP is not set`. The SCTP protocol is absent from the running kernel. `sctp_process_asconf` is not in System.map and is not among the shipped modules.
 
-On 6.18.9-hs, `CONFIG_IP_SCTP=m`. The drop ships `sctp.ko` (and `sctp_diag.ko`). The protocol is not built in. The installer extracts modules and runs depmod; it does not load SCTP. Startup does not load SCTP. No SCTP client or server is in the allowlist, and `modprobe`/`kmod`/`insmod` are not in the allowlist, so the module is not loaded. An inbound ASCONF never reaches `sctp_process_asconf` because the protocol is not registered.
+On 6.18.9-hs, `CONFIG_IP_SCTP=m`. The drop ships `sctp.ko` (and `sctp_diag.ko`). The protocol is not built in. The installer extracts modules and runs depmod; it does not load SCTP. Startup does not load SCTP. No SCTP client or server is in the allowlist. After boot, `kernel.modules_disabled=1` refuses a later load of `sctp`, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). An inbound ASCONF never reaches `sctp_process_asconf` because the protocol is not registered.
 
 The network hook at connect() and sendto() does not apply to inbound ASCONF processing. That does not change the result: the SCTP stack is not up.
 
 The trigger cannot be reached on any default Root Lock deployment.
 
-If a 6.18.9-hs deployment loads `sctp.ko` and runs an allowlisted SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
+If `sctp` was already loaded when the latch ran, and an allowlisted program is an SCTP listener, treat this CVE as Affected at 9.8 CRITICAL and apply the standard backstop.
 
 ### CVE-2026-63797
 
@@ -4056,7 +4058,7 @@ The trigger cannot be reached on any Root Lock deployment.
 **Base Score**: 7.8 HIGH
 **Score on Root Lock**: 0.0 — standard Root Lock deployments do not run netfs streaming writes; attaching a netfs mount is blocked
 
-Netfslib can overwrite a streaming write when avoiding read-while-write. Both pins compile netfs support (5.19.6 `=y` with `CONFIG_9P_FS=y`; 6.18.9-hs `=m` with ceph/cifs/afs/9p modules). The path needs a mounted network filesystem, and the Root Lock root filesystem is not one. `modprobe`/`insmod`/`kmod` and netfs mkfs/mount helpers are absent from the program allowlist. Under Lockdown, `mount()` / `fsmount()` / `move_mount()` return `-EPERM`.
+Netfslib can overwrite a streaming write when avoiding read-while-write. Both pins compile netfs support (5.19.6 `=y` with `CONFIG_9P_FS=y`; 6.18.9-hs `=m` with ceph/cifs/afs/9p modules). The path needs a mounted network filesystem, and the Root Lock root filesystem is not one. On 6.18.9-hs those filesystems are modules. After boot, `kernel.modules_disabled=1` refuses a later load, even through an allowlisted `kmod`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections). Netfs mkfs and mount helpers are absent from the program allowlist. Under Lockdown, `mount()`, `fsmount()`, and `move_mount()` return `-EPERM`.
 
 The trigger cannot be reached on any Root Lock deployment.
 

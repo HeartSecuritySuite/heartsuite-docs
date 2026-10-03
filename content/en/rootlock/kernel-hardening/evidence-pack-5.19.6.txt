@@ -52,6 +52,10 @@ modules.builtin line count: 334
 
 modules_disabled sysctl (runtime): 0 — module loading is not locked after boot
 kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y
+  Note added 2026-10-03: both values above were measured on this
+  guest (Debian 12 lab, 2026-05-19). That boot predates
+  heartsuite-kernel-latch.service. On current installs that service
+  sets kernel.modules_disabled=1 early in every Root Lock kernel boot.
 
 Comparison: a standard Debian 12 running config ships 3500–4000 loadable modules.
 

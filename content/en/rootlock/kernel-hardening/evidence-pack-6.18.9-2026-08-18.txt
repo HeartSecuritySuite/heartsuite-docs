@@ -55,6 +55,11 @@ modules.builtin line count: 198
 
 modules_disabled sysctl (runtime): 0 — module loading is not locked after boot
 kexec_load_disabled sysctl (runtime): 0 — consistent with CONFIG_KEXEC=y / CONFIG_KEXEC_FILE=y
+  Note added 2026-10-03: both values above were measured on this
+  guest. That boot predates heartsuite-kernel-latch.service. On
+  current installs that service sets
+  kernel.modules_disabled=1 early in every Root Lock kernel boot,
+  and kexec_load_disabled=1 where the kernel has that setting.
 
 Comparison: the published 5.19.6 pack recorded 0 modules loaded and 9 .ko files.
 

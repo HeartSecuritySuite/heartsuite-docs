@@ -39,6 +39,12 @@ Module archive shipped with this binary:
   modules.builtin: 196 lines
   Config counts: 2688 =y, 3995 =m, CONFIG_MODULES=y
   Loaded-module count: not measured (no guest boot).
+  modules_disabled sysctl (runtime): not measured (no guest boot).
+  On current installs, heartsuite-kernel-latch.service sets this to 1
+  early in boot, before sshd, after loading the netfilter modules the
+  firewall needs.
+  This pack did not observe that. CONFIG_KEXEC is unset on this pack,
+  so kexec_load_disabled does not exist here.
 
 === 2. WHAT CHANGED VERSUS THE 18 AUGUST 2026 PACK ===
 

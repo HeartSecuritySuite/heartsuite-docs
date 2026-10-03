@@ -45,5 +45,5 @@ Installing packages, replacing program files, and updating Root Lock itself are 
 - [Protecting During Maintenance](protecting-during-maintenance/) — Unseal from the console after Lockdown, because SSH cannot make the GRUB pick, then install or edit over SSH in Setup Mode. Ansible can run after the window is open; it cannot lift the seal.
 - [File Backup and Versioning](file-backup-versioning/) — Automatic versioned backups on the Root Lock kernel. Under Lockdown the kernel is intended to keep other programs off those versions. Restore any earlier version from Backup.
 - [Cache Adjustment](cache-adjustment/) — The allowlist cache is an LRU window the Dashboard expands for you. Manual sizing is optional.
-- [Restricting Kernel Module Loading](kmod-hardening/) — Narrow kmod's file access before Lockdown. Seal prep can auto-narrow directory grants under `/lib/modules`.
+- [Restricting Kernel Module Loading](kmod-hardening/) — Early in every boot, before the network comes up, a latch blocks new module loads until reboot. Narrowing kmod's file grants covers boot before that point. Seal prep can auto-narrow directory grants under `/lib/modules`.
 - [Updating Root Lock](updating-heartsuite/) — Unseal if Lockdown is applied, then run the bundle from a terminal in Setup Mode and type `YES` for one stock boot; the GRUB default stays Root Lock.

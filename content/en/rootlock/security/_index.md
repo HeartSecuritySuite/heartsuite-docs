@@ -70,7 +70,7 @@ Scores on this page apply to **6.18.9-hs**. 5.19.6 is an archived kernel line. A
 
 - **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The next boot loads your on-disk allowlist. In-memory tampering is wiped on that boot. A kernel write that changes the on-disk file is what the next boot loads.
 - **New program execution.** The kernel refuses to run any program not in the Lockdown allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
-- **Kernel module loading post-boot.** On Debian 12, `modprobe` and `insmod` are symlinks to `kmod`, which is added to the allowlist during standard Setup Mode via `systemd-modules-load.service`. Lockdown's file-access enforcement denies `kmod` access to `/usr/lib/modprobe.d/` by default — module loading fails at the file-read stage before any module can be loaded. Module-based rootkits cannot be installed.
+- **Kernel module loading after boot.** Early in every Root Lock kernel boot, Setup Mode included, `heartsuite-kernel-latch.service` loads the netfilter modules the firewall needs, then sets `kernel.modules_disabled=1` before sshd starts. Until the next reboot, the kernel refuses every new module load, even for root. Modules already loaded stay loaded. Standard Setup allowlists `kmod` (on Debian 12, `modprobe` and `insmod` are symlinks to it), but no file grant on `kmod` reopens loading after the latch. Before the latch, which is before the network is configured, Lockdown denies `kmod` read of `/usr/lib/modprobe.d/` by default. OpenRC systems have no latch service and get the setting from `HS_lockdown.sh` when Lockdown is applied. Module-based rootkits cannot be installed after the latch.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
 - **Mounting new filesystems.** Lockdown blocks `mount()`, `fsmount()`, and `move_mount()` after boot. Bind-mounts and remounts to shadow allowlisted paths are refused.
 
@@ -89,7 +89,7 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 
 - **Sensitive-data disclosure during the live session.** A root attacker can read disk content while the session is active. Confidentiality during the breach is the role of disk encryption, not Lockdown.
 - **Hardware-level and pre-boot threats.** Firmware compromise, baseboard management exploits, and physical attacks on the boot chain are outside the Root Lock attack surface.
-- **Misconfigured allowlists.** If you allowlist tools you should not — `modprobe`, `bpftool`, networked exfiltration utilities — outcomes move from "Blocked" to "Bounded" and from "Bounded" to "Allowed." See the [deployment-tuning note](#note-on-scores-on-root-lock-and-deployment-tuning).
+- **Misconfigured allowlists.** If you allowlist tools you should not — `bpftool`, networked exfiltration utilities — outcomes move from "Blocked" to "Bounded" and from "Bounded" to "Allowed." Allowlisting `modprobe` does not reopen module loading after `kernel.modules_disabled=1`. See the [deployment-tuning note](#note-on-scores-on-root-lock-and-deployment-tuning).
 
 ## Residuals (non-zero Score on Root Lock)
 
@@ -128,9 +128,11 @@ The io_uring CVEs in the catalog are already fixed on 6.18.9-hs.
 
 ## How to read the backstop sections
 
-Root Lock runs two kernel controls, and the per-CVE entries refer to both. The allowlist check runs on every program start, whether or not Lockdown is on. A kernel write can change Lockdown state in memory. Root from userspace cannot clear it. A program with no allowlist entry does not run.
+Root Lock's allowlist and Lockdown are two controls the per-CVE entries refer to, and a boot latch sits in front of both. The allowlist check runs on every program start, whether or not Lockdown is on. A kernel write can change Lockdown state in memory. Root from userspace cannot clear it. A program with no allowlist entry does not run.
 
-Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then state which of these two controls limits what an attacker can do after the bug fires.
+A latch is a kernel setting that, once switched on, stays on until the next reboot. The boot latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, the kernel refuses every new module load, even for root or an allowlisted `kmod`. Modules already loaded stay loaded. `HS_lockdown.sh` sets the same value again, in case the latch service is masked; on OpenRC systems, which have no latch service, that is the only place it is set.
+
+Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then state which control limits what an attacker can do after the bug fires. For a bug that lives only in a module that was not loaded at boot, that control is the latch. The allowlist and Lockdown still bound what an already-loaded module, or built-in code, can be asked to do.
 
 ### Why this is unusual
 
@@ -148,9 +150,9 @@ Catalog rows marked fixed on 6.18.9-hs keep the archived 5.19.6 score.
 
 ### Note on Not-exploitable entries that depend on allowlist composition
 
-Several Not-exploitable entries justify their 0.0 Score on Root Lock with phrasing of the form *"X not in allowlist."* These claims are accurate for any Root Lock deployment built through the standard Setup Mode workflow, where the allowlist is populated from production service activity. Utilities not invoked during that workflow would not be added to the allowlist. Specifically, the following utilities should not be allowlisted on a production Root Lock deployment:
+Several Not-exploitable entries justify their 0.0 Score on Root Lock with phrasing of the form *"X not in allowlist."* These claims are accurate for utilities that standard Setup Mode does not record, because the allowlist is populated from production service activity. The module loader is the exception: standard Setup does allowlist `kmod`, and what blocks module loads after boot is `kernel.modules_disabled`, not the allowlist. Specifically:
 
-- `modprobe`, `insmod` / `kmod` — kernel module loading. On Debian 12, these resolve to `kmod`, which standard Setup Mode does allowlist; the protection is Lockdown's file-access enforcement denying `kmod` access to `/usr/lib/modprobe.d/`. Granting `kmod` that access reverts CVE-2024-36883 (and any other module-loading-dependent CVE) to **Affected**.
+- `modprobe`, `insmod` / `kmod` — kernel module loading. On Debian 12 these resolve to `kmod`, which standard Setup Mode does allowlist. Once the latch has run, granting `kmod` read of `/usr/lib/modprobe.d/` does not let a new module load. Before it, Lockdown's denial of that directory covers the gap. CVE-2024-36883 stays at 0.0 because no new module can register pernet operations after the latch. A module that was already loaded stays resident.
 - `tc` (iproute2 traffic control) — qdisc/filter manipulation. Allowlisting reverts CVE-2025-37914 / 37915 / 37923 / 22121 and other `NET_SCHED` CVEs to **Affected**.
 - `bpftool`, `trace-cmd`, `perf`, debugfs/tracefs writers — kernel instrumentation. Allowlisting reverts the kprobe / tracing / perf CVE cluster (CVE-2024-38588 etc.) to **Affected**.
 - `dmsetup`, raw block-device tools, `cryptsetup` mappings created post-boot — block-layer mutation. Same shape.

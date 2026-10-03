@@ -184,7 +184,7 @@ This is the primary use case of Root Lock. The implementation is structural, not
 
 See [System Requirements](../introduction/system-requirements/#software-compatibility-notes) and [Deployment Scenarios](../introduction/deployment-scenarios/) for details.
 
-**Module loading restriction**: In Lockdown, `kmod`, `modprobe`, and `insmod` have no allowlist entries by default and cannot execute. Module-based rootkits cannot be installed because the module loaders cannot run. Where kmod is required for hardware drivers, its file access permissions can be restricted to specific `.ko` paths.
+**Module loading restriction**: Early in every Root Lock kernel boot, before sshd starts, `heartsuite-kernel-latch.service` loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. For the rest of that boot, the kernel refuses new module loads, even for root. Standard Setup allowlists `kmod`, but no file grant on it reopens loading after the latch. Narrowing those grants limits what `kmod` can load before the latch, which is early in boot, before the network is configured. See [Restricting Kernel Module Loading](../maintenance/kmod-hardening/).
 
 **Post-compromise file recovery**: When an approved program is compromised and encrypts or corrupts files (for example ransomware inside an approved process), per-write backup preserves every version. Recovery starts from the moment before the damage began, not the last scheduled backup window. Under Lockdown, the kernel blocks write and delete to the backup directory (`/.hs/b/`) for every program except Root Lock backup tooling (`hs-backup` and `hs-version-manager`). That includes root.
 

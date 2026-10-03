@@ -20,6 +20,8 @@ Compiled-in residuals and write-ups: [Compiled-in CVEs](../compiled-in-cves/). M
 
 Where an option below is unset, that subsystem is absent and the group is Not Affected without a per-CVE review. Where that option is set on the kernel you boot, the row stays on the patch date and carries no Not Affected badge.
 
+An option set to `=m` (built as a module) stays on the patch date. Early in every Root Lock kernel boot, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1`, and after that a module that was not already loaded cannot be loaded, even by root. Not Affected remains the badge for an unset option only. Code in a module that did load, and code built in with `=y`, stays in the running kernel. Scanners still match the pin config. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections).
+
 Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](../compiled-in-cves/#cve-2026-31431). An attacker who already has root cannot persist or edit the allowlist, because the allowlist files are immutable and the kernel refuses the write.
 
 | Config gate | CVEs covered | Status |
