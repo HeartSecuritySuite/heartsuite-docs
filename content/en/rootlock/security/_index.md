@@ -21,6 +21,10 @@ markup:
 
 **Overview**: Every kernel CVE relevant to Root Lock — what it can do, what it cannot, and why.
 
+**How these scores are made.** Each score is a desk assessment of one kernel CVE against the Root Lock kernel build. A reviewer reads the published build configuration and the kernel source, applies the [four assessment gates](#the-four-assessment-gates), and a person checks the result before it is published. The scores come from that analysis. No exploit was run against a Root Lock host to produce them. Live attack tests in a lab are a separate kind of evidence.
+
+**What is in scope.** This catalog covers kernel CVEs only. A CVE in an application you run, such as a web server, FTP daemon, database, or CI server, is outside it. If that application is on your allowlist, its bug still fires. Root Lock then decides what the compromised program can run, open, and reach next. See [Gate 3](#the-four-assessment-gates).
+
 The **Score on Root Lock** column is a CVSS v3.1 Environmental Score for a Root Lock deployment: the risk on this kernel, not the theoretical worst case.
 
 Where the attack surface is absent — hardware not present, trigger not installed, feature not compiled in — the score is 0.0 regardless of Base Score. Where the code path is reachable, the score stays non-zero because the bug can still be triggered; under Lockdown, the attacker who triggers it still cannot run new programs or write to the sealed allowlist.
@@ -70,7 +74,7 @@ Scores on this page apply to **6.18.9-hs**. 5.19.6 is an archived kernel line. A
 
 - **Persistence across reboot.** No service, cron job, init script running new code, or kernel module added by the attacker survives a reboot. The next boot loads your on-disk allowlist. In-memory tampering is wiped on that boot. A kernel write that changes the on-disk file is what the next boot loads.
 - **New program execution.** The kernel refuses to run any program not in the Lockdown allowlist, regardless of root privilege. Backdoors, custom exploit tools, droppers, and post-exploitation frameworks cannot run.
-- **Kernel module loading after boot.** Early in every Root Lock kernel boot, Setup Mode included, `heartsuite-kernel-latch.service` loads the netfilter modules the firewall needs, then sets `kernel.modules_disabled=1` before sshd starts. Until the next reboot, the kernel refuses every new module load, even for root. Modules already loaded stay loaded. Standard Setup allowlists `kmod` (on Debian 12, `modprobe` and `insmod` are symlinks to it), but no file grant on `kmod` reopens loading after the latch. Before the latch, which is before the network is configured, Lockdown denies `kmod` read of `/usr/lib/modprobe.d/` by default. OpenRC systems have no latch service and get the setting from `HS_lockdown.sh` when Lockdown is applied. Module-based rootkits cannot be installed after the latch.
+- **Kernel module loading after boot.** Early in every Root Lock kernel boot, Setup Mode included, `heartsuite-kernel-latch.service` loads the netfilter modules the firewall needs, then sets `kernel.modules_disabled=1` before sshd starts. Until the next reboot, a later modprobe stays refused. The latch script does not unload modules already in memory. HeartSuite is not on yet in that sysinit window, so the program allowlist is not what stops those loads. OpenRC systems have no latch service and get the setting from `HS_lockdown.sh` when Lockdown is applied. Module-based rootkits cannot be installed after the latch.
 - **Allowlist modification at runtime.** The runtime allowlist lives in kernel memory and is not modifiable post-boot. The on-disk allowlist file is `chattr +i` immutable; Lockdown blocks `FS_IOC_SETFLAGS` so root cannot strip the immutable flag.
 - **Mounting new filesystems.** Lockdown blocks `mount()`, `fsmount()`, and `move_mount()` after boot. Bind-mounts and remounts to shadow allowlisted paths are refused.
 
@@ -89,7 +93,7 @@ Under Lockdown the kernel decides, per program, whether it can run, which files 
 
 - **Sensitive-data disclosure during the live session.** A root attacker can read disk content while the session is active. Confidentiality during the breach is the role of disk encryption, not Lockdown.
 - **Hardware-level and pre-boot threats.** Firmware compromise, baseboard management exploits, and physical attacks on the boot chain are outside the Root Lock attack surface.
-- **Misconfigured allowlists.** If you allowlist tools you should not — `bpftool`, networked exfiltration utilities — outcomes move from "Blocked" to "Bounded" and from "Bounded" to "Allowed." Allowlisting `modprobe` does not reopen module loading after `kernel.modules_disabled=1`. See the [deployment-tuning note](#note-on-scores-on-root-lock-and-deployment-tuning).
+- **Misconfigured allowlists.** If you allowlist tools you should not — `bpftool`, networked exfiltration utilities — outcomes move from "Blocked" to "Bounded" and from "Bounded" to "Allowed." After `kernel.modules_disabled=1`, a later modprobe stays refused. See the [deployment-tuning note](#note-on-scores-on-root-lock-and-deployment-tuning).
 
 ## Residuals (non-zero Score on Root Lock)
 
@@ -130,7 +134,7 @@ The io_uring CVEs in the catalog are already fixed on 6.18.9-hs.
 
 Root Lock's allowlist and Lockdown are two controls the per-CVE entries refer to, and a boot latch sits in front of both. The allowlist check runs on every program start, whether or not Lockdown is on. A kernel write can change Lockdown state in memory. Root from userspace cannot clear it. A program with no allowlist entry does not run.
 
-A latch is a kernel setting that, once switched on, stays on until the next reboot. The boot latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, the kernel refuses every new module load, even for root or an allowlisted `kmod`. Modules already loaded stay loaded. `HS_lockdown.sh` sets the same value again, in case the latch service is masked; on OpenRC systems, which have no latch service, that is the only place it is set.
+A latch is a kernel setting that, once switched on, stays on until the next reboot. The boot latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused. The latch script does not unload modules already in memory. `HS_lockdown.sh` writes the same value again, where the node exists, in case the latch service is masked. OpenRC systems have no latch service and get that write only when Lockdown is applied.
 
 Per-CVE entries on [Compiled-in CVEs](compiled-in-cves/) name the bug, then state which control limits what an attacker can do after the bug fires. For a bug that lives only in a module that was not loaded at boot, that control is the latch. The allowlist and Lockdown still bound what an already-loaded module, or built-in code, can be asked to do.
 
@@ -150,9 +154,9 @@ Catalog rows marked fixed on 6.18.9-hs keep the archived 5.19.6 score.
 
 ### Note on Not-exploitable entries that depend on allowlist composition
 
-Several Not-exploitable entries justify their 0.0 Score on Root Lock with phrasing of the form *"X not in allowlist."* These claims are accurate for utilities that standard Setup Mode does not record, because the allowlist is populated from production service activity. The module loader is the exception: standard Setup does allowlist `kmod`, and what blocks module loads after boot is `kernel.modules_disabled`, not the allowlist. Specifically:
+Several Not-exploitable entries justify their 0.0 Score on Root Lock with phrasing of the form *"X not in allowlist."* These claims are accurate for utilities that standard Setup Mode does not record, because the allowlist is populated from production service activity. Module loads after boot are the other control: `kernel.modules_disabled`, written by the boot latch. Specifically:
 
-- `modprobe`, `insmod` / `kmod` — kernel module loading. On Debian 12 these resolve to `kmod`, which standard Setup Mode does allowlist. Once the latch has run, granting `kmod` read of `/usr/lib/modprobe.d/` does not let a new module load. Before it, Lockdown's denial of that directory covers the gap. CVE-2024-36883 stays at 0.0 because no new module can register pernet operations after the latch. A module that was already loaded stays resident.
+- `modprobe`, `insmod` / `kmod` — kernel module loading. On Debian 12 these resolve to `kmod`. Once the latch has run, a later modprobe stays refused. CVE-2024-36883 stays at 0.0 because no new module can register pernet operations after the latch. The latch script does not unload a module already in memory.
 - `tc` (iproute2 traffic control) — qdisc/filter manipulation. Allowlisting reverts CVE-2025-37914 / 37915 / 37923 / 22121 and other `NET_SCHED` CVEs to **Affected**.
 - `bpftool`, `trace-cmd`, `perf`, debugfs/tracefs writers — kernel instrumentation. Allowlisting reverts the kprobe / tracing / perf CVE cluster (CVE-2024-38588 etc.) to **Affected**.
 - `dmsetup`, raw block-device tools, `cryptsetup` mappings created post-boot — block-layer mutation. Same shape.
@@ -171,13 +175,13 @@ Share this section and the [disabled-features](disabled-features/) catalog with 
 
 ## The Four Assessment Gates
 
-Every entry in this catalog was verified source-first. No assumptions were made about what is compiled in, and no scanner output was taken at face value. The assessment follows four gates in order:
+Every entry in this catalog was assessed source-first, by reading the build configuration and the kernel source. No assumptions were made about what is compiled in, and no scanner output was taken at face value. The assessment is analysis. It does not include running each exploit. It follows four gates in order:
 
 **Gate 1 — Is the vulnerable code compiled in?** The Root Lock kernel configuration is checked directly against the relevant `CONFIG_` option. If the option is not set, the vulnerable code does not exist in the running kernel. The assessment stops here as Not Affected regardless of kernel version string.
 
 **Gate 2 — Does Root Lock's outbound connection control cover the attack path?** For socket-based CVEs, Root Lock intercepts outbound `connect()` calls only. Attack paths that reach the kernel through socket creation, `sendmsg`, `recvmsg`, or kernel-internal crypto interfaces are not covered by this control and are noted accordingly.
 
-**Gate 3 — Can an exploit program run?** Under Lockdown, the program allowlist is made filesystem-immutable, so no new entries can be added and an exploit program the attacker drops has no entry and cannot execute. This gate does not apply to CVEs exploitable from within an already-running, allowlisted process.
+**Gate 3 — Can an exploit program run?** Under Lockdown, the program allowlist is made filesystem-immutable, so no new entries can be added and an exploit program the attacker drops has no entry and cannot execute. This gate does not apply to CVEs exploitable from within an already-running, allowlisted process. A web application bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved. What Root Lock refuses is the next step, a program, file, or destination that program was never granted.
 
 **Gate 4 — What can root actually do under Lockdown?** When a CVE achieves root privilege, Lockdown applies a further constraint. The kernel refuses to clear filesystem immutable flags (`chattr -i` is blocked at the syscall level). All three mount syscall variants are blocked. Clearing Lockdown takes a reboot from physical or serial-console access onto the maintenance kernel; SSH cannot unseal, although it remains how you administer the host before and after that step. Seal and control integrity are product contracts on the pin you run.
 

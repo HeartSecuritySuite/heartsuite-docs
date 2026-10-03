@@ -25,9 +25,9 @@ This policy describes how HeartSuite supports the **Root Lock kernel** — the c
 
 It applies to:
 
-- **Root Lock kernel streams** currently shipped and supported:
+- **Root Lock kernel stream** currently shipped and supported:
   - **6.18** — primary LTS stream and commercial baseline (HeartSuite v1.6.4 ships kernel **6.18.9**).
-  - **5.19** — legacy stream for existing deployments; no longer the default for new installations.
+- **5.19** is withdrawn. No customer support and no further updates. Debian 11 and Ubuntu 20.04 are lab re-proof of that archived k5 installer only. They do not take the current 6.18 bundle.
 - **Coordinated update bundles** that deliver the Root Lock kernel together with matching userspace components (Dashboard, daemon, tools, and installer). Kernel changes are not published or supported as standalone kernel-only packages outside these bundles.
 - **Integration with subscription terms** — patch targets, notification channels, and binding service-level commitments appear in your subscription agreement. This page states public targets and operational boundaries so buyers can align internal change-control and vulnerability-management programs before contract signature.
 
@@ -39,7 +39,7 @@ It applies to:
 
 HeartSuite's current commercial baseline is a **mainline LTS** kernel (6.18). New streams are LTS bases — not arbitrary upstream version chasing.
 
-The **5.19** stream is a legacy exception: 5.19 was a short-lived mainline release. It remains in this policy only for existing deployments until the deprecation window closes.
+The **5.19** stream is withdrawn. It was a short-lived mainline release. It remains here only as lab re-proof of the archived k5 installer on Debian 11 and Ubuntu 20.04.
 
 **Why LTS-only**
 

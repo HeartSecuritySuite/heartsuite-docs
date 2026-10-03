@@ -51,7 +51,7 @@ The footer shows the primary actions available at any point:
 | `[?]` | Explain — what this approval means |
 | `[q]` | Return to the Dashboard |
 
-Two additional keys appear contextually, not in the footer:
+One additional key appears contextually, not in the footer:
 
 | Key | When available |
 |-----|---------------|

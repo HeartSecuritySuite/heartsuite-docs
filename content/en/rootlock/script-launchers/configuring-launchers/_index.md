@@ -72,7 +72,7 @@ Skipping leaves the checklist row incomplete, so the Suggested Next Step stays o
 Before or after Dashboard activation, you can run a script through a specific launcher directly to verify it works under its own permissions:
 
 ```bash
-# hs-python-launcher /path/to/your-script.py
+# hs_python3 /path/to/your-script.py
 ```
 
 This applies the script's allowlist entry rather than the interpreter's. Before activation, running the same script with `python3` directly uses the interpreter's broader permissions; after activation, that call routes through the launcher as well. This is useful for verifying per-script permissions in isolation before relying on them in Lockdown.

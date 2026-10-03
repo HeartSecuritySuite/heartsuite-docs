@@ -15,7 +15,7 @@ toc: false
 
 ---
 
-> **Note:** 5.19.6 is the legacy kernel line, installed only on Debian 11 and Ubuntu 20.04. New installs on every other supported distribution run 6.18.9-hs, whose posture is in [Hardening matrix for kernel 6.18.9](../kernel-comparison-matrix-6.18.9/).
+> **Note:** 5.19.6 is the withdrawn k5 line, kept for lab re-proof on Debian 11 and Ubuntu 20.04. It has no customer support. New installs on every supported distribution run 6.18.9-hs, whose posture is in [Hardening matrix for kernel 6.18.9](../kernel-comparison-matrix-6.18.9/).
 
 On a run of the open-source `kernel-hardening-checker` config linter — the same tool Linux kernel security researchers use — the Root Lock 5.19.6 kernel outperforms Arch linux-hardened on attack-surface measures.
 

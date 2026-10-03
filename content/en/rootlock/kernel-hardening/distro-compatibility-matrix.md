@@ -28,13 +28,13 @@ Each row assigns a **tier** that says what HeartSuite has run recently and what 
 | **Supported** | In the current k6 `release-core` lab set (Debian 12, Debian 13, Ubuntu 24.04, Ubuntu 26.04). Install and initial setup are what that set covers. Lockdown on that set is not a published green sign-off. Validate Lockdown on your gold image. |
 | **In lab** | In the current catalog (`release-plus` or equivalent) with a named caveat. Not certified. |
 | **Experimental** | Catalog `experimental` set, or explicitly not certified. Useful for CI; not a procurement baseline. |
-| **Legacy (5.19 only)** | Old-glibc hosts. They take the k5 installer and the 5.19 Root Lock kernel only. A 6.18 install is refused. |
+| **Legacy (5.19 only)** | Withdrawn k5 line. No customer support. Debian 11 and Ubuntu 20.04 are lab re-proof of that installer only. A 6.18 install is refused. |
 | **Compatible (customer validation)** | Same RPM or Debian family as a tested row, but HeartSuite has not published branded testing for your exact minor or vendor image. You run install and Lockdown on your gold image before production. |
 | **Not supported** | Outside architecture or distribution scope. Use HJFS on a standard kernel or a supported base OS. |
 
 **Columns**
 
-- **Kernel line** — Which Root Lock kernel the current installer for that row ships. Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only. Ubuntu 22.04 is not offered on this installer. You do not pick both lines at install on a given row.
+- **Kernel line** — Which Root Lock kernel the current installer for that row ships. Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04 use **6.18** (`uname -r` is `6.18.9-hs` on the fielded pin). Debian 11 and Ubuntu 20.04 use **5.19** only, as lab re-proof of the withdrawn k5 line. Ubuntu 22.04 is not offered on this installer. You do not pick both lines at install on a given row.
 - **Boot** — How the installer sets the default kernel entry. UEFI Secure Boot for the Root Lock kernel entry remains [incomplete](enterprise-adoption-guide/#secure-boot-firmware-compatibility-and-roadmap). The original distribution kernel (maintenance kernel) keeps its signing status for recovery. On GRUB, including Fedora and Red Hat, an optional boot menu password can be set from Lockdown before the seal ([Lockdown](../lockdown/)).
 
 Source for rows and kernel series: `heartsuite/tools/live_matrix/distro_catalog.yaml`, plus the installer floors (glibc 2.34, Python 3.11), as of 2026-09-24.
@@ -95,7 +95,7 @@ Catalog `experimental`, or rolling / not certified. Expect extra reboots, boot-l
 
 ### Legacy (5.19 only)
 
-Debian 11 and Ubuntu 20.04 use the k5 installer and the 5.19 Root Lock kernel. They must never consume the current k6 / 6.18 bundle.
+Debian 11 and Ubuntu 20.04 use the archived k5 installer and the 5.19 Root Lock kernel. That line is withdrawn: no customer support and no further updates. Those rows are lab re-proof only. They must never consume the current k6 / 6.18 bundle.
 
 ### Compatible (customer validation)
 

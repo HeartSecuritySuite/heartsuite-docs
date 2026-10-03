@@ -15,7 +15,7 @@ menu:
     identifier: "system-requirements"
 ---
 
-**Overview**: Confirm the host is x86 Linux on a distribution from the current lab matrix before you install. The Local Path command is the same on bare metal and on a full virtual machine. Root Lock by HeartSuite ships a **6.18** kernel for new images (`uname -r` is `6.18.9-hs` on the current release) and a **5.19** kernel only for old-glibc hosts (Debian 11, Ubuntu 20.04). Each line has its own configuration.
+**Overview**: Confirm the host is x86 Linux on a distribution from the current lab matrix before you install. The Local Path command is the same on bare metal and on a full virtual machine. Root Lock by HeartSuite ships a **6.18** kernel for new images (`uname -r` is `6.18.9-hs` on the current release). **5.19** is withdrawn: no customer support. Debian 11 and Ubuntu 20.04 are lab re-proof of that archived k5 installer only. Each line has its own configuration.
 
 See the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/) for tiers, versions, and kernel line per row. That page is the source for which bases are Supported, In lab, Experimental, or Legacy.
 
@@ -24,14 +24,14 @@ See the [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibilit
 | Component | Supported |
 |-----------|-----------|
 | Architecture | x86 (64-bit) |
-| Distributions | Current 6.18 lab set: Debian 12/13, Ubuntu 24.04/26.04 (**Supported**). Fedora 42 (**In lab**). Rocky Linux 10, CentOS Stream 10, Alpine 3.21, openSUSE Tumbleweed (**Experimental**). Debian 11 and Ubuntu 20.04 (**Legacy, 5.19 only**). Ubuntu 22.04, Rocky Linux 9, RHEL 9, AlmaLinux 9, and CentOS Stream 9 miss the Python 3.11 floor. RHEL 8 and AlmaLinux 8 miss the glibc 2.34 floor. SLES: contact support; the same floors apply. Full notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/). |
-| Kernels | 6.18 for new installs (`6.18.9-hs`). 5.19 only on Debian 11 / Ubuntu 20.04. |
+| Distributions | Current 6.18 lab set: Debian 12/13, Ubuntu 24.04/26.04 (**Supported**). Fedora 42 (**In lab**). Rocky Linux 10, CentOS Stream 10, Alpine 3.21, openSUSE Tumbleweed (**Experimental**). Debian 11 and Ubuntu 20.04 (**withdrawn 5.19, lab re-proof only**). Ubuntu 22.04, Rocky Linux 9, RHEL 9, AlmaLinux 9, and CentOS Stream 9 miss the Python 3.11 floor. RHEL 8 and AlmaLinux 8 miss the glibc 2.34 floor. SLES: contact support; the same floors apply. Full notes: [Distro Compatibility Matrix](../../kernel-hardening/distro-compatibility-matrix/). |
+| Kernels | 6.18 for new installs (`6.18.9-hs`). 5.19 is withdrawn; lab re-proof only on Debian 11 / Ubuntu 20.04. |
 
 Do not use the April 2026 v1.6.4 list (Fedora 41, Rocky 9.7, Alpine 3.21 as “validated,” Ubuntu 22.04 omitted). That table is retired.
 
 ## Kernel
 
-New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel. Debian 11 and Ubuntu 20.04 take the 5.19 installer and kernel only; the 6.18 bundle must not be installed on them. Ubuntu 22.04 is not offered on this installer (Python 3.10). The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
+New Debian 12/13 and Ubuntu 24.04/26.04 installs boot the 6.18 Root Lock kernel. Debian 11 and Ubuntu 20.04 are lab re-proof of the withdrawn 5.19 installer; the 6.18 bundle must not be installed on them. Ubuntu 22.04 is not offered on this installer (Python 3.10). The Dashboard verifies kernel activation after initial setup and provides orientation on every boot.
 
 ## Software compatibility notes
 

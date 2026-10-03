@@ -64,7 +64,7 @@ You are then in Setup Mode on the Root Lock kernel:
 
 - Blocking is off; logging and backups are on.
 - New activity appears in the review queues.
-- Maintenance (`[m]`) is hidden — you can already install software and edit files.
+- The Maintenance grid button is hidden in Setup Mode. Keyboard `[m]` still opens Maintenance after you have unsealed. You can already install software and edit files.
 
 Make your changes — install packages and edit configuration. When finished, lock down again from Lockdown (`[l]`). Review and approve the new queue items before you type `YES`. The activation flow is in [Lockdown](../../lockdown/).
 

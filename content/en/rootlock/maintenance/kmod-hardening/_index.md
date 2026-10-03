@@ -1,8 +1,8 @@
 ---
-title: "Restrict kmod before modules are locked at boot"
+title: "Narrow kmod's file grants before Lockdown"
 linkTitle: "Restricting Kernel Module Loading"
 weight: 5
-description: "Early in every boot, before the network comes up, Root Lock locks kernel module loading until reboot, even for root. File grants on kmod limit what it can load before that point."
+description: "Early in every HeartSuite-kernel boot, a latch refuses a later modprobe until reboot. This page is how you narrow kmod's file grants before Lockdown seals them."
 categories: ["Advanced"]
 tags: ["heartsuite", "linux", "maintenance", "security", "lockdown", "kmod", "modules"]
 type: docs
@@ -13,21 +13,21 @@ toc: true
 
 **Overview**: Root Lock blocks kernel module loading with a latch: a kernel setting that, once switched on, stays on until the next reboot.
 
-The latch is `heartsuite-kernel-latch.service`. It runs early in every Root Lock kernel boot, Setup Mode included, before the network is configured and before sshd starts. It first loads the netfilter modules the firewall needs. Then it sets `kernel.modules_disabled=1`, and `kernel.kexec_load_disabled=1` where the kernel has that setting. From then until reboot, the kernel refuses to load or unload any module (`init_module`, `finit_module`, `delete_module`), even for root or an allowlisted `kmod`. Modules already loaded stay loaded. The kernel setting does the blocking, not a Root Lock check.
+The latch is `heartsuite-kernel-latch.service`. It runs early in every Root Lock kernel boot, Setup Mode included, before the network is configured and before sshd starts. It first loads the netfilter modules the firewall needs. Then it sets `kernel.modules_disabled=1`, and `kernel.kexec_load_disabled=1` where that node exists. From then until reboot, a later modprobe stays refused (`init_module`, `finit_module`, and `delete_module`). The latch script does not unload modules already in memory. The kernel setting does the blocking, not a Root Lock check.
 
-`HS_lockdown.sh` sets the same values again, in case the latch service is masked. OpenRC systems have no latch service and get the settings only when Lockdown is applied.
+`HS_lockdown.sh` writes the same settings again, where the node exists, in case the latch service is masked. OpenRC systems have no latch service and get those writes only when Lockdown is applied.
 
-This page is about early boot, before the latch runs. No file grant, including a read grant on `/usr/lib/modprobe.d/` or `/lib/modules`, reopens loading after it.
+HeartSuite is not on yet while that oneshot runs, so the program allowlist is not what stops module loads in that window. This page is how you narrow kmod's file grants before Lockdown seals the allowlist.
 
 ## When no extra work is needed
 
-If `kmod`, `modprobe`, and `insmod` have no allowlist entries, Root Lock refuses to run them, so they cannot load a module before the latch either. You can skip the rest of this page. Standard Setup does allowlist `kmod`, so on most systems the next section applies.
+If kmod has no directory grant under `/lib/modules` or `/usr/lib/modules`, you can skip the rest of this page.
 
 ## When kmod is allowlisted
 
-Some hardware configurations require kmod at startup to load drivers or filesystem modules. Standard Setup allowlists `kmod` via `systemd-modules-load.service`. The latch runs after udev's initial device scan, `systemd-modules-load.service`, the `binfmt_misc` mount, and `ufw.service` (when enabled). Until then, an allowlisted `kmod` can load any module it can read.
+Some hardware configurations load drivers or filesystem modules at startup. The latch runs after udev's initial device scan, `systemd-modules-load.service`, the `binfmt_misc` mount, and `ufw.service` (when enabled). Those early loads are that boot path and the latch's own netfilter preload.
 
-Narrow those file grants to the module paths kmod needs. An allowlisted kmod with a directory read under `/lib/modules` can open module files that were never observed during Setup Mode. Narrow grants make Root Lock refuse that read before the latch runs. The latch's own netfilter preload is a fixed list; file grants neither add to it nor extend loading past the latch.
+A kmod program that holds a directory grant on `/lib/modules` or `/usr/lib/modules` can load any module present in that tree. Narrow those grants to the module paths kmod needs. An allowlisted kmod with a directory read under `/lib/modules` can open module files that were never observed during Setup Mode. The latch's own netfilter preload is a fixed list. File grants do not add to it.
 
 ## Narrow file access before Lockdown
 
@@ -48,7 +48,7 @@ After Lockdown engages:
 - **Allowlist entries are sealed** — kmod's entry cannot be modified while Lockdown is active.
 - **Startup scripts are sealed** — system-wide shell configuration, systemd unit directories, and cron. Attackers cannot insert scripts that would run before Lockdown re-engages on the next boot and expand kmod's permissions.
 
-After the latch, `kernel.modules_disabled` refuses every module load. Before it, the allowlist and kmod's file grants are what limit loading.
+After the latch, a later modprobe stays refused. The allowlist and kmod's file grants are a separate control, and Lockdown seals them.
 
 ## Per-user shell profile coverage
 

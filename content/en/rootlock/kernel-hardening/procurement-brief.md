@@ -51,7 +51,7 @@ Legacy 5.19.6 glance (checker `b9b83a0`, not comparable item-for-item): attack-s
 
 On 6.18.9-hs #43, exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**. `INIT_ON_FREE_DEFAULT_ON` and `MODULE_SIG_FORCE` stay off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset. `bpf()` returns `ENOSYS`.
 
-The allowlist constrains programs that have no allowlist entry. Lockdown, once engaged, also constrains new module loads. Both are policy decisions in the kernel.
+The allowlist constrains programs that have no allowlist entry. On every HeartSuite-kernel boot, including Setup, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1` at sysinit, before sshd. A later modprobe stays refused. That latch is a boot script. `HS_lockdown.sh` writes the same setting again if the oneshot is masked.
 
 ---
 

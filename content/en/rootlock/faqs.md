@@ -188,19 +188,19 @@ To make changes, open Maintenance (`[m]`). If the seal is applied, reboot from a
 
 {{< details summary="What are the system requirements for Root Lock?" >}}
 
-A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Fedora 42 is in lab. Rocky Linux 10, CentOS Stream 10, Alpine, and openSUSE Tumbleweed are experimental. Debian 11 and Ubuntu 20.04 use the 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 meet the glibc floor and fail the Python floor, so the installer refuses them. RHEL 8, AlmaLinux 8, and older extended-support releases (CentOS 7, Ubuntu 18.04, Debian 10 and earlier) are below the glibc floor. There is no compat package that puts this installer on those releases. Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
+A: x86 (64-bit) Linux. The current installer needs glibc 2.34 or newer and Python 3.11 or newer. The 6.18 lab set is Debian 12, Debian 13, Ubuntu 24.04, and Ubuntu 26.04. Fedora 42 is in lab. Rocky Linux 10, CentOS Stream 10, Alpine, and openSUSE Tumbleweed are experimental. Debian 11 and Ubuntu 20.04 are lab re-proof of the withdrawn 5.19 kernel only. Ubuntu 22.04, Rocky Linux 9, AlmaLinux 9, RHEL 9, and CentOS Stream 9 meet the glibc floor and fail the Python floor, so the installer refuses them. RHEL 8, AlmaLinux 8, and older extended-support releases (CentOS 7, Ubuntu 18.04, Debian 10 and earlier) are below the glibc floor. There is no compat package that puts this installer on those releases. Full matrix: [Distro Compatibility](kernel-hardening/distro-compatibility-matrix/).
 
 {{< /details >}}
 
 {{< details summary="Which Linux kernels does Root Lock ship? Is Linux 7 supported?" >}}
 
-A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a shipped kernel. A host already on Debian 11 or Ubuntu 20.04 is the legacy case, in [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
+A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a shipped kernel. 5.19 is withdrawn. Debian 11 and Ubuntu 20.04 are lab re-proof of that archived line only. See [Kernel Support Policy](kernel-hardening/kernel-support-policy/).
 
 {{< /details >}}
 
 {{< details summary="How can I download Root Lock?" >}}
 
-A: Download the tar file from heartsecsuite.com — the download form is on the website; direct wget links are not provided.
+A: On the target host, run `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash`. Inspect the script first if you prefer. See [Obtaining Root Lock by HeartSuite](installation/obtaining-heartsuite/).
 
 {{< /details >}}
 
@@ -397,7 +397,7 @@ A: No. Video, network, and block drivers are kernel code. They are not programs 
 
 `/dev/sda` (or `/dev/vda`, `/dev/nvme0n1`) is a device node. Write access to it is a **file grant** on some userspace program — often a directory write to `/dev`. That write goes to the raw disk and skips the filesystem, which is why Root Lock requires a file grant for that open.
 
-`kmod` is the loader, not the driver. Early in every Root Lock kernel boot, a latch service sets `kernel.modules_disabled=1`. After that, the kernel refuses every new module load, even when `kmod` can read the module file. File grants on `kmod` only matter before the latch runs, which is early in boot, before the network is configured. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
+`kmod` is the loader. Early in every Root Lock kernel boot, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1`. After that, a later modprobe stays refused. See [Restricting Kernel Module Loading](maintenance/kmod-hardening/).
 
 {{< /details >}}
 
