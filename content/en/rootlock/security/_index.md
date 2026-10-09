@@ -25,8 +25,8 @@ markup:
 <div class="col-md-4">
 <div class="cve-hero-card cve-hero-neutralized">
 <p class="cve-hero-number text-success">{{< cve-stat type="neutralized" >}}</p>
-<p class="cve-hero-label">Score on Root Lock <strong>0.0</strong></p>
-<p class="cve-hero-detail">The program that reaches the bug has no allowlist entry, or the hardware is not in the machine.</p>
+<p class="cve-hero-label">High &amp; Critical CVEs reduced to Score on Root Lock <strong>0.0</strong></p>
+<p class="cve-hero-detail">Attack surface absent by design.</p>
 </div>
 </div>
 <div class="col-md-4">
