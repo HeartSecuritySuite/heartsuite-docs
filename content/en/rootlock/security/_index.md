@@ -14,7 +14,7 @@ markup:
     endLevel: 2
 ---
 
-**Overview**: This page is the status of kernel CVEs on the Root Lock kernel you boot. `uname -r` is `6.18.9-hs`. Kernel 5.19.6 is an archived line. A CVE in an application you run, such as a web server or a database, is outside this list. If that program is on your allowlist, its bug fires in that program.
+**Overview**: This page is the status of kernel CVEs on the Root Lock kernel you boot. `uname -r` is `6.18.9-hs`. Kernel 5.19.6 is an archived line. A CVE in an application you run, such as a web server, an FTP server, a database, or a CI server, is outside this list. If that program is on your allowlist, its bug fires in that program.
 
 | State | What it means | Where to read it |
 |-------|----------------|------------------|
@@ -24,7 +24,7 @@ markup:
 
 On this kernel the BPF syscall is off, so there is no eBPF program to load. Each row was read from the published build configuration and the kernel source. No exploit was run to produce these rows.
 
-The long write-ups also print a Score on Root Lock beside the status word. That figure is a CVSS environmental score for one deployment. When the bug can be reached only through a program that has no allowlist entry, that program does not run and the catalog prints 0.0. Approving the program makes the row Affected. The number for the seven rows below is in the note at the end of this page.
+The long write-ups also print a Score on Root Lock beside the status word. That figure is a CVSS environmental score for one deployment. When the bug can be reached only through a program that has no allowlist entry, that program does not run and the catalog prints 0.0. The catalog also prints 0.0 when the hardware the bug needs is not in the machine. Approving the missing program makes that row Affected. The number for the seven rows below is in the note at the end of this page.
 
 ## Residuals (non-zero Score on Root Lock)
 
@@ -42,21 +42,21 @@ These seven CVEs are **Affected** on 6.18.9-hs. The base score is the upstream s
 
 The io_uring CVEs in the catalog are already fixed on 6.18.9-hs. `CONFIG_IO_URING` stays set, so a later io_uring finding stays on the patch date.
 
-These seven stay on the patch date in your policy. The fix arrives in a Root Lock bundle. A program you already approved can hit a bug in this table, and the bug can panic the kernel. Filing the row does not close it.
+These seven stay on the patch date in your policy. The fix arrives in a Root Lock bundle. A program you already approved can hit a bug in this table. It can read the files it was granted, and it can panic the kernel. It does not start a program that has no allowlist entry. The next boot loads the allowlist saved on disk. Filing the row does not close it.
 
 ## The Four Assessment Gates
 
-Every entry on this page was checked by reading the build configuration and the kernel source, in this order. Nothing was assumed about what is compiled in, and a scanner result was not taken as the answer. The check reads that configuration and source. It does not include running an exploit against a Root Lock host.
+Every entry on this page was checked by reading the build configuration and the kernel source, in this order. Nothing was assumed about what is compiled in, and a scanner result was not taken as the answer. A person checks the row before it is published. The check does not include running an exploit against a Root Lock host. A lab attack test is a separate kind of evidence.
 
 **Gate 1 — Is the vulnerable code compiled in?** The Root Lock kernel configuration is checked against the relevant `CONFIG_` option. If the option is not set, the vulnerable code is not in the kernel you boot. The check stops here as **Not affected**, whatever the kernel version string says.
 
 **Gate 2 — Does Root Lock's outbound connection control cover the attack path?** For a CVE that uses a socket, Root Lock checks outbound `connect()` calls. A path that reaches the kernel by creating a socket, by `sendmsg` or `recvmsg`, or by crypto inside the kernel is outside that check, and the write-up says so.
 
-**Gate 3 — Can the program that reaches this bug run?** A program with no allowlist entry does not run. That covers a program the attacker drops, and it covers a bug that can be reached only through a particular program, such as `tc` or `bpftool`. If that program has no entry, the catalog prints 0.0. Under Lockdown the allowlist file is immutable, so no new entry can be added after Lockdown. This gate does not apply when the CVE is reached from a program already on the allowlist. A bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved, the row is Affected, and it stays on the patch date. What Root Lock refuses next is a program, a file, or a destination that program was never granted.
+**Gate 3 — Can the program that reaches this bug run?** The allowlist is checked on every program start, whether or not Lockdown is on. A program with no allowlist entry does not run. That covers a program the attacker drops, and it covers a bug that can be reached only through a particular program, such as `tc` or `bpftool`. If that program has no entry, the catalog prints 0.0. Under Lockdown the allowlist file is immutable, so no new entry can be added after Lockdown. This gate does not apply when the CVE is reached from a program already on the allowlist. A bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved, the row is Affected, and it stays on the patch date. A program you approved runs, including one that arrived in an update you accepted, and it can start only a program that already has an entry. What Root Lock refuses next is a program, a file, or a destination that program was never granted.
 
-**Gate 4 — What can root actually do under Lockdown?** When a CVE gives an attacker root, Lockdown applies a further limit. The kernel refuses to clear the immutable flag on a file (`chattr -i` is refused). `mount()`, `fsmount()`, and `move_mount()` are refused. Clearing Lockdown takes a reboot from the physical console or the serial console onto the maintenance kernel. SSH cannot make that pick. SSH remains how you administer the host before and after that step. Those limits hold on the kernel you boot.
+**Gate 4 — What can root actually do under Lockdown?** When a CVE gives an attacker root, Lockdown applies a further limit. The kernel refuses to clear the immutable flag on a file (`chattr -i` is refused). `mount()`, `fsmount()`, and `move_mount()` are refused. The next boot loads the allowlist saved on disk, so a change that lived only in memory is gone. Clearing Lockdown takes a reboot from the physical console or the serial console onto the maintenance kernel. SSH cannot make that pick. SSH remains how you administer the host before and after that step. Those limits hold on the kernel you boot.
 
-Lockdown does not close two limits: reading memory during the live session, and crashing the system. An Affected entry says so where that is the case.
+Reading files and reading memory during the live session stay open. Sending the files off the host depends on an approved program that can open a connection, such as `curl`. The bug can panic the kernel. Firmware, the machine's management controller, and a physical attack on the boot chain are outside this page. Disk encryption is what protects the data on disk. An Affected entry says so where that is the case.
 
 ## Scanner Guidance
 
@@ -72,7 +72,7 @@ On the write-ups, the backstop is the limit that still applies after the bug fir
 
 The allowlist is checked on every program start, whether or not Lockdown is on. A program with no allowlist entry does not run.
 
-The latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused. The latch does not unload a module already in memory. `HS_lockdown.sh` writes the same setting again, where that setting exists, in case the latch service is masked. OpenRC has no latch service and gets that write only when Lockdown is applied.
+The latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Root Lock is not running yet in that window, so the allowlist is not what stops those loads. Until the next reboot, a later modprobe stays refused. The latch does not unload a module already in memory. `HS_lockdown.sh` writes the same setting again, where that setting exists, in case the latch service is masked. OpenRC has no latch service and gets that write only when Lockdown is applied.
 
 For a bug that lives only in a module that was not loaded at boot, the latch is the control the write-up is naming. An option set to `=m` stays on the patch date. Not affected is the word for an option that is unset. Code built in with `=y`, and code in a module that did load, is in the running kernel.
 
@@ -82,7 +82,7 @@ File the seven rows above as Affected. Score on Root Lock is a second number for
 
 They are published at 7.1 HIGH for an allowlist that already holds an outbound networking utility such as `curl`, `wget`, outbound `ssh`, `nc`, or `python3` with sockets. A live session can read files and send them off the host through that utility, so Modified Confidentiality stays High (`MC:H`). Modified Integrity is None (`MI:N`): a new program does not run, the allowlist stays as loaded, and the session ends at reboot. Modified Availability stays High (`MA:H`) because the bug can panic the kernel. The vector is `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`, which is 7.1 HIGH.
 
-If you have confirmed that your allowlist holds none of those utilities, the same vector with `MC:L` is 6.1 MEDIUM. The published figure stays 7.1 until you have confirmed that.
+If you have confirmed that your allowlist holds none of those utilities, the same vector with `MC:L` is 6.1 MEDIUM. A live session can read files, and carrying them off the host then takes the console. The published figure stays 7.1 until you have confirmed that.
 
 An allowlist with no process-mutation utilities (`kill`, `pkill`, or init-system control beyond what Root Lock itself uses) can treat the userspace part of a disruption as `MA:L`. A kernel panic does not depend on the allowlist, so the published figure keeps `MA:H`.
 
