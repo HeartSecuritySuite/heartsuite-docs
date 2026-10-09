@@ -24,7 +24,7 @@ markup:
 
 On this kernel the BPF syscall is off, so there is no eBPF program to load. Each row was read from the published build configuration and the kernel source. No exploit was run to produce these rows.
 
-The long write-ups also print a Score on Root Lock beside the status word. That figure is a CVSS environmental score for one deployment. The number for the seven rows below is in the note at the end of this page.
+The long write-ups also print a Score on Root Lock beside the status word. That figure is a CVSS environmental score for one deployment. When the bug can be reached only through a program that has no allowlist entry, that program does not run and the catalog prints 0.0. Approving the program makes the row Affected. The number for the seven rows below is in the note at the end of this page.
 
 ## Residuals (non-zero Score on Root Lock)
 
@@ -52,7 +52,7 @@ Every entry on this page was checked by reading the build configuration and the 
 
 **Gate 2 — Does Root Lock's outbound connection control cover the attack path?** For a CVE that uses a socket, Root Lock checks outbound `connect()` calls. A path that reaches the kernel by creating a socket, by `sendmsg` or `recvmsg`, or by crypto inside the kernel is outside that check, and the write-up says so.
 
-**Gate 3 — Can an exploit program run?** Under Lockdown the allowlist file is immutable, so no new entry can be added, and a program the attacker drops has no entry and does not run. This gate does not apply when the CVE is reached from a program already on the allowlist. A bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved. What Root Lock refuses next is a program, a file, or a destination that program was never granted.
+**Gate 3 — Can the program that reaches this bug run?** A program with no allowlist entry does not run. That covers a program the attacker drops, and it covers a bug that can be reached only through a particular program, such as `tc` or `bpftool`. If that program has no entry, the catalog prints 0.0. Under Lockdown the allowlist file is immutable, so no new entry can be added after Lockdown. This gate does not apply when the CVE is reached from a program already on the allowlist. A bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved, the row is Affected, and it stays on the patch date. What Root Lock refuses next is a program, a file, or a destination that program was never granted.
 
 **Gate 4 — What can root actually do under Lockdown?** When a CVE gives an attacker root, Lockdown applies a further limit. The kernel refuses to clear the immutable flag on a file (`chattr -i` is refused). `mount()`, `fsmount()`, and `move_mount()` are refused. Clearing Lockdown takes a reboot from the physical console or the serial console onto the maintenance kernel. SSH cannot make that pick. SSH remains how you administer the host before and after that step. Those limits hold on the kernel you boot.
 
@@ -90,7 +90,7 @@ Catalog rows marked fixed on 6.18.9-hs keep the archived 5.19.6 score.
 
 ### Note on Not-exploitable entries that depend on allowlist composition
 
-Several catalog rows print 0.0 because a tool is not on the allowlist. That figure matches a host whose Setup Mode did not record the tool, because the allowlist is filled from production service activity. It is not the word Not affected. If you allowlist the tool, file the row as Affected.
+A row prints 0.0 when the program that reaches the bug has no allowlist entry. That program does not run, so the path is not reached on a host that has not approved it. Setup Mode fills the allowlist from the programs your services actually run. If you approve the program, file the row as Affected and keep it on the patch date. Not affected stays the word for an option that is unset.
 
 Module loads after boot are the other control: `kernel.modules_disabled`, written by the boot latch.
 
