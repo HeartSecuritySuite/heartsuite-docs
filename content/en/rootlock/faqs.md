@@ -200,7 +200,7 @@ A: New installs boot **6.18** (`uname -r` is `6.18.9-hs`). Linux 7 is not a ship
 
 {{< details summary="How can I download Root Lock?" >}}
 
-A: On the target host, run `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash`. Inspect the script first if you prefer. See [Obtaining Root Lock by HeartSuite](installation/obtaining-heartsuite/).
+A: On the target host, run `curl -fsSL https://get.heartsecsuite.com/get-heartsuite.sh | sudo bash`. Inspect the script first if you prefer. See [Obtaining Root Lock](installation/obtaining-heartsuite/).
 
 {{< /details >}}
 
