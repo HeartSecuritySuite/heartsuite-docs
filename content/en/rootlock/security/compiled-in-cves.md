@@ -3170,6 +3170,8 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-46281
 
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
+
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: vmalloc — virtually contiguous allocator (`CONFIG_MMU`)
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H)
@@ -3332,6 +3334,8 @@ The trigger cannot be reached on any Root Lock deployment.
 If `ifb` was already loaded when the latch ran, and the allowlist includes `ip` and `ethtool`, treat this CVE as Affected at 7.1 HIGH for confidentiality and availability only.
 
 ### CVE-2026-64600
+
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
 
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: XFS reflink / copy-on-write (`CONFIG_XFS_FS`)
@@ -3648,6 +3652,8 @@ The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-53119
 
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
+
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: ACPI WMI bus (`CONFIG_ACPI_WMI`)
 **Base Score**: 7.8 HIGH
@@ -3656,6 +3662,8 @@ The trigger cannot be reached on any Root Lock deployment.
 The WMI bus reads `driver_override` while a driver probe is in progress, and a concurrent write to that attribute can free the string. 5.19.6 does not build the WMI bus. 6.18.9-hs builds it as a module, and the upstream fix is in 6.18.33. Patch on your policy date. Lockdown limits what an attacker can do after the bug fires.
 
 ### CVE-2026-53120
+
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
 
 **CVE-2026-53120**
 **Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
@@ -3674,6 +3682,8 @@ PCI is compiled in on both fielded kernels and is present on a standard server. 
 A reboot is a clean slate. The attack does not survive it.
 
 ### CVE-2026-53129
+
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
 
 **Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
 **Component:** fs/mbcache (`CONFIG_FS_MBCACHE=y` and `CONFIG_EXT4_FS=y` on 5.19.6-HeartSuite-2.0; `CONFIG_FS_MBCACHE=m` and `CONFIG_EXT4_FS=m` on 6.18.9-hs)
@@ -3749,6 +3759,8 @@ On 6.18.9-hs, `CONFIG_USB4=m` is compiled. Parsing still requires a USB4/Thunder
 The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-53233
+
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
 
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: netdev generic netlink RX bind (`CONFIG_NET_DEVMEM`)
@@ -3941,6 +3953,8 @@ On 6.18.9-hs, `CONFIG_FRAMEBUFFER_CONSOLE=y` and `CONFIG_FRAMEBUFFER_CONSOLE_ROT
 The trigger cannot be reached on any Root Lock deployment.
 
 ### CVE-2026-52992
+
+**State on 6.18.9-hs**: Affected. Base score 7.8 HIGH. This row stays on the patch date.
 
 **Status**: Not in this kernel on 5.19.6. In the kernel on 6.18.9-hs.
 **Component**: ADFS filesystem (`CONFIG_ADFS_FS`)
