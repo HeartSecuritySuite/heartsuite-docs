@@ -14,7 +14,7 @@ markup:
     endLevel: 2
 ---
 
-**Overview**: This page is the status of kernel CVEs on the Root Lock kernel you boot. `uname -r` is `6.18.9-hs`. Kernel 5.19.6 is an archived line. A CVE in an application you run, such as a web server or a database, is outside this list. If that program is on your allowlist, its bug still fires.
+**Overview**: This page is the status of kernel CVEs on the Root Lock kernel you boot. `uname -r` is `6.18.9-hs`. Kernel 5.19.6 is an archived line. A CVE in an application you run, such as a web server or a database, is outside this list. If that program is on your allowlist, its bug fires in that program.
 
 | State | What it means | Where to read it |
 |-------|----------------|------------------|
@@ -22,13 +22,13 @@ markup:
 | **Affected** | The code is in the kernel you boot. The row stays on the patch date. | The table below, then the write-up |
 | **Fixed** | 6.18.9-hs already has the upstream fix. | [Compiled-in CVEs](compiled-in-cves/) |
 
-On this kernel the BPF syscall is off, so there is no eBPF program to load. The guest file `/boot/config-6.18.9-hs` is an 11-line stub, and a `grep` of it is not the proof. The proof is the build configuration named on [Evidence Status](../kernel-hardening/evidence-status/). These rows were read from that configuration and the kernel source. No exploit was run to produce them.
+On this kernel the BPF syscall is off, so there is no eBPF program to load. Each row was read from the published build configuration and the kernel source. No exploit was run to produce these rows.
 
-The long write-ups also print a Score on Root Lock. That figure is a CVSS environmental score for one deployment. It sits beside the status word. It is not a second status.
+The long write-ups also print a Score on Root Lock beside the status word. That figure is a CVSS environmental score for one deployment. The number for the seven rows below is in the note at the end of this page.
 
 ## Residuals (non-zero Score on Root Lock)
 
-These seven CVEs are **Affected** on 6.18.9-hs. The base score is the upstream score. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). The environmental figure for this table is in the [note below](#note-on-scores-on-root-lock-and-deployment-tuning).
+These seven CVEs are **Affected** on 6.18.9-hs. The base score is the upstream score. Full write-ups: [Compiled-in CVEs](compiled-in-cves/). The environmental figure for this table is in the [note at the end of this page](#note-on-scores-on-root-lock-and-deployment-tuning).
 
 | CVE | Component | State | Base score |
 |-----|-----------|-------|------------|
@@ -44,35 +44,41 @@ The io_uring CVEs in the catalog are already fixed on 6.18.9-hs. `CONFIG_IO_URIN
 
 These seven stay on the patch date in your policy. The fix arrives in a Root Lock bundle. A program you already approved can hit a bug in this table, and the bug can panic the kernel. Filing the row does not close it.
 
-## How to read the backstop sections
+## The Four Assessment Gates
 
-The per-CVE write-ups name two controls, and a boot latch sits in front of both.
+Every entry on this page was checked by reading the build configuration and the kernel source, in this order. Nothing was assumed about what is compiled in, and a scanner result was not taken as the answer. The check reads that configuration and source. It does not include running an exploit against a Root Lock host.
 
-The allowlist is checked on every program start, whether or not Lockdown is on. A program with no allowlist entry does not run.
+**Gate 1 — Is the vulnerable code compiled in?** The Root Lock kernel configuration is checked against the relevant `CONFIG_` option. If the option is not set, the vulnerable code is not in the kernel you boot. The check stops here as **Not affected**, whatever the kernel version string says.
 
-The latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused. The latch does not unload a module already in memory. `HS_lockdown.sh` writes the same value again, where the node exists, in case the latch service is masked. OpenRC has no latch service and gets that write only when Lockdown is applied.
+**Gate 2 — Does Root Lock's outbound connection control cover the attack path?** For a CVE that uses a socket, Root Lock checks outbound `connect()` calls. A path that reaches the kernel by creating a socket, by `sendmsg` or `recvmsg`, or by crypto inside the kernel is outside that check, and the write-up says so.
 
-For a bug that lives only in a module that was not loaded at boot, the latch is the control the write-up is naming. An option set to `=m` stays on the patch date. Not affected is the word for an unset option. Code built in with `=y`, and code in a module that did load, is in the running kernel.
+**Gate 3 — Can an exploit program run?** Under Lockdown the allowlist file is immutable, so no new entry can be added, and a program the attacker drops has no entry and does not run. This gate does not apply when the CVE is reached from a program already on the allowlist. A bug in an allowlisted Apache or PHP process is that case: the bug runs inside a program you approved. What Root Lock refuses next is a program, a file, or a destination that program was never granted.
+
+**Gate 4 — What can root actually do under Lockdown?** When a CVE gives an attacker root, Lockdown applies a further limit. The kernel refuses to clear the immutable flag on a file (`chattr -i` is refused). `mount()`, `fsmount()`, and `move_mount()` are refused. Clearing Lockdown takes a reboot from the physical console or the serial console onto the maintenance kernel. SSH cannot make that pick. SSH remains how you administer the host before and after that step. Those limits hold on the kernel you boot.
+
+Lockdown does not close two limits: reading memory during the live session, and crashing the system. An Affected entry says so where that is the case.
 
 ## Scanner Guidance
 
-When a scanner flags a Not affected row, it matched the upstream version string. The status is the option on [Disabled features](disabled-features/). The guest file `/boot/config-6.18.9-hs` is an 11-line stub, so a `grep` of that file is not the proof. Share that page with your scanner vendor when you dispute a row. The workflow for the exception register is [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
+When a scanner flags Root Lock for a CVE listed as Not affected, the result is a version-string match. The scanner has found a kernel version older than the upstream fix and has not checked whether the vulnerable code is in the kernel you boot.
 
-## The Four Assessment Gates
+The steps for recording an exception, for the maintenance kernel, and for the published advisory feeds are on [CVE Hygiene for Scanners](../kernel-hardening/cve-hygiene-for-scanners/).
 
-Read the Affected table first. These four checks are how that word was chosen.
+Share this section and the [Disabled features](disabled-features/) list with your scanner vendor when you dispute a row. The proof is the published build configuration for the kernel you boot, not the version string. On 6.18.9-hs the file `/boot/config-6.18.9-hs` is an 11-line stub, so a search of that file does not show whether the option is set. The configuration to use is the one named on [Evidence Status](../kernel-hardening/evidence-status/).
 
-**Compiled in.** The build configuration is checked for the `CONFIG_` option. When the option is unset, the code is absent and the state is Not affected.
+## How to read the backstop sections
 
-**Outbound connections.** The check on this kernel covers outbound `connect()`. A bug reached through socket creation, `sendmsg`, `recvmsg`, or an in-kernel crypto interface is outside that check.
+On the write-ups, the backstop is the limit that still applies after the bug fires. The write-ups name two controls, and a boot latch sits in front of both.
 
-**A new program.** A program with no allowlist entry does not run. A bug inside a program you already approved, such as a web server on the allowlist, runs in that program. That program can read and write the files it was granted.
+The allowlist is checked on every program start, whether or not Lockdown is on. A program with no allowlist entry does not run.
 
-**After the bug fires.** The allowlist file is immutable, and the kernel refuses the write that would clear that flag. Mounts are refused. Clearing Lockdown takes a reboot from the physical console or the serial console onto the maintenance kernel. SSH cannot make that pick. The bug can panic the kernel.
+The latch is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, before the network is configured and before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused. The latch does not unload a module already in memory. `HS_lockdown.sh` writes the same setting again, where that setting exists, in case the latch service is masked. OpenRC has no latch service and gets that write only when Lockdown is applied.
+
+For a bug that lives only in a module that was not loaded at boot, the latch is the control the write-up is naming. An option set to `=m` stays on the patch date. Not affected is the word for an option that is unset. Code built in with `=y`, and code in a module that did load, is in the running kernel.
 
 ### Note on Scores on Root Lock and deployment tuning
 
-Score on Root Lock is a CVSS v3.1 environmental figure in the long catalog. It is not the status word. The seven Affected rows above stay on the patch date either way.
+File the seven rows above as Affected. Score on Root Lock is a second number for one deployment: 7.1 HIGH when the allowlist already includes a program that can send data off the host, such as `curl` or `wget`, and 6.1 MEDIUM when you have confirmed that it includes none of those. The row stays on the patch date either way. The detail below is the CVSS environmental vector behind those two figures.
 
 They are published at 7.1 HIGH for an allowlist that already holds an outbound networking utility such as `curl`, `wget`, outbound `ssh`, `nc`, or `python3` with sockets. A live session can read files and send them off the host through that utility, so Modified Confidentiality stays High (`MC:H`). Modified Integrity is None (`MI:N`): a new program does not run, the allowlist stays as loaded, and the session ends at reboot. Modified Availability stays High (`MA:H`) because the bug can panic the kernel. The vector is `CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`, which is 7.1 HIGH.
 
@@ -88,11 +94,11 @@ Several catalog rows print 0.0 because a tool is not on the allowlist. That figu
 
 Module loads after boot are the other control: `kernel.modules_disabled`, written by the boot latch.
 
-- `modprobe`, `insmod`, and `kmod` load kernel modules. On Debian 12 these resolve to `kmod`. Once the latch has run, a later modprobe stays refused. CVE-2024-36883 stays at 0.0 because no new module can register pernet operations after the latch. The latch does not unload a module already in memory.
-- `tc` (iproute2 traffic control) changes qdisc and filter state. Allowlisting it makes CVE-2025-37914, CVE-2025-37915, CVE-2025-37923, CVE-2025-22121, and the other `NET_SCHED` rows Affected.
-- `bpftool`, `trace-cmd`, `perf`, and writers of debugfs or tracefs are kernel instrumentation. Allowlisting them makes the kprobe, tracing, and perf rows, including CVE-2024-38588, Affected.
-- `dmsetup`, raw block-device tools, and `cryptsetup` mappings created after boot are block-layer changes. Same shape.
-- `ip xfrm`, `setkey`, strongSwan, libreswan, or any IKE daemon sets up an XFRM security association. Allowlisting any of these makes `esp_output` reachable and makes CVE-2026-43284 Affected at its base score of 8.8 HIGH.
+- `modprobe`, `insmod`, and `kmod` load kernel modules. On Debian 12 these resolve to `kmod`. Once the latch has run, a later modprobe stays refused. CVE-2024-36883 stays at 0.0 because no new module can finish its network setup after the latch. The latch does not unload a module already in memory.
+- `tc` (iproute2) changes traffic-control settings. Allowlisting it makes CVE-2025-37914, CVE-2025-37915, CVE-2025-37923, CVE-2025-22121, and the other traffic-control rows Affected.
+- `bpftool`, `trace-cmd`, `perf`, and programs that write kernel trace data are kernel instrumentation. Allowlisting them makes the tracing rows, including CVE-2024-38588, Affected.
+- `dmsetup`, raw block-device tools, and `cryptsetup` mappings created after boot change block storage. Same shape.
+- `ip xfrm`, `setkey`, strongSwan, libreswan, or any IKE daemon sets up an encrypted network tunnel. Allowlisting any of these makes that path reachable and makes CVE-2026-43284 Affected at its base score of 8.8 HIGH.
 - `e4defrag`, or any extent-defragmentation tool, reaches ext4 online defragmentation. Allowlisting it makes CVE-2024-26704 Affected at its base score of 7.8 HIGH.
 
 If you run a development or debug host and you need one of these tools, file the matching catalog row as Affected. The kernel refuses a program that has no allowlist entry. The tool you approved is itself the way in.
