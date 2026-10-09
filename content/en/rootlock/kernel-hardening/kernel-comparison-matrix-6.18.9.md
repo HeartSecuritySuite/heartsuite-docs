@@ -11,6 +11,8 @@ aliases:
 toc: true
 ---
 
+This page compares hardening-checker scores. It is not the list of which kernel CVEs are Not affected, Affected, or Fixed. That list is [Kernel Security Transparency](../../security/). The 18 August file is build #37, and on that build the BPF syscall is on. The kernel that ships is 6.18.9-hs build #43, and on that build the BPF syscall is off.
+
 **Subject:** kernel that ships, **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`).  
 **uname -r:** `6.18.9-hs`  
 **Config SHA-256 (packaging config):** `d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684`  

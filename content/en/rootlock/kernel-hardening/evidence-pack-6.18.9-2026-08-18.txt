@@ -1,3 +1,8 @@
+Warning: this file records build #37 on 2026-08-18.
+It is not the kernel that ships (build #43).
+On this file CONFIG_BPF_SYSCALL=y.
+CVE status for the kernel that ships is https://docs.heartsecsuite.com/rootlock/security/
+
 Root Lock by HeartSuite — Kernel Hardening Evidence Pack
 Subject: 18 August 2026 record of 6.18.9-hs build #37 (packaging 6.18.9-HeartSuite-3)
 The kernel that ships is build #43. Its checker pack is evidence-pack-6.18.9.txt.

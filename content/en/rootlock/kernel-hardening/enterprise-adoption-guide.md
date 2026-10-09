@@ -42,9 +42,7 @@ Root Lock treats the kernel as an integrated part of the delivered product, not 
 - **Update cadence and patching**: Kernels are released as coordinated versioned bundles with the userspace components (daemon, Dashboard, tools, and installer). After Lockdown, pick **Maintenance: unseal and return to Root Lock** at the console, land in Setup Mode on the Root Lock kernel, then apply the bundle over SSH — or reprovision from an updated image. Review new queue items before Lockdown again.
 
   Public patch targets, notification channels, and version-string semantics are in the [Kernel Support Policy](kernel-support-policy/). Supported distributions and validation tiers are in the [Distro Compatibility Matrix](distro-compatibility-matrix/).
-- **CVE handling**: The [Kernel Security Transparency](../../security/) page provides per-CVE status with technical rationale. Features compiled out produce "Not Affected" entries — the vulnerable code path is absent by design; no patch or policy change is required. For reachable code paths, Lockdown's allowlist bounds post-exploitation impact: new programs cannot execute, mounts are refused, and changes to sealed configuration are blocked.
-
-  Each CVE also carries a published Score on Root Lock, a CVSS v3.1 Environmental Score for a Root Lock deployment. Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
+- **CVE handling**: [Kernel Security Transparency](../../security/) is the status of each kernel CVE on the Root Lock kernel you boot: **Not affected**, **Affected**, or **Fixed**. Not affected means that option is unset, so the code is absent. An Affected row stays on the patch date. The long catalog also prints a Score on Root Lock beside that word. Scanner and audit workflows are in [CVE Hygiene for Scanners](cve-hygiene-for-scanners/).
 - **Stack pairing and testing**: The kernel is built, tested, and supported together with the matching userspace. The full enforcement contract (VFS hooks + Lockdown seal + allowlist) is validated across supported distributions.
 - **Support SLAs**: Commercial subscription terms cover the integrated stack, including kernel-related incidents, coordinated updates, and guidance on deployment and recovery. Activation and support details appear in the [Subscription](../../licensing/) section and your subscription agreement.
 
@@ -158,7 +156,7 @@ This is the documented, supported escape hatch for operational needs, kernel pol
 Nothing on the kernel posture page relies on "trust us."
 
 - Reproduce hardening measurements yourself with the published config SHA-256 and the open-source checker (full commands in [Threat model](../auditor-brief/)).
-- Review every relevant CVE with the exact "Not Affected / Score on Root Lock 0.0 / bounded impact" rationale on the [Kernel Security Transparency](../../security/) page.
+- Review every relevant CVE on the [Kernel Security Transparency](../../security/) page. The word you file is Not affected, Affected, or Fixed.
 - Inspect live state via the status JSON, per-decision syslog events, approval log, and the sealed allowlist files (all readable or harvestable without special privileges beyond normal admin access).
 - For procurement and due-diligence packages: attach the Procurement Brief, threat-model page, comparison matrix, and evidence packs to an RFP or vendor questionnaire. The customer's control testing still has to stand on its own.
 

@@ -2,7 +2,7 @@
 title: "Compiled-in CVEs — what each score means"
 linkTitle: "Compiled-in CVEs"
 weight: 10
-description: "Per-CVE status for compiled-in Root Lock kernel paths: Score on Root Lock, dual-kernel pins, and Lockdown bounds."
+description: "Per-CVE status for paths in the Root Lock kernel: Not affected, Affected, or Fixed, with the catalog score beside the word."
 categories: ["Reference"]
 tags: ["heartsuite", "linux", "security", "cve", "kernel", "vulnerability"]
 toc: true
@@ -14,13 +14,11 @@ aliases:
 <!-- Flat catalog: every entry is an h3 under the page title, so the h1-to-h3 jump is intentional. -->
 <!-- markdownlint-disable MD001 -->
 
-**Overview**: Per-CVE write-ups for paths that exist in a Root Lock kernel. A 0.0 score means the trigger is absent on this deployment (hardware, tool, or config). A non-zero score is a live residual.
+**Overview**: Each row is a kernel CVE for a path in the Root Lock kernel. The word you file is on [Kernel Security Transparency](/rootlock/security/): **Not affected** when the option is unset, **Affected** when the code is in the kernel you boot, or **Fixed** on 6.18.9-hs when that kernel already has the upstream fix. An Affected row stays on the patch date.
 
-Each write-up is a desk assessment of the kernel build and source. No exploit was run to produce it. Application CVEs, such as bugs in a web server or database you allowlist, are outside this catalog. See [Kernel Security Transparency](/rootlock/security/) for how these scores are made.
+A Score on Root Lock of 0.0 is a figure in this catalog. It is not the same word as Not affected. Where a 0.0 depends on a tool staying off the allowlist, allowlisting that tool makes the row Affected. Application CVEs, such as a bug in a web server or database you allowlisted, are outside this catalog. No exploit was run to produce these rows. Groups whose option is unset are on [Not Affected — Disabled Features](../disabled-features/).
 
-Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections) on the Kernel Security Transparency landing before the entries. Compiled-out groups are on [Not Affected — Disabled Features](../disabled-features/).
-
-**Module loads after boot.** Where a write-up below says a module cannot be loaded, the control is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, Setup Mode included, before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused (`init_module`, `finit_module`, and `delete_module`). The latch script does not unload modules already in memory. A 0.0 score on an `=m` (module) option does not take the row off the patch date, and Not Affected still means only that the option is unset.
+**Module loads after boot.** Where a write-up says a module cannot be loaded, the control is `heartsuite-kernel-latch.service`. Early in every Root Lock kernel boot, Setup Mode included, before sshd starts, it loads the netfilter modules the firewall needs and sets `kernel.modules_disabled=1`. Until the next reboot, a later modprobe stays refused (`init_module`, `finit_module`, and `delete_module`). The latch script does not unload modules already in memory. OpenRC has no latch service and gets that setting from `HS_lockdown.sh` when Lockdown is applied. A 0.0 on an `=m` option does not take that row off the patch date. Not Affected means the option is unset.
 
 | CVE | Component | Base Score | Score on Root Lock | Status |
 |-----|-----------|-----------|-----------------|--------|
@@ -311,10 +309,6 @@ Read [How to read the backstop sections](/rootlock/security/#how-to-read-the-bac
 This CVE describes a privilege escalation through the AF_ALG socket interface. An attacker who can open an AF_ALG socket reaches `algif_aead_copy_sgl()`, exploits a copy-on-write failure in the scatter-gather list handling, and gains root.
 
 `CONFIG_CRYPTO_USER_API_AEAD` is not compiled into the Root Lock kernel. The AF_ALG socket family is not available. An attempt to open an AF_ALG socket returns `EAFNOSUPPORT` — there is no `algif_aead` code present in the running kernel and therefore no reachable code path. The Root Lock kernel predates the upstream fix versions listed above, but the fix is not required: the fix removes a vulnerability in code that was never compiled in.
-
-Lockdown closes the remaining question. Even if the code path were present, Lockdown — `chattr +i` filesystem immutability combined with the Root Lock kernel refusing runtime changes to the allowlist — removes every useful action root can take after gaining privilege. The kernel refuses to clear immutable flags. Mount operations are blocked in Lockdown. Writes to the audit log are blocked. Root cannot modify the allowlist, add a backdoor, or persist across a reboot.
-
-See [Deployment Scenarios → Production Servers](../introduction/deployment-scenarios/) for the architectural context of how Lockdown interacts with a privilege escalation reaching root.
 
 ### CVE-2026-43284
 

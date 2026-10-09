@@ -210,7 +210,7 @@ A customer scanner remains the usual CC7.1 control. Root Lock can reduce the bla
 
 **How Root Lock can support a customer control**:
 
-**Vulnerability surface reduction**: Where the kernel you boot leaves an option unset, that code is absent and the Score on Root Lock for those CVEs is 0.0. The Kernel Security Transparency page documents every relevant CVE against the Root Lock kernel.
+**Vulnerability surface reduction**: Where the kernel you boot leaves an option unset, that code is absent and the status is Not affected. [Kernel Security Transparency](../security/) is the list, and an Affected row stays on the patch date.
 
 **Configuration change detection**: Under Lockdown, the allowlist is sealed and cannot be changed. Any attempt to modify allowlist files, Root Lock configuration, or system integrity files (shared libraries, systemd units, SSH config) is blocked at the kernel.
 
