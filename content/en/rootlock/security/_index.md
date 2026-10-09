@@ -16,6 +16,36 @@ markup:
 
 **Overview**: This page is the status of kernel CVEs on the Root Lock kernel you boot. `uname -r` is `6.18.9-hs`. Kernel 5.19.6 is an archived line. A CVE in an application you run, such as a web server, an FTP server, a database, or a CI server, is outside this list. If that program is on your allowlist, its bug fires in that program.
 
+<div class="cve-hero-statement">
+<p class="cve-hs-lead">On the kernel you boot, most of these kernel CVEs have no path.</p>
+</div>
+
+<div class="cve-hero">
+<div class="row text-center g-4">
+<div class="col-md-4">
+<div class="cve-hero-card cve-hero-neutralized">
+<p class="cve-hero-number text-success">{{< cve-stat type="neutralized" >}}</p>
+<p class="cve-hero-label">Score on Root Lock <strong>0.0</strong></p>
+<p class="cve-hero-detail">The program that reaches the bug has no allowlist entry, or the hardware is not in the machine.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="cve-hero-card cve-hero-contained">
+<p class="cve-hero-number text-teal">{{< cve-stat type="reachable" >}}</p>
+<p class="cve-hero-label">Open on the kernel you boot</p>
+<p class="cve-hero-detail">These stay on the patch date. The scored rows are in the table below. One open row is not given a 0.0.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="cve-hero-card cve-hero-compiled">
+<p class="cve-hero-number text-info">{{< cve-stat type="compiled-out" >}}</p>
+<p class="cve-hero-label">Not affected</p>
+<p class="cve-hero-detail">The option is unset, so that code is not in the kernel you boot.</p>
+</div>
+</div>
+</div>
+</div>
+
 | State | What it means | Where to read it |
 |-------|----------------|------------------|
 | **Not affected** | That option is unset, so the vulnerable code is absent. | [Disabled features](disabled-features/) |
