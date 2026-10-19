@@ -22,7 +22,7 @@ Where an option below is unset, that subsystem is absent and the group is Not Af
 
 An option set to `=m` (built as a module) stays on the patch date. Early in every Root Lock kernel boot, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1`, and after that a later modprobe stays refused. Not Affected remains the badge for an unset option only. Code in a module that did load, and code built in with `=y`, stays in the running kernel. Scanners still match the pin config. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections).
 
-Where a CVE in this section achieves root privilege, Lockdown provides the same backstop described in [CVE-2026-31431](../compiled-in-cves/#cve-2026-31431). An attacker who already has root cannot persist or edit the allowlist, because the allowlist files are immutable and the kernel refuses the write.
+Where a CVE in this section achieves root privilege, Lockdown is the bound that remains after the bug fires. An attacker who already has root cannot persist or edit the allowlist, because the allowlist files are immutable and the kernel refuses the write. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections).
 
 | Config gate | CVEs covered | Status |
 |-------------|-------------|--------|

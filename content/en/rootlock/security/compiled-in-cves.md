@@ -27,7 +27,7 @@ A Score on Root Lock of 0.0 is printed when the program that reaches the bug has
 | [CVE-2026-23193](#cve-2026-23193) | Linux iSCSI target (`CONFIG_ISCSI_TARGET`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_ISCSI_TARGET` not compiled |
 | [CVE-2026-43284](#cve-2026-43284) | XFRM/IPv6 ESP (`CONFIG_XFRM`, `CONFIG_INET6_ESP`) | <span class="badge badge-cve-high">8.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — `esp_output` unreachable; no XFRM SA can be established; IPsec management tools absent from Root Lock allowlist; Dirty Frag chain broken (rxrpc absent) |
 | [CVE-2023-0266](#cve-2023-0266) | ALSA PCM | <span class="badge badge-cve-high">7.9 HIGH</span> | <span class="badge badge-erased">0.0</span> | Hardware absent on server deployments |
-| [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Code not compiled in |
+| [CVE-2026-31431](#cve-2026-31431) | algif_aead (AF_ALG) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-erased">0.0</span> | Not affected on 5.19.6 (option unset). On 6.18.9-hs the module is not loaded and the latch refuses a later load. Stays on the patch date. |
 | [CVE-2026-43500](#cve-2026-43500) | rxrpc (`CONFIG_AF_RXRPC`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_AF_RXRPC` not compiled; Dirty Frag chain cannot execute on Root Lock |
 | [CVE-2026-46242](#cve-2026-46242) | epoll (`CONFIG_EPOLL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6 (introduced in 6.4); Not exploitable on 6.18.9-hs — linked-epoll close race not constructible from the allowlist |
 | [CVE-2026-46300](#cve-2026-46300) | skbuff coalescing and ESP-in-TCP (`CONFIG_NET`, `CONFIG_INET_ESPINTCP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
@@ -301,14 +301,19 @@ A Score on Root Lock of 0.0 is printed when the program that reaches the bug has
 
 ### CVE-2026-31431
 
-**Status**: Not Affected  
+**Status**: Not affected on 5.19.6. On 6.18.9-hs the module is not loaded.  
 **Component**: algif_aead — the in-kernel AEAD interface exposed by the AF_ALG socket family (`CONFIG_CRYPTO_USER_API_AEAD`)  
 **Base Score**: 7.8 HIGH (AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H) — CNA (kernel.org); NVD assessment pending  
+**Score on Root Lock**: 0.0 — 5.19.6 leaves `CONFIG_CRYPTO_USER_API_AEAD` unset. 6.18.9-hs builds `algif_aead` as a module. The boot latch does not load it, and `kernel.modules_disabled=1` refuses a later load. The 6.18.9-hs row stays on the patch date.  
 **Upstream fix**: Linux 6.12.85 (LTS), 6.18.22 (LTS), 6.19.12 (LTS)
 
 This CVE describes a privilege escalation through the AF_ALG socket interface. An attacker who can open an AF_ALG socket reaches `algif_aead_copy_sgl()`, exploits a copy-on-write failure in the scatter-gather list handling, and gains root.
 
-`CONFIG_CRYPTO_USER_API_AEAD` is not compiled into the Root Lock kernel. The AF_ALG socket family is not available. An attempt to open an AF_ALG socket returns `EAFNOSUPPORT` — there is no `algif_aead` code present in the running kernel and therefore no reachable code path. The Root Lock kernel predates the upstream fix versions listed above, but the fix is not required: the fix removes a vulnerability in code that was never compiled in.
+On 5.19.6, `# CONFIG_CRYPTO_USER_API_AEAD is not set`. `algif_aead.c` is not in that image. That kernel is Not affected.
+
+On 6.18.9-hs, `CONFIG_CRYPTO_USER_API_AEAD=m`. The shipped modules include `algif_aead` and `af_alg`. The upstream fix is in 6.18.22, so this build does not contain it. `heartsuite-kernel-latch.service` loads the netfilter modules the firewall needs, then sets `kernel.modules_disabled=1` before sshd. It does not load `algif_aead`. The AF_ALG family is not registered, so a socket open returns `EAFNOSUPPORT` and does not reach `algif_aead_copy_sgl()`. See [How to read the backstop sections](/rootlock/security/#how-to-read-the-backstop-sections).
+
+A program that is already running can call `socket()` once that module is loaded. The 0.0 on 6.18.9-hs is the unloaded module and the latch. The row stays on the patch date.
 
 ### CVE-2026-43284
 

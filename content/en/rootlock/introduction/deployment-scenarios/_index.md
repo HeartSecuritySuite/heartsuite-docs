@@ -29,9 +29,9 @@ On a homogeneous fleet of these servers, install each host through Cloud Path or
 
 Patches, package upgrades, and new services follow the same path: open a maintenance window, install the changes in Setup Mode, approve the new entries, then re-engage Lockdown.
 
-CVE-2026-31431 — privilege escalation via AF_ALG — shows what Lockdown means on a production server. An attacker who exploits it ends up with root. On a Root Lock kernel AF_ALG is not compiled in, so that path is gone.
+CVE-2026-31431 is a privilege escalation through the AF_ALG AEAD socket. On the 5.19.6 archive kernel `CONFIG_CRYPTO_USER_API_AEAD` is unset, so that code is absent. On the 6.18.9-hs kernel that ships, the interface is a module. The boot latch does not load it, and a later load stays refused, so the socket path is not resident. The finding stays on the patch date. Detail is in [CVE-2026-31431](../../security/compiled-in-cves/#cve-2026-31431).
 
-Even if it had been, Lockdown constrains the root shell the exploit produces: the kernel refuses to clear immutable flags, blocks mount operations, and blocks writes to the audit log, so a program added from that shell is gone after reboot.
+Lockdown constrains a root shell that another bug produces: the kernel refuses to clear immutable flags, blocks mount operations, and blocks writes to the audit log, so a program added from that shell is gone after reboot.
 
 See [Kernel Security Transparency](../../security/) for the full CVE status table and scanner guidance.
 
