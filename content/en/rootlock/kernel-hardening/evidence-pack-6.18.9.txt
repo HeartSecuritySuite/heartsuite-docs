@@ -1,11 +1,13 @@
 Root Lock by HeartSuite — Kernel Hardening Evidence Pack
-Subject: kernel that ships, 6.18.9-hs (packaging 6.18.9-HeartSuite-3, build #43)
+Subject: kernel that ships, 6.18.9-hs (packaging 6.18.9-HeartSuite-3, build #44)
 Checker run: 2026-10-02
 Tool: kernel-hardening-checker commit e870d0141259f875d3d1b54fef49dec7074e4cac
         (github.com/a13xp0p0v/kernel-hardening-checker; short e870d01)
         Same commit as the 18 August 2026 pack, so the totals compare directly.
 
-This pack measures build #43. It is not the 18 August 2026 pack.
+This file's binary is build #44 (2026-10-19). The checker totals are the
+2026-10-02 run of packaging config d6a08a04, which build #43 and build
+#44 share. It is not the 18 August 2026 pack.
 That earlier pack is evidence-pack-6.18.9-2026-08-18.txt (build #37,
 vmlinuz SHA-256 1b44fffb…, config SHA-256 3cd18247…).
 Its guest boot, lsmod, and dmesg are not copied here.
@@ -17,8 +19,8 @@ were not taken.
 === 1. CONFIG AND BINARY IDENTITY ===
 
 vmlinuz-6.18.9-hs (packaging name vmlinuz-6.18.9-HeartSuite-3):
-  SHA-256: f2e4749856f56cde87f9bcc887620f2d9b0aa2066756e4d3501326660b926c92
-  file(1): 6.18.9-hs (root@debian13) #43 SMP PREEMPT_DYNAMIC Tue Sep 29 08:25:56 CDT 2026
+  SHA-256: b643762e78d87e46fe962529dcdb592c47818a5113e6e9089969ad5d59f5d689
+  file(1): 6.18.9-hs (root@debian13) #44 SMP PREEMPT_DYNAMIC Mon Oct 19 08:44:30 CDT 2026
 
 Packaging config used for the checker (not a guest /boot/config):
   SHA-256: d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684
@@ -29,8 +31,9 @@ Packaging config used for the checker (not a guest /boot/config):
   CONFIG_IKCONFIG is not set.
 
 Build #42 (file(1) #42, Fri Sep 11 18:28:21 CDT 2026, vmlinuz SHA-256
-478dde7d…) was built from this same config. It is a different vmlinuz.
-This pack is the #43 binary above.
+478dde7d…) and build #43 (file(1) #43, Tue Sep 29 08:25:56 CDT 2026,
+vmlinuz SHA-256 f2e47498…) were built from this same config. Each is a
+different vmlinuz. This pack is the #44 binary above.
 
 Module archive shipped with this binary:
   kernel_modules.tar SHA-256: d7b84fb2823918f590a667127cdb731b9ccde68fd189031d6b7680855fd79e94
@@ -127,19 +130,19 @@ from evidence-pack-6.18.9-2026-08-18.txt. They were not re-run on
 
 Config                               | OK  | FAIL | Total | OK%  | Source
 -------------------------------------|-----|------|-------|------|-------------------
-HS 6.18.9-hs #43                     | 153 |  106 |  259  | 59.1 | packaging config SHA d6a08a04… (this pack §1), run 2026-10-02
+HS 6.18.9-hs #44                     | 153 |  106 |  259  | 59.1 | packaging config SHA d6a08a04… (same config as #43), run 2026-10-02
 HS 6.18.9-hs #37                     | 148 |  111 |  259  | 57.1 | 18 August 2026 pack, config SHA 3cd18247…
 Arch linux-hardened 6.18.16-hardened1| 181 |   78 |  259  | 69.9 | 18 August 2026 pack
 Vanilla x86_64 defconfig 6.18.9      | 153 |  106 |  259  | 59.1 | 18 August 2026 pack
 KSPP recommended x86-64              | 235 |   22 |  257  | 91.4 | 18 August 2026 pack (intent benchmark)
 
-#43 ties the 18 August vanilla defconfig on the overall count.
-The mix differs: #43 attack-surface is 62/131, vanilla was 88/131.
-#43 self_protection is 78/110, vanilla was 56/110.
+#44 (same config as #43) ties the 18 August vanilla defconfig on the overall count.
+The mix differs: #44 attack-surface is 62/131, vanilla was 88/131.
+#44 self_protection is 78/110, vanilla was 56/110.
 
 === 8. PER-CATEGORY CHECKER SCORES ===
 
-Category              | HS #43        | HS #37 (18 Aug) | Arch lh 6.18.16 | Vanilla 6.18.9
+Category              | HS #44        | HS #37 (18 Aug) | Arch lh 6.18.16 | Vanilla 6.18.9
 ----------------------|---------------|-----------------|-----------------|---------------
 cut_attack_surface    | 62/131 (47.3%)| 57/131 (43.5%)  | 76/131 (58.0%)  | 88/131 (67.2%)
 self_protection       | 78/110 (70.9%)| 78/110 (70.9%) | 92/110 (83.6%)  | 56/110 (50.9%)
@@ -172,9 +175,9 @@ Not set, or not forced:
   sha256sum /path/to/config-6.18.9-hs
   # Expected: d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684
   sha256sum /path/to/vmlinuz-6.18.9-hs
-  # Expected: f2e4749856f56cde87f9bcc887620f2d9b0aa2066756e4d3501326660b926c92
+  # Expected: b643762e78d87e46fe962529dcdb592c47818a5113e6e9089969ad5d59f5d689
   file /path/to/vmlinuz-6.18.9-hs
-  # Expected to contain: #43 SMP PREEMPT_DYNAMIC Tue Sep 29 08:25:56 CDT 2026
+  # Expected to contain: #44 SMP PREEMPT_DYNAMIC Mon Oct 19 08:44:30 CDT 2026
 
   Do not use an unpinned checker HEAD. Item counts move.
   Do not point this procedure at the 18 August config (SHA 3cd18247…).
@@ -182,8 +185,8 @@ Not set, or not forced:
 
 === 11. SOURCE CITATIONS ===
 
-  Binary: vmlinuz SHA-256 f2e47498…, file(1) build #43, Tue Sep 29 08:25:56 CDT 2026
-  Config: SHA-256 d6a08a04…, also the config of build #42 (different vmlinuz)
+  Binary: vmlinuz SHA-256 b643762e…, file(1) build #44, Mon Oct 19 08:44:30 CDT 2026
+  Config: SHA-256 d6a08a04…, also the config of builds #42 and #43 (different vmlinuz)
   Checker: github.com/a13xp0p0v/kernel-hardening-checker @ e870d01, run 2026-10-02
   Prior pack, with the guest boot: evidence-pack-6.18.9-2026-08-18.txt
   Legacy 5.19.6 pack: evidence-pack-5.19.6.txt

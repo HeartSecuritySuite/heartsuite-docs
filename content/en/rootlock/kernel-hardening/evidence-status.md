@@ -2,7 +2,7 @@
 title: "Which kernel evidence is published today"
 linkTitle: "Evidence Status"
 weight: 16
-description: "Build #43 is the kernel that ships. Its checker pack has no guest boot. The 18 August 2026 pack is build #37. 5.19.6 remains the legacy measured stream."
+description: "Build #44 is the kernel that ships. Its config matches build #43, so the checker pack is that config and has no guest boot. The 18 August 2026 pack is build #37. 5.19.6 remains the legacy measured stream."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "evidence", "procurement"]
 type: docs
@@ -12,7 +12,7 @@ toc: true
 ---
 
 **Subject:** Root Lock kernel evidence  
-**Kernel that ships:** `6.18.9-hs` build `#43`, packaging `6.18.9-HeartSuite-3`. The BPF syscall is off.  
+**Kernel that ships:** `6.18.9-hs` build `#44`, packaging `6.18.9-HeartSuite-3`. The BPF syscall is off. Config SHA-256 matches build `#43`.  
 **Checker pack for that binary:** [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02). Config and checker only. No guest boot.  
 **18 August 2026 pack:** build `#37`, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). That pack includes the Debian 12 guest boot.  
 **Legacy stream:** kernel **5.19.6** (maintenance-only; see [Kernel Support Policy](kernel-support-policy/#519-stream-deprecation))
@@ -23,17 +23,17 @@ toc: true
 
 | Stream | Role | Config SHA-256 | Evidence pack | Comparison matrix | Checker run | Runtime verification |
 |---|---|---|---|---|---|---|
-| **6.18.9-hs build #43** | Kernel that ships | `d6a08a04…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-10-02 (`e870d01`) | Not repeated |
+| **6.18.9-hs build #44** | Kernel that ships | `d6a08a04…` in [pack](../evidence-pack-6.18.9.txt) | [Published](../evidence-pack-6.18.9.txt) | [Published](kernel-comparison-matrix-6.18.9/) | 2026-10-02 (`e870d01`) | Not repeated |
 | **6.18.9-hs build #37** | 18 August 2026 pack | `3cd18247…` in [pack](../evidence-pack-6.18.9-2026-08-18.txt) | [Published](../evidence-pack-6.18.9-2026-08-18.txt) | Scores kept in that pack | 2026-08-18 (`e870d01`) | 2026-08-18 (Debian 12 guest) |
 | **5.19.6** | Legacy / existing fleets | [Published](../evidence-pack-5.19.6.txt) | [Published](../evidence-pack-5.19.6.txt) | [Published](kernel-comparison-matrix-5.19.6/) | 2026-05-19 (`b9b83a0`) | 2026-05-19 (Debian 12 VM) |
 
-5.19.6 scores are legacy. Build #37 is the 18 August measurement. Build #43 is the kernel that ships.
+5.19.6 scores are legacy. Build #37 is the 18 August measurement. Build #44 is the kernel that ships. Its packaging config is the build #43 config.
 
 ---
 
-## What the build #43 pack contains
+## What the build #44 pack contains
 
-- **Identity** — `file` `#43`, vmlinuz SHA-256 `f2e47498…`, packaging config SHA-256 `d6a08a04…` in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
+- **Identity** — `file` `#44`, vmlinuz SHA-256 `b643762e…`, packaging config SHA-256 `d6a08a04…` (same config as build `#43`) in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt)
 - **Automated scores** — checker `e870d01`, run 2026-10-02: overall 153/259 (59.1%), attack-surface 62/131 (47.3%), exploit-resistance 78/110 (70.9%)
 - **Runtime** — not repeated. The Debian 12 guest boot is the build #37 pack.
 - **What moved since #37** — `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, `CONFIG_KEXEC_FILE`, `CONFIG_CRASH_DUMP`, and `CONFIG_PROC_VMCORE` are unset. `CONFIG_IO_URING` stays `y`.
@@ -63,7 +63,7 @@ The 5.19.6 pack is unchanged and still reproducible (checker `b9b83a0`, SHA `d67
 
 **Evaluating a 6.18.9-hs deployment today**
 
-- Use [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) for build #43 (config and checker). Use [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt) when you need the guest boot. Threat model: [auditor brief](auditor-brief/).
+- Use [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) for build #44 (config shared with #43, and the checker). Use [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt) when you need the guest boot. Threat model: [auditor brief](auditor-brief/).
 - Confirm `uname -r` is `6.18.9-hs`. The `uname -r` string does not contain the word `HeartSuite`, so its absence is not a sign that the maintenance kernel is running.
 - On the kernel that ships, the BPF syscall is off, so there is no eBPF program to load. A finding stays on the patch date when that option is set on the kernel you boot.
 

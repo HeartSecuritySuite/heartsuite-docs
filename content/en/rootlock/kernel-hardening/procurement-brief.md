@@ -13,7 +13,7 @@ toc: true
 
 **Overview**: Side-by-side comparison of Root Lock kernel configuration choices against community hardened kernels and the KSPP benchmark.
 
-**Subject:** kernel that ships, **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy measured stream.  
+**Subject:** kernel that ships, **6.18.9-hs** build **#44** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy measured stream.  
 **Evidence:** tables below are the 2026-10-02 checker run, [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (checker `e870d01`, 153/259). The 18 August guest boot is build #37, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). Legacy: [5.19.6 matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt).
 
 **Kernel that ships:** `uname -r` is `6.18.9-hs`. The BPF syscall is off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset.
@@ -24,15 +24,15 @@ For deployment, Secure Boot, fleet, and “no custom kernel” alternatives see 
 
 ## What this document covers
 
-HeartSuite numbers below are outputs of `kernel-hardening-checker` commit `e870d0141259f875d3d1b54fef49dec7074e4cac` applied to the **#43 packaging config** (SHA-256 `d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684`). Arch, vanilla, and KSPP rows are the 18 August 2026 run of that same commit.
+HeartSuite numbers below are outputs of `kernel-hardening-checker` commit `e870d0141259f875d3d1b54fef49dec7074e4cac` applied to the packaging config shared by builds **#43** and **#44** (SHA-256 `d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684`). Arch, vanilla, and KSPP rows are the 18 August 2026 run of that same commit.
 
 Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are the era-matched 6.18.x peers. Do not mix these percentages with the 5.19.6 pack, because its checker commit (`b9b83a0`) counts a different set of items.
 
 ---
 
-## At a glance (6.18.9-hs build #43, checker run 2026-10-02)
+## At a glance (6.18.9-hs build #44, same config as #43, checker run 2026-10-02)
 
-| What you care about | HS 6.18.9-hs #43 | Arch linux-hardened 6.18.16 | KSPP x86-64* |
+| What you care about | HS 6.18.9-hs #44 | Arch linux-hardened 6.18.16 | KSPP x86-64* |
 |---|---|---|---|
 | Dangerous features disabled (attack-surface) | 47.3% (62/131) | 58.0% (76/131) | 100% (131/131) |
 | Exploit-resistance mitigations | 70.9% (78/110) | **83.6%** (92/110) | 84.5% (93/110) |
@@ -49,7 +49,7 @@ Legacy 5.19.6 glance (checker `b9b83a0`, not comparable item-for-item): attack-s
 
 ## What changed between 5.19.6 and this pin
 
-On 6.18.9-hs #43, exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**. `INIT_ON_FREE_DEFAULT_ON` and `MODULE_SIG_FORCE` stay off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset. `bpf()` returns `ENOSYS`.
+On 6.18.9-hs #44 (same packaging config as #43), exploit-resistance options `INIT_ON_ALLOC_DEFAULT_ON`, `HARDENED_USERCOPY`, `FORTIFY_SOURCE`, `SLAB_FREELIST_RANDOM` / `_HARDENED`, `KFENCE`, and `MODULE_SIG` are **on**. `INIT_ON_FREE_DEFAULT_ON` and `MODULE_SIG_FORCE` stay off. `CONFIG_IO_URING=y`. `CONFIG_KEXEC` and `CONFIG_KEXEC_FILE` are unset. `bpf()` returns `ENOSYS`.
 
 The allowlist constrains programs that have no allowlist entry. On every HeartSuite-kernel boot, including Setup, `heartsuite-kernel-latch.service` sets `kernel.modules_disabled=1` at sysinit, before sshd. A later modprobe stays refused. That latch is a boot script. `HS_lockdown.sh` writes the same setting again if the oneshot is masked.
 
@@ -59,7 +59,7 @@ The allowlist constrains programs that have no allowlist entry. On every HeartSu
 
 | Tool | Bypass prevention | Exploit resistance | Availability |
 |---|---|---|---|
-| **Root Lock 6.18.9-hs #43** | Measured 47.3% attack-surface | Moderate–high (measured 70.9% ER) | Commercial |
+| **Root Lock 6.18.9-hs #44** | Measured 47.3% attack-surface | Moderate–high (measured 70.9% ER) | Commercial |
 | **Root Lock 5.19.6** (legacy) | Measured 68.9% attack-surface | Low — vanilla baseline (28.4% ER) | Commercial (legacy) |
 | Arch linux-hardened 6.18.16 | Moderate | **High** (83.6% ER measured) | Free, open-source |
 | grsecurity / PaX | High | **Very high** | Paid subscription |
@@ -90,9 +90,9 @@ Root Lock is host-local kernel enforcement, so it does not replace network firew
 
 ```
 Packaging config SHA-256: d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684
-vmlinuz SHA-256:          f2e4749856f56cde87f9bcc887620f2d9b0aa2066756e4d3501326660b926c92
+vmlinuz SHA-256:          b643762e78d87e46fe962529dcdb592c47818a5113e6e9089969ad5d59f5d689
 uname -r:                 6.18.9-hs
-file(1) build:            #43
+file(1) build:            #44
 Tool: https://github.com/a13xp0p0v/kernel-hardening-checker (commit e870d0141259f875d3d1b54fef49dec7074e4cac)
 Expected checker:         OK 153 / FAIL 106
 ```

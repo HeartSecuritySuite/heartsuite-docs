@@ -2,7 +2,7 @@
 title: "What a red team should test on this kernel"
 linkTitle: "Auditor Brief"
 weight: 22
-description: "Threat model and residual risks for the kernel that ships, 6.18.9-hs build #43. The Debian 12 guest boot is the 18 August build #37 pack. 5.19.6 remains the legacy pack."
+description: "Threat model and residual risks for the kernel that ships, 6.18.9-hs build #44. The Debian 12 guest boot is the 18 August build #37 pack. 5.19.6 remains the legacy pack."
 categories: ["Reference"]
 tags: ["kernel", "hardening", "security", "audit", "red-team"]
 type: docs
@@ -11,7 +11,7 @@ aliases:
 toc: true
 ---
 
-**Subject:** Root Lock by HeartSuite — **6.18.9-hs** build **#43** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy k5 line.  
+**Subject:** Root Lock by HeartSuite — **6.18.9-hs** build **#44** (packaging `6.18.9-HeartSuite-3`). **5.19.6** is the legacy k5 line.  
 **Evidence status:** Checker scores for the kernel that ships are in [`evidence-pack-6.18.9.txt`](../evidence-pack-6.18.9.txt) (2026-10-02). The Debian 12 guest boot is build **#37**, [`evidence-pack-6.18.9-2026-08-18.txt`](../evidence-pack-6.18.9-2026-08-18.txt). The **5.19.6** pack remains the measured record of that legacy line.  
 **Primary stream:** [Hardening matrix for kernel 6.18.9](kernel-comparison-matrix-6.18.9/)  
 **Legacy stream:** Config SHA-256 `d67caa637263c33ce939b7eef867f0695d60d11d285d6694a7f5567e73ba6fbc` — measured 2026-05-19, checker `b9b83a0` — [comparison matrix](kernel-comparison-matrix-5.19.6/), [`evidence-pack-5.19.6.txt`](../evidence-pack-5.19.6.txt)
@@ -26,7 +26,7 @@ Root Lock targets **a process on the protected system attempting to bypass VFS-l
 
 ---
 
-## What the measurements show (build #43, checker run 2026-10-02)
+## What the measurements show (build #44, same config as #43, checker run 2026-10-02)
 
 Tool: [kernel-hardening-checker](https://github.com/a13xp0p0v/kernel-hardening-checker) commit `e870d0141259f875d3d1b54fef49dec7074e4cac`, 2026-10-02, against packaging config SHA-256 `d6a08a04f4d6734adbafac431c3ebe46d339a495d907f1c6c569959321cc3684`.
 
@@ -37,7 +37,7 @@ Arch linux-hardened **6.18.16-hardened1** and vanilla **6.18.9** `defconfig` are
 Automated score: **62/131 (47.3%)**  
 Era-matched Arch linux-hardened 6.18.16: 76/131 (58.0%). Era-matched vanilla 6.18.9 defconfig: 88/131 (67.2%). KSPP x86-64 intent: 131/131 (100%).
 
-Build #43 trails both era-matched peers on this axis. Five checks moved to OK since build #37: `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, `CONFIG_KEXEC_FILE`, `CONFIG_CRASH_DUMP`, and `CONFIG_PROC_VMCORE`.
+Build #44 (same config as #43) trails both era-matched peers on this axis. Five checks moved to OK on #43 since build #37: `CONFIG_BPF_SYSCALL`, `CONFIG_KEXEC`, `CONFIG_KEXEC_FILE`, `CONFIG_CRASH_DUMP`, and `CONFIG_PROC_VMCORE`.
 
 ### Exploit-resistance (KSPP-style mitigations)
 
