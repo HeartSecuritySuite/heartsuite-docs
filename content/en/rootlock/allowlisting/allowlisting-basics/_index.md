@@ -183,6 +183,10 @@ From the Dashboard, select the File Access queue (`[f]`).
 
 Do not approve directory grants for install-time trees — package-manager caches, build directories, and similar — unless that program needs those paths at runtime, because a directory grant covers everything under it.
 
+### Paths from a chrooted program
+
+Under Setup Mode, the File Access queue shows `/maildrop` for Postfix pickup, whose root is `/var/spool/postfix`. You approve that path when this host delivers mail. A directory grant covers the files under that name in that root.
+
 ## Internet Access queue
 
 Programs that make outbound internet connections are logged with the destination IP address and reverse DNS hostname. The Internet Access queue presents these for review.

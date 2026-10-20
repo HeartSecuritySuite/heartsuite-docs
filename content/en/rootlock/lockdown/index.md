@@ -183,6 +183,10 @@ Lockdown seals Root Lock's configuration with filesystem immutability, so a comp
 | How long does the seal last? | N/A | Until Maintenance unseals. The seal persists across reboots and re-engages automatically on every Root Lock kernel boot. |
 | How do you remove Lockdown? | N/A | Maintenance (`[m]`) — console GRUB pick **Maintenance: unseal and return to Root Lock**. Physical or serial-console access is required for that step. If a boot menu password was set, that pick asks for it. Then SSH for the work. |
 
+### Programs that call chroot
+
+Under Lockdown, Root Lock checks each file from the program's own root. For Postfix pickup, that root is `/var/spool/postfix`, and you approved `/maildrop` in the File Access queue. A directory grant covers the files under that name in that root.
+
 ### What Lockdown seals
 
 Once Lockdown is engaged, Root Lock seals these categories at once, using `chattr +i`. Before you confirm, the Dashboard shows the paths that will be sealed, grouped by category with counts. The list is for review only, and approving an allowlist grant never adds a path to it. To seal an extra path, unseal, add it to the lockdown script and its reverse to the unlock script, then lock down again from Lockdown (`[l]`) — see [Appendices](../appendices/#lockdown-scripts).

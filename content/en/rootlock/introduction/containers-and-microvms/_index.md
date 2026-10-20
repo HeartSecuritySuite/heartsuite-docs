@@ -23,6 +23,10 @@ Build and run OCI images on another host. When a task should sit in its own mach
 
 Docker, containerd, Podman, and runc isolate processes on the host kernel. A container runtime on it is not a fit by design: under Lockdown, Root Lock refuses the new mounts a runtime makes each time it starts or reschedules a container. See [System Requirements](../system-requirements/#software-compatibility-notes).
 
+### Programs that call chroot
+
+Postfix pickup calls chroot on this host and keeps the root `/var/spool/postfix`. Under Setup Mode, the File Access queue shows `/maildrop`. You approve that path when this host delivers mail. A directory grant covers the files under that name in that root.
+
 A backup receiver that accepts Restic over SFTP runs a handful of programs and needs no container engine. Run the container engine on another host, and let Root Lock protect the machines around it.
 
 ## What Firecracker and Kata are
