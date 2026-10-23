@@ -20,9 +20,9 @@ menu:
 
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite checks each program at the kernel, including a program running as root. [What the allowlist check covers](how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
 
-In Lockdown, anything not on the allowlist is blocked before it can act. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing means booting the maintenance kernel from a physical or serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After the unseal, SSH is how you work in Setup Mode. [Lockdown](../lockdown/) covers activation. [Circumvention and recovery](how-it-compares/#circumvention-and-recovery) covers residual risk.
+In Lockdown, Root Lock blocks a program start that presents no allowlist entry, a file read or write on the open path that the entry does not grant, and an outbound connection the entry does not grant. By design, remote root has no intended path to change the sealed allowlist while the machine is running. Unsealing means booting the maintenance kernel from a physical or serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After the unseal, SSH is how you work in Setup Mode. [Lockdown](../lockdown/) covers activation. [Circumvention and recovery](how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 ## In this section
 
