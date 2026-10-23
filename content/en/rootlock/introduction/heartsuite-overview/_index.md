@@ -15,13 +15,15 @@ menu:
     identifier: "heartsuite-overview"
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite checks each program at the kernel, including a program running as root.
 
 Your SSH server and your web server both run as root. They still get different permissions because they are different programs.
 
 ## Kernel-level enforcement
 
-Under Lockdown, no program can execute without an allowlist entry. That entry also controls which files the program can read or write, and which network connections it can make.
+Under Lockdown, Root Lock checks an allowlist entry at program start, on the open path for a file read or write, and on an outbound connection. The same checks apply to a program running as root. A program start, a file open, or a connection with no matching grant is blocked.
+
+On the 6.18.9-hs kernel that ships, Root Lock accepts a name that already has an allowlist entry and runs a different program. Root Lock also accepts, without a write grant for that file or directory, a FIFO, a socket file, or a symlink, an append through process accounting, and a change to the mode and owner of a file the program already has open. The same cases are named in [What the allowlist check covers](../how-it-compares/#what-the-allowlist-check-covers).
 
 The **Dashboard** is the interface. After unattended initial setup, it shows the checklist and what is waiting for review.
 
@@ -42,7 +44,7 @@ Initial setup runs unattended on first boot of the Root Lock kernel, and again a
 
 ### 1. Program Allowlist
 
-An allowlist entry says whether a program may execute, which files it may read or write, and which network connections it may make. The kernel requires that entry before the program is permitted to execute.
+An allowlist entry says whether a program may execute, which files it may read or write, and which network connections it may make. Root Lock reads that entry at program start, on the open path, and on an outbound connection.
 
 The Dashboard presents three review queues:
 
@@ -55,7 +57,7 @@ File access is approved as **read** or **write**. Write includes read. See [Allo
 ### 2. Setup Mode and Lockdown
 
 - **Setup Mode**: The kernel logs program executions, file accesses, and network connections without blocking them. Use this mode to build the allowlist.
-- **Lockdown**: The kernel enforces the allowlist. Programs without an entry, or that exceed their permissions, are blocked.
+- **Lockdown**: Root Lock applies the checks above.
 
 Activating Lockdown requires empty review queues, configured alerts, and an active subscription. Type `YES` (case-sensitive) to confirm.
 
@@ -71,7 +73,7 @@ When an approved program is compromised, recovery starts from the write before t
 
 ### 4. Secure Script Launchers
 
-For Python, PHP, and Perl, Secure Script Launchers identify the script being executed so each script gets its own allowlist entry, the same as a compiled program.
+For Python, PHP, and Perl, Secure Script Launchers identify the script so that script can have its own allowlist entry.
 
 ## Two setup paths
 

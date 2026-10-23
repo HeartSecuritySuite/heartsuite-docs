@@ -176,9 +176,9 @@ Specific transmission controls:
 
 This is the primary use case of Root Lock. The implementation is structural, not signature-based.
 
-**Default-deny execution**: In Lockdown, the Root Lock kernel refuses to execute any program not in the allowlist. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — cannot execute, because it has no allowlist entry. The kernel refuses the `execve()` call regardless of file permissions, user privilege, or whether any scanner detected the file.
+**Default-deny execution**: In Lockdown, Root Lock refuses a direct execution of a program whose presented name has no allowlist entry. A file downloaded to `/tmp` — a reverse shell, a credential dumper, a dropper — has no entry, so that execution is blocked regardless of file permissions, user privilege, or whether any scanner detected the file. [What the allowlist check covers](../introduction/how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
 
-**Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script gets its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` is not. In Lockdown, it is blocked before the interpreter processes it.
+**Interpreted code coverage**: Python, Perl, and PHP scripts are covered by Secure Script Launchers. Each script can have its own allowlist entry, separate from the interpreter. The Python interpreter may be on the allowlist; a malicious `.py` file dropped at `/tmp/attack.py` has no entry for that path. The same section names a start that presents a different name.
 
 **BPF syscall**: On the 6.18.9-hs kernel that ships, the BPF syscall is off, so there is no eBPF program to load.
 

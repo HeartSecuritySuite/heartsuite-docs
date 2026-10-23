@@ -19,7 +19,7 @@ menu:
 
 ## Why Setup Mode is necessary
 
-Lockdown blocks any program that is not on the allowlist, including as root. Initial setup already adds startup and shutdown programs so the host can boot. Setup Mode is how you add the rest of the workload.
+Lockdown blocks a program start that presents no allowlist entry, including a program running as root. [What the allowlist check covers](../how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed. Initial setup already adds startup and shutdown programs so the host can boot. Setup Mode is how you add the rest of the workload.
 
 In Setup Mode, Root Lock logs activity without blocking it. You review that activity through the Dashboard queues, approve programs and their access, and build an allowlist that matches the workload. Then you activate Lockdown.
 

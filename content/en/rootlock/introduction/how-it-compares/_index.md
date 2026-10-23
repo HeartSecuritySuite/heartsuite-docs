@@ -258,7 +258,7 @@ The table below answers each question in full for the main enforcement mechanism
 | seccomp-bpf sandboxes (bubblewrap, firejail, systemd, browser sandboxes) | The parent process that sets the filter | The child process the filter applies to | A sibling process launched without the filter is unaffected. Filters are scoped to a process tree, not a program identity |
 | gVisor | Container runtime administrator | Syscalls from inside the sandboxed container | Compromise the gVisor sentry process, or exploit a syscall-emulation bug |
 | Linux EDR agents (CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, FortiEDR) | SOC team via a cloud console | Monitored processes | Root kills the agent, unloads the driver, or exploits a BYOVD bypass |
-| **Root Lock** | **You in Setup Mode; allowlist sealed by Lockdown** | **Every program, including those running as root** | **Physical presence or the cloud serial console to boot the maintenance kernel. What can still go wrong: whether Setup Mode approved too much, and whether someone at the console can unseal it. See Circumvention** |
+| **Root Lock** | **You in Setup Mode; allowlist sealed by Lockdown** | **Every program, including those running as root** | **Physical presence or the cloud serial console to boot the maintenance kernel.** Starts and file changes that still succeed are in [What the allowlist check covers](#what-the-allowlist-check-covers). |
 
 **Two differences carry the position.** Every mechanism above narrows the runtime trust boundary to a subset of processes: one container, one labelled domain, one process tree, one observed program. Root Lock narrows it to *every* program via a system-wide allowlist, root included.
 
@@ -316,6 +316,12 @@ See [System Requirements → Software Compatibility Notes](../system-requirement
 
 For CISO and procurement evaluation of the Root Lock kernel itself in enterprise fleets (including operational models, Secure Boot roadmap, and alternatives), see the [Kernel Hardening → Enterprise Adoption Guide](../../kernel-hardening/enterprise-adoption-guide/).
 
+## What the allowlist check covers
+
+Under Lockdown, Root Lock checks an allowlist entry at program start, on the open path for a file read or write, and on an outbound connection. The same checks apply to a program running as root. A program start, a file open, or a connection with no matching grant is blocked.
+
+On the 6.18.9-hs kernel that ships, Root Lock accepts a name that already has an allowlist entry and runs a different program. Root Lock also accepts, without a write grant for that file or directory, a FIFO, a socket file, or a symlink, an append through process accounting, and a change to the mode and owner of a file the program already has open.
+
 ## Circumvention and recovery
 
 Every security system has a known way to be taken out of the picture. Being explicit about it is how customers evaluate fit.
@@ -327,10 +333,10 @@ Root Lock's sealed allowlist is intended to change through these operator paths:
 
 What this means for security:
 
-- Under Lockdown, an attacker who already has remote root cannot defeat enforcement. There is no agent to kill, no kernel module to unload, and no LSM policy to set permissive. There is also no remote way to force a reboot into the maintenance kernel without console access. Nothing the attacker ran survives a reboot.
+- Under Lockdown, remote root cannot turn Root Lock off by killing an agent, unloading a module, or setting a policy permissive, and cannot edit the sealed allowlist without the console path above. [What the allowlist check covers](#what-the-allowlist-check-covers) names the starts and file changes that still succeed. There is also no remote way to force a reboot into the maintenance kernel without console access. Nothing the attacker ran survives a reboot.
 - Supported recovery (unseal) requires physical or serial-console access: a keyboard and monitor at the machine, a serial port, or your cloud provider's serial console. SSH access alone, regardless of privilege level, is not the unseal path. After unseal, SSH is how you work in Setup Mode.
 - Physical or serial-console access always returns control to you when the boot menu password is left off. No software applied to the host can prevent that console recovery. If one was set, GRUB asks before **Maintenance: unseal and return to Root Lock** or a kernel-line edit, and a forgotten password is cleared by mounting the disk from outside, not at the menu. The normal boot still does not ask.
-- **What can still go wrong (beyond physical or serial-console access).** An allowlist can approve too much in Setup Mode, an already-approved program can be abused as a deputy, and on a kernel this large, whether every seal and control path that must stay gated under Lockdown (for example sibling attributes or HeartSuite control entry points) is actually gated remains an engineering job.
+- **What can still go wrong (beyond physical or serial-console access).** An allowlist can approve too much in Setup Mode, an already-approved program can act inside its grants, and [What the allowlist check covers](#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
 - Seal and control integrity are product contracts, tested on ship pins; check them on the pin you run. That is a different question from whether an agent is still running.
 
 Compare this to the tools in the first table, where root can turn enforcement off in most of them by killing the agent, unloading the module, or setting the policy permissive. Root Lock is deliberately not in that category.
@@ -339,7 +345,7 @@ To see the three enforcement mechanisms tested against real attacks, including w
 
 **Privileged access.** SOC 2, PCI DSS, and ISO 27001 each expect the organization to restrict and review privileged access. None of them is a single question of the form “can an administrator remotely disable this product?”
 
-sudo, PAM, and privileged-access tools such as WALLIX decide who may elevate and when. Root Lock decides what a program may execute, read, write, and reach on the network, including as root. An allowlist grant is not a remote Lockdown off-switch. WALLIX is named here only for that comparison.
+sudo, PAM, and privileged-access tools such as WALLIX decide who may elevate and when. Root Lock applies the check in [What the allowlist check covers](#what-the-allowlist-check-covers), including to a program running as root. An allowlist grant is not a remote Lockdown off-switch. WALLIX is named here only for that comparison.
 
 Under Lockdown, remote root cannot modify the sealed allowlist or disable Root Lock the way a userspace agent can be killed, because changing the seal takes physical or serial-console access to boot the maintenance kernel.
 

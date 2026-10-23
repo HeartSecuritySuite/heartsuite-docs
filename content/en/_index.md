@@ -1,12 +1,12 @@
 ---
 title: "HeartSuite product documentation"
 linkTitle: "Home"
-description: "Root Lock by HeartSuite is kernel default-deny for programs, files, and outbound network, including as root. Unsealing Lockdown takes the maintenance kernel from a physical or serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After unseal, SSH is how you work in Setup Mode."
+description: "Root Lock by HeartSuite checks program start, file open, and outbound connections at the kernel, including as root. The Root Lock overview names what the current kernel still accepts. Unsealing Lockdown takes the maintenance kernel from a physical or serial console. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal, and SSH cannot lift the seal. After unseal, SSH is how you work in Setup Mode."
 ---
 
 This site is the documentation for HeartSuite products. Each product has its own section.
 
-- [Root Lock by HeartSuite](rootlock/) — Kernel-level default-deny for programs, files, and outbound network. Start here.
+- [Root Lock by HeartSuite](rootlock/) — Kernel checks on program start, file open, and outbound connections. Start here.
 
 Prototypes:
 
