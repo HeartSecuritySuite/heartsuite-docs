@@ -17,9 +17,9 @@ aliases:
 
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite checks each program at the kernel, including a program running as root. [What the allowlist check covers](introduction/how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite enforces default-deny on all three at the kernel, per program, including as root.
 
-In Lockdown, Root Lock blocks a program start that presents no allowlist entry, a file read or write on the open path that the entry does not grant, and an outbound connection the entry does not grant. An attacker who already has remote root cannot edit the sealed allowlist while the machine is running. To leave Lockdown, pick **Maintenance: unseal and return to Root Lock** in GRUB from a physical or serial console; that boot runs `HS_unlock.sh`, which is what lifts the seal — sshd does not. Relocking from the maintenance kernel is a reboot, because the GRUB default stays Root Lock. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. After the unseal, SSH is how you work in Setup Mode. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
+In Lockdown, anything not on the allowlist is blocked before it can act. An attacker who already has remote root cannot edit the sealed allowlist while the machine is running. To leave Lockdown, pick **Maintenance: unseal and return to Root Lock** in GRUB from a physical or serial console; that boot runs `HS_unlock.sh`, which is what lifts the seal — sshd does not. Relocking from the maintenance kernel is a reboot, because the GRUB default stays Root Lock. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. After the unseal, SSH is how you work in Setup Mode. [Lockdown](lockdown/) covers activation. [Circumvention and recovery](introduction/how-it-compares/#circumvention-and-recovery) covers residual risk.
 
 On a single host, Root Lock supports two setup paths. Cloud Path and Local Path both arrive at the Dashboard after initial setup.
 

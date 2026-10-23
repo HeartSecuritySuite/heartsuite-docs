@@ -16,7 +16,7 @@ menu:
     weight: 30
 ---
 
-**Overview**: When you lock down from Setup Mode, Root Lock by HeartSuite blocks a program start that presents no allowlist entry, including a program you forgot to approve and a program running as root. [What the allowlist check covers](../introduction/how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
+**Overview**: When you lock down from Setup Mode, Root Lock by HeartSuite blocks every program not on the allowlist, including any you forgot to approve, including as root.
 
 The Dashboard guides activation through a precondition checklist and a typed `YES`. Lockdown then seals the allowlist with filesystem immutability (`chattr +i`): no program or user, including root, can modify it while the server is running.
 
@@ -42,7 +42,7 @@ Each mode defines a different trust boundary.
 
 In Setup Mode, you are trusted to teach the allowlist — anything not on the allowlist is logged but not blocked.
 
-In Lockdown, Root Lock withdraws trust from a program start that presents no allowlist entry, including a program running as root. Your ability to change that allowlist at runtime is also withdrawn — configuration is sealed until Maintenance unseals it so you can install software or edit files.
+In Lockdown, trust is withdrawn from running programs regardless of which user runs them. Any program, including one running as root, must be on the allowlist. Your ability to change that allowlist at runtime is also withdrawn — configuration is sealed until Maintenance unseals it so you can install software or edit files.
 
 > [!NOTE]
 > Unsealing Lockdown takes physical or serial-console access: pick **Maintenance: unseal and return to Root Lock** at the boot menu. SSH is not enough for that step. sshd is stopped when Lockdown seals, unless you chose to leave it running before the seal. After unseal, SSH is how you work in Setup Mode.

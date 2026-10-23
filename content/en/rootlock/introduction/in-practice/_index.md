@@ -15,7 +15,7 @@ menu:
     identifier: "in-practice"
 ---
 
-**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite checks each one per program, including a program running as root. [What the allowlist check covers](../how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed.
+**Overview**: Every attack does three things: run a program, access files, make a network connection. Root Lock by HeartSuite controls all three — per program, not per user, including as root.
 
 Each section below targets one of these three mechanisms with a real attack. Every example involves root access. In each case, root is not enough.
 
@@ -29,11 +29,11 @@ In Lockdown, Root Lock blocks these attacks regardless of whether the vulnerable
 
 On a standard Linux server, a file downloaded to `/tmp` is executable the moment it arrives. As root, there are no further gates.
 
-**What Root Lock does.** A direct execution of a new file needs an allowlist entry for the name presented at start. A file downloaded to `/tmp` has no entry — it was never observed during Setup Mode, never reviewed, never approved.
+**What Root Lock does.** Every program must have an allowlist entry before the kernel will run it. A file downloaded to `/tmp` has no entry — it was never observed during Setup Mode, never reviewed, never approved.
 
-In Lockdown, Root Lock refuses that execution. The attacker has a file. They cannot run it under that name.
+In Lockdown, the kernel refuses to execute it. The attacker has a file. They cannot run it.
 
-Secure Script Launchers give a Python, Perl, or PHP script its own allowlist entry, separate from the interpreter. A script dropped at `/tmp/attack.py` has no entry for that path. [What the allowlist check covers](../how-it-compares/#what-the-allowlist-check-covers) names the start that presents a different name.
+This applies equally to interpreted scripts. A malicious Python script dropped at `/tmp/attack.py` has no allowlist entry for that path. Root Lock's Secure Script Launchers give each script its own allowlist entry, separate from the interpreter. Python runs. The unauthorized script does not.
 
 **What it does not cover.** If the attacker already controls an approved program and issues commands within that program's approved scope, the program check does not apply. The other two still do: the program can only read and write files in its allowlist, and only connect to destinations in its network allowlist.
 

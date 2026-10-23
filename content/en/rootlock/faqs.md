@@ -287,7 +287,7 @@ If the outer machine does not expose `/dev/kvm`, install on that outer machine: 
 
 {{< details summary="If Root Lock runs in a VM, can a hypervisor jailbreak bypass it?" >}}
 
-A: A full VM (KVM, VMware, AWS, Firecracker, Kata) is a supported install. Root Lock is the guest kernel. Under Lockdown, Root Lock blocks a program start that presents no allowlist entry, and an outbound connection the entry does not grant, including for a program running as root. [What the allowlist check covers](introduction/how-it-compares/#what-the-allowlist-check-covers) names the starts and file changes that still succeed. Remote root in the guest cannot unseal Lockdown.
+A: A full VM (KVM, VMware, AWS, Firecracker, Kata) is a supported install. Root Lock is the guest kernel. Under Lockdown it blocks unapproved programs, files, and outbound network inside that guest, including as root, and remote root in the guest cannot unseal Lockdown.
 
 The hypervisor's own controls — serial console, pause/snapshot, and attaching the disk to another machine — sit outside the guest, so Root Lock does not police them. They are the same class as a keyboard on metal, so restrict them in hypervisor or cloud IAM.
 
