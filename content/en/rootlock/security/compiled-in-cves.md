@@ -298,6 +298,44 @@ A Score on Root Lock of 0.0 is printed when the program that reaches the bug has
 | [CVE-2026-23234](#cve-2026-23234) | f2fs (`CONFIG_F2FS_FS`) | no CNA score | <span class="badge badge-cve-none">0.0</span> | Write completion on an f2fs superblock. Install roots named here are ext4 and xfs. |
 | [CVE-2026-23235](#cve-2026-23235) | f2fs sysfs (`CONFIG_F2FS_FS`) | no CNA score | <span class="badge badge-cve-none">0.0</span> | Per-mount sysfs attributes. They exist only after an f2fs mount. |
 | [CVE-2026-31532](#cve-2026-31532) | CAN raw (`CONFIG_CAN_RAW`) | <span class="badge badge-cve-high">7.8 HIGH</span> | not scored 0.0 | `raw_rcv` needs a CAN netdevice. `socket()` is not the gate. The pin has `CONFIG_USER_NS=y`. |
+| [CVE-2026-97940](#cve-2026-97940) | IPv6 FIB walker (`CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-74257](#cve-2026-74257) | BPF sockmap UDP recv (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-68284](#cve-2026-68284) | BPF sockmap TCP send cork (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-68399](#cve-2026-68399) | BPF socket local storage clone (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-74363](#cve-2026-74363) | BPF filesystem inode free (`CONFIG_BPF_SYSCALL` / bpffs) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-93137](#cve-2026-93137) | BPF `bpf_find_vma` helper (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-74589](#cve-2026-74589) | BPF sockmap send verdict redirect (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">8.4 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-74714](#cve-2026-74714) | BPF TCP established iterator (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-72112](#cve-2026-72112) | io_uring BPF ops registration (`CONFIG_IO_URING`, `CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-72493](#cve-2026-72493) | net core backlog enqueue (`CONFIG_NET`) | <span class="badge bg-danger">9.9 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-92489](#cve-2026-92489) | XFRM device direct output / packet offload (`CONFIG_XFRM`, `CONFIG_XFRM_OFFLOAD`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-74569](#cve-2026-74569) | netfilter SIP conntrack NAT (`CONFIG_NF_CONNTRACK_SIP`, `CONFIG_NF_NAT_SIP`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-72322](#cve-2026-72322) | IPv6 MLD delayed work (`CONFIG_IPV6`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-74656](#cve-2026-74656) | IPv4 FIB nexthop MTU (`CONFIG_INET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-90049](#cve-2026-90049) | skbuff zerocopy (`CONFIG_NET`) | <span class="badge bg-danger">9.3 CRITICAL</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-98163](#cve-2026-98163) | cgroup task iterator (`CONFIG_CGROUPS`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — outside introduced range (needs ≥6.19) |
+| [CVE-2026-90392](#cve-2026-90392) | BPF link info (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-90210](#cve-2026-90210) | BPF trampoline multi-attach free (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — outside introduced range (needs ≥7.2) |
+| [CVE-2026-74256](#cve-2026-74256) | BPF sockmap `bpf_msg_pop_data` (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">8.4 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-74371](#cve-2026-74371) | BPF_PROG_QUERY (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
+| [CVE-2026-80713](#cve-2026-80713) | io_uring task restrictions across exec (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">8.4 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — outside introduced range (needs ≥7.0) |
+| [CVE-2026-89783](#cve-2026-89783) | xfrm6 input addr / secpath (`CONFIG_XFRM`, `CONFIG_IPV6`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-72137](#cve-2026-72137) | XFRM NAT keepalive (`CONFIG_XFRM`) | <span class="badge bg-danger">9.8 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-74705](#cve-2026-74705) | UDP tunnel GSO segmentation (`CONFIG_NET`) | <span class="badge bg-danger">10.0 CRITICAL</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-90003](#cve-2026-90003) | futex requeue PI / rcuwait (`CONFIG_PREEMPT_RT`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — `CONFIG_PREEMPT_RT` is not set |
+| [CVE-2026-98276](#cve-2026-98276) | socket timestamp (`CONFIG_NET`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-90326](#cve-2026-90326) | blk-cgroup policy activation (`CONFIG_BLK_CGROUP`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-high">7.1 HIGH</span> | In the kernel on 6.18.9-hs. |
+| [CVE-2026-98136](#cve-2026-98136) | ntfs `$AttrDef` table walk (`CONFIG_NTFS_FS`) | <span class="badge badge-cve-high">7.1 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — outside introduced range (needs ≥7.1) |
+| [CVE-2026-98229](#cve-2026-98229) | XFRM input secpath reset (`CONFIG_XFRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-98241](#cve-2026-98241) | IPv6 XFRM local error / PMTU (`CONFIG_XFRM`, `CONFIG_IPV6`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-98364](#cve-2026-98364) | XFRM bundle device reference (`CONFIG_XFRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-98369](#cve-2026-98369) | XFRM transform reinject (`CONFIG_XFRM`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-98230](#cve-2026-98230) | XFRM state_cache hlist delete (`CONFIG_XFRM`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — tool not in the program allowlist |
+| [CVE-2026-98281](#cve-2026-98281) | futex private hash on vfork (`CONFIG_FUTEX_PRIVATE_HASH`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected — outside introduced range (needs ≥6.18.33) |
+| [CVE-2026-98320](#cve-2026-98320) | netfilter flowtable ct reference (`CONFIG_NF_FLOW_TABLE`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-97609](#cve-2026-97609) | netfilter cttimeout module unload (`CONFIG_NF_CT_NETLINK_TIMEOUT`) | <span class="badge badge-cve-high">7.0 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs |
+| [CVE-2026-93138](#cve-2026-93138) | BPF vmlinux BTF prep (`CONFIG_BPF_SYSCALL`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not exploitable — feature not compiled |
+| [CVE-2026-81010](#cve-2026-81010) | io_uring waitid task_work (`CONFIG_IO_URING`) | <span class="badge badge-cve-high">7.8 HIGH</span> | <span class="badge badge-cve-none">0.0</span> | Not Affected on 5.19.6; Not exploitable — feature not compiled on 6.18.9-hs |
 
 ### CVE-2026-31431
 
@@ -4240,3 +4278,445 @@ The trigger cannot be reached on any Root Lock deployment.
 `service_table` iteration needs a bound QAT device. Root Lock servers without Intel QAT hardware never load those modules.
 
 The trigger cannot be reached on any Root Lock deployment.
+
+### CVE-2026-74257
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF sockmap UDP recv (`CONFIG_BPF_SYSCALL`, sockmap / `CONFIG_BPF_STREAM_PARSER`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_BPF_SYSCALL` is not set on 5.19.6; public derived 6.18 compiles `CONFIG_BPF_SYSCALL` off
+
+`udp_bpf_recvmsg()` raced lockless `sk_msg_recvmsg()` on a shared `sk_msg`. Reaching it needs a BPF sockmap / sk_msg attachment on a UDP socket. 5.19.6 ships `# CONFIG_BPF_SYSCALL is not set` and has no `udp_bpf_recvmsg` in System.map. The public derived 6.18 pin treats `CONFIG_BPF_SYSCALL=n`; `bpf()` returns `ENOSYS` and sockmap programs cannot load.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-68284
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF sockmap TCP send cork (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — sockmap `tcp_bpf_sendmsg()` is not reachable without `CONFIG_BPF_SYSCALL`
+
+`tcp_bpf_sendmsg()` freed a stale cork when two threads raced across `sk_stream_wait_memory()`. The path needs a BPF sockmap program on a TCP socket. 5.19.6 has `# CONFIG_BPF_SYSCALL is not set` and no `tcp_bpf_sendmsg` symbol. Public derived 6.18 sets `CONFIG_BPF_SYSCALL=n`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-68399
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF socket local storage clone (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `sk_bpf_storage` clone path is not compiled on public pins
+
+`sk_clone()` shallow-copied `sk_bpf_storage`; an early bailout before `bpf_sk_storage_clone()` left the clone pointing at the parent storage, and freeing the clone destroyed the parent’s storage. That object exists only with `CONFIG_BPF_SYSCALL`. 5.19.6 has it not set. Public derived 6.18 compiles it off.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74363
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF filesystem inode free (`CONFIG_BPF_SYSCALL` / bpffs)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — bpffs is not compiled on public pins
+
+A prior bpffs change freed inodes immediately in `destroy_inode()` without an RCU grace period, racing RCU pathwalk. 5.19.6 has `# CONFIG_BPF_SYSCALL is not set` and no `bpf_destroy_inode` in System.map. Public derived 6.18 treats `CONFIG_BPF_SYSCALL=n` (public derived pin off).
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-93137
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF `bpf_find_vma` helper (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `bpf_find_vma` is not compiled / not callable on public pins
+
+`bpf_find_vma()` read `task->mm` without pinning; a concurrent `exit_mm()` freed the `mm_struct`. The helper is built only with `CONFIG_BPF_SYSCALL`. 5.19.6 leaves the option unset (no symbol). Public derived 6.18 compiles the syscall off.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74589
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF sockmap send verdict redirect (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 8.4 HIGH
+**Score on Root Lock**: 0.0 — sockmap send-verdict path is not reachable without `CONFIG_BPF_SYSCALL`
+
+`tcp_bpf_send_verdict` used `sk_redir` across a socket unlock without a temporary reference. Reaching it needs a BPF sockmap verdict program. Public pins do not compile `CONFIG_BPF_SYSCALL` (5.19 unset; public derived 6.18 off).
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74714
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF TCP established iterator (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — BPF TCP iterators are not compiled on public pins
+
+`bpf_iter_tcp_established_batch()` called `sock_hold` on `TCP_NEW_SYN_RECV` request sockets that were not fully initialized. The iterator is built under `CONFIG_BPF_SYSCALL`. 5.19.6 leaves it unset. Public derived 6.18 compiles the syscall off.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-72112
+
+**Status**: Not exploitable — feature not compiled
+**Component**: io_uring BPF ops registration (`CONFIG_IO_URING`, `CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — BPF struct_ops cannot load on 5.19.6; public derived 6.18 compiles both `CONFIG_IO_URING` and `CONFIG_BPF_SYSCALL` off
+
+`io_install_bpf` allowed a second registration of an already-bound BPF struct_ops map, overwriting `ops->priv` and orphaning the first ring’s `loop_step`. 5.19.6 has `CONFIG_IO_URING=y` but `# CONFIG_BPF_SYSCALL is not set`, so the BPF ops map cannot be created. The public derived 6.18 pin treats `CONFIG_IO_URING=n` and `CONFIG_BPF_SYSCALL=n`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-72493
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: net core backlog enqueue (`CONFIG_NET`)
+**Base Score**: 9.9 CRITICAL
+**Score on Root Lock**: 0.0 — device unregister / netns teardown required for the race is not reachable from the allowlist
+
+`enqueue_to_backlog()` checked `netif_running()` locklessly, opening a TOCTOU window against backlog flush during device unregistration. Both pins compile `CONFIG_NET=y` and export `enqueue_to_backlog`. Hitting the race needs concurrent RX and netdev unregister (netns exit, veth teardown, or admin link-down). `ip`, `unshare`, `ifconfig`, `ifdown`, `networkctl`, `modprobe`, `insmod`, and `kmod` are absent from the program allowlist. 5.19.6 also has `# CONFIG_VETH is not set`. Under Lockdown the allowlist cannot gain them.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-92489
+
+**Status**: Not Affected on 5.19.6; Not exploitable — tool not in the program allowlist on 6.18.9-hs
+**Component**: XFRM device direct output / packet offload (`CONFIG_XFRM`, `CONFIG_XFRM_OFFLOAD`)
+**Base Score**: 9.8 CRITICAL
+**Score on Root Lock**: 0.0 — no `CONFIG_XFRM_OFFLOAD` on 5.19.6; on 6.18.9-hs an offload SA cannot be established from the allowlist
+
+`xfrm_dev_direct_output()` freed an skb after `local_out()` had already consumed it. 5.19.6 has no `CONFIG_XFRM_OFFLOAD` Kconfig symbol and no `xfrm_dev_direct_output` in System.map. 6.18.9-hs has `CONFIG_XFRM_OFFLOAD=y` and `CONFIG_XFRM_USER=m`. Reaching the path needs an XFRM offload security association. `ip`, `setkey`, `swanctl`, `modprobe`, `insmod`, and `kmod` are absent from the program allowlist. Under Lockdown the allowlist cannot gain them.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-97940
+
+**Status**: In the kernel on 6.18.9-hs.
+**Component**: IPv6 FIB walker / `/proc/net/ipv6_route` (`CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a root session from that use-after-free cannot persist or remount. Confidentiality stays High on a worst-case allowlist: in-memory reads remain. Availability stays High: a crash is residual.
+
+`ipv6_route_iter` / fib6 walker state could remain linked on `fib6_walkers` after the last route at a table root was deleted, so seq-stop / later walks touched freed memory. `CONFIG_IPV6=y` on 6.18.9-hs. Reading `/proc/net/ipv6_route` (and related dumps) exercises the walker on a standard deployment. Lockdown does not remove that code path from an already-running process.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-74569
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: netfilter SIP conntrack NAT (`CONFIG_NF_CONNTRACK_SIP`, `CONFIG_NF_NAT_SIP`)
+**Base Score**: 9.8 CRITICAL
+**Score on Root Lock**: 0.0 — SIP helper + NAT rewrite cannot be armed from the allowlist
+
+`sip_help_tcp()` stored NAT rewrite size deltas in `s16`; a long SIP Contact list wrapped the delta and walked past the skb tail. 5.19.6 has `CONFIG_NF_CONNTRACK_SIP=y` and `CONFIG_NF_NAT_SIP=y` (symbols present). 6.18.9-hs has both `=m` Arming the path needs netfilter SIP helper + NAT configuration and, on 6.18, module load. `iptables`, `nft`, `conntrack`, `modprobe`, `insmod`, and `kmod` are absent from the program allowlist. Under Lockdown the allowlist cannot gain them.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98163
+
+**Status**: Not Affected on 5.19.6 and on 6.18.9-hs.
+**Component**: cgroup task iterator (`CONFIG_CGROUPS`)
+**Base Score**: 7.0 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range (needs Linux ≥6.19)
+**Affected range**: ≥6.19 <7.2.8 (and 7.3-rc1…rc3). **5.19.6 and 6.18.9-hs are not in range.**
+**Upstream fix**: `057dac23d329` (mainline); stable `828938118d6c` (7.2.8+)
+**Introducing commit**: `260fbcb92bbea` (“cgroup: Move dying_tasks cleanup from cgroup_task_release() to cgroup_task_free()”)
+
+The race appears only after that commit extended dying-task lifetime on the dying_tasks list. `CONFIG_CGROUPS=y` on both HeartSuite pins does not pull those pins into range.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-90392
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF link info (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_BPF_SYSCALL` is not set on 5.19.6; public derived 6.18 compiles `CONFIG_BPF_SYSCALL` off
+
+`bpf_link_show_fdinfo` / `bpf_link_get_info_by_fd` read `link->prog` without the lock that serializes `bpf_link_update`. Reaching those entry points needs the bpf() syscall. 5.19.6 ships `# CONFIG_BPF_SYSCALL is not set`. The public derived 6.18 pin treats `CONFIG_BPF_SYSCALL=n`; `bpf()` returns `ENOSYS`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-90210
+
+**Status**: Not Affected on 5.19.6 and on 6.18.9-hs.
+**Component**: BPF trampoline multi-attach free (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range (needs Linux ≥7.2)
+**Affected range**: 7.2 → <7.2.6. **5.19.6 and 6.18.9-hs are not in range.**
+
+The UAF in `bpf_trampoline_multi_attach_free` on update failure is not present in these trees. Public derived 6.18 also compiles `CONFIG_BPF_SYSCALL` off.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74256
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF sockmap `bpf_msg_pop_data` (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 8.4 HIGH
+**Score on Root Lock**: 0.0 — sockmap pop path is not reachable without `CONFIG_BPF_SYSCALL`
+
+`bpf_msg_pop_data()` added `start + len` as `u32` and wrapped before the bounds check. The helper is only reached from a BPF sockmap / sk_msg program. 5.19.6 has `# CONFIG_BPF_SYSCALL is not set`. Public derived 6.18 sets `CONFIG_BPF_SYSCALL=n`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74371
+
+**Status**: Not Affected on 5.19.6. Not exploitable — feature not compiled on 6.18.9-hs.
+**Component**: BPF_PROG_QUERY (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — introduced in 6.17; public derived 6.18 compiles `CONFIG_BPF_SYSCALL` off
+**Affected range**: ≥6.17 <6.18.40 (and ≥6.19 <7.1.5). **5.19.6 is not in range.**
+
+`BPF_PROG_QUERY` wrote `query.revision` past a short userspace `bpf_attr`. That command needs the bpf() syscall. Public derived 6.18 treats `CONFIG_BPF_SYSCALL=n`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-80713
+
+**Status**: Not Affected on 5.19.6 and on 6.18.9-hs.
+**Component**: io_uring task restrictions across exec (`CONFIG_IO_URING`)
+**Base Score**: 8.4 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range (needs Linux ≥7.0)
+**Affected range**: ≥7.0 <7.1.8. **5.19.6 and 6.18.9-hs are not in range.**
+
+Per-task io_uring restrictions and the exec-cancel free that drops them arrived with Linux 7.0. `CONFIG_IO_URING=y` on 5.19.6 does not place that pin in range. Public derived 6.18 also compiles `CONFIG_IO_URING` off.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-89783
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: xfrm6 input addr / secpath (`CONFIG_XFRM`, `CONFIG_IPV6`)
+**Base Score**: 9.8 CRITICAL
+**Score on Root Lock**: 0.0 — XFRM SA setup tools are not in the program allowlist
+
+`xfrm6_input_addr()` used an off-by-one depth check and could write one past `sp->xvec[]` when a full secpath re-entered IPv6 input with HAO / type-2 routing. `CONFIG_XFRM=y` and `CONFIG_IPV6=y` on both pins; `xfrm6_input_addr` is in System.map. Reaching a populated XFRM secpath still requires IPsec/XFRM management (`ip xfrm`, `setkey`, strongSwan, libreswan, or `swanctl`). Those programs are absent from the shipped program allowlist. Under Lockdown the allowlist cannot gain them. On 6.18.9-hs `CONFIG_XFRM_USER=m`; after the boot latch, a later modprobe stays refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-72137
+
+**Status**: Not Affected on 5.19.6. Not exploitable — tool not in the program allowlist on 6.18.9-hs.
+**Component**: XFRM NAT keepalive (`CONFIG_XFRM`)
+**Base Score**: 9.8 CRITICAL
+**Score on Root Lock**: 0.0 — NAT keepalive code absent on 5.19.6; on 6.18.9-hs SA setup tools are not in the program allowlist
+**Affected range**: ≥6.11 <6.12.101 / <6.18.40. **5.19.6 is not in range.**
+
+`nat_keepalive_send()` double-freed an skb after the IPv4/IPv6 send helper returned an error post-ownership handoff. System.map on 5.19.6 has no `nat_keepalive_send`. On 6.18.9-hs the symbol is present under `CONFIG_XFRM=y`, but NAT keepalive runs only for XFRM states configured with keepalive. Creating those states needs `ip xfrm` or an IKE daemon — absent from the program allowlist. Under Lockdown those tools cannot be added.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-74705
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: UDP tunnel GSO segmentation (`CONFIG_NET`)
+**Base Score**: 10.0 CRITICAL
+**Score on Root Lock**: 0.0 — tunnel setup tools are not in the program allowlist
+
+`__skb_udp_tunnel_segment()` saved a UDP header pointer before a pull that could reallocate `skb->head`. `skb_udp_tunnel_segment` is present on both pins. The path runs when GSO segments UDP-encapsulated tunnel traffic (WireGuard/VXLAN/GENEVE/FOU class). 5.19.6 has WireGuard/VXLAN/GENEVE unset. 6.18.9-hs builds those as modules (`CONFIG_NET_UDP_TUNNEL=m`, `CONFIG_WIREGUARD=m`, `CONFIG_VXLAN=m`, `CONFIG_GENEVE=m`). Creating tunnel interfaces needs `ip` or `wg` (or equivalent) — absent from the program allowlist. After the boot latch, a later modprobe stays refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-72322
+
+**Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
+**Component**: IPv6 MLD delayed work (`CONFIG_IPV6`)
+**Base Score**: 9.8 CRITICAL
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a root session from that use-after-free cannot persist or remount. Confidentiality stays High on a worst-case allowlist: in-memory reads remain. Availability stays High: a crash is residual.
+
+A race between device teardown and MLD delayed work frees multicast state the worker still touches. `CONFIG_IPV6=y` on both pins. MLD runs for IPv6-enabled interfaces without a special allowlisted tool. Lockdown does not remove that code path from an already-running process.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-74656
+
+**Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
+**Component**: IPv4 FIB nexthop MTU (`CONFIG_INET`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls. Confidentiality stays High on a worst-case allowlist. Availability stays High: a crash is residual.
+
+`fib_nhc_update_mtu()` walks nexthop exceptions under RTNL without serializing against PMTU exception updates, leaving a use-after-free window. `CONFIG_INET=y` on both pins; `fib_nhc_update_mtu` is in System.map. IPv4 PMTU/FIB activity is a core path used by already-running networked allowlisted programs. Lockdown does not remove that code path.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-90049
+
+**Status**: In the kernel on 5.19.6 and on 6.18.9-hs.
+**Component**: skbuff zerocopy (`CONFIG_NET`)
+**Base Score**: 9.3 CRITICAL
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls. Confidentiality stays High on a worst-case allowlist. Availability stays High: a crash is residual.
+
+`skb_zerocopy()` called `skb_tx_error()` on the source skb after an `skb_orphan_frags()` failure — a destructive operation on a buffer the caller still owns. `CONFIG_NET=y` on both pins; `skb_zerocopy` is in System.map. Zerocopy transmit helpers sit on core networking paths used by already-running allowlisted programs. Lockdown does not remove that code path.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-90003
+
+**Status**: Not Affected on 5.19.6 and on 6.18.9-hs.
+**Component**: futex requeue PI / rcuwait (`CONFIG_PREEMPT_RT`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `# CONFIG_PREEMPT_RT is not set` on 6.18.9-hs (5.19.6 likewise not a PREEMPT_RT build)
+
+NVD states the rcuwait use-after-free in `futex_requeue_pi_complete()` on **PREEMPT_RT**. Both HeartSuite pins ship without `CONFIG_PREEMPT_RT`. `CONFIG_FUTEX_PI=y` alone does not enable that RT failure mode.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98136
+
+**Status**: Not Affected on 6.18.9-hs.
+**Component**: ntfs `$AttrDef` table walk (`CONFIG_NTFS_FS`)
+**Base Score**: 7.1 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range (needs Linux ≥7.1)
+**Affected range**: ≥7.1 <7.2.7 (and 7.3-rc1). **6.18.9-hs is not in range.**
+**Upstream fix**: `3e2ae47b8ebc` / `c8504fc1245f`
+**Introducing commit**: `1e9ea7e04472d` (classic ntfs `ntfs_attr_find_in_attrdef()`)
+
+The unbounded `$AttrDef` walk is a Linux ≥7.1 classic-ntfs bug. `CONFIG_NTFS_FS` is not set on 6.18.9-hs (`CONFIG_NTFS3_FS=m` is a different driver and is not this CVE's surface).
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98229
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: XFRM input secpath reset (`CONFIG_XFRM`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — XFRM SA setup tools are not in the program allowlist
+
+`xfrm_input()` can keep dereferencing an `xfrm_state` after VTI / XFRM-interface / depth-error paths reset the skb secpath. `CONFIG_XFRM=y` on 6.18.9-hs; `xfrm_input` is in System.map. Reaching a populated XFRM receive path still requires IPsec/XFRM management (`ip xfrm`, `setkey`, strongSwan, libreswan, or `swanctl`). Those programs are absent from the shipped program allowlist. Under Lockdown the allowlist cannot gain them. On 6.18.9-hs `CONFIG_XFRM_USER=m` / `CONFIG_XFRM_INTERFACE=m`; after the boot latch, a later modprobe stays refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98241
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: IPv6 XFRM local error / PMTU (`CONFIG_XFRM`, `CONFIG_IPV6`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — XFRM SA / tunnel setup tools are not in the program allowlist
+
+`xfrm6_local_rxpmtu()` and `xfrm6_local_error()` treated `skb->sk` as a full IPv6 socket; a TCP_NEW_SYN_RECV request_sock on an IPv6 XFRM tunnel PMTU path can be miscast. Symbols are present under `CONFIG_XFRM` / `CONFIG_IPV6`. Creating the XFRM tunnel/policy still needs `ip xfrm` or an IKE daemon — absent from the program allowlist. Under Lockdown those tools cannot be added.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98364
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: XFRM bundle device reference (`CONFIG_XFRM`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — XFRM SA setup tools are not in the program allowlist
+
+Bundle creation read `dst->dev` without holding a device reference across `xfrm_fill_dst()`, racing `RTM_DELLINK`. Bundle resolution runs for configured XFRM policies/states. SA setup tools are absent from the program allowlist. Under Lockdown those tools cannot be added.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98369
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: XFRM transform reinject (`CONFIG_XFRM`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — XFRM SA setup tools are not in the program allowlist
+
+`xfrm_trans_reinject()` lacked `rcu_read_lock()` / `skb_dst_force()` / `dev_hold()` on the async transform completion path. `xfrm_trans_reinject` is in System.map under `CONFIG_XFRM=y`. The path still needs XFRM SA processing configured by `ip xfrm` or an IKE daemon — absent from the program allowlist. Under Lockdown those tools cannot be added.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98230
+
+**Status**: Not exploitable — tool not in the program allowlist
+**Component**: XFRM state_cache hlist delete (`CONFIG_XFRM`)
+**Base Score**: 7.0 HIGH
+**Score on Root Lock**: 0.0 — XFRM SA setup tools are not in the program allowlist
+
+`__xfrm_state_delete()` still used `hlist_del_rcu()` on `state_cache` / `state_cache_input`, so a second delete could write through `LIST_POISON`. State hash management requires XFRM admin tools (`ip xfrm` / IKE) — absent from the program allowlist. Under Lockdown those tools cannot be added.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98281
+
+**Status**: Not Affected on 6.18.9-hs.
+**Component**: futex private hash on vfork (`CONFIG_FUTEX_PRIVATE_HASH`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range (needs Linux ≥6.18.33)
+**Affected range**: ≥6.18.33 <6.18.54 (and corresponding 7.x windows). **6.18.9-hs is not in range.**
+
+Private-hash allocation on `vfork()` / other `CLONE_VM` users was fixed after 6.18.33. `CONFIG_FUTEX_PRIVATE_HASH=y` on 6.18.9-hs does not pull that pin into the regression window. OSV's affected version list starts at v6.18.33.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98320
+
+**Status**: Not exploitable — feature not compiled on 5.19.6 archive pin; Not exploitable — tool not in the program allowlist on 6.18.9-hs.
+**Component**: netfilter flowtable ct reference (`CONFIG_NF_FLOW_TABLE`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — flowtable offload is modular and needs nftables setup tools that are not in the program allowlist
+
+The flowtable datapath could drop the conntrack reference too early. On 6.18.9-hs `CONFIG_NF_FLOW_TABLE=m` / `CONFIG_NFT_FLOW_OFFLOAD=m`. Enabling the path needs `nft` (or equivalent) and a loaded flowtable module — `nft` is absent from the program allowlist; after the boot latch a later modprobe stays refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-98276
+
+**Status**: In the kernel on 6.18.9-hs.
+**Component**: socket timestamp (`CONFIG_NET`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls, so a root session from that race cannot persist or remount. Confidentiality stays High on a worst-case allowlist: in-memory reads remain. Availability stays High: a crash is residual.
+
+`sock_gettstamp()` enabled `SOCK_TIMESTAMP` without the socket lock while other paths mutate `sk_flags` non-atomically. `CONFIG_NET=y`; `sock_gettstamp` is in System.map. Getsockopt/ioctl timestamp paths are reachable from already-running allowlisted networked programs. Lockdown does not remove that code path.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
+
+### CVE-2026-97609
+
+**Status**: Not exploitable — feature not compiled on 5.19.6 archive pin; Not exploitable — tool not in the program allowlist on 6.18.9-hs.
+**Component**: netfilter cttimeout module unload (`CONFIG_NF_CT_NETLINK_TIMEOUT`)
+**Base Score**: 7.0 HIGH
+**Score on Root Lock**: 0.0 — cttimeout unload needs modprobe/rmmod, which are not in the program allowlist
+
+`cttimeout_exit()` could race `nf_ct_set_timeout()` across module unload. On 6.18.9-hs `CONFIG_NF_CT_NETLINK_TIMEOUT=m`. Loading and unloading that module needs `modprobe`/`rmmod` — absent from the program allowlist; after the boot latch a later modprobe stays refused.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-93138
+
+**Status**: Not exploitable — feature not compiled
+**Component**: BPF vmlinux BTF prep (`CONFIG_BPF_SYSCALL`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — `CONFIG_BPF_SYSCALL` is not set on 5.19.6; public derived 6.18 compiles `CONFIG_BPF_SYSCALL` off
+
+`bpf_get_btf_vmlinux()` published a partially initialized `struct btf` without ordering against lockless readers. Reaching it needs the bpf() syscall. 5.19.6 ships `# CONFIG_BPF_SYSCALL is not set`. The public derived 6.18 pin treats `CONFIG_BPF_SYSCALL=n`; `bpf()` returns `ENOSYS`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-81010
+
+**Status**: Not Affected on 5.19.6. Not exploitable — feature not compiled on 6.18.9-hs.
+**Component**: io_uring waitid task_work (`CONFIG_IO_URING`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 0.0 — outside the introduced range on 5.19.6 (needs ≥6.7); public derived 6.18 compiles `CONFIG_IO_URING` off
+**Affected range**: ≥6.7 <6.18.52 / <7.2.4. **5.19.6 is not in range.**
+
+`io_waitid_cb()` ignored task_work cancellation on the kworker fallback path. Public derived 6.18 treats `CONFIG_IO_URING=n`.
+
+The trigger cannot be reached on any HeartSuite Core Secure deployment.
+
+### CVE-2026-90326
+
+**Status**: In the kernel on 6.18.9-hs.
+**Component**: blk-cgroup policy activation (`CONFIG_BLK_CGROUP`)
+**Base Score**: 7.8 HIGH
+**Score on Root Lock**: 7.1 HIGH — Modified Integrity None (`CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H/MC:H/MI:N/MA:H`). Lockdown refuses `FS_IOC_SETFLAGS` and all three mount syscalls. Confidentiality stays High on a worst-case allowlist. Availability stays High: a crash is residual.
+
+`blkcg_activate_policy()` can race concurrent blkg destruction when IO policies are activated (scheduler switch / policy enable on a live queue). `CONFIG_BLK_CGROUP=y` on 6.18.9-hs; `blkcg_activate_policy` and `blkg_destroy` are in System.map. Cgroup/blkcg lifecycle is continuous under allowlisted `systemd` and related services; Lockdown does not remove that code path.
+
+**Even with this CVE exploited to root, the attacker cannot run new code on this system.** Lockdown's allowlist refuses every non-allowlisted program at `execve`, including in the worst case where the attacker has cleared Lockdown. No persistence, no backdoors, no cross-reboot survival. ([How](/rootlock/security/#how-to-read-the-backstop-sections).)
+
+A reboot is a clean slate. The attack does not survive it.
