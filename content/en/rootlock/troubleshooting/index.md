@@ -55,7 +55,9 @@ The Dashboard presents the same information with metadata enrichment and groupin
 
 ## Nested virtual machines without hardware virtualization
 
-The Local Path command is the same on a physical host and on a full VM. If you created a virtual machine *inside* a VPS or cloud guest that has no `/dev/kvm`, the installer stops at the start. Install Root Lock on the outer machine, or use a host that provides hardware virtualization. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
+The Local Path command is the same on a physical host and on a full VM. If you created a virtual machine *inside* a VPS or cloud guest that has no `/dev/kvm`, the installer stops at the start. Install Root Lock on the outer machine, or use a host that provides hardware virtualization.
+
+The installer stops because the nested guest runs under software emulation. Installing on the outer machine is the same protection. The outer machine is the nested guest's hypervisor, so Root Lock on the outer machine covers everything inside it. See [Bare metal, virtual machines, and nested VMs](../introduction/system-requirements/#bare-metal-virtual-machines-and-nested-vms).
 
 ## Reporting issues
 
