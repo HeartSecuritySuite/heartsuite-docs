@@ -15,11 +15,11 @@ Hugo serves this directory at the site root (default `staticDir`). JSON files ar
 
 On each annotated **`hs-v*`** kernel release tag, HeartSuite's internal **Publish advisory feeds** workflow:
 
-1. Checks out this docs repo alongside the private Core Secure build tree and the heartsuite userspace tree.
+1. Checks out this docs repo and the private Core Secure build tree.
 2. Runs `test_cve_config_crosswalk.py --sbom-out=…` — **must PASS** (no CONFIG drift).
-3. Runs `tools/generate_osv_from_cve_sbom.py` and `tools/generate_cyclonedx_sbom.py` when present in those checkouts.
+3. Runs `tools/generate_osv_from_cve_sbom.py`. CycloneDX runs only in the workstation command below, which has the heartsuite checkout.
 4. Writes `index.json` (catalogue schema `hs-advisory-catalog/v1`) and copies all JSON artefacts here.
-5. Commits to `main` on this repo (requires `HEARTSUITE_DOCS_WRITE_TOKEN` on the release automation host).
+5. Uploads the artefact. A person copies `static/advisories/` onto `main` from a workstation. The workflow has no write token.
 
 Local regeneration without CI:
 
